@@ -5,19 +5,23 @@ package com.azure.spring.data.gremlin.conversion.script;
 
 import com.azure.spring.data.gremlin.common.GremlinEntityType;
 import com.azure.spring.data.gremlin.exception.GremlinInvalidEntityIdFieldException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AbstractGremlinScriptLiteralUnitTest {
 
-    @Test(expected = GremlinInvalidEntityIdFieldException.class)
+    @Test
     public void testEntityInvalidIdType() {
         final Double id = 12.342;
-        GremlinScriptLiteralHelper.generateEntityWithRequiredId(id, GremlinEntityType.EDGE);
+        assertThrows(GremlinInvalidEntityIdFieldException.class,
+            () -> GremlinScriptLiteralHelper.generateEntityWithRequiredId(id, GremlinEntityType.EDGE));
     }
 
-    @Test(expected = GremlinInvalidEntityIdFieldException.class)
+    @Test
     public void testPropertyInvalidIdType() {
         final Double id = 12.342;
-        GremlinScriptLiteralHelper.generatePropertyWithRequiredId(id);
+        assertThrows(GremlinInvalidEntityIdFieldException.class,
+            () -> GremlinScriptLiteralHelper.generatePropertyWithRequiredId(id));
     }
 }

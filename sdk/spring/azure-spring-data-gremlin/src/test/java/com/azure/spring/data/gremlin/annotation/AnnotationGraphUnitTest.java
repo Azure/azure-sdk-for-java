@@ -8,8 +8,8 @@ import com.azure.spring.data.gremlin.common.domain.Network;
 import com.azure.spring.data.gremlin.common.domain.Roadmap;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSource;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSourceGraph;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationGraphUnitTest {
 
@@ -17,15 +17,15 @@ public class AnnotationGraphUnitTest {
     public void testAnnotationGraphDefaultCollection() {
         final GremlinSource<Network> source = GremlinUtils.toGremlinSource(Network.class);
 
-        Assert.assertTrue(source instanceof GremlinSourceGraph);
-        Assert.assertTrue(source.getLabel().isEmpty());
+        Assertions.assertTrue(source instanceof GremlinSourceGraph);
+        Assertions.assertTrue(source.getLabel().isEmpty());
     }
 
     @Test
     public void testAnnotationGraphSpecifiedCollection() {
         final GremlinSource<Roadmap> source = GremlinUtils.toGremlinSource(Roadmap.class);
 
-        Assert.assertTrue(source instanceof GremlinSourceGraph);
-        Assert.assertTrue(source.getLabel().isEmpty());
+        Assertions.assertTrue(source instanceof GremlinSourceGraph);
+        Assertions.assertTrue(source.getLabel().isEmpty());
     }
 }

@@ -10,14 +10,14 @@ import com.azure.spring.data.gremlin.common.domain.BookReference;
 import com.azure.spring.data.gremlin.common.repository.BookReferenceRepository;
 import com.azure.spring.data.gremlin.common.repository.BookRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class BookReferenceRepositoryIT {
 
@@ -60,7 +60,7 @@ public class BookReferenceRepositoryIT {
     @Autowired
     private BookRepository bookRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.referenceRepository.deleteAll();
         this.bookRepository.deleteAll();
@@ -70,8 +70,8 @@ public class BookReferenceRepositoryIT {
         found.sort(Comparator.comparing(BookReference::getId));
         expected.sort(Comparator.comparing(BookReference::getId));
 
-        Assert.assertEquals(found.size(), expected.size());
-        Assert.assertEquals(found, expected);
+        Assertions.assertEquals(found.size(), expected.size());
+        Assertions.assertEquals(found, expected);
     }
 
     @Test
@@ -79,11 +79,11 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        Assert.assertTrue(referenceRepository.findAll().iterator().hasNext());
+        Assertions.assertTrue(referenceRepository.findAll().iterator().hasNext());
 
         referenceRepository.deleteAll();
 
-        Assert.assertFalse(referenceRepository.findAll().iterator().hasNext());
+        Assertions.assertFalse(referenceRepository.findAll().iterator().hasNext());
     }
 
     @Test
@@ -91,11 +91,11 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        Assert.assertTrue(referenceRepository.findAll().iterator().hasNext());
+        Assertions.assertTrue(referenceRepository.findAll().iterator().hasNext());
 
         referenceRepository.deleteAll(GremlinEntityType.EDGE);
 
-        Assert.assertFalse(referenceRepository.findAll().iterator().hasNext());
+        Assertions.assertFalse(referenceRepository.findAll().iterator().hasNext());
     }
 
     @Test
@@ -103,11 +103,11 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        Assert.assertTrue(referenceRepository.findAll().iterator().hasNext());
+        Assertions.assertTrue(referenceRepository.findAll().iterator().hasNext());
 
         referenceRepository.deleteAll(BookReference.class);
 
-        Assert.assertFalse(referenceRepository.findAll().iterator().hasNext());
+        Assertions.assertFalse(referenceRepository.findAll().iterator().hasNext());
     }
 
     @Test
@@ -115,8 +115,8 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.save(BOOK_REFERENCE_0);
 
-        Assert.assertTrue(referenceRepository.findById(BOOK_REFERENCE_0.getId()).isPresent());
-        Assert.assertFalse(referenceRepository.findById(BOOK_REFERENCE_1.getId()).isPresent());
+        Assertions.assertTrue(referenceRepository.findById(BOOK_REFERENCE_0.getId()).isPresent());
+        Assertions.assertFalse(referenceRepository.findById(BOOK_REFERENCE_1.getId()).isPresent());
     }
 
     @Test
@@ -136,12 +136,12 @@ public class BookReferenceRepositoryIT {
 
         Optional<BookReference> optional = referenceRepository.findById(BOOK_REFERENCE_0.getId());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(optional.get(), BOOK_REFERENCE_0);
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(optional.get(), BOOK_REFERENCE_0);
 
         optional = referenceRepository.findById(NO_EXIST_ID);
 
-        Assert.assertFalse(optional.isPresent());
+        Assertions.assertFalse(optional.isPresent());
     }
 
     @Test
@@ -149,8 +149,8 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        Assert.assertTrue(referenceRepository.existsById(BOOK_REFERENCE_0.getId()));
-        Assert.assertFalse(referenceRepository.existsById(NO_EXIST_ID));
+        Assertions.assertTrue(referenceRepository.existsById(BOOK_REFERENCE_0.getId()));
+        Assertions.assertFalse(referenceRepository.existsById(NO_EXIST_ID));
     }
 
     @Test
@@ -163,7 +163,7 @@ public class BookReferenceRepositoryIT {
 
         assertDomainListEquals(found, BOOK_REFERENCES);
 
-        Assert.assertFalse(referenceRepository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
+        Assertions.assertFalse(referenceRepository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
     }
 
     @Test
@@ -171,11 +171,11 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        Assert.assertEquals(referenceRepository.count(), BOOK_REFERENCES.size() + BOOKS.size());
+        Assertions.assertEquals(referenceRepository.count(), BOOK_REFERENCES.size() + BOOKS.size());
 
         referenceRepository.deleteAll();
 
-        Assert.assertEquals(referenceRepository.count(), 0);
+        Assertions.assertEquals(referenceRepository.count(), 0);
     }
 
     @Test
@@ -183,11 +183,11 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        Assert.assertTrue(referenceRepository.findById(BOOK_REFERENCE_0.getId()).isPresent());
+        Assertions.assertTrue(referenceRepository.findById(BOOK_REFERENCE_0.getId()).isPresent());
 
         referenceRepository.deleteById(BOOK_REFERENCE_0.getId());
 
-        Assert.assertFalse(referenceRepository.findById(BOOK_REFERENCE_0.getId()).isPresent());
+        Assertions.assertFalse(referenceRepository.findById(BOOK_REFERENCE_0.getId()).isPresent());
     }
 
     @Test
@@ -195,6 +195,6 @@ public class BookReferenceRepositoryIT {
         bookRepository.saveAll(BOOKS);
         referenceRepository.saveAll(BOOK_REFERENCES);
 
-        Assert.assertEquals(referenceRepository.edgeCount(), BOOK_REFERENCES.size());
+        Assertions.assertEquals(referenceRepository.edgeCount(), BOOK_REFERENCES.size());
     }
 }

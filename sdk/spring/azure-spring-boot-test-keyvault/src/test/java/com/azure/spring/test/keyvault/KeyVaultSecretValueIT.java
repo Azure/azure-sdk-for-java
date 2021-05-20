@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -146,7 +146,7 @@ public class KeyVaultSecretValueIT {
     }
 
     @Test
-    @Ignore("Block live test, ignore temporarily")
+    @Disabled("Block live test, ignore temporarily")
     public void keyVaultWithVirtualMachineMSI() {
         LOGGER.info("keyVaultWithVirtualMachineMSI begin.");
         final VirtualMachine vm = AZURE.virtualMachines().getByResourceGroup(SPRING_RESOURCE_GROUP, VM_NAME);

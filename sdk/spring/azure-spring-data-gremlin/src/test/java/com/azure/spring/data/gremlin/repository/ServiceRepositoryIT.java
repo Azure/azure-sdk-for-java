@@ -9,15 +9,16 @@ import com.azure.spring.data.gremlin.common.domain.ServiceType;
 import com.azure.spring.data.gremlin.common.domain.SimpleDependency;
 import com.azure.spring.data.gremlin.common.repository.ServiceRepository;
 import com.azure.spring.data.gremlin.common.repository.SimpleDependencyRepository;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class ServiceRepositoryIT {
 
@@ -63,7 +65,7 @@ public class ServiceRepositoryIT {
     @Autowired
     private SimpleDependencyRepository dependencyRepo;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws ParseException {
         PROPERTIES_B.put("serviceB-port", 8761);
         PROPERTIES_B.put("priority", "high");
@@ -86,37 +88,37 @@ public class ServiceRepositoryIT {
         serviceC = new Service(ID_C, COUNT_C, false, NAME_C, ServiceType.BACK_END, createDateC, PROPERTIES_C);
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.repository.deleteAll();
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         this.repository.deleteAll();
     }
 
     @Test
     public void testQueries() {
-        Assert.assertFalse(this.repository.findById(serviceA.getId()).isPresent());
-        Assert.assertFalse(this.repository.findById(serviceB.getId()).isPresent());
+        Assertions.assertFalse(this.repository.findById(serviceA.getId()).isPresent());
+        Assertions.assertFalse(this.repository.findById(serviceB.getId()).isPresent());
 
         this.repository.save(serviceA);
         this.repository.save(serviceB);
 
         Optional<Service> foundOptional = this.repository.findById(serviceA.getId());
-        Assert.assertTrue(foundOptional.isPresent());
-        Assert.assertEquals(foundOptional.get(), serviceA);
+        Assertions.assertTrue(foundOptional.isPresent());
+        Assertions.assertEquals(foundOptional.get(), serviceA);
 
         foundOptional = this.repository.findById(serviceB.getId());
-        Assert.assertTrue(foundOptional.isPresent());
-        Assert.assertEquals(foundOptional.get(), serviceB);
+        Assertions.assertTrue(foundOptional.isPresent());
+        Assertions.assertEquals(foundOptional.get(), serviceB);
 
         this.repository.deleteById(serviceA.getId());
         this.repository.deleteById(serviceB.getId());
 
-        Assert.assertFalse(this.repository.findById(serviceA.getId()).isPresent());
-        Assert.assertFalse(this.repository.findById(serviceB.getId()).isPresent());
+        Assertions.assertFalse(this.repository.findById(serviceA.getId()).isPresent());
+        Assertions.assertFalse(this.repository.findById(serviceB.getId()).isPresent());
     }
 
     @Test
@@ -128,13 +130,13 @@ public class ServiceRepositoryIT {
         this.dependencyRepo.save(depend);
 
         final Optional<SimpleDependency> foundOptional = this.dependencyRepo.findById(depend.getId());
-        Assert.assertTrue(foundOptional.isPresent());
-        Assert.assertEquals(foundOptional.get(), depend);
+        Assertions.assertTrue(foundOptional.isPresent());
+        Assertions.assertEquals(foundOptional.get(), depend);
 
         this.dependencyRepo.delete(foundOptional.get());
 
-        Assert.assertTrue(this.repository.findById(serviceA.getId()).isPresent());
-        Assert.assertTrue(this.repository.findById(serviceB.getId()).isPresent());
+        Assertions.assertTrue(this.repository.findById(serviceA.getId()).isPresent());
+        Assertions.assertTrue(this.repository.findById(serviceB.getId()).isPresent());
     }
 
     @Test
@@ -144,12 +146,12 @@ public class ServiceRepositoryIT {
 
         final List<Service> services = this.repository.findByName(serviceA.getName());
 
-        Assert.assertEquals(services.size(), 1);
-        Assert.assertEquals(services.get(0), serviceA);
+        Assertions.assertEquals(services.size(), 1);
+        Assertions.assertEquals(services.get(0), serviceA);
 
         this.repository.deleteAll();
 
-        Assert.assertTrue(this.repository.findByName(serviceA.getName()).isEmpty());
+        Assertions.assertTrue(this.repository.findByName(serviceA.getName()).isEmpty());
     }
 
     @Test
@@ -159,12 +161,12 @@ public class ServiceRepositoryIT {
 
         final List<Service> services = this.repository.findByInstanceCount(serviceB.getInstanceCount());
 
-        Assert.assertEquals(services.size(), 1);
-        Assert.assertEquals(services.get(0), serviceB);
+        Assertions.assertEquals(services.size(), 1);
+        Assertions.assertEquals(services.get(0), serviceB);
 
         this.repository.deleteAll();
 
-        Assert.assertTrue(this.repository.findByInstanceCount(serviceB.getInstanceCount()).isEmpty());
+        Assertions.assertTrue(this.repository.findByInstanceCount(serviceB.getInstanceCount()).isEmpty());
     }
 
     @Test
@@ -174,12 +176,12 @@ public class ServiceRepositoryIT {
 
         final List<Service> services = this.repository.findByActive(serviceB.isActive());
 
-        Assert.assertEquals(services.size(), 1);
-        Assert.assertEquals(services.get(0), serviceB);
+        Assertions.assertEquals(services.size(), 1);
+        Assertions.assertEquals(services.get(0), serviceB);
 
         this.repository.deleteAll();
 
-        Assert.assertTrue(this.repository.findByActive(serviceB.isActive()).isEmpty());
+        Assertions.assertTrue(this.repository.findByActive(serviceB.isActive()).isEmpty());
     }
 
     @Test
@@ -189,12 +191,12 @@ public class ServiceRepositoryIT {
 
         final List<Service> services = this.repository.findByCreateAt(serviceA.getCreateAt());
 
-        Assert.assertEquals(services.size(), 1);
-        Assert.assertEquals(services.get(0), serviceA);
+        Assertions.assertEquals(services.size(), 1);
+        Assertions.assertEquals(services.get(0), serviceA);
 
         this.repository.deleteAll();
 
-        Assert.assertTrue(this.repository.findByCreateAt(serviceB.getCreateAt()).isEmpty());
+        Assertions.assertTrue(this.repository.findByCreateAt(serviceB.getCreateAt()).isEmpty());
     }
 
     @Test
@@ -204,12 +206,12 @@ public class ServiceRepositoryIT {
 
         final List<Service> services = this.repository.findByProperties(serviceB.getProperties());
 
-        Assert.assertEquals(services.size(), 1);
-        Assert.assertEquals(services.get(0), serviceB);
+        Assertions.assertEquals(services.size(), 1);
+        Assertions.assertEquals(services.get(0), serviceB);
 
         this.repository.deleteAll();
 
-        Assert.assertTrue(this.repository.findByProperties(serviceB.getProperties()).isEmpty());
+        Assertions.assertTrue(this.repository.findByProperties(serviceB.getProperties()).isEmpty());
     }
 
     @Test
@@ -220,11 +222,11 @@ public class ServiceRepositoryIT {
         final Optional<Service> foundConfig = this.repository.findById(serviceA.getId());
         final Optional<Service> foundEureka = this.repository.findById(serviceB.getId());
 
-        Assert.assertTrue(foundConfig.isPresent());
-        Assert.assertTrue(foundEureka.isPresent());
+        Assertions.assertTrue(foundConfig.isPresent());
+        Assertions.assertTrue(foundEureka.isPresent());
 
-        Assert.assertEquals(foundConfig.get(), serviceA);
-        Assert.assertEquals(foundEureka.get(), serviceB);
+        Assertions.assertEquals(foundConfig.get(), serviceA);
+        Assertions.assertEquals(foundEureka.get(), serviceB);
     }
 
     @Test
@@ -234,9 +236,9 @@ public class ServiceRepositoryIT {
 
         final List<Service> services = repository.findByNameAndInstanceCount(NAME_B, COUNT_B);
 
-        Assert.assertEquals(services.size(), 1);
-        Assert.assertEquals(services.get(0), serviceB);
-        Assert.assertTrue(repository.findByNameAndInstanceCount(NAME_B, COUNT_A).isEmpty());
+        Assertions.assertEquals(services.size(), 1);
+        Assertions.assertEquals(services.get(0), serviceB);
+        Assertions.assertTrue(repository.findByNameAndInstanceCount(NAME_B, COUNT_A).isEmpty());
     }
 
     @Test
@@ -246,9 +248,9 @@ public class ServiceRepositoryIT {
 
         final List<Service> services = repository.findByNameAndInstanceCountAndType(NAME_B, COUNT_B, ServiceType.BACK_END);
 
-        Assert.assertEquals(services.size(), 1);
-        Assert.assertEquals(services.get(0), serviceB);
-        Assert.assertTrue(repository.findByNameAndInstanceCountAndType(NAME_B, COUNT_A, ServiceType.BOTH).isEmpty());
+        Assertions.assertEquals(services.size(), 1);
+        Assertions.assertEquals(services.get(0), serviceB);
+        Assertions.assertTrue(repository.findByNameAndInstanceCountAndType(NAME_B, COUNT_A, ServiceType.BOTH).isEmpty());
     }
 
     @Test
@@ -261,13 +263,13 @@ public class ServiceRepositoryIT {
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
 
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         foundServices = repository.findByNameOrInstanceCount("fake-name", COUNT_A);
 
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceA);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceA);
     }
 
     @Test
@@ -280,12 +282,12 @@ public class ServiceRepositoryIT {
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
 
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         foundServices = repository.findByNameAndActiveOrProperties(NAME_B, false, new HashMap<>());
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceB);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceB);
     }
 
     @Test
@@ -298,12 +300,12 @@ public class ServiceRepositoryIT {
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
 
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         foundServices = repository.findByNameOrInstanceCountAndType(NAME_B, COUNT_A, ServiceType.BACK_END);
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceB);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceB);
     }
 
     @Test
@@ -316,12 +318,12 @@ public class ServiceRepositoryIT {
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
 
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         foundServices = repository.findByNameAndInstanceCountOrType(NAME_A, COUNT_B, ServiceType.BACK_END);
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceB);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceB);
     }
 
     @Test
@@ -331,12 +333,12 @@ public class ServiceRepositoryIT {
 
         final List<Service> foundServices = repository.findByActiveExists();
 
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceA);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceA);
 
         this.repository.deleteAll();
 
-        Assert.assertTrue(repository.findByActiveExists().isEmpty());
+        Assertions.assertTrue(repository.findByActiveExists().isEmpty());
     }
 
     @Test
@@ -346,19 +348,19 @@ public class ServiceRepositoryIT {
 
         Date testDate = new SimpleDateFormat("yyyyMMdd").parse("20180602");
         List<Service> foundServices = repository.findByCreateAtAfter(testDate);
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceB);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceB);
 
         testDate = new SimpleDateFormat("yyyyMMdd").parse("20180502");
         foundServices = repository.findByCreateAtAfter(testDate);
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         testDate = new SimpleDateFormat("yyyyMMdd").parse("20180606");
         foundServices = repository.findByCreateAtAfter(testDate);
-        Assert.assertTrue(foundServices.isEmpty());
+        Assertions.assertTrue(foundServices.isEmpty());
     }
 
     @Test
@@ -372,15 +374,15 @@ public class ServiceRepositoryIT {
 
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         testDate = new SimpleDateFormat("yyyyMMdd").parse("20180607");
         foundServices = repository.findByNameOrTypeAndInstanceCountAndCreateAtAfter(NAME_A, serviceB.getType(), COUNT_B,
                 testDate);
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceA);
-        Assert.assertTrue(repository.findByNameOrTypeAndInstanceCountAndCreateAtAfter("fake-name", serviceB.getType(),
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceA);
+        Assertions.assertTrue(repository.findByNameOrTypeAndInstanceCountAndCreateAtAfter("fake-name", serviceB.getType(),
                 COUNT_B, testDate).isEmpty());
     }
 
@@ -391,19 +393,19 @@ public class ServiceRepositoryIT {
 
         Date testDate = new SimpleDateFormat("yyyyMMdd").parse("20180602");
         List<Service> foundServices = repository.findByCreateAtBefore(testDate);
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceA);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceA);
 
         testDate = new SimpleDateFormat("yyyyMMdd").parse("20180606");
         foundServices = repository.findByCreateAtBefore(testDate);
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         testDate = new SimpleDateFormat("yyyyMMdd").parse("20180506");
         foundServices = repository.findByCreateAtBefore(testDate);
-        Assert.assertTrue(foundServices.isEmpty());
+        Assertions.assertTrue(foundServices.isEmpty());
     }
 
     @Test
@@ -414,21 +416,21 @@ public class ServiceRepositoryIT {
         Date startDate = new SimpleDateFormat("yyyyMMdd").parse("20180602");
         Date endDate = new SimpleDateFormat("yyyyMMdd").parse("20180606");
         List<Service> foundServices = repository.findByCreateAtAfterAndCreateAtBefore(startDate, endDate);
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceB);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceB);
 
         startDate = new SimpleDateFormat("yyyyMMdd").parse("20180506");
         endDate = new SimpleDateFormat("yyyyMMdd").parse("20180606");
         foundServices = repository.findByCreateAtAfterAndCreateAtBefore(startDate, endDate);
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         startDate = new SimpleDateFormat("yyyyMMdd").parse("20180606");
         endDate = new SimpleDateFormat("yyyyMMdd").parse("20180607");
         foundServices = repository.findByCreateAtAfterAndCreateAtBefore(startDate, endDate);
-        Assert.assertTrue(foundServices.isEmpty());
+        Assertions.assertTrue(foundServices.isEmpty());
     }
 
     @Test
@@ -439,21 +441,21 @@ public class ServiceRepositoryIT {
         Date startDate = new SimpleDateFormat("yyyyMMdd").parse("20180602");
         Date endDate = new SimpleDateFormat("yyyyMMdd").parse("20180606");
         List<Service> foundServices = repository.findByCreateAtBetween(startDate, endDate);
-        Assert.assertEquals(foundServices.size(), 1);
-        Assert.assertEquals(foundServices.get(0), serviceB);
+        Assertions.assertEquals(foundServices.size(), 1);
+        Assertions.assertEquals(foundServices.get(0), serviceB);
 
         startDate = new SimpleDateFormat("yyyyMMdd").parse("20180601");
         endDate = new SimpleDateFormat("yyyyMMdd").parse("20180604");
         foundServices = repository.findByCreateAtBetween(startDate, endDate);
         services.sort(Comparator.comparing(Service::getId));
         foundServices.sort(Comparator.comparing(Service::getId));
-        Assert.assertEquals(foundServices.size(), 2);
-        Assert.assertEquals(foundServices, services);
+        Assertions.assertEquals(foundServices.size(), 2);
+        Assertions.assertEquals(foundServices, services);
 
         startDate = new SimpleDateFormat("yyyyMMdd").parse("20180606");
         endDate = new SimpleDateFormat("yyyyMMdd").parse("20180607");
         foundServices = repository.findByCreateAtBetween(startDate, endDate);
-        Assert.assertTrue(foundServices.isEmpty());
+        Assertions.assertTrue(foundServices.isEmpty());
     }
 }
 

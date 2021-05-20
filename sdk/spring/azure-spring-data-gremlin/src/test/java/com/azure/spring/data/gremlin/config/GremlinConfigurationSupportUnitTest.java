@@ -23,9 +23,9 @@ import com.azure.spring.data.gremlin.common.domain.Service;
 import com.azure.spring.data.gremlin.common.domain.SimpleDependency;
 import com.azure.spring.data.gremlin.common.domain.Student;
 import com.azure.spring.data.gremlin.common.domain.UserDomain;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,7 +38,7 @@ public class GremlinConfigurationSupportUnitTest {
     private static final String TEST_DOMAIN_PACKAGE_NAME = "com.azure.spring.data.gremlin.common.domain";
     private TestConfig config;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.config = new TestConfig();
     }
@@ -47,14 +47,14 @@ public class GremlinConfigurationSupportUnitTest {
     public void testGetMappingBasePackages() {
         final Collection<String> basePackages = this.config.getMappingBasePackages();
 
-        Assert.assertNotNull(basePackages);
-        Assert.assertEquals(basePackages.size(), 1);
-        Assert.assertEquals(basePackages.toArray()[0], TEST_CONFIG_PACKAGE_NAME);
+        Assertions.assertNotNull(basePackages);
+        Assertions.assertEquals(basePackages.size(), 1);
+        Assertions.assertEquals(basePackages.toArray()[0], TEST_CONFIG_PACKAGE_NAME);
     }
 
     @Test
     public void testGremlinMappingContext() throws ClassNotFoundException {
-        Assert.assertNotNull(this.config.gremlinMappingContext());
+        Assertions.assertNotNull(this.config.gremlinMappingContext());
     }
 
     @Test
@@ -67,17 +67,17 @@ public class GremlinConfigurationSupportUnitTest {
                 Neighbor.class, Master.class, Group.class, GroupOwner.class, Orange.class)
         );
 
-        Assert.assertNotNull(entities);
-        Assert.assertEquals(entities.size(), references.size());
+        Assertions.assertNotNull(entities);
+        Assertions.assertEquals(entities.size(), references.size());
 
-        references.forEach(entity -> Assert.assertTrue(entities.contains(entity)));
+        references.forEach(entity -> Assertions.assertTrue(entities.contains(entity)));
     }
 
     @Test
     public void testScanEntityEmpty() throws ClassNotFoundException {
         final Set<Class<?>> entities = this.config.scanEntities("");
 
-        Assert.assertTrue(entities.isEmpty());
+        Assertions.assertTrue(entities.isEmpty());
     }
 
     private class TestConfig extends GremlinConfigurationSupport {

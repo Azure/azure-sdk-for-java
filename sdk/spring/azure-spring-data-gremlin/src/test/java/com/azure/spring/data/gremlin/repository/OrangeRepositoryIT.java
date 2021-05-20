@@ -8,20 +8,20 @@ import com.azure.spring.data.gremlin.common.TestUtils;
 import com.azure.spring.data.gremlin.common.domain.Orange;
 import com.azure.spring.data.gremlin.common.repository.OrangeRepository;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class OrangeRepositoryIT {
 
@@ -45,12 +45,12 @@ public class OrangeRepositoryIT {
     @Autowired
     private OrangeRepository repository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.repository.deleteAll();
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         this.repository.deleteAll();
     }
@@ -59,12 +59,12 @@ public class OrangeRepositoryIT {
     public void testGeneratedIdFindById() {
         final Orange orange = this.repository.save(ORANGE_0);
 
-        Assert.assertNotNull(orange.getId());
+        Assertions.assertNotNull(orange.getId());
 
         final Optional<Orange> optional = this.repository.findById(orange.getId());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(optional.get(), orange);
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(optional.get(), orange);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class OrangeRepositoryIT {
 
         this.repository.deleteById(orange.getId());
 
-        Assert.assertFalse(this.repository.findById(orange.getId()).isPresent());
-        Assert.assertFalse(this.repository.existsById(orange.getId()));
+        Assertions.assertFalse(this.repository.findById(orange.getId()).isPresent());
+        Assertions.assertFalse(this.repository.existsById(orange.getId()));
     }
 }

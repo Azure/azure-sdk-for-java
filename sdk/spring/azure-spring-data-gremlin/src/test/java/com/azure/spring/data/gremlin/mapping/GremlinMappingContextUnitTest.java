@@ -6,8 +6,8 @@ package com.azure.spring.data.gremlin.mapping;
 import com.azure.spring.data.gremlin.annotation.Vertex;
 import com.azure.spring.data.gremlin.common.TestConstants;
 import com.azure.spring.data.gremlin.common.domain.Project;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.util.ClassTypeInformation;
 
 public class GremlinMappingContextUnitTest {
@@ -18,8 +18,8 @@ public class GremlinMappingContextUnitTest {
         final BasicGremlinPersistentEntity<Project> entity = context.createPersistentEntity(
                 ClassTypeInformation.from(Project.class));
 
-        Assert.assertNotNull(entity);
-        Assert.assertNotNull(entity.findAnnotation(Vertex.class));
-        Assert.assertEquals(entity.findAnnotation(Vertex.class).label(), TestConstants.VERTEX_PROJECT_LABEL);
+        Assertions.assertNotNull(entity);
+        Assertions.assertNotNull(entity.findAnnotation(Vertex.class));
+        Assertions.assertEquals(entity.findAnnotation(Vertex.class).label(), TestConstants.VERTEX_PROJECT_LABEL);
     }
 }

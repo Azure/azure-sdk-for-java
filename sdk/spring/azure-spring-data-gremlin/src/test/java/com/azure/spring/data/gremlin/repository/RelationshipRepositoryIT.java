@@ -13,20 +13,20 @@ import com.azure.spring.data.gremlin.common.repository.PersonRepository;
 import com.azure.spring.data.gremlin.common.repository.ProjectRepository;
 import com.azure.spring.data.gremlin.common.repository.RelationshipRepository;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class RelationshipRepositoryIT {
 
@@ -50,12 +50,12 @@ public class RelationshipRepositoryIT {
     @Autowired
     private ProjectRepository projectRepo;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.relationshipRepo.deleteAll();
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         this.relationshipRepo.deleteAll();
     }
@@ -66,11 +66,11 @@ public class RelationshipRepositoryIT {
         this.projectRepo.save(this.project);
         this.relationshipRepo.save(this.relationship);
 
-        Assert.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
 
         this.relationshipRepo.deleteAll();
 
-        Assert.assertFalse(this.relationshipRepo.existsById(this.person.getId()));
+        Assertions.assertFalse(this.relationshipRepo.existsById(this.person.getId()));
     }
 
     @Test
@@ -79,11 +79,11 @@ public class RelationshipRepositoryIT {
         this.projectRepo.save(this.project);
         this.relationshipRepo.save(this.relationship);
 
-        Assert.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
 
         this.relationshipRepo.deleteById(this.relationship.getId());
 
-        Assert.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
     }
 
     @Test
@@ -92,11 +92,11 @@ public class RelationshipRepositoryIT {
         this.projectRepo.save(this.project);
         this.relationshipRepo.save(this.relationship);
 
-        Assert.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
 
         this.relationshipRepo.delete(this.relationship);
 
-        Assert.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
     }
 
     @Test
@@ -109,23 +109,23 @@ public class RelationshipRepositoryIT {
 
         this.relationshipRepo.deleteAll(domains);
 
-        Assert.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
     }
 
     @Test
     public void testSave() {
-        Assert.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
 
         this.personRepo.save(this.person);
         this.projectRepo.save(this.project);
         this.relationshipRepo.save(this.relationship);
 
-        Assert.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
     }
 
     @Test
     public void testSaveAll() {
-        Assert.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertFalse(this.relationshipRepo.existsById(this.relationship.getId()));
 
         final List<Relationship> domains = Arrays.asList(this.relationship);
 
@@ -133,7 +133,7 @@ public class RelationshipRepositoryIT {
         this.projectRepo.save(this.project);
         this.relationshipRepo.saveAll(domains);
 
-        Assert.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
     }
 
     @Test
@@ -144,11 +144,11 @@ public class RelationshipRepositoryIT {
 
         final Relationship foundRelationship = this.relationshipRepo.findById(this.relationship.getId()).get();
 
-        Assert.assertNotNull(foundRelationship);
-        Assert.assertEquals(foundRelationship.getId(), this.relationship.getId());
-        Assert.assertEquals(foundRelationship.getName(), this.relationship.getName());
+        Assertions.assertNotNull(foundRelationship);
+        Assertions.assertEquals(foundRelationship.getId(), this.relationship.getId());
+        Assertions.assertEquals(foundRelationship.getName(), this.relationship.getName());
 
-        Assert.assertFalse(this.relationshipRepo.findById(this.person.getId()).isPresent());
+        Assertions.assertFalse(this.relationshipRepo.findById(this.person.getId()).isPresent());
     }
 
     @Test
@@ -157,8 +157,8 @@ public class RelationshipRepositoryIT {
         this.projectRepo.save(this.project);
         this.relationshipRepo.save(this.relationship);
 
-        Assert.assertFalse(this.relationshipRepo.existsById(this.person.getId()));
-        Assert.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
+        Assertions.assertFalse(this.relationshipRepo.existsById(this.person.getId()));
+        Assertions.assertTrue(this.relationshipRepo.existsById(this.relationship.getId()));
     }
 
 
@@ -176,24 +176,24 @@ public class RelationshipRepositoryIT {
         domains.sort((a, b) -> (a.getId().compareTo(b.getId())));
         foundDomains.sort((a, b) -> (a.getId().compareTo(b.getId())));
 
-        Assert.assertArrayEquals(domains.toArray(), foundDomains.toArray());
+        Assertions.assertArrayEquals(domains.toArray(), foundDomains.toArray());
     }
 
     @Test
     public void testVertexCount() {
-        Assert.assertEquals(this.personRepo.count(), 0);
-        Assert.assertEquals(this.projectRepo.edgeCount(), 0);
-        Assert.assertEquals(this.relationshipRepo.vertexCount(), 0);
+        Assertions.assertEquals(this.personRepo.count(), 0);
+        Assertions.assertEquals(this.projectRepo.edgeCount(), 0);
+        Assertions.assertEquals(this.relationshipRepo.vertexCount(), 0);
 
         this.personRepo.save(this.person0);
         this.personRepo.save(this.person);
         this.projectRepo.save(this.project);
         this.relationshipRepo.save(this.relationship);
 
-        Assert.assertEquals(this.personRepo.vertexCount(), 3);
-        Assert.assertEquals(this.projectRepo.vertexCount(), 3);
-        Assert.assertEquals(this.relationshipRepo.edgeCount(), 1);
-        Assert.assertEquals(this.relationshipRepo.count(), 4);
+        Assertions.assertEquals(this.personRepo.vertexCount(), 3);
+        Assertions.assertEquals(this.projectRepo.vertexCount(), 3);
+        Assertions.assertEquals(this.relationshipRepo.edgeCount(), 1);
+        Assertions.assertEquals(this.relationshipRepo.count(), 4);
     }
 
     @Test
@@ -205,12 +205,12 @@ public class RelationshipRepositoryIT {
 
         final List<Relationship> relationships = this.relationshipRepo.findByLocation(this.relationship.getLocation());
 
-        Assert.assertEquals(relationships.size(), 1);
-        Assert.assertEquals(relationships.get(0), this.relationship);
+        Assertions.assertEquals(relationships.size(), 1);
+        Assertions.assertEquals(relationships.get(0), this.relationship);
 
         this.relationshipRepo.deleteAll();
 
-        Assert.assertTrue(this.relationshipRepo.findByLocation(this.relationship.getLocation()).isEmpty());
+        Assertions.assertTrue(this.relationshipRepo.findByLocation(this.relationship.getLocation()).isEmpty());
     }
 
     @Test
@@ -222,10 +222,10 @@ public class RelationshipRepositoryIT {
 
         this.relationshipRepo.deleteAll(GremlinEntityType.EDGE);
 
-        Assert.assertFalse(this.relationshipRepo.findById(this.relationship.getId()).isPresent());
-        Assert.assertTrue(this.personRepo.existsById(this.person.getId()));
-        Assert.assertTrue(this.personRepo.existsById(this.person0.getId()));
-        Assert.assertTrue(this.projectRepo.existsById(this.project.getId()));
+        Assertions.assertFalse(this.relationshipRepo.findById(this.relationship.getId()).isPresent());
+        Assertions.assertTrue(this.personRepo.existsById(this.person.getId()));
+        Assertions.assertTrue(this.personRepo.existsById(this.person0.getId()));
+        Assertions.assertTrue(this.projectRepo.existsById(this.project.getId()));
     }
 
     @Test
@@ -235,9 +235,9 @@ public class RelationshipRepositoryIT {
         this.projectRepo.save(this.project);
         this.relationshipRepo.deleteAll(Relationship.class);
 
-        Assert.assertFalse(this.relationshipRepo.findById(this.relationship.getId()).isPresent());
-        Assert.assertTrue(this.personRepo.findById(this.person0.getId()).isPresent());
-        Assert.assertTrue(this.projectRepo.findById(this.project.getId()).isPresent());
+        Assertions.assertFalse(this.relationshipRepo.findById(this.relationship.getId()).isPresent());
+        Assertions.assertTrue(this.personRepo.findById(this.person0.getId()).isPresent());
+        Assertions.assertTrue(this.projectRepo.findById(this.project.getId()).isPresent());
     }
 
     @Test
@@ -250,9 +250,9 @@ public class RelationshipRepositoryIT {
         final List<Relationship> domains = this.relationshipRepo.findByNameAndLocation(relationship.getName(),
                 relationship.getLocation());
 
-        Assert.assertEquals(domains.size(), 1);
-        Assert.assertEquals(domains.get(0), this.relationship);
-        Assert.assertTrue(relationshipRepo.findByNameAndLocation(relationship.getName(), "faker").isEmpty());
+        Assertions.assertEquals(domains.size(), 1);
+        Assertions.assertEquals(domains.get(0), this.relationship);
+        Assertions.assertTrue(relationshipRepo.findByNameAndLocation(relationship.getName(), "faker").isEmpty());
     }
 
     @Test
@@ -270,13 +270,13 @@ public class RelationshipRepositoryIT {
         domains.sort(Comparator.comparing(Relationship::getId));
         foundDomains.sort(Comparator.comparing(Relationship::getId));
 
-        Assert.assertEquals(foundDomains.size(), 2);
-        Assert.assertEquals(foundDomains, domains);
+        Assertions.assertEquals(foundDomains.size(), 2);
+        Assertions.assertEquals(foundDomains, domains);
 
         foundDomains = this.relationshipRepo.findByNameOrId("fake-name", relationship0.getId());
 
-        Assert.assertEquals(foundDomains.size(), 1);
-        Assert.assertEquals(foundDomains.get(0), this.relationship0);
+        Assertions.assertEquals(foundDomains.size(), 1);
+        Assertions.assertEquals(foundDomains.get(0), this.relationship0);
     }
 
     @Test
@@ -294,11 +294,11 @@ public class RelationshipRepositoryIT {
         foundRelationships.sort(Comparator.comparing(Relationship::getId));
         relationships.sort(Comparator.comparing(Relationship::getId));
 
-        Assert.assertEquals(foundRelationships, relationships);
+        Assertions.assertEquals(foundRelationships, relationships);
 
         this.relationshipRepo.deleteAll();
 
-        Assert.assertFalse(this.relationshipRepo.findAll().iterator().hasNext());
+        Assertions.assertFalse(this.relationshipRepo.findAll().iterator().hasNext());
     }
 }
 

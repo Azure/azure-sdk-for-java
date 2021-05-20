@@ -5,8 +5,8 @@ package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
@@ -28,7 +28,7 @@ public abstract class UnaryAzureMessageConverterTest<T> {
 
     protected abstract void assertMessageHeadersEqual(T azureMessage, Message<?> message);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         converter = getConverter();
     }

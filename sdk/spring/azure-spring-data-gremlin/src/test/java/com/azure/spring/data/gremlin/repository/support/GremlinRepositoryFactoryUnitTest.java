@@ -5,20 +5,22 @@ package com.azure.spring.data.gremlin.repository.support;
 
 import com.azure.spring.data.gremlin.common.domain.Person;
 import com.azure.spring.data.gremlin.query.GremlinOperations;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.query.QueryLookupStrategy;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class GremlinRepositoryFactoryUnitTest {
 
     @Mock
@@ -29,22 +31,30 @@ public class GremlinRepositoryFactoryUnitTest {
 
     private GremlinRepositoryFactory factory;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.factory = new GremlinRepositoryFactory(this.operations, this.context);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Test
     public void testGetRepositoryBaseClass() {
-        Assert.assertEquals(SimpleGremlinRepository.class, this.factory.getRepositoryBaseClass(null));
+        Assertions.assertEquals(SimpleGremlinRepository.class, this.factory.getRepositoryBaseClass(null));
     }
 
     @Test
     public void testGetEntityInformation() {
         final EntityInformation<Person, String> information = this.factory.getEntityInformation(Person.class);
 
-        Assert.assertNotNull(information);
-        Assert.assertEquals(information.getIdType(), String.class);
+        Assertions.assertNotNull(information);
+        Assertions.assertEquals(information.getIdType(), String.class);
     }
 
     @Test
@@ -52,6 +62,6 @@ public class GremlinRepositoryFactoryUnitTest {
         final Optional<QueryLookupStrategy> strategyOptional = this.factory.
                 getQueryLookupStrategy(QueryLookupStrategy.Key.CREATE, null);
 
-        Assert.assertTrue(strategyOptional.isPresent());
+        Assertions.assertTrue(strategyOptional.isPresent());
     }
 }

@@ -10,30 +10,31 @@ import com.azure.spring.data.gremlin.conversion.source.GremlinSourceEdge;
 import com.azure.spring.data.gremlin.exception.GremlinUnexpectedSourceTypeException;
 import com.azure.spring.data.gremlin.mapping.GremlinMappingContext;
 import com.azure.spring.data.gremlin.repository.support.GremlinEntityInformation;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import static org.junit.Assert.assertEquals;
-
-@RunWith(MockitoJUnitRunner.class)
 public class GremlinScriptLiteralVertexUnitTest {
 
     private MappingGremlinConverter converter;
     private GremlinMappingContext mappingContext;
     private GremlinSource<Person> gremlinSource;
     private GremlinScriptLiteralVertex scriptLiteralVertex;
+    private AutoCloseable closeable;
 
     @Mock
     private ApplicationContext applicationContext;
 
-    @Before
+    @BeforeEach
     public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.mappingContext = new GremlinMappingContext();
         this.mappingContext.setApplicationContext(this.applicationContext);
         this.mappingContext.afterPropertiesSet();
@@ -47,69 +48,78 @@ public class GremlinScriptLiteralVertexUnitTest {
         this.converter.write(person, gremlinSource);
     }
 
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
+
+
     @Test
     public void testGenerateCountScript() {
         final List<String> queryList = scriptLiteralVertex.generateCountScript(gremlinSource);
-        assertEquals(queryList.get(0), "g.V()");
+        Assertions.assertEquals(queryList.get(0), "g.V()");
     }
 
     @Test
     public void testGenerateFindByIdScript() {
         final List<String> queryList = scriptLiteralVertex.generateFindByIdScript(gremlinSource);
-        assertEquals(queryList.get(0), "g.V().hasId('123')");
+        Assertions.assertEquals(queryList.get(0), "g.V().hasId('123')");
     }
 
     @Test
     public void testGenerateFindAllScript() {
         final List<String> queryList = scriptLiteralVertex.generateFindAllScript(gremlinSource);
-        assertEquals(queryList.get(0), "g.V().has(label, 'label-person')"
+        Assertions.assertEquals(queryList.get(0), "g.V().has(label, 'label-person')"
             + ".has('_classname', 'com.azure.spring.data.gremlin.common.domain.Person')");
     }
 
     @Test
     public void testGenerateInsertScript() {
         final List<String> queryList = scriptLiteralVertex.generateInsertScript(gremlinSource);
-        assertEquals(queryList.get(0), "g.addV('label-person').property(id, '123').property('name', 'bill')"
+        Assertions.assertEquals(queryList.get(0), "g.addV('label-person').property(id, '123').property('name', 'bill')"
             + ".property('_classname', 'com.azure.spring.data.gremlin.common.domain.Person')");
     }
 
     @Test
     public void testGenerateUpdateScript() {
         final List<String> queryList = scriptLiteralVertex.generateUpdateScript(gremlinSource);
-        assertEquals(queryList.get(0), "g.V('123').property('name', 'bill')"
+        Assertions.assertEquals(queryList.get(0), "g.V('123').property('name', 'bill')"
             + ".property('_classname', 'com.azure.spring.data.gremlin.common.domain.Person')");
     }
 
     @Test
     public void testGenerateDeleteByIdScript() {
         final List<String> queryList = scriptLiteralVertex.generateDeleteByIdScript(gremlinSource);
-        assertEquals(queryList.get(0), "g.V().hasId('123').drop()");
+        Assertions.assertEquals(queryList.get(0), "g.V().hasId('123').drop()");
     }
 
     @Test
     public void testGenerateDeleteAllScript() {
         final List<String> queryList = scriptLiteralVertex.generateDeleteAllScript();
-        assertEquals(queryList.get(0), "g.V().drop()");
+        Assertions.assertEquals(queryList.get(0), "g.V().drop()");
     }
 
     @Test
     public void testGenerateDeleteAllByClassScript() {
         final List<String> queryList = new GremlinScriptLiteralVertex().generateDeleteAllByClassScript(gremlinSource);
-        assertEquals(queryList.get(0), "g.V().has(label, 'label-person').drop()");
+        Assertions.assertEquals(queryList.get(0), "g.V().has(label, 'label-person').drop()");
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testInvalidDeleteAllByClassScript() {
-        new GremlinScriptLiteralVertex().generateDeleteAllByClassScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralVertex().generateDeleteAllByClassScript(new GremlinSourceEdge<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testInvalidFindAllScript() {
-        new GremlinScriptLiteralVertex().generateFindAllScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralVertex().generateFindAllScript(new GremlinSourceEdge<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testInvalidDeleteById() {
-        new GremlinScriptLiteralVertex().generateDeleteByIdScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralVertex().generateDeleteByIdScript(new GremlinSourceEdge<>()));
     }
 }

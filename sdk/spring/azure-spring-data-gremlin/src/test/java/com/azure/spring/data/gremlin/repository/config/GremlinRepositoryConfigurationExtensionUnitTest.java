@@ -5,9 +5,9 @@ package com.azure.spring.data.gremlin.repository.config;
 
 import com.azure.spring.data.gremlin.repository.GremlinRepository;
 import org.apache.commons.lang3.NotImplementedException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.env.Environment;
@@ -18,6 +18,8 @@ import org.springframework.core.type.StandardAnnotationMetadata;
 import org.springframework.data.repository.config.AnnotationRepositoryConfigurationSource;
 import org.springframework.data.repository.config.RepositoryConfigurationSource;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class GremlinRepositoryConfigurationExtensionUnitTest {
 
     private static final String GREMLIN_MODULE_NAME = "Gremlin";
@@ -26,19 +28,19 @@ public class GremlinRepositoryConfigurationExtensionUnitTest {
 
     private GremlinRepositoryConfigurationExtension extension;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.extension = new GremlinRepositoryConfigurationExtension();
     }
 
     @Test
     public void testGremlinRepositoryConfigurationExtensionGetters() {
-        Assert.assertEquals(this.extension.getModuleName(), GREMLIN_MODULE_NAME);
-        Assert.assertEquals(this.extension.getModulePrefix(), GREMLIN_MODULE_PREFIX);
-        Assert.assertEquals(this.extension.getIdentifyingTypes().size(), 1);
+        Assertions.assertEquals(this.extension.getModuleName(), GREMLIN_MODULE_NAME);
+        Assertions.assertEquals(this.extension.getModulePrefix(), GREMLIN_MODULE_PREFIX);
+        Assertions.assertEquals(this.extension.getIdentifyingTypes().size(), 1);
 
-        Assert.assertSame(this.extension.getIdentifyingTypes().toArray()[0], GremlinRepository.class);
-        Assert.assertTrue(this.extension.getIdentifyingAnnotations().isEmpty());
+        Assertions.assertSame(this.extension.getIdentifyingTypes().toArray()[0], GremlinRepository.class);
+        Assertions.assertTrue(this.extension.getIdentifyingAnnotations().isEmpty());
     }
 
     @Test
@@ -50,16 +52,16 @@ public class GremlinRepositoryConfigurationExtensionUnitTest {
         final RepositoryConfigurationSource config = new AnnotationRepositoryConfigurationSource(metadata,
                 EnableGremlinRepositories.class, loader, environment, registry);
 
-        Assert.assertFalse(registry.containsBeanDefinition(GREMLIN_MAPPING_CONTEXT));
+        Assertions.assertFalse(registry.containsBeanDefinition(GREMLIN_MAPPING_CONTEXT));
 
         this.extension.registerBeansForRoot(registry, config);
 
-        Assert.assertTrue(registry.containsBeanDefinition(GREMLIN_MAPPING_CONTEXT));
+        Assertions.assertTrue(registry.containsBeanDefinition(GREMLIN_MAPPING_CONTEXT));
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test
     public void testGetRepositoryFactoryBeanClassNameException() {
-        this.extension.getRepositoryFactoryBeanClassName();
+        assertThrows(NotImplementedException.class, ()-> this.extension.getRepositoryFactoryBeanClassName());
     }
 
     @EnableGremlinRepositories

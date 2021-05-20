@@ -14,27 +14,29 @@ import com.azure.spring.data.gremlin.common.repository.NetworkRepository;
 import com.azure.spring.data.gremlin.common.repository.PersonRepository;
 import com.azure.spring.data.gremlin.common.repository.ProjectRepository;
 import com.azure.spring.data.gremlin.common.repository.RelationshipRepository;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class NetworkRepositoryIT {
 
     private final Person person = new Person(TestConstants.VERTEX_PERSON_ID, TestConstants.VERTEX_PERSON_NAME);
     private final Project project = new Project(TestConstants.VERTEX_PROJECT_ID, TestConstants.VERTEX_PROJECT_NAME,
-            TestConstants.VERTEX_PROJECT_URI);
+        TestConstants.VERTEX_PROJECT_URI);
     private final Relationship relationship = new Relationship(TestConstants.EDGE_RELATIONSHIP_ID,
-            TestConstants.EDGE_RELATIONSHIP_NAME, TestConstants.EDGE_RELATIONSHIP_LOCATION,
-            this.person, this.project);
+        TestConstants.EDGE_RELATIONSHIP_NAME, TestConstants.EDGE_RELATIONSHIP_LOCATION,
+        this.person, this.project);
 
     @Autowired
     private NetworkRepository networkRepository;
@@ -48,12 +50,12 @@ public class NetworkRepositoryIT {
     @Autowired
     private RelationshipRepository relationshipRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.networkRepository.deleteAll();
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         this.networkRepository.deleteAll();
     }
@@ -69,18 +71,18 @@ public class NetworkRepositoryIT {
 
         this.networkRepository.save(network);
 
-        Assert.assertTrue(personRepository.findById(this.person.getId()).isPresent());
-        Assert.assertTrue(projectRepository.findById(this.project.getId()).isPresent());
-        Assert.assertTrue(relationshipRepository.findById(this.relationship.getId()).isPresent());
+        Assertions.assertTrue(personRepository.findById(this.person.getId()).isPresent());
+        Assertions.assertTrue(projectRepository.findById(this.project.getId()).isPresent());
+        Assertions.assertTrue(relationshipRepository.findById(this.relationship.getId()).isPresent());
 
         this.networkRepository.deleteById(network.getId());
 
-        Assert.assertFalse(personRepository.findById(this.person.getId()).isPresent());
-        Assert.assertFalse(projectRepository.findById(this.project.getId()).isPresent());
-        Assert.assertFalse(relationshipRepository.findById(this.relationship.getId()).isPresent());
+        Assertions.assertFalse(personRepository.findById(this.person.getId()).isPresent());
+        Assertions.assertFalse(projectRepository.findById(this.project.getId()).isPresent());
+        Assertions.assertFalse(relationshipRepository.findById(this.relationship.getId()).isPresent());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testFindAllException() {
         final Network network = new Network();
 
@@ -90,10 +92,10 @@ public class NetworkRepositoryIT {
         network.edgeAdd(this.relationship);
 
         this.networkRepository.save(network);
-        this.networkRepository.findAll(Network.class);
+        assertThrows(UnsupportedOperationException.class, () -> this.networkRepository.findAll(Network.class));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testFindScriptGeneratorException() {
         final Network network = new Network();
 
@@ -103,7 +105,8 @@ public class NetworkRepositoryIT {
         network.edgeAdd(this.relationship);
 
         this.networkRepository.save(network);
-        this.networkRepository.findByEdgeList(Collections.singletonList(this.relationship));
+        assertThrows(UnsupportedOperationException.class,
+            () -> this.networkRepository.findByEdgeList(Collections.singletonList(this.relationship)));
     }
 
     @Test
@@ -118,9 +121,9 @@ public class NetworkRepositoryIT {
         this.networkRepository.save(network);
         this.networkRepository.deleteAll(GremlinEntityType.GRAPH);
 
-        Assert.assertFalse(this.personRepository.findById(this.person.getId()).isPresent());
-        Assert.assertFalse(this.projectRepository.findById(this.project.getId()).isPresent());
-        Assert.assertFalse(this.relationshipRepository.findById(this.relationship.getId()).isPresent());
+        Assertions.assertFalse(this.personRepository.findById(this.person.getId()).isPresent());
+        Assertions.assertFalse(this.projectRepository.findById(this.project.getId()).isPresent());
+        Assertions.assertFalse(this.relationshipRepository.findById(this.relationship.getId()).isPresent());
     }
 
     @Test
@@ -135,8 +138,8 @@ public class NetworkRepositoryIT {
         this.networkRepository.save(network);
         this.networkRepository.deleteAll(Network.class);
 
-        Assert.assertFalse(this.relationshipRepository.findById(this.relationship.getId()).isPresent());
-        Assert.assertFalse(this.personRepository.findById(this.person.getId()).isPresent());
-        Assert.assertFalse(this.projectRepository.findById(this.project.getId()).isPresent());
+        Assertions.assertFalse(this.relationshipRepository.findById(this.relationship.getId()).isPresent());
+        Assertions.assertFalse(this.personRepository.findById(this.person.getId()).isPresent());
+        Assertions.assertFalse(this.projectRepository.findById(this.project.getId()).isPresent());
     }
 }

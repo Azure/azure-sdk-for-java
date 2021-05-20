@@ -12,17 +12,18 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.test.support.reactor.SendOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperation> {
 
     @Mock
@@ -32,8 +33,9 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperatio
     @Mock
     private EventHubProducerAsyncClient mockProducerClient;
 
-    @Before
+    @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         when(this.mockClientFactory.getOrCreateProducerClient(eq(this.destination)))
             .thenReturn(this.mockProducerClient);
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))

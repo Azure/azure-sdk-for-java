@@ -5,38 +5,41 @@ package com.azure.spring.data.gremlin.common;
 
 import com.azure.spring.data.gremlin.common.domain.Service;
 import com.azure.spring.data.gremlin.conversion.source.AbstractGremlinSource;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GremlinUtilsUnitTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCreateIntegerInstance() {
-        GremlinUtils.createInstance(Integer.class);
+        assertThrows(IllegalArgumentException.class, () -> GremlinUtils.createInstance(Integer.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCreateTestConstantsInstance() {
-        GremlinUtils.createInstance(TestConstants.class);
+        assertThrows(IllegalArgumentException.class, () -> GremlinUtils.createInstance(TestConstants.class));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCreateAbstractInstance() {
-        GremlinUtils.createInstance(AbstractGremlinSource.class);
+        assertThrows(IllegalArgumentException.class, () -> GremlinUtils.createInstance(AbstractGremlinSource.class));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testTimeToMilliSecondsException() {
-        GremlinUtils.timeToMilliSeconds(new Service());
+        assertThrows(UnsupportedOperationException.class, () -> GremlinUtils.timeToMilliSeconds(new Service()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testToPrimitiveLongException() {
-        GremlinUtils.toPrimitiveLong((short) 2);
+
+        assertThrows(UnsupportedOperationException.class, () -> GremlinUtils.toPrimitiveLong((short) 2));
     }
 
     @Test
     public void testToPrimitiveLong() {
-        Assert.assertEquals(3, GremlinUtils.toPrimitiveLong(3L));
+        Assertions.assertEquals(3, GremlinUtils.toPrimitiveLong(3L));
     }
 }

@@ -9,18 +9,18 @@ import com.azure.spring.data.gremlin.common.domain.Student;
 import com.azure.spring.data.gremlin.common.repository.MasterRepository;
 import com.azure.spring.data.gremlin.common.repository.StudentRepository;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class MasterRepositoryIT {
 
@@ -39,13 +39,13 @@ public class MasterRepositoryIT {
     @Autowired
     private StudentRepository studentRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.masterRepository.deleteAll();
         this.studentRepository.deleteAll();
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         this.masterRepository.deleteAll();
         this.studentRepository.deleteAll();
@@ -58,12 +58,12 @@ public class MasterRepositoryIT {
 
         final List<Master> masters = Lists.newArrayList(this.masterRepository.findAll(Master.class));
 
-        Assert.assertEquals(masters.size(), 1);
-        Assert.assertEquals(masters.get(0), MASTER);
+        Assertions.assertEquals(masters.size(), 1);
+        Assertions.assertEquals(masters.get(0), MASTER);
 
         final List<Student> students = Lists.newArrayList(this.studentRepository.findAll(Student.class));
 
-        Assert.assertEquals(students.size(), 1);
-        Assert.assertEquals(students.get(0), STUDENT);
+        Assertions.assertEquals(students.size(), 1);
+        Assertions.assertEquals(students.get(0), STUDENT);
     }
 }

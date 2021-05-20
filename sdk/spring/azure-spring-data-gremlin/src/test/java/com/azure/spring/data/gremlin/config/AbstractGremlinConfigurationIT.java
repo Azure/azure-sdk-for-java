@@ -4,14 +4,14 @@
 package com.azure.spring.data.gremlin.config;
 
 import com.azure.spring.data.gremlin.common.TestRepositoryConfiguration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class AbstractGremlinConfigurationIT {
 
@@ -20,17 +20,17 @@ public class AbstractGremlinConfigurationIT {
 
     @Test
     public void testGremlinFactory() {
-        Assert.assertNotNull(this.testConfig.gremlinFactory());
+        Assertions.assertNotNull(this.testConfig.gremlinFactory());
     }
 
     @Test
     public void testMappingGremlinConverter() throws ClassNotFoundException {
-        Assert.assertNotNull(this.testConfig.mappingGremlinConverter());
+        Assertions.assertNotNull(this.testConfig.mappingGremlinConverter());
     }
 
     @Test
     public void testGremlinTemplate() throws ClassNotFoundException {
-        Assert.assertNotNull(this.testConfig.gremlinTemplate(testConfig.gremlinFactory()));
+        Assertions.assertNotNull(this.testConfig.gremlinTemplate(testConfig.gremlinFactory()));
     }
 }
 

@@ -9,18 +9,17 @@ import com.microsoft.spring.data.gremlin.common.GremlinFactory;
 import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
 import com.microsoft.spring.data.gremlin.query.GremlinTemplate;
 import com.microsoft.spring.data.gremlin.repository.config.EnableGremlinRepositories;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
-@RunWith(MockitoJUnitRunner.class)
 public class GremlinRepositoriesAutoConfigurationUnitTest {
 
     private AnnotationConfigApplicationContext applicationContext;
@@ -34,7 +33,12 @@ public class GremlinRepositoriesAutoConfigurationUnitTest {
     @Mock
     private MappingGremlinConverter converter;
 
-    @After
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
     public void cleanup() {
         if (this.applicationContext != null) {
             this.applicationContext.close();
@@ -53,14 +57,15 @@ public class GremlinRepositoriesAutoConfigurationUnitTest {
     public void testDefaultRepositoryConfiguration() {
         initializeApplicationContext(TestConfiguration.class);
 
-        Assert.assertNotNull(this.applicationContext.getBean(UserRepository.class));
+        Assertions.assertNotNull(this.applicationContext.getBean(UserRepository.class));
     }
 
-    @Test(expected = NoSuchBeanDefinitionException.class)
+    @Test
     public void testInvalidRepositoryConfiguration() {
         initializeApplicationContext(InvalidConfiguration.class);
 
-        this.applicationContext.getBean(UserRepository.class);
+        Assertions.assertThrows(NoSuchBeanDefinitionException.class,
+            () -> this.applicationContext.getBean(UserRepository.class));
     }
 
     @Configuration

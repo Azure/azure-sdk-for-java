@@ -7,8 +7,9 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -22,8 +23,21 @@ import java.text.ParseException;
 
 
 public class UserPrincipalAzureADGraphTest {
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(9519);
+
+    private WireMockRule wireMockRule;
+
+    @BeforeEach
+    void setup() {
+        wireMockRule = new WireMockRule(9519);
+        wireMockRule.start();
+    }
+
+    @AfterEach
+    void close() {
+        if (wireMockRule.isRunning()) {
+            wireMockRule.stop();
+        }
+    }
 
     @Test
     public void userPrincipalIsSerializable() throws ParseException, IOException, ClassNotFoundException {

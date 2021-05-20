@@ -6,20 +6,20 @@ package com.azure.spring.data.gremlin.repository;
 import com.azure.spring.data.gremlin.common.TestRepositoryConfiguration;
 import com.azure.spring.data.gremlin.common.domain.UserDomain;
 import com.azure.spring.data.gremlin.common.repository.UserDomainRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class UserDomainRepositoryIT {
 
@@ -36,25 +36,25 @@ public class UserDomainRepositoryIT {
     @Autowired
     private UserDomainRepository repository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.repository.deleteAll();
     }
 
     @Test
     public void testWithNoIdName() {
-        Assert.assertEquals(0, this.repository.vertexCount());
-        Assert.assertFalse(this.repository.findById(NAME_0).isPresent());
+        Assertions.assertEquals(0, this.repository.vertexCount());
+        Assertions.assertFalse(this.repository.findById(NAME_0).isPresent());
 
         this.repository.save(DOMAIN_0);
         final Optional<UserDomain> optional = this.repository.findById(NAME_0);
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(DOMAIN_0.getName(), optional.get().getName());
-        Assert.assertEquals(DOMAIN_0.getLevel(), optional.get().getLevel());
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(DOMAIN_0.getName(), optional.get().getName());
+        Assertions.assertEquals(DOMAIN_0.getLevel(), optional.get().getLevel());
 
         this.repository.deleteById(NAME_0);
-        Assert.assertFalse(this.repository.findById(NAME_0).isPresent());
+        Assertions.assertFalse(this.repository.findById(NAME_0).isPresent());
     }
 
     @Test
@@ -63,12 +63,12 @@ public class UserDomainRepositoryIT {
 
         final List<UserDomain> domains = this.repository.findByName(DOMAIN_0.getName());
 
-        Assert.assertEquals(domains.size(), 1);
-        Assert.assertEquals(domains.get(0), DOMAIN_0);
+        Assertions.assertEquals(domains.size(), 1);
+        Assertions.assertEquals(domains.get(0), DOMAIN_0);
 
         this.repository.deleteAll();
 
-        Assert.assertTrue(this.repository.findByName(DOMAIN_0.getName()).isEmpty());
+        Assertions.assertTrue(this.repository.findByName(DOMAIN_0.getName()).isEmpty());
     }
 
     @Test
@@ -83,12 +83,12 @@ public class UserDomainRepositoryIT {
         domains.sort(Comparator.comparing(UserDomain::getName));
         foundDomains.sort(Comparator.comparing(UserDomain::getName));
 
-        Assert.assertEquals(foundDomains.size(), domains.size());
-        Assert.assertEquals(foundDomains, domains);
+        Assertions.assertEquals(foundDomains.size(), domains.size());
+        Assertions.assertEquals(foundDomains, domains);
 
         this.repository.deleteAll(domains);
 
-        Assert.assertTrue(this.repository.findByEnabledExists().isEmpty());
+        Assertions.assertTrue(this.repository.findByEnabledExists().isEmpty());
     }
 
     @Test
@@ -98,21 +98,21 @@ public class UserDomainRepositoryIT {
         this.repository.saveAll(domains);
 
         List<UserDomain> foundDomains = this.repository.findByLevelBetween(8, 9);
-        Assert.assertTrue(foundDomains.isEmpty());
+        Assertions.assertTrue(foundDomains.isEmpty());
 
         foundDomains = this.repository.findByLevelBetween(7, 8);
-        Assert.assertEquals(foundDomains.size(), 1);
-        Assert.assertEquals(foundDomains.get(0), DOMAIN_1);
+        Assertions.assertEquals(foundDomains.size(), 1);
+        Assertions.assertEquals(foundDomains.get(0), DOMAIN_1);
 
         foundDomains = this.repository.findByLevelBetween(0, 8);
         domains.sort(Comparator.comparing(UserDomain::getName));
         foundDomains.sort(Comparator.comparing(UserDomain::getName));
 
-        Assert.assertEquals(foundDomains.size(), domains.size());
-        Assert.assertEquals(foundDomains, domains);
+        Assertions.assertEquals(foundDomains.size(), domains.size());
+        Assertions.assertEquals(foundDomains, domains);
 
         this.repository.deleteAll(domains);
 
-        Assert.assertTrue(this.repository.findByLevelBetween(0, 8).isEmpty());
+        Assertions.assertTrue(this.repository.findByLevelBetween(0, 8).isEmpty());
     }
 }

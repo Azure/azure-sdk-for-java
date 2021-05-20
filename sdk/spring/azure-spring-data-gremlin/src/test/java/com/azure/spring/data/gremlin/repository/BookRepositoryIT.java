@@ -8,14 +8,14 @@ import com.azure.spring.data.gremlin.common.TestRepositoryConfiguration;
 import com.azure.spring.data.gremlin.common.domain.Book;
 import com.azure.spring.data.gremlin.common.repository.BookRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class BookRepositoryIT {
 
@@ -51,7 +51,7 @@ public class BookRepositoryIT {
     @Autowired
     private BookRepository repository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.repository.deleteAll();
     }
@@ -60,49 +60,49 @@ public class BookRepositoryIT {
         found.sort(Comparator.comparing(Book::getSerialNumber));
         expected.sort(Comparator.comparing(Book::getSerialNumber));
 
-        Assert.assertEquals(found.size(), expected.size());
-        Assert.assertEquals(found, expected);
+        Assertions.assertEquals(found.size(), expected.size());
+        Assertions.assertEquals(found, expected);
     }
 
     @Test
     public void testDeleteAll() {
         repository.saveAll(BOOKS);
 
-        Assert.assertTrue(repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(repository.findAll().iterator().hasNext());
 
         repository.deleteAll();
 
-        Assert.assertFalse(repository.findAll().iterator().hasNext());
+        Assertions.assertFalse(repository.findAll().iterator().hasNext());
     }
 
     @Test
     public void testDeleteAllOnType() {
         repository.saveAll(BOOKS);
 
-        Assert.assertTrue(repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(repository.findAll().iterator().hasNext());
 
         repository.deleteAll(GremlinEntityType.VERTEX);
 
-        Assert.assertFalse(repository.findAll().iterator().hasNext());
+        Assertions.assertFalse(repository.findAll().iterator().hasNext());
     }
 
     @Test
     public void testDeleteAllOnDomain() {
         repository.saveAll(BOOKS);
 
-        Assert.assertTrue(repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(repository.findAll().iterator().hasNext());
 
         repository.deleteAll(Book.class);
 
-        Assert.assertFalse(repository.findAll().iterator().hasNext());
+        Assertions.assertFalse(repository.findAll().iterator().hasNext());
     }
 
     @Test
     public void testSave() {
         repository.save(BOOK_0);
 
-        Assert.assertTrue(repository.findById(BOOK_0.getSerialNumber()).isPresent());
-        Assert.assertFalse(repository.findById(BOOK_1.getSerialNumber()).isPresent());
+        Assertions.assertTrue(repository.findById(BOOK_0.getSerialNumber()).isPresent());
+        Assertions.assertFalse(repository.findById(BOOK_1.getSerialNumber()).isPresent());
     }
 
     @Test
@@ -120,20 +120,20 @@ public class BookRepositoryIT {
 
         Optional<Book> optional = repository.findById(BOOK_0.getSerialNumber());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(optional.get(), BOOK_0);
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(optional.get(), BOOK_0);
 
         optional = repository.findById(NO_EXIST_ID);
 
-        Assert.assertFalse(optional.isPresent());
+        Assertions.assertFalse(optional.isPresent());
     }
 
     @Test
     public void testExistsById() {
         repository.saveAll(BOOKS);
 
-        Assert.assertTrue(repository.existsById(BOOK_0.getSerialNumber()));
-        Assert.assertFalse(repository.existsById(NO_EXIST_ID));
+        Assertions.assertTrue(repository.existsById(BOOK_0.getSerialNumber()));
+        Assertions.assertFalse(repository.existsById(NO_EXIST_ID));
     }
 
     @Test
@@ -147,43 +147,43 @@ public class BookRepositoryIT {
 
         assertDomainListEquals(found, expected);
 
-        Assert.assertFalse(repository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
+        Assertions.assertFalse(repository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
     }
 
     @Test
     public void testCount() {
         repository.saveAll(BOOKS);
 
-        Assert.assertEquals(repository.count(), BOOKS.size());
+        Assertions.assertEquals(repository.count(), BOOKS.size());
 
         repository.deleteAll();
 
-        Assert.assertEquals(repository.count(), 0);
+        Assertions.assertEquals(repository.count(), 0);
     }
 
     @Test
     public void testDeleteById() {
         repository.saveAll(BOOKS);
 
-        Assert.assertTrue(repository.findById(BOOK_0.getSerialNumber()).isPresent());
+        Assertions.assertTrue(repository.findById(BOOK_0.getSerialNumber()).isPresent());
 
         repository.deleteById(BOOK_0.getSerialNumber());
 
-        Assert.assertFalse(repository.findById(BOOK_0.getSerialNumber()).isPresent());
+        Assertions.assertFalse(repository.findById(BOOK_0.getSerialNumber()).isPresent());
     }
 
     @Test
     public void testVertexCount() {
         repository.saveAll(BOOKS);
 
-        Assert.assertEquals(repository.vertexCount(), BOOKS.size());
+        Assertions.assertEquals(repository.vertexCount(), BOOKS.size());
     }
 
     @Test
     public void testEdgeCount() {
         repository.saveAll(BOOKS);
 
-        Assert.assertEquals(repository.edgeCount(), 0);
+        Assertions.assertEquals(repository.edgeCount(), 0);
     }
 
     @Test
@@ -196,7 +196,7 @@ public class BookRepositoryIT {
 
         found = repository.findByNameOrPrice(NO_EXIST_NAME, NO_EXIST_PRICE);
 
-        Assert.assertTrue(found.isEmpty());
+        Assertions.assertTrue(found.isEmpty());
     }
 
     @Test
@@ -209,13 +209,13 @@ public class BookRepositoryIT {
 
         final Optional<Book> optional = repository.findById(book.getSerialNumber());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(optional.get(), book);
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(optional.get(), book);
 
         final Optional<Book> optionalNullName = repository.findById(bookNullName.getSerialNumber());
 
-        Assert.assertTrue(optionalNullName.isPresent());
-        Assert.assertEquals(optionalNullName.get(), bookNullName);
+        Assertions.assertTrue(optionalNullName.isPresent());
+        Assertions.assertEquals(optionalNullName.get(), bookNullName);
 
         final List<Book> books = Lists.newArrayList(repository.findAll());
 

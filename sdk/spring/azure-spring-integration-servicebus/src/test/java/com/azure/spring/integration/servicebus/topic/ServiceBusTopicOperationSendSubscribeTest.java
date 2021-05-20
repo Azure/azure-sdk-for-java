@@ -7,10 +7,10 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.test.support.SendSubscribeWithGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT;
@@ -18,17 +18,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusTopicOperationSendSubscribeTest
     extends SendSubscribeWithGroupOperationTest<ServiceBusTopicOperation> {
 
     @Mock
     ServiceBusTopicClientFactory clientFactory;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     @Override
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override

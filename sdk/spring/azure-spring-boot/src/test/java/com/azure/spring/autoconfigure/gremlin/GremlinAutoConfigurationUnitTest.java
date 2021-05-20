@@ -6,8 +6,8 @@ import com.microsoft.spring.data.gremlin.common.GremlinFactory;
 import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
 import com.microsoft.spring.data.gremlin.mapping.GremlinMappingContext;
 import com.microsoft.spring.data.gremlin.query.GremlinTemplate;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -31,11 +31,11 @@ public class GremlinAutoConfigurationUnitTest {
                 .withPropertyValues(GREMLIN_PASSWORD_CONFIG)
                 .withPropertyValues(GREMLIN_TELEMETRY_CONFIG_ALLOWED)
                 .run(context -> {
-                    Assert.assertNotNull(context.getBean(GremlinFactory.class));
-                    Assert.assertNotNull(context.getBean(GremlinFactory.class).getGremlinClient());
-                    Assert.assertNotNull(context.getBean(GremlinTemplate.class));
-                    Assert.assertNotNull(context.getBean(GremlinMappingContext.class));
-                    Assert.assertNotNull(context.getBean(MappingGremlinConverter.class));
+                    Assertions.assertNotNull(context.getBean(GremlinFactory.class));
+                    Assertions.assertNotNull(context.getBean(GremlinFactory.class).getGremlinClient());
+                    Assertions.assertNotNull(context.getBean(GremlinTemplate.class));
+                    Assertions.assertNotNull(context.getBean(GremlinMappingContext.class));
+                    Assertions.assertNotNull(context.getBean(MappingGremlinConverter.class));
                 });
     }
 }

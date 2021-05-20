@@ -4,7 +4,7 @@
 package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.api.SubscribeOperation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 
 import static org.junit.Assert.assertFalse;

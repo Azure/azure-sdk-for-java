@@ -12,11 +12,13 @@ import com.azure.spring.data.gremlin.conversion.source.GremlinSourceGraph;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSourceVertex;
 import com.azure.spring.data.gremlin.exception.GremlinInvalidEntityIdFieldException;
 import com.azure.spring.data.gremlin.exception.GremlinUnexpectedEntityTypeException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GremlinEntityInformationUnitTest {
 
@@ -25,10 +27,10 @@ public class GremlinEntityInformationUnitTest {
         final Person person = new Person(TestConstants.VERTEX_PERSON_ID, TestConstants.VERTEX_PERSON_NAME);
         final GremlinEntityInformation<Person, String> personInfo = new GremlinEntityInformation<>(Person.class);
 
-        Assert.assertNotNull(personInfo.getIdField());
-        Assert.assertEquals(personInfo.getId(person), TestConstants.VERTEX_PERSON_ID);
-        Assert.assertEquals(personInfo.getIdType(), String.class);
-        Assert.assertTrue(personInfo.createGremlinSource() instanceof GremlinSourceVertex);
+        Assertions.assertNotNull(personInfo.getIdField());
+        Assertions.assertEquals(personInfo.getId(person), TestConstants.VERTEX_PERSON_ID);
+        Assertions.assertEquals(personInfo.getIdType(), String.class);
+        Assertions.assertTrue(personInfo.createGremlinSource() instanceof GremlinSourceVertex);
     }
 
     @Test
@@ -36,41 +38,46 @@ public class GremlinEntityInformationUnitTest {
         final GremlinEntityInformation<Relationship, String> relationshipInfo =
             new GremlinEntityInformation<>(Relationship.class);
 
-        Assert.assertNotNull(relationshipInfo.getIdField());
-        Assert.assertTrue(relationshipInfo.createGremlinSource() instanceof GremlinSourceEdge);
+        Assertions.assertNotNull(relationshipInfo.getIdField());
+        Assertions.assertTrue(relationshipInfo.createGremlinSource() instanceof GremlinSourceEdge);
     }
 
     @Test
     public void testGraphEntityInformation() {
         final GremlinEntityInformation<Network, String> networkInfo = new GremlinEntityInformation<>(Network.class);
 
-        Assert.assertNotNull(networkInfo.getIdField());
-        Assert.assertTrue(networkInfo.createGremlinSource() instanceof GremlinSourceGraph);
+        Assertions.assertNotNull(networkInfo.getIdField());
+        Assertions.assertTrue(networkInfo.createGremlinSource() instanceof GremlinSourceGraph);
     }
 
-    @Test(expected = GremlinUnexpectedEntityTypeException.class)
+    @Test
     public void testEntityInformationException() {
-        new GremlinEntityInformation<TestDomain, String>(TestDomain.class).createGremlinSource();
+        assertThrows(GremlinUnexpectedEntityTypeException.class,
+            ()->new GremlinEntityInformation<TestDomain, String>(TestDomain.class).createGremlinSource());
     }
 
-    @Test(expected = GremlinInvalidEntityIdFieldException.class)
+    @Test
     public void testEntityInformationNoIdException() {
-        new GremlinEntityInformation<TestNoIdDomain, String>(TestNoIdDomain.class);
+        assertThrows(GremlinInvalidEntityIdFieldException.class,
+            ()-> new GremlinEntityInformation<TestNoIdDomain, String>(TestNoIdDomain.class));
     }
 
-    @Test(expected = GremlinInvalidEntityIdFieldException.class)
+    @Test
     public void testEntityInformationMultipleIdException() {
-        new GremlinEntityInformation<TestMultipleIdDomain, String>(TestMultipleIdDomain.class);
+        assertThrows(GremlinInvalidEntityIdFieldException.class,
+            ()->  new GremlinEntityInformation<TestMultipleIdDomain, String>(TestMultipleIdDomain.class));
     }
 
-    @Test(expected = GremlinInvalidEntityIdFieldException.class)
+    @Test
     public void testEntityInformationNoStringIdException() {
-        new GremlinEntityInformation<TestNoStringIdDomain, String>(TestNoStringIdDomain.class);
+        assertThrows(GremlinInvalidEntityIdFieldException.class,
+            ()->   new GremlinEntityInformation<TestNoStringIdDomain, String>(TestNoStringIdDomain.class));
     }
 
-    @Test(expected = GremlinInvalidEntityIdFieldException.class)
+    @Test
     public void testEntityInformationIdFieldAndIdAnnotation() {
-        new GremlinEntityInformation<TestIdFieldAndIdAnnotation, String>(TestIdFieldAndIdAnnotation.class);
+        assertThrows(GremlinInvalidEntityIdFieldException.class,
+            ()-> new GremlinEntityInformation<TestIdFieldAndIdAnnotation, String>(TestIdFieldAndIdAnnotation.class));
     }
 
     private class TestDomain {

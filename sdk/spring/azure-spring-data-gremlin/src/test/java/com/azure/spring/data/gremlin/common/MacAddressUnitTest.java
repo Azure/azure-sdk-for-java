@@ -4,16 +4,16 @@
 package com.azure.spring.data.gremlin.common;
 
 import com.azure.spring.data.gremlin.telemetry.MacAddress;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MacAddressUnitTest {
 
     @Test
     public void testGetHashMacNormal() {
-        Assert.assertNotNull(MacAddress.getHashMac());
-        Assert.assertFalse(MacAddress.getHashMac().isEmpty());
-        Assert.assertFalse(MacAddress.isValidHashMacFormat(""));
-        Assert.assertTrue(MacAddress.isValidHashMacFormat(MacAddress.getHashMac()));
+        Assertions.assertNotNull(MacAddress.getHashMac());
+        Assertions.assertFalse(MacAddress.getHashMac().isEmpty());
+        Assertions.assertFalse(MacAddress.isValidHashMacFormat(""));
+        Assertions.assertTrue(MacAddress.isValidHashMacFormat(MacAddress.getHashMac()));
     }
 }

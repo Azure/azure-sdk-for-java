@@ -19,11 +19,11 @@ import com.azure.spring.data.gremlin.exception.GremlinQueryException;
 import com.azure.spring.data.gremlin.exception.GremlinUnexpectedEntityTypeException;
 import com.azure.spring.data.gremlin.mapping.GremlinMappingContext;
 import com.azure.spring.data.gremlin.repository.support.GremlinEntityInformation;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,14 +33,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@PropertySource(value = {"classpath:application.properties"})
-@ContextConfiguration(classes = {GremlinTemplateIT.TestConfiguration.class})
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@ExtendWith(SpringExtension.class)
+@PropertySource(value = { "classpath:application.properties" })
+@ContextConfiguration(classes = { GremlinTemplateIT.TestConfiguration.class })
 @EnableConfigurationProperties(TestGremlinProperties.class)
 public class GremlinTemplateIT {
 
@@ -49,29 +51,29 @@ public class GremlinTemplateIT {
     private final Person person1 = new Person(TestConstants.VERTEX_PERSON_1_ID, TestConstants.VERTEX_PERSON_1_NAME);
 
     private final Project project = new Project(TestConstants.VERTEX_PROJECT_ID, TestConstants.VERTEX_PROJECT_NAME,
-            TestConstants.VERTEX_PROJECT_URI);
+        TestConstants.VERTEX_PROJECT_URI);
     private final Project project0 = new Project(TestConstants.VERTEX_PROJECT_0_ID, TestConstants.VERTEX_PROJECT_0_NAME,
-            TestConstants.VERTEX_PROJECT_0_URI);
+        TestConstants.VERTEX_PROJECT_0_URI);
 
     private final Relationship relationship = new Relationship(TestConstants.EDGE_RELATIONSHIP_ID,
-            TestConstants.EDGE_RELATIONSHIP_NAME, TestConstants.EDGE_RELATIONSHIP_LOCATION,
-            this.person, this.project);
+        TestConstants.EDGE_RELATIONSHIP_NAME, TestConstants.EDGE_RELATIONSHIP_LOCATION,
+        this.person, this.project);
     private final Relationship relationship0 = new Relationship(TestConstants.EDGE_RELATIONSHIP_0_ID,
-            TestConstants.EDGE_RELATIONSHIP_0_NAME, TestConstants.EDGE_RELATIONSHIP_0_LOCATION,
-            this.person0, this.project);
+        TestConstants.EDGE_RELATIONSHIP_0_NAME, TestConstants.EDGE_RELATIONSHIP_0_LOCATION,
+        this.person0, this.project);
     private final Relationship relationship1 = new Relationship(TestConstants.EDGE_RELATIONSHIP_1_ID,
-            TestConstants.EDGE_RELATIONSHIP_1_NAME, TestConstants.EDGE_RELATIONSHIP_1_LOCATION,
-            this.person1, this.project);
+        TestConstants.EDGE_RELATIONSHIP_1_NAME, TestConstants.EDGE_RELATIONSHIP_1_LOCATION,
+        this.person1, this.project);
     private final Relationship relationship2 = new Relationship(TestConstants.EDGE_RELATIONSHIP_2_ID,
-            TestConstants.EDGE_RELATIONSHIP_2_NAME, TestConstants.EDGE_RELATIONSHIP_2_LOCATION,
-            this.person, this.project0);
+        TestConstants.EDGE_RELATIONSHIP_2_NAME, TestConstants.EDGE_RELATIONSHIP_2_LOCATION,
+        this.person, this.project0);
 
     private Network network;
 
     private final GremlinEntityInformation<Person, String> personInfo = new GremlinEntityInformation<>(Person.class);
     private final GremlinEntityInformation<Project, String> projectInfo = new GremlinEntityInformation<>(Project.class);
     private final GremlinEntityInformation<Relationship, String> relationshipInfo =
-            new GremlinEntityInformation<>(Relationship.class);
+        new GremlinEntityInformation<>(Relationship.class);
     private final GremlinEntityInformation<Network, String> networkInfo = new GremlinEntityInformation<>(Network.class);
 
     private final GremlinSource<Person> personSource = personInfo.createGremlinSource();
@@ -87,7 +89,7 @@ public class GremlinTemplateIT {
 
     private GremlinTemplate template;
 
-    @Before
+    @BeforeEach
     public void setup() throws ClassNotFoundException {
         final GremlinMappingContext mappingContext = new GremlinMappingContext();
 
@@ -115,7 +117,7 @@ public class GremlinTemplateIT {
         this.template.insert(this.network, this.networkSource);
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         this.template.deleteAll();
     }
@@ -128,9 +130,9 @@ public class GremlinTemplateIT {
         Project projectVertex = this.template.findVertexById(this.project.getId(), this.projectSource);
         Relationship relationshipEdge = this.template.findEdgeById(this.relationship.getId(), this.relationshipSource);
 
-        Assert.assertNotNull(personVertex);
-        Assert.assertNotNull(projectVertex);
-        Assert.assertNotNull(relationshipEdge);
+        Assertions.assertNotNull(personVertex);
+        Assertions.assertNotNull(projectVertex);
+        Assertions.assertNotNull(relationshipEdge);
 
         this.template.deleteAll();
 
@@ -138,13 +140,13 @@ public class GremlinTemplateIT {
         projectVertex = this.template.findVertexById(this.project.getId(), this.projectSource);
         relationshipEdge = this.template.findEdgeById(this.relationship.getId(), this.relationshipSource);
 
-        Assert.assertNull(personVertex);
-        Assert.assertNull(projectVertex);
-        Assert.assertNull(relationshipEdge);
+        Assertions.assertNull(personVertex);
+        Assertions.assertNull(projectVertex);
+        Assertions.assertNull(relationshipEdge);
 
-        Assert.assertTrue(this.template.findAll(this.personSource).isEmpty());
-        Assert.assertTrue(this.template.findAll(this.projectSource).isEmpty());
-        Assert.assertTrue(this.template.findAll(this.relationshipSource).isEmpty());
+        Assertions.assertTrue(this.template.findAll(this.personSource).isEmpty());
+        Assertions.assertTrue(this.template.findAll(this.projectSource).isEmpty());
+        Assertions.assertTrue(this.template.findAll(this.relationshipSource).isEmpty());
     }
 
     @Test
@@ -153,12 +155,12 @@ public class GremlinTemplateIT {
 
         final Person foundPerson = this.template.findVertexById(this.person0.getId(), this.personSource);
 
-        Assert.assertNotNull(foundPerson);
-        Assert.assertEquals(foundPerson.getId(), this.person0.getId());
-        Assert.assertEquals(foundPerson.getName(), this.person0.getName());
+        Assertions.assertNotNull(foundPerson);
+        Assertions.assertEquals(foundPerson.getId(), this.person0.getId());
+        Assertions.assertEquals(foundPerson.getName(), this.person0.getName());
     }
 
-    @Test(expected = GremlinQueryException.class)
+    @Test
     public void testVertexInsertException() {
         this.template.insert(this.person, this.personSource);
 
@@ -175,51 +177,53 @@ public class GremlinTemplateIT {
 
         final Relationship foundRelationship = this.template.findById(this.relationship.getId(), relationshipSource);
 
-        Assert.assertNotNull(foundRelationship);
-        Assert.assertEquals(foundRelationship.getId(), this.relationship.getId());
-        Assert.assertEquals(foundRelationship.getName(), this.relationship.getName());
-        Assert.assertEquals(foundRelationship.getLocation(), this.relationship.getLocation());
+        Assertions.assertNotNull(foundRelationship);
+        Assertions.assertEquals(foundRelationship.getId(), this.relationship.getId());
+        Assertions.assertEquals(foundRelationship.getName(), this.relationship.getName());
+        Assertions.assertEquals(foundRelationship.getLocation(), this.relationship.getLocation());
     }
 
-    @Test(expected = GremlinQueryException.class)
+    @Test
     public void testEdgeInsertException() {
         this.template.insert(this.person, this.personSource);
         this.template.insert(this.project, this.projectSource);
         this.template.insert(this.relationship, this.relationshipSource);
 
         final Relationship repeated = new Relationship(this.relationship.getId(), this.relationship.getName(),
-                this.relationship.getLocation(), this.person, this.project);
+            this.relationship.getLocation(), this.person, this.project);
 
-        this.template.insert(repeated, this.relationshipSource);
+        assertThrows(GremlinQueryException.class,
+            () -> this.template.insert(repeated, this.relationshipSource));
     }
 
     @Test
     public void testFindVertexById() {
         Person foundPerson = this.template.findVertexById(this.person1.getId(), this.personSource);
-        Assert.assertNull(foundPerson);
+        Assertions.assertNull(foundPerson);
 
         this.template.insert(this.person1, this.personSource);
 
         foundPerson = this.template.findVertexById(this.person1.getId(), this.personSource);
 
-        Assert.assertNotNull(foundPerson);
-        Assert.assertEquals(foundPerson.getId(), this.person1.getId());
-        Assert.assertEquals(foundPerson.getName(), this.person1.getName());
+        Assertions.assertNotNull(foundPerson);
+        Assertions.assertEquals(foundPerson.getId(), this.person1.getId());
+        Assertions.assertEquals(foundPerson.getName(), this.person1.getName());
     }
 
-    @Test(expected = GremlinUnexpectedEntityTypeException.class)
+    @Test
     public void testFindVertexByIdException() {
         this.template.insert(this.person, this.personSource);
         this.template.insert(this.project0, this.projectSource);
         this.template.insert(this.relationship2, this.relationshipSource);
 
-        this.template.findVertexById(this.project.getId(), this.relationshipSource);
+        assertThrows(GremlinUnexpectedEntityTypeException.class,
+            () -> this.template.findVertexById(this.project.getId(), this.relationshipSource));
     }
 
     @Test
     public void testFindEdgeById() {
         Relationship foundRelationship = this.template.findEdgeById(this.relationship2.getId(), relationshipSource);
-        Assert.assertNull(foundRelationship);
+        Assertions.assertNull(foundRelationship);
 
         this.template.insert(this.person, this.personSource);
         this.template.insert(this.project0, this.projectSource);
@@ -227,19 +231,20 @@ public class GremlinTemplateIT {
 
         foundRelationship = this.template.findEdgeById(this.relationship2.getId(), this.relationshipSource);
 
-        Assert.assertNotNull(foundRelationship);
-        Assert.assertEquals(foundRelationship.getId(), this.relationship2.getId());
-        Assert.assertEquals(foundRelationship.getName(), this.relationship2.getName());
-        Assert.assertEquals(foundRelationship.getLocation(), this.relationship2.getLocation());
+        Assertions.assertNotNull(foundRelationship);
+        Assertions.assertEquals(foundRelationship.getId(), this.relationship2.getId());
+        Assertions.assertEquals(foundRelationship.getName(), this.relationship2.getName());
+        Assertions.assertEquals(foundRelationship.getLocation(), this.relationship2.getLocation());
     }
 
-    @Test(expected = GremlinUnexpectedEntityTypeException.class)
+    @Test
     public void testFindEdgeByIdException() {
         this.template.insert(this.person, this.personSource);
         this.template.insert(this.project0, this.projectSource);
         this.template.insert(this.relationship2, this.relationshipSource);
 
-        this.template.findEdgeById(this.relationship2.getId(), this.projectSource);
+        assertThrows(GremlinUnexpectedEntityTypeException.class,
+            () -> this.template.findEdgeById(this.relationship2.getId(), this.projectSource));
     }
 
     @Test
@@ -247,27 +252,28 @@ public class GremlinTemplateIT {
         this.buildTestGraph();
         final Person foundPerson = this.template.findById(this.person1.getId(), this.personSource);
 
-        Assert.assertNotNull(foundPerson);
-        Assert.assertEquals(foundPerson.getId(), this.person1.getId());
-        Assert.assertEquals(foundPerson.getName(), this.person1.getName());
+        Assertions.assertNotNull(foundPerson);
+        Assertions.assertEquals(foundPerson.getId(), this.person1.getId());
+        Assertions.assertEquals(foundPerson.getName(), this.person1.getName());
 
         final Relationship foundRelationship = this.template.findById(this.relationship.getId(), relationshipSource);
 
-        Assert.assertNotNull(foundRelationship);
-        Assert.assertEquals(foundRelationship.getId(), this.relationship.getId());
-        Assert.assertEquals(foundRelationship.getName(), this.relationship.getName());
-        Assert.assertEquals(foundRelationship.getLocation(), this.relationship.getLocation());
+        Assertions.assertNotNull(foundRelationship);
+        Assertions.assertEquals(foundRelationship.getId(), this.relationship.getId());
+        Assertions.assertEquals(foundRelationship.getName(), this.relationship.getName());
+        Assertions.assertEquals(foundRelationship.getLocation(), this.relationship.getLocation());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testFindByIdException() {
-        this.template.findById(this.network.getId(), this.networkSource);
+        assertThrows(UnsupportedOperationException.class, () -> this.template.findById(this.network.getId(),
+            this.networkSource));
     }
 
-    @Test(expected = GremlinQueryException.class)
+    @Test
     public void testUpdateException() {
         this.personSource.setId(this.person.getId());
-        this.template.update(this.person, this.personSource);
+        assertThrows(GremlinQueryException.class, () -> this.template.update(this.person, this.personSource));
     }
 
     @Test
@@ -281,10 +287,10 @@ public class GremlinTemplateIT {
 
         final Person foundPerson = this.template.findById(updatedPerson.getId(), this.personSource);
 
-        Assert.assertNotNull(foundPerson);
-        Assert.assertEquals(this.person.getId(), foundPerson.getId());
-        Assert.assertEquals(updatedPerson.getId(), foundPerson.getId());
-        Assert.assertEquals(updatedPerson.getName(), foundPerson.getName());
+        Assertions.assertNotNull(foundPerson);
+        Assertions.assertEquals(this.person.getId(), foundPerson.getId());
+        Assertions.assertEquals(updatedPerson.getId(), foundPerson.getId());
+        Assertions.assertEquals(updatedPerson.getName(), foundPerson.getName());
     }
 
     @Test
@@ -296,17 +302,17 @@ public class GremlinTemplateIT {
         final String updatedName = "updated-relation-name";
         final String updatedLocation = "updated-location";
         final Relationship updatedRelationship = new Relationship(TestConstants.EDGE_RELATIONSHIP_2_ID,
-                updatedName, updatedLocation, this.person, this.project0);
+            updatedName, updatedLocation, this.person, this.project0);
 
         this.template.update(updatedRelationship, this.relationshipSource);
 
         final Relationship foundRelationship = this.template.findById(updatedRelationship.getId(), relationshipSource);
 
-        Assert.assertNotNull(foundRelationship);
-        Assert.assertEquals(this.relationship2.getId(), foundRelationship.getId());
-        Assert.assertEquals(updatedRelationship.getId(), foundRelationship.getId());
-        Assert.assertEquals(updatedRelationship.getName(), foundRelationship.getName());
-        Assert.assertEquals(updatedRelationship.getLocation(), foundRelationship.getLocation());
+        Assertions.assertNotNull(foundRelationship);
+        Assertions.assertEquals(this.relationship2.getId(), foundRelationship.getId());
+        Assertions.assertEquals(updatedRelationship.getId(), foundRelationship.getId());
+        Assertions.assertEquals(updatedRelationship.getName(), foundRelationship.getName());
+        Assertions.assertEquals(updatedRelationship.getLocation(), foundRelationship.getLocation());
     }
 
     @Test
@@ -331,18 +337,18 @@ public class GremlinTemplateIT {
         final Project foundProject = this.template.findById(project.getId(), this.projectSource);
         final Relationship foundRelationship = this.template.findById(relationship.getId(), this.relationshipSource);
 
-        Assert.assertNotNull(foundPerson);
-        Assert.assertNotNull(foundProject);
-        Assert.assertNotNull(foundRelationship);
+        Assertions.assertNotNull(foundPerson);
+        Assertions.assertNotNull(foundProject);
+        Assertions.assertNotNull(foundRelationship);
 
-        Assert.assertEquals(foundPerson.getId(), person.getId());
-        Assert.assertEquals(foundPerson.getName(), person.getName());
+        Assertions.assertEquals(foundPerson.getId(), person.getId());
+        Assertions.assertEquals(foundPerson.getName(), person.getName());
 
-        Assert.assertEquals(foundProject.getId(), project.getId());
-        Assert.assertEquals(foundProject.getUri(), project.getUri());
+        Assertions.assertEquals(foundProject.getId(), project.getId());
+        Assertions.assertEquals(foundProject.getUri(), project.getUri());
 
-        Assert.assertEquals(foundRelationship.getId(), relationship.getId());
-        Assert.assertEquals(foundRelationship.getLocation(), relationship.getLocation());
+        Assertions.assertEquals(foundRelationship.getId(), relationship.getId());
+        Assertions.assertEquals(foundRelationship.getLocation(), relationship.getLocation());
     }
 
     @Test
@@ -352,9 +358,9 @@ public class GremlinTemplateIT {
 
         Person foundPerson = this.template.findById(this.person.getId(), this.personSource);
 
-        Assert.assertNotNull(foundPerson);
-        Assert.assertEquals(foundPerson.getId(), this.person.getId());
-        Assert.assertEquals(foundPerson.getName(), this.person.getName());
+        Assertions.assertNotNull(foundPerson);
+        Assertions.assertEquals(foundPerson.getId(), this.person.getId());
+        Assertions.assertEquals(foundPerson.getName(), this.person.getName());
 
         final String updatedName = "update-person-name";
         final Person updatedPerson = new Person(this.person.getId(), updatedName);
@@ -364,9 +370,9 @@ public class GremlinTemplateIT {
 
         foundPerson = this.template.findById(updatedPerson.getId(), this.personSource);
 
-        Assert.assertNotNull(foundPerson);
-        Assert.assertEquals(foundPerson.getId(), updatedPerson.getId());
-        Assert.assertEquals(foundPerson.getName(), updatedPerson.getName());
+        Assertions.assertNotNull(foundPerson);
+        Assertions.assertEquals(foundPerson.getId(), updatedPerson.getId());
+        Assertions.assertEquals(foundPerson.getName(), updatedPerson.getName());
     }
 
     @Test
@@ -378,26 +384,26 @@ public class GremlinTemplateIT {
 
         Relationship foundRelationship = this.template.findById(this.relationship.getId(), this.relationshipSource);
 
-        Assert.assertNotNull(foundRelationship);
-        Assert.assertEquals(foundRelationship.getId(), this.relationship.getId());
-        Assert.assertEquals(foundRelationship.getName(), this.relationship.getName());
-        Assert.assertEquals(foundRelationship.getLocation(), this.relationship.getLocation());
+        Assertions.assertNotNull(foundRelationship);
+        Assertions.assertEquals(foundRelationship.getId(), this.relationship.getId());
+        Assertions.assertEquals(foundRelationship.getName(), this.relationship.getName());
+        Assertions.assertEquals(foundRelationship.getLocation(), this.relationship.getLocation());
 
         final String updatedName = "updated-relation-name";
         final String updatedLocation = "updated-location";
         final Relationship updatedRelationship = new Relationship(TestConstants.EDGE_RELATIONSHIP_2_ID,
-                updatedName, updatedLocation, this.person, this.project);
+            updatedName, updatedLocation, this.person, this.project);
 
         this.relationshipSource.setId(updatedRelationship.getId());
         this.template.save(updatedRelationship, this.relationshipSource);
 
         foundRelationship = this.template.findById(updatedRelationship.getId(), this.relationshipSource);
 
-        Assert.assertNotNull(foundRelationship);
-        Assert.assertEquals(this.relationship2.getId(), foundRelationship.getId());
-        Assert.assertEquals(updatedRelationship.getId(), foundRelationship.getId());
-        Assert.assertEquals(updatedRelationship.getName(), foundRelationship.getName());
-        Assert.assertEquals(updatedRelationship.getLocation(), foundRelationship.getLocation());
+        Assertions.assertNotNull(foundRelationship);
+        Assertions.assertEquals(this.relationship2.getId(), foundRelationship.getId());
+        Assertions.assertEquals(updatedRelationship.getId(), foundRelationship.getId());
+        Assertions.assertEquals(updatedRelationship.getName(), foundRelationship.getName());
+        Assertions.assertEquals(updatedRelationship.getLocation(), foundRelationship.getLocation());
     }
 
     @Test
@@ -410,13 +416,13 @@ public class GremlinTemplateIT {
 
         final Person personFound = this.template.findById(this.person.getId(), this.personSource);
 
-        Assert.assertNotNull(personFound);
-        Assert.assertEquals(personFound.getId(), this.person.getId());
+        Assertions.assertNotNull(personFound);
+        Assertions.assertEquals(personFound.getId(), this.person.getId());
 
         Relationship relationshipFound = this.template.findById(this.relationship.getId(), this.relationshipSource);
 
-        Assert.assertNotNull(relationshipFound);
-        Assert.assertEquals(relationshipFound.getId(), this.relationship.getId());
+        Assertions.assertNotNull(relationshipFound);
+        Assertions.assertEquals(relationshipFound.getId(), this.relationship.getId());
 
         final String updatedName = "updated-name";
         this.relationship.setName(updatedName);
@@ -425,29 +431,29 @@ public class GremlinTemplateIT {
 
         relationshipFound = this.template.findById(this.relationship.getId(), this.relationshipSource);
 
-        Assert.assertNotNull(relationshipFound);
-        Assert.assertEquals(relationshipFound.getId(), this.relationship.getId());
-        Assert.assertEquals(relationshipFound.getName(), updatedName);
+        Assertions.assertNotNull(relationshipFound);
+        Assertions.assertEquals(relationshipFound.getId(), this.relationship.getId());
+        Assertions.assertEquals(relationshipFound.getName(), updatedName);
     }
 
     @Test
     public void testFindAllVertex() {
         List<Person> personList = this.template.findAll(this.personSource);
 
-        Assert.assertTrue(personList.isEmpty());
+        Assertions.assertTrue(personList.isEmpty());
 
         final List<Person> personCollection = Arrays.asList(this.person, this.person0, this.person1);
         personCollection.forEach(person -> this.template.insert(person, this.personSource));
 
         personList = this.template.findAll(this.personSource);
 
-        Assert.assertFalse(personList.isEmpty());
-        Assert.assertEquals(personList.size(), personCollection.size());
+        Assertions.assertFalse(personList.isEmpty());
+        Assertions.assertEquals(personList.size(), personCollection.size());
 
         personList.sort((a, b) -> (a.getId().compareTo(b.getId())));
         personCollection.sort((a, b) -> (a.getId().compareTo(b.getId())));
 
-        Assert.assertArrayEquals(personList.toArray(), personCollection.toArray());
+        Assertions.assertArrayEquals(personList.toArray(), personCollection.toArray());
     }
 
     @Test
@@ -460,21 +466,21 @@ public class GremlinTemplateIT {
 
         List<Relationship> relationshipList = this.template.findAll(this.relationshipSource);
 
-        Assert.assertTrue(relationshipList.isEmpty());
+        Assertions.assertTrue(relationshipList.isEmpty());
 
         final List<Relationship> relationshipCollection = Arrays.asList(this.relationship, this.relationship0,
-                this.relationship1, this.relationship2);
+            this.relationship1, this.relationship2);
         relationshipCollection.forEach(relationship -> this.template.insert(relationship, this.relationshipSource));
 
         relationshipList = this.template.findAll(this.relationshipSource);
 
-        Assert.assertFalse(relationshipList.isEmpty());
-        Assert.assertEquals(relationshipList.size(), relationshipCollection.size());
+        Assertions.assertFalse(relationshipList.isEmpty());
+        Assertions.assertEquals(relationshipList.size(), relationshipCollection.size());
 
         relationshipList.sort((a, b) -> (a.getId().compareTo(b.getId())));
         relationshipCollection.sort((a, b) -> (a.getId().compareTo(b.getId())));
 
-        Assert.assertArrayEquals(relationshipList.toArray(), relationshipCollection.toArray());
+        Assertions.assertArrayEquals(relationshipList.toArray(), relationshipCollection.toArray());
     }
 
     @Test
@@ -484,12 +490,12 @@ public class GremlinTemplateIT {
         this.template.deleteById(this.person0.getId(), this.personSource);
 
         Person foundPerson = this.template.findById(this.person.getId(), this.personSource);
-        Assert.assertNotNull(foundPerson);
+        Assertions.assertNotNull(foundPerson);
 
         this.template.deleteById(this.person.getId(), this.personSource);
 
         foundPerson = this.template.findById(this.person.getId(), this.personSource);
-        Assert.assertNull(foundPerson);
+        Assertions.assertNull(foundPerson);
     }
 
     @Test
@@ -503,12 +509,12 @@ public class GremlinTemplateIT {
         this.template.deleteById(this.relationship0.getId(), this.relationshipSource);
 
         Relationship foundRelationship = this.template.findById(this.relationship.getId(), this.relationshipSource);
-        Assert.assertNotNull(foundRelationship);
+        Assertions.assertNotNull(foundRelationship);
 
         this.template.deleteById(this.relationship.getId(), this.relationshipSource);
 
         foundRelationship = this.template.findById(this.relationship.getId(), this.relationshipSource);
-        Assert.assertNull(foundRelationship);
+        Assertions.assertNull(foundRelationship);
     }
 
     @Test
@@ -517,33 +523,33 @@ public class GremlinTemplateIT {
         this.template.deleteById(this.network.getId(), this.relationshipSource);
 
         final Relationship foundRelationship = this.template.findById(this.relationship.getId(), relationshipSource);
-        Assert.assertNull(foundRelationship);
+        Assertions.assertNull(foundRelationship);
 
         final Person foundPerson = this.template.findById(this.person.getId(), this.personSource);
-        Assert.assertNull(foundPerson);
+        Assertions.assertNull(foundPerson);
     }
 
     @Test
     public void testIsEmptyGraph() {
-        Assert.assertTrue(this.template.isEmptyGraph(this.networkSource));
+        Assertions.assertTrue(this.template.isEmptyGraph(this.networkSource));
 
         this.network.vertexAdd(this.person);
         this.network.vertexAdd(this.project);
         this.network.edgeAdd(this.relationship);
         this.template.insert(this.network, this.networkSource);
 
-        Assert.assertFalse(this.template.isEmptyGraph(this.networkSource));
+        Assertions.assertFalse(this.template.isEmptyGraph(this.networkSource));
     }
 
-    @Test(expected = GremlinQueryException.class)
+    @Test
     public void testIsEmptyGraphException() {
-        this.template.isEmptyGraph(this.relationshipSource);
+        assertThrows(GremlinQueryException.class, () -> this.template.isEmptyGraph(this.relationshipSource));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testInvalidDependencySaveException() {
         final InvalidDependency dependency = new InvalidDependency(this.relationship.getId(),
-                this.relationship.getName(), this.person.getId(), this.project.getId());
+            this.relationship.getName(), this.person.getId(), this.project.getId());
         final GremlinSource<InvalidDependency> source = new GremlinSourceGraph<>(InvalidDependency.class);
 
         this.personSource.setId(this.person.getId());
@@ -553,7 +559,7 @@ public class GremlinTemplateIT {
         this.relationshipSource.setId(this.relationship.getId());
         this.template.save(this.relationship, this.relationshipSource);
 
-        this.template.findById(dependency.getId(), source);
+        assertThrows(UnsupportedOperationException.class, () -> this.template.findById(dependency.getId(), source));
     }
 
     @Configuration
@@ -570,9 +576,9 @@ public class GremlinTemplateIT {
         @Bean
         public GremlinConfig getGremlinConfig() {
             return GremlinConfig.builder(properties.getEndpoint(), properties.getUsername(), properties.getPassword())
-                    .sslEnabled(properties.isSslEnabled())
-                    .port(properties.getPort())
-                    .build();
+                                .sslEnabled(properties.isSslEnabled())
+                                .port(properties.getPort())
+                                .build();
         }
     }
 }

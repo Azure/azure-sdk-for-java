@@ -9,8 +9,8 @@ import com.azure.spring.data.gremlin.common.domain.Dependency;
 import com.azure.spring.data.gremlin.common.domain.Relationship;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSource;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSourceEdge;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationEdgeUnitTest {
 
@@ -18,17 +18,17 @@ public class AnnotationEdgeUnitTest {
     public void testAnnotationEdgeDefaultLabel() {
         final GremlinSource<Dependency> source = GremlinUtils.toGremlinSource(Dependency.class);
 
-        Assert.assertTrue(source instanceof GremlinSourceEdge);
-        Assert.assertNotNull(source.getLabel());
-        Assert.assertEquals(source.getLabel(), Dependency.class.getSimpleName());
+        Assertions.assertTrue(source instanceof GremlinSourceEdge);
+        Assertions.assertNotNull(source.getLabel());
+        Assertions.assertEquals(source.getLabel(), Dependency.class.getSimpleName());
     }
 
     @Test
     public void testAnnotationEdgeSpecifiedLabel() {
         final GremlinSource<Relationship> source = GremlinUtils.toGremlinSource(Relationship.class);
 
-        Assert.assertTrue(source instanceof GremlinSourceEdge);
-        Assert.assertNotNull(source.getLabel());
-        Assert.assertEquals(source.getLabel(), TestConstants.EDGE_RELATIONSHIP_LABEL);
+        Assertions.assertTrue(source instanceof GremlinSourceEdge);
+        Assertions.assertNotNull(source.getLabel());
+        Assertions.assertEquals(source.getLabel(), TestConstants.EDGE_RELATIONSHIP_LABEL);
     }
 }

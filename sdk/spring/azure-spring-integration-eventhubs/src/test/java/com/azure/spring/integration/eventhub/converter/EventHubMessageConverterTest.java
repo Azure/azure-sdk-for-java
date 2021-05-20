@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.test.support.UnaryAzureMessageConverterTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.LinkedMultiValueMap;

@@ -11,25 +11,26 @@ import com.azure.spring.data.gremlin.conversion.source.GremlinSource;
 import com.azure.spring.data.gremlin.mapping.GremlinMappingContext;
 import com.azure.spring.data.gremlin.repository.support.GremlinEntityInformation;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationContext;
 
-@RunWith(MockitoJUnitRunner.class)
 public class MappingGremlinConverterUnitTest {
 
     private MappingGremlinConverter converter;
     private GremlinMappingContext mappingContext;
+    private AutoCloseable closeable;
 
     @Mock
     private ApplicationContext applicationContext;
 
-    @Before
+    @BeforeEach
     public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.mappingContext = new GremlinMappingContext();
 
         this.mappingContext.setApplicationContext(this.applicationContext);
@@ -39,16 +40,21 @@ public class MappingGremlinConverterUnitTest {
         this.converter = new MappingGremlinConverter(this.mappingContext);
     }
 
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
+
     @Test
     public void testMappingGremlinConverterGetter() {
-        Assert.assertEquals(this.converter.getMappingContext(), this.mappingContext);
-        Assert.assertNotNull(this.converter.getConversionService());
+        Assertions.assertEquals(this.converter.getMappingContext(), this.mappingContext);
+        Assertions.assertNotNull(this.converter.getConversionService());
 
         final Person person = new Person(TestConstants.VERTEX_PERSON_ID, TestConstants.VERTEX_PERSON_NAME);
         FieldUtils.getAllFields(Person.class);
 
-        Assert.assertNotNull(this.converter.getPropertyAccessor(person));
-        Assert.assertEquals(converter.getIdFieldValue(person), TestConstants.VERTEX_PERSON_ID);
+        Assertions.assertNotNull(this.converter.getPropertyAccessor(person));
+        Assertions.assertEquals(converter.getIdFieldValue(person), TestConstants.VERTEX_PERSON_ID);
     }
 
     @Test
@@ -59,9 +65,9 @@ public class MappingGremlinConverterUnitTest {
 
         this.converter.write(person, source);
 
-        Assert.assertTrue(source.getId().isPresent());
-        Assert.assertEquals(source.getId().get(), person.getId());
-        Assert.assertEquals(source.getProperties().get(TestConstants.PROPERTY_NAME), person.getName());
+        Assertions.assertTrue(source.getId().isPresent());
+        Assertions.assertEquals(source.getId().get(), person.getId());
+        Assertions.assertEquals(source.getProperties().get(TestConstants.PROPERTY_NAME), person.getName());
     }
 
     @Test
@@ -76,9 +82,9 @@ public class MappingGremlinConverterUnitTest {
 
         this.converter.write(relationship, source);
 
-        Assert.assertTrue(source.getId().isPresent());
-        Assert.assertEquals(source.getId().get(), relationship.getId());
-        Assert.assertEquals(source.getProperties().get(TestConstants.PROPERTY_NAME), relationship.getName());
+        Assertions.assertTrue(source.getId().isPresent());
+        Assertions.assertEquals(source.getId().get(), relationship.getId());
+        Assertions.assertEquals(source.getProperties().get(TestConstants.PROPERTY_NAME), relationship.getName());
     }
 }
 

@@ -3,34 +3,35 @@
 
 package com.azure.spring.data.gremlin.query.criteria;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.spring.data.gremlin.query.criteria.CriteriaType.IS_EQUAL;
 import static com.azure.spring.data.gremlin.query.criteria.CriteriaType.OR;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CriteriaUnitTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetUnaryInstanceException() {
         final List<Object> values = new ArrayList<>();
 
-        Criteria.getUnaryInstance(OR, "fake-name", values);
+        assertThrows(IllegalArgumentException.class, () -> Criteria.getUnaryInstance(OR, "fake-name", values));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testGetBinaryInstanceException() {
         final List<Object> values = new ArrayList<>();
         final Criteria left = Criteria.getUnaryInstance(IS_EQUAL, "fake-name", values);
         final Criteria right = Criteria.getUnaryInstance(IS_EQUAL, "fake-name", values);
 
-        Criteria.getBinaryInstance(IS_EQUAL, left, right);
+        assertThrows(IllegalArgumentException.class, () -> Criteria.getBinaryInstance(IS_EQUAL, left, right));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testCriteriaTypeToGremlinException() {
-        CriteriaType.criteriaTypeToGremlin(IS_EQUAL);
+        assertThrows(UnsupportedOperationException.class, () -> CriteriaType.criteriaTypeToGremlin(IS_EQUAL));
     }
 }

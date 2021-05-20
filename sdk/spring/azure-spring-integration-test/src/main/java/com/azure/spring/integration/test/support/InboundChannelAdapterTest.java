@@ -4,8 +4,8 @@
 package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.AbstractInboundChannelAdapter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -56,7 +56,7 @@ public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannel
         }
     }
 
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     public A getAdapter() {

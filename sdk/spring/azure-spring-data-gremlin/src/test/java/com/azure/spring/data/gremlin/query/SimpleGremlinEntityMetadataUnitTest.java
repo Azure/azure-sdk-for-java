@@ -4,8 +4,8 @@
 package com.azure.spring.data.gremlin.query;
 
 import com.azure.spring.data.gremlin.common.domain.Person;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class SimpleGremlinEntityMetadataUnitTest {
 
@@ -13,7 +13,7 @@ public class SimpleGremlinEntityMetadataUnitTest {
     public void testSimpleGremlinEntityMetadata() {
         final SimpleGremlinEntityMetadata<Person> metadata = new SimpleGremlinEntityMetadata<>(Person.class);
 
-        Assert.assertNotNull(metadata);
-        Assert.assertEquals(metadata.getJavaType(), Person.class);
+        Assertions.assertNotNull(metadata);
+        Assertions.assertEquals(metadata.getJavaType(), Person.class);
     }
 }

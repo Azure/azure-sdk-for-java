@@ -3,22 +3,22 @@
 
 package com.azure.spring.data.gremlin.repository.config;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 public class GremlinRepositoryRegistrarUnitTest {
 
     private GremlinRepositoryRegistrar registrar;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.registrar = new GremlinRepositoryRegistrar();
     }
 
     @Test
     public void testGremlinRepositoryRegistrarGetters() {
-        Assert.assertSame(this.registrar.getAnnotation(), EnableGremlinRepositories.class);
-        Assert.assertTrue(this.registrar.getExtension() instanceof GremlinRepositoryConfigurationExtension);
+        Assertions.assertSame(this.registrar.getAnnotation(), EnableGremlinRepositories.class);
+        Assertions.assertTrue(this.registrar.getExtension() instanceof GremlinRepositoryConfigurationExtension);
     }
 }

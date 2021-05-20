@@ -10,14 +10,14 @@ import com.azure.spring.data.gremlin.common.domain.Student;
 import com.azure.spring.data.gremlin.common.repository.NeighborRepository;
 import com.azure.spring.data.gremlin.common.repository.StudentRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class NeighborRepositoryIT {
 
@@ -58,7 +58,7 @@ public class NeighborRepositoryIT {
     @Autowired
     private NeighborRepository neighborRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.studentRepository.deleteAll();
         this.neighborRepository.deleteAll();
@@ -68,32 +68,32 @@ public class NeighborRepositoryIT {
         found.sort(Comparator.comparing(Neighbor::getId));
         expected.sort(Comparator.comparing(Neighbor::getId));
 
-        Assert.assertEquals(found.size(), expected.size());
-        Assert.assertEquals(found, expected);
+        Assertions.assertEquals(found.size(), expected.size());
+        Assertions.assertEquals(found, expected);
     }
 
     @Test
     public void testDeleteAll() {
         neighborRepository.deleteAll();
 
-        Assert.assertFalse(neighborRepository.findAll().iterator().hasNext());
+        Assertions.assertFalse(neighborRepository.findAll().iterator().hasNext());
 
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        Assert.assertTrue(neighborRepository.findAll().iterator().hasNext());
+        Assertions.assertTrue(neighborRepository.findAll().iterator().hasNext());
     }
 
     @Test
     public void testDeleteAllOnType() {
         neighborRepository.deleteAll(GremlinEntityType.EDGE);
 
-        Assert.assertFalse(neighborRepository.findAll().iterator().hasNext());
+        Assertions.assertFalse(neighborRepository.findAll().iterator().hasNext());
 
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        Assert.assertTrue(neighborRepository.findAll().iterator().hasNext());
+        Assertions.assertTrue(neighborRepository.findAll().iterator().hasNext());
     }
 
     @Test
@@ -101,11 +101,11 @@ public class NeighborRepositoryIT {
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        Assert.assertTrue(neighborRepository.findAll().iterator().hasNext());
+        Assertions.assertTrue(neighborRepository.findAll().iterator().hasNext());
 
         neighborRepository.deleteAll(Neighbor.class);
 
-        Assert.assertFalse(neighborRepository.findAll().iterator().hasNext());
+        Assertions.assertFalse(neighborRepository.findAll().iterator().hasNext());
     }
 
     @Test
@@ -113,8 +113,8 @@ public class NeighborRepositoryIT {
         studentRepository.saveAll(STUDENTS);
         neighborRepository.save(NEIGHBOR_0);
 
-        Assert.assertTrue(neighborRepository.findById(NEIGHBOR_0.getId()).isPresent());
-        Assert.assertFalse(neighborRepository.findById(NEIGHBOR_1.getId()).isPresent());
+        Assertions.assertTrue(neighborRepository.findById(NEIGHBOR_0.getId()).isPresent());
+        Assertions.assertFalse(neighborRepository.findById(NEIGHBOR_1.getId()).isPresent());
     }
 
     @Test
@@ -134,12 +134,12 @@ public class NeighborRepositoryIT {
 
         Optional<Neighbor> optional = neighborRepository.findById(NEIGHBOR_0.getId());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(optional.get(), NEIGHBOR_0);
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(optional.get(), NEIGHBOR_0);
 
         optional = neighborRepository.findById(NO_EXIST_ID);
 
-        Assert.assertFalse(optional.isPresent());
+        Assertions.assertFalse(optional.isPresent());
     }
 
     @Test
@@ -147,8 +147,8 @@ public class NeighborRepositoryIT {
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        Assert.assertTrue(neighborRepository.existsById(NEIGHBOR_0.getId()));
-        Assert.assertFalse(neighborRepository.existsById(NO_EXIST_ID));
+        Assertions.assertTrue(neighborRepository.existsById(NEIGHBOR_0.getId()));
+        Assertions.assertFalse(neighborRepository.existsById(NO_EXIST_ID));
     }
 
     @Test
@@ -161,7 +161,7 @@ public class NeighborRepositoryIT {
 
         assertDomainListEquals(found, NEIGHBORS);
 
-        Assert.assertFalse(neighborRepository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
+        Assertions.assertFalse(neighborRepository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
     }
 
     @Test
@@ -169,11 +169,11 @@ public class NeighborRepositoryIT {
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        Assert.assertEquals(neighborRepository.count(), STUDENTS.size() + NEIGHBORS.size());
+        Assertions.assertEquals(neighborRepository.count(), STUDENTS.size() + NEIGHBORS.size());
 
         neighborRepository.deleteAll();
 
-        Assert.assertEquals(neighborRepository.count(), 0);
+        Assertions.assertEquals(neighborRepository.count(), 0);
     }
 
     @Test
@@ -181,11 +181,11 @@ public class NeighborRepositoryIT {
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        Assert.assertTrue(neighborRepository.findById(NEIGHBOR_0.getId()).isPresent());
+        Assertions.assertTrue(neighborRepository.findById(NEIGHBOR_0.getId()).isPresent());
 
         neighborRepository.deleteById(NEIGHBOR_0.getId());
 
-        Assert.assertFalse(neighborRepository.findById(NEIGHBOR_0.getId()).isPresent());
+        Assertions.assertFalse(neighborRepository.findById(NEIGHBOR_0.getId()).isPresent());
     }
 
     @Test
@@ -193,6 +193,6 @@ public class NeighborRepositoryIT {
         studentRepository.saveAll(STUDENTS);
         neighborRepository.saveAll(NEIGHBORS);
 
-        Assert.assertEquals(neighborRepository.edgeCount(), NEIGHBORS.size());
+        Assertions.assertEquals(neighborRepository.edgeCount(), NEIGHBORS.size());
     }
 }

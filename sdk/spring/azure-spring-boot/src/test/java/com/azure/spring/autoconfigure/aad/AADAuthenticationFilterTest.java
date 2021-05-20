@@ -6,8 +6,8 @@ package com.azure.spring.autoconfigure.aad;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.security.core.Authentication;
@@ -53,7 +53,7 @@ public class AADAuthenticationFilterTest {
 
     //TODO (Zhou Liu): current test case is out of date, a new test case need to cover here, do it later.
     @Test
-    @Ignore
+    @Disabled
     public void doFilterInternal() {
         this.contextRunner.withPropertyValues("azure.activedirectory.client-id", TestConstants.CLIENT_ID)
                 .withPropertyValues("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET)

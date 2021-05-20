@@ -9,9 +9,7 @@ import com.azure.spring.messaging.container.SimpleMessageListenerContainer;
 import com.azure.spring.messaging.endpoint.AbstractAzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerEndpoint;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -29,9 +27,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -39,13 +38,10 @@ import static org.mockito.Mockito.mock;
  */
 public class AzureListenerAnnotationBeanPostProcessorTests {
 
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void simpleMessageListener() throws Exception {
         ConfigurableApplicationContext context =
-                new AnnotationConfigApplicationContext(Config.class, SimpleMessageListenerTestBean.class);
+            new AnnotationConfigApplicationContext(Config.class, SimpleMessageListenerTestBean.class);
 
         AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
         assertEquals("One container should have been registered", 1, factory.getListenerContainers().size());
@@ -56,7 +52,7 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
         MethodAzureListenerEndpoint methodEndpoint = (MethodAzureListenerEndpoint) endpoint;
         assertEquals(SimpleMessageListenerTestBean.class, methodEndpoint.getBean().getClass());
         assertEquals(SimpleMessageListenerTestBean.class.getMethod("handleIt", String.class),
-                methodEndpoint.getMethod());
+            methodEndpoint.getMethod());
 
         MessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
         methodEndpoint.setupListenerContainer(listenerContainer);
@@ -70,7 +66,7 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
     @Test
     public void metaAnnotationIsDiscovered() throws Exception {
         ConfigurableApplicationContext context =
-                new AnnotationConfigApplicationContext(Config.class, MetaAnnotationTestBean.class);
+            new AnnotationConfigApplicationContext(Config.class, MetaAnnotationTestBean.class);
 
         try {
             AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
@@ -90,10 +86,9 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
     @Test
     @SuppressWarnings("resource")
     public void invalidProxy() {
-        thrown.expect(BeanCreationException.class);
-        thrown.expectCause(is(instanceOf(IllegalStateException.class)));
-        thrown.expectMessage("handleIt2");
-        new AnnotationConfigApplicationContext(Config.class, ProxyConfig.class, InvalidProxyTestBean.class);
+        assertThrows(BeanCreationException.class,
+            () -> new AnnotationConfigApplicationContext(Config.class, ProxyConfig.class, InvalidProxyTestBean.class),
+            "handleIt2");
     }
 
     @AzureMessageListener(destination = "metaTestQueue")

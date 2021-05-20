@@ -9,52 +9,63 @@ import com.azure.spring.data.gremlin.conversion.script.GremlinScriptLiteralVerte
 import com.azure.spring.data.gremlin.conversion.source.GremlinSourceEdge;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSourceVertex;
 import com.azure.spring.data.gremlin.exception.GremlinUnexpectedSourceTypeException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GremlinResultUnitTest {
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testVertexInsertException() {
-        new GremlinScriptLiteralVertex().generateInsertScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralVertex().generateInsertScript(new GremlinSourceEdge<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testVertexUpdateException() {
-        new GremlinScriptLiteralVertex().generateUpdateScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralVertex().generateUpdateScript(new GremlinSourceEdge<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testVertexFindByIdException() {
-        new GremlinScriptLiteralVertex().generateFindByIdScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralVertex().generateFindByIdScript(new GremlinSourceEdge<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testEdgeInsertException() {
-        new GremlinScriptLiteralEdge().generateInsertScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralEdge().generateInsertScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testEdgeUpdateException() {
-        new GremlinScriptLiteralEdge().generateUpdateScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralEdge().generateUpdateScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testEdgeFindByIdException() {
-        new GremlinScriptLiteralEdge().generateFindByIdScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralEdge().generateFindByIdScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testGraphInsertException() {
-        new GremlinScriptLiteralGraph().generateInsertScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralGraph().generateInsertScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testGraphUpdateException() {
-        new GremlinScriptLiteralGraph().generateUpdateScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralGraph().generateUpdateScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testGraphFindByIdException() {
-        new GremlinScriptLiteralGraph().generateFindByIdScript(new GremlinSourceVertex<>());
+        assertThrows(UnsupportedOperationException.class,
+            () -> new GremlinScriptLiteralGraph().generateFindByIdScript(new GremlinSourceVertex<>()));
     }
 }

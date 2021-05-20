@@ -7,19 +7,19 @@ import com.azure.spring.data.gremlin.common.TestRepositoryConfiguration;
 import com.azure.spring.data.gremlin.common.domain.AdvancedUser;
 import com.azure.spring.data.gremlin.common.repository.AdvancedUserRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class AdvancedUserRepositoryIT {
 
@@ -38,7 +38,7 @@ public class AdvancedUserRepositoryIT {
     @Autowired
     private AdvancedUserRepository repository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.repository.deleteAll();
     }
@@ -50,21 +50,21 @@ public class AdvancedUserRepositoryIT {
 
         final Optional<AdvancedUser> optional = this.repository.findById(USER_0.getId());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(USER_0.getId(), optional.get().getId());
-        Assert.assertEquals(USER_0.getName(), optional.get().getName());
-        Assert.assertEquals(USER_0.getLevel(), optional.get().getLevel());
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(USER_0.getId(), optional.get().getId());
+        Assertions.assertEquals(USER_0.getName(), optional.get().getName());
+        Assertions.assertEquals(USER_0.getLevel(), optional.get().getLevel());
 
         final List<AdvancedUser> foundUsers = Lists.newArrayList(this.repository.findAll(AdvancedUser.class));
-        Assert.assertEquals(foundUsers.size(), users.size());
+        Assertions.assertEquals(foundUsers.size(), users.size());
 
         this.repository.deleteById(USER_0.getId());
 
-        Assert.assertFalse(this.repository.findById(USER_0.getId()).isPresent());
-        Assert.assertTrue(this.repository.findById(USER_1.getId()).isPresent());
+        Assertions.assertFalse(this.repository.findById(USER_0.getId()).isPresent());
+        Assertions.assertTrue(this.repository.findById(USER_1.getId()).isPresent());
 
         this.repository.deleteAll();
 
-        Assert.assertFalse(this.repository.findById(USER_1.getId()).isPresent());
+        Assertions.assertFalse(this.repository.findById(USER_1.getId()).isPresent());
     }
 }

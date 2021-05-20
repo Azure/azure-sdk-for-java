@@ -10,8 +10,8 @@ import com.azure.spring.data.gremlin.common.TestConstants;
 import com.azure.spring.data.gremlin.common.domain.Network;
 import com.azure.spring.data.gremlin.common.domain.Person;
 import com.azure.spring.data.gremlin.common.domain.Relationship;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.util.ClassTypeInformation;
 
 public class BasicGremlinPersistentEntityUnitTest {
@@ -22,9 +22,9 @@ public class BasicGremlinPersistentEntityUnitTest {
                 new BasicGremlinPersistentEntity<>(ClassTypeInformation.from(Person.class));
         final Vertex annotation = entity.findAnnotation(Vertex.class);
 
-        Assert.assertEquals(entity.getType(), Person.class);
-        Assert.assertEquals(annotation.annotationType(), Vertex.class);
-        Assert.assertEquals(annotation.label(), TestConstants.VERTEX_PERSON_LABEL);
+        Assertions.assertEquals(entity.getType(), Person.class);
+        Assertions.assertEquals(annotation.annotationType(), Vertex.class);
+        Assertions.assertEquals(annotation.label(), TestConstants.VERTEX_PERSON_LABEL);
     }
 
     @Test
@@ -33,9 +33,9 @@ public class BasicGremlinPersistentEntityUnitTest {
                 new BasicGremlinPersistentEntity<>(ClassTypeInformation.from(Relationship.class));
         final Edge annotation = entity.findAnnotation(Edge.class);
 
-        Assert.assertEquals(entity.getType(), Relationship.class);
-        Assert.assertEquals(annotation.annotationType(), Edge.class);
-        Assert.assertEquals(annotation.label(), TestConstants.EDGE_RELATIONSHIP_LABEL);
+        Assertions.assertEquals(entity.getType(), Relationship.class);
+        Assertions.assertEquals(annotation.annotationType(), Edge.class);
+        Assertions.assertEquals(annotation.label(), TestConstants.EDGE_RELATIONSHIP_LABEL);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class BasicGremlinPersistentEntityUnitTest {
                 new BasicGremlinPersistentEntity<>(ClassTypeInformation.from(Network.class));
         final Graph annotation = entity.findAnnotation(Graph.class);
 
-        Assert.assertEquals(entity.getType(), Network.class);
-        Assert.assertEquals(annotation.annotationType(), Graph.class);
+        Assertions.assertEquals(entity.getType(), Network.class);
+        Assertions.assertEquals(annotation.annotationType(), Graph.class);
     }
 }

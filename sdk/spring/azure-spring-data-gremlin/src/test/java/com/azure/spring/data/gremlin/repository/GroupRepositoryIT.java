@@ -12,20 +12,20 @@ import com.azure.spring.data.gremlin.common.repository.GroupOwnerRepository;
 import com.azure.spring.data.gremlin.common.repository.GroupRepository;
 import com.azure.spring.data.gremlin.common.repository.StudentRepository;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class GroupRepositoryIT {
 
@@ -73,7 +73,7 @@ public class GroupRepositoryIT {
     @Autowired
     private StudentRepository studentRepository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.groupOwnerRepository.deleteAll();
         this.studentRepository.deleteAll();
@@ -83,7 +83,7 @@ public class GroupRepositoryIT {
         this.groupOwnerRepository.saveAll(GROUP_OWNERS);
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         this.groupOwnerRepository.deleteAll();
         this.studentRepository.deleteAll();
@@ -94,12 +94,12 @@ public class GroupRepositoryIT {
     public void testGeneratedIdFindById() {
         final Group expect = this.groupRepository.save(GROUP_0);
 
-        Assert.assertNotNull(expect.getId());
+        Assertions.assertNotNull(expect.getId());
 
         final Optional<Group> optional = this.groupRepository.findById(expect.getId());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(expect, optional.get());
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(expect, optional.get());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class GroupRepositoryIT {
 
         this.groupRepository.deleteById(group.getId());
 
-        Assert.assertFalse(this.groupRepository.findById(group.getId()).isPresent());
-        Assert.assertFalse(this.groupRepository.existsById(group.getId()));
+        Assertions.assertFalse(this.groupRepository.findById(group.getId()).isPresent());
+        Assertions.assertFalse(this.groupRepository.existsById(group.getId()));
     }
 }

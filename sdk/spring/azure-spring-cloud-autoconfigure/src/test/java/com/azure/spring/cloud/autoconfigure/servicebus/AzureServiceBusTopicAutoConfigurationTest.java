@@ -14,7 +14,11 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStrin
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -27,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AzureServiceBusTopicAutoConfigurationTest {
 
     private static final String SERVICE_BUS_PROPERTY_PREFIX = "spring.cloud.azure.servicebus.";
@@ -34,6 +39,17 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureServiceBusTopicAutoConfiguration.class));
+    private AutoCloseable closeable;
+
+    @BeforeAll
+    public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterAll
+    public void close() throws Exception {
+        this.closeable.close();
+    }
 
     @Test
     public void testAzureServiceBusTopicDisabled() {
@@ -64,7 +80,8 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
     @Test
     public void testTopicClientFactoryCreated() {
-        this.contextRunner.withUserConfiguration(TestConfigWithConnectionStringProvider.class, TestConfigWithServiceBusNamespaceManager.class)
+        this.contextRunner.withUserConfiguration(TestConfigWithConnectionStringProvider.class,
+            TestConfigWithServiceBusNamespaceManager.class)
                           .run(context -> assertThat(context).hasSingleBean(ServiceBusTopicClientFactory.class)
                                                              .hasSingleBean(ServiceBusTopicOperation.class));
     }
@@ -86,7 +103,8 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
     @Test
     public void testResourceManagerProvided() {
-        this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class, TestConfigWithConnectionStringProvider.class, AzureServiceBusAutoConfiguration.class)
+        this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class,
+            TestConfigWithConnectionStringProvider.class, AzureServiceBusAutoConfiguration.class)
                           .withPropertyValues(
                               AZURE_PROPERTY_PREFIX + "resource-group=rg1",
                               SERVICE_BUS_PROPERTY_PREFIX + "namespace=ns1"
@@ -112,7 +130,8 @@ public class AzureServiceBusTopicAutoConfigurationTest {
                               assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
                               assertThat(context).hasSingleBean(ServiceBusTopicTemplate.class);
 
-                              ServiceBusMessageConverter messageConverter = context.getBean(ServiceBusMessageConverter.class);
+                              ServiceBusMessageConverter messageConverter =
+                                  context.getBean(ServiceBusMessageConverter.class);
                               ServiceBusTopicTemplate topicTemplate = context.getBean(ServiceBusTopicTemplate.class);
                               assertSame(messageConverter, topicTemplate.getMessageConverter());
                           });

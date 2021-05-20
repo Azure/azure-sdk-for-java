@@ -7,8 +7,8 @@ import com.azure.spring.data.gremlin.common.TestConstants;
 import com.azure.spring.data.gremlin.common.domain.Network;
 import com.azure.spring.data.gremlin.common.domain.Person;
 import com.azure.spring.data.gremlin.common.domain.Relationship;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.mapping.model.Property;
 import org.springframework.data.mapping.model.SimpleTypeHolder;
 import org.springframework.data.util.ClassTypeInformation;
@@ -31,16 +31,16 @@ public class BasicGremlinPersistentPropertyUnitTest {
         Field field = ReflectionUtils.findField(Person.class, TestConstants.PROPERTY_ID);
         BasicGremlinPersistentProperty property = this.createBasicGremlinPersistentProperty(entity, field);
 
-        Assert.assertEquals(property.getName(), TestConstants.PROPERTY_ID);
-        Assert.assertTrue(property.isIdProperty());
-        Assert.assertNotNull(property.createAssociation());
+        Assertions.assertEquals(property.getName(), TestConstants.PROPERTY_ID);
+        Assertions.assertTrue(property.isIdProperty());
+        Assertions.assertNotNull(property.createAssociation());
 
         field = ReflectionUtils.findField(Person.class, TestConstants.PROPERTY_NAME);
         property = this.createBasicGremlinPersistentProperty(entity, field);
 
-        Assert.assertEquals(property.getName(), TestConstants.PROPERTY_NAME);
-        Assert.assertFalse(property.isIdProperty());
-        Assert.assertNotNull(property.createAssociation());
+        Assertions.assertEquals(property.getName(), TestConstants.PROPERTY_NAME);
+        Assertions.assertFalse(property.isIdProperty());
+        Assertions.assertNotNull(property.createAssociation());
     }
 
     @Test
@@ -50,16 +50,16 @@ public class BasicGremlinPersistentPropertyUnitTest {
         Field field = ReflectionUtils.findField(Relationship.class, TestConstants.PROPERTY_ID);
         BasicGremlinPersistentProperty property = this.createBasicGremlinPersistentProperty(entity, field);
 
-        Assert.assertEquals(property.getName(), TestConstants.PROPERTY_ID);
-        Assert.assertTrue(property.isIdProperty());
-        Assert.assertNotNull(property.createAssociation());
+        Assertions.assertEquals(property.getName(), TestConstants.PROPERTY_ID);
+        Assertions.assertTrue(property.isIdProperty());
+        Assertions.assertNotNull(property.createAssociation());
 
         field = ReflectionUtils.findField(Relationship.class, TestConstants.PROPERTY_LOCATION);
         property = this.createBasicGremlinPersistentProperty(entity, field);
 
-        Assert.assertEquals(property.getName(), TestConstants.PROPERTY_LOCATION);
-        Assert.assertFalse(property.isIdProperty());
-        Assert.assertNotNull(property.createAssociation());
+        Assertions.assertEquals(property.getName(), TestConstants.PROPERTY_LOCATION);
+        Assertions.assertFalse(property.isIdProperty());
+        Assertions.assertNotNull(property.createAssociation());
     }
 
     @Test
@@ -69,8 +69,8 @@ public class BasicGremlinPersistentPropertyUnitTest {
         final Field field = ReflectionUtils.findField(Network.class, TestConstants.PROPERTY_ID);
         final BasicGremlinPersistentProperty property = this.createBasicGremlinPersistentProperty(entity, field);
 
-        Assert.assertEquals(property.getName(), TestConstants.PROPERTY_ID);
-        Assert.assertTrue(property.isIdProperty());
-        Assert.assertNotNull(property.createAssociation());
+        Assertions.assertEquals(property.getName(), TestConstants.PROPERTY_ID);
+        Assertions.assertTrue(property.isIdProperty());
+        Assertions.assertNotNull(property.createAssociation());
     }
 }

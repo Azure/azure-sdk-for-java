@@ -8,14 +8,14 @@ import com.azure.spring.data.gremlin.common.TestRepositoryConfiguration;
 import com.azure.spring.data.gremlin.common.domain.Student;
 import com.azure.spring.data.gremlin.common.repository.StudentRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfiguration.class)
 public class StudentRepositoryIT {
 
@@ -46,7 +46,7 @@ public class StudentRepositoryIT {
     @Autowired
     private StudentRepository repository;
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.repository.deleteAll();
     }
@@ -55,53 +55,53 @@ public class StudentRepositoryIT {
         found.sort(Comparator.comparing(Student::getId));
         expected.sort(Comparator.comparing(Student::getId));
 
-        Assert.assertEquals(found.size(), expected.size());
-        Assert.assertEquals(found, expected);
+        Assertions.assertEquals(found.size(), expected.size());
+        Assertions.assertEquals(found, expected);
     }
 
     @Test
     public void testDeleteAll() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertTrue(repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(repository.findAll().iterator().hasNext());
 
         repository.deleteAll();
 
-        Assert.assertFalse(repository.findAll().iterator().hasNext());
+        Assertions.assertFalse(repository.findAll().iterator().hasNext());
     }
 
     @Test
     public void testDeleteAllOnType() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertTrue(repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(repository.findAll().iterator().hasNext());
 
         repository.deleteAll(GremlinEntityType.EDGE);
 
-        Assert.assertTrue(repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(repository.findAll().iterator().hasNext());
 
         repository.deleteAll(GremlinEntityType.VERTEX);
 
-        Assert.assertFalse(repository.findAll().iterator().hasNext());
+        Assertions.assertFalse(repository.findAll().iterator().hasNext());
     }
 
     @Test
     public void testDeleteAllOnDomain() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertTrue(repository.findAll().iterator().hasNext());
+        Assertions.assertTrue(repository.findAll().iterator().hasNext());
 
         repository.deleteAll(Student.class);
 
-        Assert.assertFalse(repository.findAll().iterator().hasNext());
+        Assertions.assertFalse(repository.findAll().iterator().hasNext());
     }
 
     @Test
     public void testSave() {
         repository.save(STUDENT_0);
 
-        Assert.assertTrue(repository.findById(STUDENT_0.getId()).isPresent());
-        Assert.assertFalse(repository.findById(STUDENT_1.getId()).isPresent());
+        Assertions.assertTrue(repository.findById(STUDENT_0.getId()).isPresent());
+        Assertions.assertFalse(repository.findById(STUDENT_1.getId()).isPresent());
     }
 
     @Test
@@ -119,20 +119,20 @@ public class StudentRepositoryIT {
 
         Optional<Student> optional = repository.findById(STUDENT_0.getId());
 
-        Assert.assertTrue(optional.isPresent());
-        Assert.assertEquals(optional.get(), STUDENT_0);
+        Assertions.assertTrue(optional.isPresent());
+        Assertions.assertEquals(optional.get(), STUDENT_0);
 
         optional = repository.findById(NO_EXIST_ID);
 
-        Assert.assertFalse(optional.isPresent());
+        Assertions.assertFalse(optional.isPresent());
     }
 
     @Test
     public void testExistsById() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertTrue(repository.existsById(STUDENT_0.getId()));
-        Assert.assertFalse(repository.existsById(NO_EXIST_ID));
+        Assertions.assertTrue(repository.existsById(STUDENT_0.getId()));
+        Assertions.assertFalse(repository.existsById(NO_EXIST_ID));
     }
 
     @Test
@@ -146,51 +146,51 @@ public class StudentRepositoryIT {
 
         assertDomainListEquals(found, expected);
 
-        Assert.assertFalse(repository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
+        Assertions.assertFalse(repository.findAllById(Collections.singleton(NO_EXIST_ID)).iterator().hasNext());
     }
 
     @Test
     public void testCount() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertEquals(repository.count(), STUDENTS.size());
+        Assertions.assertEquals(repository.count(), STUDENTS.size());
 
         repository.deleteAll();
 
-        Assert.assertEquals(repository.count(), 0);
+        Assertions.assertEquals(repository.count(), 0);
     }
 
     @Test
     public void testDeleteById() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertTrue(repository.findById(STUDENT_0.getId()).isPresent());
+        Assertions.assertTrue(repository.findById(STUDENT_0.getId()).isPresent());
 
         repository.deleteById(STUDENT_0.getId());
 
-        Assert.assertFalse(repository.findById(STUDENT_0.getId()).isPresent());
+        Assertions.assertFalse(repository.findById(STUDENT_0.getId()).isPresent());
     }
 
     @Test
     public void testVertexCount() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertEquals(repository.vertexCount(), STUDENTS.size());
+        Assertions.assertEquals(repository.vertexCount(), STUDENTS.size());
     }
 
     @Test
     public void testEdgeCount() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertEquals(repository.edgeCount(), 0);
+        Assertions.assertEquals(repository.edgeCount(), 0);
     }
 
     @Test
     public void testFindByName() {
         repository.saveAll(STUDENTS);
 
-        Assert.assertTrue(repository.findByName(NO_EXIST_NAME).isEmpty());
-        Assert.assertEquals(repository.findByName(STUDENT_0.getName()).size(), 1);
-        Assert.assertEquals(repository.findByName(STUDENT_0.getName()).get(0), STUDENT_0);
+        Assertions.assertTrue(repository.findByName(NO_EXIST_NAME).isEmpty());
+        Assertions.assertEquals(repository.findByName(STUDENT_0.getName()).size(), 1);
+        Assertions.assertEquals(repository.findByName(STUDENT_0.getName()).get(0), STUDENT_0);
     }
 }

@@ -8,9 +8,7 @@ import com.azure.spring.messaging.annotation.AzureMessageListeners;
 import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerEndpoint;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
@@ -21,10 +19,8 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Warren Zhu
  */
-public abstract class AbstractAzureMessagingAnnotationDrivenTests {
 
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
+public abstract class AbstractAzureMessagingAnnotationDrivenTests {
 
     @Test
     public abstract void sampleConfiguration();

@@ -9,8 +9,8 @@ import com.azure.spring.data.gremlin.common.domain.Library;
 import com.azure.spring.data.gremlin.common.domain.Person;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSource;
 import com.azure.spring.data.gremlin.conversion.source.GremlinSourceVertex;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AnnotationVertexUnitTest {
 
@@ -18,17 +18,17 @@ public class AnnotationVertexUnitTest {
     public void testAnnotationVertexDefaultLabel() {
         final GremlinSource<Library> source = GremlinUtils.toGremlinSource(Library.class);
 
-        Assert.assertTrue(source instanceof GremlinSourceVertex);
-        Assert.assertNotNull(source.getLabel());
-        Assert.assertEquals(source.getLabel(), Library.class.getSimpleName());
+        Assertions.assertTrue(source instanceof GremlinSourceVertex);
+        Assertions.assertNotNull(source.getLabel());
+        Assertions.assertEquals(source.getLabel(), Library.class.getSimpleName());
     }
 
     @Test
     public void testAnnotationVertexSpecifiedLabel() {
         final GremlinSource<Person> source = GremlinUtils.toGremlinSource(Person.class);
 
-        Assert.assertTrue(source instanceof GremlinSourceVertex);
-        Assert.assertNotNull(source.getLabel());
-        Assert.assertEquals(source.getLabel(), TestConstants.VERTEX_PERSON_LABEL);
+        Assertions.assertTrue(source instanceof GremlinSourceVertex);
+        Assertions.assertNotNull(source.getLabel());
+        Assertions.assertEquals(source.getLabel(), TestConstants.VERTEX_PERSON_LABEL);
     }
 }

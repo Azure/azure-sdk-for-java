@@ -12,73 +12,87 @@ import com.azure.spring.data.gremlin.conversion.source.GremlinSourceVertex;
 import com.azure.spring.data.gremlin.exception.GremlinUnexpectedEntityTypeException;
 import com.azure.spring.data.gremlin.exception.GremlinUnexpectedSourceTypeException;
 import org.apache.tinkerpop.gremlin.driver.Result;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GremlinScriptUnitTest {
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testVertexWriteException() {
-        new GremlinResultVertexReader().read(singletonList(new Result(new Object())), new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinResultVertexReader().read(singletonList(new Result(new Object())),
+                new GremlinSourceEdge<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testEdgeReadException() {
-        new GremlinResultEdgeReader().read(singletonList(new Result(new Object())), new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinResultEdgeReader().read(singletonList(new Result(new Object())),
+                new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedEntityTypeException.class)
+    @Test
     public void testGeneratePropertyException() {
         final Map<String, Object> properties = new HashMap<>();
         final GremlinSource<?> source = new GremlinSourceVertex<>();
         properties.put("person", source);
-        GremlinScriptLiteralHelper.generateProperties(properties);
+        assertThrows(GremlinUnexpectedEntityTypeException.class,
+            () -> GremlinScriptLiteralHelper.generateProperties(properties));
     }
 
-    @Test(expected = GremlinUnexpectedEntityTypeException.class)
+    @Test
     public void testGenerateHasException() {
         final GremlinSource<?> source = new GremlinSourceVertex<>();
-        GremlinScriptLiteralHelper.generateHas("fake-name", source);
+        assertThrows(GremlinUnexpectedEntityTypeException.class,
+            () -> GremlinScriptLiteralHelper.generateHas("fake-name", source));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testEdgeDeleteByIdScriptException() {
-        new GremlinScriptLiteralEdge().generateDeleteByIdScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralEdge().generateDeleteByIdScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testGraphDeleteByIdScriptException() {
-        new GremlinScriptLiteralGraph().generateDeleteByIdScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralGraph().generateDeleteByIdScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testGraphFindAllScriptException() {
-        new GremlinScriptLiteralGraph().generateFindAllScript(new GremlinSourceVertex<>());
+        assertThrows(UnsupportedOperationException.class,
+            () -> new GremlinScriptLiteralGraph().generateFindAllScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testGraphCountException() {
-        new GremlinScriptLiteralGraph().generateCountScript(new GremlinSourceVertex<>());
+        assertThrows(UnsupportedOperationException.class,
+            () -> new GremlinScriptLiteralGraph().generateCountScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testEdgeCountScriptException() {
-        new GremlinScriptLiteralEdge().generateCountScript(new GremlinSourceVertex<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralEdge().generateCountScript(new GremlinSourceVertex<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testVertexDeleteByIdScriptException() {
-        new GremlinScriptLiteralGraph().generateDeleteByIdScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralGraph().generateDeleteByIdScript(new GremlinSourceEdge<>()));
     }
 
-    @Test(expected = GremlinUnexpectedSourceTypeException.class)
+    @Test
     public void testVertexCountScriptException() {
-        new GremlinScriptLiteralVertex().generateCountScript(new GremlinSourceEdge<>());
+        assertThrows(GremlinUnexpectedSourceTypeException.class,
+            () -> new GremlinScriptLiteralVertex().generateCountScript(new GremlinSourceEdge<>()));
     }
 
     @Test
@@ -93,7 +107,7 @@ public class GremlinScriptUnitTest {
 
         source.setProperty(fakeName, null);
 
-        Assert.assertEquals(source.getProperties().size(), 3); // one predefined property _classname
-        Assert.assertNull(source.getProperties().get(fakeName));
+        Assertions.assertEquals(source.getProperties().size(), 3); // one predefined property _classname
+        Assertions.assertNull(source.getProperties().get(fakeName));
     }
 }

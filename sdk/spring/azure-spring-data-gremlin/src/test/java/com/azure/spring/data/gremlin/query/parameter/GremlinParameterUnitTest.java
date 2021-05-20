@@ -5,9 +5,9 @@ package com.azure.spring.data.gremlin.query.parameter;
 
 import com.azure.spring.data.gremlin.query.paramerter.GremlinParameter;
 import com.azure.spring.data.gremlin.query.paramerter.GremlinParameters;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
 
@@ -22,7 +22,7 @@ public class GremlinParameterUnitTest {
         return "handle: " + name;
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws NoSuchMethodException {
         method = this.getClass().getMethod("handle", String.class);
         methodParameter = new MethodParameter(this.getClass().getMethod("handle", String.class), 0);
@@ -32,18 +32,18 @@ public class GremlinParameterUnitTest {
     public void testGremlinParameter() {
         final GremlinParameter parameter = new GremlinParameter(this.methodParameter);
 
-        Assert.assertNotNull(parameter);
-        Assert.assertEquals(parameter.getType(), String.class);
-        Assert.assertEquals(parameter.getIndex(), 0);
+        Assertions.assertNotNull(parameter);
+        Assertions.assertEquals(parameter.getType(), String.class);
+        Assertions.assertEquals(parameter.getIndex(), 0);
     }
 
     @Test
     public void testGremlinParameters() {
         final GremlinParameters gremlinParameters = new GremlinParameters(this.method);
 
-        Assert.assertNotNull(gremlinParameters);
-        Assert.assertEquals(gremlinParameters.getNumberOfParameters(), 1);
-        Assert.assertNotNull(gremlinParameters.getParameter(0));
+        Assertions.assertNotNull(gremlinParameters);
+        Assertions.assertEquals(gremlinParameters.getNumberOfParameters(), 1);
+        Assertions.assertNotNull(gremlinParameters.getParameter(0));
     }
 }
 

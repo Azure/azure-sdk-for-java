@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MemoizerTest {
 
@@ -25,8 +25,8 @@ public class MemoizerTest {
         ExpensiveOperation expensiveOperation = mock(ExpensiveOperation.class);
         when(expensiveOperation.compute(INPUT)).thenReturn(OUTPUT);
         Function<String, String> memoized = Memoizer.memoize(expensiveOperation::compute);
-        Assert.assertEquals(memoized.apply(INPUT), OUTPUT);
-        Assert.assertEquals(memoized.apply(INPUT), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT), OUTPUT);
         verify(expensiveOperation, times(1)).compute(INPUT);
     }
 
@@ -35,8 +35,8 @@ public class MemoizerTest {
         ExpensiveBiOperation expensiveOperation = mock(ExpensiveBiOperation.class);
         when(expensiveOperation.compute(INPUT, INPUT2)).thenReturn(OUTPUT);
         BiFunction<String, String, String> memoized = Memoizer.memoize(expensiveOperation::compute);
-        Assert.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
-        Assert.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
         verify(expensiveOperation, times(1)).compute(INPUT, INPUT2);
     }
 
@@ -46,10 +46,10 @@ public class MemoizerTest {
         ExpensiveOperation expensiveOperation = mock(ExpensiveOperation.class);
         when(expensiveOperation.compute(INPUT)).thenReturn(OUTPUT);
         Function<String, String> memoized = Memoizer.memoize(map, expensiveOperation::compute);
-        Assert.assertEquals(memoized.apply(INPUT), OUTPUT);
-        Assert.assertEquals(memoized.apply(INPUT), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT), OUTPUT);
         verify(expensiveOperation, times(1)).compute(INPUT);
-        Assert.assertTrue(map.size() == 1);
+        Assertions.assertTrue(map.size() == 1);
     }
 
     @Test
@@ -58,10 +58,10 @@ public class MemoizerTest {
         ExpensiveBiOperation expensiveOperation = mock(ExpensiveBiOperation.class);
         when(expensiveOperation.compute(INPUT, INPUT2)).thenReturn(OUTPUT);
         BiFunction<String, String, String> memoized = Memoizer.memoize(map, expensiveOperation::compute);
-        Assert.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
-        Assert.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
+        Assertions.assertEquals(memoized.apply(INPUT, INPUT2), OUTPUT);
         verify(expensiveOperation, times(1)).compute(INPUT, INPUT2);
-        Assert.assertTrue(map.size() == 1);
+        Assertions.assertTrue(map.size() == 1);
     }
 
     interface ExpensiveOperation {
