@@ -1,7 +1,6 @@
 parameters:
   PackageName: not-specified
   SafeName: notspecified
-  SkipJacoco: true
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -32,5 +31,3 @@ stages:
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
-      TestStepMavenInputs:
-        options: $(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=${{ variables['SkipJacoco'] }} -DtrimStackTrace=false -pl $(ProjectList)

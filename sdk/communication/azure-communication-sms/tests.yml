@@ -5,4 +5,3 @@ stages:
     parameters:
       PackageName: azure-communication-sms
       SafeName: azurecommunicationsms
-      SkipJacoco: ${{ not(startsWith(variables['System.StageName'], 'Public')) }}
