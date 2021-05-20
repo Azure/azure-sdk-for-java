@@ -5,9 +5,6 @@ parameters:
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      ${{ if not(startsWith(variables['System.StageName'], 'Public')) }}:
-        TestStepMavenInputs:
-          options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
       CloudConfig:
         Public:
           SubscriptionConfigurations:
@@ -34,3 +31,5 @@ stages:
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
+      TestStepMavenInputs:
+        options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=${{ not(startsWith(variables['System.StageName'], 'Public')) }} -DtrimStackTrace=false -pl $(ProjectList)'
