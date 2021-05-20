@@ -134,7 +134,7 @@ public class DefaultEventHubClientFactoryTest {
         assertNotNull(client);
         clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor);
 
-        verifyPrivate(clientFactory).invoke("createEventProcessorClientInternal", eventHubName, consumerGroup,
+        verifyPrivate(clientFactory,times(1)).invoke("createEventProcessorClientInternal", eventHubName, consumerGroup,
             eventHubProcessor);
     }
 

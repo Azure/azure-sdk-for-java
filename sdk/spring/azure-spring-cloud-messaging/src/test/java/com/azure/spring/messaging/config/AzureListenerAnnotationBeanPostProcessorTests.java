@@ -27,11 +27,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Warren Zhu
@@ -44,11 +45,11 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
             new AnnotationConfigApplicationContext(Config.class, SimpleMessageListenerTestBean.class);
 
         AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
-        assertEquals("One container should have been registered", 1, factory.getListenerContainers().size());
+        assertEquals(1, factory.getListenerContainers().size(), "One container should have been registered");
         MessageListenerTestContainer container = factory.getListenerContainers().get(0);
 
         AzureListenerEndpoint endpoint = container.getEndpoint();
-        assertEquals("Wrong endpoint type", MethodAzureListenerEndpoint.class, endpoint.getClass());
+        assertEquals(MethodAzureListenerEndpoint.class, endpoint.getClass(), "Wrong endpoint type");
         MethodAzureListenerEndpoint methodEndpoint = (MethodAzureListenerEndpoint) endpoint;
         assertEquals(SimpleMessageListenerTestBean.class, methodEndpoint.getBean().getClass());
         assertEquals(SimpleMessageListenerTestBean.class.getMethod("handleIt", String.class),
@@ -58,9 +59,9 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
         methodEndpoint.setupListenerContainer(listenerContainer);
         assertNotNull(listenerContainer.getMessageHandler());
 
-        assertTrue("Should have been started " + container, container.isStarted());
+        assertTrue(container.isStarted(), "Should have been started " + container);
         context.close(); // Close and stop the listeners
-        assertTrue("Should have been stopped " + container, container.isStopped());
+        assertTrue(container.isStopped(), "Should have been stopped " + container);
     }
 
     @Test
@@ -70,10 +71,10 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
 
         try {
             AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
-            assertEquals("one container should have been registered", 1, factory.getListenerContainers().size());
+            assertEquals(1, factory.getListenerContainers().size(), "one container should have been registered");
 
             AzureListenerEndpoint endpoint = factory.getListenerContainers().get(0).getEndpoint();
-            assertEquals("Wrong endpoint type", MethodAzureListenerEndpoint.class, endpoint.getClass());
+            assertEquals(MethodAzureListenerEndpoint.class, endpoint.getClass(), "Wrong endpoint type");
             MethodAzureListenerEndpoint methodEndpoint = (MethodAzureListenerEndpoint) endpoint;
             assertEquals(MetaAnnotationTestBean.class, methodEndpoint.getBean().getClass());
             assertEquals(MetaAnnotationTestBean.class.getMethod("handleIt", String.class), methodEndpoint.getMethod());

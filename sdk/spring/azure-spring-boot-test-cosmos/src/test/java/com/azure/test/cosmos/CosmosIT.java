@@ -80,18 +80,18 @@ public class CosmosIT {
 
             final User savedUser = saveUserMono.block();
             Assertions.assertNotNull(savedUser, "Saved user must not be null");
-            Assertions.assertEquals("Saved user first name doesn't match",
-                testUser.getFirstName(), savedUser.getFirstName());
+            Assertions.assertEquals(testUser.getFirstName(), savedUser.getFirstName(),
+                "Saved user first name doesn't match");
 
             firstNameUserFlux.collectList().block();
             final Optional<User> optionalUserResult = repository.findById(testUser.getId()).blockOptional();
             Assertions.assertTrue(optionalUserResult.isPresent(), "Cannot find user.");
 
             final User result = optionalUserResult.get();
-            Assertions.assertEquals("query result firstName doesn't match!",
-                testUser.getFirstName(), result.getFirstName());
-            Assertions.assertEquals("query result lastName doesn't match!", testUser.getLastName(),
-                result.getLastName());
+            Assertions.assertEquals(testUser.getFirstName(), result.getFirstName(),
+                "query result firstName doesn't match!");
+            Assertions.assertEquals(testUser.getLastName(), result.getLastName(),
+                "query result lastName doesn't match!");
 
             LOGGER.info("findOne in User collection get result: {}", result.toString());
         }

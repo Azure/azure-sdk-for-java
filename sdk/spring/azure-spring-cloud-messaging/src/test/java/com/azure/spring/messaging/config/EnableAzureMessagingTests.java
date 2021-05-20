@@ -23,12 +23,12 @@ import org.springframework.stereotype.Component;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Warren Zhu
@@ -170,9 +170,9 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
         context.getBean(LazyBean.class);  // trigger lazy resolution
         assertEquals(1, defaultFactory.getListenerContainers().size());
         MessageListenerTestContainer container = defaultFactory.getListenerContainers().get(0);
-        assertTrue("Should have been started " + container, container.isStarted());
+        assertTrue(container.isStarted(), "Should have been started " + container);
         context.close();  // close and stop the listeners
-        assertTrue("Should have been stopped " + container, container.isStopped());
+        assertTrue(container.isStopped(), "Should have been stopped " + container);
     }
 
     @AzureMessageListener(destination = "orderQueue")
