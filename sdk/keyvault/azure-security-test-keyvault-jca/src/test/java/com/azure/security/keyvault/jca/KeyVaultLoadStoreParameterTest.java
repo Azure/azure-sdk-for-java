@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
 public class KeyVaultLoadStoreParameterTest {
 
     /**

@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
 public class KeyVaultKeyManagerTest {
 
     private static KeyVaultKeyManager manager;

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * The JUnit test for the KeyVaultCertificates.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
 public class KeyVaultCertificatesTest {
 
     private static String certificateName;
@@ -66,8 +66,8 @@ public class KeyVaultCertificatesTest {
     @Test
     public void testGetKeyStore() throws Exception {
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
-        assertNotNull(keyStore.getCertificate("myalias"));
-        assertTrue(keyStore.containsAlias("myalias"));
+        assertNotNull(keyStore.getCertificate(certificateName));
+        assertTrue(keyStore.containsAlias(certificateName));
         X509Certificate certificate = getTestCertificate();
 
         keyStore.setCertificateEntry("setcert", certificate);
@@ -95,9 +95,9 @@ public class KeyVaultCertificatesTest {
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         X509Certificate certificate = getTestCertificate();
 
-        assertNotNull(keyStore.getCertificate("myalias"));
-        keyStore.deleteEntry("myalias");
-        keyStore.setCertificateEntry("myalias", certificate);
+        assertNotNull(keyStore.getCertificate(certificateName));
+        keyStore.deleteEntry(certificateName);
+        keyStore.setCertificateEntry(certificateName, certificate);
         Thread.sleep(30000);
         assertNull(keyStore.getCertificateAlias(certificate));
     }
@@ -106,9 +106,9 @@ public class KeyVaultCertificatesTest {
     public void testUpdateLastForceRefreshTime() throws Exception {
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         X509Certificate certificate = getTestCertificate();
-        assertNotNull(keyStore.getCertificate("myalias"));
-        keyStore.deleteEntry("myalias");
-        keyStore.setCertificateEntry("myalias", certificate);
+        assertNotNull(keyStore.getCertificate(certificateName));
+        keyStore.deleteEntry(certificateName);
+        keyStore.setCertificateEntry(certificateName, certificate);
         Thread.sleep(1000);
         KeyVaultCertificates.updateLastForceRefreshTime();
         assertNull(keyStore.getCertificateAlias(certificate));
