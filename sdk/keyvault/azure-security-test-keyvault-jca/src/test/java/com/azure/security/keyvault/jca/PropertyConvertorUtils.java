@@ -3,9 +3,16 @@
 
 package com.azure.security.keyvault.jca;
 
+import java.security.KeyStore;
+import java.util.Arrays;
 import java.util.List;
 
 public class PropertyConvertorUtils {
+
+    public static final List<String> SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_URI",
+        "AZURE_KEYVAULT_TENANT_ID",
+        "AZURE_KEYVAULT_CLIENT_ID",
+        "AZURE_KEYVAULT_CLIENT_SECRET");
 
     public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
         key.forEach(
@@ -16,5 +23,17 @@ public class PropertyConvertorUtils {
                 System.getProperties().put(systemPropertyKey, value);
             }
         );
+    }
+
+
+    public static KeyStore getKeyVaultKeyStore() throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
+        keyStore.load(parameter);
+        return keyStore;
     }
 }

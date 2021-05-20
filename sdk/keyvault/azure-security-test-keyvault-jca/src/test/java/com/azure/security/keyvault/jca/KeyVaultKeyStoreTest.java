@@ -12,10 +12,10 @@ import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Enumeration;
 
+import static com.azure.security.keyvault.jca.PropertyConvertorUtils.SYSTEM_PROPERTIES;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -56,12 +56,7 @@ public class KeyVaultKeyStoreTest {
 
     @BeforeAll
     public static void setEnvironmentProperty() {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(SYSTEM_PROPERTIES);
         keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
@@ -89,7 +84,7 @@ public class KeyVaultKeyStoreTest {
         } catch (CertificateException e) {
             throw new ProviderException(e);
         }
-        keystore.engineSetCertificateEntry("myalias", certificate);
+        keystore.engineSetCertificateEntry("setcert", certificate);
         assertNotNull(keystore.engineGetCertificateAlias(certificate));
     }
 
@@ -124,14 +119,8 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testEngineAliases() {
-        Enumeration<String> allAliases = keystore.engineAliases();
-        boolean flag = false;
-        while (allAliases.hasMoreElements()) {
-            if (allAliases.nextElement().equals(certificateName)) {
-                flag = true;
-            }
-        }
-        assertTrue(flag);
+        assertTrue(keystore.engineAliases().hasMoreElements());
+        assertEquals(keystore.engineAliases().nextElement(), certificateName);
     }
 
 
