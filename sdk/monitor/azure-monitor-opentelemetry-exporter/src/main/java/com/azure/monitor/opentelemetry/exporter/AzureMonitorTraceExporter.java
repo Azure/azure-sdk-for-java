@@ -66,6 +66,9 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     // for ThreadContext.getRequestTelemetryContext().getRequestTelemetry().setSource()
     private static final AttributeKey<String> AI_SPAN_SOURCE_KEY = AttributeKey.stringKey("applicationinsights.internal.source");
 
+    private static final AttributeKey<String> EVENTHUBS_PEER_ADDRESS = AttributeKey.stringKey("peer.address");
+    private static final AttributeKey<String> EVENTHUBS_MESSAGE_BUS_DESTINATION = AttributeKey.stringKey("message_bus.destination");
+
     static {
         Set<String> dbSystems = new HashSet<>();
         dbSystems.add("db2");
@@ -262,9 +265,15 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             return;
         }
         String messagingSystem = attributes.get(AttributeKey.stringKey("messaging.system"));
-        // TODO (trask) ideally EventHubs SDK should emit messaging.system attribute
-        if (messagingSystem != null || span.getName().equals("EventHubs.message")) {
+        if (messagingSystem != null) {
             applyMessagingClientSpan(attributes, remoteDependencyData, messagingSystem, span.getKind());
+            return;
+        }
+        // TODO (trask) ideally EventHubs SDK should conform and fit the above path used for other messaging systems
+        //  but no rush as messaging semantic conventions may still change
+        String name = span.getName();
+        if (name.equals("EventHubs.send") || name.equals("EventHubs.message")) {
+            applyEventHubsSpan(attributes, remoteDependencyData);
             return;
         }
     }
@@ -402,6 +411,15 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         } else {
             telemetry.setTarget(messagingSystem);
         }
+    }
+
+    // TODO (trask) ideally EventHubs SDK should conform and fit the above path used for other messaging systems
+    //  but no rush as messaging semantic conventions may still change
+    private void applyEventHubsSpan(Attributes attributes, RemoteDependencyData telemetry) {
+        telemetry.setType("Microsoft.EventHub");
+        String peerAddress = attributes.get(EVENTHUBS_PEER_ADDRESS);
+        String destination = attributes.get(EVENTHUBS_MESSAGE_BUS_DESTINATION);
+        telemetry.setTarget(peerAddress + "/" + destination);
     }
 
     private static int getDefaultPortForDbSystem(String dbSystem) {
