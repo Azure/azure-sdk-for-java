@@ -199,9 +199,9 @@ class ServiceBusSessionReceiver implements AsyncAutoCloseable {
     }
 
     @Override
-    public Mono<Void> closeAsync(String message) {
+    public Mono<Void> closeAsync() {
         if (isDisposed.getAndSet(true)) {
-            return receiveLink.closeAsync(message);
+            return receiveLink.closeAsync();
         }
 
         final LockRenewalOperation operation = renewalOperation.getAndSet(null);
