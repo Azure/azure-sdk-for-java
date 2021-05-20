@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Store certificates loaded from classpath.
  */
-public class ClasspathCertificates implements AzureCertificate {
+public class ClasspathCertificates implements AzureCertificates {
 
     /**
      * Store certificates' alias.
@@ -34,6 +34,7 @@ public class ClasspathCertificates implements AzureCertificate {
      * Get certificate aliases.
      * @return certificate aliases
      */
+    @Override
     public List<String> getAliases() {
         return aliases;
     }
@@ -42,6 +43,7 @@ public class ClasspathCertificates implements AzureCertificate {
      * Get certificates.
      * @return certificates
      */
+    @Override
     public Map<String, Certificate> getCertificates() {
         return certificates;
     }
@@ -50,6 +52,7 @@ public class ClasspathCertificates implements AzureCertificate {
      * Get certificate keys.
      * @return certificate keys
      */
+    @Override
     public Map<String, Key> getCertificateKeys() {
         return certificateKeys;
     }
@@ -86,6 +89,7 @@ public class ClasspathCertificates implements AzureCertificate {
      * Delete certificate info by alias if exits
      * @param alias certificate alias
      */
+    @Override
     public void deleteEntry(String alias) {
         aliases.remove(alias);
         certificates.remove(alias);

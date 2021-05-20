@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Store Azure Certificates
  */
-public interface AzureCertificate {
+public interface AzureCertificates {
 
     /**
      * Get certificate aliases.

@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Store certificates loaded from KeyVault.
  */
-public class KeyVaultCertificates implements AzureCertificate {
+public class KeyVaultCertificates implements AzureCertificates {
 
     /**
      * Stores the list of aliases.
@@ -71,6 +71,7 @@ public class KeyVaultCertificates implements AzureCertificate {
      * Get certificate aliases.
      * @return certificate aliases
      */
+    @Override
     public List<String> getAliases() {
         refreshCertificatesIfNeeded();
         return aliases;
@@ -80,6 +81,7 @@ public class KeyVaultCertificates implements AzureCertificate {
      * Get certificates.
      * @return certificates
      */
+    @Override
     public Map<String, Certificate> getCertificates() {
         refreshCertificatesIfNeeded();
         return certificates;
@@ -89,6 +91,7 @@ public class KeyVaultCertificates implements AzureCertificate {
      * Get certificates.
      * @return certificate keys
      */
+    @Override
     public Map<String, Key> getCertificateKeys() {
         refreshCertificatesIfNeeded();
         return certificateKeys;
@@ -139,6 +142,7 @@ public class KeyVaultCertificates implements AzureCertificate {
      * Delete certificate info by alias if exits
      * @param alias deleted certificate
      */
+    @Override
     public void deleteEntry(String alias) {
         if (aliases != null) {
             aliases.remove(alias);

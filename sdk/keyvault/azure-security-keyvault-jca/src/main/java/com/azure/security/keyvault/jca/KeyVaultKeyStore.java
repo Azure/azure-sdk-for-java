@@ -116,7 +116,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Enumeration<String> engineAliases() {
         List<String> aliasList = Stream.of(keyVaultCertificates, classpathCertificates)
-            .map(AzureCertificate::getAliases)
+            .map(AzureCertificates::getAliases)
             .flatMap(Collection::stream)
             .distinct().collect(Collectors.toList());
 
@@ -142,7 +142,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Certificate engineGetCertificate(String alias) {
         Certificate certificate = Stream.of(keyVaultCertificates, classpathCertificates)
-            .map(AzureCertificate::getCertificates)
+            .map(AzureCertificates::getCertificates)
             .filter(a -> a.containsKey(alias))
             .findFirst()
             .map(certificates -> certificates.get(alias))
@@ -160,7 +160,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String alias = null;
         if (cert != null) {
             List<String> aliasList = Stream.of(keyVaultCertificates, classpathCertificates)
-                .map(AzureCertificate::getAliases)
+                .map(AzureCertificates::getAliases)
                 .flatMap(Collection::stream)
                 .distinct()
                 .collect(Collectors.toList());
@@ -203,7 +203,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Key engineGetKey(String alias, char[] password) {
         return Stream.of(keyVaultCertificates, classpathCertificates)
-                        .map(AzureCertificate::getCertificateKeys)
+                        .map(AzureCertificates::getCertificateKeys)
                         .filter(a -> a.containsKey(alias))
                         .findFirst()
                         .map(certificateKeys -> certificateKeys.get(alias))
@@ -213,7 +213,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         return Stream.of(keyVaultCertificates, classpathCertificates)
-                     .map(AzureCertificate::getAliases)
+                     .map(AzureCertificates::getAliases)
                      .flatMap(Collection::stream)
                      .distinct()
                      .anyMatch(a -> Objects.equals(a, alias));
@@ -285,7 +285,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public int engineSize() {
         return Stream.of(keyVaultCertificates, classpathCertificates)
-                     .map(AzureCertificate::getAliases)
+                     .map(AzureCertificates::getAliases)
                      .flatMap(Collection::stream)
                      .distinct()
                      .collect(Collectors.toList())
