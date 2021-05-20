@@ -31,3 +31,7 @@ extends:
       - name: azure-resourcemanager-videoanalyzer
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagervideoanalyzer
+        
+      - name: azure-media-videoanalyzer-edge
+        groupId: com.azure
+        safeName: azuremediavideoanalyzeredge

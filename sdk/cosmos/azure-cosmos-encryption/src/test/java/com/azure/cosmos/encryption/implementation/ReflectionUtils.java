@@ -59,4 +59,8 @@ public class ReflectionUtils {
     public static void setEncryptionSettings(EncryptionProcessor encryptionProcessor, EncryptionSettings encryptionSettings) {
         set(encryptionProcessor, encryptionSettings,"encryptionSettings");
     }
+
+    public static void setPolicyFormatVersion(ClientEncryptionPolicy clientEncryptionPolicy, int policyFormatVersion) {
+        set(clientEncryptionPolicy, policyFormatVersion,"policyFormatVersion");
+    }
 }

@@ -325,7 +325,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;

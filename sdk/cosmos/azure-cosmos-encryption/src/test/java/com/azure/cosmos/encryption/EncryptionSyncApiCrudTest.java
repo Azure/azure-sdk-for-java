@@ -59,13 +59,15 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
         this.client = getClientBuilder().buildClient();
         this.cosmosDatabase =
             this.client.getDatabase(getSharedCosmosDatabase(this.cosmosClientAccessor.getCosmosAsyncClient(this.client)).getId());
+        EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider encryptionKeyStoreProvider =
+            new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         this.cosmosEncryptionClient = CosmosEncryptionClient.createCosmosEncryptionClient(this.client,
-            new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider());
+            encryptionKeyStoreProvider);
         this.cosmosEncryptionDatabase =
             cosmosEncryptionClient.getCosmosEncryptionDatabase(this.cosmosDatabase);
 
-        metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
+        metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");
         this.cosmosEncryptionDatabase.createClientEncryptionKey("key3",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1);
         this.cosmosEncryptionDatabase.createClientEncryptionKey("key4",
