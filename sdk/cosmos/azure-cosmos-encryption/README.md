@@ -78,7 +78,7 @@ You need to first create Container with ClientEncryptionPolicy and using cosmos 
 //Create Client Encryption Key
 EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key", "tempmetadata");
 cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).subscribe();
+            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata).subscribe();
 //Create Encryption Container            
 ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
 includedPath.setClientEncryptionKeyId("key");
@@ -90,6 +90,7 @@ List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
 paths.add(includedPath);
 ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
 CosmosContainerProperties properties = new CosmosContainerProperties(<CONTAINER_NAME>, "/mypk");
+properties.setClientEncryptionPolicy(clientEncryptionPolicy);
 cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).subscribe();
 
 // Create a reference to the encryption container
