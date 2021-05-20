@@ -107,12 +107,12 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
 
     void addEvents(EventDataBatch batch, int numberOfMessages) {
         for (int i = 0; i < numberOfMessages; i++) {
-            final int index = events.size() % numberOfMessages;
+            final int index = numberOfMessages % events.size();
             final EventData event = events.get(index);
 
             try {
                 if (!batch.tryAdd(event)) {
-                    System.out.printf("Only added %s of %s events.%n", i, events.size());
+                    System.out.printf("Only added %s of %s events.%n", i, numberOfMessages);
                     break;
                 }
             } catch (PayloadSizeExceededException e) {

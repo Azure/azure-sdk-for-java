@@ -5,8 +5,6 @@ package com.azure.messaging.eventhubs.perf;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventprocessorhost.EventProcessorHost;
-import com.microsoft.azure.eventprocessorhost.ICheckpointManager;
-import com.microsoft.azure.eventprocessorhost.ILeaseManager;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -15,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
-public class EventProcessorClientTest extends ServiceTest {
+public class EventProcessorTest extends ServiceTest {
     private SampleEventProcessorFactory processorFactory;
     private ConcurrentHashMap<String, CountDownLatch> eventsToReceive;
 
@@ -24,7 +22,7 @@ public class EventProcessorClientTest extends ServiceTest {
      *
      * @param options the options configured for the test.
      */
-    public EventProcessorClientTest(EventHubsOptions options) {
+    public EventProcessorTest(EventHubsOptions options) {
         super(options);
     }
 
@@ -66,14 +64,11 @@ public class EventProcessorClientTest extends ServiceTest {
         processorFactory = new SampleEventProcessorFactory(eventsToReceive);
 
         final Mono<EventProcessorHost> createProcessor = Mono.defer(() -> {
-            final ConcurrentHashMap<String, OwnershipInformation> partitionOwnershipMap = new ConcurrentHashMap<>();
-            final ICheckpointManager checkpointManager = new SampleCheckpointManager(partitionOwnershipMap);
-            final ILeaseManager leaseManager = new SampleLeaseManager(partitionOwnershipMap);
             final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
             final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
                 EventProcessorHost.EventProcessorHostBuilder.newBuilder(
                     connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
-                    .useUserCheckpointAndLeaseManagers(checkpointManager, leaseManager)
+                    .useUserCheckpointAndLeaseManagers(new InMemoryCheckpointManager(), new InMemoryLeaseManager("test-host"))
                     .useEventHubConnectionString(connectionStringBuilder.toString())
                     .setExecutor(getScheduler());
 

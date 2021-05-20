@@ -9,9 +9,11 @@ import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.StreamSupport;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
@@ -28,6 +30,9 @@ public class ReceiveEventsTest extends ServiceTest {
      */
     public ReceiveEventsTest(EventHubsOptions options) {
         super(options);
+
+        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
+        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
     }
 
     @Override
@@ -66,36 +71,46 @@ public class ReceiveEventsTest extends ServiceTest {
 
     @Override
     public void run() {
-        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
-        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
+        final AtomicInteger number = new AtomicInteger();
+        while (true) {
+            try {
+                final Iterable<EventData> receivedEvents = receiver.receiveSync(options.getCount());
+                for (EventData eventData : receivedEvents) {
+                    number.incrementAndGet();
+                }
 
-        final Iterable<EventData> events;
-        try {
-            events = receiver.receiveSync(options.getCount());
-        } catch (EventHubException e) {
-            throw new RuntimeException("Unable to receive events.", e);
-        }
-
-        final int size = calculateNumberOfEvents(events);
-        if (size != options.getCount()) {
-            throw new RuntimeException(String.format("Did not get size. Expected: %s. Actual: %s%n.",
-                options.getCount(), size));
+                if (number.get() >= options.getCount()) {
+                    break;
+                }
+            } catch (EventHubException e) {
+                throw new RuntimeException("Unable to get more events", e);
+            }
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
-        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
-        return Mono.fromCompletionStage(
-            receiverAsync.thenComposeAsync(receiver -> receiver.receive(options.getCount()))
-                .thenAccept(events -> {
-                    final int size = calculateNumberOfEvents(events);
-                    if (size != options.getCount()) {
-                        throw new RuntimeException(String.format("Did not get size. Expected: %s. Actual: %s%n.",
-                            options.getCount(), size));
+        final CompletableFuture<Void> receiveEvents = receiverAsync.thenApplyAsync(receiver -> {
+            final AtomicInteger number = new AtomicInteger();
+            while (true) {
+                try {
+                    final Iterable<EventData> receivedEvents = receiver.receive(options.getCount()).get();
+                    for (EventData eventData : receivedEvents) {
+                        number.incrementAndGet();
                     }
-                }));
+
+                    if (number.get() >= options.getCount()) {
+                        break;
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException("Unable to get more events", e);
+                }
+            }
+
+            return null;
+        });
+
+        return Mono.fromCompletionStage(receiveEvents);
     }
 
     @Override
@@ -105,15 +120,14 @@ public class ReceiveEventsTest extends ServiceTest {
                 Mono.fromCompletionStage(receiver.close()), super.cleanupAsync());
         } else if (receiverAsync != null) {
             return Mono.whenDelayError(
-                Mono.fromCompletionStage(receiverAsync.thenComposeAsync(r -> r.close())),
-                super.cleanupAsync());
+                Mono.fromCompletionStage(receiverAsync.thenComposeAsync(r -> r.close())).doFinally(signal -> {
+                    System.out.println("Done async receiver clean. Signal: " + signal);
+                }).timeout(Duration.ofSeconds(45)),
+                super.cleanupAsync().doFinally(signal -> {
+                    System.out.println("Done super.clean() clean. Signal: " + signal);
+                }));
         } else {
             return super.cleanupAsync();
         }
-    }
-
-    private static int calculateNumberOfEvents(Iterable<EventData> events) {
-        long size = StreamSupport.stream(events.spliterator(), false).count();
-        return Long.valueOf(size).intValue();
     }
 }
