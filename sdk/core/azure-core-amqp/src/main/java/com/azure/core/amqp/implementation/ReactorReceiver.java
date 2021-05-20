@@ -234,10 +234,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
         return closeAsync("User invoked close operation.", null);
     }
 
-    public Mono<Void> closeAsync(String message) {
-        return closeAsync(message, null);
-    }
-
     protected Message decodeDelivery(Delivery delivery) {
         final int messageSize = delivery.pending();
         final byte[] buffer = new byte[messageSize];

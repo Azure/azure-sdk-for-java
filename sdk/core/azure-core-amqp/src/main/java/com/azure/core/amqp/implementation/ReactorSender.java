@@ -346,10 +346,6 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
         return closeAsync("User invoked close operation.", null);
     }
 
-    public Mono<Void> closeAsync(String message) {
-        return closeAsync(message, null);
-    }
-
     /**
      * Disposes of the sender.
      *
