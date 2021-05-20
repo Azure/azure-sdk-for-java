@@ -3,7 +3,7 @@
 ## 1.0.0-beta.5 (2021-05-20)
 #### New Features
 * Added type in EncryptionKeyWrapMetadata constructor.
-* Added validation for partition key on encrypted field for Container creation.
+* Added validation for partition key on encrypted field during Container creation.
 * Exposed policyFormatVersion in ClientEncryptionPolicy
 
 ## 1.0.0-beta.4 (2021-05-12)
