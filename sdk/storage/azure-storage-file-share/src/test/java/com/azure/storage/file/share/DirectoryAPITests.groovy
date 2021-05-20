@@ -11,6 +11,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
+import com.azure.storage.file.share.options.ShareDirectoryListFilesAndDirectoriesOptions
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -396,7 +397,12 @@ class DirectoryAPITests extends APISpec {
         }
 
         when:
-        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(namer.getResourcePrefix() + extraPrefix, maxResults, null, null).iterator()
+        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(
+            new ShareDirectoryListFilesAndDirectoriesOptions()
+                .setPrefix(namer.getResourcePrefix() + extraPrefix)
+                .setMaxResultsPerPage(maxResults).setShareFileTraits(traits)
+                .setIncludeExtendedInfo(includeExtendedInfo),
+            null, null).iterator()
 
         then:
         for (int i = 0; i < numOfResults; i++) {
@@ -405,10 +411,10 @@ class DirectoryAPITests extends APISpec {
         !fileRefIter.hasNext()
 
         where:
-        extraPrefix   | maxResults | numOfResults
-        ""            | null       | 3
-        ""            | 1          | 3
-        "noOp"        | 3          | 0
+        extraPrefix   | maxResults | traits | includeExtendedInfo || numOfResults
+        ""            | null       | null   | false               || 3
+        ""            | 1          | null   | false               || 3
+        "noOp"        | 3          | null   | false               || 0
     }
 
     def "List max results by page"() {

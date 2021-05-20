@@ -26,9 +26,12 @@ import com.azure.storage.file.share.implementation.models.DirectoriesGetProperti
 import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
@@ -37,6 +40,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareDirectoryListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -605,18 +609,50 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage) {
         try {
-            return listFilesAndDirectoriesWithOptionalTimeout(prefix, maxResultsPerPage, null, Context.NONE);
+            return listFilesAndDirectoriesWithOptionalTimeout(new ShareDirectoryListFilesAndDirectoriesOptions()
+                .setPrefix(prefix).setMaxResultsPerPage(maxResultsPerPage), null, Context.NONE);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<ShareFileItem> listFilesAndDirectoriesWithOptionalTimeout(String prefix, Integer maxResultsPerPage,
-                                                                        Duration timeout, Context context) {
+    /**
+     * Lists all sub-directories and files in this directory with their prefix or snapshots.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>List all sub-directories with "subdir" prefix and return 10 results in the account</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#string-integer}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-directories-and-files">Azure
+     * Docs</a>.</p>
+     *
+     * @param options Optional parameters.
+     * the server will return up to 5,000 items.
+     * @return {@link ShareFileItem File info} in this directory with prefix and max number of return results.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareFileItem> listFilesAndDirectories(ShareDirectoryListFilesAndDirectoriesOptions options) {
+        try {
+            return listFilesAndDirectoriesWithOptionalTimeout(options, null, Context.NONE);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<ShareFileItem> listFilesAndDirectoriesWithOptionalTimeout(
+        ShareDirectoryListFilesAndDirectoriesOptions options, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        List<ListFilesIncludeType> includeTypes = options.getShareFileTraits() != null
+            ? new ArrayList<>(options.getShareFileTraits()) : null;
+
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever =
             (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
-                .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, prefix, snapshot,
-                    marker, pageSize == null ? maxResultsPerPage : pageSize, null, context), timeout)
+                .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, options.getPrefix(),
+                    snapshot, marker, pageSize == null ? options.getMaxResultsPerPage() : pageSize, null, includeTypes,
+                    options.includeExtendedInfo(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1224,10 +1260,14 @@ public class ShareDirectoryAsyncClient {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (response.getValue().getSegment() != null) {
             response.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(directoryItem.getName(),
-                    true, null)));
+                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(directoryItem.getName(), true,
+                    directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()), directoryItem.getPermissionKey(),
+                    null)));
             response.getValue().getSegment().getFileItems()
                 .forEach(fileItem -> shareFileItems.add(new ShareFileItem(fileItem.getName(), false,
+                    fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
                     fileItem.getProperties().getContentLength())));
         }
 

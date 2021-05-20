@@ -5,8 +5,10 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.time.OffsetDateTime;
 
 /** File properties. */
 @JacksonXmlRootElement(localName = "FileProperty")
@@ -21,6 +23,42 @@ public final class FileProperty {
      */
     @JsonProperty(value = "Content-Length", required = true)
     private long contentLength;
+
+    /*
+     * The CreationTime property.
+     */
+    @JsonProperty(value = "CreationTime")
+    private DateTimeRfc1123 creationTime;
+
+    /*
+     * The LastAccessTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private DateTimeRfc1123 lastAccessTime;
+
+    /*
+     * The LastWriteTime property.
+     */
+    @JsonProperty(value = "LastWriteTime")
+    private DateTimeRfc1123 lastWriteTime;
+
+    /*
+     * The ChangeTime property.
+     */
+    @JsonProperty(value = "ChangeTime")
+    private DateTimeRfc1123 changeTime;
+
+    /*
+     * The Last-Modified property.
+     */
+    @JsonProperty(value = "Last-Modified")
+    private DateTimeRfc1123 lastModified;
+
+    /*
+     * The Etag property.
+     */
+    @JsonProperty(value = "Etag")
+    private String etag;
 
     /**
      * Get the contentLength property: Content length of the file. This value may not be up-to-date since an SMB client
@@ -43,6 +81,161 @@ public final class FileProperty {
      */
     public FileProperty setContentLength(long contentLength) {
         this.contentLength = contentLength;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: The CreationTime property.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime getCreationTime() {
+        if (this.creationTime == null) {
+            return null;
+        }
+        return this.creationTime.getDateTime();
+    }
+
+    /**
+     * Set the creationTime property: The CreationTime property.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setCreationTime(OffsetDateTime creationTime) {
+        if (creationTime == null) {
+            this.creationTime = null;
+        } else {
+            this.creationTime = new DateTimeRfc1123(creationTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the lastAccessTime property: The LastAccessTime property.
+     *
+     * @return the lastAccessTime value.
+     */
+    public OffsetDateTime getLastAccessTime() {
+        if (this.lastAccessTime == null) {
+            return null;
+        }
+        return this.lastAccessTime.getDateTime();
+    }
+
+    /**
+     * Set the lastAccessTime property: The LastAccessTime property.
+     *
+     * @param lastAccessTime the lastAccessTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setLastAccessTime(OffsetDateTime lastAccessTime) {
+        if (lastAccessTime == null) {
+            this.lastAccessTime = null;
+        } else {
+            this.lastAccessTime = new DateTimeRfc1123(lastAccessTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the lastWriteTime property: The LastWriteTime property.
+     *
+     * @return the lastWriteTime value.
+     */
+    public OffsetDateTime getLastWriteTime() {
+        if (this.lastWriteTime == null) {
+            return null;
+        }
+        return this.lastWriteTime.getDateTime();
+    }
+
+    /**
+     * Set the lastWriteTime property: The LastWriteTime property.
+     *
+     * @param lastWriteTime the lastWriteTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setLastWriteTime(OffsetDateTime lastWriteTime) {
+        if (lastWriteTime == null) {
+            this.lastWriteTime = null;
+        } else {
+            this.lastWriteTime = new DateTimeRfc1123(lastWriteTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the changeTime property: The ChangeTime property.
+     *
+     * @return the changeTime value.
+     */
+    public OffsetDateTime getChangeTime() {
+        if (this.changeTime == null) {
+            return null;
+        }
+        return this.changeTime.getDateTime();
+    }
+
+    /**
+     * Set the changeTime property: The ChangeTime property.
+     *
+     * @param changeTime the changeTime value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setChangeTime(OffsetDateTime changeTime) {
+        if (changeTime == null) {
+            this.changeTime = null;
+        } else {
+            this.changeTime = new DateTimeRfc1123(changeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the lastModified property: The Last-Modified property.
+     *
+     * @return the lastModified value.
+     */
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
+    }
+
+    /**
+     * Set the lastModified property: The Last-Modified property.
+     *
+     * @param lastModified the lastModified value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setLastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        return this;
+    }
+
+    /**
+     * Get the etag property: The Etag property.
+     *
+     * @return the etag value.
+     */
+    public String getEtag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: The Etag property.
+     *
+     * @param etag the etag value to set.
+     * @return the FileProperty object itself.
+     */
+    public FileProperty setEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 }
