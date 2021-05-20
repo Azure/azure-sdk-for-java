@@ -371,6 +371,7 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
             }
 
             sender.close();
+            sendTimeoutTimer.cancel();
         };
 
         return Mono.fromRunnable(() -> {

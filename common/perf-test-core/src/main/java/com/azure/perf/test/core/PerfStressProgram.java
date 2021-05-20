@@ -180,6 +180,7 @@ public class PerfStressProgram {
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
+     * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
         completedOperations = new int[parallel];
