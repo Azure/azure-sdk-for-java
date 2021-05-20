@@ -14,9 +14,14 @@
   <version>0.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Azure Spring Boot Starter Sample - Cosmos DB</name>
+  <name>Azure Spring Boot Starter Sample - Cosmos DB 2.3.x</name>
   <description>Sample project for Azure Document DB Starter</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <properties>
+    <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.4-->
+    <reactor-bom.version>2020.0.4</reactor-bom.version>  <!-- {x-version-update;springboot_2_3_io.projectreactor:reactor-bom;external_dependency} -->
+  </properties>
 
   <dependencies>
     <dependency>

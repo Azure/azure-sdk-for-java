@@ -19,6 +19,11 @@
   <description>Sample project for Azure Key Vault Secrets Starter</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.4-->
+    <reactor-bom.version>2020.0.4</reactor-bom.version>  <!-- {x-version-update;springboot_2_3_io.projectreactor:reactor-bom;external_dependency} -->
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

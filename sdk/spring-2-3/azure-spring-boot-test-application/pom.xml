@@ -19,6 +19,9 @@
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.4-->
+    <reactor-bom.version>2020.0.4</reactor-bom.version>  <!-- {x-version-update;springboot_2_3_io.projectreactor:reactor-bom;external_dependency} -->
+
   </properties>
 
   <dependencies>
