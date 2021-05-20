@@ -50,6 +50,22 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs The default value of this property is 'false', except for methods like
+     * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
+     * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
+     * disables input logging and may limit our ability to investigate issues that occur.
+     *
+     * @return the {@link AnalyzeSentimentOptions} object itself.
+     */
+    @Override
+    public AnalyzeSentimentOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1-preview.1 and later.

@@ -1,4 +1,4 @@
-# Azure Javas Autorest config file
+# Azure Java Autorest config file
 
 > see https://aka.ms/autorest
 
@@ -84,7 +84,7 @@ public class MethodRequestCustomizations extends Customization {
 
     private void customizePipelineSetRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
-            "public String getPayloadAsJson() {\n" +
+            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
                 "    PipelineTopologySetRequestBody setRequestBody = new PipelineTopologySetRequestBody(this.pipelineTopology.getName());\n" +
                 "    setRequestBody.setSystemData(this.pipelineTopology.getSystemData());\n" +
                 "    setRequestBody.setProperties(this.pipelineTopology.getProperties());\n" +
@@ -92,11 +92,12 @@ public class MethodRequestCustomizations extends Customization {
                 "}"
         );
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
     }
     private void customizeLivePipelineSetRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
-            "public String getPayloadAsJson() {\n" +
+            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
                 "    LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody(this.livePipeline.getName());\n" +
                 "    setRequestBody.setSystemData(this.livePipeline.getSystemData());\n" +
                 "    setRequestBody.setProperties(this.livePipeline.getProperties());\n" +
@@ -104,20 +105,22 @@ public class MethodRequestCustomizations extends Customization {
                 "}"
         );
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
     }
     private void customizeMethodRequest(ClassCustomization classCustomization) {
         classCustomization.addMethod(
-            "public String getPayloadAsJson() {\n" +
+            "public String getPayloadAsJson() throws UnsupportedEncodingException {\n" +
                 "    ObjectSerializer serializer = JsonSerializerProviders.createInstance();\n" +
                 "    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();\n" +
                 "    serializer.serialize(outputStream, this);\n" +
-                "    String payload = outputStream.toString();\n" +
+                "    String payload = outputStream.toString(\"UTF-8\");\n" +
                 "    return payload;\n" +
                 "}"
         );
         classCustomization.getMethod("getPayloadAsJson").addAnnotation("@JsonIgnore");
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setDescription("Get the payload as JSON: the serialized form of the request body");
+        classCustomization.getMethod("getPayloadAsJson").getJavadoc().addThrows("UnsupportedEncodingException", "UnsupportedEncodingException");
         classCustomization.getMethod("getPayloadAsJson").getJavadoc().setReturn("the payload as JSON");
     }
 
