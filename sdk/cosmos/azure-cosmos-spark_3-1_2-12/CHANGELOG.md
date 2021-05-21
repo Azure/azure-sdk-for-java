@@ -1,5 +1,7 @@
 ## Release History
 
+### 4.1.0-beta.1 (Unreleased)
+
 ### 4.0.0 (2021-05-14)
 #### Configuration Renames
 * Renamed data source name `cosmos.changeFeed` to `cosmos.oltp.changeFeed`, See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21184).
