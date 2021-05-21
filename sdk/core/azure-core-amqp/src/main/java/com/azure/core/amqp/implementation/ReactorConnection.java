@@ -113,7 +113,6 @@ public class ReactorConnection implements AmqpConnection {
                         operationTimeout), handler.getErrorContext())));
                 return activeEndpoint.thenReturn(reactorConnection);
             })
-            .or(onClosedError("Could not get active connection."))
             .doOnError(error -> {
                 final String message = String.format(
                     "connectionId[%s] Error occurred while connection was starting. Error: %s", connectionId, error);
@@ -135,9 +134,9 @@ public class ReactorConnection implements AmqpConnection {
                 if (!isDisposed.getAndSet(true)) {
                     logger.verbose("connectionId[{}]: Disposing of active sessions due to error.", connectionId);
                     return dispose(new AmqpShutdownSignal(false, false,
-                        error.getMessage())).then(Mono.empty());
+                        error.getMessage())).then(Mono.error(error));
                 } else {
-                    return Mono.empty();
+                    return Mono.error(error);
                 }
             })
             .doOnComplete(() -> {
@@ -258,7 +257,7 @@ public class ReactorConnection implements AmqpConnection {
                         connectionId, sessionName), handler.getErrorContext())));
 
             return activeSession.thenReturn(sessionSubscription.getSession());
-        }).or(onClosedError("Could not create session: " + sessionName));
+        });
     }
 
     /**
@@ -385,19 +384,6 @@ public class ReactorConnection implements AmqpConnection {
                 closeConnectionWork();
             }
         }).then(isClosedMono.asMono());
-    }
-
-    /**
-     * Returns a Mono that completes when the connection handler is closed. If it does, an {@link AmqpException} is
-     * returned. It indicates that a shutdown was initiated and we should stop.
-     *
-     * @return A Mono that completes when the shutdown signal is emitted. If it does, returns an error.
-     */
-    private <T> Mono<T> onClosedError(String message) {
-        return Mono.firstWithSignal(isClosedMono.asMono(), shutdownSignalSink.asMono())
-            .then(Mono.error(new AmqpException(false,
-                String.format("connectionId[%s] Connection closed. %s", connectionId, message),
-                handler.getErrorContext())));
     }
 
     private synchronized void closeConnectionWork() {
