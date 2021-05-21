@@ -16,7 +16,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.PrivateKeyDetails;
 import org.apache.http.ssl.PrivateKeyStrategy;
 import org.apache.http.ssl.SSLContexts;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -38,14 +38,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
 public class ServerSocketTest {
 
-    KeyStore ks;
+    private static KeyStore ks;
 
-    KeyManagerFactory kmf;
+    private static KeyManagerFactory kmf;
 
     private static String certificateName;
 
-    @BeforeEach
-    public void beforeEach() throws Exception {
+    @BeforeAll
+    public static void beforeEach() throws Exception {
+
+        System.out.println("add log just for find error in pipeline, which will be revert");
         /*
          * Add JCA provider.
          */
@@ -90,7 +92,7 @@ public class ServerSocketTest {
 
     @Test
     public void testHttpsConnectionWithoutClientTrust() throws Exception {
-
+        System.out.println("add log just for find error in pipeline, which will be revert testHttpsConnectionWithoutClientTrust");
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
@@ -101,6 +103,7 @@ public class ServerSocketTest {
 
     @Test
     public void testHttpsConnectionWithSelfSignedClientTrust() throws Exception {
+        System.out.println("add log just for find error in pipeline, which will be revert testHttpsConnectionWithSelfSignedClientTrust");
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
@@ -111,6 +114,7 @@ public class ServerSocketTest {
 
     @Test
     public void testServerSocketWithDefaultTrustManager() throws Exception {
+        System.out.println("add log just for find error in pipeline, which will be revert testServerSocketWithDefaultTrustManager");
         serverSocketWithTrustManager(8768);
     }
 
@@ -122,7 +126,7 @@ public class ServerSocketTest {
      */
     @Test
     public void testServerSocketWithKeyVaultTrustManager() throws Exception {
-
+        System.out.println("add log just for find error in pipeline, which will be revert testServerSocketWithKeyVaultTrustManager");
         Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
         serverSocketWithTrustManager(8767);
 
