@@ -1580,7 +1580,6 @@ public class BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicy}
      *
-     * @return The immutability policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteImmutabilityPolicy() {
@@ -1616,6 +1615,7 @@ public class BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean}
      *
+     * @param legalHold Whether or not you want a legal hold on the blob.
      * @return The legal hold result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1632,6 +1632,7 @@ public class BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context}
      *
+     * @param legalHold Whether or not you want a legal hold on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the legal hold result.

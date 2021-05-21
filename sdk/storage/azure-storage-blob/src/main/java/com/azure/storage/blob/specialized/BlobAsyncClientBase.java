@@ -2225,6 +2225,7 @@ public class BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHold#boolean}
      *
+     * @param legalHold Whether or not you want a legal hold on the blob.
      * @return A reactive response containing the legal hold result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2245,6 +2246,7 @@ public class BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHoldWithResponse#boolean}
      *
+     * @param legalHold Whether or not you want a legal hold on the blob.
      * @return A reactive response containing the legal hold result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
