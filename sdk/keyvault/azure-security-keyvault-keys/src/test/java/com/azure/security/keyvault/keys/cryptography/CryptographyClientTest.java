@@ -36,6 +36,7 @@ import java.util.Random;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class CryptographyClientTest extends CryptographyClientTestBase {
     private KeyClient client;
@@ -216,9 +217,23 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
 
         List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
-        Provider provider = Security.getProvider("SunEC");
+        String algorithmName = "EC";
+        Provider provider = null;
+
+        for (Provider currentProvider: Security.getProviders()) {
+            if (currentProvider.containsValue(algorithmName)) {
+                provider = currentProvider;
+
+                break;
+            }
+        }
+
+        if (provider == null) {
+            fail(String.format("No suitable security provider for algorithm %s was found.", algorithmName));
+        }
+
         for (KeyCurveName crv : curveList) {
-            final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC", provider);
+            final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithmName, provider);
             ECGenParameterSpec gps = new ECGenParameterSpec(curveToSpec.get(crv));
             generator.initialize(gps);
             KeyPair keyPair = generator.generateKeyPair();
@@ -260,9 +275,23 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
 
         List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
-        Provider provider = Security.getProvider("SunEC");
+        String algorithmName = "EC";
+        Provider provider = null;
+
+        for (Provider currentProvider: Security.getProviders()) {
+            if (currentProvider.containsValue(algorithmName)) {
+                provider = currentProvider;
+
+                break;
+            }
+        }
+
+        if (provider == null) {
+            fail(String.format("No suitable security provider for algorithm %s was found.", algorithmName));
+        }
+
         for (KeyCurveName crv : curveList) {
-            final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC", provider);
+            final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithmName, provider);
             ECGenParameterSpec gps = new ECGenParameterSpec(curveToSpec.get(crv));
             generator.initialize(gps);
             KeyPair keyPair = generator.generateKeyPair();
