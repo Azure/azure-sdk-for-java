@@ -1171,6 +1171,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String linkName = StringUtil.getRandomString(entityPath);
         logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
 
+        // Use withRetry below to retry transient errors like connection lost.
         final Flux<ServiceBusReceiveLink> receiveLink = withRetry(connectionProcessor.flatMap(connection -> {
             if (receiverOptions.isSessionReceiver()) {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
