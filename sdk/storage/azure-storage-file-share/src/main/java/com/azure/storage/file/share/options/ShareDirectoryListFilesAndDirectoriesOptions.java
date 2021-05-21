@@ -1,6 +1,6 @@
 package com.azure.storage.file.share.options;
 
-import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
+import com.azure.storage.file.share.models.ListFilesIncludeType;
 
 import java.util.EnumSet;
 

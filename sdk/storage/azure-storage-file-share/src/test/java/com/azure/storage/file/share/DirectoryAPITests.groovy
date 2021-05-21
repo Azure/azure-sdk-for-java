@@ -6,6 +6,7 @@ package com.azure.storage.file.share
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import com.azure.storage.file.share.models.ListFilesIncludeType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
@@ -381,7 +382,7 @@ class DirectoryAPITests extends APISpec {
     def "List files and directories args"() {
         given:
         primaryDirectoryClient.create()
-        def nameList = new LinkedList()
+        def nameList = [] as List<String>
         def dirPrefix = namer.getRandomName(60)
         for (int i = 0; i < 2; i++) {
             def subDirClient = primaryDirectoryClient.getSubdirectoryClient(dirPrefix + i)
@@ -393,28 +394,34 @@ class DirectoryAPITests extends APISpec {
         }
         primaryDirectoryClient.createFile(dirPrefix + 2, 1024)
         for (int i = 0; i < 3; i++) {
-            nameList.add(dirPrefix + i)
+            nameList << (dirPrefix + i)
         }
 
         when:
-        def fileRefIter = primaryDirectoryClient.listFilesAndDirectories(
+        def returnedFileList = primaryDirectoryClient.listFilesAndDirectories(
             new ShareDirectoryListFilesAndDirectoriesOptions()
                 .setPrefix(namer.getResourcePrefix() + extraPrefix)
                 .setMaxResultsPerPage(maxResults).setShareFileTraits(traits)
                 .setIncludeExtendedInfo(includeExtendedInfo),
-            null, null).iterator()
+            null, null).collect()
 
         then:
-        for (int i = 0; i < numOfResults; i++) {
-            Objects.equals(nameList.pop(), fileRefIter.next().getName())
+        if (expectingResults) {
+            assert nameList == returnedFileList*.getName()
         }
-        !fileRefIter.hasNext()
+        true
 
         where:
-        extraPrefix   | maxResults | traits | includeExtendedInfo || numOfResults
-        ""            | null       | null   | false               || 3
-        ""            | 1          | null   | false               || 3
-        "noOp"        | 3          | null   | false               || 0
+        extraPrefix | maxResults | traits                                                | includeExtendedInfo || expectingResults
+        ""          | null       | null                                                  | false               || true
+        ""          | 1          | null                                                  | false               || true
+        "noOp"      | 3          | null                                                  | false               || false
+        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.ETAG])           | false               || true
+        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.ATTRIBUTES])     | false               || true
+        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.PERMISSION_KEY]) | false               || true
+        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.TIMESTAMPS])     | false               || true
+        ""          | null       | EnumSet.allOf(ListFilesIncludeType.class)             | false               || true
+        ""          | null       | null                                                  | true                || true
     }
 
     def "List max results by page"() {

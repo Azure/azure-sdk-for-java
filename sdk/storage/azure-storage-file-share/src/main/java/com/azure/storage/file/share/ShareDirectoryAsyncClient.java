@@ -26,11 +26,11 @@ import com.azure.storage.file.share.implementation.models.DirectoriesGetProperti
 import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
-import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.ListFilesIncludeType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
@@ -647,12 +647,13 @@ public class ShareDirectoryAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
         List<ListFilesIncludeType> includeTypes = options.getShareFileTraits() != null
             ? new ArrayList<>(options.getShareFileTraits()) : null;
+        Boolean nullableIncludeExtendedInfo = options.includeExtendedInfo() ? true : null;
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever =
             (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, options.getPrefix(),
                     snapshot, marker, pageSize == null ? options.getMaxResultsPerPage() : pageSize, null, includeTypes,
-                    options.includeExtendedInfo(), context), timeout)
+                    nullableIncludeExtendedInfo, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

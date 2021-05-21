@@ -28,25 +28,25 @@ public final class FileProperty {
      * The CreationTime property.
      */
     @JsonProperty(value = "CreationTime")
-    private DateTimeRfc1123 creationTime;
+    private OffsetDateTime creationTime;
 
     /*
      * The LastAccessTime property.
      */
     @JsonProperty(value = "LastAccessTime")
-    private DateTimeRfc1123 lastAccessTime;
+    private OffsetDateTime lastAccessTime;
 
     /*
      * The LastWriteTime property.
      */
     @JsonProperty(value = "LastWriteTime")
-    private DateTimeRfc1123 lastWriteTime;
+    private OffsetDateTime lastWriteTime;
 
     /*
      * The ChangeTime property.
      */
     @JsonProperty(value = "ChangeTime")
-    private DateTimeRfc1123 changeTime;
+    private OffsetDateTime changeTime;
 
     /*
      * The Last-Modified property.
@@ -90,10 +90,7 @@ public final class FileProperty {
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
-        if (this.creationTime == null) {
-            return null;
-        }
-        return this.creationTime.getDateTime();
+        return this.creationTime;
     }
 
     /**
@@ -103,11 +100,7 @@ public final class FileProperty {
      * @return the FileProperty object itself.
      */
     public FileProperty setCreationTime(OffsetDateTime creationTime) {
-        if (creationTime == null) {
-            this.creationTime = null;
-        } else {
-            this.creationTime = new DateTimeRfc1123(creationTime);
-        }
+        this.creationTime = creationTime;
         return this;
     }
 
@@ -117,10 +110,7 @@ public final class FileProperty {
      * @return the lastAccessTime value.
      */
     public OffsetDateTime getLastAccessTime() {
-        if (this.lastAccessTime == null) {
-            return null;
-        }
-        return this.lastAccessTime.getDateTime();
+        return this.lastAccessTime;
     }
 
     /**
@@ -130,11 +120,7 @@ public final class FileProperty {
      * @return the FileProperty object itself.
      */
     public FileProperty setLastAccessTime(OffsetDateTime lastAccessTime) {
-        if (lastAccessTime == null) {
-            this.lastAccessTime = null;
-        } else {
-            this.lastAccessTime = new DateTimeRfc1123(lastAccessTime);
-        }
+        this.lastAccessTime = lastAccessTime;
         return this;
     }
 
@@ -144,10 +130,7 @@ public final class FileProperty {
      * @return the lastWriteTime value.
      */
     public OffsetDateTime getLastWriteTime() {
-        if (this.lastWriteTime == null) {
-            return null;
-        }
-        return this.lastWriteTime.getDateTime();
+        return this.lastWriteTime;
     }
 
     /**
@@ -157,11 +140,7 @@ public final class FileProperty {
      * @return the FileProperty object itself.
      */
     public FileProperty setLastWriteTime(OffsetDateTime lastWriteTime) {
-        if (lastWriteTime == null) {
-            this.lastWriteTime = null;
-        } else {
-            this.lastWriteTime = new DateTimeRfc1123(lastWriteTime);
-        }
+        this.lastWriteTime = lastWriteTime;
         return this;
     }
 
@@ -171,10 +150,7 @@ public final class FileProperty {
      * @return the changeTime value.
      */
     public OffsetDateTime getChangeTime() {
-        if (this.changeTime == null) {
-            return null;
-        }
-        return this.changeTime.getDateTime();
+        return this.changeTime;
     }
 
     /**
@@ -184,11 +160,7 @@ public final class FileProperty {
      * @return the FileProperty object itself.
      */
     public FileProperty setChangeTime(OffsetDateTime changeTime) {
-        if (changeTime == null) {
-            this.changeTime = null;
-        } else {
-            this.changeTime = new DateTimeRfc1123(changeTime);
-        }
+        this.changeTime = changeTime;
         return this;
     }
 
