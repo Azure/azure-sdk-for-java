@@ -390,7 +390,7 @@ public final class BlobProperties {
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
         final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
         OffsetDateTime immutabilityPolicyExpiresOn, BlobImmutabilityPolicyMode immutabilityPolicyMode,
-        boolean hasLegalHold) {
+        Boolean hasLegalHold) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -756,7 +756,7 @@ public final class BlobProperties {
     /**
      * @return whether or not the blob has a legal hold.
      */
-    public boolean hasLegalHold() {
+    public Boolean hasLegalHold() {
         return hasLegalHold;
     }
 }
