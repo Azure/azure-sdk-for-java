@@ -7,34 +7,31 @@ package com.azure.containers.containerregistry.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ManifestOrderBy. */
-public enum ManifestOrderBy {
-    /** Enum value none. */
-    NONE("none"),
+/** Defines values for TokenGrantType. */
+public enum TokenGrantType {
+    /** Enum value refresh_token. */
+    REFRESH_TOKEN("refresh_token"),
 
-    /** Enum value timedesc. */
-    LAST_UPDATED_ON_DESCENDING("timedesc"),
+    /** Enum value password. */
+    PASSWORD("password");
 
-    /** Enum value timeasc. */
-    LAST_UPDATED_ON_ASCENDING("timeasc");
-
-    /** The actual serialized value for a ManifestOrderBy instance. */
+    /** The actual serialized value for a TokenGrantType instance. */
     private final String value;
 
-    ManifestOrderBy(String value) {
+    TokenGrantType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ManifestOrderBy instance.
+     * Parses a serialized value to a TokenGrantType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ManifestOrderBy object, or null if unable to parse.
+     * @return the parsed TokenGrantType object, or null if unable to parse.
      */
     @JsonCreator
-    public static ManifestOrderBy fromString(String value) {
-        ManifestOrderBy[] items = ManifestOrderBy.values();
-        for (ManifestOrderBy item : items) {
+    public static TokenGrantType fromString(String value) {
+        TokenGrantType[] items = TokenGrantType.values();
+        for (TokenGrantType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
