@@ -87,30 +87,25 @@ public class KeyVaultCertificatesTest {
         return certificate;
     }
 
-
-
     @Test
     public void testCertificatesRefreshInterval() throws Exception {
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "15000");
+        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "1000");
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
-        X509Certificate certificate = getTestCertificate();
-
         assertNotNull(keyStore.getCertificate(certificateName));
         keyStore.deleteEntry(certificateName);
-        keyStore.setCertificateEntry(certificateName, certificate);
-        Thread.sleep(30000);
-        assertNull(keyStore.getCertificateAlias(certificate));
+        assertNull(keyStore.getCertificate(certificateName));
+        Thread.sleep(2000);
+        assertNotNull(keyStore.getCertificate(certificateName));
     }
 
     @Test
     public void testUpdateLastForceRefreshTime() throws Exception {
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
-        X509Certificate certificate = getTestCertificate();
         assertNotNull(keyStore.getCertificate(certificateName));
         keyStore.deleteEntry(certificateName);
-        keyStore.setCertificateEntry(certificateName, certificate);
-        Thread.sleep(1000);
+        assertNull(keyStore.getCertificate(certificateName));
+        Thread.sleep(10);
         KeyVaultCertificates.updateLastForceRefreshTime();
-        assertNull(keyStore.getCertificateAlias(certificate));
+        assertNotNull(keyStore.getCertificate(certificateName));
     }
 }
