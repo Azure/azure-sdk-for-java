@@ -76,6 +76,6 @@ completed before the run.
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka/src/main/resources/application.yaml
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka/src/main/resources/application.yaml

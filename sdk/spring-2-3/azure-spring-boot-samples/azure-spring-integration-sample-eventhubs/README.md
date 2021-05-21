@@ -73,12 +73,12 @@ completed before the run.
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/
-[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[eventhub-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-eventhubs/src/main/java/com/azure/spring/integration/eventhub/api/EventHubOperation.java
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/ReceiveController.java
-[send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/SendController.java
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/resources/application.yaml
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[eventhub-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-integration-eventhubs/src/main/java/com/azure/spring/integration/eventhub/api/EventHubOperation.java
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/ReceiveController.java
+[send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/SendController.java
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/resources/application.yaml
 
 

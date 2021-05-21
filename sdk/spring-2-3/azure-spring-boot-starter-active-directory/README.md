@@ -407,29 +407,29 @@ Please follow [instructions here] to build from source or contribute.
 [Azure Portal]: https://ms.portal.azure.com/#home
 [The OAuth 2.0 authorization code grant]: https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow
 [azure_subscription]: https://azure.microsoft.com/free
-[azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
-[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
-[azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/ZhuXiaoBing-cn/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
-[azure-spring-boot-sample-active-directory-resource-server-by-filter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter
+[azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
+[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
+[azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/ZhuXiaoBing-cn/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
+[azure-spring-boot-sample-active-directory-resource-server-by-filter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter
 [AAD App Roles feature]: https://docs.microsoft.com/azure/architecture/multitenant-identity/app-roles#roles-using-azure-ad-app-roles
 [client credentials grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-client-creds-grant-flow
 [configured in your manifest]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps#examples
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
-[instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md
+[instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/CONTRIBUTING.md
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[official doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+[official doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.logging
 [OAuth 2.0 implicit grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-boot-samples
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
 [Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
 [Incremental consent]: https://docs.microsoft.com/azure/active-directory/azuread-dev/azure-ad-endpoint-comparison#incremental-and-dynamic-consent
 [register_an_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
-[prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#prerequisites
-[Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application
-[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[prerequisite]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-boot-starter-active-directory#prerequisites
+[Accessing a web application]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-boot-starter-active-directory#accessing-a-web-application
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 

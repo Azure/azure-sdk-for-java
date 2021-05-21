@@ -298,4 +298,4 @@ In this section, you clone a containerized Spring Boot application and test it l
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/README.md#ready-to-run-checklist

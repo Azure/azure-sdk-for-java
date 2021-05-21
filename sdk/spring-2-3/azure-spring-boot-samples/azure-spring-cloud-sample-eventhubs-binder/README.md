@@ -208,11 +208,11 @@ spring:
 [azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/ 
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/ 
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-[application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-mi.yaml
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application.yaml
-[application-sp.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-sp.yaml
+[application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-mi.yaml
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application.yaml
+[application-sp.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder/src/main/resources/application-sp.yaml

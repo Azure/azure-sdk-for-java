@@ -74,9 +74,9 @@ completed before the run.
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/
-[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
-[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue/src/main/java/com/azure/spring/sample/storage/queue/SendController.java
-[receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue/src/main/java/com/azure/spring/sample/storage/queue/ReceiveController.java
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue/src/main/resources/application.yaml
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue/src/main/java/com/azure/spring/sample/storage/queue/SendController.java
+[receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue/src/main/java/com/azure/spring/sample/storage/queue/ReceiveController.java
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue/src/main/resources/application.yaml

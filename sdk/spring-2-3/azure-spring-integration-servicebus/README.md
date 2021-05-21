@@ -65,13 +65,13 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Links -->
 [azure_subscription]: https://azure.microsoft.com/free
-[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
+[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/CONTRIBUTING.md
 [maven]: https://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#spring-integration-servicebus
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
-[spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
+[spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.logging
 [spring_integration]: https://spring.io/projects/spring-integration
-[spring_integration_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
-[src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-servicebus
+[spring_integration_sample_with_service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
+[src_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-integration-servicebus
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

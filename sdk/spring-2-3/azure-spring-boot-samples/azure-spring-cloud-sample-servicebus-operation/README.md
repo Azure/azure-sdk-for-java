@@ -69,9 +69,9 @@ completed before the run.
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: https://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
-[queue-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/QueueController.java 
-[topic-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/TopicController.java 
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[servicebus-queue-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/queue/ServiceBusQueueOperation.java
-[servicebus-topic-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/topic/ServiceBusTopicOperation.java
-[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/resources/application.yaml
+[queue-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/QueueController.java 
+[topic-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/TopicController.java 
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[servicebus-queue-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/queue/ServiceBusQueueOperation.java
+[servicebus-topic-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/topic/ServiceBusTopicOperation.java
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/resources/application.yaml

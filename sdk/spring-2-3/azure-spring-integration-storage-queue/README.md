@@ -55,13 +55,13 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-integration-storage-queue
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-integration-storage-queue
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-storage-queue
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-integration-storage-queue
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
-[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
-[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
+[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.logging
+[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

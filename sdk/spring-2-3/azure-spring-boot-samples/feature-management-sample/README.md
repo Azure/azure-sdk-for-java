@@ -64,4 +64,4 @@ Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/m
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/azure-spring-boot-samples/README.md#ready-to-run-checklist

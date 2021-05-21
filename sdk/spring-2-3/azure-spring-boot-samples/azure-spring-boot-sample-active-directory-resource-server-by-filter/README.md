@@ -141,5 +141,5 @@ redirectUriTemplate: xxxxxx-your-redirect-uri-xxxxxx
 
 <!-- LINKS -->
 
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [azure-china]: https://docs.microsoft.com/azure/china/china-welcome

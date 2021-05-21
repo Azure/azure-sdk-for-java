@@ -40,4 +40,4 @@ Type | Reference Link
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring-2-3/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
