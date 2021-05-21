@@ -32,5 +32,10 @@ stages:
       EnvVars:
         SKIP_LIVE_TEST: TRUE
       TestStepMavenInputs:
-        options: $(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=${{ not(startsWith(variables['System.StageName'], 'Public')) }} -DtrimStackTrace=false -pl $(ProjectList)
-
+        options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList) -Djacoco.skip='${{ not(startsWith(variables['System.StageName'], 'Public')) }}
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '$(JavaTestVersion)'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'verify'
