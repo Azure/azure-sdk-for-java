@@ -20,8 +20,8 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
 <!--  <properties>
-    &lt;!&ndash; Change reactor-bom version from Dysprosium-SR19 to 2020.0.4&ndash;&gt;
-    <reactor-bom.version>2020.0.4</reactor-bom.version>  &lt;!&ndash; {x-version-update;springboot_2_3_io.projectreactor:reactor-bom;external_dependency} &ndash;&gt;
+    &lt;!&ndash; Change reactor-bom version from Dysprosium-SR19 to 2020.0.6&ndash;&gt;
+    <reactor-bom.version>2020.0.6</reactor-bom.version>  &lt;!&ndash; {x-version-update;springboot_2_3_io.projectreactor:reactor-bom;external_dependency} &ndash;&gt;
   </properties>-->
 
   <dependencies>
@@ -35,11 +35,6 @@
       <artifactId>spring-boot-starter-validation</artifactId>
       <version>2.3.10.RELEASE</version> <!-- {x-version-update;springboot_2_3_org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
     </dependency>
-    <!--<dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-core</artifactId>
-      <version>3.4.3</version> &lt;!&ndash; {x-version-update;io.projectreactor:reactor-core;external_dependency} &ndash;&gt;
-    </dependency>-->
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>

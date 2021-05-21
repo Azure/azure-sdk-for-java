@@ -12,7 +12,7 @@
 
   <artifactId>azure-appconfiguration-convert-sample-initial</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-appconfiguration-convert-sample-initial;current} -->
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-appconfiguration-convert-sample-initial;current} -->
   <name>Azure App Configuration Conversion Sample</name>
   <description>Sample project to show conversion to Azure App Configuration</description>
 
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>25.0-jre</version> <!-- {x-version-update;springboot_2_3_cosmos_com.google.guava:guava;external_dependency} -->
+      <version>25.0-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

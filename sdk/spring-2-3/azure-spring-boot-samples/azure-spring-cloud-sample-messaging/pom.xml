@@ -11,7 +11,7 @@
 
   <artifactId>azure-spring-cloud-sample-messaging</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-sample-messaging;current} -->
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-sample-messaging;current} -->
   <name>Azure Spring Cloud Sample Messaging</name>
 
   <dependencyManagement>

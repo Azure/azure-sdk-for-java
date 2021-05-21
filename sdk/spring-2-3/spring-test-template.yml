@@ -9,7 +9,7 @@ parameters:
     - spring-2-3/azure-spring-boot-test-aad-b2c
     - spring-2-3/azure-spring-boot-test-servicebus-jms
     - spring-2-3/azure-spring-boot-test-storage
-#    - spring-2-3/azure-spring-cloud-test-eventhubs
+    - spring-2-3/azure-spring-cloud-test-eventhubs
   Artifacts:
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
@@ -47,9 +47,9 @@ parameters:
     - name: azure-spring-boot-test-servicebus-jms
       groupId: com.azure.spring
       safeName: azurespringboottestservicebusjms
-#    - name: azure-spring-cloud-test-eventhubs
-#      groupId: com.azure.spring
-#      safeName: azurespringcloudtesteventhubs
+    - name: azure-spring-cloud-test-eventhubs
+      groupId: com.azure.spring
+      safeName: azurespringcloudtesteventhubs
     - name: azure-spring-boot-test-storage
       groupId: com.azure.spring
       safeName: azurespringbootteststorage

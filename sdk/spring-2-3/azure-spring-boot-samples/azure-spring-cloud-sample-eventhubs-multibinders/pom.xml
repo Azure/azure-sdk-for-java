@@ -12,7 +12,7 @@
 
   <artifactId>azure-spring-cloud-sample-eventhubs-multibinders</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-sample-eventhubs-multibinders;current} -->
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-sample-eventhubs-multibinders;current} -->
   <name>Azure Spring Cloud Sample Event Hubs Multiple Binders</name>
 
   <dependencyManagement>

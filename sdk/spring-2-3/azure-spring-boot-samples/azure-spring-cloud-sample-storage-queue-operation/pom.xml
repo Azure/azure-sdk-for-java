@@ -11,7 +11,7 @@
 
   <artifactId>azure-spring-cloud-sample-storage-queue-operation</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-sample-storage-queue-operation;current} -->
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-sample-storage-queue-operation;current} -->
   <name>Azure Spring Cloud Sample Storage Queue Operation</name>
 
   <dependencyManagement>

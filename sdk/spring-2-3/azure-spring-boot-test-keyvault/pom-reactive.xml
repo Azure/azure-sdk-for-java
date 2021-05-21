@@ -16,8 +16,8 @@
   <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-keyvault-reactive;current} -->
 
   <properties>
-    <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.4-->
-    <reactor-bom.version>2020.0.4</reactor-bom.version>
+    <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.6-->
+    <reactor-bom.version>2020.0.6</reactor-bom.version>
   </properties>
 
   <dependencies>

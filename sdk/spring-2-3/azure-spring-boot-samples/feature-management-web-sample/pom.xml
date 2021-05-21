@@ -11,7 +11,7 @@
 
   <artifactId>feature-management-web-sample</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:feature-management-web-sample;current} -->
+  <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:feature-management-web-sample;current} -->
   <name>Azure Spring Cloud Sample Feature Management</name>
 
   <dependencies>
@@ -30,12 +30,12 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-feature-management</artifactId>
-      <version>1.2.8.1-beta.1</version> <!-- {x-version-update;springboot_2_3_com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-      <version>1.2.8.1-beta.1</version> <!-- {x-version-update;springboot_2_3_com.microsoft.azure:spring-cloud-azure-feature-management-web;current} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-azure-feature-management-web;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

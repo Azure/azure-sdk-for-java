@@ -8,15 +8,22 @@
   <parent>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-test-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-parent;current} -->
+    <version>0.0.0</version> <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-boot-test-parent;current} -->
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
   <artifactId>azure-spring-cloud-test-eventhubs</artifactId>
-  <version>1.0.0</version>  <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-test-eventhubs;current} -->
+  <version>0.0.0</version>  <!-- {x-version-update;springboot_2_3_com.azure.spring:azure-spring-cloud-test-eventhubs;current} -->
 
   <name>azure-spring-cloud-test-eventhubs</name>
   <description>EventHubs Test project for Spring Cloud</description>
+
+  <properties>
+    <!-- Change jackson-bom version from 2.11.4 to 2.12.2-->
+    <jackson-bom.version>2.12.2</jackson-bom.version>
+    <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.6-->
+    <reactor-bom.version>2020.0.6</reactor-bom.version>
+  </properties>
 
   <dependencies>
     <dependency>
