@@ -1,5 +1,8 @@
 # Release History
 
+
+## 2.5.0 (2021-05-20)
+
 ## 2.4.0 (2021-04-23)
 ### Breaking Changes
 - Update `com.azure` group id to `com.azure.spring`.
