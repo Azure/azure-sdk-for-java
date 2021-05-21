@@ -60,7 +60,7 @@
     },
     "certificateName": {
       "type": "string",
-      "defaultValue": "0myalias"
+      "defaultValue": "myalias"
     },
     "subjectName": {
       "type": "string",

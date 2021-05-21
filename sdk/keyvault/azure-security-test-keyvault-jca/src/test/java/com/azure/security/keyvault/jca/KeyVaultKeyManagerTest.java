@@ -14,7 +14,7 @@ import static com.azure.security.keyvault.jca.PropertyConvertorUtils.SYSTEM_PROP
 import static com.azure.security.keyvault.jca.PropertyConvertorUtils.getKeyVaultKeyStore;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultKeyManagerTest {
 
     private static KeyVaultKeyManager manager;

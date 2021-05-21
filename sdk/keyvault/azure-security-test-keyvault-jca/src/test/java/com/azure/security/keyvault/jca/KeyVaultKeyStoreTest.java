@@ -15,14 +15,13 @@ import java.security.cert.X509Certificate;
 import java.util.Base64;
 
 import static com.azure.security.keyvault.jca.PropertyConvertorUtils.SYSTEM_PROPERTIES;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultKeyStoreTest {
 
 
@@ -118,9 +117,8 @@ public class KeyVaultKeyStoreTest {
 
 
     @Test
-    public void testEngineAliases() {
-        assertTrue(keystore.engineAliases().hasMoreElements());
-        assertEquals(keystore.engineAliases().nextElement(), certificateName);
+    public void testEngineContainsAlias() {
+        assertTrue(keystore.engineContainsAlias(certificateName));
     }
 
 
