@@ -153,8 +153,8 @@
         <module>azure-spring-boot-samples/azure-spring-boot-sample-servicebus</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-storage-resource</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-cache</module>
-        <module>azure-spring-boot-samples/azure-appconfiguration-conversion-sample-complete</module>
-        <module>azure-spring-boot-samples/azure-appconfiguration-conversion-sample-initial</module>
+        <module>azure-spring-boot-samples/spring-cloud-azure-appconfiguration-convert-sample-complete</module>
+        <module>azure-spring-boot-samples/azure-appconfiguration-convert-sample-initial</module>
         <module>azure-spring-boot-samples/azure-appconfiguration-sample</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder</module>
         <module>azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka</module>
