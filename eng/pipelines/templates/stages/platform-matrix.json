@@ -1,7 +1,4 @@
 {
-  "displayNames": {
-    "true": "TestFromSource"
-  },
   "matrix": {
     "Agent": {
       "ubuntu-18.04": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" },
@@ -26,7 +23,9 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": true,
+      "TestFromSourceConfig": {
+          "TestFromSource": true
+      },
       "TestGoals": "surefire:test",
       "TestOptions": ""
     },
@@ -38,7 +37,10 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "AdditionalOptions": "-am",
       "TestGoals": "verify",
-      "TestOptions": ""
+      "TestOptions": "",
+      "CoverageConfig": {
+          "Coverage": false
+      }
     }
   ]
 }

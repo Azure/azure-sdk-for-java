@@ -68,10 +68,8 @@ stages:
           - ${{ if eq(parameters.SDKType, 'data') }}:
             - TestFromSource=^(?!true).*
         MatrixReplace:
-          # Temporarily replace macOS agents with ubuntu agents because of ongoing pool capacity issues
-          - Pool=Azure.Pipelines/azsdk-pool-mms-ubuntu-1804-general
-          - OsVmImage=macOS-10.15/MMSUbuntu18.04
           - AZURE_TEST.*=.*/
+          - Coverage=.*/true
           - ${{ if eq(parameters.SDKType, 'data') }}:
             - TestGoals=.*/verify
             - TestOptions=.*/-am
