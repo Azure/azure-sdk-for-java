@@ -332,6 +332,30 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "LastAccessTime")
     private OffsetDateTime lastAccessedTime;
 
+    /*
+     * The x-ms-is-current-version property.
+     */
+    @JsonProperty(value = "x-ms-is-current-version")
+    private Boolean currentVersion;
+
+    /*
+     * The x-ms-immutability-policy-mode property.
+     */
+    @JsonProperty(value = "x-ms-immutability-policy-mode")
+    private BlobImmutabilityPolicyMode immutabilityPolicyMode;
+
+    /*
+     * The x-ms-immutability-policy-until-date property.
+     */
+    @JsonProperty(value = "x-ms-immutability-policy-until-date")
+    private OffsetDateTime immutabilityPolicyExpiryTime;
+
+    /*
+     * The x-ms-legal-hold property.
+     */
+    @JsonProperty(value = "x-ms-legal-hold")
+    private Boolean hasLegalHold;
+
     /**
      * Get the lastModified property: Returns the date and time the container
      * was last modified. Any operation that modifies the blob, including an
@@ -1302,6 +1326,86 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setLastAccessedTime(OffsetDateTime lastAccessedTime) {
         this.lastAccessedTime = lastAccessedTime;
+        return this;
+    }
+
+    /**
+     * Get the currentVersion property: The x-ms-is-current-version property.
+     *
+     * @return the currentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.currentVersion;
+    }
+
+    /**
+     * Set the currentVersion property: The x-ms-is-current-version property.
+     *
+     * @param currentVersion the currentVersion value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setCurrentVersion(Boolean currentVersion) {
+        this.currentVersion = currentVersion;
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     *
+     * @return the immutabilityPolicyMode value.
+     */
+    public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
+        return this.immutabilityPolicyMode;
+    }
+
+    /**
+     * Set the immutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     *
+     * @param immutabilityPolicyMode the immutabilityPolicyMode value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setImmutabilityPolicyMode(BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        this.immutabilityPolicyMode = immutabilityPolicyMode;
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyExpiryTime property: The x-ms-immutability-policy-until-date property.
+     *
+     * @return the immutabilityPolicyExpiryTime value.
+     */
+    public OffsetDateTime getImmutabilityPolicyExpiryTime() {
+        return this.immutabilityPolicyExpiryTime;
+    }
+
+    /**
+     * Set the immutabilityPolicyExpiryTime property: The x-ms-immutability-policy-until-date property.
+     *
+     * @param immutabilityPolicyExpiryTime the xMsImmutabilityPolicyUntilDate value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setImmutabilityPolicyExpiryTime(OffsetDateTime immutabilityPolicyExpiryTime) {
+        this.immutabilityPolicyExpiryTime = immutabilityPolicyExpiryTime;
+        return this;
+    }
+
+    /**
+     * Get the hasLegalHold property: The x-ms-legal-hold property.
+     *
+     * @return the hasLegalHold value.
+     */
+    public Boolean hasLegalHold() {
+        return this.hasLegalHold;
+    }
+
+    /**
+     * Set the hasLegalHold property: The x-ms-legal-hold property.
+     *
+     * @param hasLegalHold the xMsLegalHold value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setHasLegalHold(Boolean hasLegalHold) {
+        this.hasLegalHold = hasLegalHold;
         return this;
     }
 }

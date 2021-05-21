@@ -6,6 +6,8 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -236,6 +238,30 @@ public final class BlobItemProperties {
      */
     @JsonProperty(value = "LastAccessTime")
     private OffsetDateTime lastAccessedTime;
+
+    /*
+     * The Expiry-Time property.
+     */
+    @JsonProperty(value = "Expiry-Time")
+    private OffsetDateTime expiryTime;
+
+    /*
+     * The ImmutabilityPolicyUntilDate property.
+     */
+    @JsonProperty(value = "ImmutabilityPolicyUntilDate")
+    private OffsetDateTime immutabilityPolicyExpiryTime;
+
+    /*
+     * The ImmutabilityPolicyMode property.
+     */
+    @JsonProperty(value = "ImmutabilityPolicyMode")
+    private BlobImmutabilityPolicyMode immutabilityPolicyMode;
+
+    /*
+     * The LegalHold property.
+     */
+    @JsonProperty(value = "LegalHold")
+    private Boolean hasLegalHold;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -983,6 +1009,86 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setLastAccessedTime(OffsetDateTime lastAccessedTime) {
         this.lastAccessedTime = lastAccessedTime;
+        return this;
+    }
+
+    /**
+     * Get the expiryTime property: The Expiry-Time property.
+     *
+     * @return the expiryTime value.
+     */
+    public OffsetDateTime getExpiryTime() {
+        return this.expiryTime;
+    }
+
+    /**
+     * Set the expiryTime property: The Expiry-Time property.
+     *
+     * @param expiryTime the expiryTime value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setExpiryTime(OffsetDateTime expiryTime) {
+        this.expiryTime = expiryTime;
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyExpiryTime property: The ImmutabilityPolicyUntilDate property.
+     *
+     * @return the immutabilityPolicyExpiryTime value.
+     */
+    public OffsetDateTime getImmutabilityPolicyExpiryTime() {
+        return this.immutabilityPolicyExpiryTime;
+    }
+
+    /**
+     * Set the immutabilityPolicyExpiryTime property: The ImmutabilityPolicyUntilDate property.
+     *
+     * @param immutabilityPolicyExpiryTime the immutabilityPolicyExpiryTime value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setImmutabilityPolicyExpiryTime(OffsetDateTime immutabilityPolicyExpiryTime) {
+        this.immutabilityPolicyExpiryTime = immutabilityPolicyExpiryTime;
+        return this;
+    }
+
+    /**
+     * Get the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
+     *
+     * @return the immutabilityPolicyMode value.
+     */
+    public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
+        return this.immutabilityPolicyMode;
+    }
+
+    /**
+     * Set the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
+     *
+     * @param immutabilityPolicyMode the immutabilityPolicyMode value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setImmutabilityPolicyMode(BlobImmutabilityPolicyMode immutabilityPolicyMode) {
+        this.immutabilityPolicyMode = immutabilityPolicyMode;
+        return this;
+    }
+
+    /**
+     * Get the hasLegalHold property: The LegalHold property.
+     *
+     * @return the hasLegalHold value.
+     */
+    public Boolean hasLegalHold() {
+        return this.hasLegalHold;
+    }
+
+    /**
+     * Set the hasLegalHold property: The LegalHold property.
+     *
+     * @param hasLegalHold the v value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setHasLegalHold(Boolean hasLegalHold) {
+        this.hasLegalHold = hasLegalHold;
         return this;
     }
 }

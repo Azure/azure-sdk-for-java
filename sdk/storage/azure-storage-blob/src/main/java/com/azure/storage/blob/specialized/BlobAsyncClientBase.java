@@ -30,6 +30,8 @@ import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
+import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyResponse;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.QueryRequest;
@@ -46,6 +48,9 @@ import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
+import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobRange;
@@ -542,13 +547,16 @@ public class BlobAsyncClientBase {
             options.getDestinationRequestConditions() == null
             ? new BlobRequestConditions()
             : options.getDestinationRequestConditions();
+        final BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         return new PollerFlux<>(interval,
             (pollingContext) -> {
                 try {
                     return onStart(options.getSourceUrl(), options.getMetadata(), options.getTags(),
                         options.getTier(), options.getRehydratePriority(), options.isSealDestination(),
-                        sourceModifiedCondition, destinationRequestConditions);
+                        sourceModifiedCondition, destinationRequestConditions, immutabilityPolicy,
+                        options.isLegalHold());
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
@@ -581,7 +589,8 @@ public class BlobAsyncClientBase {
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, Map<String, String> tags,
         AccessTier tier, RehydratePriority priority, Boolean sealBlob,
         BlobBeginCopySourceRequestConditions sourceModifiedRequestConditions,
-        BlobRequestConditions destinationRequestConditions) {
+        BlobRequestConditions destinationRequestConditions, BlobImmutabilityPolicy immutabilityPolicy,
+        Boolean legalHold) {
         URL url;
         try {
             url = new URL(sourceUrl);
@@ -597,7 +606,8 @@ public class BlobAsyncClientBase {
                 destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
                 destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
                 destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(), null,
-                tagsToString(tags), sealBlob, null, null, null, context))
+                tagsToString(tags), sealBlob, immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                legalHold, context))
             .map(response -> {
                 final BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -816,6 +826,8 @@ public class BlobAsyncClientBase {
             ? new RequestConditions() : options.getSourceRequestConditions();
         BlobRequestConditions destRequestConditions = options.getDestinationRequestConditions() == null
             ? new BlobRequestConditions() : options.getDestinationRequestConditions();
+        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
         URL url;
         try {
@@ -832,7 +844,8 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
-            tagsToString(options.getTags()), null, null, null, context)
+            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            options.isLegalHold(), context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 
@@ -1291,7 +1304,8 @@ public class BlobAsyncClientBase {
             hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
             hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
             hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
-            hd.isSealed(), hd.getLastAccessedTime(), null);
+            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicyExpiryTime(),
+            hd.getImmutabilityPolicyMode(), hd.hasLegalHold());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 
@@ -1445,7 +1459,8 @@ public class BlobAsyncClientBase {
                     ModelHelper.getObjectReplicationSourcePolicies(hd.getXMsOr()),
                     ModelHelper.getObjectReplicationDestinationPolicyId(hd.getXMsOr()),
                     RehydratePriority.fromString(hd.getXMsRehydratePriority()), hd.isXMsBlobSealed(),
-                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime());
+                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime(), hd.getXMsImmutabilityPolicyUntilDate(),
+                    hd.getXMsImmutabilityPolicyMode(), hd.isXMsLegalHold());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -2082,5 +2097,170 @@ public class BlobAsyncClientBase {
                     queryOptions.getErrorConsumer())
                     .read(),
                 ModelHelper.transformQueryHeaders(response.getHeaders())));
+    }
+
+    /**
+     * Sets the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * object level immutable policy enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy}
+     *
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
+     * @return A reactive response containing the immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobImmutabilityPolicy> setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        try {
+            return setImmutabilityPolicyWithResponse(immutabilityPolicy, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions}
+     *
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response containing the immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlobImmutabilityPolicy>> setImmutabilityPolicyWithResponse(
+        BlobImmutabilityPolicy immutabilityPolicy, BlobRequestConditions requestConditions) {
+        try {
+            return withContext(context -> setImmutabilityPolicyWithResponse(immutabilityPolicy, requestConditions,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlobImmutabilityPolicy>> setImmutabilityPolicyWithResponse(
+        BlobImmutabilityPolicy immutabilityPolicy, BlobRequestConditions requestConditions, Context context) {
+        BlobImmutabilityPolicy finalImmutabilityPolicy = immutabilityPolicy == null ? new BlobImmutabilityPolicy()
+            : immutabilityPolicy;
+        if (BlobImmutabilityPolicyMode.MUTABLE.equals(finalImmutabilityPolicy.getPolicyMode())) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("immutabilityPolicy.policyMode must be %s or %s",
+                    BlobImmutabilityPolicyMode.LOCKED.toString(), BlobImmutabilityPolicyMode.UNLOCKED.toString())));
+        }
+
+        BlobRequestConditions finalRequestConditions = requestConditions == null
+            ? new BlobRequestConditions() : requestConditions;
+        // TODO (gapra) : Discuss, should we just expose ifUnmodifiedSince here?
+        return this.azureBlobStorage.getBlobs().setImmutabilityPolicyWithResponseAsync(containerName, blobName, null,
+            null, finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),
+            finalImmutabilityPolicy.getPolicyMode(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> {
+                BlobsSetImmutabilityPolicyHeaders headers = response.getDeserializedHeaders();
+                BlobImmutabilityPolicy responsePolicy = new BlobImmutabilityPolicy()
+                    .setPolicyMode(headers.getXMsImmutabilityPolicyMode())
+                    .setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate());
+                return new SimpleResponse<>(response, responsePolicy);
+            });
+    }
+
+    /**
+     * Deletes the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * object level immutable policy enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicy}
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteImmutabilityPolicy() {
+        try {
+            return deleteImmutabilityPolicyWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Deletes the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicyWithResponse}
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteImmutabilityPolicyWithResponse() {
+        try {
+            return withContext(this::deleteImmutabilityPolicyWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteImmutabilityPolicyWithResponse(Context context) {
+        return this.azureBlobStorage.getBlobs().deleteImmutabilityPolicyWithResponseAsync(containerName, blobName,
+            null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Sets a legal hold on the blob.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * object level immutable policy enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHold#boolean}
+     *
+     * @return A reactive response containing the legal hold result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobLegalHoldResult> setLegalHold(boolean legalHold) {
+        try {
+            return setLegalHoldWithResponse(legalHold).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Sets a legal hold on the blob.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHoldWithResponse#boolean}
+     *
+     * @return A reactive response containing the legal hold result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlobLegalHoldResult>> setLegalHoldWithResponse(boolean legalHold) {
+        try {
+            return withContext(context -> setLegalHoldWithResponse(legalHold, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlobLegalHoldResult>> setLegalHoldWithResponse(boolean legalHold, Context context) {
+        return this.azureBlobStorage.getBlobs().setLegalHoldWithResponseAsync(containerName, blobName,
+            legalHold, null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response,
+                new BlobLegalHoldResult(response.getDeserializedHeaders().isXMsLegalHold())));
     }
 }

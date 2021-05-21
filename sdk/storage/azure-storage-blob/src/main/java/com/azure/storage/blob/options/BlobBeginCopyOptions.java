@@ -5,6 +5,7 @@ package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.RehydratePriority;
@@ -27,6 +28,8 @@ public class BlobBeginCopyOptions {
     private BlobRequestConditions destinationRequestConditions;
     private Duration pollInterval;
     private Boolean sealDestination;
+    private BlobImmutabilityPolicy immutabilityPolicy;
+    private Boolean legalHold;
 
     /**
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -174,6 +177,42 @@ public class BlobBeginCopyOptions {
      */
     public BlobBeginCopyOptions setSealDestination(Boolean sealDestination) {
         this.sealDestination = sealDestination;
+        return this;
+    }
+
+    /**
+     * @return {@link BlobImmutabilityPolicy}
+     */
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return immutabilityPolicy;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
+     * @return The updated options.
+     */
+    public BlobBeginCopyOptions setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * @return If a legal hold should be placed on the blob.
+     */
+    public Boolean isLegalHold() {
+        return legalHold;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param legalHold Indicates if a legal hold should be placed on the blob.
+     * @return The updated options.
+     */
+    public BlobBeginCopyOptions setLegalHold(Boolean legalHold) {
+        this.legalHold = legalHold;
         return this;
     }
 }

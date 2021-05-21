@@ -6,6 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
 import java.util.Collections;
@@ -23,6 +24,8 @@ public class BlockBlobCommitBlockListOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+    private BlobImmutabilityPolicy immutabilityPolicy;
+    private Boolean legalHold;
 
     /**
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
@@ -115,6 +118,42 @@ public class BlockBlobCommitBlockListOptions {
      */
     public BlockBlobCommitBlockListOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * @return {@link BlobImmutabilityPolicy}
+     */
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return immutabilityPolicy;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
+     * @return The updated options.
+     */
+    public BlockBlobCommitBlockListOptions setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * @return If a legal hold should be placed on the blob.
+     */
+    public Boolean isLegalHold() {
+        return legalHold;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param legalHold Indicates if a legal hold should be placed on the blob.
+     * @return The updated options.
+     */
+    public BlockBlobCommitBlockListOptions setLegalHold(Boolean legalHold) {
+        this.legalHold = legalHold;
         return this;
     }
 }

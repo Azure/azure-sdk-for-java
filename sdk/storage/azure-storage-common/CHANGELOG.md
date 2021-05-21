@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.12.0-beta.2 (Unreleased)
-
+- Added support for the set immutability policy permission for Account SAS. 
 
 ## 12.12.0-beta.1 (2021-05-13)
 - Fixed bug in Utility.convertStreamToByteBuffer where variable updates would happen incorrectly if we hit the end of stream.

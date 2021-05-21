@@ -28,7 +28,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
-import com.azure.storage.blob.implementation.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsAcquireLeaseResponse;
@@ -62,6 +61,7 @@ import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
@@ -302,10 +302,12 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicy(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -317,10 +319,12 @@ public final class BlobsImpl {
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicy(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -329,10 +333,12 @@ public final class BlobsImpl {
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
         Mono<BlobsSetLegalHoldResponse> setLegalHold(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
@@ -1395,6 +1401,8 @@ public final class BlobsImpl {
     /**
      * The Set Immutability Policy operation sets the immutability policy on the blob.
      *
+     * @param containerName The container name.
+     * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -1412,6 +1420,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetImmutabilityPolicyResponse> setImmutabilityPolicyWithResponseAsync(
+            String containerName,
+            String blob,
             Integer timeout,
             String requestId,
             OffsetDateTime ifUnmodifiedSince,
@@ -1427,6 +1437,8 @@ public final class BlobsImpl {
         return service.setImmutabilityPolicy(
                 this.client.getUrl(),
                 comp,
+                containerName,
+                blob,
                 timeout,
                 this.client.getVersion(),
                 requestId,
@@ -1440,6 +1452,8 @@ public final class BlobsImpl {
     /**
      * The Delete Immutability Policy operation deletes the immutability policy on the blob.
      *
+     * @param containerName The container name.
+     * @param blob The blob name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      *     Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -1453,16 +1467,26 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsDeleteImmutabilityPolicyResponse> deleteImmutabilityPolicyWithResponseAsync(
-            Integer timeout, String requestId, Context context) {
+            String containerName, String blob, Integer timeout, String requestId, Context context) {
         final String comp = "immutabilityPolicies";
         final String accept = "application/xml";
         return service.deleteImmutabilityPolicy(
-                this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId, accept, context);
+                this.client.getUrl(),
+                comp,
+                containerName,
+                blob,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**
      * The Set Legal Hold operation sets a legal hold on the blob.
      *
+     * @param containerName The container name.
+     * @param blob The blob name.
      * @param legalHold Specified if a legal hold should be set on the blob.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
@@ -1477,11 +1501,20 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetLegalHoldResponse> setLegalHoldWithResponseAsync(
-            boolean legalHold, Integer timeout, String requestId, Context context) {
+            String containerName, String blob, boolean legalHold, Integer timeout, String requestId, Context context) {
         final String comp = "legalhold";
         final String accept = "application/xml";
         return service.setLegalHold(
-                this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId, legalHold, accept, context);
+                this.client.getUrl(),
+                comp,
+                containerName,
+                blob,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                legalHold,
+                accept,
+                context);
     }
 
     /**
