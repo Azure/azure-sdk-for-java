@@ -130,4 +130,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/build-developing-version-artifacts-if-needed.md
+[build-developing-version-artifacts-if-needed]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring-2-3/build-developing-version-artifacts-if-needed.md
