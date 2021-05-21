@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * The KeyProperties REST model.
  */
-public class KeyProperties implements Serializable {
+public final class KeyProperties implements Serializable {
     
     /**
      * Stores the serial version UID.

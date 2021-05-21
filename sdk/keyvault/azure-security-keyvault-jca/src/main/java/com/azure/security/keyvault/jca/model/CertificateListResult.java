@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * The CertificateItem REST model.
  */
-public class CertificateListResult implements Serializable {
+public final class CertificateListResult implements Serializable {
     
     /**
      * Stores the serial version UID.

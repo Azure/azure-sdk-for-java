@@ -6,7 +6,7 @@ package com.azure.security.keyvault.jca;
 /**
  * Constants used for Key Vault related URLs.
  */
-public class UriUtil {
+public final class UriUtil {
 
     public static final String KEY_VAULT_BASE_URI_GLOBAL = "https://vault.azure.net";
     public static final String KEY_VAULT_BASE_URI_CN = "https://vault.azure.cn";
