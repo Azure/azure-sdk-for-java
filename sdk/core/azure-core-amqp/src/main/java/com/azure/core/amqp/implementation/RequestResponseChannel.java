@@ -198,11 +198,6 @@ public class RequestResponseChannel implements AsyncAutoCloseable {
         return endpointStates.asFlux();
     }
 
-    public void dispose() {
-        closeAsync()
-            .block(retryOptions.getTryTimeout());
-    }
-
     @Override
     public Mono<Void> closeAsync() {
         return this.closeAsync("");

@@ -233,7 +233,7 @@ class RequestResponseChannelTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        channel.dispose();
+        channel.closeAsync().block();
 
         // Assert
         verify(sender).close();
@@ -465,7 +465,7 @@ class RequestResponseChannelTest {
         assertTrue(channel.isDisposed());
 
         // This turns it into a synchronous operation so we know that it is disposed completely.
-        channel.dispose();
+        channel.closeAsync().block();
 
         // Assert
         verify(receiver).close();
