@@ -117,6 +117,8 @@ stages:
         dependsOn: []
         jobs:
         - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+          variables:
+            CurrentCloud: cloud.key
           parameters:
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
             AdditionalParameters:
