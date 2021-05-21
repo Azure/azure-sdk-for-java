@@ -115,7 +115,7 @@ stages:
     - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
       - stage: ${{ cloud.key }}_${{ parameters.TestName }}
         variables:
-          Coverage: ${{ eq(cloud.key, 'Public') }}
+          Coverage: ${{ not(eq(cloud.key, 'Public')) }}
         dependsOn: []
         jobs:
         - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
