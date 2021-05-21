@@ -21,21 +21,21 @@ config = {
     'appconfiguration': {
         'sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.13.RELEASE'),
             )
         }
     },
     'cosmos': {
         'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.13.RELEASE'),
             )
         }
     },
     'spring': {
         'sdk/spring-2-3/azure-spring-boot-test-parent/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.13.RELEASE'),
             )
         }
     }
