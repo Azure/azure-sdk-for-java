@@ -1,4 +1,8 @@
 {
+  "displayNames": {
+      "false": "",
+      "true": "Coverage"
+  },
   "matrix": {
     "Agent": {
       "ubuntu-18.04": { "OSVmImage": "MMSUbuntu18.04", "Pool": "azsdk-pool-mms-ubuntu-1804-general" },
@@ -38,9 +42,7 @@
       "AdditionalOptions": "-am",
       "TestGoals": "verify",
       "TestOptions": "",
-      "CoverageConfig": {
-          "Coverage": false
-      }
+      "Coverage": false
     }
   ]
 }

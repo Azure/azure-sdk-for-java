@@ -137,18 +137,6 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
-      - task: Maven@3
-        displayName: 'Generate aggregate code coverage report'
-        condition: eq(variables['Coverage'], 'true')
-        inputs:
-          mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
-          options: -Pcoverage
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          goals: jacoco:report-aggregate
-
       - task: PublishTestResults@2
         condition: always()
         inputs:
@@ -157,12 +145,4 @@ jobs:
           ${{ if ne(parameters.TestResultsFiles, '') }}:
             testResultsFiles: ${{ parameters.TestResultsFiles }}
 
-      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
-      # Code coverage reporting is setup only for Track 2 modules.
-      - task: PublishCodeCoverageResults@1
-        condition: eq(variables['Coverage'], 'true')
-        inputs:
-          codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
-          failIfCoverageEmpty: false
+      - template: ../steps/code-coverage.yml
