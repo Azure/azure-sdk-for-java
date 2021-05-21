@@ -24,13 +24,17 @@ private object Exceptions {
   def isNotFoundException(throwable: Throwable): Boolean = {
     throwable match {
       case cosmosException: CosmosException =>
-        if (cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
-          cosmosException.getSubStatusCode == 0) {
-          true
-        } else {
-          false
-        }
+        isNotFoundExceptionCore(cosmosException)
       case _ => false
     }
+  }
+
+  def isNotFoundExceptionCore(cosmosException: CosmosException): Boolean = {
+      if (cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
+        cosmosException.getSubStatusCode == 0) {
+        true
+      } else {
+        false
+      }
   }
 }

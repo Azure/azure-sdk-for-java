@@ -5,17 +5,17 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.BulkWriter.DefaultMaxPendingOperationPerCore
-import com.azure.cosmos.{BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.{BulkItemRequestOptions, BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.Disposable
 import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
+
 import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
-
 import com.azure.cosmos.spark.BulkWriter.emitFailureHandler
 import reactor.core.publisher.Sinks.EmitFailureHandler
 import reactor.core.publisher.Sinks.EmitResult
@@ -172,6 +172,13 @@ class BulkWriter(container: CosmosAsyncContainer,
         BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue)
       case ItemWriteStrategy.ItemAppend =>
         BulkOperations.getCreateItemOperation(objectNode, partitionKeyValue)
+      case ItemWriteStrategy.ItemDelete =>
+        BulkOperations.getDeleteItemOperation(objectNode.get(CosmosConstants.Properties.Id).asText(), partitionKeyValue)
+      case ItemWriteStrategy.ItemDeleteIfNotModified =>
+        BulkOperations.getDeleteItemOperation(
+          objectNode.get(CosmosConstants.Properties.Id).asText(),
+          partitionKeyValue,
+          new BulkItemRequestOptions().setIfMatchETag(objectNode.get(CosmosConstants.Properties.ETag).asText()))
       case _ =>
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
@@ -260,8 +267,10 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   private def shouldIgnore(cosmosException: CosmosException): Boolean = {
     // ignore 409 on create-item
-    writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemAppend &&
-      Exceptions.isResourceExistsException(cosmosException)
+    (writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemAppend &&
+      Exceptions.isResourceExistsException(cosmosException)) ||
+      (writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemDelete &&
+        Exceptions.isNotFoundExceptionCore(cosmosException))
   }
 
   private def shouldRetry(cosmosException: CosmosException, operationContext: OperationContext): Boolean = {

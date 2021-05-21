@@ -53,6 +53,10 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     cosmosWriteConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite => upsertWithRetryAsync(partitionKeyValue, objectNode)
       case ItemWriteStrategy.ItemAppend => createWithRetryAsync(partitionKeyValue, objectNode)
+      case ItemWriteStrategy.ItemDelete =>
+        deleteWithRetryAsync(partitionKeyValue, objectNode, false)
+      case ItemWriteStrategy.ItemDeleteIfNotModified =>
+        deleteWithRetryAsync(partitionKeyValue, objectNode, true)
     }
   }
 
@@ -97,6 +101,25 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     pendingPointWrites.put(promise.future, true)
 
     executeAsync(() => upsertWithRetry(partitionKeyValue, objectNode))
+      .onComplete {
+        case Success(_) =>
+          promise.success(Unit)
+          pendingPointWrites.remove(promise.future)
+        case Failure(e) =>
+          promise.failure(e)
+          capturedFailure.set(e)
+          pendingPointWrites.remove(promise.future)
+      }
+  }
+
+  private def deleteWithRetryAsync(partitionKeyValue: PartitionKey,
+                                   objectNode: ObjectNode,
+                                   onlyIfNotModified: Boolean): Unit = {
+
+    val promise = Promise[Unit]()
+    pendingPointWrites.put(promise.future, true)
+
+    executeAsync(() => deleteWithRetry(partitionKeyValue, objectNode, onlyIfNotModified))
       .onComplete {
         case Success(_) =>
           promise.success(Unit)
@@ -158,6 +181,43 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     throw exceptionOpt.get
   }
   // scalastyle:on return
+
+  private def deleteWithRetry(partitionKeyValue: PartitionKey,
+                              objectNode: ObjectNode,
+                              onlyIfNotModified: Boolean): Unit = {
+
+    var exceptionOpt = Option.empty[Exception]
+    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+      try {
+        // TODO: moderakh, there is room for further improvement by making this code nonblocking
+        // using reactive stream retry pattern
+
+        val options = if (onlyIfNotModified) {
+          new CosmosItemRequestOptions().setIfMatchETag(objectNode.get(CosmosConstants.Properties.ETag).asText())
+        } else {
+          new CosmosItemRequestOptions()
+        }
+
+        container.deleteItem(
+          objectNode.get(CosmosConstants.Properties.Id).asText(),
+          partitionKeyValue,
+          options).block()
+        return
+      } catch {
+        case e: CosmosException if Exceptions.isNotFoundExceptionCore(e) =>
+          return
+        case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
+          logWarning(
+            s"delete item attempt #$attempt max remaining retries"
+              + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+          exceptionOpt = Option.apply(e)
+      }
+    }
+
+    assert(exceptionOpt.isDefined)
+    throw exceptionOpt.get
+  }
+
 
   private def executeAsync(work: () => Any) : Future[Unit] = {
     val future = new CompletableFuture[Unit]()
