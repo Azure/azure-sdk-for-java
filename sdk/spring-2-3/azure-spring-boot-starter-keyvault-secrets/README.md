@@ -46,7 +46,7 @@ described in the “keyvault-name” element of [About keys, secrets, and certif
 
 If your Spring property is using a name that does not honor the Key Vault secret
 key limitation use the following technique as described by 
-[Externalized Configuration](https://docs.spring.io/autorepo/docs/spring-boot/current/reference/html/spring-boot-features.html#boot-features-external-config-placeholders-in-properties) 
+[Externalized Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.files.property-placeholders) 
 in the Spring Boot documentation.
 
 ## Examples
