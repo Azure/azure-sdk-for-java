@@ -218,9 +218,10 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
         List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
         String algorithmName = "EC";
+        Provider[] providers = Security.getProviders();
         Provider provider = null;
 
-        for (Provider currentProvider: Security.getProviders()) {
+        for (Provider currentProvider: providers) {
             if (currentProvider.containsValue(algorithmName)) {
                 provider = currentProvider;
 
@@ -229,6 +230,10 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         }
 
         if (provider == null) {
+            for (Provider currentProvider : providers) {
+                System.out.println(currentProvider.getName());
+            }
+
             fail(String.format("No suitable security provider for algorithm %s was found.", algorithmName));
         }
 
@@ -276,9 +281,10 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
         List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
         String algorithmName = "EC";
+        Provider[] providers = Security.getProviders();
         Provider provider = null;
 
-        for (Provider currentProvider: Security.getProviders()) {
+        for (Provider currentProvider: providers) {
             if (currentProvider.containsValue(algorithmName)) {
                 provider = currentProvider;
 
@@ -287,6 +293,10 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         }
 
         if (provider == null) {
+            for (Provider currentProvider : providers) {
+                System.out.println(currentProvider.getName());
+            }
+
             fail(String.format("No suitable security provider for algorithm %s was found.", algorithmName));
         }
 
