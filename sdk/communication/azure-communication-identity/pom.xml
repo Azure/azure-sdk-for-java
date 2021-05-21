@@ -133,6 +133,15 @@
             <exclude>com/azure/communication/**/implementation/**/*</exclude>
           </excludes>
         </configuration>
+        <executions>
+          <execution>
+            <id>coverage-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
