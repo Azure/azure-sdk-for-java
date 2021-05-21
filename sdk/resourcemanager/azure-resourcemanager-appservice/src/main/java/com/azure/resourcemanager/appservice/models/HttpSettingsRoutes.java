@@ -10,20 +10,21 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HttpSettingsRoutes model. */
+/** The configuration settings of the paths HTTP requests. */
 @JsonFlatten
 @Fluent
 public class HttpSettingsRoutes extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpSettingsRoutes.class);
 
     /*
-     * The apiPrefix property.
+     * The prefix that should precede all the authentication/authorization
+     * paths.
      */
     @JsonProperty(value = "properties.apiPrefix")
     private String apiPrefix;
 
     /**
-     * Get the apiPrefix property: The apiPrefix property.
+     * Get the apiPrefix property: The prefix that should precede all the authentication/authorization paths.
      *
      * @return the apiPrefix value.
      */
@@ -32,7 +33,7 @@ public class HttpSettingsRoutes extends ProxyOnlyResource {
     }
 
     /**
-     * Set the apiPrefix property: The apiPrefix property.
+     * Set the apiPrefix property: The prefix that should precede all the authentication/authorization paths.
      *
      * @param apiPrefix the apiPrefix value to set.
      * @return the HttpSettingsRoutes object itself.

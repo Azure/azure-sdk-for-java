@@ -65,6 +65,13 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private Boolean perSiteScaling;
 
     /*
+     * ServerFarm supports ElasticScale. Apps in this plan will scale as if the
+     * ServerFarm was ElasticPremium sku
+     */
+    @JsonProperty(value = "properties.elasticScaleEnabled")
+    private Boolean elasticScaleEnabled;
+
+    /*
      * Maximum number of total workers allowed for this ElasticScaleEnabled App
      * Service Plan
      */
@@ -249,6 +256,28 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      */
     public AppServicePlanPatchResource withPerSiteScaling(Boolean perSiteScaling) {
         this.perSiteScaling = perSiteScaling;
+        return this;
+    }
+
+    /**
+     * Get the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
+     * ServerFarm was ElasticPremium sku.
+     *
+     * @return the elasticScaleEnabled value.
+     */
+    public Boolean elasticScaleEnabled() {
+        return this.elasticScaleEnabled;
+    }
+
+    /**
+     * Set the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
+     * ServerFarm was ElasticPremium sku.
+     *
+     * @param elasticScaleEnabled the elasticScaleEnabled value to set.
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withElasticScaleEnabled(Boolean elasticScaleEnabled) {
+        this.elasticScaleEnabled = elasticScaleEnabled;
         return this;
     }
 

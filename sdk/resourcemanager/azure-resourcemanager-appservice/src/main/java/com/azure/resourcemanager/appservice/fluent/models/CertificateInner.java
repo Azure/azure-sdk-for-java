@@ -24,6 +24,12 @@ public class CertificateInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateInner.class);
 
     /*
+     * Certificate password.
+     */
+    @JsonProperty(value = "properties.password")
+    private String password;
+
+    /*
      * Friendly name of the certificate.
      */
     @JsonProperty(value = "properties.friendlyName", access = JsonProperty.Access.WRITE_ONLY)
@@ -76,12 +82,6 @@ public class CertificateInner extends Resource {
      */
     @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
-
-    /*
-     * Certificate password.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
 
     /*
      * Certificate thumbprint.
@@ -157,6 +157,26 @@ public class CertificateInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /**
+     * Get the password property: Certificate password.
+     *
+     * @return the password value.
+     */
+    public String password() {
+        return this.password;
+    }
+
+    /**
+     * Set the password property: Certificate password.
+     *
+     * @param password the password value to set.
+     * @return the CertificateInner object itself.
+     */
+    public CertificateInner withPassword(String password) {
+        this.password = password;
+        return this;
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the certificate.
@@ -259,26 +279,6 @@ public class CertificateInner extends Resource {
      */
     public OffsetDateTime expirationDate() {
         return this.expirationDate;
-    }
-
-    /**
-     * Get the password property: Certificate password.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Certificate password.
-     *
-     * @param password the password value to set.
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withPassword(String password) {
-        this.password = password;
-        return this;
     }
 
     /**

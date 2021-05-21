@@ -11,68 +11,73 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The IdentityProviders model. */
+/**
+ * The configuration settings of each of the identity providers used to configure App Service
+ * Authentication/Authorization.
+ */
 @JsonFlatten
 @Fluent
 public class IdentityProviders extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProviders.class);
 
     /*
-     * The azureActiveDirectory property.
+     * The configuration settings of the Azure Active directory provider.
      */
     @JsonProperty(value = "properties.azureActiveDirectory")
     private AzureActiveDirectory azureActiveDirectory;
 
     /*
-     * The facebook property.
+     * The configuration settings of the Facebook provider.
      */
     @JsonProperty(value = "properties.facebook")
     private Facebook facebook;
 
     /*
-     * The gitHub property.
+     * The configuration settings of the GitHub provider.
      */
     @JsonProperty(value = "properties.gitHub")
     private GitHub gitHub;
 
     /*
-     * The google property.
+     * The configuration settings of the Google provider.
      */
     @JsonProperty(value = "properties.google")
     private Google google;
 
     /*
-     * The legacyMicrosoftAccount property.
-     */
-    @JsonProperty(value = "properties.legacyMicrosoftAccount")
-    private LegacyMicrosoftAccount legacyMicrosoftAccount;
-
-    /*
-     * The twitter property.
+     * The configuration settings of the Twitter provider.
      */
     @JsonProperty(value = "properties.twitter")
     private Twitter twitter;
 
     /*
-     * The apple property.
+     * The map of the name of the alias of each custom Open ID Connect provider
+     * to the
+     * configuration settings of the custom Open ID Connect provider.
+     */
+    @JsonProperty(value = "properties.customOpenIdConnectProviders")
+    private Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders;
+
+    /*
+     * The configuration settings of the legacy Microsoft Account provider.
+     */
+    @JsonProperty(value = "properties.legacyMicrosoftAccount")
+    private LegacyMicrosoftAccount legacyMicrosoftAccount;
+
+    /*
+     * The configuration settings of the Apple provider.
      */
     @JsonProperty(value = "properties.apple")
     private Apple apple;
 
     /*
-     * The azureStaticWebApps property.
+     * The configuration settings of the Azure Static Web Apps provider.
      */
     @JsonProperty(value = "properties.azureStaticWebApps")
     private AzureStaticWebApps azureStaticWebApps;
 
-    /*
-     * Dictionary of <CustomOpenIdConnectProvider>
-     */
-    @JsonProperty(value = "properties.customOpenIdConnectProviders")
-    private Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders;
-
     /**
-     * Get the azureActiveDirectory property: The azureActiveDirectory property.
+     * Get the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.
      *
      * @return the azureActiveDirectory value.
      */
@@ -81,7 +86,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Set the azureActiveDirectory property: The azureActiveDirectory property.
+     * Set the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.
      *
      * @param azureActiveDirectory the azureActiveDirectory value to set.
      * @return the IdentityProviders object itself.
@@ -92,7 +97,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Get the facebook property: The facebook property.
+     * Get the facebook property: The configuration settings of the Facebook provider.
      *
      * @return the facebook value.
      */
@@ -101,7 +106,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Set the facebook property: The facebook property.
+     * Set the facebook property: The configuration settings of the Facebook provider.
      *
      * @param facebook the facebook value to set.
      * @return the IdentityProviders object itself.
@@ -112,7 +117,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Get the gitHub property: The gitHub property.
+     * Get the gitHub property: The configuration settings of the GitHub provider.
      *
      * @return the gitHub value.
      */
@@ -121,7 +126,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Set the gitHub property: The gitHub property.
+     * Set the gitHub property: The configuration settings of the GitHub provider.
      *
      * @param gitHub the gitHub value to set.
      * @return the IdentityProviders object itself.
@@ -132,7 +137,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Get the google property: The google property.
+     * Get the google property: The configuration settings of the Google provider.
      *
      * @return the google value.
      */
@@ -141,7 +146,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Set the google property: The google property.
+     * Set the google property: The configuration settings of the Google provider.
      *
      * @param google the google value to set.
      * @return the IdentityProviders object itself.
@@ -152,27 +157,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Get the legacyMicrosoftAccount property: The legacyMicrosoftAccount property.
-     *
-     * @return the legacyMicrosoftAccount value.
-     */
-    public LegacyMicrosoftAccount legacyMicrosoftAccount() {
-        return this.legacyMicrosoftAccount;
-    }
-
-    /**
-     * Set the legacyMicrosoftAccount property: The legacyMicrosoftAccount property.
-     *
-     * @param legacyMicrosoftAccount the legacyMicrosoftAccount value to set.
-     * @return the IdentityProviders object itself.
-     */
-    public IdentityProviders withLegacyMicrosoftAccount(LegacyMicrosoftAccount legacyMicrosoftAccount) {
-        this.legacyMicrosoftAccount = legacyMicrosoftAccount;
-        return this;
-    }
-
-    /**
-     * Get the twitter property: The twitter property.
+     * Get the twitter property: The configuration settings of the Twitter provider.
      *
      * @return the twitter value.
      */
@@ -181,7 +166,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Set the twitter property: The twitter property.
+     * Set the twitter property: The configuration settings of the Twitter provider.
      *
      * @param twitter the twitter value to set.
      * @return the IdentityProviders object itself.
@@ -192,7 +177,50 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Get the apple property: The apple property.
+     * Get the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
+     * provider to the configuration settings of the custom Open ID Connect provider.
+     *
+     * @return the customOpenIdConnectProviders value.
+     */
+    public Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders() {
+        return this.customOpenIdConnectProviders;
+    }
+
+    /**
+     * Set the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
+     * provider to the configuration settings of the custom Open ID Connect provider.
+     *
+     * @param customOpenIdConnectProviders the customOpenIdConnectProviders value to set.
+     * @return the IdentityProviders object itself.
+     */
+    public IdentityProviders withCustomOpenIdConnectProviders(
+        Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
+        this.customOpenIdConnectProviders = customOpenIdConnectProviders;
+        return this;
+    }
+
+    /**
+     * Get the legacyMicrosoftAccount property: The configuration settings of the legacy Microsoft Account provider.
+     *
+     * @return the legacyMicrosoftAccount value.
+     */
+    public LegacyMicrosoftAccount legacyMicrosoftAccount() {
+        return this.legacyMicrosoftAccount;
+    }
+
+    /**
+     * Set the legacyMicrosoftAccount property: The configuration settings of the legacy Microsoft Account provider.
+     *
+     * @param legacyMicrosoftAccount the legacyMicrosoftAccount value to set.
+     * @return the IdentityProviders object itself.
+     */
+    public IdentityProviders withLegacyMicrosoftAccount(LegacyMicrosoftAccount legacyMicrosoftAccount) {
+        this.legacyMicrosoftAccount = legacyMicrosoftAccount;
+        return this;
+    }
+
+    /**
+     * Get the apple property: The configuration settings of the Apple provider.
      *
      * @return the apple value.
      */
@@ -201,7 +229,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Set the apple property: The apple property.
+     * Set the apple property: The configuration settings of the Apple provider.
      *
      * @param apple the apple value to set.
      * @return the IdentityProviders object itself.
@@ -212,7 +240,7 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Get the azureStaticWebApps property: The azureStaticWebApps property.
+     * Get the azureStaticWebApps property: The configuration settings of the Azure Static Web Apps provider.
      *
      * @return the azureStaticWebApps value.
      */
@@ -221,34 +249,13 @@ public class IdentityProviders extends ProxyOnlyResource {
     }
 
     /**
-     * Set the azureStaticWebApps property: The azureStaticWebApps property.
+     * Set the azureStaticWebApps property: The configuration settings of the Azure Static Web Apps provider.
      *
      * @param azureStaticWebApps the azureStaticWebApps value to set.
      * @return the IdentityProviders object itself.
      */
     public IdentityProviders withAzureStaticWebApps(AzureStaticWebApps azureStaticWebApps) {
         this.azureStaticWebApps = azureStaticWebApps;
-        return this;
-    }
-
-    /**
-     * Get the customOpenIdConnectProviders property: Dictionary of &lt;CustomOpenIdConnectProvider&gt;.
-     *
-     * @return the customOpenIdConnectProviders value.
-     */
-    public Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders() {
-        return this.customOpenIdConnectProviders;
-    }
-
-    /**
-     * Set the customOpenIdConnectProviders property: Dictionary of &lt;CustomOpenIdConnectProvider&gt;.
-     *
-     * @param customOpenIdConnectProviders the customOpenIdConnectProviders value to set.
-     * @return the IdentityProviders object itself.
-     */
-    public IdentityProviders withCustomOpenIdConnectProviders(
-        Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
-        this.customOpenIdConnectProviders = customOpenIdConnectProviders;
         return this;
     }
 
@@ -279,17 +286,8 @@ public class IdentityProviders extends ProxyOnlyResource {
         if (google() != null) {
             google().validate();
         }
-        if (legacyMicrosoftAccount() != null) {
-            legacyMicrosoftAccount().validate();
-        }
         if (twitter() != null) {
             twitter().validate();
-        }
-        if (apple() != null) {
-            apple().validate();
-        }
-        if (azureStaticWebApps() != null) {
-            azureStaticWebApps().validate();
         }
         if (customOpenIdConnectProviders() != null) {
             customOpenIdConnectProviders()
@@ -300,6 +298,15 @@ public class IdentityProviders extends ProxyOnlyResource {
                             e.validate();
                         }
                     });
+        }
+        if (legacyMicrosoftAccount() != null) {
+            legacyMicrosoftAccount().validate();
+        }
+        if (apple() != null) {
+            apple().validate();
+        }
+        if (azureStaticWebApps() != null) {
+            azureStaticWebApps().validate();
         }
     }
 }

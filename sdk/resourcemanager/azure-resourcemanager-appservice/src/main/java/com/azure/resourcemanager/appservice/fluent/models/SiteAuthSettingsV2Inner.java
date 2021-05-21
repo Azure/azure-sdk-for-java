@@ -16,44 +16,51 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SiteAuthSettingsV2 model. */
+/** Configuration settings for the Azure App Service Authentication / Authorization V2 feature. */
 @JsonFlatten
 @Fluent
 public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteAuthSettingsV2Inner.class);
 
     /*
-     * The platform property.
+     * The configuration settings of the platform of App Service
+     * Authentication/Authorization.
      */
     @JsonProperty(value = "properties.platform")
     private AuthPlatform platform;
 
     /*
-     * The globalValidation property.
+     * The configuration settings that determines the validation flow of users
+     * using App Service Authentication/Authorization.
      */
     @JsonProperty(value = "properties.globalValidation")
     private GlobalValidation globalValidation;
 
     /*
-     * The identityProviders property.
+     * The configuration settings of each of the identity providers used to
+     * configure App Service Authentication/Authorization.
      */
     @JsonProperty(value = "properties.identityProviders")
     private IdentityProviders identityProviders;
 
     /*
-     * The login property.
+     * The configuration settings of the login flow of users using App Service
+     * Authentication/Authorization.
      */
     @JsonProperty(value = "properties.login")
     private Login login;
 
     /*
-     * The httpSettings property.
+     * The configuration settings of the HTTP requests for authentication and
+     * authorization requests made against App Service
+     * Authentication/Authorization.
      */
     @JsonProperty(value = "properties.httpSettings")
     private HttpSettings httpSettings;
 
     /**
-     * Get the platform property: The platform property.
+     * Get the platform property: The configuration settings of the platform of App Service
+     * Authentication/Authorization.
      *
      * @return the platform value.
      */
@@ -62,7 +69,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the platform property: The platform property.
+     * Set the platform property: The configuration settings of the platform of App Service
+     * Authentication/Authorization.
      *
      * @param platform the platform value to set.
      * @return the SiteAuthSettingsV2Inner object itself.
@@ -73,7 +81,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the globalValidation property: The globalValidation property.
+     * Get the globalValidation property: The configuration settings that determines the validation flow of users using
+     * App Service Authentication/Authorization.
      *
      * @return the globalValidation value.
      */
@@ -82,7 +91,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the globalValidation property: The globalValidation property.
+     * Set the globalValidation property: The configuration settings that determines the validation flow of users using
+     * App Service Authentication/Authorization.
      *
      * @param globalValidation the globalValidation value to set.
      * @return the SiteAuthSettingsV2Inner object itself.
@@ -93,7 +103,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the identityProviders property: The identityProviders property.
+     * Get the identityProviders property: The configuration settings of each of the identity providers used to
+     * configure App Service Authentication/Authorization.
      *
      * @return the identityProviders value.
      */
@@ -102,7 +113,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the identityProviders property: The identityProviders property.
+     * Set the identityProviders property: The configuration settings of each of the identity providers used to
+     * configure App Service Authentication/Authorization.
      *
      * @param identityProviders the identityProviders value to set.
      * @return the SiteAuthSettingsV2Inner object itself.
@@ -113,7 +125,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the login property: The login property.
+     * Get the login property: The configuration settings of the login flow of users using App Service
+     * Authentication/Authorization.
      *
      * @return the login value.
      */
@@ -122,7 +135,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the login property: The login property.
+     * Set the login property: The configuration settings of the login flow of users using App Service
+     * Authentication/Authorization.
      *
      * @param login the login value to set.
      * @return the SiteAuthSettingsV2Inner object itself.
@@ -133,7 +147,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the httpSettings property: The httpSettings property.
+     * Get the httpSettings property: The configuration settings of the HTTP requests for authentication and
+     * authorization requests made against App Service Authentication/Authorization.
      *
      * @return the httpSettings value.
      */
@@ -142,7 +157,8 @@ public class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the httpSettings property: The httpSettings property.
+     * Set the httpSettings property: The configuration settings of the HTTP requests for authentication and
+     * authorization requests made against App Service Authentication/Authorization.
      *
      * @param httpSettings the httpSettings value to set.
      * @return the SiteAuthSettingsV2Inner object itself.

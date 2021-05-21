@@ -11,20 +11,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LoginScopes model. */
+/** The configuration settings of the login flow, including the scopes that should be requested. */
 @JsonFlatten
 @Fluent
 public class LoginScopes extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoginScopes.class);
 
     /*
-     * The scopes property.
+     * A list of the scopes that should be requested while authenticating.
      */
     @JsonProperty(value = "properties.scopes")
     private List<String> scopes;
 
     /**
-     * Get the scopes property: The scopes property.
+     * Get the scopes property: A list of the scopes that should be requested while authenticating.
      *
      * @return the scopes value.
      */
@@ -33,7 +33,7 @@ public class LoginScopes extends ProxyOnlyResource {
     }
 
     /**
-     * Set the scopes property: The scopes property.
+     * Set the scopes property: A list of the scopes that should be requested while authenticating.
      *
      * @param scopes the scopes value to set.
      * @return the LoginScopes object itself.

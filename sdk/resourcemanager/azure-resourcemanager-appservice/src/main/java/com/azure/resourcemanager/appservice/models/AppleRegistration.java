@@ -10,26 +10,26 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppleRegistration model. */
+/** The configuration settings of the registration for the Apple provider. */
 @JsonFlatten
 @Fluent
 public class AppleRegistration extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppleRegistration.class);
 
     /*
-     * The clientId property.
+     * The Client ID of the app used for login.
      */
     @JsonProperty(value = "properties.clientId")
     private String clientId;
 
     /*
-     * The clientSecretSettingName property.
+     * The app setting name that contains the client secret.
      */
     @JsonProperty(value = "properties.clientSecretSettingName")
     private String clientSecretSettingName;
 
     /**
-     * Get the clientId property: The clientId property.
+     * Get the clientId property: The Client ID of the app used for login.
      *
      * @return the clientId value.
      */
@@ -38,7 +38,7 @@ public class AppleRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientId property: The clientId property.
+     * Set the clientId property: The Client ID of the app used for login.
      *
      * @param clientId the clientId value to set.
      * @return the AppleRegistration object itself.
@@ -49,7 +49,7 @@ public class AppleRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientSecretSettingName property: The clientSecretSettingName property.
+     * Get the clientSecretSettingName property: The app setting name that contains the client secret.
      *
      * @return the clientSecretSettingName value.
      */
@@ -58,7 +58,7 @@ public class AppleRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientSecretSettingName property: The clientSecretSettingName property.
+     * Set the clientSecretSettingName property: The app setting name that contains the client secret.
      *
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the AppleRegistration object itself.

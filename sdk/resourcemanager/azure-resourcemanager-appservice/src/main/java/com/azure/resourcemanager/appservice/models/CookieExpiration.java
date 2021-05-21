@@ -10,26 +10,27 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CookieExpiration model. */
+/** The configuration settings of the session cookie's expiration. */
 @JsonFlatten
 @Fluent
 public class CookieExpiration extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CookieExpiration.class);
 
     /*
-     * The convention property.
+     * The convention used when determining the session cookie's expiration.
      */
     @JsonProperty(value = "properties.convention")
     private CookieExpirationConvention convention;
 
     /*
-     * The timeToExpiration property.
+     * The time after the request is made when the session cookie should
+     * expire.
      */
     @JsonProperty(value = "properties.timeToExpiration")
     private String timeToExpiration;
 
     /**
-     * Get the convention property: The convention property.
+     * Get the convention property: The convention used when determining the session cookie's expiration.
      *
      * @return the convention value.
      */
@@ -38,7 +39,7 @@ public class CookieExpiration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the convention property: The convention property.
+     * Set the convention property: The convention used when determining the session cookie's expiration.
      *
      * @param convention the convention value to set.
      * @return the CookieExpiration object itself.
@@ -49,7 +50,7 @@ public class CookieExpiration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the timeToExpiration property: The timeToExpiration property.
+     * Get the timeToExpiration property: The time after the request is made when the session cookie should expire.
      *
      * @return the timeToExpiration value.
      */
@@ -58,7 +59,7 @@ public class CookieExpiration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the timeToExpiration property: The timeToExpiration property.
+     * Set the timeToExpiration property: The time after the request is made when the session cookie should expire.
      *
      * @param timeToExpiration the timeToExpiration value to set.
      * @return the CookieExpiration object itself.

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureActiveDirectoryLogin model. */
+/** The configuration settings of the Azure Active Directory login flow. */
 @JsonFlatten
 @Fluent
 public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
@@ -24,7 +24,9 @@ public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
     private Boolean disableWwwAuthenticate;
 
     /*
-     * The loginParameters property.
+     * Login parameters to send to the OpenID Connect authorization endpoint
+     * when
+     * a user logs in. Each parameter must be in the form "key=value".
      */
     @JsonProperty(value = "properties.loginParameters")
     private List<String> loginParameters;
@@ -50,7 +52,8 @@ public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
     }
 
     /**
-     * Get the loginParameters property: The loginParameters property.
+     * Get the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a
+     * user logs in. Each parameter must be in the form "key=value".
      *
      * @return the loginParameters value.
      */
@@ -59,7 +62,8 @@ public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
     }
 
     /**
-     * Set the loginParameters property: The loginParameters property.
+     * Set the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a
+     * user logs in. Each parameter must be in the form "key=value".
      *
      * @param loginParameters the loginParameters value to set.
      * @return the AzureActiveDirectoryLogin object itself.

@@ -20,6 +20,12 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificatePatchResource.class);
 
     /*
+     * Certificate password.
+     */
+    @JsonProperty(value = "properties.password")
+    private String password;
+
+    /*
      * Friendly name of the certificate.
      */
     @JsonProperty(value = "properties.friendlyName", access = JsonProperty.Access.WRITE_ONLY)
@@ -72,12 +78,6 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
-
-    /*
-     * Certificate password.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
 
     /*
      * Certificate thumbprint.
@@ -147,6 +147,26 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.domainValidationMethod")
     private String domainValidationMethod;
+
+    /**
+     * Get the password property: Certificate password.
+     *
+     * @return the password value.
+     */
+    public String password() {
+        return this.password;
+    }
+
+    /**
+     * Set the password property: Certificate password.
+     *
+     * @param password the password value to set.
+     * @return the CertificatePatchResource object itself.
+     */
+    public CertificatePatchResource withPassword(String password) {
+        this.password = password;
+        return this;
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the certificate.
@@ -249,26 +269,6 @@ public class CertificatePatchResource extends ProxyOnlyResource {
      */
     public OffsetDateTime expirationDate() {
         return this.expirationDate;
-    }
-
-    /**
-     * Get the password property: Certificate password.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Certificate password.
-     *
-     * @param password the password value to set.
-     * @return the CertificatePatchResource object itself.
-     */
-    public CertificatePatchResource withPassword(String password) {
-        this.password = password;
-        return this;
     }
 
     /**

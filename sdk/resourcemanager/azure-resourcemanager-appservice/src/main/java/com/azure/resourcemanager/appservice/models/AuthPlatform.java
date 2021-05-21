@@ -10,32 +10,39 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AuthPlatform model. */
+/** The configuration settings of the platform of App Service Authentication/Authorization. */
 @JsonFlatten
 @Fluent
 public class AuthPlatform extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthPlatform.class);
 
     /*
-     * The enabled property.
+     * <code>true</code> if the Authentication / Authorization feature is
+     * enabled for the current app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /*
-     * The runtimeVersion property.
+     * The RuntimeVersion of the Authentication / Authorization feature in use
+     * for the current app.
+     * The setting in this value can control the behavior of certain features
+     * in the Authentication / Authorization module.
      */
     @JsonProperty(value = "properties.runtimeVersion")
     private String runtimeVersion;
 
     /*
-     * The configFilePath property.
+     * The path of the config file containing auth settings if they come from a
+     * file.
+     * If the path is relative, base will the site's root directory.
      */
     @JsonProperty(value = "properties.configFilePath")
     private String configFilePath;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
+     * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -44,7 +51,8 @@ public class AuthPlatform extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
+     * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the AuthPlatform object itself.
@@ -55,7 +63,9 @@ public class AuthPlatform extends ProxyOnlyResource {
     }
 
     /**
-     * Get the runtimeVersion property: The runtimeVersion property.
+     * Get the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
+     * current app. The setting in this value can control the behavior of certain features in the Authentication /
+     * Authorization module.
      *
      * @return the runtimeVersion value.
      */
@@ -64,7 +74,9 @@ public class AuthPlatform extends ProxyOnlyResource {
     }
 
     /**
-     * Set the runtimeVersion property: The runtimeVersion property.
+     * Set the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
+     * current app. The setting in this value can control the behavior of certain features in the Authentication /
+     * Authorization module.
      *
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the AuthPlatform object itself.
@@ -75,7 +87,8 @@ public class AuthPlatform extends ProxyOnlyResource {
     }
 
     /**
-     * Get the configFilePath property: The configFilePath property.
+     * Get the configFilePath property: The path of the config file containing auth settings if they come from a file.
+     * If the path is relative, base will the site's root directory.
      *
      * @return the configFilePath value.
      */
@@ -84,7 +97,8 @@ public class AuthPlatform extends ProxyOnlyResource {
     }
 
     /**
-     * Set the configFilePath property: The configFilePath property.
+     * Set the configFilePath property: The path of the config file containing auth settings if they come from a file.
+     * If the path is relative, base will the site's root directory.
      *
      * @param configFilePath the configFilePath value to set.
      * @return the AuthPlatform object itself.

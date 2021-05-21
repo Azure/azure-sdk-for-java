@@ -87,6 +87,20 @@ public interface WebSiteManagementClient {
     DomainRegistrationProvidersClient getDomainRegistrationProviders();
 
     /**
+     * Gets the AppServiceEnvironmentsClient object to access its operations.
+     *
+     * @return the AppServiceEnvironmentsClient object.
+     */
+    AppServiceEnvironmentsClient getAppServiceEnvironments();
+
+    /**
+     * Gets the AppServicePlansClient object to access its operations.
+     *
+     * @return the AppServicePlansClient object.
+     */
+    AppServicePlansClient getAppServicePlans();
+
+    /**
      * Gets the CertificatesClient object to access its operations.
      *
      * @return the CertificatesClient object.
@@ -129,18 +143,18 @@ public interface WebSiteManagementClient {
     RecommendationsClient getRecommendations();
 
     /**
+     * Gets the ResourceHealthMetadatasClient object to access its operations.
+     *
+     * @return the ResourceHealthMetadatasClient object.
+     */
+    ResourceHealthMetadatasClient getResourceHealthMetadatas();
+
+    /**
      * Gets the ResourceProvidersClient object to access its operations.
      *
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
-
-    /**
-     * Gets the WebAppsClient object to access its operations.
-     *
-     * @return the WebAppsClient object.
-     */
-    WebAppsClient getWebApps();
 
     /**
      * Gets the StaticSitesClient object to access its operations.
@@ -150,23 +164,16 @@ public interface WebSiteManagementClient {
     StaticSitesClient getStaticSites();
 
     /**
-     * Gets the AppServiceEnvironmentsClient object to access its operations.
+     * Gets the WebAppsClient object to access its operations.
      *
-     * @return the AppServiceEnvironmentsClient object.
+     * @return the WebAppsClient object.
      */
-    AppServiceEnvironmentsClient getAppServiceEnvironments();
+    WebAppsClient getWebApps();
 
     /**
-     * Gets the AppServicePlansClient object to access its operations.
+     * Gets the KubeEnvironmentsClient object to access its operations.
      *
-     * @return the AppServicePlansClient object.
+     * @return the KubeEnvironmentsClient object.
      */
-    AppServicePlansClient getAppServicePlans();
-
-    /**
-     * Gets the ResourceHealthMetadatasClient object to access its operations.
-     *
-     * @return the ResourceHealthMetadatasClient object.
-     */
-    ResourceHealthMetadatasClient getResourceHealthMetadatas();
+    KubeEnvironmentsClient getKubeEnvironments();
 }

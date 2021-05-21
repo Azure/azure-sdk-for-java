@@ -10,32 +10,36 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomOpenIdConnectProvider model. */
+/** The configuration settings of the custom Open ID Connect provider. */
 @JsonFlatten
 @Fluent
 public class CustomOpenIdConnectProvider extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomOpenIdConnectProvider.class);
 
     /*
-     * The enabled property.
+     * <code>false</code> if the custom Open ID provider provider should not be
+     * enabled; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /*
-     * The registration property.
+     * The configuration settings of the app registration for the custom Open
+     * ID Connect provider.
      */
     @JsonProperty(value = "properties.registration")
     private OpenIdConnectRegistration registration;
 
     /*
-     * The login property.
+     * The configuration settings of the login flow of the custom Open ID
+     * Connect provider.
      */
     @JsonProperty(value = "properties.login")
     private OpenIdConnectLogin login;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the custom Open ID provider provider should not be
+     * enabled; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -44,7 +48,8 @@ public class CustomOpenIdConnectProvider extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the custom Open ID provider provider should not be
+     * enabled; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the CustomOpenIdConnectProvider object itself.
@@ -55,7 +60,8 @@ public class CustomOpenIdConnectProvider extends ProxyOnlyResource {
     }
 
     /**
-     * Get the registration property: The registration property.
+     * Get the registration property: The configuration settings of the app registration for the custom Open ID Connect
+     * provider.
      *
      * @return the registration value.
      */
@@ -64,7 +70,8 @@ public class CustomOpenIdConnectProvider extends ProxyOnlyResource {
     }
 
     /**
-     * Set the registration property: The registration property.
+     * Set the registration property: The configuration settings of the app registration for the custom Open ID Connect
+     * provider.
      *
      * @param registration the registration value to set.
      * @return the CustomOpenIdConnectProvider object itself.
@@ -75,7 +82,7 @@ public class CustomOpenIdConnectProvider extends ProxyOnlyResource {
     }
 
     /**
-     * Get the login property: The login property.
+     * Get the login property: The configuration settings of the login flow of the custom Open ID Connect provider.
      *
      * @return the login value.
      */
@@ -84,7 +91,7 @@ public class CustomOpenIdConnectProvider extends ProxyOnlyResource {
     }
 
     /**
-     * Set the login property: The login property.
+     * Set the login property: The configuration settings of the login flow of the custom Open ID Connect provider.
      *
      * @param login the login value to set.
      * @return the CustomOpenIdConnectProvider object itself.

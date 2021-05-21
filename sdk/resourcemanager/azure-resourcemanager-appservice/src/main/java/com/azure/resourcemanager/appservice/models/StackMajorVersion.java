@@ -49,26 +49,6 @@ public final class StackMajorVersion {
     private Boolean applicationInsights;
 
     /*
-     * <appSettings>
-     * <appSetting name="FUNCTIONS_WORKER_RUNTIME" value="dotnet" />
-     * </appSettings>
-     * Example: All the function apps need AppSetting:
-     * "FUNCTIONS_WORKER_RUNTIME" to be set stack name
-     */
-    @JsonProperty(value = "appSettingsDictionary")
-    private Map<String, Object> appSettingsDictionary;
-
-    /*
-     * <siteConfigProperties>
-     * <siteConfigProperty name="Use32BitWorkerProcess" value="false" />
-     * </siteConfigProperties>
-     * Example: All Linux Function Apps, need Use32BitWorkerProcess to be set
-     * to 0
-     */
-    @JsonProperty(value = "siteConfigPropertiesDictionary")
-    private Map<String, Object> siteConfigPropertiesDictionary;
-
-    /*
      * <code>true</code> if this stack is in Preview, otherwise
      * <code>false</code>.
      */
@@ -88,6 +68,26 @@ public final class StackMajorVersion {
      */
     @JsonProperty(value = "isHidden")
     private Boolean isHidden;
+
+    /*
+     * <appSettings>
+     * <appSetting name="FUNCTIONS_WORKER_RUNTIME" value="dotnet" />
+     * </appSettings>
+     * Example: All the function apps need AppSetting:
+     * "FUNCTIONS_WORKER_RUNTIME" to be set stack name
+     */
+    @JsonProperty(value = "appSettingsDictionary")
+    private Map<String, Object> appSettingsDictionary;
+
+    /*
+     * <siteConfigProperties>
+     * <siteConfigProperty name="Use32BitWorkerProcess" value="false" />
+     * </siteConfigProperties>
+     * Example: All Linux Function Apps, need Use32BitWorkerProcess to be set
+     * to 0
+     */
+    @JsonProperty(value = "siteConfigPropertiesDictionary")
+    private Map<String, Object> siteConfigPropertiesDictionary;
 
     /**
      * Get the displayVersion property: Application stack major version (display only).
@@ -194,54 +194,6 @@ public final class StackMajorVersion {
     }
 
     /**
-     * Get the appSettingsDictionary property: &lt;appSettings&gt; &lt;appSetting name="FUNCTIONS_WORKER_RUNTIME"
-     * value="dotnet" /&gt; &lt;/appSettings&gt; Example: All the function apps need AppSetting:
-     * "FUNCTIONS_WORKER_RUNTIME" to be set stack name.
-     *
-     * @return the appSettingsDictionary value.
-     */
-    public Map<String, Object> appSettingsDictionary() {
-        return this.appSettingsDictionary;
-    }
-
-    /**
-     * Set the appSettingsDictionary property: &lt;appSettings&gt; &lt;appSetting name="FUNCTIONS_WORKER_RUNTIME"
-     * value="dotnet" /&gt; &lt;/appSettings&gt; Example: All the function apps need AppSetting:
-     * "FUNCTIONS_WORKER_RUNTIME" to be set stack name.
-     *
-     * @param appSettingsDictionary the appSettingsDictionary value to set.
-     * @return the StackMajorVersion object itself.
-     */
-    public StackMajorVersion withAppSettingsDictionary(Map<String, Object> appSettingsDictionary) {
-        this.appSettingsDictionary = appSettingsDictionary;
-        return this;
-    }
-
-    /**
-     * Get the siteConfigPropertiesDictionary property: &lt;siteConfigProperties&gt; &lt;siteConfigProperty
-     * name="Use32BitWorkerProcess" value="false" /&gt; &lt;/siteConfigProperties&gt; Example: All Linux Function Apps,
-     * need Use32BitWorkerProcess to be set to 0.
-     *
-     * @return the siteConfigPropertiesDictionary value.
-     */
-    public Map<String, Object> siteConfigPropertiesDictionary() {
-        return this.siteConfigPropertiesDictionary;
-    }
-
-    /**
-     * Set the siteConfigPropertiesDictionary property: &lt;siteConfigProperties&gt; &lt;siteConfigProperty
-     * name="Use32BitWorkerProcess" value="false" /&gt; &lt;/siteConfigProperties&gt; Example: All Linux Function Apps,
-     * need Use32BitWorkerProcess to be set to 0.
-     *
-     * @param siteConfigPropertiesDictionary the siteConfigPropertiesDictionary value to set.
-     * @return the StackMajorVersion object itself.
-     */
-    public StackMajorVersion withSiteConfigPropertiesDictionary(Map<String, Object> siteConfigPropertiesDictionary) {
-        this.siteConfigPropertiesDictionary = siteConfigPropertiesDictionary;
-        return this;
-    }
-
-    /**
      * Get the isPreview property: &lt;code&gt;true&lt;/code&gt; if this stack is in Preview, otherwise
      * &lt;code&gt;false&lt;/code&gt;.
      *
@@ -304,6 +256,54 @@ public final class StackMajorVersion {
      */
     public StackMajorVersion withIsHidden(Boolean isHidden) {
         this.isHidden = isHidden;
+        return this;
+    }
+
+    /**
+     * Get the appSettingsDictionary property: &lt;appSettings&gt; &lt;appSetting name="FUNCTIONS_WORKER_RUNTIME"
+     * value="dotnet" /&gt; &lt;/appSettings&gt; Example: All the function apps need AppSetting:
+     * "FUNCTIONS_WORKER_RUNTIME" to be set stack name.
+     *
+     * @return the appSettingsDictionary value.
+     */
+    public Map<String, Object> appSettingsDictionary() {
+        return this.appSettingsDictionary;
+    }
+
+    /**
+     * Set the appSettingsDictionary property: &lt;appSettings&gt; &lt;appSetting name="FUNCTIONS_WORKER_RUNTIME"
+     * value="dotnet" /&gt; &lt;/appSettings&gt; Example: All the function apps need AppSetting:
+     * "FUNCTIONS_WORKER_RUNTIME" to be set stack name.
+     *
+     * @param appSettingsDictionary the appSettingsDictionary value to set.
+     * @return the StackMajorVersion object itself.
+     */
+    public StackMajorVersion withAppSettingsDictionary(Map<String, Object> appSettingsDictionary) {
+        this.appSettingsDictionary = appSettingsDictionary;
+        return this;
+    }
+
+    /**
+     * Get the siteConfigPropertiesDictionary property: &lt;siteConfigProperties&gt; &lt;siteConfigProperty
+     * name="Use32BitWorkerProcess" value="false" /&gt; &lt;/siteConfigProperties&gt; Example: All Linux Function Apps,
+     * need Use32BitWorkerProcess to be set to 0.
+     *
+     * @return the siteConfigPropertiesDictionary value.
+     */
+    public Map<String, Object> siteConfigPropertiesDictionary() {
+        return this.siteConfigPropertiesDictionary;
+    }
+
+    /**
+     * Set the siteConfigPropertiesDictionary property: &lt;siteConfigProperties&gt; &lt;siteConfigProperty
+     * name="Use32BitWorkerProcess" value="false" /&gt; &lt;/siteConfigProperties&gt; Example: All Linux Function Apps,
+     * need Use32BitWorkerProcess to be set to 0.
+     *
+     * @param siteConfigPropertiesDictionary the siteConfigPropertiesDictionary value to set.
+     * @return the StackMajorVersion object itself.
+     */
+    public StackMajorVersion withSiteConfigPropertiesDictionary(Map<String, Object> siteConfigPropertiesDictionary) {
+        this.siteConfigPropertiesDictionary = siteConfigPropertiesDictionary;
         return this;
     }
 

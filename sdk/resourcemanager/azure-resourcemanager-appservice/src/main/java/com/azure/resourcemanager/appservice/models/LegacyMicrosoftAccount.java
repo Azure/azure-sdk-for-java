@@ -10,38 +10,42 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LegacyMicrosoftAccount model. */
+/** The configuration settings of the legacy Microsoft Account provider. */
 @JsonFlatten
 @Fluent
 public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyMicrosoftAccount.class);
 
     /*
-     * The enabled property.
+     * <code>false</code> if the legacy Microsoft Account provider should not
+     * be enabled despite the set registration; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /*
-     * The registration property.
+     * The configuration settings of the app registration for the legacy
+     * Microsoft Account provider.
      */
     @JsonProperty(value = "properties.registration")
     private ClientRegistration registration;
 
     /*
-     * The login property.
+     * The configuration settings of the login flow.
      */
     @JsonProperty(value = "properties.login")
     private LoginScopes login;
 
     /*
-     * The validation property.
+     * The configuration settings of the legacy Microsoft Account provider
+     * token validation flow.
      */
     @JsonProperty(value = "properties.validation")
     private AllowedAudiencesValidation validation;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the legacy Microsoft Account provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -50,7 +54,8 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the legacy Microsoft Account provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the LegacyMicrosoftAccount object itself.
@@ -61,7 +66,8 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     }
 
     /**
-     * Get the registration property: The registration property.
+     * Get the registration property: The configuration settings of the app registration for the legacy Microsoft
+     * Account provider.
      *
      * @return the registration value.
      */
@@ -70,7 +76,8 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     }
 
     /**
-     * Set the registration property: The registration property.
+     * Set the registration property: The configuration settings of the app registration for the legacy Microsoft
+     * Account provider.
      *
      * @param registration the registration value to set.
      * @return the LegacyMicrosoftAccount object itself.
@@ -81,7 +88,7 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     }
 
     /**
-     * Get the login property: The login property.
+     * Get the login property: The configuration settings of the login flow.
      *
      * @return the login value.
      */
@@ -90,7 +97,7 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     }
 
     /**
-     * Set the login property: The login property.
+     * Set the login property: The configuration settings of the login flow.
      *
      * @param login the login value to set.
      * @return the LegacyMicrosoftAccount object itself.
@@ -101,7 +108,8 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     }
 
     /**
-     * Get the validation property: The validation property.
+     * Get the validation property: The configuration settings of the legacy Microsoft Account provider token validation
+     * flow.
      *
      * @return the validation value.
      */
@@ -110,7 +118,8 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     }
 
     /**
-     * Set the validation property: The validation property.
+     * Set the validation property: The configuration settings of the legacy Microsoft Account provider token validation
+     * flow.
      *
      * @param validation the validation value to set.
      * @return the LegacyMicrosoftAccount object itself.

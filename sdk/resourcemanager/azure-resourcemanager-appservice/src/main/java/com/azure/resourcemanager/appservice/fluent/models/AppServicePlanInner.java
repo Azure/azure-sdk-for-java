@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
@@ -29,6 +30,12 @@ public class AppServicePlanInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private SkuDescription sku;
+
+    /*
+     * Extended Location.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * Target worker tier assigned to the App Service plan.
@@ -184,6 +191,26 @@ public class AppServicePlanInner extends Resource {
      */
     public AppServicePlanInner withSku(SkuDescription sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Extended Location.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Extended Location.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -571,6 +598,9 @@ public class AppServicePlanInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();

@@ -10,20 +10,20 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LoginRoutes model. */
+/** The routes that specify the endpoints used for login and logout requests. */
 @JsonFlatten
 @Fluent
 public class LoginRoutes extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoginRoutes.class);
 
     /*
-     * The logoutEndpoint property.
+     * The endpoint at which a logout request should be made.
      */
     @JsonProperty(value = "properties.logoutEndpoint")
     private String logoutEndpoint;
 
     /**
-     * Get the logoutEndpoint property: The logoutEndpoint property.
+     * Get the logoutEndpoint property: The endpoint at which a logout request should be made.
      *
      * @return the logoutEndpoint value.
      */
@@ -32,7 +32,7 @@ public class LoginRoutes extends ProxyOnlyResource {
     }
 
     /**
-     * Set the logoutEndpoint property: The logoutEndpoint property.
+     * Set the logoutEndpoint property: The endpoint at which a logout request should be made.
      *
      * @param logoutEndpoint the logoutEndpoint value to set.
      * @return the LoginRoutes object itself.

@@ -10,20 +10,20 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FileSystemTokenStore model. */
+/** The configuration settings of the storage of the tokens if a file system is used. */
 @JsonFlatten
 @Fluent
 public class FileSystemTokenStore extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FileSystemTokenStore.class);
 
     /*
-     * The directory property.
+     * The directory in which the tokens will be stored.
      */
     @JsonProperty(value = "properties.directory")
     private String directory;
 
     /**
-     * Get the directory property: The directory property.
+     * Get the directory property: The directory in which the tokens will be stored.
      *
      * @return the directory value.
      */
@@ -32,7 +32,7 @@ public class FileSystemTokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Set the directory property: The directory property.
+     * Set the directory property: The directory in which the tokens will be stored.
      *
      * @param directory the directory value to set.
      * @return the FileSystemTokenStore object itself.

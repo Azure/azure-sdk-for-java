@@ -11,26 +11,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OpenIdConnectLogin model. */
+/** The configuration settings of the login flow of the custom Open ID Connect provider. */
 @JsonFlatten
 @Fluent
 public class OpenIdConnectLogin extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenIdConnectLogin.class);
 
     /*
-     * The nameClaimType property.
+     * The name of the claim that contains the users name.
      */
     @JsonProperty(value = "properties.nameClaimType")
     private String nameClaimType;
 
     /*
-     * The scopes property.
+     * A list of the scopes that should be requested while authenticating.
      */
     @JsonProperty(value = "properties.scopes")
     private List<String> scopes;
 
     /**
-     * Get the nameClaimType property: The nameClaimType property.
+     * Get the nameClaimType property: The name of the claim that contains the users name.
      *
      * @return the nameClaimType value.
      */
@@ -39,7 +39,7 @@ public class OpenIdConnectLogin extends ProxyOnlyResource {
     }
 
     /**
-     * Set the nameClaimType property: The nameClaimType property.
+     * Set the nameClaimType property: The name of the claim that contains the users name.
      *
      * @param nameClaimType the nameClaimType value to set.
      * @return the OpenIdConnectLogin object itself.
@@ -50,7 +50,7 @@ public class OpenIdConnectLogin extends ProxyOnlyResource {
     }
 
     /**
-     * Get the scopes property: The scopes property.
+     * Get the scopes property: A list of the scopes that should be requested while authenticating.
      *
      * @return the scopes value.
      */
@@ -59,7 +59,7 @@ public class OpenIdConnectLogin extends ProxyOnlyResource {
     }
 
     /**
-     * Set the scopes property: The scopes property.
+     * Set the scopes property: A list of the scopes that should be requested while authenticating.
      *
      * @param scopes the scopes value to set.
      * @return the OpenIdConnectLogin object itself.

@@ -10,26 +10,28 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureStaticWebApps model. */
+/** The configuration settings of the Azure Static Web Apps provider. */
 @JsonFlatten
 @Fluent
 public class AzureStaticWebApps extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStaticWebApps.class);
 
     /*
-     * The enabled property.
+     * <code>false</code> if the Azure Static Web Apps provider should not be
+     * enabled despite the set registration; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /*
-     * The registration property.
+     * The configuration settings of the Azure Static Web Apps registration.
      */
     @JsonProperty(value = "properties.registration")
     private AzureStaticWebAppsRegistration registration;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Static Web Apps provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -38,7 +40,8 @@ public class AzureStaticWebApps extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Static Web Apps provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the AzureStaticWebApps object itself.
@@ -49,7 +52,7 @@ public class AzureStaticWebApps extends ProxyOnlyResource {
     }
 
     /**
-     * Get the registration property: The registration property.
+     * Get the registration property: The configuration settings of the Azure Static Web Apps registration.
      *
      * @return the registration value.
      */
@@ -58,7 +61,7 @@ public class AzureStaticWebApps extends ProxyOnlyResource {
     }
 
     /**
-     * Set the registration property: The registration property.
+     * Set the registration property: The configuration settings of the Azure Static Web Apps registration.
      *
      * @param registration the registration value to set.
      * @return the AzureStaticWebApps object itself.

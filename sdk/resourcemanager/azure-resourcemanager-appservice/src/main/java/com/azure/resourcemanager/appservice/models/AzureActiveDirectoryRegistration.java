@@ -10,38 +10,56 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureActiveDirectoryRegistration model. */
+/** The configuration settings of the Azure Active Directory app registration. */
 @JsonFlatten
 @Fluent
 public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryRegistration.class);
 
     /*
-     * The openIdIssuer property.
+     * The OpenID Connect Issuer URI that represents the entity which issues
+     * access tokens for this application.
+     * When using Azure Active Directory, this value is the URI of the
+     * directory tenant, e.g.
+     * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
+     * This URI is a case-sensitive identifier for the token issuer.
+     * More information on OpenID Connect Discovery:
+     * http://openid.net/specs/openid-connect-discovery-1_0.html
      */
     @JsonProperty(value = "properties.openIdIssuer")
     private String openIdIssuer;
 
     /*
-     * The clientId property.
+     * The Client ID of this relying party application, known as the client_id.
+     * This setting is required for enabling OpenID Connection authentication
+     * with Azure Active Directory or
+     * other 3rd party OpenID Connect providers.
+     * More information on OpenID Connect:
+     * http://openid.net/specs/openid-connect-core-1_0.html
      */
     @JsonProperty(value = "properties.clientId")
     private String clientId;
 
     /*
-     * The clientSecretSettingName property.
+     * The app setting name that contains the client secret of the relying
+     * party application.
      */
     @JsonProperty(value = "properties.clientSecretSettingName")
     private String clientSecretSettingName;
 
     /*
-     * The clientSecretCertificateThumbprint property.
+     * An alternative to the client secret, that is the thumbprint of a
+     * certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret. It is also optional.
      */
     @JsonProperty(value = "properties.clientSecretCertificateThumbprint")
     private String clientSecretCertificateThumbprint;
 
     /**
-     * Get the openIdIssuer property: The openIdIssuer property.
+     * Get the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
+     * tokens for this application. When using Azure Active Directory, this value is the URI of the directory tenant,
+     * e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token
+     * issuer. More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
      *
      * @return the openIdIssuer value.
      */
@@ -50,7 +68,10 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the openIdIssuer property: The openIdIssuer property.
+     * Set the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
+     * tokens for this application. When using Azure Active Directory, this value is the URI of the directory tenant,
+     * e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token
+     * issuer. More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
      *
      * @param openIdIssuer the openIdIssuer value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
@@ -61,7 +82,9 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientId property: The clientId property.
+     * Get the clientId property: The Client ID of this relying party application, known as the client_id. This setting
+     * is required for enabling OpenID Connection authentication with Azure Active Directory or other 3rd party OpenID
+     * Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
      *
      * @return the clientId value.
      */
@@ -70,7 +93,9 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientId property: The clientId property.
+     * Set the clientId property: The Client ID of this relying party application, known as the client_id. This setting
+     * is required for enabling OpenID Connection authentication with Azure Active Directory or other 3rd party OpenID
+     * Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
      *
      * @param clientId the clientId value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
@@ -81,7 +106,8 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientSecretSettingName property: The clientSecretSettingName property.
+     * Get the clientSecretSettingName property: The app setting name that contains the client secret of the relying
+     * party application.
      *
      * @return the clientSecretSettingName value.
      */
@@ -90,7 +116,8 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientSecretSettingName property: The clientSecretSettingName property.
+     * Set the clientSecretSettingName property: The app setting name that contains the client secret of the relying
+     * party application.
      *
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
@@ -101,7 +128,9 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientSecretCertificateThumbprint property: The clientSecretCertificateThumbprint property.
+     * Get the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
+     * of a certificate used for signing purposes. This property acts as a replacement for the Client Secret. It is also
+     * optional.
      *
      * @return the clientSecretCertificateThumbprint value.
      */
@@ -110,7 +139,9 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientSecretCertificateThumbprint property: The clientSecretCertificateThumbprint property.
+     * Set the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
+     * of a certificate used for signing purposes. This property acts as a replacement for the Client Secret. It is also
+     * optional.
      *
      * @param clientSecretCertificateThumbprint the clientSecretCertificateThumbprint value to set.
      * @return the AzureActiveDirectoryRegistration object itself.

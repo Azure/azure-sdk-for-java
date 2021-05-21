@@ -11,26 +11,29 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureActiveDirectoryValidation model. */
+/** The configuration settings of the Azure Active Directory token validation flow. */
 @JsonFlatten
 @Fluent
 public class AzureActiveDirectoryValidation extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryValidation.class);
 
     /*
-     * The jwtClaimChecks property.
+     * The configuration settings of the checks that should be made while
+     * validating the JWT Claims.
      */
     @JsonProperty(value = "properties.jwtClaimChecks")
     private JwtClaimChecks jwtClaimChecks;
 
     /*
-     * The allowedAudiences property.
+     * The list of audiences that can make successful
+     * authentication/authorization requests.
      */
     @JsonProperty(value = "properties.allowedAudiences")
     private List<String> allowedAudiences;
 
     /**
-     * Get the jwtClaimChecks property: The jwtClaimChecks property.
+     * Get the jwtClaimChecks property: The configuration settings of the checks that should be made while validating
+     * the JWT Claims.
      *
      * @return the jwtClaimChecks value.
      */
@@ -39,7 +42,8 @@ public class AzureActiveDirectoryValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Set the jwtClaimChecks property: The jwtClaimChecks property.
+     * Set the jwtClaimChecks property: The configuration settings of the checks that should be made while validating
+     * the JWT Claims.
      *
      * @param jwtClaimChecks the jwtClaimChecks value to set.
      * @return the AzureActiveDirectoryValidation object itself.
@@ -50,7 +54,8 @@ public class AzureActiveDirectoryValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Get the allowedAudiences property: The allowedAudiences property.
+     * Get the allowedAudiences property: The list of audiences that can make successful authentication/authorization
+     * requests.
      *
      * @return the allowedAudiences value.
      */
@@ -59,7 +64,8 @@ public class AzureActiveDirectoryValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Set the allowedAudiences property: The allowedAudiences property.
+     * Set the allowedAudiences property: The list of audiences that can make successful authentication/authorization
+     * requests.
      *
      * @param allowedAudiences the allowedAudiences value to set.
      * @return the AzureActiveDirectoryValidation object itself.

@@ -10,44 +10,45 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OpenIdConnectConfig model. */
+/** The configuration settings of the endpoints used for the custom Open ID Connect provider. */
 @JsonFlatten
 @Fluent
 public class OpenIdConnectConfig extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenIdConnectConfig.class);
 
     /*
-     * The authorizationEndpoint property.
+     * The endpoint to be used to make an authorization request.
      */
     @JsonProperty(value = "properties.authorizationEndpoint")
     private String authorizationEndpoint;
 
     /*
-     * The tokenEndpoint property.
+     * The endpoint to be used to request a token.
      */
     @JsonProperty(value = "properties.tokenEndpoint")
     private String tokenEndpoint;
 
     /*
-     * The issuer property.
+     * The endpoint that issues the token.
      */
     @JsonProperty(value = "properties.issuer")
     private String issuer;
 
     /*
-     * The certificationUri property.
+     * The endpoint that provides the keys necessary to validate the token.
      */
     @JsonProperty(value = "properties.certificationUri")
     private String certificationUri;
 
     /*
-     * The wellKnownOpenIdConfiguration property.
+     * The endpoint that contains all the configuration endpoints for the
+     * provider.
      */
     @JsonProperty(value = "properties.wellKnownOpenIdConfiguration")
     private String wellKnownOpenIdConfiguration;
 
     /**
-     * Get the authorizationEndpoint property: The authorizationEndpoint property.
+     * Get the authorizationEndpoint property: The endpoint to be used to make an authorization request.
      *
      * @return the authorizationEndpoint value.
      */
@@ -56,7 +57,7 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Set the authorizationEndpoint property: The authorizationEndpoint property.
+     * Set the authorizationEndpoint property: The endpoint to be used to make an authorization request.
      *
      * @param authorizationEndpoint the authorizationEndpoint value to set.
      * @return the OpenIdConnectConfig object itself.
@@ -67,7 +68,7 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tokenEndpoint property: The tokenEndpoint property.
+     * Get the tokenEndpoint property: The endpoint to be used to request a token.
      *
      * @return the tokenEndpoint value.
      */
@@ -76,7 +77,7 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tokenEndpoint property: The tokenEndpoint property.
+     * Set the tokenEndpoint property: The endpoint to be used to request a token.
      *
      * @param tokenEndpoint the tokenEndpoint value to set.
      * @return the OpenIdConnectConfig object itself.
@@ -87,7 +88,7 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Get the issuer property: The issuer property.
+     * Get the issuer property: The endpoint that issues the token.
      *
      * @return the issuer value.
      */
@@ -96,7 +97,7 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Set the issuer property: The issuer property.
+     * Set the issuer property: The endpoint that issues the token.
      *
      * @param issuer the issuer value to set.
      * @return the OpenIdConnectConfig object itself.
@@ -107,7 +108,7 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Get the certificationUri property: The certificationUri property.
+     * Get the certificationUri property: The endpoint that provides the keys necessary to validate the token.
      *
      * @return the certificationUri value.
      */
@@ -116,7 +117,7 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Set the certificationUri property: The certificationUri property.
+     * Set the certificationUri property: The endpoint that provides the keys necessary to validate the token.
      *
      * @param certificationUri the certificationUri value to set.
      * @return the OpenIdConnectConfig object itself.
@@ -127,7 +128,8 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Get the wellKnownOpenIdConfiguration property: The wellKnownOpenIdConfiguration property.
+     * Get the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for the
+     * provider.
      *
      * @return the wellKnownOpenIdConfiguration value.
      */
@@ -136,7 +138,8 @@ public class OpenIdConnectConfig extends ProxyOnlyResource {
     }
 
     /**
-     * Set the wellKnownOpenIdConfiguration property: The wellKnownOpenIdConfiguration property.
+     * Set the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for the
+     * provider.
      *
      * @param wellKnownOpenIdConfiguration the wellKnownOpenIdConfiguration value to set.
      * @return the OpenIdConnectConfig object itself.

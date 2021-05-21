@@ -57,13 +57,6 @@ public class StaticSiteArmResourceInner extends Resource {
     private String branch;
 
     /*
-     * The provider that submitted the last deployment to the primary
-     * environment of the static site.
-     */
-    @JsonProperty(value = "properties.provider", access = JsonProperty.Access.WRITE_ONLY)
-    private String provider;
-
-    /*
      * The custom domains associated with this static site.
      */
     @JsonProperty(value = "properties.customDomains", access = JsonProperty.Access.WRITE_ONLY)
@@ -83,16 +76,30 @@ public class StaticSiteArmResourceInner extends Resource {
     private StaticSiteBuildProperties buildProperties;
 
     /*
-     * Template options for generating a new repository.
-     */
-    @JsonProperty(value = "properties.templateProperties")
-    private StaticSiteTemplateOptions templateProperties;
-
-    /*
      * Private endpoint connections
      */
     @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResponseMessageEnvelopeRemotePrivateEndpointConnection> privateEndpointConnections;
+
+    /*
+     * State indicating whether staging environments are allowed or not allowed
+     * for a static web app.
+     */
+    @JsonProperty(value = "properties.stagingEnvironmentPolicy")
+    private StagingEnvironmentPolicy stagingEnvironmentPolicy;
+
+    /*
+     * <code>false</code> if config file is locked for this static web app;
+     * otherwise, <code>true</code>.
+     */
+    @JsonProperty(value = "properties.allowConfigFileUpdates")
+    private Boolean allowConfigFileUpdates;
+
+    /*
+     * Template options for generating a new repository.
+     */
+    @JsonProperty(value = "properties.templateProperties")
+    private StaticSiteTemplateOptions templateProperties;
 
     /*
      * The content distribution endpoint for the static site.
@@ -113,18 +120,11 @@ public class StaticSiteArmResourceInner extends Resource {
     private List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps;
 
     /*
-     * State indicating whether staging environments are allowed or not allowed
-     * for a static web app.
+     * The provider that submitted the last deployment to the primary
+     * environment of the static site.
      */
-    @JsonProperty(value = "properties.stagingEnvironmentPolicy")
-    private StagingEnvironmentPolicy stagingEnvironmentPolicy;
-
-    /*
-     * <code>false</code> if config file is locked for this static web app;
-     * otherwise, <code>true</code>.
-     */
-    @JsonProperty(value = "properties.allowConfigFileUpdates")
-    private Boolean allowConfigFileUpdates;
+    @JsonProperty(value = "properties.provider", access = JsonProperty.Access.WRITE_ONLY)
+    private String provider;
 
     /*
      * Kind of resource.
@@ -222,16 +222,6 @@ public class StaticSiteArmResourceInner extends Resource {
     }
 
     /**
-     * Get the provider property: The provider that submitted the last deployment to the primary environment of the
-     * static site.
-     *
-     * @return the provider value.
-     */
-    public String provider() {
-        return this.provider;
-    }
-
-    /**
      * Get the customDomains property: The custom domains associated with this static site.
      *
      * @return the customDomains value.
@@ -283,59 +273,12 @@ public class StaticSiteArmResourceInner extends Resource {
     }
 
     /**
-     * Get the templateProperties property: Template options for generating a new repository.
-     *
-     * @return the templateProperties value.
-     */
-    public StaticSiteTemplateOptions templateProperties() {
-        return this.templateProperties;
-    }
-
-    /**
-     * Set the templateProperties property: Template options for generating a new repository.
-     *
-     * @param templateProperties the templateProperties value to set.
-     * @return the StaticSiteArmResourceInner object itself.
-     */
-    public StaticSiteArmResourceInner withTemplateProperties(StaticSiteTemplateOptions templateProperties) {
-        this.templateProperties = templateProperties;
-        return this;
-    }
-
-    /**
      * Get the privateEndpointConnections property: Private endpoint connections.
      *
      * @return the privateEndpointConnections value.
      */
     public List<ResponseMessageEnvelopeRemotePrivateEndpointConnection> privateEndpointConnections() {
         return this.privateEndpointConnections;
-    }
-
-    /**
-     * Get the contentDistributionEndpoint property: The content distribution endpoint for the static site.
-     *
-     * @return the contentDistributionEndpoint value.
-     */
-    public String contentDistributionEndpoint() {
-        return this.contentDistributionEndpoint;
-    }
-
-    /**
-     * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
-     * @return the keyVaultReferenceIdentity value.
-     */
-    public String keyVaultReferenceIdentity() {
-        return this.keyVaultReferenceIdentity;
-    }
-
-    /**
-     * Get the userProvidedFunctionApps property: User provided function apps registered with the static site.
-     *
-     * @return the userProvidedFunctionApps value.
-     */
-    public List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps() {
-        return this.userProvidedFunctionApps;
     }
 
     /**
@@ -380,6 +323,63 @@ public class StaticSiteArmResourceInner extends Resource {
     public StaticSiteArmResourceInner withAllowConfigFileUpdates(Boolean allowConfigFileUpdates) {
         this.allowConfigFileUpdates = allowConfigFileUpdates;
         return this;
+    }
+
+    /**
+     * Get the templateProperties property: Template options for generating a new repository.
+     *
+     * @return the templateProperties value.
+     */
+    public StaticSiteTemplateOptions templateProperties() {
+        return this.templateProperties;
+    }
+
+    /**
+     * Set the templateProperties property: Template options for generating a new repository.
+     *
+     * @param templateProperties the templateProperties value to set.
+     * @return the StaticSiteArmResourceInner object itself.
+     */
+    public StaticSiteArmResourceInner withTemplateProperties(StaticSiteTemplateOptions templateProperties) {
+        this.templateProperties = templateProperties;
+        return this;
+    }
+
+    /**
+     * Get the contentDistributionEndpoint property: The content distribution endpoint for the static site.
+     *
+     * @return the contentDistributionEndpoint value.
+     */
+    public String contentDistributionEndpoint() {
+        return this.contentDistributionEndpoint;
+    }
+
+    /**
+     * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
+     *
+     * @return the keyVaultReferenceIdentity value.
+     */
+    public String keyVaultReferenceIdentity() {
+        return this.keyVaultReferenceIdentity;
+    }
+
+    /**
+     * Get the userProvidedFunctionApps property: User provided function apps registered with the static site.
+     *
+     * @return the userProvidedFunctionApps value.
+     */
+    public List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps() {
+        return this.userProvidedFunctionApps;
+    }
+
+    /**
+     * Get the provider property: The provider that submitted the last deployment to the primary environment of the
+     * static site.
+     *
+     * @return the provider value.
+     */
+    public String provider() {
+        return this.provider;
     }
 
     /**
@@ -431,11 +431,11 @@ public class StaticSiteArmResourceInner extends Resource {
         if (buildProperties() != null) {
             buildProperties().validate();
         }
-        if (templateProperties() != null) {
-            templateProperties().validate();
-        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (templateProperties() != null) {
+            templateProperties().validate();
         }
         if (userProvidedFunctionApps() != null) {
             userProvidedFunctionApps().forEach(e -> e.validate());

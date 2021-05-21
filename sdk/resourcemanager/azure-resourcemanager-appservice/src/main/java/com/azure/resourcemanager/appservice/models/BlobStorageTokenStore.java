@@ -10,20 +10,22 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BlobStorageTokenStore model. */
+/** The configuration settings of the storage of the tokens if blob storage is used. */
 @JsonFlatten
 @Fluent
 public class BlobStorageTokenStore extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobStorageTokenStore.class);
 
     /*
-     * The sasUrlSettingName property.
+     * The name of the app setting containing the SAS URL of the blob storage
+     * containing the tokens.
      */
     @JsonProperty(value = "properties.sasUrlSettingName")
     private String sasUrlSettingName;
 
     /**
-     * Get the sasUrlSettingName property: The sasUrlSettingName property.
+     * Get the sasUrlSettingName property: The name of the app setting containing the SAS URL of the blob storage
+     * containing the tokens.
      *
      * @return the sasUrlSettingName value.
      */
@@ -32,7 +34,8 @@ public class BlobStorageTokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Set the sasUrlSettingName property: The sasUrlSettingName property.
+     * Set the sasUrlSettingName property: The name of the app setting containing the SAS URL of the blob storage
+     * containing the tokens.
      *
      * @param sasUrlSettingName the sasUrlSettingName value to set.
      * @return the BlobStorageTokenStore object itself.

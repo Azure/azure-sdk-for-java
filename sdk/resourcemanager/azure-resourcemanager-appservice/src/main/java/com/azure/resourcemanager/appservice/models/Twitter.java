@@ -10,26 +10,29 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Twitter model. */
+/** The configuration settings of the Twitter provider. */
 @JsonFlatten
 @Fluent
 public class Twitter extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Twitter.class);
 
     /*
-     * The enabled property.
+     * <code>false</code> if the Twitter provider should not be enabled despite
+     * the set registration; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /*
-     * The registration property.
+     * The configuration settings of the app registration for the Twitter
+     * provider.
      */
     @JsonProperty(value = "properties.registration")
     private TwitterRegistration registration;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Twitter provider should not be enabled despite
+     * the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -38,7 +41,8 @@ public class Twitter extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Twitter provider should not be enabled despite
+     * the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the Twitter object itself.
@@ -49,7 +53,7 @@ public class Twitter extends ProxyOnlyResource {
     }
 
     /**
-     * Get the registration property: The registration property.
+     * Get the registration property: The configuration settings of the app registration for the Twitter provider.
      *
      * @return the registration value.
      */
@@ -58,7 +62,7 @@ public class Twitter extends ProxyOnlyResource {
     }
 
     /**
-     * Set the registration property: The registration property.
+     * Set the registration property: The configuration settings of the app registration for the Twitter provider.
      *
      * @param registration the registration value to set.
      * @return the Twitter object itself.

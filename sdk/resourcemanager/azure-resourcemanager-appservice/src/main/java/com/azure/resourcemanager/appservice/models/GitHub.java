@@ -10,32 +10,35 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GitHub model. */
+/** The configuration settings of the GitHub provider. */
 @JsonFlatten
 @Fluent
 public class GitHub extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GitHub.class);
 
     /*
-     * The enabled property.
+     * <code>false</code> if the GitHub provider should not be enabled despite
+     * the set registration; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /*
-     * The registration property.
+     * The configuration settings of the app registration for the GitHub
+     * provider.
      */
     @JsonProperty(value = "properties.registration")
     private ClientRegistration registration;
 
     /*
-     * The login property.
+     * The configuration settings of the login flow.
      */
     @JsonProperty(value = "properties.login")
     private LoginScopes login;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the GitHub provider should not be enabled despite the
+     * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -44,7 +47,8 @@ public class GitHub extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the GitHub provider should not be enabled despite the
+     * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the GitHub object itself.
@@ -55,7 +59,7 @@ public class GitHub extends ProxyOnlyResource {
     }
 
     /**
-     * Get the registration property: The registration property.
+     * Get the registration property: The configuration settings of the app registration for the GitHub provider.
      *
      * @return the registration value.
      */
@@ -64,7 +68,7 @@ public class GitHub extends ProxyOnlyResource {
     }
 
     /**
-     * Set the registration property: The registration property.
+     * Set the registration property: The configuration settings of the app registration for the GitHub provider.
      *
      * @param registration the registration value to set.
      * @return the GitHub object itself.
@@ -75,7 +79,7 @@ public class GitHub extends ProxyOnlyResource {
     }
 
     /**
-     * Get the login property: The login property.
+     * Get the login property: The configuration settings of the login flow.
      *
      * @return the login value.
      */
@@ -84,7 +88,7 @@ public class GitHub extends ProxyOnlyResource {
     }
 
     /**
-     * Set the login property: The login property.
+     * Set the login property: The configuration settings of the login flow.
      *
      * @param login the login value to set.
      * @return the GitHub object itself.

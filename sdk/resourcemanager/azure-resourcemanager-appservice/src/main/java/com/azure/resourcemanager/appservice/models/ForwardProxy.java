@@ -10,32 +10,32 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ForwardProxy model. */
+/** The configuration settings of a forward proxy used to make the requests. */
 @JsonFlatten
 @Fluent
 public class ForwardProxy extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardProxy.class);
 
     /*
-     * The convention property.
+     * The convention used to determine the url of the request made.
      */
     @JsonProperty(value = "properties.convention")
     private ForwardProxyConvention convention;
 
     /*
-     * The customHostHeaderName property.
+     * The name of the header containing the host of the request.
      */
     @JsonProperty(value = "properties.customHostHeaderName")
     private String customHostHeaderName;
 
     /*
-     * The customProtoHeaderName property.
+     * The name of the header containing the scheme of the request.
      */
     @JsonProperty(value = "properties.customProtoHeaderName")
     private String customProtoHeaderName;
 
     /**
-     * Get the convention property: The convention property.
+     * Get the convention property: The convention used to determine the url of the request made.
      *
      * @return the convention value.
      */
@@ -44,7 +44,7 @@ public class ForwardProxy extends ProxyOnlyResource {
     }
 
     /**
-     * Set the convention property: The convention property.
+     * Set the convention property: The convention used to determine the url of the request made.
      *
      * @param convention the convention value to set.
      * @return the ForwardProxy object itself.
@@ -55,7 +55,7 @@ public class ForwardProxy extends ProxyOnlyResource {
     }
 
     /**
-     * Get the customHostHeaderName property: The customHostHeaderName property.
+     * Get the customHostHeaderName property: The name of the header containing the host of the request.
      *
      * @return the customHostHeaderName value.
      */
@@ -64,7 +64,7 @@ public class ForwardProxy extends ProxyOnlyResource {
     }
 
     /**
-     * Set the customHostHeaderName property: The customHostHeaderName property.
+     * Set the customHostHeaderName property: The name of the header containing the host of the request.
      *
      * @param customHostHeaderName the customHostHeaderName value to set.
      * @return the ForwardProxy object itself.
@@ -75,7 +75,7 @@ public class ForwardProxy extends ProxyOnlyResource {
     }
 
     /**
-     * Get the customProtoHeaderName property: The customProtoHeaderName property.
+     * Get the customProtoHeaderName property: The name of the header containing the scheme of the request.
      *
      * @return the customProtoHeaderName value.
      */
@@ -84,7 +84,7 @@ public class ForwardProxy extends ProxyOnlyResource {
     }
 
     /**
-     * Set the customProtoHeaderName property: The customProtoHeaderName property.
+     * Set the customProtoHeaderName property: The name of the header containing the scheme of the request.
      *
      * @param customProtoHeaderName the customProtoHeaderName value to set.
      * @return the ForwardProxy object itself.

@@ -11,26 +11,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JwtClaimChecks model. */
+/** The configuration settings of the checks that should be made while validating the JWT Claims. */
 @JsonFlatten
 @Fluent
 public class JwtClaimChecks extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JwtClaimChecks.class);
 
     /*
-     * The allowedGroups property.
+     * The list of the allowed groups.
      */
     @JsonProperty(value = "properties.allowedGroups")
     private List<String> allowedGroups;
 
     /*
-     * The allowedClientApplications property.
+     * The list of the allowed client applications.
      */
     @JsonProperty(value = "properties.allowedClientApplications")
     private List<String> allowedClientApplications;
 
     /**
-     * Get the allowedGroups property: The allowedGroups property.
+     * Get the allowedGroups property: The list of the allowed groups.
      *
      * @return the allowedGroups value.
      */
@@ -39,7 +39,7 @@ public class JwtClaimChecks extends ProxyOnlyResource {
     }
 
     /**
-     * Set the allowedGroups property: The allowedGroups property.
+     * Set the allowedGroups property: The list of the allowed groups.
      *
      * @param allowedGroups the allowedGroups value to set.
      * @return the JwtClaimChecks object itself.
@@ -50,7 +50,7 @@ public class JwtClaimChecks extends ProxyOnlyResource {
     }
 
     /**
-     * Get the allowedClientApplications property: The allowedClientApplications property.
+     * Get the allowedClientApplications property: The list of the allowed client applications.
      *
      * @return the allowedClientApplications value.
      */
@@ -59,7 +59,7 @@ public class JwtClaimChecks extends ProxyOnlyResource {
     }
 
     /**
-     * Set the allowedClientApplications property: The allowedClientApplications property.
+     * Set the allowedClientApplications property: The list of the allowed client applications.
      *
      * @param allowedClientApplications the allowedClientApplications value to set.
      * @return the JwtClaimChecks object itself.

@@ -10,20 +10,20 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureStaticWebAppsRegistration model. */
+/** The configuration settings of the registration for the Azure Static Web Apps provider. */
 @JsonFlatten
 @Fluent
 public class AzureStaticWebAppsRegistration extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStaticWebAppsRegistration.class);
 
     /*
-     * The clientId property.
+     * The Client ID of the app used for login.
      */
     @JsonProperty(value = "properties.clientId")
     private String clientId;
 
     /**
-     * Get the clientId property: The clientId property.
+     * Get the clientId property: The Client ID of the app used for login.
      *
      * @return the clientId value.
      */
@@ -32,7 +32,7 @@ public class AzureStaticWebAppsRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientId property: The clientId property.
+     * Set the clientId property: The Client ID of the app used for login.
      *
      * @param clientId the clientId value to set.
      * @return the AzureStaticWebAppsRegistration object itself.
