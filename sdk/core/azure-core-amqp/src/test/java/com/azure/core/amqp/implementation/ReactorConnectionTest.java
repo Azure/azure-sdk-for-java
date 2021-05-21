@@ -32,12 +32,7 @@ import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -144,6 +139,7 @@ class ReactorConnectionTest {
         when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(),
             connectionHandler))
             .thenReturn(connectionProtonJ);
+        when(reactor.attachments()).thenReturn(mock(Record.class));
 
         final Pipe pipe = Pipe.open();
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(CONNECTION_ID, reactor, pipe);
@@ -465,6 +461,33 @@ class ReactorConnectionTest {
         StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
+    }
+
+    /**
+     * Ensures we get a transient AmqpException when connection is broken.
+     */
+    @Disabled("It's stuck at disposing the connection.")
+    @Test
+    void endpointStatesTransportError() {
+        when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
+        final Event event = mock(Event.class);
+        final Transport transport = mock(Transport.class);
+        final ErrorCondition errorCondition = mock(ErrorCondition.class);
+        when(errorCondition.getCondition()).thenReturn(AmqpErrorCode.CONNECTION_FORCED);
+        when(errorCondition.getDescription()).thenReturn("mock condition description");
+        when(transport.getCondition()).thenReturn(errorCondition);
+        when(event.getConnection()).thenReturn(connectionProtonJ);
+        when(event.getTransport()).thenReturn(transport);
+
+        // Act and Assert
+        StepVerifier.create(connection.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> connectionHandler.onTransportError(event))
+            .expectErrorMatches(error -> {
+                AmqpException amqpExp = (AmqpException) error;
+                return amqpExp.isTransient();
+            })
+            .verify();
     }
 
     /**
