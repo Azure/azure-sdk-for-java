@@ -32,7 +32,7 @@ stages:
       EnvVars:
         SKIP_LIVE_TEST: TRUE
       TestStepMavenInputs:
-        options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList) -Djacoco.skip=${{ eq(variables[''CurrentCloud''], ''Public'') }}'
+        options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList) -Djacoco.skip=$[eq(variables[''CurrentCloud''], ''Public'')]'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '$(JavaTestVersion)'
