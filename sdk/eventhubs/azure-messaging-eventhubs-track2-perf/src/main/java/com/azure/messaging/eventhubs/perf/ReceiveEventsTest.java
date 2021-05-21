@@ -17,7 +17,7 @@ import java.util.Objects;
  * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
  * receive.
  */
-public class ReceiveEventsTests extends ServiceTest {
+public class ReceiveEventsTest extends ServiceTest {
     private EventHubConsumerClient receiver;
     private EventHubConsumerAsyncClient receiverAsync;
 
@@ -26,7 +26,7 @@ public class ReceiveEventsTests extends ServiceTest {
      *
      * @param options the options configured for the test.
      */
-    ReceiveEventsTests(EventHubsOptions options) {
+    public ReceiveEventsTest(EventHubsOptions options) {
         super(options);
     }
 

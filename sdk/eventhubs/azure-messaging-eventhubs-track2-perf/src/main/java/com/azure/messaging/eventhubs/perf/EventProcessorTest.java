@@ -19,16 +19,15 @@ import java.util.stream.Collectors;
 /**
  * Tests EventProcessorClient.
  */
-public class EventProcessorClientTest extends ServiceTest {
+public class EventProcessorTest extends ServiceTest {
     private final ConcurrentHashMap<String, CountDownLatch> eventsToReceive = new ConcurrentHashMap<>();
-
 
     /**
      * Creates an instance of performance test.
      *
      * @param options the options configured for the test.
      */
-    public EventProcessorClientTest(EventHubsOptions options) {
+    public EventProcessorTest(EventHubsOptions options) {
         super(options);
 
     }

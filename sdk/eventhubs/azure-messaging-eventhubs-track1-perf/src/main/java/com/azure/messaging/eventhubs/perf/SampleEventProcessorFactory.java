@@ -9,13 +9,12 @@ import com.microsoft.azure.eventprocessorhost.PartitionContext;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartitionProcessor> {
-    private final Map<String, CountDownLatch> numberOfEventsPerPartition;
     private final ConcurrentHashMap<String, SamplePartitionProcessor> processorMap = new ConcurrentHashMap<>();
 
-    public SampleEventProcessorFactory(Map<String, CountDownLatch> numberOfEventsPerPartition) {
-        this.numberOfEventsPerPartition = numberOfEventsPerPartition;
+    public SampleEventProcessorFactory() {
     }
 
     @Override
@@ -23,13 +22,10 @@ public class SampleEventProcessorFactory implements IEventProcessorFactory<Sampl
         final String partitionId = context.getPartitionId();
 
         System.out.printf("Claimed partition: %s%n", partitionId);
-
-        final CountDownLatch numberOfEvents = numberOfEventsPerPartition.get(partitionId);
-        if (numberOfEvents == null) {
-            throw new RuntimeException("Unable to get a countdown for: " + partitionId);
-        }
-
-        return processorMap.computeIfAbsent(partitionId, key -> new SamplePartitionProcessor(numberOfEvents));
+        return processorMap.computeIfAbsent(partitionId, key -> {
+            new SamplePartitionProcessor();
+        });
     }
+
 }
 

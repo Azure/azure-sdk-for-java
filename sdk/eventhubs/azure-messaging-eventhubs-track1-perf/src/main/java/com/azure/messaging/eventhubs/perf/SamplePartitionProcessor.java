@@ -14,15 +14,13 @@ import java.util.concurrent.CountDownLatch;
  * Processes a single partition.
  */
 public class SamplePartitionProcessor implements IEventProcessor {
-    private final CountDownLatch numberOfEvents;
 
     /**
      * Creates an instance for that partition id.
      *
      * @param numberOfEvents Number of Events left to receive.
      */
-    public SamplePartitionProcessor(CountDownLatch numberOfEvents) {
-        this.numberOfEvents = numberOfEvents;
+    public SamplePartitionProcessor() {
     }
 
     @Override

@@ -16,10 +16,10 @@ public class App {
      */
     public static void main(String[] args) {
         final Class<?>[] testClasses = new Class<?>[]{
-            ReceiveEventsTests.class,
+            ReceiveEventsTest.class,
             SendEventDataTest.class,
             SendEventDataBatchTest.class,
-            EventProcessorClientTest.class,
+            EventProcessorTest.class,
             GetPartitionInformationTest.class
         };
 
