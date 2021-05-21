@@ -7,12 +7,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
 public class KeyVaultClientTest {
     private static KeyVaultClient keyVaultClient;
     private static String certificateName;
@@ -34,10 +32,6 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetCertificate() {
-        List<String> aliases = keyVaultClient.getAliases();
-        aliases.stream().forEach(a -> System.out.println(a.charAt(0) + "--" + a.substring(1)));
-        assertNotNull(aliases);
-        System.out.println("getCertificateName" + certificateName.charAt(0) + "--" + certificateName.substring(1));
         assertNotNull(keyVaultClient.getCertificate(certificateName));
     }
 
