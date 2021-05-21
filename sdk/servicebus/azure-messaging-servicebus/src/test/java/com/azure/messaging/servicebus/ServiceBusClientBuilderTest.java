@@ -260,7 +260,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     public void sendAndReceiveEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties();
         String fullyQualifiedNamespace = getFullyQualifiedDomainName();
-        String sharedAccessKeyName = properties.getSharedAccessKeyName();;
+        String sharedAccessKeyName = properties.getSharedAccessKeyName();
         String sharedAccessKey = properties.getSharedAccessKey();
         String queueName = getQueueName(0);
 
