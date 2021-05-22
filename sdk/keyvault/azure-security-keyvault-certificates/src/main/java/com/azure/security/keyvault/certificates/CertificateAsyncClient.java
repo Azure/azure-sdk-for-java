@@ -216,6 +216,7 @@ public final class CertificateAsyncClient {
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
         return beginCreateCertificate(certificateName, policy, true, null);
     }
@@ -1607,6 +1608,7 @@ public final class CertificateAsyncClient {
      * @throws HttpResponseException if {@link CertificateIssuer#getName() name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateIssuer updated issuer}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateIssuer>> updateIssuerWithResponse(CertificateIssuer issuer) {
         try {
             return withContext(context -> updateIssuerWithResponse(issuer, context));
