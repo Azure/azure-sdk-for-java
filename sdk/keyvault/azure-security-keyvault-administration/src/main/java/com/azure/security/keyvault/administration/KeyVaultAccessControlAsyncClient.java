@@ -41,7 +41,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionP
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
-import com.azure.security.keyvault.administration.options.SetRoleDefinitionOptions;
+import com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
