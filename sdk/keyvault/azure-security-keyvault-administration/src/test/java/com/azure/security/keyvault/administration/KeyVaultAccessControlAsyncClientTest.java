@@ -9,7 +9,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultAdministrationE
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
@@ -52,15 +51,11 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 assertNotNull(roleDefinition.getId());
                 assertNotNull(roleDefinition.getName());
                 assertNotNull(roleDefinition.getType());
-
-                KeyVaultRoleDefinitionProperties properties = roleDefinition.getProperties();
-
-                assertNotNull(properties);
-                assertNotNull(properties.getRoleName());
-                assertNotNull(properties.getDescription());
-                assertNotNull(properties.getRoleType());
-                assertFalse(properties.getAssignableScopes().isEmpty());
-                assertFalse(properties.getPermissions().isEmpty());
+                assertNotNull(roleDefinition.getRoleName());
+                assertNotNull(roleDefinition.getDescription());
+                assertNotNull(roleDefinition.getRoleType());
+                assertFalse(roleDefinition.getAssignableScopes().isEmpty());
+                assertFalse(roleDefinition.getPermissions().isEmpty());
             });
 
         sleepIfRunningAgainstService(5000);
@@ -90,13 +85,9 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 assertEquals(roleDefinitionName, roleDefinition.getName());
                 assertEquals(KeyVaultRoleDefinitionType.MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS,
                     roleDefinition.getType());
-
-                KeyVaultRoleDefinitionProperties properties = roleDefinition.getProperties();
-
-                assertNotNull(properties);
-                assertTrue(properties.getAssignableScopes().contains(KeyVaultRoleScope.GLOBAL));
-                assertEquals(KeyVaultRoleType.CUSTOM_ROLE, properties.getRoleType());
-                assertEquals(roleDefinitionName, properties.getRoleName());
+                assertTrue(roleDefinition.getAssignableScopes().contains(KeyVaultRoleScope.GLOBAL));
+                assertEquals(KeyVaultRoleType.CUSTOM_ROLE, roleDefinition.getRoleType());
+                assertEquals(roleDefinitionName, roleDefinition.getRoleName());
 
                 // Clean up the role definition.
                 KeyVaultAccessControlAsyncClient cleanupClient =
@@ -259,7 +250,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         KeyVaultRoleDefinition roleDefinition = null;
 
         for (KeyVaultRoleDefinition currentRoleDefinition : roleDefinitions) {
-            if (currentRoleDefinition.getProperties().getRoleName().equals(ROLE_NAME)) {
+            if (currentRoleDefinition.getRoleName().equals(ROLE_NAME)) {
                 roleDefinition = currentRoleDefinition;
 
                 break;
@@ -317,7 +308,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         KeyVaultRoleDefinition roleDefinition = null;
 
         for (KeyVaultRoleDefinition currentRoleDefinition : roleDefinitions) {
-            if (currentRoleDefinition.getProperties().getRoleName().equals(ROLE_NAME)) {
+            if (currentRoleDefinition.getRoleName().equals(ROLE_NAME)) {
                 roleDefinition = currentRoleDefinition;
 
                 break;
@@ -373,7 +364,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         KeyVaultRoleDefinition roleDefinition = null;
 
         for (KeyVaultRoleDefinition currentRoleDefinition : roleDefinitions) {
-            if (currentRoleDefinition.getProperties().getRoleName().equals(ROLE_NAME)) {
+            if (currentRoleDefinition.getRoleName().equals(ROLE_NAME)) {
                 roleDefinition = currentRoleDefinition;
 
                 break;
@@ -431,7 +422,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         KeyVaultRoleDefinition roleDefinition = null;
 
         for (KeyVaultRoleDefinition currentRoleDefinition : roleDefinitions) {
-            if (currentRoleDefinition.getProperties().getRoleName().equals(ROLE_NAME)) {
+            if (currentRoleDefinition.getRoleName().equals(ROLE_NAME)) {
                 roleDefinition = currentRoleDefinition;
 
                 break;
@@ -480,7 +471,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         KeyVaultRoleDefinition roleDefinition = null;
 
         for (KeyVaultRoleDefinition currentRoleDefinition : roleDefinitions) {
-            if (currentRoleDefinition.getProperties().getRoleName().equals(ROLE_NAME)) {
+            if (currentRoleDefinition.getRoleName().equals(ROLE_NAME)) {
                 roleDefinition = currentRoleDefinition;
 
                 break;
