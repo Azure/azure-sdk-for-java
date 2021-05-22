@@ -15,6 +15,7 @@ import java.util.Objects;
 public final class KeyVaultRoleAssignmentProperties {
     private final String roleDefinitionId;
     private final String principalId;
+    private final KeyVaultRoleScope roleScope;
 
     /**
      * Creates a new {@link KeyVaultRoleAssignmentProperties role assignment properties} object with the specified
@@ -23,18 +24,13 @@ public final class KeyVaultRoleAssignmentProperties {
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID used in the
      * {@link KeyVaultRoleAssignment role assignment}.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
-     * It can point to a user, service principal, or security group.
+     * It can point to a user, service principal, or security group.*
+     * @param roleScope The {@link KeyVaultRoleScope scope} of this {@link KeyVaultRoleAssignment role assignment}.
      */
-    public KeyVaultRoleAssignmentProperties(String roleDefinitionId, String principalId) {
-        Objects.requireNonNull(roleDefinitionId,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleDefinitionId' in 'properties'"));
-        Objects.requireNonNull(principalId,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'principalId' in 'properties'"));
-
+    public KeyVaultRoleAssignmentProperties(String roleDefinitionId, String principalId, KeyVaultRoleScope roleScope) {
         this.roleDefinitionId = roleDefinitionId;
         this.principalId = principalId;
+        this.roleScope = roleScope;
     }
 
     /**
@@ -54,5 +50,14 @@ public final class KeyVaultRoleAssignmentProperties {
      */
     public String getPrincipalId() {
         return principalId;
+    }
+
+    /**
+     * Get the {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleScope scope}.
+     *
+     * @return The {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleScope scope}.
+     */
+    public KeyVaultRoleScope getRoleScope() {
+        return roleScope;
     }
 }

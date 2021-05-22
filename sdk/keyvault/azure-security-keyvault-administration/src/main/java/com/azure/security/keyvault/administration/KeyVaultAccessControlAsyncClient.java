@@ -971,8 +971,8 @@ public final class KeyVaultAccessControlAsyncClient {
 
         return new KeyVaultRoleAssignment(roleAssignment.getId(), roleAssignment.getName(), roleAssignment.getType(),
             new KeyVaultRoleAssignmentProperties(propertiesWithScope.getRoleDefinitionId(),
-                propertiesWithScope.getPrincipalId()),
-            KeyVaultRoleScope.fromString(propertiesWithScope.getScope().toString()));
+                propertiesWithScope.getPrincipalId(),
+                KeyVaultRoleScope.fromString(propertiesWithScope.getScope().toString())));
     }
 
     private static final class TransformedPagedResponse<L extends List<T>, T, U> implements PagedResponse<T> {

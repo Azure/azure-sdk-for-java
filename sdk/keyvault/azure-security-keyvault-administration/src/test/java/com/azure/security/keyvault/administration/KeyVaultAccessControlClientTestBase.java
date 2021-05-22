@@ -81,7 +81,6 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertEquals(roleAssignment1.getId(), roleAssignment2.getId());
         assertEquals(roleAssignment1.getName(), roleAssignment2.getName());
         assertEquals(roleAssignment1.getType(), roleAssignment2.getType());
-        assertEquals(roleAssignment1.getRoleScope(), roleAssignment2.getRoleScope());
 
         KeyVaultRoleAssignmentProperties properties1 = roleAssignment1.getProperties();
         KeyVaultRoleAssignmentProperties properties2 = roleAssignment2.getProperties();
@@ -94,6 +93,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertNotNull(properties2);
         assertEquals(properties1.getPrincipalId(), properties2.getPrincipalId());
         assertEquals(properties1.getRoleDefinitionId(), properties2.getRoleDefinitionId());
+        assertEquals(properties1.getRoleScope(), properties2.getRoleScope());
     }
 
     static void assertRoleDefinitionEquals(KeyVaultRoleDefinition roleDefinition1,

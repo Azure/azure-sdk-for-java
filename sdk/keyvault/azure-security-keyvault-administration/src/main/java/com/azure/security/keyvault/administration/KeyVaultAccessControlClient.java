@@ -285,8 +285,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
      * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
-     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
+     * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
@@ -307,10 +307,11 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
-     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
-     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given
+     * name already exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are
+     * invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
+     * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
