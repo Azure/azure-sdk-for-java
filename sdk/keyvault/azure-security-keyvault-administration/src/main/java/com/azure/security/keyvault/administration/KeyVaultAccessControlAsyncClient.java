@@ -342,7 +342,6 @@ public final class KeyVaultAccessControlAsyncClient {
             RoleDefinitionProperties roleDefinitionProperties =
                 new RoleDefinitionProperties()
                     .setRoleName(options.getRoleDefinitionName())
-                    .setRoleType(RoleType.fromString(options.getRoleType().toString()))
                     .setAssignableScopes(assignableScopes)
                     .setDescription(options.getDescription())
                     .setPermissions(permissions);

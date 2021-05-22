@@ -15,7 +15,6 @@ import java.util.UUID;
 public class SetRoleDefinitionOptions {
     private final KeyVaultRoleScope roleScope;
     private final String roleDefinitionName;
-    private final KeyVaultRoleType roleType;
     private String roleName;
     private String description;
     private List<KeyVaultPermission> permissions;
@@ -41,7 +40,6 @@ public class SetRoleDefinitionOptions {
     public SetRoleDefinitionOptions(KeyVaultRoleScope roleScope, String roleDefinitionName) {
         this.roleScope = roleScope;
         this.roleDefinitionName = roleDefinitionName;
-        this.roleType = KeyVaultRoleType.CUSTOM_ROLE;
     }
 
     /**
@@ -60,15 +58,6 @@ public class SetRoleDefinitionOptions {
      */
     public String getRoleDefinitionName() {
         return roleDefinitionName;
-    }
-
-    /**
-     * Get the role type.
-     *
-     * @return The role type.
-     */
-    public KeyVaultRoleType getRoleType() {
-        return roleType;
     }
 
     /**
