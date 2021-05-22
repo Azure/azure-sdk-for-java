@@ -14,7 +14,7 @@ import java.net.URL;
  * methods of {@link SecretClient} or {@link SecretAsyncClient}.
  */
 public final class KeyVaultSecretIdentifier {
-    private final String secretId, vaultUrl, name, version;
+    private final String sourceId, vaultUrl, name, version;
 
     /**
      * Create a new {@link KeyVaultSecretIdentifier} from a given secret identifier.
@@ -24,22 +24,22 @@ public final class KeyVaultSecretIdentifier {
      * <ul>
      *     <li>https://{key-vault-name}.vault.azure.net/secrets/{secret-name}</li>
      *     <li>https://{key-vault-name}.vault.azure.net/secrets/{secret-name}/pending</li>
-     *     <li>https://{key-vault-name}.vault.azure.net/secrets/{secret-name}/{unique-version-id}</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/secrets/{secret-name}/{unique-version-sourceId}</li>
      *     <li>https://{key-vault-name}.vault.azure.net/deletedsecrets/{deleted-secret-name}</li>
      * </ul>
      *
-     * @param secretId The secret identifier to extract information from.
+     * @param sourceId The secret identifier to extract information from.
      *
      * @throws IllegalArgumentException If {@code secretId} is an invalid Key Vault Secret identifier.
      * @throws NullPointerException If {@code secretId} is {@code null}.
      */
-    public KeyVaultSecretIdentifier(String secretId) {
-        if (secretId == null) {
+    public KeyVaultSecretIdentifier(String sourceId) {
+        if (sourceId == null) {
             throw new NullPointerException("'secretId' cannot be null.");
         }
 
         try {
-            final URL url = new URL(secretId);
+            final URL url = new URL(sourceId);
             // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
             final String[] pathSegments = url.getPath().split("/");
 
@@ -50,7 +50,7 @@ public final class KeyVaultSecretIdentifier {
                 throw new IllegalArgumentException("'secretId' is not a valid Key Vault Secret identifier.");
             }
 
-            this.secretId = secretId;
+            this.sourceId = sourceId;
             this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
@@ -64,8 +64,8 @@ public final class KeyVaultSecretIdentifier {
      *
      * @return The secret identifier.
      */
-    public String getSecretId() {
-        return secretId;
+    public String getSourceId() {
+        return sourceId;
     }
 
     /**
