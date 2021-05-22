@@ -296,6 +296,7 @@ public final class KeyClient {
      * {@codesnippet com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions-Context}
      *
      * @param createOctKeyOptions The key options object containing information about the ec key being created.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey created key}.
      *
