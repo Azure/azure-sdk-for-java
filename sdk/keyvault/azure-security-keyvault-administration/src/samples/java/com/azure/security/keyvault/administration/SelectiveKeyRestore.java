@@ -5,12 +5,12 @@ package com.azure.security.keyvault.administration;
 
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 
 /**
  * This sample demonstrates how to selectively restore a key from key vault backup.
  */
-public class SelectiveRestore {
+public class SelectiveKeyRestore {
     /**
      * Authenticates with the key vault and shows how to selectively restore a key from key vault backup synchronously.
      * For examples of how to perform async operations, please refer to
@@ -37,8 +37,8 @@ public class SelectiveRestore {
         String backupFolderUrl = "<backup-folder-url>";
         String sasToken = "<sas-token>";
 
-        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller =
-            backupClient.beginSelectiveRestore(keyName, backupFolderUrl, sasToken);
+        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, Void> restorePoller =
+            backupClient.beginSelectiveKeyRestore(keyName, backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
     }
