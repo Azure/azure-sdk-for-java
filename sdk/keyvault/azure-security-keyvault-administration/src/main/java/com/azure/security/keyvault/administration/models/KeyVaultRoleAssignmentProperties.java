@@ -4,9 +4,6 @@
 package com.azure.security.keyvault.administration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-
-import java.util.Objects;
 
 /**
  * A class that defines a role assignment's properties.
