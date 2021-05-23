@@ -1,8 +1,8 @@
-# Microsoft Azure SDK for Video Analyzer Management APIs
+# Azure Resource Manager VideoAnalyzer client library for Java
 
-Microsoft Azure SDK for Video Analyzer Management APIs.
+Azure Resource Manager VideoAnalyzer client library for Java.
 
-This package contains Microsoft Azure SDK for Video Analyzer Management APIs. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt). Package tag package-2021-05-01-preview.
+This package contains Microsoft Azure SDK for VideoAnalyzer Management SDK. Azure Video Analyzer ARM Client. Package tag package-2021-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
