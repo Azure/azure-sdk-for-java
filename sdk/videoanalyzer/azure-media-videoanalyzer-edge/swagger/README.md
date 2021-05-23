@@ -5,7 +5,6 @@
 ## Configuration
 
 ```yaml
-package-name: "@azure/media-video-analyzer-edge"
 title: Microsoft Azure SDK for Azure Video Analyzer on IoT Edge - edge client library for Java
 description: This package contains the edge client library for Azure Video Analyzer on IoT Edge.
 generate-metadata: false
