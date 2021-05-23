@@ -6,8 +6,8 @@
 
 ```yaml
 package-name: "@azure/media-video-analyzer-edge"
-title: Microsoft Azure SDK for Media Video Analyzer Edge
-description: This package contains Microsoft Azure SDK for Media Video Analyzer Edge.
+title: Microsoft Azure SDK for Azure Video Analyzer on IoT Edge - edge client library for Java
+description: This package contains the edge client library for Azure Video Analyzer on IoT Edge.
 generate-metadata: false
 license-header: MICROSOFT_MIT_SMALL
 output-folder: ../
