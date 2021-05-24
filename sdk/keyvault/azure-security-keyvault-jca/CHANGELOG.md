@@ -1,6 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.7 (2021-05-24)
+### New Features
+- Add "module-info.java".
 
 
 ## 1.0.0-beta.6 (2021-04-19)
