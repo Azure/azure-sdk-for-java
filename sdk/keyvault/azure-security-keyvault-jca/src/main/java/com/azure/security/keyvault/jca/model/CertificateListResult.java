@@ -39,13 +39,21 @@ public class CertificateListResult implements Serializable {
         this.value = value;
     }
 
+    /**
+     * Get the NextLint
+     * @return the nextLink
+     */
     public String getNextLink() {
         return nextLink;
     }
 
+    /**
+     * Set the NextLink
+     * @param nextLink the nextLink
+     */
     public void setNextLink(String nextLink) {
         this.nextLink = nextLink;
     }
 
-    public String nextLink;
+    private String nextLink;
 }

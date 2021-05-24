@@ -192,12 +192,14 @@ class KeyVaultClient extends DelegateRestClient {
         headers.put("Authorization", "Bearer " + getAccessToken());
         String url = String.format("%scertificates%s", keyVaultUrl, API_VERSION_POSTFIX);
 
-        while(url != null && url != "") {
+        while (url != null && url.length() != 0) {
             String response = get(url, headers);
             CertificateListResult certificateListResult = null;
             if (response != null) {
                 JsonConverter converter = JsonConverterFactory.createJsonConverter();
                 certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
+            } else {
+                url = null;
             }
             if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
@@ -205,8 +207,9 @@ class KeyVaultClient extends DelegateRestClient {
                     String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
                     result.add(alias);
                 }
+                url = certificateListResult.getNextLink();
             }
-            url = certificateListResult.getNextLink();
+
         }
         return result;
     }
