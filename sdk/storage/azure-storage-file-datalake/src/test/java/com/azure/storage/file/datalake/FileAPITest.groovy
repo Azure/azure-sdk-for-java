@@ -2233,7 +2233,7 @@ class FileAPITest extends APISpec {
         StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
             null, null, null))
             .verifyComplete()
-        
+
         uploadReporter.getReportedByteCount() == size
 
         cleanup:
@@ -3165,8 +3165,8 @@ class FileAPITest extends APISpec {
         1000      | '\n'            || _
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -3546,7 +3546,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     def "Query parquet output IA"() {
         setup:
         def outSer = new FileQueryParquetSerialization()

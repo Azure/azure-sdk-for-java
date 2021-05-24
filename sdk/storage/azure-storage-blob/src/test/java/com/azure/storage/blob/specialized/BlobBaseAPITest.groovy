@@ -300,7 +300,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @Unroll
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -712,7 +712,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore /* TODO: Unignore when parquet is officially supported. */
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "Query parquet output IA"() {
         setup:
         def outSer = new BlobQueryParquetSerialization()
