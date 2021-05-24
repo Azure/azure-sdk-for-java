@@ -126,6 +126,18 @@
       <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-management</artifactId>
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-storage-generated</artifactId>
+      <version>1.0.0-beta.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
