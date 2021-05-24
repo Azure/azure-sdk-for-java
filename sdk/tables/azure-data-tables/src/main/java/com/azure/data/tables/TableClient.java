@@ -79,24 +79,6 @@ public final class TableClient {
     }
 
     /**
-     * Creates a new {@link TableBatch} object. Batch objects allow you to enqueue multiple create, update, upsert,
-     * and/or delete operations on entities that share the same partition key. When the batch is executed, all of the
-     * operations will be performed as part of a single transaction. As a result, either all operations in the batch
-     * will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation in a batch
-     * must operate on a distinct row key. Attempting to add multiple operations to a batch that share the same row key
-     * will cause an exception to be thrown.
-     *
-     * @param partitionKey The partition key shared by all operations in the batch.
-     *
-     * @return An object representing the batch, to which operations can be added.
-     *
-     * @throws IllegalArgumentException If the provided partition key is {@code null} or empty.
-     */
-    public TableBatch createBatch(String partitionKey) {
-        return new TableBatch(this.client.createBatch(partitionKey));
-    }
-
-    /**
      * Creates the table within the Tables service.
      *
      * @return A {@link TableItem} that represents the table.
