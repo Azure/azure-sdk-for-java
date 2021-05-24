@@ -70,6 +70,9 @@
           <analysisConfiguration>
             <revapi.ignore>
               <item>
+                <code>java.method.addedToInterface</code>
+              </item>
+              <item>
                 <regex>true</regex>
                 <code>.*</code>
                 <package>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*</package>
