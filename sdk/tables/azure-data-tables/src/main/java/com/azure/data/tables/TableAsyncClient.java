@@ -714,7 +714,7 @@ public final class TableAsyncClient {
      * @return A paged reactive result containing matching entities within the table.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context) {
         return new PagedFlux<>(
