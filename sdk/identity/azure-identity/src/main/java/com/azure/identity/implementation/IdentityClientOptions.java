@@ -36,6 +36,7 @@ public final class IdentityClientOptions {
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
+    private boolean cp1Disabled;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -44,6 +45,7 @@ public final class IdentityClientOptions {
         Configuration configuration = Configuration.getGlobalConfiguration();
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
@@ -293,5 +295,14 @@ public final class IdentityClientOptions {
      */
     public TokenCachePersistenceOptions getTokenCacheOptions() {
         return this.tokenCachePersistenceOptions;
+    }
+
+    /**
+     * Check whether CP1 client capability should be disabled.
+     *
+     * @return the status indicating if CP1 client capability should be disabled.
+     */
+    public boolean isCp1Disabled() {
+        return this.cp1Disabled;
     }
 }

@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.OperationEntityInner;
-import com.azure.resourcemanager.cognitiveservices.models.OperationEntity;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.OperationInner;
+import com.azure.resourcemanager.cognitiveservices.models.Operation;
 import com.azure.resourcemanager.cognitiveservices.models.Operations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,14 +27,14 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<OperationEntity> list() {
-        PagedIterable<OperationEntityInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationEntityImpl(inner1, this.manager()));
+    public PagedIterable<Operation> list() {
+        PagedIterable<OperationInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OperationEntity> list(Context context) {
-        PagedIterable<OperationEntityInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationEntityImpl(inner1, this.manager()));
+    public PagedIterable<Operation> list(Context context) {
+        PagedIterable<OperationInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

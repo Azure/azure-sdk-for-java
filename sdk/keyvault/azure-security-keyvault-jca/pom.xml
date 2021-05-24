@@ -74,6 +74,28 @@
                 </executions>
             </plugin>
             <plugin>
+              <groupId>org.moditect</groupId>
+              <artifactId>moditect-maven-plugin</artifactId>
+              <version>1.0.0.RC1</version>  <!-- {x-version-update;org.moditect:moditect-maven-plugin;external_dependency} -->
+              <executions>
+                <execution>
+                  <id>add-module-infos</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>add-module-info</goal>
+                  </goals>
+                  <configuration>
+                    <overwriteExistingFiles>true</overwriteExistingFiles>
+                    <module>
+                      <moduleInfoFile>
+                        src/main/module-info.java
+                      </moduleInfoFile>
+                    </module>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
@@ -205,6 +227,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-        <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
+        <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
     </properties>
 </project>

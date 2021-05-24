@@ -13,3 +13,4 @@ variables:
   JavaBuildVersion: '1.11'
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.11'
+  IsDebug: $[coalesce(variables['System.Debug'], 'false')]

@@ -14,9 +14,9 @@ import java.util.List;
 public final class KeyVaultRoleDefinitionProperties {
     private final String roleName;
     private final String description;
-    private final String roleType;
+    private final KeyVaultRoleType roleType;
     private final List<KeyVaultPermission> permissions;
-    private final List<String> assignableScopes;
+    private final List<KeyVaultRoleScope> assignableScopes;
 
     /**
      * Creates a new {@link KeyVaultRoleDefinitionProperties role definition properties} object with the specified
@@ -29,7 +29,9 @@ public final class KeyVaultRoleDefinitionProperties {
      * has.
      * @param assignableScopes The assignable scopes of the {@link KeyVaultRoleDefinition role definition}.
      */
-    public KeyVaultRoleDefinitionProperties(String roleName, String roleDescription, String roleType, List<KeyVaultPermission> permissions, List<String> assignableScopes) {
+    public KeyVaultRoleDefinitionProperties(String roleName, String roleDescription, KeyVaultRoleType roleType,
+                                            List<KeyVaultPermission> permissions,
+                                            List<KeyVaultRoleScope> assignableScopes) {
         this.roleName = roleName;
         this.description = roleDescription;
         this.roleType = roleType;
@@ -60,7 +62,7 @@ public final class KeyVaultRoleDefinitionProperties {
      *
      * @return The role type.
      */
-    public String getRoleType() {
+    public KeyVaultRoleType getRoleType() {
         return roleType;
     }
 
@@ -78,7 +80,7 @@ public final class KeyVaultRoleDefinitionProperties {
      *
      * @return The {@link KeyVaultRoleDefinition role definition}'s assignable scopes.
      */
-    public List<String> getAssignableScopes() {
+    public List<KeyVaultRoleScope> getAssignableScopes() {
         return assignableScopes;
     }
 }

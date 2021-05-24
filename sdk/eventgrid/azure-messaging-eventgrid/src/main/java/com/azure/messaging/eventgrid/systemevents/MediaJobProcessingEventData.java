@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import java.util.Map;
 
-/** Job processing event data. */
+/**
+ * Job processing event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobProcessing
+ * event.
+ */
 @Immutable
 public final class MediaJobProcessingEventData extends MediaJobStateChangeEventData {
     /** {@inheritDoc} */

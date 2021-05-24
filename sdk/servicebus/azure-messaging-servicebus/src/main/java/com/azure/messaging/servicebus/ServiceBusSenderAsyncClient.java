@@ -697,7 +697,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
-        return getSendLink()
+        return withRetry(getSendLink(), retryOptions, "Failed to create send link " + linkName)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;

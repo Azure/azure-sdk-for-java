@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.implementation.TrainingDocumentInfoHelper;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
+import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * The TrainingDocumentInfo model.
  */
+@Immutable
 public final class TrainingDocumentInfo {
 
     /*

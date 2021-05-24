@@ -40,6 +40,9 @@ prerelease_version_regex_with_name = r'^beta\.(?P<revision>0|[1-9]\d*)$'
 # This is special for track 1, data track, which can be <major>.<minor>.<version>-beta with no ".X"
 prerelease_data_version_regex = r'^beta$'
 
+# Allow list prefix remover
+allowlist_exception_identifier_remover_regex = re.compile(r'^(?:.+_)(?=.+:)(.*)$')
+
 class UpdateType(Enum):
     external_dependency = 'external_dependency'
     library = 'library'
@@ -118,8 +121,9 @@ class CodeModule:
             # '_' in them if they're an external dependency exception. Since the allowlist
             # name needs to be the actual dependency, take everything after the _ which is
             # the actual name
-            if '_' in temp:
-                temp = temp.split('_')[1]
+            match = allowlist_exception_identifier_remover_regex.match(temp)
+            if match:
+                temp = match.group(1)
             return temp + ':[' + self.external_dependency + ']'
         else:
             raise ValueError('string_for_allowlist_include called on non-external_dependency: ' + self.name)

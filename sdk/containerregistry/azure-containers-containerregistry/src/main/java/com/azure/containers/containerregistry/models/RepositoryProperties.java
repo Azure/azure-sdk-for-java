@@ -4,13 +4,22 @@
 
 package com.azure.containers.containerregistry.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Repository attributes. */
-@Immutable
+@JsonFlatten
+@Fluent
 public final class RepositoryProperties {
+    /*
+     * Registry login server name.  This is likely to be similar to
+     * {registry-name}.azurecr.io
+     */
+    @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String registryLoginServer;
+
     /*
      * Image name
      */
@@ -33,7 +42,7 @@ public final class RepositoryProperties {
      * Number of the manifests
      */
     @JsonProperty(value = "manifestCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int registryArtifactCount;
+    private int manifestCount;
 
     /*
      * Number of the tags
@@ -42,10 +51,45 @@ public final class RepositoryProperties {
     private int tagCount;
 
     /*
-     * Writeable properties of the resource
+     * Delete enabled
      */
-    @JsonProperty(value = "changeableAttributes", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private ContentProperties writeableProperties;
+    @JsonProperty(value = "changeableAttributes.deleteEnabled")
+    private Boolean deleteEnabled;
+
+    /*
+     * Write enabled
+     */
+    @JsonProperty(value = "changeableAttributes.writeEnabled")
+    private Boolean writeEnabled;
+
+    /*
+     * List enabled
+     */
+    @JsonProperty(value = "changeableAttributes.listEnabled")
+    private Boolean listEnabled;
+
+    /*
+     * Read enabled
+     */
+    @JsonProperty(value = "changeableAttributes.readEnabled")
+    private Boolean readEnabled;
+
+    /*
+     * Enables Teleport functionality on new images in the repository improving
+     * Container startup performance
+     */
+    @JsonProperty(value = "changeableAttributes.teleportEnabled")
+    private Boolean teleportEnabled;
+
+    /**
+     * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
+     *
+     * @return the registryLoginServer value.
+     */
+    public String getRegistryLoginServer() {
+        return this.registryLoginServer;
+    }
 
     /**
      * Get the name property: Image name.
@@ -75,12 +119,12 @@ public final class RepositoryProperties {
     }
 
     /**
-     * Get the registryArtifactCount property: Number of the manifests.
+     * Get the manifestCount property: Number of the manifests.
      *
-     * @return the registryArtifactCount value.
+     * @return the manifestCount value.
      */
-    public int getRegistryArtifactCount() {
-        return this.registryArtifactCount;
+    public int getManifestCount() {
+        return this.manifestCount;
     }
 
     /**
@@ -93,11 +137,104 @@ public final class RepositoryProperties {
     }
 
     /**
-     * Get the writeableProperties property: Writeable properties of the resource.
+     * Get the deleteEnabled property: Delete enabled.
      *
-     * @return the writeableProperties value.
+     * @return the deleteEnabled value.
      */
-    public ContentProperties getWriteableProperties() {
-        return this.writeableProperties;
+    public Boolean isDeleteEnabled() {
+        return this.deleteEnabled;
+    }
+
+    /**
+     * Set the deleteEnabled property: Delete enabled.
+     *
+     * @param deleteEnabled the deleteEnabled value to set.
+     * @return the RepositoryProperties object itself.
+     */
+    public RepositoryProperties setDeleteEnabled(Boolean deleteEnabled) {
+        this.deleteEnabled = deleteEnabled;
+        return this;
+    }
+
+    /**
+     * Get the writeEnabled property: Write enabled.
+     *
+     * @return the writeEnabled value.
+     */
+    public Boolean isWriteEnabled() {
+        return this.writeEnabled;
+    }
+
+    /**
+     * Set the writeEnabled property: Write enabled.
+     *
+     * @param writeEnabled the writeEnabled value to set.
+     * @return the RepositoryProperties object itself.
+     */
+    public RepositoryProperties setWriteEnabled(Boolean writeEnabled) {
+        this.writeEnabled = writeEnabled;
+        return this;
+    }
+
+    /**
+     * Get the listEnabled property: List enabled.
+     *
+     * @return the listEnabled value.
+     */
+    public Boolean isListEnabled() {
+        return this.listEnabled;
+    }
+
+    /**
+     * Set the listEnabled property: List enabled.
+     *
+     * @param listEnabled the listEnabled value to set.
+     * @return the RepositoryProperties object itself.
+     */
+    public RepositoryProperties setListEnabled(Boolean listEnabled) {
+        this.listEnabled = listEnabled;
+        return this;
+    }
+
+    /**
+     * Get the readEnabled property: Read enabled.
+     *
+     * @return the readEnabled value.
+     */
+    public Boolean isReadEnabled() {
+        return this.readEnabled;
+    }
+
+    /**
+     * Set the readEnabled property: Read enabled.
+     *
+     * @param readEnabled the readEnabled value to set.
+     * @return the RepositoryProperties object itself.
+     */
+    public RepositoryProperties setReadEnabled(Boolean readEnabled) {
+        this.readEnabled = readEnabled;
+        return this;
+    }
+
+    /**
+     * Get the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
+     * Container startup performance.
+     *
+     * @return the teleportEnabled value.
+     */
+    public Boolean isTeleportEnabled() {
+        return this.teleportEnabled;
+    }
+
+    /**
+     * Set the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
+     * Container startup performance.
+     *
+     * @param teleportEnabled the teleportEnabled value to set.
+     * @return the RepositoryProperties object itself.
+     */
+    public RepositoryProperties setTeleportEnabled(Boolean teleportEnabled) {
+        this.teleportEnabled = teleportEnabled;
+        return this;
     }
 }

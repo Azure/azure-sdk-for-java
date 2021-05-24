@@ -32,7 +32,9 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +47,13 @@ import java.util.regex.Pattern;
 /**
  * This is the utility class that includes helper methods used across our clients.
  */
-public final class Utils {
+final class Utils {
     private static final String CONTINUATIONLINK_HEADER_NAME;
     private static final Pattern CONTINUATIONLINK_PATTERN;
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
+    private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
+    private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
@@ -74,12 +78,24 @@ public final class Utils {
     /**
      * This method parses the response to get the continuation token used to make the next pagination call.
      * The continuation token is returned by the service in the form of a header and not as a nextLink field.
+     *
+     * <p>
+     *      Per the Docker v2 HTTP API spec, the Link header is an RFC5988
+     *      compliant rel='next' with URL to next result set, if available.
+     *      See: https://docs.docker.com/registry/spec/api/
+     *
+     *      The URI reference can be obtained from link-value as follows:
+     *        Link       = "Link" ":" #link-value
+     *        link-value = "<" URI-Reference ">" * (";" link-param )
+     *      See: https://tools.ietf.org/html/rfc5988#section-5
+     * </p>
      * @param listResponse response that is parsed.
      * @param mapperFunction the function that maps the rest api response into the public model exposed by the client.
      * @param <T> The model type returned by the rest client.
      * @param <R> The model type returned by the public client.
      * @return paged response with the correct continuation token.
      */
+
     static <T, R> PagedResponse<T> getPagedResponseWithContinuationToken(PagedResponse<R> listResponse, Function<List<R>, List<T>> mapperFunction) {
         Objects.requireNonNull(mapperFunction);
 
@@ -141,27 +157,6 @@ public final class Utils {
     }
 
     /**
-     * This method maps a given response to another based on the mapper function.
-     * @param response response that is parsed.
-     * @param mapFunction the function that maps the rest api response into the public model exposed by the client.
-     * @param <T> The model type returned by the rest client.
-     * @param <R> The model type returned by the public client.
-     * @return paged response with the correct continuation token.
-     */
-    static <T, R> Response<R> mapResponse(Response<T> response, Function<T, R> mapFunction) {
-        if (response == null || mapFunction == null) {
-            return null;
-        }
-
-        return new ResponseBase<String, R>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            mapFunction.apply(response.getValue()),
-            null);
-    }
-
-    /**
      * This method builds the httpPipeline for the builders.
      * @param clientOptions The client options
      * @param logOptions http log options.
@@ -183,7 +178,8 @@ public final class Utils {
         List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
-        String endpoint) {
+        String endpoint,
+        ClientLogger logger) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -206,22 +202,24 @@ public final class Utils {
         // However since ACR uses the rest endpoints of the service in the credential policy,
         // we want to be able to use the same pipeline (minus the credential policy) to have uniformity in the policy
         // pipelines across all ACR endpoints.
-        if (credential != null) {
-            ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
-            credentialPolicies.add(loggingPolicy);
-
-            ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
-                credential,
-                endpoint,
-                new HttpPipelineBuilder()
-                    .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
-                    .httpClient(httpClient)
-                    .build(),
-                JacksonAdapter.createDefaultSerializerAdapter());
-
-            ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
-            policies.add(credentialsPolicy);
+        if (credential == null) {
+            logger.verbose("Credentials are null, enabling anonymous access");
         }
+
+        ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
+        credentialPolicies.add(loggingPolicy);
+
+        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
+            credential,
+            endpoint,
+            new HttpPipelineBuilder()
+                .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .build(),
+            JacksonAdapter.createDefaultSerializerAdapter());
+
+        ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
+        policies.add(credentialsPolicy);
 
         policies.add(loggingPolicy);
         HttpPipeline httpPipeline =
@@ -239,5 +237,20 @@ public final class Utils {
         }
 
         return clonedPolicy;
+    }
+
+    static Mono<Response<Void>> deleteResponseToSuccess(Response<Void> responseT) {
+        if (responseT.getStatusCode() != HTTP_STATUS_CODE_NOT_FOUND) {
+            return Mono.just(responseT);
+        }
+
+        Response<Void> successResponse = new ResponseBase<String, Void>(
+            responseT.getRequest(),
+            HTTP_STATUS_CODE_ACCEPTED,
+            responseT.getHeaders(),
+            null,
+            null);
+
+        return Mono.just(successResponse);
     }
 }

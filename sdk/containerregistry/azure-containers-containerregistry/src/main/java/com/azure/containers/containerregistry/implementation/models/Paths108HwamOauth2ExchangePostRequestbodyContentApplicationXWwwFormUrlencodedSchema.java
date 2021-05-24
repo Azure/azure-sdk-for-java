@@ -27,7 +27,7 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
      * access_token_refresh_token or access_token.
      */
     @JsonProperty(value = "access_token", required = true)
-    private String aadAccesstoken;
+    private String aadAccessToken;
 
     /**
      * Creates an instance of Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema class.
@@ -79,25 +79,25 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     }
 
     /**
-     * Get the aadAccesstoken property: AAD access token, mandatory when grant_type is access_token_refresh_token or
+     * Get the aadAccessToken property: AAD access token, mandatory when grant_type is access_token_refresh_token or
      * access_token.
      *
-     * @return the aadAccesstoken value.
+     * @return the aadAccessToken value.
      */
-    public String getAadAccesstoken() {
-        return this.aadAccesstoken;
+    public String getAadAccessToken() {
+        return this.aadAccessToken;
     }
 
     /**
-     * Set the aadAccesstoken property: AAD access token, mandatory when grant_type is access_token_refresh_token or
+     * Set the aadAccessToken property: AAD access token, mandatory when grant_type is access_token_refresh_token or
      * access_token.
      *
-     * @param aadAccesstoken the aadAccesstoken value to set.
+     * @param aadAccessToken the aadAccessToken value to set.
      * @return the Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema object itself.
      */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema setAadAccesstoken(
-            String aadAccesstoken) {
-        this.aadAccesstoken = aadAccesstoken;
+    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema setAadAccessToken(
+            String aadAccessToken) {
+        this.aadAccessToken = aadAccessToken;
         return this;
     }
 }

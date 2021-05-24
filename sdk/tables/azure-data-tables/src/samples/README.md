@@ -58,7 +58,7 @@ This project welcomes contributions and suggestions. See [Contributing][sdk_read
 [sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#troubleshooting
 [sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#next-steps
 [sdk_readme_contributing]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/README.md#contributing
-[sample_async_client_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/TableServiceAsyncClientCodeSnippets.java
-[sample_sync_client_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/TableServiceClientCodeSnippets.java
+[sample_async_client_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/com/azure/data/tables/TableServiceAsyncClientCodeSnippets.java
+[sample_sync_client_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/tables/azure-data-tables/src/samples/java/com/azure/data/tables/TableServiceClientCodeSnippets.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%tables%2Fazure-data-tables%2Fsrc%2Fsamples%2README.png)
