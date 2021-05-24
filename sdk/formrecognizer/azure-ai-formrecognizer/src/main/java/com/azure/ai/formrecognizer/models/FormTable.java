@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The FormTable model.
+ * Represents a table recognized from the input document.
  */
 @Immutable
 public final class FormTable {

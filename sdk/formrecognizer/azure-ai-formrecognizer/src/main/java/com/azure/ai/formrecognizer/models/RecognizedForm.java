@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The RecognizedForm model.
+ * Represents a form that has been recognized by a trained or prebuilt model based on the provided input document.
  */
 @Immutable
 public final class RecognizedForm {
