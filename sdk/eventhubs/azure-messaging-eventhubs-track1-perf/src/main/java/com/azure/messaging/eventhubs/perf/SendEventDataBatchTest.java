@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 /**
  * Sends an event data batch with {@link EventHubsOptions#getCount()} number of events in the batch.
  */
-public class SendEventDataBatchTest extends ServiceTest {
+public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
 
     /**
      * Creates an instance of performance test.

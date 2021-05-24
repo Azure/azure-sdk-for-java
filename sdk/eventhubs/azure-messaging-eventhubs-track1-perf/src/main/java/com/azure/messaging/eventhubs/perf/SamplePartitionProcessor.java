@@ -3,61 +3,73 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventprocessorhost.CloseReason;
 import com.microsoft.azure.eventprocessorhost.IEventProcessor;
 import com.microsoft.azure.eventprocessorhost.PartitionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Processes a single partition.
  */
 public class SamplePartitionProcessor implements IEventProcessor {
-    private final ClientLogger logger = new ClientLogger(SamplePartitionProcessor.class);
-    private final AtomicReference<PartitionCounter> currentCounter = new AtomicReference<>();
+    private final Logger logger = LoggerFactory.getLogger(SamplePartitionProcessor.class);
+    private final ConcurrentLinkedQueue<PartitionCounter> currentCounters = new ConcurrentLinkedQueue<>();
     private final ArrayList<PartitionCounter> allCounters = new ArrayList<>();
+    private final AtomicBoolean isStopped = new AtomicBoolean();
 
-    /**
-     * Creates an instance for that partition id.
-     */
-    public SamplePartitionProcessor() {
+    public List<PartitionCounter> getCounters() {
+        return allCounters;
     }
 
     @Override
     public void onOpen(PartitionContext context) {
-        logger.verbose("PartitionId[{}] OnOpen", context.getPartitionId());
-
-        final PartitionCounter counter = new PartitionCounter(context.getPartitionId());
-        if (!currentCounter.compareAndSet(null, counter)) {
-            throw logger.logThrowableAsError(new RuntimeException("There shouldn't be a current counter on open. Id: "
-                + context.getPartitionId()));
+        if (isStopped.get()) {
+            System.out.printf("OnOpen: Already stopped partition %s%n", context.getPartitionId());
+            return;
         }
 
+        logger.trace("PartitionId[{}] OnOpen", context.getPartitionId());
+
+        final PartitionCounter counter = new PartitionCounter(context.getPartitionId());
         counter.start();
+        currentCounters.add(counter);
     }
 
     @Override
     public void onClose(PartitionContext context, CloseReason reason) {
-        logger.info("PartitionId[{}] OnClose {}", context.getPartitionId(), reason);
-
-        final PartitionCounter counter = this.currentCounter.getAndSet(null);
-        if (counter == null) {
-            throw logger.logThrowableAsError(new RuntimeException("There was no existing counter to close."));
+        if (isStopped.get()) {
+            System.out.printf("OnClose: Already stopped partition %s%n", context.getPartitionId());
+            return;
         }
 
-        counter.stop();
-        allCounters.add(counter);
+        logger.info("PartitionId[{}] OnClose {}", context.getPartitionId(), reason);
+
+        final PartitionCounter lastCounter = currentCounters.poll();
+        if (lastCounter == null) {
+            throw new RuntimeException("There was no current counter to stop. Id: " + context.getPartitionId());
+        }
+
+        lastCounter.stop();
+        allCounters.add(lastCounter);
     }
 
     @Override
     public void onEvents(PartitionContext context, Iterable<EventData> events) {
-        final PartitionCounter partitionCounter = currentCounter.get();
+        if (isStopped.get()) {
+            System.out.printf("OnEvents: Already stopped partition %s%n", context.getPartitionId());
+            return;
+        }
+
+        final PartitionCounter partitionCounter = currentCounters.peek();
         if (partitionCounter == null) {
-            throw logger.logThrowableAsError(new RuntimeException("Expected a current counter for partition: "
-                + context.getPartitionId()));
+            throw new RuntimeException("Expected a current counter for partition: " + context.getPartitionId());
         }
 
         for (EventData event : events) {
@@ -67,18 +79,19 @@ public class SamplePartitionProcessor implements IEventProcessor {
 
     @Override
     public void onError(PartitionContext context, Throwable error) {
-        logger.warning("PartitionId[{}] Error[{}]", context.getPartitionId(), error);
+        logger.warn("PartitionId[{}] onError", context.getPartitionId(), error);
     }
 
-    public String getResults() {
-        final StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < allCounters.size(); i++) {
-            final PartitionCounter partitionCounter = allCounters.get(i);
-            final String formatted = String.format("%d\t%s\t%s\t%s%n", i, partitionCounter.getPartitionId(),
-                partitionCounter.totalEvents(), partitionCounter.elapsedTime());
-            builder.append(formatted);
+    public void onStop() {
+        if (isStopped.getAndSet(true)) {
+            return;
         }
 
-        return builder.toString();
+        PartitionCounter counter = currentCounters.poll();
+        while (counter != null) {
+            counter.stop();
+            allCounters.add(counter);
+            counter = currentCounters.poll();
+        }
     }
 }

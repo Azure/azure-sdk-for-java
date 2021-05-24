@@ -3,12 +3,10 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
-import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.TransportType;
 
 /**
@@ -18,27 +16,19 @@ public class EventHubsOptions extends PerfStressOptions {
     private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String AZURE_EVENTHUBS_EVENTHUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
 
-    // Minimum duration is 5 minutes so we can give it time to claim all the partitions.
-    private static final int MINIMUM_DURATION = 5 * 60;
-
     @Parameter(names = {"--transportType"}, description = "TransportType for the connection",
         converter = TransportTypeConverter.class)
     private TransportType transportType;
 
-    @Parameter(names = {"-cs", "--connectionString"}, description = "Connection string for Event Hubs namespace.")
+    @Parameter(names = {"-cs", "--connectionString"}, description = "Connection string for Event Hubs namespace.",
+        required = true)
     private String connectionString;
 
-    @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.")
+    @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.", required = true)
     private String eventHubName;
-
-    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
-    private String consumerGroup;
 
     @Parameter(names = {"--partitionId"}, description = "Partition to send events to or receive from.")
     private String partitionId;
-
-    @Parameter(names = {"--output" }, description = "Name of a file to output results to. If null, then ClientLogger.")
-    private String outputFile;
 
     /**
      * Creates an instance with the default options.
@@ -46,15 +36,6 @@ public class EventHubsOptions extends PerfStressOptions {
     public EventHubsOptions() {
         super();
         this.transportType = TransportType.AMQP;
-        this.consumerGroup = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
-
-        // It is the default duration or less than 300 seconds.
-        if (getDuration() < 300) {
-            final ClientLogger logger = new ClientLogger(EventHubsOptions.class);
-
-            throw logger.logThrowableAsError(new RuntimeException(
-                "Test duration is shorter than 60 seconds. It should be at least " + MINIMUM_DURATION + " seconds"));
-        }
     }
 
     /**
@@ -64,15 +45,6 @@ public class EventHubsOptions extends PerfStressOptions {
      */
     public String getConnectionString() {
         return connectionString != null ? connectionString : System.getenv(AZURE_EVENTHUBS_CONNECTION_STRING);
-    }
-
-    /**
-     * Gets the consumer group for receiving messages.
-     *
-     * @return The consumer group for receiving messages.
-     */
-    public String getConsumerGroup() {
-        return consumerGroup;
     }
 
     /**
@@ -110,15 +82,6 @@ public class EventHubsOptions extends PerfStressOptions {
      */
     public TransportType getTransportType() {
         return transportType;
-    }
-
-    /**
-     * Gets the name of the output file to write results to.
-     *
-     * @return The name of the output file to write results to. {@code null} to output to ClientLogger.
-     */
-    public String getOutputFile() {
-        return outputFile;
     }
 
     static class TransportTypeConverter implements IStringConverter<TransportType> {

@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Gets partition information.
  */
-public class GetPartitionInformationTest extends ServiceTest {
+public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     /**
      * Creates an instance of performance test.
      *

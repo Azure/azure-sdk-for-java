@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Sends a number of {@link EventData} to Event Hub.
  */
-public class SendEventDataTest extends ServiceTest {
+public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
 
     /**
      * Creates an instance of performance test.

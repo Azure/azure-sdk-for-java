@@ -32,7 +32,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 /**
  * Base class that tests Event Hubs.
  */
-abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
+abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
     private final ScheduledExecutorService scheduler;
     private final int totalNumberOfEventsPerPartition;
 
@@ -45,7 +45,7 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
      *
      * @param options the options configured for the test.
      */
-    ServiceTest(EventHubsOptions options) {
+    ServiceTest(T options) {
         super(options);
 
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
