@@ -7,6 +7,7 @@ package com.azure.media.videoanalyzer.edge.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.UnsupportedEncodingException;
 
 /** Creates a new live pipeline or updates an existing one. */
 @Fluent
@@ -56,10 +57,11 @@ public final class LivePipelineSetRequest extends MethodRequest {
 
     /**
      * Get the payload as JSON: the serialized form of the request body
-     *
+
+     * @throws UnsupportedEncodingException UnsupportedEncodingException
      * @return the payload as JSON
      */
-    public String getPayloadAsJson() {
+    public String getPayloadAsJson() throws UnsupportedEncodingException {
         LivePipelineSetRequestBody setRequestBody = new LivePipelineSetRequestBody(this.livePipeline.getName());
         setRequestBody.setSystemData(this.livePipeline.getSystemData());
         setRequestBody.setProperties(this.livePipeline.getProperties());

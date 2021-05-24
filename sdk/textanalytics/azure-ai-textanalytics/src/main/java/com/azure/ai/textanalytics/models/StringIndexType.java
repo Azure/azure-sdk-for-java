@@ -10,7 +10,7 @@ import com.azure.core.util.ExpandableStringEnum;
  */
 public final class StringIndexType extends ExpandableStringEnum<StringIndexType> {
     /** Static value TextElements_v8 for StringIndexType. */
-    public static final StringIndexType TEXT_ELEMENTS_V8 = fromString("TextElements_v8");
+    public static final StringIndexType TEXT_ELEMENT_V8 = fromString("TextElement_v8");
 
     /** Static value UnicodeCodePoint for StringIndexType. */
     public static final StringIndexType UNICODE_CODE_POINT = fromString("UnicodeCodePoint");

@@ -337,7 +337,6 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
         close();
     }
 
-    @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
     }
@@ -371,6 +370,7 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
             }
 
             sender.close();
+            sendTimeoutTimer.cancel();
         };
 
         return Mono.fromRunnable(() -> {

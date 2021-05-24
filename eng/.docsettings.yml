@@ -155,6 +155,7 @@ known_content_issues:
   - ['sdk/keyvault/azure-security-keyvault-administration/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
   - ['sdk/monitor/azure-monitor-opentelemetry-exporter/swagger/README.md', '#3113' ]
+  - ['sdk/monitor/azure-monitor-query/swagger/README.md', '#3113' ]
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
   - ['sdk/purview/azure-analytics-purview-catalog/swagger/README.md', '#3113']
   - ['sdk/purview/azure-analytics-purview-scanning/swagger/README.md', '#3113']

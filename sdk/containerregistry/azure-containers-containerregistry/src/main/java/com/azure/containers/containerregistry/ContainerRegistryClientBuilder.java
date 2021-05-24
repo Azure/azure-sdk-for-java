@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
