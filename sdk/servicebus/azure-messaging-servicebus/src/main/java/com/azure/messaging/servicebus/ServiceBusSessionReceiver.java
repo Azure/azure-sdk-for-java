@@ -212,7 +212,6 @@ class ServiceBusSessionReceiver implements AsyncAutoCloseable {
         return receiveLink.closeAsync().doFinally(signal -> subscriptions.dispose());
     }
 
-    @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
     }

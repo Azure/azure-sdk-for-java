@@ -180,6 +180,7 @@ public class PerfStressProgram {
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
+     * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
         completedOperations = new int[parallel];
@@ -208,6 +209,15 @@ public class PerfStressProgram {
                 throw new RuntimeException(e);
             }
         } else {
+            // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
+            // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
+            // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
+            Schedulers.onHandleError((t, e) -> {
+                System.err.print(t + " threw exception: ");
+                e.printStackTrace();
+                System.exit(1);
+            });
+
             Flux.range(0, parallel)
                 .parallel()
                 .runOn(Schedulers.boundedElastic())
@@ -221,6 +231,9 @@ public class PerfStressProgram {
         System.out.println("=== Results ===");
 
         int totalOperations = getCompletedOperations();
+        if (totalOperations == 0) {
+            throw new IllegalStateException("Zero operations has been completed");
+        }
         double operationsPerSecond = getOperationsPerSecond();
         double secondsPerOperation = 1 / operationsPerSecond;
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
@@ -249,7 +262,7 @@ public class PerfStressProgram {
                 completedOperations[index]++;
                 lastCompletionNanoTimes[index] = System.nanoTime() - startNanoTime;
             })
-            .take(Duration.ofNanos(endNanoTime - startNanoTime))
+            .takeWhile(i -> System.nanoTime() < endNanoTime)
             .then();
     }
 

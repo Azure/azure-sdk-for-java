@@ -14,7 +14,7 @@ Use the client library for Video Analyzer on IoT Edge to:
 ### Prerequisites
 
 - A Java Development Kit, version 8 or later.
-- You need an active [Azure subscription][azure_sub] and a [IoT device connection string][iot_device_connection_string] to use this package.
+- You need an active [Azure subscription][azure_sub] and a IoT device connection string to use this package.
 - To interact with Azure IoT Hub you will need to add their dependency to your `pom.xml`
 
 ### Include the package
@@ -186,17 +186,17 @@ additional questions or comments.
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 
-[package]: TODO://link-to-published-package
+[package]: https://aka.ms/ava/sdk/client/java
+[samples]: https://aka.ms/video-analyzer-sample
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/videoanalyzer
 
-[source]: TODO://link-to-published-source
-
-[doc_direct_methods]: TODO://link
-[doc_product]: TODO://link
-[doc_pipeline]: TODO://link
-[iot_device_connection_string]: TODO://link
+[doc_direct_methods]: https://go.microsoft.com/fwlink/?linkid=2162396
+[doc_pipelines]: https://go.microsoft.com/fwlink/?linkid=2162396
+[doc_product]: https://go.microsoft.com/fwlink/?linkid=2162396
 
 [iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fvideoanalyzer%2Fazure-media-videoanalyzer-edge%2FREADME.png)
 

@@ -109,7 +109,7 @@ public class AppConfigurationRefreshTest {
 
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
 
         configRefresh.refreshConfigurations().get();
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
@@ -121,14 +121,14 @@ public class AppConfigurationRefreshTest {
         watchKeys.add(initialResponse());
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
         assertFalse(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
 
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(updatedResponse());
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(updatedResponse());
 
         // If there is a change it should update
         assertTrue(configRefresh.refreshConfigurations().get());
@@ -161,14 +161,14 @@ public class AppConfigurationRefreshTest {
         watchKeys.add(initialResponse());
         StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
         assertFalse(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
 
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(updatedResponse());
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(updatedResponse());
 
         // If there is a change it should update
         assertTrue(configRefresh.refreshConfigurations().get());
@@ -199,7 +199,7 @@ public class AppConfigurationRefreshTest {
         watchKeys.add(initialResponse());
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString()))
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString()))
             .thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
@@ -214,7 +214,7 @@ public class AppConfigurationRefreshTest {
         watchKeys.add(initialResponse());
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getCacheExpiration());
 
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(null);
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
@@ -245,7 +245,7 @@ public class AppConfigurationRefreshTest {
         AppConfigurationRefresh configRefreshLost = new AppConfigurationRefresh(propertiesLost,
             clientStoreMock);
         StateHolder.setLoadState(TEST_STORE_NAME, true);
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(null);
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(null);
         configRefreshLost.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
