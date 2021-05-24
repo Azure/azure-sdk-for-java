@@ -14,6 +14,7 @@ import org.springframework.jms.core.JmsTemplate;
 import javax.jms.ConnectionFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PremiumServiceBusJMSAutoConfigurationTest {
@@ -39,6 +40,20 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
     }
+
+    @Test
+    public void testAzureServiceBusJMSProperties() {
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
+        contextRunner.withPropertyValues(
+            "spring.jms.servicebus.destination=test",
+            "spring.jms.servicebus.subscription=test")
+                     .run(context -> {
+                         AzureServiceBusJMSProperties properties = context.getBean(AzureServiceBusJMSProperties.class);
+                         assertEquals("test", properties.getDestination());
+                         assertEquals("test", properties.getSubscription());
+                     });
+    }
+
 
     @Test
     public void testWithoutServiceBusJMSNamespace() {

@@ -15,7 +15,7 @@ public class Receiver {
 
     public static final Exchanger<String> EXCHANGER = new Exchanger<>();
 
-    @JmsListener(destination = QUEUE_NAME, containerFactory = "jmsListenerContainerFactory")
+    @JmsListener(destination = "${spring.jms.servicebus.destination}", containerFactory = "jmsListenerContainerFactory")
     public void receiveMessage(User user) throws InterruptedException {
         EXCHANGER.exchange(user.getName());
     }

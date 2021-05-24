@@ -28,6 +28,10 @@ public class AzureServiceBusJMSProperties {
 
     private String pricingTier;
 
+    private String destination;
+
+    private String subscription;
+
     public String getConnectionString() {
         return connectionString;
     }
@@ -58,6 +62,22 @@ public class AzureServiceBusJMSProperties {
 
     public void setIdleTimeout(int idleTimeout) {
         this.idleTimeout = idleTimeout;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(String subscription) {
+        this.subscription = subscription;
     }
 
     /**

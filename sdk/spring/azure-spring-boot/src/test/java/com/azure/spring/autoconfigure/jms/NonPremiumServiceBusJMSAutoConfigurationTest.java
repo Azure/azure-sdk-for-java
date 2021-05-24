@@ -9,11 +9,20 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.stereotype.Component;
 
 import javax.jms.ConnectionFactory;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NonPremiumServiceBusJMSAutoConfigurationTest {
@@ -47,6 +56,19 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
             "spring.jms.servicebus.pricing-tier=fake",
             "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
                      .run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test
+    public void testAzureServiceBusJMSProperties() {
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
+        contextRunner.withPropertyValues(
+            "spring.jms.servicebus.destination=test",
+            "spring.jms.servicebus.subscription=test")
+            .run(context -> {
+                AzureServiceBusJMSProperties properties = context.getBean(AzureServiceBusJMSProperties.class);
+                assertEquals("test", properties.getDestination());
+                assertEquals("test", properties.getSubscription());
+            });
     }
 
     @Test
