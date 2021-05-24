@@ -41,7 +41,7 @@ public class RecognizeBusinessCardAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/businessCards/businessCard.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
