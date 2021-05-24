@@ -409,6 +409,9 @@ class DirectoryAPITests extends APISpec {
         if (expectingResults) {
             assert nameList == returnedFileList*.getName()
         }
+        else {
+            assert returnedFileList.size() == 0
+        }
         true
 
         where:
