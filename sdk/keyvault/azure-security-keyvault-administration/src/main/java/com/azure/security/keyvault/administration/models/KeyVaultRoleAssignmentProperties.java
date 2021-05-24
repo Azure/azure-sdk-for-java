@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public final class KeyVaultRoleAssignmentProperties {
     private final String roleDefinitionId;
     private final String principalId;
-    private final KeyVaultRoleScope roleScope;
+    private final KeyVaultRoleScope scope;
 
     /**
      * Creates a new {@link KeyVaultRoleAssignmentProperties role assignment properties} object with the specified
@@ -22,12 +22,12 @@ public final class KeyVaultRoleAssignmentProperties {
      * {@link KeyVaultRoleAssignment role assignment}.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      * It can point to a user, service principal, or security group.*
-     * @param roleScope The {@link KeyVaultRoleScope scope} of this {@link KeyVaultRoleAssignment role assignment}.
+     * @param scope The {@link KeyVaultRoleScope scope} of this {@link KeyVaultRoleAssignment role assignment}.
      */
-    public KeyVaultRoleAssignmentProperties(String roleDefinitionId, String principalId, KeyVaultRoleScope roleScope) {
+    public KeyVaultRoleAssignmentProperties(String roleDefinitionId, String principalId, KeyVaultRoleScope scope) {
         this.roleDefinitionId = roleDefinitionId;
         this.principalId = principalId;
-        this.roleScope = roleScope;
+        this.scope = scope;
     }
 
     /**
@@ -54,7 +54,7 @@ public final class KeyVaultRoleAssignmentProperties {
      *
      * @return The {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleScope scope}.
      */
-    public KeyVaultRoleScope getRoleScope() {
-        return roleScope;
+    public KeyVaultRoleScope getScope() {
+        return scope;
     }
 }

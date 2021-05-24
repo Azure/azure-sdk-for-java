@@ -217,7 +217,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
             assertNotNull(properties);
             assertNotNull(properties.getRoleDefinitionId());
             assertNotNull(properties.getPrincipalId());
-            assertEquals(KeyVaultRoleScope.GLOBAL, properties.getRoleScope());
+            assertEquals(KeyVaultRoleScope.GLOBAL, properties.getScope());
         }
     }
 
@@ -267,7 +267,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
             assertNotNull(properties);
             assertEquals(servicePrincipalId, properties.getPrincipalId());
             assertEquals(roleDefinition.getId(), properties.getRoleDefinitionId());
-            assertEquals(KeyVaultRoleScope.GLOBAL, properties.getRoleScope());
+            assertEquals(KeyVaultRoleScope.GLOBAL, properties.getScope());
         } finally {
             if (getTestMode() != TestMode.PLAYBACK) {
                 // Clean up the role assignment.

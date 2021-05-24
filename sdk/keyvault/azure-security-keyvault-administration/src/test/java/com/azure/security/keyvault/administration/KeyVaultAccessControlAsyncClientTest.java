@@ -220,7 +220,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 assertNotNull(properties);
                 assertNotNull(properties.getRoleDefinitionId());
                 assertNotNull(properties.getPrincipalId());
-                assertEquals(KeyVaultRoleScope.GLOBAL, properties.getRoleScope());
+                assertEquals(KeyVaultRoleScope.GLOBAL, properties.getScope());
             });
 
         sleepIfRunningAgainstService(5000);
@@ -276,7 +276,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 assertNotNull(properties);
                 assertEquals(servicePrincipalId, properties.getPrincipalId());
                 assertEquals(finalRoleDefinition.getId(), properties.getRoleDefinitionId());
-                assertEquals(KeyVaultRoleScope.GLOBAL, properties.getRoleScope());
+                assertEquals(KeyVaultRoleScope.GLOBAL, properties.getScope());
 
                 // Clean up the role assignment.
                 KeyVaultAccessControlAsyncClient cleanupClient = getClientBuilder(httpClient, true).buildAsyncClient();
