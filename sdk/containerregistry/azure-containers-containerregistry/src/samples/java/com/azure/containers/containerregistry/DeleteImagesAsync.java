@@ -7,6 +7,9 @@ import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+/**
+ * This is a sample for deleting images asynchronously.
+ */
 public class DeleteImagesAsync {
     static final String ENDPOINT = "https://registryName.azure.io";
 

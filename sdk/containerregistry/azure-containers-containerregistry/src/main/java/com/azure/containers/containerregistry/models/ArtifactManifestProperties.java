@@ -208,11 +208,6 @@ public final class ArtifactManifestProperties {
     private Boolean readEnabled;
 
     /**
-     * Initializes an instance of {@link ArtifactManifestProperties}.
-     */
-    public ArtifactManifestProperties() { }
-
-    /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
      *

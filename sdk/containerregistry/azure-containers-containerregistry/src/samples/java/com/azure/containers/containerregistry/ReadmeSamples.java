@@ -6,6 +6,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ManifestOrderBy;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -159,7 +160,7 @@ public class ReadmeSamples {
         try {
             anonymousClient.deleteRepository(repositoryName);
             System.out.println("Unexpected Success: Delete is not allowed on anonymous access");
-        } catch (Exception ex) {
+        } catch (ClientAuthenticationException ex) {
             System.out.println("Expected exception: Delete is not allowed on anonymous access");
         }
     }

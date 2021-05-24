@@ -3,6 +3,9 @@
 
 package com.azure.containers.containerregistry;
 
+/**
+ * This is a sample for listing tags asynchronously.
+ */
 public class ListTagsAsync {
     static final String ENDPOINT = "https://registryName.azure.io";
     static final String REPOSITORY_NAME = "library/hello-world";

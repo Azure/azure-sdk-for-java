@@ -131,8 +131,8 @@ public final class RegistryArtifactAsync {
     }
 
     /**
-     * Gets the tag or digest for the current instance.
-     * @return Tag or digest information for the current instance.
+     * Gets the digest for the current instance.
+     * @return Digest information for the current instance.
      * */
     public String getDigest() {
         return this.digest;

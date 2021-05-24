@@ -145,7 +145,7 @@ public final class ContainerRegistryAsyncClient {
      * Delete the repository identified by 'repositoryName'.
      *
      * @param repositoryName Name of the image (including the namespace).
-     * @return deleted repository properties.
+     * @return the completion stream.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the 'repositoryName' is null.
      * @throws IllegalArgumentException thrown if 'repositoryName' is empty.
@@ -177,10 +177,8 @@ public final class ContainerRegistryAsyncClient {
      * @param repositoryName Name of the repository to reference.
      * @param digest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifactAsync RegistryArtifactAsync} for the desired repository.
-     * @throws NullPointerException if 'repositoryName' is null.
-     * @throws IllegalArgumentException if 'repositoryName' is empty.
-     * @throws NullPointerException if 'digest' is null.
-     * @throws IllegalArgumentException if 'digest' is empty.
+     * @throws NullPointerException if 'repositoryName' or 'digest' is null.
+     * @throws IllegalArgumentException if 'repositoryName' or 'digest 'is empty.
      */
     public RegistryArtifactAsync getArtifact(String repositoryName, String digest) {
         return new RegistryArtifactAsync(repositoryName, digest, httpPipeline, endpoint, apiVersion);
