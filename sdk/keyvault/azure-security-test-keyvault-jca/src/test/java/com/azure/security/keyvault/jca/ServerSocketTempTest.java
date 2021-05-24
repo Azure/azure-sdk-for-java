@@ -66,10 +66,9 @@ public class ServerSocketTempTest {
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
-        System.setProperty("azure.keyvault.uri", "https://key-vault-lzc12.vault.azure.net/");
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            "https://key-vault-lzc12.vault.azure.net/",
+            System.getenv("AZURE_KEYVAULT_URI"),
             System.getenv("AZURE_KEYVAULT_TENANT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
