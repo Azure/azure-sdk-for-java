@@ -24,6 +24,11 @@ public enum DataFeedSourceType {
     AZURE_DATA_EXPLORER("AzureDataExplorer"),
 
     /**
+     * Enum value AzureEventHubs.
+     */
+    AZURE_EVENT_HUBS("AzureEventHubs"),
+
+    /**
      * Enum value AzureTable.
      */
     AZURE_TABLE("AzureTable"),
