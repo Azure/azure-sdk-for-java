@@ -1,10 +1,14 @@
 # Release History
 
+## 3.6.0-beta.1 (Unreleased)
+
 ## 3.5.0 (2021-05-24)
 ### New Features
+- Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
 - Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
-- Support creating `GrantedAuthority` by groupId and groupName for web application.([#20218])  
+- Enable property azure.activedirectory.redirect-uri-template.([#21116](https://github.com/Azure/azure-sdk-for-java/issues/21116))
+- Support creating `GrantedAuthority` by groupId and groupName for web application.([#20218])
   ```yaml
   user-group:
       allowed-group-names: group1,group2
@@ -16,6 +20,10 @@
   | allowed-group-names | if `enable-full-list` is `false`, create `GrantedAuthority` with groupNames which belong to user and `allowed-group-names` |
   | allowed-group-ids   | if `enable-full-list` is `false`, create `GrantedAuthority` with groupIds which belong to user and `allowed-group-ids` |
   | enable-full-list    | default is `false`.<br> if the value is `true`, create `GrantedAuthority` only with user's  all groupIds, ignore group names|
+
+### Key Bug Fixes
+- Fix the issue [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036) where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer.
+- Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
 
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
