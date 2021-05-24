@@ -49,11 +49,6 @@
       <version>2.0.2</version> <!-- {x-version-update;springboot_2_3_org.powermock:powermock-module-junit4;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <version>2.3.10.RELEASE</version> <!-- {x-version-update;springboot_2_3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
@@ -75,7 +70,6 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>junit:junit:[4.13.2]</include> <!-- {x-include-update;springboot_2_3_junit:junit;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.1.7.Final]</include> <!-- {x-include-update;springboot_2_3_org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.mockito:mockito-core:[3.3.3]</include> <!-- {x-include-update;springboot_2_3_org.mockito:mockito-core;external_dependency} -->

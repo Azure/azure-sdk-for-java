@@ -19,8 +19,6 @@
   <description>EventHubs Test project for Spring Cloud</description>
 
   <properties>
-    <!-- Change jackson-bom version from 2.11.4 to 2.12.2-->
-    <jackson-bom.version>2.12.2</jackson-bom.version>
     <!-- Change reactor-bom version from Dysprosium-SR19 to 2020.0.6-->
     <reactor-bom.version>2020.0.6</reactor-bom.version>
   </properties>
