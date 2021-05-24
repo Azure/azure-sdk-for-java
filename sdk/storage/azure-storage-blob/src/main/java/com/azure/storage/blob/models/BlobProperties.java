@@ -60,7 +60,7 @@ public final class BlobProperties {
     private final OffsetDateTime expiresOn;
     private final OffsetDateTime immutabilityPolicyExpiresOn;
     private final BlobImmutabilityPolicyMode immutabilityPolicyMode;
-    private final boolean hasLegalHold;
+    private final Boolean hasLegalHold;
 
     /**
      * Constructs a {@link BlobProperties}.
