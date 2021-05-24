@@ -46,7 +46,6 @@ public class ServerSocketTempTest {
     @Test
     public void testServerSocket() throws Exception {
 
-        System.setProperty("javax.net.debug" , "ssl,handshake");
         /*
          * Add JCA provider.
          */
@@ -67,9 +66,10 @@ public class ServerSocketTempTest {
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
+        System.setProperty("azure.keyvault.uri", "https://key-vault-lzc12.vault.azure.net/");
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
+            "https://key-vault-lzc12.vault.azure.net/",
             System.getenv("AZURE_KEYVAULT_TENANT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
@@ -78,11 +78,13 @@ public class ServerSocketTempTest {
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
 
-        SSLContext context = SSLContext.getInstance("TLS");
-        context.init(kmf.getKeyManagers(), null, null);
+        SSLContext context = SSLContexts
+            .custom()
+            .loadKeyMaterial(ks, "".toCharArray())
+            .build();
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8865);
 
         Thread server = new Thread(() -> {
             while (true) {
@@ -129,7 +131,7 @@ public class ServerSocketTempTest {
         System.out.println("start to send request: testServerSocket");
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8765");
+            HttpGet httpGet = new HttpGet("https://localhost:8865");
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
@@ -157,7 +159,6 @@ public class ServerSocketTempTest {
     @Test
     public void testServerSocketWithSelfSignedClientTrust() throws Exception {
 
-        System.setProperty("javax.net.debug" , "ssl,handshake");
         /*
          * Add JCA provider.
          */
@@ -193,7 +194,7 @@ public class ServerSocketTempTest {
         context.init(kmf.getKeyManagers(), null, null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8766);
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8866);
 
         Thread server = new Thread(() -> {
             while (true) {
@@ -238,7 +239,7 @@ public class ServerSocketTempTest {
         String result = null;
         System.out.println("start to send request: testServerSocketWithSelfSignedClientTrust");
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8766");
+            HttpGet httpGet = new HttpGet("https://localhost:8866");
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
