@@ -12,7 +12,6 @@ module com.azure.identity {
     requires org.linguafranca.pwdb.database;
     requires org.linguafranca.pwdb.kdbx;
     requires org.linguafranca.pwdb.kdbx.simple;
-    requires reactor.core;
 
     exports com.azure.identity;
 
