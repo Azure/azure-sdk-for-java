@@ -24,7 +24,7 @@ public final class KeyVaultCertificateIdentifier {
      * <ul>
      *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}</li>
      *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/pending</li>
-     *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{unique-version-sourceId}</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}/{unique-version-id}</li>
      *     <li>https://{key-vault-name}.vault.azure.net/deletedcertificates/{deleted-certificate-name}</li>
      * </ul>
      *
@@ -33,13 +33,13 @@ public final class KeyVaultCertificateIdentifier {
      * @throws IllegalArgumentException If {@code certificateId} is an invalid Key Vault Certificate identifier.
      * @throws NullPointerException If {@code certificateId} is {@code null}.
      */
-    public KeyVaultCertificateIdentifier(String sourceId) {
-        if (sourceId == null) {
+    public KeyVaultCertificateIdentifier(String id) {
+        if (id == null) {
             throw new NullPointerException("'certificateId' cannot be null");
         }
 
         try {
-            final URL url = new URL(sourceId);
+            final URL url = new URL(id);
             // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
             final String[] pathSegments = url.getPath().split("/");
 
@@ -50,7 +50,7 @@ public final class KeyVaultCertificateIdentifier {
                 throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
             }
 
-            this.sourceId = sourceId;
+            this.sourceId = id;
             this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
