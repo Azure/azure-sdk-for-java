@@ -27,9 +27,8 @@ import java.net.Socket;
 import java.security.KeyStore;
 import java.security.Security;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 
-import static com.azure.security.keyvault.jca.PropertyConvertorUtils.SYSTEM_PROPERTIES;
-import static com.azure.security.keyvault.jca.PropertyConvertorUtils.getKeyVaultKeyStore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -61,8 +60,20 @@ public class ServerSocketTempTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(SYSTEM_PROPERTIES);
-        KeyStore ks = getKeyVaultKeyStore();
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
+        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
+        ks.load(parameter);
+
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
 
@@ -70,7 +81,7 @@ public class ServerSocketTempTest {
         context.init(kmf.getKeyManagers(), null, null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8865);
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
 
         Thread server = new Thread(() -> {
             while (true) {
@@ -115,7 +126,7 @@ public class ServerSocketTempTest {
         String result = null;
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8865");
+            HttpGet httpGet = new HttpGet("https://localhost:8765");
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
@@ -157,8 +168,20 @@ public class ServerSocketTempTest {
          *  - Set the SSL context to use the KeyManagerFactory.
          *  - Create the SSLServerSocket using th SSL context.
          */
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(SYSTEM_PROPERTIES);
-        KeyStore ks = getKeyVaultKeyStore();
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
+        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
+            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
+        ks.load(parameter);
+
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
 
@@ -166,7 +189,7 @@ public class ServerSocketTempTest {
         context.init(kmf.getKeyManagers(), null, null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8866);
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8766);
 
         Thread server = new Thread(() -> {
             while (true) {
@@ -211,7 +234,7 @@ public class ServerSocketTempTest {
         String result = null;
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8866");
+            HttpGet httpGet = new HttpGet("https://localhost:8766");
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
