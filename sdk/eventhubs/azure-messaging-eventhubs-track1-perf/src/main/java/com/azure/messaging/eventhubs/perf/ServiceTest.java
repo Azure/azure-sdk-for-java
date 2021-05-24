@@ -213,12 +213,13 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         if (options.isSync()) {
             try {
                 client.closeSync();
+                scheduler.shutdown();
                 return Mono.empty();
             } catch (EventHubException e) {
-                return Mono.error(new RuntimeException("Unable to close synchronous client.", e));
-            } finally {
                 scheduler.shutdown();
+                return Mono.error(new RuntimeException("Unable to close synchronous client.", e));
             }
+
         } else if (clientFuture != null) {
             final CompletableFuture<Void> future = clientFuture
                 .thenComposeAsync(client -> client.close())
@@ -230,8 +231,9 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
                 });
 
             return Mono.fromCompletionStage(future);
+        } else {
+            scheduler.shutdown();
+            return Mono.empty();
         }
-
-        return Mono.empty();
     }
 }
