@@ -3,30 +3,18 @@
 ## 3.5.0-beta.1 (Unreleased)
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
 - Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
-- Support creating `GrantedAuthority` by groupId and groupName for web application.([#20218])    
-    The application can configure to use groupName to control the permission, for example
-    ```java
-    @GetMapping("groupName")
-    @ResponseBody
-    @PreAuthorize("hasRole('ROLE_<groupName>')")
-    public String groupName() {
-        return "groupName message";
-    }
-    ```
-    but groupName is changeable, if there are two users with groupNameA and groupNameB, groupNameA is renamed to groupNameB, groupNameB is renamed to groupNameA,
-    the application may behave unexpectedly.
-    To avoid the situation, the application now can configure to create GrantedAuthority by groupId.
-   
-    ```java
-        @GetMapping("group1Id")
-        @ResponseBody
-        @PreAuthorize("hasRole('ROLE_<group1-id>')")
-        public String group1Id() {
-            return "group1Id message";
-        }
-
-    ```
-
+- Support creating `GrantedAuthority` by groupId and groupName for web application.([#20218])
+  ```yaml
+  user-group:
+      allowed-group-names: group1,group2
+      allowed-group-ids: <group1-id>,<group2-id>
+      enable-full-list: false  
+  ```
+  | Parameter           | Description                                             |
+    | ------------------- | ------------------------------------------------------------ |
+  | allowed-group-names | if `enable-full-list` is `false`, create `GrantedAuthority` with groupNames which belong to user and `allowed-group-names` |
+  | allowed-group-ids   | if `enable-full-list` is `false`, create `GrantedAuthority` with groupIds which belong to user and `allowed-group-ids` |
+  | enable-full-list    | default is `false`.<br> if the value is `true`, create `GrantedAuthority` only with user's  all groupIds, ignore group names|
 
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
