@@ -2,6 +2,11 @@
 
 ## 4.0.0-beta.8 (Unreleased)
 
+### Breaking Changes
+- Made `KeyVaultRoleDefinition` flat, as opposed to it having a `KeyVaultRoleDefinitionProperties` member with more properties inside of it.
+- Moved `roleScope` from `KeyVaultRoleAssignment` to `KeyVaultRoleAssignmentProperties` and renamed it to `scope`.
+- Moved `SetRoleDefinitionOptions` from the `options` package to the `models` package.
+- Removed `roleType` from `SetRoleDefinitionOptions`.
 
 ## 4.0.0-beta.7 (2021-05-15)
 
