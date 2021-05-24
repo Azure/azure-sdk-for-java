@@ -337,7 +337,6 @@ class ReactorSender implements AmqpSendLink, AsyncAutoCloseable {
         close();
     }
 
-    @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
     }

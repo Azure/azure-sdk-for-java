@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.6 (Unreleased)
+
+
 ### 1.0.0-beta.5 (2021-05-20)
 #### New Features
 * Added type in EncryptionKeyWrapMetadata constructor.
