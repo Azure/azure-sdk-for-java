@@ -2,6 +2,16 @@
 
 ## 4.3.0-beta.9 (Unreleased)
 
+### New Features
+- Added `createOctKey()` and `createOctKeyWithResponse()` to `KeyClient` and `KeyAsyncClient`.
+- Added factory methods for RSA algorithms in `DecryptParameters` and `EncryptParameters`:
+    - `createRsa15Parameters()`
+    - `createRsaOaepParameters()`
+    - `createRsaOaep256Parameters()`
+
+### Breaking Changes
+- Removed `EXPORT` from the `KeyOperation` enum.
+- Re-ordered parameters in the `EncryptResult` constructor to show `authenticationTag` before `additionalAuthenticatedData` to align with classes like `DecryptParameters`.
 
 ## 4.3.0-beta.8 (2021-05-15)
 
