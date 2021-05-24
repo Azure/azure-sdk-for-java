@@ -6,15 +6,13 @@ package com.azure.messaging.eventhubs.perf;
 import com.microsoft.azure.eventprocessorhost.IEventProcessorFactory;
 import com.microsoft.azure.eventprocessorhost.PartitionContext;
 
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartitionProcessor> {
-    private final ConcurrentHashMap<String, SamplePartitionProcessor> processorMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, SamplePartitionProcessor> processorMap;
 
-    public SampleEventProcessorFactory() {
+    public SampleEventProcessorFactory(ConcurrentHashMap<String, SamplePartitionProcessor> processorMap) {
+        this.processorMap = processorMap;
     }
 
     @Override
@@ -22,10 +20,13 @@ public class SampleEventProcessorFactory implements IEventProcessorFactory<Sampl
         final String partitionId = context.getPartitionId();
 
         System.out.printf("Claimed partition: %s%n", partitionId);
-        return processorMap.computeIfAbsent(partitionId, key -> {
-            new SamplePartitionProcessor();
-        });
-    }
 
+        final SamplePartitionProcessor samplePartitionProcessor = processorMap.get(partitionId);
+        if (samplePartitionProcessor == null) {
+            throw new RuntimeException("There should have been a processor for partition " + partitionId);
+        }
+
+        return samplePartitionProcessor;
+    }
 }
 
