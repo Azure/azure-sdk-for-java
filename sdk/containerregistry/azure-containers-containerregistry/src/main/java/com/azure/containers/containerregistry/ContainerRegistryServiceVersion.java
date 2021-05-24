@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.containers.containerregistry.models;
+package com.azure.containers.containerregistry;
 
 import com.azure.core.util.ServiceVersion;
 
@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Container Registry supported by this client library.
  */
 public enum ContainerRegistryServiceVersion implements ServiceVersion {
-    V1_0("1.0");
+    V1_0("1");
 
     private final String version;
 

@@ -7,9 +7,9 @@ package com.azure.containers.containerregistry.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Changeable attributes. */
+/** Changeable attributes for Repository. */
 @Fluent
-public final class ManifestChangeableAttributes {
+public final class RepositoryWriteableProperties {
     /*
      * Delete enabled
      */
@@ -35,16 +35,11 @@ public final class ManifestChangeableAttributes {
     private Boolean readEnabled;
 
     /*
-     * Quarantine state
+     * Enables Teleport functionality on new images in the repository improving
+     * Container startup performance
      */
-    @JsonProperty(value = "quarantineState")
-    private String quarantineState;
-
-    /*
-     * Quarantine details
-     */
-    @JsonProperty(value = "quarantineDetails")
-    private String quarantineDetails;
+    @JsonProperty(value = "teleportEnabled")
+    private Boolean teleportEnabled;
 
     /**
      * Get the deleteEnabled property: Delete enabled.
@@ -59,9 +54,9 @@ public final class ManifestChangeableAttributes {
      * Set the deleteEnabled property: Delete enabled.
      *
      * @param deleteEnabled the deleteEnabled value to set.
-     * @return the ManifestChangeableAttributes object itself.
+     * @return the RepositoryWriteableProperties object itself.
      */
-    public ManifestChangeableAttributes setDeleteEnabled(Boolean deleteEnabled) {
+    public RepositoryWriteableProperties setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
     }
@@ -79,9 +74,9 @@ public final class ManifestChangeableAttributes {
      * Set the writeEnabled property: Write enabled.
      *
      * @param writeEnabled the writeEnabled value to set.
-     * @return the ManifestChangeableAttributes object itself.
+     * @return the RepositoryWriteableProperties object itself.
      */
-    public ManifestChangeableAttributes setWriteEnabled(Boolean writeEnabled) {
+    public RepositoryWriteableProperties setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
     }
@@ -99,9 +94,9 @@ public final class ManifestChangeableAttributes {
      * Set the listEnabled property: List enabled.
      *
      * @param listEnabled the listEnabled value to set.
-     * @return the ManifestChangeableAttributes object itself.
+     * @return the RepositoryWriteableProperties object itself.
      */
-    public ManifestChangeableAttributes setListEnabled(Boolean listEnabled) {
+    public RepositoryWriteableProperties setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
     }
@@ -119,50 +114,32 @@ public final class ManifestChangeableAttributes {
      * Set the readEnabled property: Read enabled.
      *
      * @param readEnabled the readEnabled value to set.
-     * @return the ManifestChangeableAttributes object itself.
+     * @return the RepositoryWriteableProperties object itself.
      */
-    public ManifestChangeableAttributes setReadEnabled(Boolean readEnabled) {
+    public RepositoryWriteableProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
     }
 
     /**
-     * Get the quarantineState property: Quarantine state.
+     * Get the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
+     * Container startup performance.
      *
-     * @return the quarantineState value.
+     * @return the teleportEnabled value.
      */
-    public String getQuarantineState() {
-        return this.quarantineState;
+    public Boolean isTeleportEnabled() {
+        return this.teleportEnabled;
     }
 
     /**
-     * Set the quarantineState property: Quarantine state.
+     * Set the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
+     * Container startup performance.
      *
-     * @param quarantineState the quarantineState value to set.
-     * @return the ManifestChangeableAttributes object itself.
+     * @param teleportEnabled the teleportEnabled value to set.
+     * @return the RepositoryWriteableProperties object itself.
      */
-    public ManifestChangeableAttributes setQuarantineState(String quarantineState) {
-        this.quarantineState = quarantineState;
-        return this;
-    }
-
-    /**
-     * Get the quarantineDetails property: Quarantine details.
-     *
-     * @return the quarantineDetails value.
-     */
-    public String getQuarantineDetails() {
-        return this.quarantineDetails;
-    }
-
-    /**
-     * Set the quarantineDetails property: Quarantine details.
-     *
-     * @param quarantineDetails the quarantineDetails value to set.
-     * @return the ManifestChangeableAttributes object itself.
-     */
-    public ManifestChangeableAttributes setQuarantineDetails(String quarantineDetails) {
-        this.quarantineDetails = quarantineDetails;
+    public RepositoryWriteableProperties setTeleportEnabled(Boolean teleportEnabled) {
+        this.teleportEnabled = teleportEnabled;
         return this;
     }
 }
