@@ -15,9 +15,11 @@ import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareDirectoryListFilesAndDirectoriesOptions
 import spock.lang.Unroll
 
+import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.stream.Collectors
 
 class DirectoryAPITests extends APISpec {
     ShareDirectoryClient primaryDirectoryClient
@@ -415,16 +417,57 @@ class DirectoryAPITests extends APISpec {
         true
 
         where:
-        extraPrefix | maxResults | traits                                                | includeExtendedInfo || expectingResults
-        ""          | null       | null                                                  | false               || true
-        ""          | 1          | null                                                  | false               || true
-        "noOp"      | 3          | null                                                  | false               || false
-        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.ETAG])           | false               || true
-        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.ATTRIBUTES])     | false               || true
-        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.PERMISSION_KEY]) | false               || true
-        ""          | null       | EnumSet.copyOf([ListFilesIncludeType.TIMESTAMPS])     | false               || true
-        ""          | null       | EnumSet.allOf(ListFilesIncludeType.class)             | false               || true
-        ""          | null       | null                                                  | true                || true
+        extraPrefix | maxResults | traits                                          | includeExtendedInfo || expectingResults
+        ""          | null       | null                                            | false               || true
+        ""          | 1          | null                                            | false               || true
+        "noOp"      | 3          | null                                            | false               || false
+        ""          | null       | EnumSet.of(ListFilesIncludeType.ETAG)           | false               || true
+        ""          | null       | EnumSet.of(ListFilesIncludeType.ATTRIBUTES)     | false               || true
+        ""          | null       | EnumSet.of(ListFilesIncludeType.PERMISSION_KEY) | false               || true
+        ""          | null       | EnumSet.of(ListFilesIncludeType.TIMESTAMPS)     | false               || true
+        ""          | null       | EnumSet.allOf(ListFilesIncludeType.class)       | false               || true
+        ""          | null       | null                                            | true                || true
+    }
+
+    def "List files and directories extended info results"() {
+        given:
+        def parentDir = primaryDirectoryClient
+        parentDir.create()
+        def file = parentDir.createFile(namer.getRandomName(60), 1024)
+        def dir = parentDir.createSubdirectory(namer.getRandomName(60))
+
+        when:
+        def listResults = parentDir.listFilesAndDirectories(new ShareDirectoryListFilesAndDirectoriesOptions()
+            .setIncludeExtendedInfo(true).setShareFileTraits(EnumSet.allOf(ListFilesIncludeType.class)), null, null)
+            .stream().collect(Collectors.toList())
+
+        then:
+        // directories list first
+        def dirListItem = listResults[0]
+        new File(dir.getDirectoryPath()).getName() == dirListItem.getName()
+        dirListItem.isDirectory()
+        dirListItem.getId() && !dirListItem.getId().allWhitespace
+        EnumSet.of(NtfsFileAttributes.DIRECTORY) == dirListItem.fileAttributes
+        dirListItem.getPermissionKey() && !dirListItem.getPermissionKey().allWhitespace
+        dirListItem.getProperties().getCreatedOn()
+        dirListItem.getProperties().getLastAccessedOn()
+        dirListItem.getProperties().getLastWrittenOn()
+        dirListItem.getProperties().getChangedOn()
+        dirListItem.getProperties().getLastModified()
+        dirListItem.getProperties().getETag() && !dirListItem.getProperties().getETag().allWhitespace
+
+        def fileListItem = listResults[1]
+        new File(file.getFilePath()).getName() == fileListItem.getName()
+        !fileListItem.isDirectory()
+        fileListItem.getId() && !fileListItem.getId().allWhitespace
+        EnumSet.of(NtfsFileAttributes.ARCHIVE) == fileListItem.fileAttributes
+        fileListItem.getPermissionKey() && !fileListItem.getPermissionKey().allWhitespace
+        fileListItem.getProperties().getCreatedOn()
+        fileListItem.getProperties().getLastAccessedOn()
+        fileListItem.getProperties().getLastWrittenOn()
+        fileListItem.getProperties().getChangedOn()
+        fileListItem.getProperties().getLastModified()
+        fileListItem.getProperties().getETag() && !fileListItem.getProperties().getETag().allWhitespace
     }
 
     def "List max results by page"() {
