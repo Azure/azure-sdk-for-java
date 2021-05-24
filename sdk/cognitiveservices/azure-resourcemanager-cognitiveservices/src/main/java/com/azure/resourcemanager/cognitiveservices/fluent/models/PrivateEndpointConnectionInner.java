@@ -5,15 +5,16 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cognitiveservices.models.AzureEntityResource;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Private Endpoint Connection resource. */
 @Fluent
-public final class PrivateEndpointConnectionInner extends ProxyResource {
+public final class PrivateEndpointConnectionInner extends AzureEntityResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
 
     /*
@@ -23,10 +24,10 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     private PrivateEndpointConnectionProperties properties;
 
     /*
-     * Entity Tag
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The location of the private endpoint connection
@@ -55,12 +56,12 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the etag property: Entity Tag.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *
-     * @return the etag value.
+     * @return the systemData value.
      */
-    public String etag() {
-        return this.etag;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -88,7 +89,9 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (properties() != null) {
             properties().validate();
         }
