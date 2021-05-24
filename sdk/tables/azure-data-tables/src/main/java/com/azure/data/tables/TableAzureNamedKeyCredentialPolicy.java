@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -17,6 +16,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.azure.data.tables.implementation.TableUtils.computeHMac256;
+import static com.azure.data.tables.implementation.TableUtils.parseQueryStringSplitValues;
 
 /**
  * Policy that adds the SharedKey into the request's Authorization header.
@@ -56,7 +58,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      * @return the auth header
      */
     String generateAuthorizationHeader(URL requestUrl, Map<String, String> headers) {
-        String signature = StorageImplUtils.computeHMac256(credential.getAzureNamedKey().getKey(), buildStringToSign(requestUrl,
+        String signature = computeHMac256(credential.getAzureNamedKey().getKey(), buildStringToSign(requestUrl,
             headers));
         return String.format(AUTHORIZATION_HEADER_FORMAT, credential.getAzureNamedKey().getName(), signature);
     }
@@ -110,7 +112,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
         }
 
         if (requestUrl.getQuery() != null) {
-            Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestUrl.getQuery());
+            Map<String, String[]> queryParams = parseQueryStringSplitValues(requestUrl.getQuery());
             ArrayList<String> queryParamNames = new ArrayList<>(queryParams.keySet());
 
             Collections.sort(queryParamNames);

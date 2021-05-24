@@ -13,6 +13,7 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableSignedIdentifier;
 
 import java.time.Duration;
 import java.util.List;
@@ -465,5 +466,58 @@ public final class TableClient {
                                                        Duration timeout, Context context) {
         return blockWithOptionalTimeout(
             client.getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, context), timeout);
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @return A reactive result containing the HTTP response and the table's
+     * {@link TableSignedIdentifier access policies}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TableSignedIdentifier> getAccessPolicy() {
+        return new PagedIterable<>(client.getAccessPolicy());
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A reactive result containing the HTTP response and the table's
+     * {@link TableSignedIdentifier access policies}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TableSignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
+        return new PagedIterable<>(applyOptionalTimeout(client.getAccessPolicy(context), timeout));
+    }
+
+    /**
+     * Sets stored access policies for the table that may be used with Shared Access Signatures.
+     *
+     * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setAccessPolicy(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        client.setAccessPolicy(tableSignedIdentifiers).block();
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                      Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setAccessPolicyWithResponse(tableSignedIdentifiers, context), timeout);
     }
 }

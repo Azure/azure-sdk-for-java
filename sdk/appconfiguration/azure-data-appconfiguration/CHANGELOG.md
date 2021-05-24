@@ -2,6 +2,10 @@
 
 ## 1.2.0-beta.2 (Unreleased)
 
+## 1.1.12 (2021-05-18)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
 
 ## 1.2.0-beta.1 (2021-04-09)
 ### New Features

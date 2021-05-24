@@ -29,6 +29,7 @@ public class TestUtils {
     public static final String ALPINE_REPOSITORY_NAME;
     public static final String HELLO_WORLD_REPOSITORY_NAME;
     public static final String HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
+    public static final String MICROSOFT_HELLO_WORLD_REPOSITORY_NAME;
     public static final String LATEST_TAG_NAME;
     public static final String V1_TAG_NAME;
     public static final String V2_TAG_NAME;
@@ -54,12 +55,17 @@ public class TestUtils {
     public static final String ANONYMOUS_REGISTRY_NAME;
     public static final String LOGIN_SERVER_SUFFIX;
     public static final String REGISTRY_ENDPOINT_PLAYBACK;
+    public static final String REGISTRY_NAME_PLAYBACK;
+    public static final String QUARANTINE_STATE;
+    public static final String QUARANTINE_DETAILS;
+    public static final int HTTP_STATUS_CODE_202;
 
     static {
         CONFIGURATION = Configuration.getGlobalConfiguration().clone();
         ALPINE_REPOSITORY_NAME = "library/alpine";
         HELLO_WORLD_REPOSITORY_NAME = "library/hello-world";
         HELLO_WORLD_SEATTLE_REPOSITORY_NAME = "library/hello-seattle";
+        MICROSOFT_HELLO_WORLD_REPOSITORY_NAME = "library/mcr/hello-world";
         LATEST_TAG_NAME = "latest";
         V1_TAG_NAME = "v1";
         V2_TAG_NAME = "v2";
@@ -84,7 +90,11 @@ public class TestUtils {
         ANONYMOUS_REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_NAME");
         ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
         LOGIN_SERVER_SUFFIX = "azurecr.io";
-        REGISTRY_ENDPOINT_PLAYBACK = "https://playbackregistry.azurecr.io";
+        REGISTRY_ENDPOINT_PLAYBACK = "https://pallavitcontainerregistry.azurecr.io";
+        REGISTRY_NAME_PLAYBACK = "pallavitcontainerregistry";
+        QUARANTINE_STATE = "quarantine_state";
+        QUARANTINE_DETAILS = "quaratine_details";
+        HTTP_STATUS_CODE_202 = 202;
     }
 
     static class FakeCredentials implements TokenCredential {

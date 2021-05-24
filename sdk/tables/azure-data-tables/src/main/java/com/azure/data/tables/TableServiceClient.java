@@ -16,6 +16,8 @@ import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableServiceStatistics;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -230,5 +232,82 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
         return new PagedIterable<>(applyOptionalTimeout(client.listTables(options, context), timeout));
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @return The {@link TableServiceProperties properties} of an account's Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableServiceProperties getProperties() {
+        return client.getProperties().block();
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response and the {@link TableServiceProperties properties} of an account's Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.getPropertiesWithResponse(context), timeout);
+    }
+
+    /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setProperties(TableServiceProperties tableServiceProperties) {
+        client.setProperties(tableServiceProperties).block();
+    }
+
+    /**
+     * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     *
+     * @param tableServiceProperties The {@link TableServiceProperties} to set.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
+                                                    Context context) {
+        return blockWithOptionalTimeout(client.setPropertiesWithResponse(tableServiceProperties, context), timeout);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @return Statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableServiceStatistics getStatistics() {
+        return client.getStatistics().block();
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A reactive result containing the HTTP response and statistics for the Table service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.getStatisticsWithResponse(context), timeout);
     }
 }

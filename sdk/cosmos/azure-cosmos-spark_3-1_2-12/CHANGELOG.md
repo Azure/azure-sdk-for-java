@@ -1,8 +1,15 @@
 ## Release History
 
-### 4.0.0-beta.4 (Unreleased)
+### 4.1.0-beta.1 (Unreleased)
+
+### 4.0.0 (2021-05-14)
 #### Configuration Renames
 * Renamed data source name `cosmos.changeFeed` to `cosmos.oltp.changeFeed`, See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21184).
+
+#### Key Bug Fixes
+* Fixed a bug in bulk write when using Gateway mode that could cause job failures during partition splits
+* Improved the client-side throughput control algorithm to allow saturating the allowed throughput
+* Added debug-level logging to help client-side throughput control investigations
 
 ### 4.0.0-beta.3 (2021-05-05)
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.3` Release.
