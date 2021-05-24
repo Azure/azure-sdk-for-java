@@ -197,18 +197,27 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     }
 
     private void outputPartitionResults(Consumer<String> onOutput) {
-
         onOutput.accept(HEADERS);
 
+        long total = 0;
         for (SamplePartitionProcessor processor : partitionProcessorMap.values()) {
             processor.onStop();
             final List<PartitionCounter> counters = processor.getCounters();
             for (int i = 0; i < counters.size(); i++) {
                 final PartitionCounter partitionCounter = counters.get(i);
+                total += partitionCounter.totalEvents();
                 final String result = getResults(i, partitionCounter);
                 onOutput.accept(result);
             }
         }
+
+        double elapsedTime = (endTime - startTime) * 0.000000001;
+        double eventsPerSecond = total / elapsedTime;
+
+        onOutput.accept("");
+        onOutput.accept(String.format("Total Events\t%d%n", total));
+        onOutput.accept(String.format("Total Duration (s)\t%.2f%n", elapsedTime));
+        onOutput.accept(String.format("Rate (events/s)\t%.2f%n", eventsPerSecond));
     }
 
     private String getResults(int index, PartitionCounter partitionCounter) {
