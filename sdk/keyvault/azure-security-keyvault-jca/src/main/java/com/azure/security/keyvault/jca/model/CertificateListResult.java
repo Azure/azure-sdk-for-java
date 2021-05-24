@@ -10,7 +10,7 @@ import java.util.List;
  * The CertificateItem REST model.
  */
 public class CertificateListResult implements Serializable {
-    
+
     /**
      * Stores the serial version UID.
      */
@@ -38,4 +38,14 @@ public class CertificateListResult implements Serializable {
     public void setValue(List<CertificateItem> value) {
         this.value = value;
     }
+
+    public String getNextLink() {
+        return nextLink;
+    }
+
+    public void setNextLink(String nextLink) {
+        this.nextLink = nextLink;
+    }
+
+    public String nextLink;
 }
