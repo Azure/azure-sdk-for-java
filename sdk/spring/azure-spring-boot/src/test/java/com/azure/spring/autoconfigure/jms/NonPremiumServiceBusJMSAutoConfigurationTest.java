@@ -54,12 +54,12 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest {
     public void testAzureServiceBusJMSProperties() {
         ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
         contextRunner.withPropertyValues(
-            "spring.jms.servicebus.destination=test",
-            "spring.jms.servicebus.subscription=test")
+            "spring.jms.servicebus.destination=testDestination",
+            "spring.jms.servicebus.subscription=testSubscription")
             .run(context -> {
                 AzureServiceBusJMSProperties properties = context.getBean(AzureServiceBusJMSProperties.class);
-                assertEquals("test", properties.getDestination());
-                assertEquals("test", properties.getSubscription());
+                assertEquals("testDestination", properties.getDestination());
+                assertEquals("testSubscription", properties.getSubscription());
             });
     }
 
