@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.beust.jcommander.Parameter;
-import com.microsoft.azure.eventhubs.EventHubClient;
 
 /**
  * Options for performance tests related to receiving.
@@ -17,7 +17,7 @@ public class EventHubsReceiveOptions extends EventHubsOptions {
 
     public EventHubsReceiveOptions() {
         super();
-        this.consumerGroup = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+        this.consumerGroup = EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
     }
 
     /**

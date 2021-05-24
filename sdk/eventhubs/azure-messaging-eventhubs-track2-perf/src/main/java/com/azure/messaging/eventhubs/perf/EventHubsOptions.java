@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
@@ -21,16 +20,14 @@ public class EventHubsOptions extends PerfStressOptions {
         converter = TransportTypeConverter.class)
     private AmqpTransportType transportType;
 
-    @Parameter(names = {"-cs", "--connectionString"}, description = "Connection string for Event Hubs namespace.")
+    @Parameter(names = {"-cs", "--connectionString"}, description = "Connection string for Event Hubs namespace.",
+        required = true)
     private String connectionString;
 
-    @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.")
+    @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.", required = true)
     private String eventHubName;
 
-    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
-    private String consumerGroup;
-
-    @Parameter(names = {"-p", "--partitionId"}, description = "Partition to send events to or receive from.")
+    @Parameter(names = {"--partitionId"}, description = "Partition to send events to or receive from.")
     private String partitionId;
 
     /**
@@ -39,7 +36,6 @@ public class EventHubsOptions extends PerfStressOptions {
     public EventHubsOptions() {
         super();
         this.transportType = AmqpTransportType.AMQP;
-        this.consumerGroup = EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
     }
 
     /**
@@ -49,15 +45,6 @@ public class EventHubsOptions extends PerfStressOptions {
      */
     public String getConnectionString() {
         return connectionString != null ? connectionString : System.getenv(AZURE_EVENTHUBS_CONNECTION_STRING);
-    }
-
-    /**
-     * Gets the consumer group for receiving messages.
-     *
-     * @return The consumer group for receiving messages.
-     */
-    public String getConsumerGroup() {
-        return consumerGroup;
     }
 
     /**
