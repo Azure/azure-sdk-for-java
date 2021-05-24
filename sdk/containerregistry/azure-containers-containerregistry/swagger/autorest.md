@@ -29,7 +29,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: containerregistry.json
+input-file: https://raw.githubusercontent.com/jeremymeng/azure-rest-api-specs/acr-track2-swagger/specification/containerregistry/data-plane/Azure.ContainerRegistry/preview/2019-08-15-preview/containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
