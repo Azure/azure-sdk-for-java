@@ -35,8 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * The unit test validating the ServerSocket is created using a certificate from Azure Key Vault.
  */
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
-public class ServerSocketTempTest {
-
+public class ServerSocketTemp2Test {
 
     /**
      * Test SSLServerSocket without client trust.
@@ -46,7 +45,8 @@ public class ServerSocketTempTest {
     @Test
     public void testServerSocket() throws Exception {
 
-        System.setProperty("javax.net.debug" , "ssl,handshake");
+        System.setProperty("jdk.tls.server.protocols", "TLSv1.2");
+        System.setProperty("jdk.tls.client.protocols", "TLSv1.2");
         /*
          * Add JCA provider.
          */
@@ -82,7 +82,7 @@ public class ServerSocketTempTest {
         context.init(kmf.getKeyManagers(), null, null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(9765);
 
         Thread server = new Thread(() -> {
             while (true) {
@@ -126,10 +126,10 @@ public class ServerSocketTempTest {
          */
         String result = null;
 
-        System.out.println("start to send request: testServerSocket");
+        System.out.println("start to send request: testV12ServerSocket");
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8765");
+            HttpGet httpGet = new HttpGet("https://localhost:9765");
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
@@ -157,7 +157,7 @@ public class ServerSocketTempTest {
     @Test
     public void testServerSocketWithSelfSignedClientTrust() throws Exception {
 
-        System.setProperty("javax.net.debug" , "ssl,handshake");
+        System.setProperty("jdk.tls.server.protocols", "TLSv1.2");
         /*
          * Add JCA provider.
          */
@@ -193,7 +193,7 @@ public class ServerSocketTempTest {
         context.init(kmf.getKeyManagers(), null, null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8766);
+        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(9766);
 
         Thread server = new Thread(() -> {
             while (true) {
@@ -236,9 +236,9 @@ public class ServerSocketTempTest {
          * And now execute the test.
          */
         String result = null;
-        System.out.println("start to send request: testServerSocketWithSelfSignedClientTrust");
+        System.out.println("start to send request: testV12ServerSocketWithSelfSignedClientTrust");
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8766");
+            HttpGet httpGet = new HttpGet("https://localhost:9766");
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = null;
