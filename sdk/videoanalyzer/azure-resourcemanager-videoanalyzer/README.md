@@ -2,7 +2,7 @@
 
 Azure Resource Manager Video Analyzer client library for Java.
 
-This package contains Microsoft Azure SDK for Video Analyzer Management SDK. Azure Video Analyzer (AVA) provides a platform for you to build intelligent video applications that span the edge and the cloud. Package tag package-2021-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Video Analyzer Management SDK. Azure Video Analyzer provides a platform for you to build intelligent video applications that span the edge and the cloud. Package tag package-2021-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

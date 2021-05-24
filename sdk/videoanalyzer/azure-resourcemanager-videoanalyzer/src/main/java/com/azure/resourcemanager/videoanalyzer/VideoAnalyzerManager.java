@@ -41,8 +41,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Entry point to VideoAnalyzerManager. Azure Video Analyzer (AVA) provides a platform for you to build intelligent
- * video applications that span the edge and the cloud.
+ * Entry point to VideoAnalyzerManager. Azure Video Analyzer provides a platform for you to build intelligent video
+ * applications that span the edge and the cloud.
  */
 public final class VideoAnalyzerManager {
     private Operations operations;
