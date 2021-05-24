@@ -1163,6 +1163,8 @@ public final class TableAsyncClient {
                         transactionAction.getEntity().getRowKey(), transactionAction.getEntity().getETag()));
 
                     break;
+                default:
+                    break;
             }
         }
 
