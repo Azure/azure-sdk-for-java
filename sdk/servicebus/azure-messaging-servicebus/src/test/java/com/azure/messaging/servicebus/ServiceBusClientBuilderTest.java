@@ -271,9 +271,13 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .sender()
             .queueName(queueName)
             .buildAsyncClient();
-        try {
-            StepVerifier.create(senderAsyncClient.sendMessage(testData))
-                .verifyComplete();
+        try{
+            StepVerifier.create(
+                senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAddMessage(testData));
+                    return senderAsyncClient.sendMessages(batch);
+                })
+            ).verifyComplete();
         } finally {
             senderAsyncClient.close();
         }
@@ -295,9 +299,13 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
             .sender()
             .queueName(queueName)
             .buildAsyncClient();
-        try {
-            StepVerifier.create(senderAsyncClient.sendMessage(testData))
-                .verifyComplete();
+        try{
+            StepVerifier.create(
+                senderAsyncClient.createMessageBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAddMessage(testData));
+                    return senderAsyncClient.sendMessages(batch);
+                })
+            ).verifyComplete();
         } finally {
             senderAsyncClient.close();
         }
