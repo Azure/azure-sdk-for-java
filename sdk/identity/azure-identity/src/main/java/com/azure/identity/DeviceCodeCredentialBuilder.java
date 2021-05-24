@@ -14,6 +14,8 @@ import java.util.function.Consumer;
  * @see DeviceCodeCredential
  */
 public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<DeviceCodeCredentialBuilder> {
+    private final String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
+
     private Consumer<DeviceCodeInfo> challengeConsumer =
         deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
 
