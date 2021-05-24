@@ -19,27 +19,27 @@ public final class KeyVaultKeyIdentifier {
     /**
      * Create a new {@link KeyVaultKeyIdentifier} from a given key identifier.
      *
-     * <p>Valid examples are:
+     * <p>Some examples:
      *
      * <ul>
      *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}</li>
      *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}/pending</li>
-     *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}/{unique-version-sourceId}</li>
+     *     <li>https://{key-vault-name}.vault.azure.net/keys/{key-name}/{unique-version-id}</li>
      *     <li>https://{key-vault-name}.vault.azure.net/deletedkeys/{deleted-key-name}</li>
      * </ul>
      *
-     * @param sourceId The key identifier to extract information from.
+     * @param id The identifier to extract information from.
      *
      * @throws IllegalArgumentException If {@code keyId} is an invalid Key Vault Key identifier.
      * @throws NullPointerException If {@code keyId} is {@code null}.
      */
-    public KeyVaultKeyIdentifier(String sourceId) {
-        if (sourceId == null) {
+    public KeyVaultKeyIdentifier(String id) {
+        if (id == null) {
             throw new NullPointerException("'keyId' cannot be null.");
         }
 
         try {
-            final URL url = new URL(sourceId);
+            final URL url = new URL(id);
             // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
             final String[] pathSegments = url.getPath().split("/");
 
@@ -50,7 +50,7 @@ public final class KeyVaultKeyIdentifier {
                 throw new IllegalArgumentException("'keyId' is not a valid Key Vault Key identifier.");
             }
 
-            this.sourceId = sourceId;
+            this.sourceId = id;
             this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;

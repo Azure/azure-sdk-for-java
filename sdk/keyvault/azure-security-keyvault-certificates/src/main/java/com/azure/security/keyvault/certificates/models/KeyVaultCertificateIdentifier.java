@@ -19,7 +19,7 @@ public final class KeyVaultCertificateIdentifier {
     /**
      * Create a new {@link KeyVaultCertificateIdentifier} from a given certificate identifier.
      *
-     * <p>Valid examples are:
+     * <p>Some examples:
      *
      * <ul>
      *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}</li>
@@ -28,7 +28,7 @@ public final class KeyVaultCertificateIdentifier {
      *     <li>https://{key-vault-name}.vault.azure.net/deletedcertificates/{deleted-certificate-name}</li>
      * </ul>
      *
-     * @param sourceId The certificate identifier to extract information from.
+     * @param id The identifier to extract information from.
      *
      * @throws IllegalArgumentException If {@code certificateId} is an invalid Key Vault Certificate identifier.
      * @throws NullPointerException If {@code certificateId} is {@code null}.
