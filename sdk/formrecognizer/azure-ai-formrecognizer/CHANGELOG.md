@@ -21,6 +21,7 @@
   For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
 - Renamed the method `asCountry` to `asCountryRegion`.
 - Renamed value `COUNTRY` to `COUNTRY_REGION` in the model `FieldValuetype`.
+- Renamed the property `fieldBoundingBox` to `boundingBox` in the class `FormTable`.
 - Make `FormLine`, `FormPage`, `FormTable`, `FormSelectionMark`, `TextAppearance`, `CustomFormModel`, `CustomFormModelInfo`, `CustomFormModelProperties`
   `CustomFormSubmodel`, `TrainingDocumentInfo` model class immutable.
 
