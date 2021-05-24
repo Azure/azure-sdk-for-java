@@ -30,6 +30,12 @@ public abstract class GeoObject {
     private final GeoBoundingBox boundingBox;
     private final Map<String, Object> customProperties;
 
+    /**
+     * Creates a {@link GeoObject} instance.
+     *
+     * @param boundingBox Optional bounding box of the {@link GeoObject}.
+     * @param customProperties Optional additional properties to associate to the {@link GeoObject}.
+     */
     protected GeoObject(GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
         this.boundingBox = boundingBox;
 
@@ -62,25 +68,11 @@ public abstract class GeoObject {
     }
 
     /**
-     * Gets a custom property with the given name.
-     * <p>
-     * If the property doesn't exist null will be returned.
-     *
-     * @param name Name of the custom property.
-     * @return The custom property value.
-     */
-    public final Object getCustomProperty(String name) { // Change this to Option<Object> once it is available.
-        return (customProperties == null)
-            ? null
-            : customProperties.get(name);
-    }
-
-    /**
      * Additional properties about this {@link GeoObject}.
      *
      * @return An unmodifiable representation of the additional properties associated with this {@link GeoObject}.
      */
-    final Map<String, Object> getCustomProperties() {
+    public final Map<String, Object> getCustomProperties() {
         return customProperties;
     }
 

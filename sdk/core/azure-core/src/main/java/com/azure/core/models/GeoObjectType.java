@@ -3,57 +3,67 @@
 
 package com.azure.core.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
+
 /**
  * Represents the type of a GeoJSON object.
  */
-public enum GeoObjectType {
+public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
     /**
      * GeoJSON point.
      */
-    POINT("Point"),
+    public static final GeoObjectType POINT = fromString("Point");
 
     /**
      * GeoJSON multi-point.
      */
-    MULTI_POINT("MultiPoint"),
+    public static final GeoObjectType MULTI_POINT = fromString("MultiPoint");
 
     /**
      * GeoJSON polygon.
      */
-    POLYGON("Polygon"),
+    public static final GeoObjectType POLYGON = fromString("Polygon");
 
     /**
      * GeoJSON multi-polygon.
      */
-    MULTI_POLYGON("MultiPolygon"),
+    public static final GeoObjectType MULTI_POLYGON = fromString("MultiPolygon");
 
     /**
      * GeoJSON line string.
      */
-    LINE_STRING("LineString"),
+    public static final GeoObjectType LINE_STRING = fromString("LineString");
 
     /**
      * GeoJSON multi-line string.
      */
-    MULTI_LINE_STRING("MultiLineString"),
+    public static final GeoObjectType MULTI_LINE_STRING = fromString("MultiLineString");
 
     /**
      * GeoJSON geometry collection.
      */
-    GEOMETRY_COLLECTION("GeometryCollection");
+    public static final GeoObjectType GEOMETRY_COLLECTION = fromString("GeometryCollection");
 
-    private final String jsonType;
-
-    GeoObjectType(String jsonType) {
-        this.jsonType = jsonType;
+    /**
+     * Creates or gets a GeoObjectType from its string representation.
+     *
+     * @param name Name of the GeoObjectType.
+     * @return The corresponding GeoObjectType.
+     */
+    @JsonCreator
+    public static GeoObjectType fromString(String name) {
+        return fromString(name, GeoObjectType.class);
     }
 
     /**
-     * The GeoJSON type represented by the {@link GeoObjectType}.
+     * Gets all known GeoObjectType values.
      *
-     * @return The GeoJSON type.
+     * @return All known GeoObjectType values.
      */
-    public String getJsonType() {
-        return jsonType;
+    public static Collection<GeoObjectType> values() {
+        return values(GeoObjectType.class);
     }
 }

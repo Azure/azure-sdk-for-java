@@ -176,7 +176,7 @@ public class GeoSerializationTestHelpers {
     }
 
     private static void addType(GeoObjectType type, StringBuilder builder) {
-        builder.append("\"type\":\"").append(type.getJsonType()).append("\"");
+        builder.append("\"type\":\"").append(type.toString()).append("\"");
     }
 
     private static void addPosition(GeoPosition position, StringBuilder builder) {

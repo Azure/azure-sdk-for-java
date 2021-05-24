@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Deserializes a JSON object into a {@link GeoObject}.
@@ -79,7 +78,7 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
     private static GeoObject read(JsonNode node) {
         String type = getRequiredProperty(node, TYPE_PROPERTY).asText();
 
-        if (GeoObjectType.GEOMETRY_COLLECTION.getJsonType().equalsIgnoreCase(type)) {
+        if (isGeoObjectType(type, GeoObjectType.GEOMETRY_COLLECTION)) {
             List<GeoObject> geometries = new ArrayList<>();
             for (JsonNode geoNode : getRequiredProperty(node, GEOMETRIES_PROPERTY)) {
                 geometries.add(read(geoNode));
@@ -94,30 +93,34 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         GeoBoundingBox boundingBox = readBoundingBox(node);
         Map<String, Object> properties = readProperties(node);
 
-        if (Objects.equals(type, GeoObjectType.POINT.getJsonType())) {
+        if (isGeoObjectType(type, GeoObjectType.POINT)) {
             return new GeoPoint(readCoordinate(coordinates), boundingBox, properties);
-        } else if (Objects.equals(type, GeoObjectType.LINE_STRING.getJsonType())) {
+        } else if (isGeoObjectType(type, GeoObjectType.LINE_STRING)) {
             return new GeoLineString(readCoordinates(coordinates), boundingBox, properties);
-        } else if (Objects.equals(type, GeoObjectType.POLYGON.getJsonType())) {
+        } else if (isGeoObjectType(type, GeoObjectType.POLYGON)) {
             List<GeoLinearRing> rings = new ArrayList<>();
             coordinates.forEach(ring -> rings.add(new GeoLinearRing(readCoordinates(ring))));
 
             return new GeoPolygon(rings, boundingBox, properties);
-        } else if (Objects.equals(type, GeoObjectType.MULTI_POINT.getJsonType())) {
+        } else if (isGeoObjectType(type, GeoObjectType.MULTI_POINT)) {
             List<GeoPoint> points = new ArrayList<>();
             readCoordinates(coordinates).forEach(position -> points.add(new GeoPoint(position)));
 
             return new GeoPointCollection(points, boundingBox, properties);
-        } else if (Objects.equals(type, GeoObjectType.MULTI_LINE_STRING.getJsonType())) {
+        } else if (isGeoObjectType(type, GeoObjectType.MULTI_LINE_STRING)) {
             List<GeoLineString> lines = new ArrayList<>();
             coordinates.forEach(line -> lines.add(new GeoLineString(readCoordinates(line))));
 
             return new GeoLineStringCollection(lines, boundingBox, properties);
-        } else if (Objects.equals(type, GeoObjectType.MULTI_POLYGON.getJsonType())) {
+        } else if (isGeoObjectType(type, GeoObjectType.MULTI_POLYGON)) {
             return readMultiPolygon(coordinates, boundingBox, properties);
         }
 
         throw LOGGER.logExceptionAsError(new IllegalStateException(String.format("Unsupported geo type %s.", type)));
+    }
+
+    private static boolean isGeoObjectType(String jsonType, GeoObjectType type) {
+        return type.toString().equalsIgnoreCase(jsonType);
     }
 
     private static GeoPolygonCollection readMultiPolygon(JsonNode node, GeoBoundingBox boundingBox,
