@@ -4,7 +4,6 @@
 package com.azure.storage.common;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Mono;
