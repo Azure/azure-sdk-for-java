@@ -43,6 +43,12 @@
       <artifactId>azure-media</artifactId>
       <version>0.9.8</version> <!-- {x-version-update;com.microsoft.azure:azure-media;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>oauth2-oidc-sdk</artifactId>
+      <version>5.64.4</version>
+      <scope>runtime</scope>
+    </dependency>
   </dependencies>
 
 </project>
