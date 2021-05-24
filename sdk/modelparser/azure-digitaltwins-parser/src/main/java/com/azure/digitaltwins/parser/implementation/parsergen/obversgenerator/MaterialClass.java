@@ -220,11 +220,11 @@ public class MaterialClass implements TypeGenerator {
         this.generateConstructor(obverseClass, false);
 
         // TODO: Once concrete subclass has members implement
-        //for (Map.Entry<Integer, List<ConcreteSubclass>> kvp : this.concreteSubclasses.entrySet()) {
-        //    for (ConcreteSubclass concreteSubclass : kvp.getValue()) {
-        //        concreteSubclass.addMembers(obverseClass, this.typeName);
-        //    }
-        //}
+        for (Map.Entry<Integer, List<ConcreteSubclass>> kvp : this.concreteSubclasses.entrySet()) {
+            for (ConcreteSubclass concreteSubclass : kvp.getValue()) {
+                concreteSubclass.addMembers(obverseClass, this.typeName);
+            }
+        }
 
         for (MaterialProperty materialProperty : this.properties) {
             materialProperty.addMembers(this.materialClassDigest.getDtdlVersions(), obverseClass, this.isAugmentable);
@@ -261,7 +261,7 @@ public class MaterialClass implements TypeGenerator {
                 .concat(String.valueOf(kvp.getKey()))
                 .concat(", \"")
                 .concat(kvp.getValue())
-                .concat("\";"));
+                .concat("\");"));
         }
 
         staticDeclaration.jBreak();
@@ -271,10 +271,8 @@ public class MaterialClass implements TypeGenerator {
                 .concat(String.valueOf(kvp.getKey()))
                 .concat(", \"")
                 .concat(kvp.getValue())
-                .concat("\";"));
+                .concat("\");"));
         }
-
-        staticDeclaration.jBreak();
     }
 
     private void generateConcreteKinds(JavaClass obverseClass, JavaScope staticDeclaration) {

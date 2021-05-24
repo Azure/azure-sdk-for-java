@@ -4,9 +4,7 @@
 package com.azure.digitaltwins.parser.implementation.parsergen.obversgenerator;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaSorted;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaSwitch;
-import com.azure.digitaltwins.parser.implementation.codegen.JavaClass;
+import com.azure.digitaltwins.parser.implementation.codegen.*;
 import com.azure.digitaltwins.parser.implementation.parsergen.NameFormatter;
 import com.azure.digitaltwins.parser.implementation.parsergen.ParserGeneratorStringValues;
 import com.azure.digitaltwins.parser.implementation.parsergen.StringRestriction;
@@ -76,7 +74,20 @@ public class ConcreteSubclass {
      * @param superclassType The name of the superclass to which the members are being added.
      */
     public void addMembers(JavaClass obverseClass, String superclassType) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Not yet implemented."));
+        if (this.pattern != null && superclassType == this.subclassType) {
+            obverseClass.field(
+                Access.PACKAGE_PRIVATE,
+                "Pattern",
+                NameFormatter.camelCaseToUnderScoreUpperCase(this.subclassType.concat(REGEX_PATTERN_FIELD_SUFFIX).concat(String.valueOf(this.dtdlVersion))),
+                "Pattern.compile(".concat("\"").concat(this.pattern).concat("\")"),
+                Multiplicity.STATIC,
+                Mutability.FINAL,
+                "Regular expression pattern for identifiers for class '"
+                    .concat(this.subClassName)
+                    .concat("' for DTDLv")
+                    .concat(String.valueOf(this.dtdlVersion))
+                    .concat("."));
+        }
     }
 
     /**
