@@ -28,10 +28,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import reactor.test.StepVerifier;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EventHubClientBuilderTest extends IntegrationTestBase {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -154,12 +152,13 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
             .buildAsyncProducerClient();
-        try {
-            asyncProducerClient.createBatch().subscribe(batch -> {
-                batch.getEvents().add(testData);
-                StepVerifier.create(asyncProducerClient.send(batch))
-                    .verifyComplete();
-            });
+        try{
+            StepVerifier.create(
+                asyncProducerClient.createBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAdd(testData));
+                    return asyncProducerClient.send(batch);
+                })
+            ).verifyComplete();
         } finally {
             asyncProducerClient.close();
         }
@@ -179,12 +178,13 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureSasCredential(sharedAccessSignature))
             .buildAsyncProducerClient();
-        try {
-            asyncProducerClient.createBatch().subscribe(batch -> {
-                batch.getEvents().add(testData);
-                StepVerifier.create(asyncProducerClient.send(batch))
-                    .verifyComplete();
-            });
+        try{
+            StepVerifier.create(
+                asyncProducerClient.createBatch().flatMap(batch -> {
+                    assertTrue(batch.tryAdd(testData));
+                    return asyncProducerClient.send(batch);
+                })
+            ).verifyComplete();
         } finally {
             asyncProducerClient.close();
         }
