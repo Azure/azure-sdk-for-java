@@ -9,11 +9,10 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import reactor.core.publisher.Mono;
 
-public interface BatchOperation {
-
+public interface TransactionalBatchAction {
     Mono<HttpRequest> prepareRequest(TableAsyncClient preparer);
 
-    class CreateEntity implements BatchOperation {
+    class CreateEntity implements TransactionalBatchAction {
         private final TableEntity entity;
 
         public CreateEntity(TableEntity entity) {
@@ -38,7 +37,7 @@ public interface BatchOperation {
         }
     }
 
-    class UpsertEntity implements BatchOperation {
+    class UpsertEntity implements TransactionalBatchAction {
         private final TableEntity entity;
         private final TableEntityUpdateMode updateMode;
 
@@ -70,7 +69,7 @@ public interface BatchOperation {
         }
     }
 
-    class UpdateEntity implements BatchOperation {
+    class UpdateEntity implements TransactionalBatchAction {
         private final TableEntity entity;
         private final TableEntityUpdateMode updateMode;
         private final boolean ifUnchanged;
@@ -109,7 +108,7 @@ public interface BatchOperation {
         }
     }
 
-    class DeleteEntity implements BatchOperation {
+    class DeleteEntity implements TransactionalBatchAction {
         private final String partitionKey;
         private final String rowKey;
         private final String eTag;

@@ -12,13 +12,15 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
-import com.azure.data.tables.models.BatchOperationResponse;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableTransactionAction;
 import com.azure.data.tables.models.TableTransactionActionType;
+import com.azure.data.tables.models.TableTransactionFailedException;
+import com.azure.data.tables.models.TableTransactionResult;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -730,14 +732,16 @@ public class TablesAsyncClientTest extends TestBase {
             TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue2)));
 
         // Act & Assert
-        final Response<List<BatchOperationResponse>> result =
+        final Response<TableTransactionResult> result =
             tableClient.submitTransactionWithResponse(transactionalBatch).block(TIMEOUT);
 
         assertNotNull(result);
         assertEquals(expectedBatchStatusCode, result.getStatusCode());
-        assertEquals(transactionalBatch.size(), result.getValue().size());
-        assertEquals(expectedOperationStatusCode, result.getValue().get(0).getStatusCode());
-        assertEquals(expectedOperationStatusCode, result.getValue().get(1).getStatusCode());
+        assertEquals(transactionalBatch.size(), result.getValue().getTransactionActionResponses().size());
+        assertEquals(expectedOperationStatusCode,
+            result.getValue().getTransactionActionResponses().get(0).getStatusCode());
+        assertEquals(expectedOperationStatusCode,
+            result.getValue().getTransactionActionResponses().get(1).getStatusCode());
 
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
@@ -804,9 +808,9 @@ public class TablesAsyncClientTest extends TestBase {
             .assertNext(response -> {
                 assertNotNull(response);
                 assertEquals(expectedBatchStatusCode, response.getStatusCode());
-                List<BatchOperationResponse> subResponses = response.getValue();
-                assertEquals(transactionalBatch.size(), subResponses.size());
-                for (BatchOperationResponse subResponse : subResponses) {
+                TableTransactionResult result = response.getValue();
+                assertEquals(transactionalBatch.size(), result.getTransactionActionResponses().size());
+                for (TableTransactionActionResponse subResponse : result.getTransactionActionResponses()) {
                     assertEquals(expectedOperationStatusCode, subResponse.getStatusCode());
                 }
             })
@@ -829,7 +833,7 @@ public class TablesAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
-            .expectErrorMatches(e -> e instanceof TableServiceException
+            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
                 && e.getMessage().contains("An operation within the batch failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")

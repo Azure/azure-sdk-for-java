@@ -5,7 +5,7 @@ package com.azure.data.tables.models;
 import com.azure.data.tables.TableClient;
 
 /**
- * The type of operation to be executed on a table entity as part of a table transactional batch of operations.
+ * The type of action to be executed on a {@link TableEntity} in a transactional batch operation.
  */
 public enum TableTransactionActionType {
     /**

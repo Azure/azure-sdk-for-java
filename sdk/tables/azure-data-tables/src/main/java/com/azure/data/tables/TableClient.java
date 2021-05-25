@@ -8,7 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.models.BatchOperationResponse;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
@@ -16,6 +16,8 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionFailedException;
+import com.azure.data.tables.models.TableTransactionResult;
 
 import java.time.Duration;
 import java.util.List;
@@ -506,45 +508,48 @@ public final class TableClient {
     }
 
     /**
-     * Executes all operations within the batch inside a transaction. When the call completes, either all operations in
-     * the batch will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation
-     * in a batch must operate on a distinct row key. Attempting to add multiple operations to a batch that share the
-     * same row key will cause an error.
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
      *
-     * @param transactionalBatch A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
      * in a table.
      *
-     * @return A list of {@link BatchOperationResponse sub-responses} for each operation in the batch.
+     * @return A list of {@link TableTransactionActionResponse sub-responses} that correspond to each operation in the
+     * transaction.
      *
-     * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
-     * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<BatchOperationResponse> submitTransaction(List<TableTransactionAction> transactionalBatch) {
-        return client.submitTransaction(transactionalBatch).block();
+    public TableTransactionResult submitTransaction(List<TableTransactionAction> transactionActions) {
+        return client.submitTransaction(transactionActions).block();
     }
 
     /**
-     * Executes all operations within the batch inside a transaction. When the call completes, either all operations in
-     * the batch will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation
-     * in a batch must operate on a distinct row key. Attempting to add multiple operations to a batch that share the
-     * same row key will cause an error.
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
      *
-     * @param transactionalBatch A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
      * in a table.
      * @param timeout Duration to wait for the operation to complete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return An HTTP response produced for the batch itself. The response's value will contain a list of
-     * {@link BatchOperationResponse sub-responses} for each operation in the batch.
+     * @return An HTTP response produced for the transaction itself. The response's value will contain a list of
+     * {@link TableTransactionActionResponse sub-responses} that correspond to each operation in the transaction.
      *
-     * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
-     * methods in {@link TableClient} to understand the conditions that may cause a given operation to fail.
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<BatchOperationResponse>> submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.submitTransactionWithResponse(transactionalBatch, context), timeout);
+    public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.submitTransactionWithResponse(transactionActions, context), timeout);
     }
 }

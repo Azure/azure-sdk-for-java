@@ -21,15 +21,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.BatchImpl;
+import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.models.AccessPolicy;
-import com.azure.data.tables.implementation.models.BatchChangeSet;
-import com.azure.data.tables.implementation.models.BatchOperation;
-import com.azure.data.tables.implementation.models.BatchRequestBody;
-import com.azure.data.tables.implementation.models.BatchSubRequest;
-import com.azure.data.tables.implementation.models.BatchSubmitBatchResponse;
+import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
+import com.azure.data.tables.implementation.models.TransactionalBatchAction;
+import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
+import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
+import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -38,7 +38,7 @@ import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceError;
-import com.azure.data.tables.models.BatchOperationResponse;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
@@ -47,6 +47,8 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionFailedException;
+import com.azure.data.tables.models.TableTransactionResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -83,14 +85,14 @@ public final class TableAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableAsyncClient.class);
     private final String tableName;
     private final AzureTableImpl tablesImplementation;
-    private final BatchImpl batchImplementation;
+    private final TransactionalBatchImpl transactionalBatchImplementation;
     private final String accountName;
     private final String tableEndpoint;
     private final HttpPipeline pipeline;
-    private final TableAsyncClient batchPrepClient;
+    private final TableAsyncClient transactionalBatchClient;
 
     TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
-                     SerializerAdapter tablesSerializer, SerializerAdapter batchSerializer) {
+                     SerializerAdapter tablesSerializer, SerializerAdapter transactionalBatchSerializer) {
         try {
             if (tableName == null) {
                 throw new NullPointerException("'tableName' must not be null to create a TableClient.");
@@ -115,13 +117,13 @@ public final class TableAsyncClient {
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
-        this.batchImplementation = new BatchImpl(tablesImplementation, batchSerializer);
+        this.transactionalBatchImplementation = new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
         this.tableName = tableName;
         this.pipeline = tablesImplementation.getHttpPipeline();
-        this.batchPrepClient = new TableAsyncClient(this, serviceVersion, tablesSerializer);
+        this.transactionalBatchClient = new TableAsyncClient(this, serviceVersion, tablesSerializer);
     }
 
-    // Create a hollow client to be used for obtaining the body of a batch operation to submit.
+    // Create a hollow client to be used for obtaining the body of a transaction operation to submit.
     TableAsyncClient(TableAsyncClient client, ServiceVersion serviceVersion, SerializerAdapter tablesSerializer) {
         this.accountName = client.getAccountName();
         this.tableEndpoint = client.getTableEndpoint();
@@ -134,8 +136,8 @@ public final class TableAsyncClient {
             .buildClient();
         this.tableName = client.getTableName();
         // A batch prep client does not need its own batch prep client nor batch implementation.
-        this.batchImplementation = null;
-        this.batchPrepClient = null;
+        this.transactionalBatchImplementation = null;
+        this.transactionalBatchClient = null;
     }
 
     /**
@@ -1081,85 +1083,89 @@ public final class TableAsyncClient {
     }
 
     /**
-     * Executes all operations within the batch inside a transaction. When the call completes, either all operations in
-     * the batch will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation
-     * in a batch must operate on a distinct row key. Attempting to add multiple operations to a batch that share the
-     * same row key will cause an error.
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
      *
-     * @param transactionalBatch A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
      * in a table.
      *
-     * @return A reactive result containing a list of {@link BatchOperationResponse sub-responses} for each operation
-     * in the batch.
+     * @return A reactive result containing a list of {@link TableTransactionActionResponse sub-responses} that
+     * correspond to each operation in the transaction
      *
-     * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceException If any operation within the batch fails. See the documentation for other client
-     * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public synchronized Mono<List<BatchOperationResponse>> submitTransaction(List<TableTransactionAction> transactionalBatch) {
-        return submitTransactionWithResponse(transactionalBatch)
+    public synchronized Mono<TableTransactionResult> submitTransaction(List<TableTransactionAction> transactionActions) {
+        return submitTransactionWithResponse(transactionActions)
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
-     * Executes all operations within the batch inside a transaction. When the call completes, either all operations in
-     * the batch will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation
-     * in a batch must operate on a distinct row key. Attempting to add multiple operations to a batch that share the
-     * same row key will cause an error.
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
      *
-     * @param transactionalBatch A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
      * in a table.
      *
-     * @return A reactive result containing the HTTP response produced for the batch itself. The response's value will
-     * contain a list of {@link BatchOperationResponse sub-responses} for each operation in the batch.
+     * @return A reactive result containing the HTTP response produced for the transaction itself. The response's
+     * value will contain a list of {@link TableTransactionActionResponse sub-responses} that correspond to each
+     * operation in the transaction.
      *
-     * @throws IllegalStateException If no operations have been added to the batch.
-     * @throws TableServiceException if any operation within the batch fails. See the documentation for the client
-     * methods in {@link TableAsyncClient} to understand the conditions that may cause a given operation to fail.
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public synchronized Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch) {
-        return withContext(context -> submitTransactionWithResponse(transactionalBatch, context));
+    public synchronized Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions) {
+        return withContext(context -> submitTransactionWithResponse(transactionActions, context));
     }
 
-    Mono<Response<List<BatchOperationResponse>>> submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch, Context context) {
+    Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
 
-        if (transactionalBatch.size() == 0) {
-            throw logger.logExceptionAsError(new IllegalStateException("A batch must contain at least one operation."));
+        if (transactionActions.size() == 0) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("A transaction must contain at least one operation."));
         }
 
-        final List<BatchOperation> operations = new ArrayList<>();
+        final List<TransactionalBatchAction> operations = new ArrayList<>();
 
-        for (TableTransactionAction transactionAction : transactionalBatch) {
+        for (TableTransactionAction transactionAction : transactionActions) {
             switch (transactionAction.getActionType()) {
                 case CREATE:
-                    operations.add(new BatchOperation.CreateEntity(transactionAction.getEntity()));
+                    operations.add(new TransactionalBatchAction.CreateEntity(transactionAction.getEntity()));
 
                     break;
                 case UPSERT_MERGE:
-                    operations.add(new BatchOperation.UpsertEntity(transactionAction.getEntity(),
+                    operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.MERGE));
 
                     break;
                 case UPSERT_REPLACE:
-                    operations.add(new BatchOperation.UpsertEntity(transactionAction.getEntity(),
+                    operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.REPLACE));
 
                     break;
                 case UPDATE_MERGE:
-                    operations.add(new BatchOperation.UpdateEntity(transactionAction.getEntity(),
+                    operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.MERGE, transactionAction.getIfUnchanged()));
 
                     break;
                 case UPDATE_REPLACE:
-                    operations.add(new BatchOperation.UpdateEntity(transactionAction.getEntity(),
+                    operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.REPLACE, transactionAction.getIfUnchanged()));
 
                     break;
                 case DELETE:
-                    operations.add(new BatchOperation.DeleteEntity(transactionAction.getEntity().getPartitionKey(),
+                    operations.add(new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity().getPartitionKey(),
                         transactionAction.getEntity().getRowKey(), transactionAction.getEntity().getETag()));
 
                     break;
@@ -1169,31 +1175,35 @@ public final class TableAsyncClient {
         }
 
         return Flux.fromIterable(operations)
-            .flatMapSequential(op -> op.prepareRequest(batchPrepClient).zipWith(Mono.just(op)))
-            .collect(BatchRequestBody::new, (body, pair) ->
-                body.addChangeOperation(new BatchSubRequest(pair.getT2(), pair.getT1())))
+            .flatMapSequential(op -> op.prepareRequest(transactionalBatchClient).zipWith(Mono.just(op)))
+            .collect(TransactionalBatchRequestBody::new, (body, pair) ->
+                body.addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
             .flatMap(body ->
-                batchImplementation.submitBatchWithRestResponseAsync(body, null, finalContext).zipWith(Mono.just(body)))
-            .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()));
+                transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null, finalContext).zipWith(Mono.just(body)))
+            .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
+            .map(response ->
+                new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    new TableTransactionResult(transactionActions, response.getValue())));
     }
 
-    private Mono<Response<List<BatchOperationResponse>>> parseResponse(BatchRequestBody requestBody,
-                                                                       BatchSubmitBatchResponse response) {
+    private Mono<Response<List<TableTransactionActionResponse>>> parseResponse(TransactionalBatchRequestBody requestBody,
+                                                                               TransactionalBatchResponse response) {
         TableServiceError error = null;
         String errorMessage = null;
-        BatchChangeSet changes = null;
-        BatchOperation failedOperation = null;
+        TransactionalBatchChangeSet changes = null;
+        TransactionalBatchAction failedAction = null;
+        Integer failedIndex = null;
 
-        if (requestBody.getContents().get(0) instanceof BatchChangeSet) {
-            changes = (BatchChangeSet) requestBody.getContents().get(0);
+        if (requestBody.getContents().get(0) instanceof TransactionalBatchChangeSet) {
+            changes = (TransactionalBatchChangeSet) requestBody.getContents().get(0);
         }
 
         for (int i = 0; i < response.getValue().length; i++) {
-            BatchOperationResponse subResponse = response.getValue()[i];
+            TableTransactionActionResponse subResponse = response.getValue()[i];
 
             // Attempt to attach a sub-request to each batch sub-response
             if (changes != null && changes.getContents().get(i) != null) {
-                ModelHelper.updateBatchOperationResponse(subResponse,
+                ModelHelper.updateTableTransactionActionResponse(subResponse,
                     changes.getContents().get(i).getHttpRequest());
             }
 
@@ -1210,8 +1220,8 @@ public final class TableAsyncClient {
                         String message = error.getOdataError().getMessage().getValue();
 
                         try {
-                            int failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
-                            failedOperation = changes.getContents().get(failedIndex).getOperation();
+                            failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
+                            failedAction = changes.getContents().get(failedIndex).getOperation();
                         } catch (NumberFormatException e) {
                             // Unable to parse failed operation from batch error message - this just means
                             // the service did not indicate which request was the one that failed. Since
@@ -1232,13 +1242,14 @@ public final class TableAsyncClient {
         if (error != null || errorMessage != null) {
             String message = "An operation within the batch failed, the transaction has been rolled back.";
 
-            if (failedOperation != null) {
-                message += " The failed operation was: " + failedOperation;
+            if (failedAction != null) {
+                message += " The failed operation was: " + failedAction;
             } else if (errorMessage != null) {
                 message += " " + errorMessage;
             }
 
-            return monoError(logger, new TableServiceException(message, null, toTableServiceError(error)));
+            return monoError(logger,
+                new TableTransactionFailedException(message, null, toTableServiceError(error), failedIndex));
         } else {
             return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
         }
