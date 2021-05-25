@@ -29,7 +29,7 @@ import java.util.function.Function;
 /**
  * Represents an session that is received when "any" session is accepted from the service.
  */
-class ServiceBusSessionReceiver implements AsyncAutoCloseable {
+class ServiceBusSessionReceiver implements AsyncAutoCloseable, AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final LockContainer<OffsetDateTime> lockContainer;
     private final AtomicReference<OffsetDateTime> sessionLockedUntil = new AtomicReference<>();
@@ -212,6 +212,7 @@ class ServiceBusSessionReceiver implements AsyncAutoCloseable {
         return receiveLink.closeAsync().doFinally(signal -> subscriptions.dispose());
     }
 
+    @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
     }
