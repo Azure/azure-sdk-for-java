@@ -171,10 +171,13 @@ jobs:
             - 'sdk/${{ parameters.ServiceDirectory }}'
             - '**/*.xml'
             - '**/*.md'
+            - '.vscode/cspell.json'
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
 
       - template: /eng/common/pipelines/templates/steps/check-spelling.yml
+        parameters:
+          CspellConfigPath: .vscode/cspell.json
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
