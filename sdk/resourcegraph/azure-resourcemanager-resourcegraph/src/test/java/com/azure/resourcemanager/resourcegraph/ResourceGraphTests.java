@@ -32,6 +32,7 @@ public class ResourceGraphTests extends TestBase {
         ResourceGraphManager manager = ResourceGraphManager
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
+        // @embedmeStart
         QueryRequest queryRequest = new QueryRequest()
             .withSubscriptions(Collections.singletonList(subscriptionId))
             .withQuery("Resources | project name, type | limit 5 | order by name asc");
@@ -48,5 +49,6 @@ public class ResourceGraphTests extends TestBase {
 
         Assertions.assertNotNull(response.data());
         Assertions.assertTrue(response.data() instanceof List);
+        // @embedmeEnd
     }
 }

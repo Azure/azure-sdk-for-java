@@ -20,6 +20,12 @@ public final class UserOwnedStorage {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
+    /*
+     * The identityClientId property.
+     */
+    @JsonProperty(value = "identityClientId")
+    private String identityClientId;
+
     /**
      * Get the resourceId property: Full resource id of a Microsoft.Storage resource.
      *
@@ -37,6 +43,26 @@ public final class UserOwnedStorage {
      */
     public UserOwnedStorage withResourceId(String resourceId) {
         this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the identityClientId property: The identityClientId property.
+     *
+     * @return the identityClientId value.
+     */
+    public String identityClientId() {
+        return this.identityClientId;
+    }
+
+    /**
+     * Set the identityClientId property: The identityClientId property.
+     *
+     * @param identityClientId the identityClientId value to set.
+     * @return the UserOwnedStorage object itself.
+     */
+    public UserOwnedStorage withIdentityClientId(String identityClientId) {
+        this.identityClientId = identityClientId;
         return this;
     }
 

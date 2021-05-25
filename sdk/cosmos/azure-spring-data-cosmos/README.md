@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.6.0</version>
+    <version>3.7.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -277,12 +277,13 @@ public class NestedEntitySample {
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L19 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L20 -->
 
 ```java
 @Repository
 public interface UserRepository extends CosmosRepository<User, String> {
     Iterable<User> findByFirstName(String firstName);
+    long countByFirstName(String firstName);
     User findOne(String id, String lastName);
 }
 ```
@@ -292,31 +293,37 @@ public interface UserRepository extends CosmosRepository<User, String> {
 #### QueryAnnotation : Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.
 - Examples for annotated queries in synchronous CosmosRepository:
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L17 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L20 -->
 
 ```java
 public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     List<User> getUsersByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     List<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    @Query("select value count(1) from c where c.firstName = @firstName")
+    long getNumberOfUsersWithFirstName(@Param("firstName") String firstName);
 }
 ```
 
 - Examples for annotated queries in ReactiveCosmosRepository.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserReactiveRepositoryCodeSnippet.java#L11-L20 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserReactiveRepositoryCodeSnippet.java#L12-L24 -->
 
 ```java
 public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends ReactiveCosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     Flux<User> getUsersByTitleAndValue(@Param("firstName") int firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     Flux<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
 
-    @Query(value = "select count(c.id) as num_ids, c.lastName from c group by c.lastName")
+    @Query("select count(c.id) as num_ids, c.lastName from c group by c.lastName")
     Flux<ObjectNode> getCoursesGroupByDepartment();
+
+    @Query("select value count(1) from c where c.lastName = @lastName")
+    Mono<Long> getNumberOfUsersWithLastName(@Param("lastName") String lastName);
 }
 ```
 
@@ -851,6 +858,8 @@ For example, if you want to use spring logback as logging framework, add the fol
   <logger name="com.azure.cosmos" level="error"/>
   <logger name="org.springframework" level="error"/>
   <logger name="io.netty" level="error"/>
+  <!-- This will enable query logging, to include query parameter logging, set this logger to TRACE -->  
+  <logger name="com.azure.cosmos.implementation.SqlQuerySpecLogger" level="DEBUG"/>  
 </configuration>
 ```
 

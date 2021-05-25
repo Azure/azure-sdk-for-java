@@ -30,6 +30,8 @@ public class JavadocThrowsChecks extends AbstractCheck {
         TokenTypes.PARAMETER_DEF,
         TokenTypes.VARIABLE_DEF,
     };
+    private static final String THIS_TOKEN = "this";
+    private static final String CLASS_TOKEN = "class";
 
     private Map<String, HashSet<String>> javadocThrowsMapping;
     private Map<String, HashSet<String>> exceptionMapping;
@@ -90,7 +92,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
 
             case TokenTypes.PARAMETER_DEF:
             case TokenTypes.VARIABLE_DEF:
-                if (currentScopeNeedsChecking) {
+                if (currentScopeNeedsChecking || token.getParent().getType() == TokenTypes.OBJBLOCK) {
                     addExceptionMapping(token);
                 }
                 break;
@@ -203,7 +205,15 @@ public class JavadocThrowsChecks extends AbstractCheck {
             return;
         }
 
-        String identifier = currentScopeIdentifier + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
+        String scope = currentScopeIdentifier;
+        if (currentScopeIdentifier == null || currentScopeIdentifier.isEmpty()) {
+            if (definitionToken.branchContains(TokenTypes.LITERAL_STATIC)) {
+                scope = CLASS_TOKEN;
+            } else {
+                scope = THIS_TOKEN;
+            }
+        }
+        String identifier = scope + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
         HashSet<String> types = exceptionMapping.getOrDefault(identifier, new HashSet<>());
 
         if (typeToken.getType() == TokenTypes.BOR) {
@@ -277,8 +287,28 @@ public class JavadocThrowsChecks extends AbstractCheck {
             return;
         } else {
             // Throwing an un-casted variable.
-            String throwIdent = throwExprToken.findFirstToken(TokenTypes.IDENT).getText();
-            HashSet<String> types = exceptionMapping.get(currentScopeIdentifier + throwIdent);
+            DetailAST lastIdentifier = null;
+            DetailAST current = throwExprToken;
+            while (current != null) {
+                if (current.getType() == TokenTypes.IDENT) {
+                    lastIdentifier = current;
+                }
+                if (current.getFirstChild() != null) {
+                    current = current.getFirstChild();
+                } else {
+                    current = current.getNextSibling();
+                }
+            }
+            if (lastIdentifier == null) {
+                return;
+            }
+
+            String throwIdentName = lastIdentifier.getText();
+            HashSet<String> types = findMatchingExceptionType(currentScopeIdentifier, throwIdentName);
+
+            if (types == null) {
+                return;
+            }
 
             for (String type : types) {
                 if (!methodJavadocThrows.contains(type)) {
@@ -286,5 +316,19 @@ public class JavadocThrowsChecks extends AbstractCheck {
                 }
             }
         }
+    }
+
+    private HashSet<String> findMatchingExceptionType(String scope, String throwIdent) {
+        // check current scope
+        HashSet<String> types = exceptionMapping.get(scope + throwIdent);
+        if (types == null) {
+            // if a matching type is not found in current method scope, search object scope
+            types = exceptionMapping.get(THIS_TOKEN + throwIdent);
+        }
+        if (types == null) {
+            // if a matching type is not found in method or instance scope, search class scope
+            types = exceptionMapping.get(CLASS_TOKEN + throwIdent);
+        }
+        return types;
     }
 }

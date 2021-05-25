@@ -37,5 +37,5 @@ public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministratio
     public abstract void beginRestore(HttpClient httpClient);
 
     @Test
-    public abstract void beginSelectiveRestore(HttpClient httpClient);
+    public abstract void beginSelectiveKeyRestore(HttpClient httpClient);
 }

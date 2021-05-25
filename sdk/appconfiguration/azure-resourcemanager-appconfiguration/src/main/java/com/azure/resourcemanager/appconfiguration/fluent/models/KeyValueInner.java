@@ -4,16 +4,19 @@
 
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The result of a request to retrieve a key-value from the specified configuration store. */
-@Immutable
-public final class KeyValueInner {
+/** The key-value resource along with all resource properties. */
+@JsonFlatten
+@Fluent
+public class KeyValueInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyValueInner.class);
 
     /*
@@ -21,7 +24,7 @@ public final class KeyValueInner {
      * The key is used in unison with the label to uniquely identify a
      * key-value.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
@@ -29,13 +32,13 @@ public final class KeyValueInner {
      * The label is used in unison with the key to uniquely identify a
      * key-value.
      */
-    @JsonProperty(value = "label", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.label", access = JsonProperty.Access.WRITE_ONLY)
     private String label;
 
     /*
      * The value of the key-value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.value")
     private String value;
 
     /*
@@ -43,35 +46,35 @@ public final class KeyValueInner {
      * Providing a proper content-type can enable transformations of values
      * when they are retrieved by applications.
      */
-    @JsonProperty(value = "contentType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.contentType")
     private String contentType;
 
     /*
      * An ETag indicating the state of a key-value within a configuration
      * store.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The last time a modifying operation was performed on the given
      * key-value.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * A value indicating whether the key-value is locked.
      * A locked key-value may not be modified until it is unlocked.
      */
-    @JsonProperty(value = "locked", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.locked", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean locked;
 
     /*
      * A dictionary of tags that can help identify what a key-value may be
      * applicable for.
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.tags")
     private Map<String, String> tags;
 
     /**
@@ -104,6 +107,17 @@ public final class KeyValueInner {
     }
 
     /**
+     * Set the value property: The value of the key-value.
+     *
+     * @param value the value value to set.
+     * @return the KeyValueInner object itself.
+     */
+    public KeyValueInner withValue(String value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
      * Get the contentType property: The content type of the key-value's value. Providing a proper content-type can
      * enable transformations of values when they are retrieved by applications.
      *
@@ -111,6 +125,18 @@ public final class KeyValueInner {
      */
     public String contentType() {
         return this.contentType;
+    }
+
+    /**
+     * Set the contentType property: The content type of the key-value's value. Providing a proper content-type can
+     * enable transformations of values when they are retrieved by applications.
+     *
+     * @param contentType the contentType value to set.
+     * @return the KeyValueInner object itself.
+     */
+    public KeyValueInner withContentType(String contentType) {
+        this.contentType = contentType;
+        return this;
     }
 
     /**
@@ -148,6 +174,17 @@ public final class KeyValueInner {
      */
     public Map<String, String> tags() {
         return this.tags;
+    }
+
+    /**
+     * Set the tags property: A dictionary of tags that can help identify what a key-value may be applicable for.
+     *
+     * @param tags the tags value to set.
+     * @return the KeyValueInner object itself.
+     */
+    public KeyValueInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**

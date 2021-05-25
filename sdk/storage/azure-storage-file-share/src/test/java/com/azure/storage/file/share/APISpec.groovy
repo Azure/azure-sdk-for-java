@@ -11,7 +11,6 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
-import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
@@ -28,7 +27,6 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 import java.util.function.BiFunction
@@ -54,27 +52,24 @@ class APISpec extends StorageSpec {
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
-    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
-    def defaultFlux = Flux.just(defaultData)
-    Long defaultDataLength = defaultData.remaining()
-
     /**
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
-        primaryFileServiceClient = setClient(env.primaryAccount)
-        primaryFileServiceAsyncClient = setAsyncClient(env.primaryAccount)
+        primaryFileServiceClient = getServiceClient(env.primaryAccount)
+        primaryFileServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
 
-        premiumFileServiceClient = setClient(env.premiumFileAccount)
-        premiumFileServiceAsyncClient = setAsyncClient(env.premiumFileAccount)
+        premiumFileServiceClient = getServiceClient(env.premiumFileAccount)
+        premiumFileServiceAsyncClient = getServiceAsyncClient(env.premiumFileAccount)
     }
 
     /**
      * Clean up the test shares, directories and files for the account.
      */
     def cleanup() {
-        def cleanupFileServiceClient = instrument(new ShareServiceClientBuilder()
-                .connectionString(env.primaryAccount.connectionString))
+        if (env.testMode != TestMode.PLAYBACK) {
+            def cleanupFileServiceClient = new ShareServiceClientBuilder()
+                .connectionString(env.primaryAccount.connectionString)
                 .buildClient()
             for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
                 def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
@@ -83,7 +78,8 @@ class APISpec extends StorageSpec {
                     createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
                 }
 
-            shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
+                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
+            }
         }
     }
 
@@ -99,14 +95,6 @@ class APISpec extends StorageSpec {
         return namer.getRandomName(namer.getResourcePrefix() + entityNo, 63)
     }
 
-    ShareServiceAsyncClient setAsyncClient(TestAccount account) {
-        try {
-            return getServiceAsyncClient(account)
-        } catch (Exception ignore) {
-            return null
-        }
-    }
-
     ShareServiceAsyncClient getServiceAsyncClient(TestAccount account) {
         return getServiceAsyncClient(account.credential, account.fileEndpoint, null)
     }
@@ -114,14 +102,6 @@ class APISpec extends StorageSpec {
     ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
                                         HttpPipelinePolicy... policies) {
         return getServiceClientBuilder(credential, endpoint, policies).buildAsyncClient()
-    }
-
-    ShareServiceClient setClient(TestAccount account) {
-        try {
-            return getServiceClient(account)
-        } catch (Exception ignore) {
-            return null
-        }
     }
 
     ShareServiceClient getServiceClient(TestAccount account) {

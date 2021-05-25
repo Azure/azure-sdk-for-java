@@ -47,7 +47,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
+        <version>3.5.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -107,7 +107,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
+        <version>3.5.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -161,7 +161,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
+        <version>3.5.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -223,7 +223,7 @@ To use **aad-starter** in this scenario, we need these steps:
     <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>3.5.0-beta.1</version>
+        <version>3.5.0</version>
     </dependency>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -570,6 +570,49 @@ In [Resource server visiting other resource server] scenario(For better descript
         return "Response from WebApiB.";
     }
     ```  
+
+#### Support setting redirect-uri-template.
+
+Developers can customize the redirect-uri.
+
+![redirect-uri](resource/redirect-uri.png)
+
+* Step 1: Add `redirect-uri-template` properties in application.yml.
+    ```yaml
+        azure:
+          activedirectory:
+            redirect-uri-template: --your-redirect-uri-template--
+    ```
+
+* Step 2: Update the configuration of the azure cloud platform in the portal.
+
+    We need to configure the same redirect-uri as application.yml:
+
+    ![web-application-config-redirect-uri](resource/web-application-config-redirect-uri.png)
+
+* Step 3: Write your Java code:
+
+    After we set redirect-uri-template, we need to update `SecurityConfigurerAdapter`:
+
+```java
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
+    /**
+     * Add configuration logic as needed.
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        super.configure(http);
+        http.oauth2Login()
+                .loginProcessingUrl("/{your-redirect-uri}")
+                .and()
+            .authorizeRequests()
+                .anyRequest().authenticated();
+    }
+}
+```
+  
 ## Examples
 
 ### Web application visiting resource servers
@@ -620,7 +663,7 @@ Please follow [instructions here] to build from source or contribute.
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
 [instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[official doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+[official doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [OAuth 2.0 implicit grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot

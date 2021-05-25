@@ -545,7 +545,7 @@ public final class FormTrainingAsyncClient {
                 .setModelName(creatComposeModelOptions.getModelName());
 
             return new PollerFlux<FormRecognizerOperationResult, CustomFormModel>(
-                creatComposeModelOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(() -> service.composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
                     .map(response -> {
                         final String composeModelOperationId

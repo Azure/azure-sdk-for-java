@@ -2,6 +2,8 @@
 
 ## 2.5.0-beta.1 (Unreleased)
 
+- Supported enabling infrastructure encryption for `StorageAccount`.
+- Supported enabling customer-managed key for Tables and Queues in `StorageAccount`.
 
 ## 2.4.0 (2021-04-28)
 

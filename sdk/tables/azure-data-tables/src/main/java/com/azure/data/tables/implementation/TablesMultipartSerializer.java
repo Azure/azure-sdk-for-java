@@ -10,10 +10,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.data.tables.implementation.models.BatchChangeSet;
-import com.azure.data.tables.models.BatchOperationResponse;
 import com.azure.data.tables.implementation.models.BatchSubRequest;
 import com.azure.data.tables.implementation.models.MultipartPart;
 import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.models.BatchOperationResponse;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * The FormPage model.
  */
+@Immutable
 public final class FormPage {
 
     /*

@@ -55,10 +55,9 @@ public class CreateComposedModel {
         final CustomFormModel customFormModel =
             client.beginCreateComposedModel(
                 Arrays.asList(labeledModelId1, labeledModelId2),
-                new CreateComposedModelOptions()
-                    .setModelName("my composed model name")
-                    .setPollInterval(Duration.ofSeconds(5)),
+                new CreateComposedModelOptions().setModelName("my composed model name"),
                 Context.NONE)
+                .setPollInterval(Duration.ofSeconds(5))
                 .getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());

@@ -266,6 +266,10 @@
                     <packages>com.azure.iot.modelsrepository*</packages>
                   </group>
                   <group>
+                    <title>Azure FarmBeats</title>
+                    <packages>com.azure.verticals.agrifood.farming*</packages>
+                  </group>
+                  <group>
                     <title>Azure Form Recognizer</title>
                     <packages>com.azure.ai.formrecognizer*</packages>
                   </group>
@@ -598,6 +602,7 @@
                     -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                     -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/java
                     <!-- -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
@@ -704,6 +709,7 @@
         <module>sdk/batchai</module>
         <module>sdk/billing</module>
         <module>sdk/boms</module>
+        <module>sdk/botservice</module>
         <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/commerce</module>
@@ -732,6 +738,7 @@
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
+        <module>sdk/farmbeats</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -741,6 +748,7 @@
         <module>sdk/hybridcompute</module>
         <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
+        <module>sdk/imagebuilder</module>
         <module>sdk/iotcentral</module>
         <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
@@ -752,6 +760,7 @@
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
+        <module>sdk/maps</module>
         <module>sdk/mariadb</module>
         <module>sdk/marketplaceordering</module>
         <module>sdk/mediaservices</module>
@@ -767,8 +776,10 @@
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/powerbidedicated</module>
+        <module>sdk/purview</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>
@@ -776,7 +787,6 @@
         <module>sdk/resourcehealth</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/resourcemover</module>
-        <module>sdk/purview</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/servicebus</module>

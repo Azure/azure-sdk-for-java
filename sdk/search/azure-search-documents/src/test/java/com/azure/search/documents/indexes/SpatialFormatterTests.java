@@ -3,10 +3,10 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.experimental.geojson.GeoLineString;
-import com.azure.core.experimental.geojson.GeoLinearRing;
-import com.azure.core.experimental.geojson.GeoPolygon;
-import com.azure.core.experimental.geojson.GeoPosition;
+import com.azure.core.models.GeoLineString;
+import com.azure.core.models.GeoLinearRing;
+import com.azure.core.models.GeoPolygon;
+import com.azure.core.models.GeoPosition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.SpatialFormatter;
 import org.junit.jupiter.api.Test;
