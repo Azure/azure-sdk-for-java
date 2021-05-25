@@ -36,7 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * The unit test validating the ServerSocket is created using a certificate from Azure Key Vault.
  */
-@Disabled("Block live test, disable temporarily")
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class ServerSocketTest {
 
@@ -49,12 +48,14 @@ public class ServerSocketTest {
     @BeforeAll
     public static void beforeEach() throws Exception {
 
+        System.out.println(Security.getProvider("AzureKeyVault"));
+        Security.removeProvider("AzureKeyVault");
+        System.out.println(Security.getProvider("AzureKeyVault"));
         /*
          * Add JCA provider.
          */
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
-
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
@@ -69,7 +70,7 @@ public class ServerSocketTest {
         ks = PropertyConvertorUtils.getKeyVaultKeyStore();
         kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
-
+        System.out.println(kmf.getKeyManagers()[0].getClass() + "in before");
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
@@ -124,9 +125,9 @@ public class ServerSocketTest {
      */
     @Test
     public void testServerSocketWithKeyVaultTrustManager() throws Exception {
-        Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
+        KeyVaultTrustManagerFactoryProvider provider = new KeyVaultTrustManagerFactoryProvider();
+        Security.addProvider(provider);
         serverSocketWithTrustManager(8767);
-
     }
 
 
@@ -167,7 +168,6 @@ public class ServerSocketTest {
 
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(ks);
-
         SSLContext context = SSLContext.getInstance("TLS");
         context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 

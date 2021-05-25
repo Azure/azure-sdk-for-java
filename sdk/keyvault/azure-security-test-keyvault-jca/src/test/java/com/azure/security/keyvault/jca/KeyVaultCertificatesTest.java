@@ -59,7 +59,8 @@ public class KeyVaultCertificatesTest {
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
