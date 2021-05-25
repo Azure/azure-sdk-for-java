@@ -47,7 +47,6 @@ public class MetricsQuerySample {
                                 .setTimespan(Duration.ofDays(30).toString())
                                 .setInterval(Duration.ofHours(1))
                                 .setTop(100)
-                                .setOrderby("")
                                 .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
                         Context.NONE);
 
