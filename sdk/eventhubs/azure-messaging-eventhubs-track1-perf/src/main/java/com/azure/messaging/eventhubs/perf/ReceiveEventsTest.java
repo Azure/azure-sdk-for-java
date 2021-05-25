@@ -39,7 +39,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     public Mono<Void> globalSetupAsync() {
         return Mono.usingWhen(
             Mono.fromCompletionStage(createEventHubClientAsync()),
-            client -> sendMessages(client, options.getPartitionId(), getTotalNumberOfEventsPerPartition()),
+            client -> sendMessages(client, options.getPartitionId(), options.getCount()),
             client -> Mono.fromCompletionStage(client.close()));
     }
 

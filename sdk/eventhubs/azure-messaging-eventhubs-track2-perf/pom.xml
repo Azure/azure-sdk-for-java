@@ -23,14 +23,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
-      <version>12.11.1</version>
+      <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

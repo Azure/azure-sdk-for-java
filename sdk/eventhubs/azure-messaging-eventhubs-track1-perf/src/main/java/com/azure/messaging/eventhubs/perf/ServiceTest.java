@@ -80,7 +80,7 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         }
 
         this.events = Collections.unmodifiableList(eventsList);
-        this.scheduler = Executors.newScheduledThreadPool(DEFAULT_BOUNDED_ELASTIC_SIZE);
+        this.scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 4);
     }
 
     ConnectionStringBuilder getConnectionStringBuilder() {

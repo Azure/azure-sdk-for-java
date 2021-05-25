@@ -132,6 +132,7 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
                 System.out.println("Sending batch. Left: " + number.get());
                 return client.send(batch);
             })
-            .last();
+            .then()
+            .doFinally(signal -> { System.out.println("Complete.");});
     }
 }

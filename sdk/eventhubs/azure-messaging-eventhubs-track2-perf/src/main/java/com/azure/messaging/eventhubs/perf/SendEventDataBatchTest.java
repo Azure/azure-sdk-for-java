@@ -20,7 +20,7 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
      *
      * @param options the options configured for the test.
      */
-    SendEventDataBatchTest(EventHubsOptions options) {
+    public SendEventDataBatchTest(EventHubsOptions options) {
         super(options);
     }
 

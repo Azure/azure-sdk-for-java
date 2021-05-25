@@ -92,7 +92,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
                         return Flux.fromIterable(properties.getPartitionIds());
                     })
-                    .flatMap(partitionId -> sendMessages(asyncClient, partitionId, options.getNumberOfEvents()))
+                    // .flatMap(partitionId -> sendMessages(asyncClient, partitionId, options.getNumberOfEvents()))
                     .then();
 
                 return Mono.when(createContainerMono, sendMessagesMono);
@@ -111,7 +111,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             () -> {
                 final BlobCheckpointStore checkpointStore = new BlobCheckpointStore(containerClient);
                 final EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
-                    .connectionString(options.getConnectionString())
+                    .connectionString(options.getConnectionString(), options.getEventHubName())
                     .consumerGroup(options.getConsumerGroup())
                     .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
                     .checkpointStore(checkpointStore)
