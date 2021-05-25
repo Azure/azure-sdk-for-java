@@ -11,26 +11,20 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
-
 /**
- * Async sample for recognizing commonly found invoice fields from a local file input stream of an invoice document.
- * For a suggested approach to extracting information from a general recognized form, see StronglyTypedRecognizedForm.java.
+ * Async sample for recognizing commonly found invoice fields from a file source URL of an invoice document.
+ * For a suggested approach to
+ * extracting information from a general recognized form, see StronglyTypedRecognizedForm.java.
  * See fields found on a invoice here:
  * https://aka.ms/formrecognizer/invoicefields
  */
-public class RecognizeInvoicesAsync {
-
+public class RecognizeInvoicesFromUrlAsync {
     /**
      * Main method to invoke this demo.
      *
@@ -40,29 +34,28 @@ public class RecognizeInvoicesAsync {
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildAsyncClient();
+                                               .credential(new AzureKeyCredential("{key}"))
+                                               .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+                                               .buildAsyncClient();
 
-        File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
-            + "sample-forms/invoices/sample_invoice.jpg");
-        byte[] fileContent = Files.readAllBytes(invoice.toPath());
-        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller;
-        try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            recognizeInvoicesPoller = client.beginRecognizeInvoices(toFluxByteBuffer(targetStream), invoice.length());
-        }
+        String invoiceUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/formrecognizer/"
+                + "azure-ai-formrecognizer/samples/sample_forms/forms/sample_invoice.jpg";
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller
+            = client.beginRecognizeInvoicesFromUrl(invoiceUrl);
 
-        Mono<List<RecognizedForm>> invoicePageResultMono = recognizeInvoicesPoller
-            .last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + pollResponse.getStatus()));
-                }
-            });
+        Mono<List<RecognizedForm>> invoicePageResultMono =
+            recognizeInvoicesPoller
+                .last()
+                .flatMap(pollResponse -> {
+                    if (pollResponse.getStatus().isComplete()) {
+                        System.out.println("Polling completed successfully");
+                        return pollResponse.getFinalResult();
+                    } else {
+                        return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
+                                                                   + pollResponse.getStatus()));
+                    }
+                });
 
         invoicePageResultMono.subscribe(recognizedInvoices -> {
             for (int i = 0; i < recognizedInvoices.size(); i++) {
