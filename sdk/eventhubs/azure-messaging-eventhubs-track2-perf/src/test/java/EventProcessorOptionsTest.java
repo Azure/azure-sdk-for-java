@@ -36,12 +36,10 @@ public class EventProcessorOptionsTest {
         final String connectionString = "eh connection string";
         final String storageConnectionString = "foo-bar-storage";
         final String storageEndpoint = "foo-bar-storage-endpoint";
-        final String outputFile = "test-file";
         final List<String> arguments = Arrays.asList(
             "--storageConnectionString", storageConnectionString,
             "--storageEndpoint", storageEndpoint,
             "--eventsToSend", String.valueOf(numberOfEvents),
-            "--output", outputFile,
             "--connectionString", connectionString,
             "--name", name);
         final EventProcessorOptions options = new EventProcessorOptions();
@@ -58,7 +56,6 @@ public class EventProcessorOptionsTest {
 
         assertEquals(name, options.getEventHubName());
         assertEquals(connectionString, options.getConnectionString());
-        assertEquals(outputFile, options.getOutputFile());
         assertEquals(storageConnectionString, options.getStorageConnectionString());
         assertEquals(numberOfEvents, options.getEventsToSend());
         assertEquals(storageEndpoint, options.getStorageEndpoint());
@@ -80,7 +77,6 @@ public class EventProcessorOptionsTest {
         final String connectionString = "eh connection string";
         final String storageConnectionString = "foo-bar-storage";
         final String storageEndpoint = "foo-bar-storage-endpoint";
-        final String outputFile = "test-file";
 
         final Map<String, String> arguments = new HashMap<>();
         arguments.put("--connectionString", connectionString);
@@ -88,7 +84,6 @@ public class EventProcessorOptionsTest {
         arguments.put("--storageConnectionString", storageConnectionString);
         arguments.put("--storageEndpoint", storageEndpoint);
         arguments.put("--eventsToSend", String.valueOf(numberOfEvents));
-        arguments.put("--output", outputFile);
 
         final String removed = arguments.remove(parameterToRemove);
         assertNotNull(removed, parameterToRemove + " should have been removed.");

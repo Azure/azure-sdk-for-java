@@ -14,10 +14,8 @@ import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import reactor.core.publisher.Mono;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -25,9 +23,11 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Tests Event Processor Host.
@@ -101,14 +101,12 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                     for (String id : runtimeInformation.getPartitionIds()) {
                         partitionProcessorMap.put(id, new SamplePartitionProcessor());
                     }
-                    //
-                    // final List<Mono<Void>> allSends = Arrays.stream(runtimeInformation.getPartitionIds())
-                    //     .map(id -> sendMessages(client, id, options.getNumberOfEvents()))
-                    //     .collect(Collectors.toList());
-                    //
-                    // return Mono.when(allSends);
 
-                    return Mono.empty();
+                    final List<Mono<Void>> allSends = Arrays.stream(runtimeInformation.getPartitionIds())
+                        .map(id -> sendMessages(client, id, options.getEventsToSend()))
+                        .collect(Collectors.toList());
+
+                    return Mono.when(allSends);
                 }),
             client -> Mono.fromCompletionStage(client.close()));
     }
@@ -149,54 +147,40 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        System.out.println("Cleaning up.");
+        System.out.println("Cleaning up and writing results.");
 
-        if (options.getOutputFile() != null) {
-            try (FileWriter writer = new FileWriter(options.getOutputFile())) {
-                outputPartitionResults(content -> {
-                    System.out.println(content);
-                    write(writer, content);
-                });
-            } catch (IOException e) {
-                System.err.printf("Unable to open file: %s. %s%n", options.getOutputFile(), e);
-            }
-        } else {
-            CloudBlockBlob blob = null;
-            try {
-                blob = containerReference.getBlockBlobReference("results.txt");
-            } catch (URISyntaxException | StorageException e) {
-                System.err.println("Could not create block blob reference to write results.txt. " + e);
-            }
+        CloudBlockBlob blob = null;
+        try {
+            blob = containerReference.getBlockBlobReference("results.txt");
+        } catch (URISyntaxException | StorageException e) {
+            System.err.println("Could not create block blob reference to write results.txt. " + e);
+        }
 
-            if (blob == null) {
-                System.out.println(HEADERS);
-                outputPartitionResults(System.out::println);
-                return super.cleanupAsync();
-            }
+        if (blob == null) {
+            System.out.println(HEADERS);
+            outputPartitionResults(System.out::println);
+            return super.cleanupAsync();
+        }
 
-            try (BlobOutputStream blobOutputStream = blob.openOutputStream();
-                 OutputStreamWriter writer = new OutputStreamWriter(blobOutputStream, StandardCharsets.UTF_8)) {
+        try (BlobOutputStream blobOutputStream = blob.openOutputStream();
+             OutputStreamWriter writer = new OutputStreamWriter(blobOutputStream, StandardCharsets.UTF_8)) {
 
-                outputPartitionResults(content -> {
-                    System.out.println(content);
-                    write(writer, content);
-                });
+            outputPartitionResults(content -> {
+                System.out.println(content);
 
-            } catch (StorageException | IOException e) {
-                System.err.println("Unable to create or write to blob. Error: " + e);
-            }
+                try {
+                    writer.write(content);
+                } catch (IOException e) {
+                    System.err.printf("Unable to write %s. Error: %s%n", content, e);
+                }
+            });
+
+        } catch (StorageException | IOException e) {
+            System.err.println("Unable to create or write to blob. Error: " + e);
         }
 
         System.out.println("Done.");
         return super.cleanupAsync();
-    }
-
-    private void write(Writer writer, String contents) {
-        try {
-            writer.write(contents);
-        } catch (IOException e) {
-            System.err.printf("Unable to write %s. Error: %s%n", contents, e);
-        }
     }
 
     private void outputPartitionResults(Consumer<String> onOutput) {
@@ -223,7 +207,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         onOutput.accept(String.format("Rate (events/s)\t%.2f%n", eventsPerSecond));
     }
 
-    private String getResults(int index, EventsCounter eventsCounter) {
+    private static String getResults(int index, EventsCounter eventsCounter) {
         final double seconds = eventsCounter.elapsedTime() * 0.000000001;
         final double operationsSecond = eventsCounter.totalEvents() / seconds;
 
