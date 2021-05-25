@@ -75,9 +75,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         }
         try {
             storageCredentials = StorageCredentials.tryParseCredentials(options.getStorageConnectionString());
-            containerName = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHMMss"))
-                .replace(":", "-")
-                .replace(" ", "");
+            containerName = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHMMss"));
 
             final StorageUri storageUri = new StorageUri(URI.create(options.getStorageEndpoint()));
             final CloudBlobClient client = new CloudBlobClient(storageUri, storageCredentials);
@@ -103,7 +101,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                     }
 
                     final List<Mono<Void>> allSends = Arrays.stream(runtimeInformation.getPartitionIds())
-                        .map(id -> sendMessages(client, id, getTotalNumberOfEventsPerPartition()))
+                        .map(id -> sendMessages(client, id, options.getNumberOfEvents()))
                         .collect(Collectors.toList());
 
                     return Mono.when(allSends);
@@ -146,7 +144,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     }
 
     @Override
-    public Mono<Void> cleanupAsync() {
+    public Mono<Void> globalCleanupAsync() {
         System.out.println("Cleaning up.");
 
         if (options.getOutputFile() != null) {

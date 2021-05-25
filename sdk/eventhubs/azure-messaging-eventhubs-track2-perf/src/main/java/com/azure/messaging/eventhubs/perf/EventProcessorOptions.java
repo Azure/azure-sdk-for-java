@@ -22,6 +22,15 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
         required = true)
     private String storageEndpoint;
 
+    @Parameter(names = {"-e", "--eventsToSend"}, description = "Number of events to send per partition.")
+    private int numberOfEvents = 100000;
+
+    @Parameter(names = {"-b", "--batchSize"}, description = "Number of events to receive as a batch.")
+    private int batchSize = 100;
+
+    @Parameter(names = {"--batch"}, description = "Use batched receive.")
+    private boolean isBatched = false;
+
     /**
      * Creates a new instance of the options.
      */
@@ -54,5 +63,32 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
      */
     public String getStorageEndpoint() {
         return storageEndpoint;
+    }
+
+    /**
+     * Gets the number of events to send.
+     *
+     * @return Number of events to send per partition.
+     */
+    public int getNumberOfEvents() {
+        return numberOfEvents;
+    }
+
+    /**
+     * Gets the number of events to receive per batch.
+     *
+     * @return The number of events to receive per batch.
+     */
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    /**
+     * Gets whether or not to receive as a batch or not.
+     *
+     * @return Whether to receive as a batch or not. Default is {@code false}.
+     */
+    public boolean isBatched() {
+        return isBatched;
     }
 }

@@ -22,6 +22,9 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
         required = true)
     private String storageEndpoint;
 
+    @Parameter(names = {"-e", "--eventsToSend"}, description = "Number of events to send per partition.")
+    private int numberOfEvents = 100000;
+
     /**
      * Creates a new instance of the options.
      */
@@ -54,5 +57,14 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
      */
     public String getStorageEndpoint() {
         return storageEndpoint;
+    }
+
+    /**
+     * Gets the number of events to send.
+     *
+     * @return Number of events to send per partition.
+     */
+    public int getNumberOfEvents() {
+        return numberOfEvents;
     }
 }

@@ -7,8 +7,11 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,11 +20,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Base class that tests Event Hubs.
  */
-abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
+abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
+    private final int totalNumberOfEventsPerPartition;
+
     protected final List<EventData> events;
 
     /**
@@ -29,7 +35,7 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
      *
      * @param options the options configured for the test.
      */
-    ServiceTest(EventHubsOptions options) {
+    ServiceTest(T options) {
         super(options);
 
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
@@ -65,6 +71,23 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
         }
 
         this.events = Collections.unmodifiableList(eventsList);
+        this.totalNumberOfEventsPerPartition = options.getCount() * options.getIterations() * 100;
+    }
+
+    void addEvents(EventDataBatch batch, int numberOfMessages) {
+        for (int i = 0; i < numberOfMessages; i++) {
+            final int index = numberOfMessages % events.size();
+            final EventData event = events.get(index);
+
+            try {
+                if (!batch.tryAdd(event)) {
+                    System.out.printf("Only added %s of %s events.%n", i, numberOfMessages);
+                    break;
+                }
+            } catch (AmqpException e) {
+                throw new RuntimeException("Event was too large for a single batch.", e);
+            }
+        }
     }
 
     /**
@@ -83,19 +106,32 @@ abstract class ServiceTest extends PerfStressTest<EventHubsOptions> {
         return builder;
     }
 
-    void addEvents(EventDataBatch batch, int numberOfMessages) {
-        for (int i = 0; i < numberOfMessages; i++) {
-            final int index = events.size() % numberOfMessages;
-            final EventData event = events.get(index);
+    Mono<Void> sendMessages(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend) {
+        final CreateBatchOptions options = partitionId != null
+            ? new CreateBatchOptions().setPartitionId(partitionId)
+            : new CreateBatchOptions();
 
-            try {
-                if (!batch.tryAdd(event)) {
-                    System.out.printf("Only added %s of %s events.%n", i, events.size());
-                    break;
+        final AtomicInteger number = new AtomicInteger(totalMessagesToSend);
+        return client.createBatch(options)
+            .repeatWhen(next -> {
+                return next.flatMap(last -> {
+                    if (number.get() < 1) {
+                        return Mono.empty();
+                    }
+
+                    return Mono.just(1);
+                });
+            })
+            .flatMap(batch -> {
+                EventData event = events.get(0);
+                while (batch.tryAdd(event)) {
+                    int index = number.getAndDecrement() % events.size();
+                    event = events.get(index);
                 }
-            } catch (AmqpException e) {
-                throw new RuntimeException("Event was too large for a single batch.", e);
-            }
-        }
+
+                System.out.println("Sending batch. Left: " + number.get());
+                return client.send(batch);
+            })
+            .last();
     }
 }

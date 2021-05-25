@@ -34,7 +34,6 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  */
 abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
     private final ScheduledExecutorService scheduler;
-    private final int totalNumberOfEventsPerPartition;
 
     protected final List<EventData> events;
     protected CompletableFuture<EventHubClient> clientFuture;
@@ -82,7 +81,6 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
 
         this.events = Collections.unmodifiableList(eventsList);
         this.scheduler = Executors.newScheduledThreadPool(DEFAULT_BOUNDED_ELASTIC_SIZE);
-        this.totalNumberOfEventsPerPartition = options.getCount() * options.getIterations() * 100;
     }
 
     ConnectionStringBuilder getConnectionStringBuilder() {
@@ -98,10 +96,6 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
 
     ScheduledExecutorService getScheduler() {
         return scheduler;
-    }
-
-    int getTotalNumberOfEventsPerPartition() {
-        return totalNumberOfEventsPerPartition;
     }
 
     void addEvents(EventDataBatch batch, int numberOfMessages) {
