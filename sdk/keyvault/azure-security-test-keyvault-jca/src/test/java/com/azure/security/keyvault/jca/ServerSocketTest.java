@@ -47,10 +47,6 @@ public class ServerSocketTest {
 
     @BeforeAll
     public static void beforeEach() throws Exception {
-
-        System.out.println(Security.getProvider("AzureKeyVault"));
-        Security.removeProvider("AzureKeyVault");
-        System.out.println(Security.getProvider("AzureKeyVault"));
         /*
          * Add JCA provider.
          */
@@ -70,7 +66,6 @@ public class ServerSocketTest {
         ks = PropertyConvertorUtils.getKeyVaultKeyStore();
         kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
-        System.out.println(kmf.getKeyManagers()[0].getClass() + "in before");
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
