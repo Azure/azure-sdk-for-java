@@ -2,7 +2,7 @@
 
 $releaseDate = "05/20/2021"
 $serviceDirectory = "spring"
-$certificatesReleaseVersion = "3.0.0"
+$certificatesReleaseVersion = "3.0.0-beta.7"
 $identityReleaseVersion = "1.5.0"
 $springtBootReleaseVersion = "3.5.0"
 

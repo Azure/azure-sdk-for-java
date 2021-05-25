@@ -3,7 +3,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.util.SearchPagedFlux;
 import org.junit.jupiter.api.Test;
