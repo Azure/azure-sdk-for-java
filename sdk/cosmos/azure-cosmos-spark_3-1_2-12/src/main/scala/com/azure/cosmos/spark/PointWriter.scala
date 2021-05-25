@@ -131,6 +131,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       }
   }
 
+  // scalastyle:off multiple.string.literals
   private def createWithRetry(partitionKeyValue: PartitionKey,
                               objectNode: ObjectNode): Unit = {
 
@@ -157,6 +158,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     assert(exceptionOpt.isDefined)
     throw exceptionOpt.get
   }
+  // scalastyle:on multiple.string.literals
 
   private def upsertWithRetry(partitionKeyValue: PartitionKey,
                               objectNode: ObjectNode): Unit = {
@@ -182,6 +184,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   }
   // scalastyle:on return
 
+  // scalastyle:off return
   private def deleteWithRetry(partitionKeyValue: PartitionKey,
                               objectNode: ObjectNode,
                               onlyIfNotModified: Boolean): Unit = {
@@ -219,7 +222,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     assert(exceptionOpt.isDefined)
     throw exceptionOpt.get
   }
-
+  // scalastyle:on return
 
   private def executeAsync(work: () => Any) : Future[Unit] = {
     val future = new CompletableFuture[Unit]()
