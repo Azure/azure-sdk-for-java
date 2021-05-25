@@ -37,18 +37,19 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
     private static final String FORMAT_STRING = "%s\t%d\t%d\t%s\t%s\t%.2f";
 
+    // Minimum duration is 5 minutes so we can give it time to claim all the partitions.
+    private static final int MINIMUM_DURATION = 5 * 60;
+
     private final SampleEventProcessorFactory processorFactory;
     private final ConcurrentHashMap<String, SamplePartitionProcessor> partitionProcessorMap;
     private final Duration testDuration;
+
     private volatile long startTime;
     private volatile long endTime;
 
     private String containerName;
     private StorageCredentials storageCredentials;
     private CloudBlobContainer containerReference;
-
-    // Minimum duration is 5 minutes so we can give it time to claim all the partitions.
-    private static final int MINIMUM_DURATION = 5 * 60;
 
     /**
      * Creates an instance of performance test.

@@ -83,7 +83,6 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         this.events = Collections.unmodifiableList(eventsList);
         this.scheduler = Executors.newScheduledThreadPool(DEFAULT_BOUNDED_ELASTIC_SIZE);
         this.totalNumberOfEventsPerPartition = options.getCount() * options.getIterations() * 100;
-
     }
 
     ConnectionStringBuilder getConnectionStringBuilder() {
