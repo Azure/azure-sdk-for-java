@@ -85,12 +85,13 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        if (options.isSync() && receiver != null) {
-            return Mono.fromRunnable(() -> receiver.close());
-        } else if (receiverAsync != null) {
-            return Mono.fromRunnable(() -> receiverAsync.close());
-        } else {
-            return super.cleanupAsync();
+        if (receiver != null) {
+            receiver.close();
         }
+        if (receiverAsync != null) {
+            receiverAsync.close();
+        }
+
+        return super.cleanupAsync();
     }
 }

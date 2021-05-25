@@ -51,12 +51,13 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        if (options.isSync() && producer != null) {
-            return Mono.fromRunnable(() -> producer.close());
-        } else if (producerAsync != null) {
-            return Mono.fromRunnable(() -> producerAsync.close());
-        } else {
-            return super.cleanupAsync();
+        if (producer != null) {
+            producer.close();
         }
+        if (producerAsync != null) {
+            producerAsync.close();
+        }
+
+        return super.cleanupAsync();
     }
 }

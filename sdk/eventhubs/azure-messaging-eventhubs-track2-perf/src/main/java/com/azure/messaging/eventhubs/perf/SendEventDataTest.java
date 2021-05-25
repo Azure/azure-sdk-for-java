@@ -52,4 +52,16 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
 
         return Mono.whenDelayError(sendEvents);
     }
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        if (producer != null) {
+            producer.close();
+        }
+        if (producerAsync != null) {
+            producerAsync.close();
+        }
+
+        return super.cleanupAsync();
+    }
 }
