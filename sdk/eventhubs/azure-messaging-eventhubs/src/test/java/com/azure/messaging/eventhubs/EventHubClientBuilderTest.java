@@ -152,7 +152,7 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
             .buildAsyncProducerClient();
-        try{
+        try {
             StepVerifier.create(
                 asyncProducerClient.createBatch().flatMap(batch -> {
                     assertTrue(batch.tryAdd(testData));
@@ -178,7 +178,7 @@ public class EventHubClientBuilderTest extends IntegrationTestBase {
             .credential(fullyQualifiedNamespace, eventHubName,
                 new AzureSasCredential(sharedAccessSignature))
             .buildAsyncProducerClient();
-        try{
+        try {
             StepVerifier.create(
                 asyncProducerClient.createBatch().flatMap(batch -> {
                     assertTrue(batch.tryAdd(testData));
