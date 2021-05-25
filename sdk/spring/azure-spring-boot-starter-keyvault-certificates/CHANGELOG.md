@@ -1,5 +1,8 @@
 # Release History
 
+## 3.0.0-beta.8 (Unreleased)
+
+
 ## 3.0.0-beta.7 (2021-05-24)
 ### New Features
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
