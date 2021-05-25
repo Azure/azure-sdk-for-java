@@ -111,7 +111,7 @@ public final class GeoPosition {
      * @return The coordinate value for the index.
      * @throws IndexOutOfBoundsException If {@code index} is equal to or greater than {@link #count()}.
      */
-    public double get(int index) {
+    double get(int index) {
         switch (index) {
             case 0:
                 return longitude;
