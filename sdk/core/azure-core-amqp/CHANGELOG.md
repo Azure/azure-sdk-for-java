@@ -1,5 +1,10 @@
 # Release History
 
+## 2.0.6 (2021-05-24)
+### Bug Fixes
+- Fixed a bug that caused amqp connection not to retry when network error happened.
+
+
 ## 2.0.5 (2021-05-07)
 
 ### Dependency Updates
