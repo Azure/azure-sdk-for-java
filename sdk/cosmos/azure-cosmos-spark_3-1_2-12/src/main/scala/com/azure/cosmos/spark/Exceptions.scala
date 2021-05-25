@@ -11,6 +11,10 @@ private object Exceptions {
     cosmosException.getStatusCode == CosmosConstants.StatusCodes.Conflict
   }
 
+  def isPreconditionFailedException(cosmosException: CosmosException): Boolean = {
+    cosmosException.getStatusCode == CosmosConstants.StatusCodes.PreconditionFailed
+  }
+
   def canBeTransientFailure(cosmosException: CosmosException): Boolean = {
     // TODO: moderakh SDK should only throw 503 and not 410,
     // however due a bug in core SDK we currently may throw 410 on write

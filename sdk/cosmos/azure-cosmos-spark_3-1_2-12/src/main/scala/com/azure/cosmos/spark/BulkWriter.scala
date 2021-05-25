@@ -266,11 +266,13 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private def shouldIgnore(cosmosException: CosmosException): Boolean = {
-    // ignore 409 on create-item
-    (writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemAppend &&
-      Exceptions.isResourceExistsException(cosmosException)) ||
-      (writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemDelete &&
-        Exceptions.isNotFoundExceptionCore(cosmosException))
+    writeConfig.itemWriteStrategy match {
+      case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(cosmosException)
+      case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(cosmosException)
+      case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(cosmosException) ||
+        Exceptions.isPreconditionFailedException(cosmosException)
+      case _ => false
+    }
   }
 
   private def shouldRetry(cosmosException: CosmosException, operationContext: OperationContext): Boolean = {

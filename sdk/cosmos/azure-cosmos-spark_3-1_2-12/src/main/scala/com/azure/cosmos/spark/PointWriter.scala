@@ -206,6 +206,8 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       } catch {
         case e: CosmosException if Exceptions.isNotFoundExceptionCore(e) =>
           return
+        case e: CosmosException if Exceptions.isPreconditionFailedException(e) && onlyIfNotModified =>
+          return
         case e: CosmosException if Exceptions.canBeTransientFailure(e) =>
           logWarning(
             s"delete item attempt #$attempt max remaining retries"
