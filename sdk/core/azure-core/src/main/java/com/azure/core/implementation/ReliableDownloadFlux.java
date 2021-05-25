@@ -34,10 +34,18 @@ public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
      */
     public ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> initialDownloadSupplier,
         Predicate<Throwable> resumePredicate, int maxRetries, Function<Long, Flux<ByteBuffer>> resumeDownload) {
+        this(initialDownloadSupplier, resumePredicate, maxRetries, resumeDownload, 0L, 0);
+    }
+
+    private ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> initialDownloadSupplier,
+        Predicate<Throwable> resumePredicate, int maxRetries, Function<Long, Flux<ByteBuffer>> resumeDownload,
+        long position, int retryCount) {
         this.initialDownloadSupplier = initialDownloadSupplier;
         this.resumePredicate = resumePredicate;
         this.maxRetries = maxRetries;
         this.resumeDownload = resumeDownload;
+        this.position = position;
+        this.retryCount = retryCount;
     }
 
     @Override
@@ -51,7 +59,8 @@ public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
                     return Flux.error(throwable);
                 }
 
-                return resumeDownload.apply(position);
+                return new ReliableDownloadFlux(() -> resumeDownload.apply(position), resumePredicate, maxRetries,
+                    resumeDownload, position, retryCount);
             })
             .subscribe(actual);
     }
