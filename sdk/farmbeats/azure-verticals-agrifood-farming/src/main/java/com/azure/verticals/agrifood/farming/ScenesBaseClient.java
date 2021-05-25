@@ -137,7 +137,7 @@ public final class ScenesBaseClient {
      *     }
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -198,7 +198,7 @@ public final class ScenesBaseClient {
      *     }
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -212,7 +212,7 @@ public final class ScenesBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
