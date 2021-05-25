@@ -37,7 +37,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Handles receiving events from Event Hubs service and translating them to proton-j messages.
  */
-public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
+public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable, AutoCloseable {
     private final String entityPath;
     private final Receiver receiver;
     private final ReceiveLinkHandler handler;
@@ -225,6 +225,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
         close();
     }
 
+    @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
     }
