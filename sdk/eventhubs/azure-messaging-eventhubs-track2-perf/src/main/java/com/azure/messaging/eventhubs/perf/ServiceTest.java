@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Base class that tests Event Hubs.
  */
 abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
-    private final int totalNumberOfEventsPerPartition;
 
     protected final List<EventData> events;
 
@@ -71,7 +70,6 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         }
 
         this.events = Collections.unmodifiableList(eventsList);
-        this.totalNumberOfEventsPerPartition = options.getCount() * options.getIterations() * 100;
     }
 
     void addEvents(EventDataBatch batch, int numberOfMessages) {

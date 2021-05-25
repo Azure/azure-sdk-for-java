@@ -205,11 +205,11 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         long total = 0;
         for (SamplePartitionProcessor processor : partitionProcessorMap.values()) {
             processor.onStop();
-            final List<PartitionCounter> counters = processor.getCounters();
+            final List<EventsCounter> counters = processor.getCounters();
             for (int i = 0; i < counters.size(); i++) {
-                final PartitionCounter partitionCounter = counters.get(i);
-                total += partitionCounter.totalEvents();
-                final String result = getResults(i, partitionCounter);
+                final EventsCounter eventsCounter = counters.get(i);
+                total += eventsCounter.totalEvents();
+                final String result = getResults(i, eventsCounter);
                 onOutput.accept(result);
             }
         }
@@ -223,11 +223,11 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         onOutput.accept(String.format("Rate (events/s)\t%.2f%n", eventsPerSecond));
     }
 
-    private String getResults(int index, PartitionCounter partitionCounter) {
-        final double seconds = partitionCounter.elapsedTime() * 0.000000001;
-        final double operationsSecond = partitionCounter.totalEvents() / seconds;
+    private String getResults(int index, EventsCounter eventsCounter) {
+        final double seconds = eventsCounter.elapsedTime() * 0.000000001;
+        final double operationsSecond = eventsCounter.totalEvents() / seconds;
 
-        return String.format(FORMAT_STRING, partitionCounter.getPartitionId(), index,
-            partitionCounter.totalEvents(), partitionCounter.elapsedTime(), seconds, operationsSecond);
+        return String.format(FORMAT_STRING, eventsCounter.getPartitionId(), index,
+            eventsCounter.totalEvents(), eventsCounter.elapsedTime(), seconds, operationsSecond);
     }
 }

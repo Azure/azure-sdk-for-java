@@ -20,11 +20,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class SamplePartitionProcessor implements IEventProcessor {
     private final Logger logger = LoggerFactory.getLogger(SamplePartitionProcessor.class);
-    private final ConcurrentLinkedQueue<PartitionCounter> currentCounters = new ConcurrentLinkedQueue<>();
-    private final ArrayList<PartitionCounter> allCounters = new ArrayList<>();
+    private final ConcurrentLinkedQueue<EventsCounter> currentCounters = new ConcurrentLinkedQueue<>();
+    private final ArrayList<EventsCounter> allCounters = new ArrayList<>();
     private final AtomicBoolean isStopped = new AtomicBoolean();
 
-    public List<PartitionCounter> getCounters() {
+    public List<EventsCounter> getCounters() {
         return allCounters;
     }
 
@@ -37,7 +37,7 @@ public class SamplePartitionProcessor implements IEventProcessor {
 
         logger.trace("PartitionId[{}] OnOpen", context.getPartitionId());
 
-        final PartitionCounter counter = new PartitionCounter(context.getPartitionId());
+        final EventsCounter counter = new EventsCounter(context.getPartitionId());
         counter.start();
         currentCounters.add(counter);
     }
@@ -51,7 +51,7 @@ public class SamplePartitionProcessor implements IEventProcessor {
 
         logger.info("PartitionId[{}] OnClose {}", context.getPartitionId(), reason);
 
-        final PartitionCounter lastCounter = currentCounters.poll();
+        final EventsCounter lastCounter = currentCounters.poll();
         if (lastCounter == null) {
             throw new RuntimeException("There was no current counter to stop. Id: " + context.getPartitionId());
         }
@@ -67,13 +67,13 @@ public class SamplePartitionProcessor implements IEventProcessor {
             return;
         }
 
-        final PartitionCounter partitionCounter = currentCounters.peek();
-        if (partitionCounter == null) {
+        final EventsCounter eventsCounter = currentCounters.peek();
+        if (eventsCounter == null) {
             throw new RuntimeException("Expected a current counter for partition: " + context.getPartitionId());
         }
 
         for (EventData event : events) {
-            partitionCounter.increment();
+            eventsCounter.increment();
         }
     }
 
@@ -87,7 +87,7 @@ public class SamplePartitionProcessor implements IEventProcessor {
             return;
         }
 
-        PartitionCounter counter = currentCounters.poll();
+        EventsCounter counter = currentCounters.poll();
         while (counter != null) {
             counter.stop();
             allCounters.add(counter);

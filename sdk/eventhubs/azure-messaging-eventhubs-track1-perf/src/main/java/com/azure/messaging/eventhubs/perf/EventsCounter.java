@@ -1,14 +1,22 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.perf;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class PartitionCounter {
+/**
+ * Keeps track of events received.
+ *
+ * @see EventProcessorTest
+ */
+public class EventsCounter {
     private final String partitionId;
     private final AtomicInteger eventsReceived = new AtomicInteger();
     private volatile Long startTime;
     private volatile Long stopTime;
 
-    public PartitionCounter(String partitionId) {
+    public EventsCounter(String partitionId) {
         this.partitionId = partitionId;
     }
 
