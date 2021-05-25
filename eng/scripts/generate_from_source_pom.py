@@ -56,7 +56,7 @@ pom_file_end = '''  </modules>
 maven_xml_namespace = '{http://maven.apache.org/POM/4.0.0}'
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str, set_pipeline_variable: bool = False):
+def create_from_source_pom(project_list: str, set_pipeline_variable: str):
     project_list_identifiers = project_list.split(',')
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
@@ -106,7 +106,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: bool = Fals
         fromSourcePom.write(pom_file_end)
 
     if set_pipeline_variable:
-        print('##vso[task.setvariable variable=CheckoutDirectories;]{}'.format(json.dumps(modules)))
+        print('##vso[task.setvariable variable={};]{}'.format(set_pipeline_variable, json.dumps(modules)))
 
 # Function that loads and parses client_versions.txt into a artifact identifier - source version mapping.
 def load_client_artifact_identifiers():
@@ -238,7 +238,7 @@ def element_find(element: ET.Element, path: str):
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--project-list', '--pl', type=str)
-    parser.add_argument('--set-pipeline-variable', action='store_true', default=False)
+    parser.add_argument('--set-pipeline-variable', type=str)
     args = parser.parse_args()
     if args.project_list == None:
         raise ValueError('Missing project list.')
