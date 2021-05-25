@@ -9,23 +9,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The ElasticsearchDataFeed model. */
+/** The AzureLogAnalyticsDataFeed model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
-@JsonTypeName("Elasticsearch")
+@JsonTypeName("AzureLogAnalytics")
 @Fluent
-public final class ElasticsearchDataFeed extends DataFeedDetail {
+public final class AzureLogAnalyticsDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter")
-    private ElasticsearchParameter dataSourceParameter;
+    @JsonProperty(value = "dataSourceParameter", required = true)
+    private AzureLogAnalyticsParameter dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public ElasticsearchParameter getDataSourceParameter() {
+    public AzureLogAnalyticsParameter getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -33,9 +33,9 @@ public final class ElasticsearchDataFeed extends DataFeedDetail {
      * Set the dataSourceParameter property: The dataSourceParameter property.
      *
      * @param dataSourceParameter the dataSourceParameter value to set.
-     * @return the ElasticsearchDataFeed object itself.
+     * @return the AzureLogAnalyticsDataFeed object itself.
      */
-    public ElasticsearchDataFeed setDataSourceParameter(ElasticsearchParameter dataSourceParameter) {
+    public AzureLogAnalyticsDataFeed setDataSourceParameter(AzureLogAnalyticsParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

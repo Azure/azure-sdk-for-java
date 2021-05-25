@@ -20,6 +20,8 @@ import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperat
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScopeType;
 import com.azure.ai.metricsadvisor.models.MetricBoundaryCondition;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -164,6 +166,28 @@ public final class AlertConfigurationTransforms {
             innerMetricAlertConfigurations.add(innerMetricAlertConfiguration);
         }
         return innerMetricAlertConfigurations;
+    }
+
+    public static PagedResponse<AnomalyAlertConfiguration> fromInnerPagedResponse(
+        PagedResponse<AnomalyAlertingConfiguration> innerResponse) {
+        final List<AnomalyAlertingConfiguration>
+            innerConfigurationList = innerResponse.getValue();
+        List<AnomalyAlertConfiguration> configurationList;
+        if (innerConfigurationList != null) {
+            configurationList = innerConfigurationList
+                .stream()
+                .map(innerConfiguration -> fromInner(innerConfiguration))
+                .collect(Collectors.toList());
+        } else {
+            configurationList = new ArrayList<>();
+        }
+        return new PagedResponseBase<Void, AnomalyAlertConfiguration>(
+            innerResponse.getRequest(),
+            innerResponse.getStatusCode(),
+            innerResponse.getHeaders(),
+            configurationList,
+            innerResponse.getContinuationToken(),
+            null);
     }
 
     /**
