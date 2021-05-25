@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.FormSelectionMark;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
@@ -12,7 +13,7 @@ import com.azure.core.util.polling.SyncPoller;
 import java.util.List;
 
 /**
- * Sample for recognizing content information from a document given through a URL.
+ * Sample for recognizing content information from a document given through an URL.
  */
 public class RecognizeContentFromUrl {
     /**
@@ -30,7 +31,7 @@ public class RecognizeContentFromUrl {
         SyncPoller<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
             client.beginRecognizeContentFromUrl(
                 "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/"
-                    + "azure-ai-formrecognizer/src/samples/resources/sample-forms/forms/Form_1.jpg");
+                    + "azure-ai-formrecognizer/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf");
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
@@ -55,6 +56,17 @@ public class RecognizeContentFromUrl {
                 System.out.println();
             }
 
+            // Selection Mark
+            for (FormSelectionMark selectionMark : formPage.getSelectionMarks()) {
+                System.out.printf(
+                    "Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
+                    selectionMark.getPageNumber(),
+                    selectionMark.getState(),
+                    selectionMark.getBoundingBox().toString(),
+                    selectionMark.getConfidence());
+            }
+
+            // Lines
             formPage.getLines().forEach(formLine -> {
                 if (formLine.getAppearance() != null) {
                     System.out.printf(
