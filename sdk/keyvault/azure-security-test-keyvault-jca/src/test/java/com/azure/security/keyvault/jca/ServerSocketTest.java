@@ -35,16 +35,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * The unit test validating the ServerSocket is created using a certificate from Azure Key Vault.
  */
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "0myalias")
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class ServerSocketTest {
 
     private static KeyStore ks;
+
+    private static KeyManagerFactory kmf;
 
     private static String certificateName;
 
     @BeforeAll
     public static void beforeEach() throws Exception {
 
+        System.out.println("add log just for find error in pipeline, which will be revert");
         /*
          * Add JCA provider.
          */
@@ -63,7 +66,11 @@ public class ServerSocketTest {
          *  - Set the KeyManagerFactory to use that KeyStore.
          */
         ks = PropertyConvertorUtils.getKeyVaultKeyStore();
+        System.out.println("getKs certificate" + ks.getCertificate("myalias"));
 
+        kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        kmf.init(ks, "changeit".toCharArray());
+        System.out.println(kmf.getKeyManagers()[0].getClass() + " in before");
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
@@ -136,10 +143,10 @@ public class ServerSocketTest {
          *  - Create the SSLServerSocket using th SSL context.
          */
 
-        SSLContext context = SSLContexts
-            .custom()
-            .loadKeyMaterial(ks, "".toCharArray())
-            .build();
+        SSLContext context = SSLContext.getInstance("TLS");
+        System.out.println(kmf.getKeyManagers().length + "kmf.length");
+        System.out.println(kmf.getKeyManagers()[0].getClass());
+        context.init(kmf.getKeyManagers(), null, null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
         SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(port);
@@ -168,11 +175,10 @@ public class ServerSocketTest {
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(ks);
 
-        SSLContext context = SSLContexts
-            .custom()
-            .loadTrustMaterial(ks, null)
-            .loadKeyMaterial(ks, "".toCharArray())
-            .build();
+        SSLContext context = SSLContext.getInstance("TLS");
+        System.out.println(kmf.getKeyManagers().length + "kmf.length in serverSocketWithTrustManager");
+        System.out.println(kmf.getKeyManagers()[0].getClass() + " in serverSocketWithTrustManager");
+        context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
         SSLServerSocketFactory factory = context.getServerSocketFactory();
         SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(port);
@@ -190,7 +196,7 @@ public class ServerSocketTest {
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-            .loadKeyMaterial(ks, "".toCharArray(), new ClientPrivateKeyStrategy())
+            .loadKeyMaterial(ks, "changeit".toCharArray(), new ClientPrivateKeyStrategy())
             .build();
 
         /*
