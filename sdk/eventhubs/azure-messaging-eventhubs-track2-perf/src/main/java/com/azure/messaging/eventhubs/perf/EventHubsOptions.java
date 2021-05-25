@@ -5,17 +5,14 @@ package com.azure.messaging.eventhubs.perf;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.perf.test.core.PerfStressOptions;
-import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.converters.BaseConverter;
 
 /**
  * Set of options for running event hubs performance tests.
  */
 public class EventHubsOptions extends PerfStressOptions {
-    public static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
-    public static final String AZURE_EVENTHUBS_EVENTHUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-
     @Parameter(names = {"--transportType"}, description = "TransportType for the connection",
         converter = TransportTypeConverter.class)
     private AmqpTransportType transportType;
@@ -39,13 +36,12 @@ public class EventHubsOptions extends PerfStressOptions {
     }
 
     /**
-     * Gets the Event Hubs namespace connection string. Either from command line or from {@link
-     * #AZURE_EVENTHUBS_CONNECTION_STRING} environment variable.
+     * Gets the Event Hubs namespace connection string.
      *
      * @return the Event Hubs namespace connection string.
      */
     public String getConnectionString() {
-        return connectionString != null ? connectionString : System.getenv(AZURE_EVENTHUBS_CONNECTION_STRING);
+        return connectionString;
     }
 
     /**
@@ -59,13 +55,12 @@ public class EventHubsOptions extends PerfStressOptions {
     }
 
     /**
-     * Gets the name of the Event Hub. Either from command line or from {@link #AZURE_EVENTHUBS_EVENTHUB_NAME}
-     * environment variable.
+     * Gets the name of the Event Hub.
      *
      * @return The name of the Event Hub.
      */
     public String getEventHubName() {
-        return eventHubName != null ? eventHubName : System.getenv(AZURE_EVENTHUBS_EVENTHUB_NAME);
+        return eventHubName;
     }
 
     /**
@@ -86,14 +81,22 @@ public class EventHubsOptions extends PerfStressOptions {
         return transportType;
     }
 
-    static class TransportTypeConverter implements IStringConverter<AmqpTransportType> {
+    static class TransportTypeConverter extends BaseConverter<AmqpTransportType> {
+        public TransportTypeConverter(String optionName) {
+            super(optionName);
+        }
+
         @Override
         public AmqpTransportType convert(String s) {
             if (s == null) {
-                throw new ParameterException(String.format("'%s' cannot be parsed into a TransportType", s));
+                throw new ParameterException(getErrorString("null", "AmqpTransportType"));
             }
 
-            return AmqpTransportType.valueOf(s);
+            try {
+                return AmqpTransportType.fromString(s);
+            } catch (IllegalArgumentException e) {
+                throw new ParameterException(getErrorString(s, "AmqpTransportType"), e);
+            }
         }
     }
 }

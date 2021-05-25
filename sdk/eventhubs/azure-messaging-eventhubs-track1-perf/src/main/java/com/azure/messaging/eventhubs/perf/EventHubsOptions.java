@@ -4,18 +4,15 @@
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.converters.BaseConverter;
 import com.microsoft.azure.eventhubs.TransportType;
 
 /**
  * Set of options for running event hubs performance tests.
  */
 public class EventHubsOptions extends PerfStressOptions {
-    private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
-    private static final String AZURE_EVENTHUBS_EVENTHUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-
     @Parameter(names = {"--transportType"}, description = "TransportType for the connection",
         converter = TransportTypeConverter.class)
     private TransportType transportType;
@@ -44,7 +41,7 @@ public class EventHubsOptions extends PerfStressOptions {
      * @return the Event Hubs namespace connection string.
      */
     public String getConnectionString() {
-        return connectionString != null ? connectionString : System.getenv(AZURE_EVENTHUBS_CONNECTION_STRING);
+        return connectionString;
     }
 
     /**
@@ -63,7 +60,7 @@ public class EventHubsOptions extends PerfStressOptions {
      * @return The name of the Event Hub.
      */
     public String getEventHubName() {
-        return eventHubName != null ? eventHubName : System.getenv(AZURE_EVENTHUBS_EVENTHUB_NAME);
+        return eventHubName;
     }
 
     /**
@@ -84,14 +81,22 @@ public class EventHubsOptions extends PerfStressOptions {
         return transportType;
     }
 
-    static class TransportTypeConverter implements IStringConverter<TransportType> {
+    static class TransportTypeConverter extends BaseConverter<TransportType> {
+        public TransportTypeConverter(String optionName) {
+            super(optionName);
+        }
+
         @Override
         public TransportType convert(String s) {
             if (s == null) {
-                throw new ParameterException(String.format("'%s' cannot be parsed into a TransportType", s));
+                throw new ParameterException(getErrorString("null", "AmqpTransportType"));
             }
 
-            return TransportType.valueOf(s);
+            try {
+                return TransportType.valueOf(s);
+            } catch (IllegalArgumentException e) {
+                throw new ParameterException(getErrorString(s, "AmqpTransportType"), e);
+            }
         }
     }
 }
