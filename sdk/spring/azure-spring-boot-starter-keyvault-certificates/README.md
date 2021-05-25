@@ -333,14 +333,16 @@ to attack, because every untrusted certificate will cause your application to se
 
 ### Refresh certificate periodically
 
-This starter allows you to refresh automatically when the certificate on the KeyVault is modified,
-add the following configuration. Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.
+KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
+
 ```yaml
 azure:
   keyvault:
     jca:
        certificates-refresh-interval: 1800000
 ```
+
+Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.
 
 ### Refresh certificate by java code
 
