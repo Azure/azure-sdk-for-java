@@ -55,7 +55,6 @@ public class RecognizeBusinessCardAsync {
                 .flatMap(pollResponse -> {
                     if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED.equals(pollResponse.getStatus())) {
                         System.out.println("Polling completed successfully");
-                        // training completed successfully, retrieving final result.
                         return pollResponse.getFinalResult();
                     } else {
                         return Mono.error(
