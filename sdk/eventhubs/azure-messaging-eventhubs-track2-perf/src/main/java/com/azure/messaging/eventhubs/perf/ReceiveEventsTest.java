@@ -4,14 +4,15 @@
 package com.azure.messaging.eventhubs.perf;
 
 import com.azure.core.util.IterableStream;
-import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Receives a single set of events then stops. {@link EventHubsOptions#getCount()} represents the batch size to
@@ -20,6 +21,7 @@ import java.util.Objects;
 public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     private EventHubConsumerClient receiver;
     private EventHubConsumerAsyncClient receiverAsync;
+    private final int totalMessagesToSend;
 
     /**
      * Creates an instance of performance test.
@@ -28,15 +30,16 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     public ReceiveEventsTest(EventHubsReceiveOptions options) {
         super(options);
+        this.totalMessagesToSend = options.getCount() * 2;
     }
 
-    // @Override
-    // public Mono<Void> globalSetupAsync() {
-    //     return Mono.usingWhen(
-    //         Mono.fromCompletionStage(createEventHubClientAsync()),
-    //         client -> sendMessages(client, options.getPartitionId(), options.getCount()),
-    //         client -> Mono.fromCompletionStage(client.close()));
-    // }
+    @Override
+    public Mono<Void> globalSetupAsync() {
+        return Mono.using(
+            () -> createEventHubClientBuilder().buildAsyncProducerClient(),
+            client -> sendMessages(client, options.getPartitionId(), totalMessagesToSend),
+            client -> client.close());
+    }
 
     @Override
     public void run() {
@@ -52,7 +55,16 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         final IterableStream<PartitionEvent> partitionEvents = receiver.receiveFromPartition(
             options.getPartitionId(), options.getCount(), EventPosition.earliest());
 
-        partitionEvents.forEach(partitionEvent -> onReceive(partitionEvent));
+        // Force the evaluation of the iterable stream.
+        final List<PartitionEvent> results = partitionEvents.stream().collect(Collectors.toList());
+
+        if (results.isEmpty()) {
+            throw new RuntimeException("Did not receive any events.");
+        } else if (results.size() != options.getCount()) {
+            throw new RuntimeException(String.format(
+                "Did not receive correct number of events. Expected: %d. Actual: %d.", options.getCount(),
+                results.size()));
+        }
     }
 
     @Override
@@ -68,10 +80,6 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
         return receiverAsync.receiveFromPartition(options.getPartitionId(), EventPosition.earliest())
             .take(options.getCount())
-            .map(event -> {
-                onReceive(event);
-                return event;
-            })
             .then();
     }
 
@@ -84,9 +92,5 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         } else {
             return super.cleanupAsync();
         }
-    }
-
-    private static void onReceive(PartitionEvent partitionEvent) {
-        EventData event = partitionEvent.getData();
     }
 }
