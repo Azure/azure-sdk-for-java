@@ -34,11 +34,7 @@ private object Exceptions {
   }
 
   def isNotFoundExceptionCore(cosmosException: CosmosException): Boolean = {
-      if (cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
-        cosmosException.getSubStatusCode == 0) {
-        true
-      } else {
-        false
-      }
+      cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
+        cosmosException.getSubStatusCode == 0
   }
 }
