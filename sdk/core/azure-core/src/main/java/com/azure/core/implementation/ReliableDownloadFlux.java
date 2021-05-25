@@ -7,8 +7,7 @@ import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
@@ -16,51 +15,50 @@ import java.util.function.Supplier;
  * operation if an error occurs during the download.
  */
 public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
-    private final Supplier<Flux<ByteBuffer>> initialDownloadSupplier;
-    private final Predicate<Throwable> resumePredicate;
+    private final Supplier<Flux<ByteBuffer>> downloadSupplier;
+    private final BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume;
     private final int maxRetries;
-    private final Function<Long, Flux<ByteBuffer>> resumeDownload;
 
-    private long position = 0L;
-    private int retryCount = 0;
+    private long position;
+    private int retryCount;
 
     /**
      * Creates a ReliableDownloadFlux.
      *
-     * @param initialDownloadSupplier Supplier of the initial download.
-     * @param resumePredicate A predicate to determine if the download should be resumed when an error occurs.
+     * @param downloadSupplier Supplier of the initial download.
+     * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs.
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
-     * @param resumeDownload A function which takes the current download offset and resumes from that position.
+     * @param position The initial offset for the download.
      */
-    public ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> initialDownloadSupplier,
-        Predicate<Throwable> resumePredicate, int maxRetries, Function<Long, Flux<ByteBuffer>> resumeDownload) {
-        this(initialDownloadSupplier, resumePredicate, maxRetries, resumeDownload, 0L, 0);
+    public ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
+        this(downloadSupplier, onDownloadErrorResume, maxRetries, position, 0);
     }
 
-    private ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> initialDownloadSupplier,
-        Predicate<Throwable> resumePredicate, int maxRetries, Function<Long, Flux<ByteBuffer>> resumeDownload,
-        long position, int retryCount) {
-        this.initialDownloadSupplier = initialDownloadSupplier;
-        this.resumePredicate = resumePredicate;
+    private ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position,
+        int retryCount) {
+        this.downloadSupplier = downloadSupplier;
+        this.onDownloadErrorResume = onDownloadErrorResume;
         this.maxRetries = maxRetries;
-        this.resumeDownload = resumeDownload;
         this.position = position;
         this.retryCount = retryCount;
     }
 
     @Override
     public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-        initialDownloadSupplier.get()
+        downloadSupplier.get()
             .doOnNext(buffer -> position += buffer.remaining())
-            .onErrorResume(resumePredicate, throwable -> {
+            .onErrorResume(throwable -> {
                 retryCount++;
 
                 if (retryCount > maxRetries) {
                     return Flux.error(throwable);
                 }
 
-                return new ReliableDownloadFlux(() -> resumeDownload.apply(position), resumePredicate, maxRetries,
-                    resumeDownload, position, retryCount);
+                return new ReliableDownloadFlux(() -> onDownloadErrorResume.apply(throwable, position),
+                    onDownloadErrorResume, maxRetries, position, retryCount);
             })
             .subscribe(actual);
     }

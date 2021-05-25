@@ -31,8 +31,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -139,15 +139,30 @@ public final class FluxUtil {
     /**
      * Creates a {@link Flux} that is capable of reliably downloading by applying reply logic when an error occurs.
      *
-     * @param initialDownloadSupplier Supplier of the initial download.
-     * @param resumePredicate A predicate to determine if the download should be resumed when an error occurs.
+     * @param downloadSupplier Supplier of the initial download.
+     * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs.
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
-     * @param resumeDownload A function which takes the current download offset and resumes from that position.
      * @return A {@link Flux} that downloads reliably.
      */
-    public static Flux<ByteBuffer> createReliableDownloadFlux(Supplier<Flux<ByteBuffer>> initialDownloadSupplier,
-        Predicate<Throwable> resumePredicate, int maxRetries, Function<Long, Flux<ByteBuffer>> resumeDownload) {
-        return new ReliableDownloadFlux(initialDownloadSupplier, resumePredicate, maxRetries, resumeDownload);
+    public static Flux<ByteBuffer> createReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries) {
+        return createReliableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, 0L);
+    }
+
+    /**
+     * Creates a {@link Flux} that is capable of reliably downloading by applying reply logic when an error occurs.
+     *
+     * @param downloadSupplier Supplier of the initial download.
+     * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs.
+     * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
+     * @param position The initial offset for the download.
+     * @return A {@link Flux} that downloads reliably.
+     */
+    public static Flux<ByteBuffer> createReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
+        return new ReliableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
     }
 
     /**
