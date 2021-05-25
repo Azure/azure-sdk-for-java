@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -242,7 +243,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints
-     * out the details of the created key.</p>
+     * out the details of the newly created key.</p>
+     *
      * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context}
      *
      * @param createEcKeyOptions The key options object containing information about the ec key being created.
@@ -254,6 +256,64 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
         return client.createEcKeyWithResponse(createEcKeyOptions, context).block();
+    }
+
+    /**
+     * Creates and stores a new symmetric key in Key Vault. If the named key already exists, Azure Key Vault creates
+     * a new version of the key. This operation requires the keys/create permission.
+     *
+     * <p>The {@link CreateOctKeyOptions} parameter is required. The {@link CreateOctKeyOptions#getExpiresOn() expires}
+     * and {@link CreateOctKeyOptions#getNotBefore() notBefore} values are optional. The
+     * {@link CreateOctKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>The {@link CreateOctKeyOptions#getKeyType() keyType} indicates the type of key to create.
+     * Possible values include: {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new symmetric key. The key activates in one day and expires in one year. Prints out the details of
+     * the newly created key.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions}
+     *
+     * @param createOctKeyOptions The key options object containing information about the ec key being created.
+     *
+     * @return The {@link KeyVaultKey created key}.
+     *
+     * @throws NullPointerException If {@code ecKeyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException If {@code ecKeyCreateOptions} is malformed.
+     */
+    public KeyVaultKey createOctKey(CreateOctKeyOptions createOctKeyOptions) {
+        return createOctKeyWithResponse(createOctKeyOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates and stores a new symmetric key in Key Vault. If the named key already exists, Azure Key Vault creates a
+     * new version of the key. This operation requires the keys/create permission.
+     *
+     * <p>The {@link CreateOctKeyOptions} parameter is required. The {@link CreateOctKeyOptions#getExpiresOn() expires}
+     * and {@link CreateOctKeyOptions#getNotBefore() notBefore} values are optional. The
+     * {@link CreateOctKeyOptions#isEnabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>The {@link CreateOctKeyOptions#getKeyType() keyType} indicates the type of key to create.
+     * Possible values include: {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new symmetric key. The key activates in one day and expires in one year. Prints out the details of
+     * the
+     * created key.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions-Context}
+     *
+     * @param createOctKeyOptions The key options object containing information about the ec key being created.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey created key}.
+     *
+     * @throws NullPointerException If {@code ecKeyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException If {@code ecKeyCreateOptions} is malformed.
+     */
+    public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
+        return client.createOctKeyWithResponse(createOctKeyOptions, context).block();
     }
 
     /**
