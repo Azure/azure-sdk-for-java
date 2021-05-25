@@ -451,7 +451,7 @@ public class ShareDirectoryClient {
      * <p>List all sub-directories and files in this directory with "subdir" prefix and return 10 results in the
      * account</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#string-integer-duration-context}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareDirectoryListFilesAndDirectoriesOptions-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-directories-and-files">Azure

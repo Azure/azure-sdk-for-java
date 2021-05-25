@@ -623,7 +623,7 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>List all sub-directories with "subdir" prefix and return 10 results in the account</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#string-integer}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#ShareDirectoryListFilesAndDirectoriesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-directories-and-files">Azure
