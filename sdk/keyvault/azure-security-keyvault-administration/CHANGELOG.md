@@ -7,6 +7,10 @@
 
 ### Breaking Changes 
 - Renamed `beginSelectiveRestore()` to `beginSelectiveKeyRestore()` in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. Made the aforementioned operation return the new `KeyVaultSelectiveKeyRestoreOperation` instead of a `KeyVaultRestoreOperation`.
+- Made `KeyVaultRoleDefinition` flat, as opposed to it having a `KeyVaultRoleDefinitionProperties` member with more properties inside of it.
+- Moved `roleScope` from `KeyVaultRoleAssignment` to `KeyVaultRoleAssignmentProperties` and renamed it to `scope`.
+- Moved `SetRoleDefinitionOptions` from the `options` package to the `models` package.
+- Removed `roleType` from `SetRoleDefinitionOptions`.
 
 ## 4.0.0-beta.7 (2021-05-15)
 
