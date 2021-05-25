@@ -185,6 +185,12 @@
             <artifactId>slf4j-nop</artifactId>
             <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
         </dependency>
+        <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>

@@ -8,15 +8,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.ByteArrayInputStream;
+import java.security.KeyStore;
 import java.security.ProviderException;
+import java.security.Security;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Base64;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * The JUnit tests for the KeyVaultKeyStore class.
@@ -141,7 +143,9 @@ public class KeyVaultKeyStoreTest {
     @Test
     public void testEngineDeleteEntry() {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        assertTrue(keystore.engineContainsAlias(certificateName));
         keystore.engineDeleteEntry(certificateName);
+        assertFalse(keystore.engineContainsAlias(certificateName));
     }
 
     @Test
@@ -155,4 +159,27 @@ public class KeyVaultKeyStoreTest {
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineStore(null, null);
     }
+
+    @Test
+    public void testRefreshEngineGetCertificate() throws Exception {
+        System.setProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate", "true");
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
+        KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
+        Certificate certificate = ks.getCertificate(certificateName);
+        ks.deleteEntry(certificateName);
+        Thread.sleep(10);
+        assertEquals(ks.getCertificateAlias(certificate), certificateName);
+    }
+
+    @Test
+    public void testNotRefreshEngineGetCertificate() throws Exception {
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
+        KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
+        Certificate certificate = ks.getCertificate(certificateName);
+        ks.deleteEntry(certificateName);
+        assertNull(ks.getCertificateAlias(certificate));
+    }
+
 }
