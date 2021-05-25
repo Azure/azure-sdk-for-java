@@ -466,7 +466,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies the result of the training operation for a valid unlabeled model Identity and exclude subfolder training set
+     * Verifies the result of the training operation for a valid unlabeled model ID and exclude subfolder training set
      * URL with existing prefix name.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

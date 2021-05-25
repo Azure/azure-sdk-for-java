@@ -30,7 +30,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card, invoice and Identity document data from
+ * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
  * input documents, recognizing layout information and analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>

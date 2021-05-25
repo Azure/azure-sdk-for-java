@@ -2115,7 +2115,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies Identity Document data from a document using file data as source and including element reference details.
+     * Verifies identity document data from a document using file data as source and including element reference details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2136,7 +2136,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies Identity Document data from a document using blank PDF.
+     * Verifies identity document data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2158,7 +2158,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verify that Identity Document recognition with damaged PDF file.
+     * Verify that identity document recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2222,7 +2222,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies license Identity data for a document using source as file url and include content when
+     * Verifies license identity data for a document using source as file url and include content when
      * includeFieldElements is true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
