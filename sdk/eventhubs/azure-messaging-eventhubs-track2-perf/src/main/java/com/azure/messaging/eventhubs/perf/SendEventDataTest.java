@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Sends a number of {@link EventData} to Event Hub.
  */
-public class SendEventDataTest extends ServiceTest {
+public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
     private EventHubProducerClient producer;
     private EventHubProducerAsyncClient producerAsync;
 

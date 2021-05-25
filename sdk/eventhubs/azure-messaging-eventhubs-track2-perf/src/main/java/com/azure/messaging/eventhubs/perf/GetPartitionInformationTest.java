@@ -8,7 +8,7 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import reactor.core.publisher.Mono;
 
-public class GetPartitionInformationTest extends ServiceTest {
+public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     private EventHubProducerClient client;
     private EventHubProducerAsyncClient asyncClient;
 
