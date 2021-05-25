@@ -221,19 +221,19 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
                     .setLabelFilter(trigger.getLabel());
 
-                ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
+                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
                     store.getEndpoint());
-                watchKeysSettings.add(configurationRevision);
+                watchKeysSettings.add(watchKey);
             }
             if (store.getFeatureFlags().getEnabled()) {
                 SettingSelector settingSelector = new SettingSelector()
                     .setKeyFilter(store.getFeatureFlags().getKeyFilter())
                     .setLabelFilter(store.getFeatureFlags().getLabelFilter());
 
-                ConfigurationSetting configurationRevision = clients.getRevison(settingSelector,
+                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
                     store.getEndpoint());
-                configurationRevision.setKey(store.getFeatureFlags().getKeyFilter());
-                watchKeysFeatures.add(configurationRevision);
+                watchKey.setKey(store.getFeatureFlags().getKeyFilter());
+                watchKeysFeatures.add(watchKey);
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
                     store.getFeatureFlags().getCacheExpiration());
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);

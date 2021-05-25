@@ -32,6 +32,12 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
 
+    /*
+     * The identityClientId property.
+     */
+    @JsonProperty(value = "identityClientId")
+    private String identityClientId;
+
     /**
      * Get the keyName property: Name of the Key from KeyVault.
      *
@@ -89,6 +95,26 @@ public final class KeyVaultProperties {
      */
     public KeyVaultProperties withKeyVaultUri(String keyVaultUri) {
         this.keyVaultUri = keyVaultUri;
+        return this;
+    }
+
+    /**
+     * Get the identityClientId property: The identityClientId property.
+     *
+     * @return the identityClientId value.
+     */
+    public String identityClientId() {
+        return this.identityClientId;
+    }
+
+    /**
+     * Set the identityClientId property: The identityClientId property.
+     *
+     * @param identityClientId the identityClientId value to set.
+     * @return the KeyVaultProperties object itself.
+     */
+    public KeyVaultProperties withIdentityClientId(String identityClientId) {
+        this.identityClientId = identityClientId;
         return this;
     }
 

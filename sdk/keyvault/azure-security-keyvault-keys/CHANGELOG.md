@@ -2,6 +2,12 @@
 
 ## 4.3.0-beta.9 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### Changes
+- Renamed `keyId` to `id` in `KeyVaultKeyIdentifier`.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `KeyClient`, `KeyAsyncClient`, `CryptographyClient` and `CryptographyAsyncClient`.
 
 ## 4.3.0-beta.8 (2021-05-15)
 
