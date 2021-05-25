@@ -7,10 +7,14 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
+import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -39,7 +44,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         // aks can use another azure auth rather than original client auth to access azure service.
         // Thus, set it to AZURE_AUTH_LOCATION_2 when you want.
-        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
+        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
         if (envSecondaryServicePrincipal == null
             || envSecondaryServicePrincipal.isEmpty()
             || !(new File(envSecondaryServicePrincipal).exists())) {
@@ -128,6 +133,80 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         Assertions.assertEquals("value2", kubernetesCluster.tags().get("tag2"));
         Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));
+    }
+
+    @Test
+    public void canAutoScaleKubernetesCluster() throws Exception {
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
+        String agentPoolName1 = generateRandomResourceName("ap1", 10);
+        String agentPoolName2 = generateRandomResourceName("ap2", 10);
+        String servicePrincipalClientId = "spId";
+        String servicePrincipalSecret = "spSecret";
+
+        // aks can use another azure auth rather than original client auth to access azure service.
+        // Thus, set it to AZURE_AUTH_LOCATION_2 when you want.
+        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
+        if (envSecondaryServicePrincipal == null
+            || envSecondaryServicePrincipal.isEmpty()
+            || !(new File(envSecondaryServicePrincipal).exists())) {
+            envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
+        }
+
+        if (!isPlaybackMode()) {
+            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
+            servicePrincipalClientId = credentialsMap.get("clientId");
+            servicePrincipalSecret = credentialsMap.get("clientSecret");
+        }
+
+        // create
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+            .withRegion(Region.US_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withServicePrincipalClientId(servicePrincipalClientId)
+            .withServicePrincipalSecret(servicePrincipalSecret)
+            .defineAgentPool(agentPoolName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(3)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .withAvailabilityZones(1, 2, 3)
+                .attach()
+            .defineAgentPool(agentPoolName1)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAutoScaling(1, 3)
+                .withNodeLabels(ImmutableMap.of("environment", "dev", "app", "spring"))
+                .withNodeTaints(ImmutableList.of("key=value:NoSchedule"))
+                .attach()
+            .defineAgentPool(agentPoolName2)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                .withAgentPoolVirtualMachineCount(0)
+                .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("30s"))
+            .create();
+
+        KubernetesClusterAgentPool agentPoolProfile = kubernetesCluster.agentPools().get(agentPoolName);
+        Assertions.assertEquals(3, agentPoolProfile.nodeCount());
+        Assertions.assertFalse(agentPoolProfile.isAutoScalingEnabled());
+        Assertions.assertEquals(Arrays.asList("1", "2", "3"), agentPoolProfile.availabilityZones());
+        Assertions.assertEquals(Code.RUNNING, agentPoolProfile.powerState().code());
+
+        KubernetesClusterAgentPool agentPoolProfile1 = kubernetesCluster.agentPools().get(agentPoolName1);
+        Assertions.assertEquals(1, agentPoolProfile1.nodeCount());
+        Assertions.assertTrue(agentPoolProfile1.isAutoScalingEnabled());
+        Assertions.assertEquals(1, agentPoolProfile1.minimumNodeCount());
+        Assertions.assertEquals(3, agentPoolProfile1.maximumNodeCount());
+        Assertions.assertEquals(ImmutableMap.of("environment", "dev", "app", "spring"), agentPoolProfile1.nodeLabels());
+        Assertions.assertEquals("key=value:NoSchedule", agentPoolProfile1.nodeTaints().iterator().next());
+
+        KubernetesClusterAgentPool agentPoolProfile2 = kubernetesCluster.agentPools().get(agentPoolName2);
+        Assertions.assertEquals(0, agentPoolProfile2.nodeCount());
     }
 
     /**

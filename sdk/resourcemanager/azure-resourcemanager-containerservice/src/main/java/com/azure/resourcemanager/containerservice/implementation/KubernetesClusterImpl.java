@@ -21,6 +21,7 @@ import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentP
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
@@ -320,6 +321,17 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public Update withoutAgentPool(String name) {
+        if (innerModel().agentPoolProfiles() != null) {
+            innerModel().withAgentPoolProfiles(
+                innerModel().agentPoolProfiles().stream()
+                    .filter(p -> !name.equals(p.name()))
+                    .collect(Collectors.toList()));
+        }
+        return null;
+    }
+
+    @Override
     public KubernetesCluster.DefinitionStages.NetworkProfileDefinitionStages.Blank<
             KubernetesCluster.DefinitionStages.WithCreate>
         defineNetworkProfile() {
@@ -358,6 +370,12 @@ public class KubernetesClusterImpl
                     .then(context.voidMono()));
         }
         innerModel().agentPoolProfiles().add(agentPool.innerModel());
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile) {
+        this.innerModel().withAutoScalerProfile(autoScalerProfile);
         return this;
     }
 

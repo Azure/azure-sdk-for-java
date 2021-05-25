@@ -8,6 +8,9 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
+import java.util.List;
+import java.util.Map;
+
 /** A client-side representation for a Kubernetes cluster agent pool. */
 @Fluent
 public interface KubernetesClusterAgentPool
@@ -36,6 +39,22 @@ public interface KubernetesClusterAgentPool
 
     /** @return the ID of the virtual network used by each virtual machine in the agent pool */
     String networkId();
+
+    List<String> availabilityZones();
+
+    Map<String, String> nodeLabels();
+
+    List<String> nodeTaints();
+
+    PowerState powerState();
+
+    int nodeCount();
+
+    boolean isAutoScalingEnabled();
+
+    int minimumNodeCount();
+
+    int maximumNodeCount();
 
     // Fluent interfaces
 
@@ -166,6 +185,60 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
+         * The stage of a container service agent pool definition allowing to specify auto-scaling.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithAutoScaling<ParentT> {
+            /**
+             * Enabling the auto-scaling with maximum/minimum number of nodes.
+             *
+             * @param minimumNodeCount the minimum number of nodes for auto-scaling.
+             * @param maximumNodeCount the maximum number of nodes for auto-scaling.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withAutoScaling(int minimumNodeCount, int maximumNodeCount);
+        }
+
+        /**
+         * The stage of a container service agent pool definition allowing to specify availability zones.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithAvailabilityZones<ParentT> {
+            /**
+             * Specifies the availability zones.
+             *
+             * @param zones the availability zones, can be 1, 2, 3.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withAvailabilityZones(Integer... zones);
+        }
+
+        /**
+         * The stage of a container service agent pool definition allowing to specify node labels and taints.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithNodeLabelsTaints<ParentT> {
+            /**
+             * Specifies the node labels for all nodes.
+             *
+             * @param nodeLabels the node labels.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNodeLabels(Map<String, String> nodeLabels);
+
+            /**
+             * Specifies the node labels.
+             *
+             * @param nodeTaints the node taints for new nodes.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNodeTaints(List<String> nodeTaints);
+        }
+
+        /**
          * The stage of a container service agent pool definition allowing to specify a virtual network to be used for
          * the agents.
          *
@@ -213,6 +286,9 @@ public interface KubernetesClusterAgentPool
                 WithMaxPodsCount<ParentT>,
                 WithVirtualNetwork<ParentT>,
                 WithAgentPoolMode<ParentT>,
+                WithAutoScaling<ParentT>,
+                WithAvailabilityZones<ParentT>,
+                WithNodeLabelsTaints<ParentT>,
                 Attachable.InDefinition<ParentT> {
         }
     }

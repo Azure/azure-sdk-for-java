@@ -360,6 +360,17 @@ public interface KubernetesCluster
             WithCreate enablePrivateCluster();
         }
 
+        /** The stage of the Kubernetes cluster definition allowing to specify the auto-scale profile. */
+        interface WithAutoScalerProfile {
+            /**
+             * Specifies the auto-scale profile.
+             *
+             * @param autoScalerProfile the auto-scale profile
+             * @return the next stage
+             */
+            WithCreate withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -371,16 +382,18 @@ public interface KubernetesCluster
                 WithDnsPrefix,
                 WithAddOnProfiles,
                 WithAccessProfiles,
+                WithAutoScalerProfile,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
-        extends KubernetesCluster.UpdateStages.WithAgentPool,
-            KubernetesCluster.UpdateStages.WithAddOnProfiles,
-            KubernetesCluster.UpdateStages.WithNetworkProfile,
-            KubernetesCluster.UpdateStages.WithRBAC,
+        extends UpdateStages.WithAgentPool,
+            UpdateStages.WithAddOnProfiles,
+            UpdateStages.WithNetworkProfile,
+            UpdateStages.WithRBAC,
+            UpdateStages.WithAutoScalerProfile,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -406,6 +419,14 @@ public interface KubernetesCluster
              * @return the stage representing configuration for the agent pool profile
              */
             KubernetesClusterAgentPool.Update<? extends Update> updateAgentPool(String name);
+
+            /**
+             * Removes an agent pool profile from the Kubernetes cluster.
+             *
+             * @param name the name for the agent pool profile
+             * @return the next stage of the update
+             */
+            Update withoutAgentPool(String name);
         }
 
         /**
@@ -450,6 +471,17 @@ public interface KubernetesCluster
              * @return the next stage of the update
              */
             KubernetesCluster.Update withRBACDisabled();
+        }
+
+        /** The stage of the Kubernetes cluster update allowing to specify the auto-scale profile. */
+        interface WithAutoScalerProfile {
+            /**
+             * Specifies the auto-scale profile.
+             *
+             * @param autoScalerProfile the auto-scale profile
+             * @return the next stage
+             */
+            Update withAutoScalerProfile(ManagedClusterPropertiesAutoScalerProfile autoScalerProfile);
         }
     }
 }
