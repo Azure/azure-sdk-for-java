@@ -1,13 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.administration.options;
+package com.azure.security.keyvault.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.administration.models.KeyVaultPermission;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +15,6 @@ import java.util.UUID;
 public class SetRoleDefinitionOptions {
     private final KeyVaultRoleScope roleScope;
     private final String roleDefinitionName;
-    private final KeyVaultRoleType roleType;
     private String roleName;
     private String description;
     private List<KeyVaultPermission> permissions;
@@ -45,7 +40,6 @@ public class SetRoleDefinitionOptions {
     public SetRoleDefinitionOptions(KeyVaultRoleScope roleScope, String roleDefinitionName) {
         this.roleScope = roleScope;
         this.roleDefinitionName = roleDefinitionName;
-        this.roleType = KeyVaultRoleType.CUSTOM_ROLE;
     }
 
     /**
@@ -64,15 +58,6 @@ public class SetRoleDefinitionOptions {
      */
     public String getRoleDefinitionName() {
         return roleDefinitionName;
-    }
-
-    /**
-     * Get the role type.
-     *
-     * @return The role type.
-     */
-    public KeyVaultRoleType getRoleType() {
-        return roleType;
     }
 
     /**

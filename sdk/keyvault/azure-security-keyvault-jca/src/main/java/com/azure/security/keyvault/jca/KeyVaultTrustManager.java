@@ -41,6 +41,13 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Constructor.
+     */
+    public KeyVaultTrustManager() {
+        this(null);
+    }
+
+    /**
+     * Constructor.
      *
      * @param keyStore the keystore.
      */

@@ -132,17 +132,17 @@ private case class FilterAnalyzer() {
         true
 
       case StringStartsWith(attr, value: String) =>
-        queryBuilder.append("STARTSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
+        queryBuilder.append("STARTSWITH(").append(canonicalCosmosFieldPath(attr)).append(",").append(pName).append(")")
         list.append((pName, value))
         true
 
       case StringEndsWith(attr, value: String) =>
-        queryBuilder.append("ENDSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
+        queryBuilder.append("ENDSWITH(").append(canonicalCosmosFieldPath(attr)).append(",").append(pName).append(")")
         list.append((pName, value))
         true
 
       case StringContains(attr, value: String) =>
-        queryBuilder.append("CONTAINS(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
+        queryBuilder.append("CONTAINS(").append(canonicalCosmosFieldPath(attr)).append(",").append(pName).append(")")
         list.append((pName, value))
         true
 

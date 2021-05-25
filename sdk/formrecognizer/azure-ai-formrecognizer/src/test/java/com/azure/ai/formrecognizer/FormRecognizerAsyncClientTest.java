@@ -38,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.IDENTITY;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
@@ -930,7 +930,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -957,7 +956,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1013,7 +1011,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1070,7 +1067,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1097,7 +1093,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
@@ -1962,7 +1957,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }, INVOICE_PDF);
     }
 
-    // ID Document Recognition
+    // identity document Recognition
 
     /**
      * Verifies license card data from a document using file data as source.
@@ -1978,7 +1973,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
@@ -2010,12 +2005,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
     /**
-     * Verifies ID Document data from a document using file data as source and including element reference details.
+     * Verifies identity document data from a document using file data as source and including element reference details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2032,12 +2027,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
     /**
-     * Verifies ID Document data from a document using blank PDF.
+     * Verifies identity document data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2058,7 +2053,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
-     * Verify that ID Document recognition with damaged PDF file.
+     * Verify that identity document recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2078,7 +2073,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         });
     }
 
-    // ID Document - URL
+    // Identity document - URL
 
     /**
      * Verifies business card data for a document using source as file url.
@@ -2094,7 +2089,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
@@ -2119,7 +2114,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     /**
-     * Verifies license ID data for a document using source as file url and include content when
+     * Verifies license Identity data for a document using source as file url and include content when
      * includeFieldElements is true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2134,7 +2129,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                     .setPollInterval(durationTestMode)
                     .getSyncPoller();
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 

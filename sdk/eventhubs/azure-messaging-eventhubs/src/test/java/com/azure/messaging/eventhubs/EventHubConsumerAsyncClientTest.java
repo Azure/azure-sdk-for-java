@@ -487,7 +487,7 @@ class EventHubConsumerAsyncClientTest {
     void setsCorrectProperties() {
         // Act
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
+            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=fakekey;EntityPath=dummy-event-hub")
             .consumerGroup(CONSUMER_GROUP)
             .buildAsyncConsumerClient();
 

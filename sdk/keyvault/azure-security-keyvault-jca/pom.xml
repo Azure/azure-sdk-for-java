@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -184,6 +184,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
             <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-nop;external_dependency} -->
+        </dependency>
+        <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+          <scope>test</scope>
         </dependency>
     </dependencies>
     <profiles>

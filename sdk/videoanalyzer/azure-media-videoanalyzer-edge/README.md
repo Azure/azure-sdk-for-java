@@ -1,8 +1,8 @@
 # Azure Video Analyzer Edge client library for Java
 
-Azure Video Analyzer on IoT Edge provides a platform to build intelligent video applications that span the edge and the cloud. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services in the cloud or the edge. It is designed to be an extensible platform, enabling you to connect different video analysis edge modules (such as Cognitive services containers, custom edge modules built by you with open-source machine learning models or custom models trained with your own data) to it and use them to analyze live video without worrying about the complexity of building and running a live video pipeline.
+Azure Video Analyzer provides a platform to build intelligent video applications that span the edge and the cloud. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services in the cloud or the edge. It is designed to be an extensible platform, enabling you to connect different video analysis edge modules (such as Cognitive services containers, custom edge modules built by you with open-source machine learning models or custom models trained with your own data) to it and use them to analyze live video without worrying about the complexity of building and running a live video pipeline.
 
-Use the client library for Video Analyzer on IoT Edge to:
+Use the client library for Video Analyzer Edge to:
 
 -   Simplify interactions with the [Microsoft Azure IoT SDKs](https://github.com/azure/azure-iot-sdks)
 -   Programmatically construct pipeline topologies and live pipelines
@@ -19,7 +19,7 @@ Use the client library for Video Analyzer on IoT Edge to:
 
 ### Include the package
 
-Install the Live Video Analyzer client library for Java with Maven:
+Install the Azure Video Analyzer Edge client library for Java with Maven:
 
 #<!-- {x-version-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
 
@@ -32,13 +32,13 @@ Install the Live Video Analyzer client library for Java with Maven:
 <dependency>
  <groupId>com.azure</groupId>
  <artifactId>azure-media-videoanalyzer-edge</artifactId>
- <version>1.0.0-beta.2</version>
+ <version>1.0.0-beta.3</version>
 </dependency>
 ```
 
--   You will need to use the version of the SDK that corresponds to the version of the Video Analyzer Edge module you are using.
+-   You will need to use the version of the SDK that corresponds to the version of the Video Analyzer edge module you are using.
 
-    | SDK          | Video Analyzer Edge Module |
+    | SDK          | Video Analyzer edge module |
     | ------------ | -------------------------- |
     | 1.0.0-beta.x | 1.0                        |
 
@@ -48,15 +48,15 @@ Please visit the [Examples](#examples) for starter code.
 
 ## Key concepts
 
-### Pipeline Topology vs Pipeline Instance
+### Pipeline topology vs live pipeline
 
-A _pipeline topology_ is a blueprint or template for instantiating live pipelines. It defines the parameters of the pipeline using placeholders as values for them. A _live pipeline_ references a pipeline topology and specifies the parameters. This way you are able to have multiple live pipelines referencing the same topology but with different values for parameters. For more information please visit [pipeline topologies and live pipelines][doc_pipelines].
+A _pipeline topology_ is a blueprint or template for creating live pipelines. It defines the parameters of the pipeline using placeholders as values for them. A _live pipeline_ references a pipeline topology and specifies the parameters. This way you are able to have multiple live pipelines referencing the same topology but with different values for parameters. For more information please visit [pipeline topologies and live pipelines][doc_pipelines].
 
 ## Examples
 
 ### Creating a pipeline topology
 
-To create a pipeline topology you need to define parameters, sources, and sinks.
+To create a pipeline topology you need to define sources and sinks.
 
 <!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L25-L72 -->
 
@@ -113,7 +113,7 @@ private static PipelineTopology buildPipeLineTopology() {
 
 ### Creating a live pipeline
 
-To create a live pipeline instance, you need to have an existing pipeline topology.
+To create a live pipeline, you need to have an existing pipeline topology.
 
 <!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L74-L92 -->
 
@@ -139,7 +139,7 @@ private static LivePipeline buildLivePipeline() {
 }
 ```
 
-### Invoking a pipeline method request
+### Invoking a direct method
 
 <!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L94-L104 -->
 
@@ -165,6 +165,9 @@ MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTo
 ```
 
 ## Troubleshooting
+
+When sending a method request using the IoT Hub's `invoke` remember to not type in the method request name directly. Instead use `MethodRequestName.getMethodName()`
+
 
 ## Next steps
 

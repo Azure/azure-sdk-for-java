@@ -32,14 +32,14 @@ public final class EncryptResult {
     private final byte[] iv;
 
     /**
-     * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-     */
-    private final byte[] additionalAuthenticatedData;
-
-    /**
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
     private final byte[] authenticationTag;
+
+    /**
+     * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+     */
+    private final byte[] additionalAuthenticatedData;
 
 
     /**
@@ -58,17 +58,17 @@ public final class EncryptResult {
      * @param algorithm The algorithm used to encrypt the content.
      * @param keyId The identifier of the key usd for the encryption operation.
      * @param iv Initialization vector for symmetric algorithms.
-     * @param additionalAuthenticatedData Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      * @param authenticationTag The tag to authenticate when performing decryption with an authenticated algorithm.
+     * @param additionalAuthenticatedData Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
      */
     public EncryptResult(byte[] ciphertext, EncryptionAlgorithm algorithm, String keyId, byte[] iv,
-                         byte[] additionalAuthenticatedData, byte[] authenticationTag) {
+                         byte[] authenticationTag, byte[] additionalAuthenticatedData) {
         this.ciphertext = CoreUtils.clone(ciphertext);
         this.algorithm = algorithm;
         this.keyId = keyId;
         this.iv = CoreUtils.clone(iv);
-        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
         this.authenticationTag = CoreUtils.clone(authenticationTag);
+        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
     }
 
     /**
@@ -105,20 +105,20 @@ public final class EncryptResult {
     }
 
     /**
-     * Get additional data to authenticate the encrypted content.
-     *
-     * @return The additional authenticated data.
-     */
-    public byte[] getAdditionalAuthenticatedData() {
-        return CoreUtils.clone(additionalAuthenticatedData);
-    }
-
-    /**
      * Get the tag to authenticate the encrypted content.
      *
      * @return The authentication tag.
      */
     public byte[] getAuthenticationTag() {
         return CoreUtils.clone(authenticationTag);
+    }
+
+    /**
+     * Get additional data to authenticate the encrypted content.
+     *
+     * @return The additional authenticated data.
+     */
+    public byte[] getAdditionalAuthenticatedData() {
+        return CoreUtils.clone(additionalAuthenticatedData);
     }
 }
