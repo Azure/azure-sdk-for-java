@@ -38,8 +38,8 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
     private static final String FORMAT_STRING = "%s\t%d\t%d\t%s\t%s\t%.2f";
 
-    // Minimum duration is 5 minutes so we can give it time to claim all the partitions.
-    private static final int MINIMUM_DURATION = 5 * 60;
+    // Minimum duration is 2 minutes so we can give it time to claim all the partitions.
+    private static final int MINIMUM_DURATION = 2 * 60;
 
     private final SampleEventProcessorFactory processorFactory;
     private final ConcurrentHashMap<String, SamplePartitionProcessor> partitionProcessorMap;
@@ -69,7 +69,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        // It is the default duration or less than 300 seconds.
+        // It is the default duration or less than 2 minutes.
         if (options.getDuration() < MINIMUM_DURATION) {
             return Mono.error(new RuntimeException(
                 "Test duration is too short. It should be at least " + MINIMUM_DURATION + " seconds"));

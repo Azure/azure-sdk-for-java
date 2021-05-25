@@ -10,8 +10,9 @@ import com.azure.perf.test.core.PerfStressProgram;
  */
 public class App {
     /**
-     *  main function.
-     * @param args args
+     * Starts running a performance test.
+     *
+     * @param args Unused command line arguments.
      * @throws RuntimeException If not able to load test classes.
      */
     public static void main(String[] args) {

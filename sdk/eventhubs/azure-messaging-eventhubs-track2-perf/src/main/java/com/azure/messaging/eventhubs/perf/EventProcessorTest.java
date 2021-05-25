@@ -13,8 +13,6 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -33,8 +31,8 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
     private static final String FORMAT_STRING = "%s\t%d\t%d\t%s\t%s\t%.2f";
 
-    // Minimum duration is 5 minutes so we can give it time to claim all the partitions.
-    private static final int MINIMUM_DURATION = 5 * 60;
+    // Minimum duration is 2 minutes so we can give it time to claim all the partitions.
+    private static final int MINIMUM_DURATION = 2 * 60;
 
     private final ConcurrentHashMap<String, SamplePartitionProcessor> partitionProcessorMap;
     private final Duration testDuration;
@@ -60,10 +58,10 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        // It is the default duration or less than 300 seconds.
-        if (options.getDuration() < 300) {
+        // It is the default duration or less than 2 minutes.
+        if (options.getDuration() < MINIMUM_DURATION) {
             return Mono.error(new RuntimeException(
-                "Test duration is shorter than 300 seconds. It should be at least " + MINIMUM_DURATION + " seconds"));
+                "Test duration is too short. It should be at least " + MINIMUM_DURATION + " seconds"));
         }
 
         final String containerName = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHMMss"));
@@ -198,20 +196,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     public Mono<Void> globalCleanupAsync() {
         System.out.println("Cleaning up.");
 
-        if (options.getOutputFile() != null) {
-            try (FileWriter writer = new FileWriter(options.getOutputFile())) {
-                outputPartitionResults(content -> {
-                    System.out.println(content);
-                    try {
-                        writer.write(content);
-                    } catch (IOException e) {
-                        System.err.printf("Unable to write %s. Error: %s%n", content, e);
-                    }
-                });
-            } catch (IOException e) {
-                System.err.printf("Unable to open file: %s. %s%n", options.getOutputFile(), e);
-            }
-        } else if (containerClient != null) {
+        if (containerClient != null) {
             final BlobAsyncClient blobAsyncClient = containerClient.getBlobAsyncClient("results.txt");
             final ArrayList<ByteBuffer> byteBuffers = new ArrayList<>();
             final ParallelTransferOptions options = new ParallelTransferOptions().setMaxConcurrency(4);
@@ -221,13 +206,15 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                 byteBuffers.add(ByteBuffer.wrap(content.getBytes(StandardCharsets.UTF_8)));
             });
 
-            return blobAsyncClient.upload(Flux.fromIterable(byteBuffers), options).then();
+            return blobAsyncClient.upload(Flux.fromIterable(byteBuffers), options)
+                .then()
+                .doFinally(signal -> System.out.println("Done global clean up."));
         } else {
             outputPartitionResults(System.out::println);
-        }
+            System.out.println("Done global clean up.");
 
-        System.out.println("Done.");
-        return super.cleanupAsync();
+            return Mono.empty();
+        }
     }
 
     private void outputPartitionResults(Consumer<String> onOutput) {

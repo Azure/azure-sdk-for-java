@@ -81,6 +81,9 @@ public class EventHubsOptions extends PerfStressOptions {
         return transportType;
     }
 
+    /**
+     * Parses the command line parameter --transportType into a value.
+     */
     static class TransportTypeConverter extends BaseConverter<TransportType> {
         public TransportTypeConverter(String optionName) {
             super(optionName);
