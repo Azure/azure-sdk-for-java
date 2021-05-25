@@ -760,7 +760,7 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     @Tag("Batch")
-    void submitTransactionAsyncAllOperations() {
+    void submitTransactionAsyncAllActions() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValueCreate = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValueUpsertInsert = testResourceNamer.randomName("rowKey", 20);
@@ -820,7 +820,7 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     @Tag("Batch")
-    void submitTransactionAsyncWithFailingOperation() {
+    void submitTransactionAsyncWithFailingAction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
@@ -838,6 +838,54 @@ public class TablesAsyncClientTest extends TestBase {
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue)
+                && e.getMessage().contains("rowKey='" + rowKeyValue2))
+            .verify();
+    }
+
+    @Test
+    @Tag("Batch")
+    void submitTransactionAsyncWithSameRowKeys() {
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+
+        List<TableTransactionAction> transactionalBatch = new ArrayList<>();
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+
+        // Act & Assert
+        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
+                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("The failed operation was")
+                && e.getMessage().contains("CreateEntity")
+                && e.getMessage().contains("partitionKey='" + partitionKeyValue)
+                && e.getMessage().contains("rowKey='" + rowKeyValue))
+            .verify();
+    }
+
+    @Test
+    @Tag("Batch")
+    void submitTransactionAsyncWithDifferentPartitionKeys() {
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+
+        List<TableTransactionAction> transactionalBatch = new ArrayList<>();
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue2, rowKeyValue2)));
+
+        // Act & Assert
+        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
+                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("The failed operation was")
+                && e.getMessage().contains("CreateEntity")
+                && e.getMessage().contains("partitionKey='" + partitionKeyValue2)
                 && e.getMessage().contains("rowKey='" + rowKeyValue2))
             .verify();
     }
