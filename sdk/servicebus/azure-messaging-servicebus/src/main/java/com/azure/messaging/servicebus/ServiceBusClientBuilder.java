@@ -241,7 +241,7 @@ public final class ServiceBusClientBuilder {
      * Sets the credential for the Service Bus resource.
      *
      * @param fullyQualifiedNamespace for the Service Bus.
-     * @param credential {@link TokenCredential} to be used for authentication.
+     * @param credential {@link AzureNamedKeyCredential} to be used for authentication.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
@@ -266,7 +266,7 @@ public final class ServiceBusClientBuilder {
      * Sets the credential for the Service Bus resource.
      *
      * @param fullyQualifiedNamespace for the Service Bus.
-     * @param credential {@link TokenCredential} to be used for authentication.
+     * @param credential {@link AzureSasCredential} to be used for authentication.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
