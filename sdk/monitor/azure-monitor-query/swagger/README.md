@@ -6,7 +6,7 @@ These settings apply only when `--tag=package-log` is specified on the command l
 
 ``` yaml $(tag) == 'package-log'
 use: '@autorest/java@4.0.22'
-input-file: log_query_swagger.json
+input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/azmon-query-swagger/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/preview/2021-05-19/OperationalInsights.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.log
@@ -21,6 +21,7 @@ models-subpackage: implementation.models
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
+client-side-validations: true
 ```
 
 ## Metrics Query
@@ -28,7 +29,7 @@ These settings apply only when `--tag=package-metrics` is specified on the comma
 
 ``` yaml $(tag) == 'package-metrics'
 use: '@autorest/java@4.0.22'
-input-file: metrics_swagger.json
+input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/azmon-query-swagger/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/metrics_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.metrics
@@ -43,6 +44,7 @@ models-subpackage: implementation.models
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
+client-side-validations: true
 directive:
     - rename-model:
         from: Response
@@ -55,7 +57,7 @@ These settings apply only when `--tag=package-metrics-namespaces` is specified o
 ``` yaml $(tag) == 'package-metrics-namespaces'
 use: '@autorest/java@4.0.22'
 service-name: MetricsNamespaces
-input-file: metrics_namespaces.json
+input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/azmon-query-swagger/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/metricNamespaces_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.metricsnamespaces
@@ -70,6 +72,7 @@ models-subpackage: implementation.models
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
+client-side-validations: true
 ```
 
 ## Metrics Definitions Query
@@ -77,7 +80,7 @@ These settings apply only when `--tag=package-metrics-definitions` is specified 
 
 ``` yaml $(tag) == 'package-metrics-definitions'
 use: '@autorest/java@4.0.22'
-input-file: metrics_definitions.json
+input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/azmon-query-swagger/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-05-01-preview/metricDefinitions_API.json
 service-name: MetricsDefinitions
 java: true
 output-folder: ../
@@ -93,4 +96,5 @@ models-subpackage: implementation.models
 required-fields-as-ctor-args: true
 model-override-setter-from-superclass: true
 credential-types: tokencredential
+client-side-validations: true
 ```
