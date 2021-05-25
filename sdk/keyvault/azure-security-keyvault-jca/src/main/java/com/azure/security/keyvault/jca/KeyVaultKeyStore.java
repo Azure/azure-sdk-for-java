@@ -456,7 +456,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             } finally {
                 try {
                     inStream.close();
-                }catch (NullPointerException | IOException e ){
+                } catch (NullPointerException | IOException e ) {
                     LOGGER.log(WARNING, "", e);
                 }
             }
