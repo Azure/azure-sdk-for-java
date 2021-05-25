@@ -25,12 +25,13 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
+/**
+ * Tests Event Processor Host.
+ */
 public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     private static final String STORAGE_PREFIX = "perf";
     private static final String HEADERS = String.join("\t", "Id", "Index", "Count",
@@ -69,10 +70,11 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     @Override
     public Mono<Void> globalSetupAsync() {
         // It is the default duration or less than 300 seconds.
-        if (options.getDuration() < 300) {
+        if (options.getDuration() < MINIMUM_DURATION) {
             return Mono.error(new RuntimeException(
-                "Test duration is shorter than 300 seconds. It should be at least " + MINIMUM_DURATION + " seconds"));
+                "Test duration is too short. It should be at least " + MINIMUM_DURATION + " seconds"));
         }
+
         try {
             storageCredentials = StorageCredentials.tryParseCredentials(options.getStorageConnectionString());
             containerName = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHMMss"));

@@ -112,16 +112,7 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
             : new CreateBatchOptions();
 
         final AtomicInteger number = new AtomicInteger(totalMessagesToSend);
-        return client.createBatch(options)
-            .repeatWhen(next -> {
-                return next.flatMap(last -> {
-                    if (number.get() < 1) {
-                        return Mono.empty();
-                    }
-
-                    return Mono.just(1);
-                });
-            })
+        return Mono.defer(() -> client.createBatch(options)
             .flatMap(batch -> {
                 EventData event = events.get(0);
                 while (batch.tryAdd(event)) {
@@ -129,10 +120,11 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
                     event = events.get(index);
                 }
 
-                System.out.println("Sending batch. Left: " + number.get());
                 return client.send(batch);
-            })
+            }))
+            .repeat(() -> number.get() > 0)
             .then()
-            .doFinally(signal -> { System.out.println("Complete.");});
+            .doFinally(signal ->
+                System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
     }
 }

@@ -25,9 +25,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.stream.Collectors;
-
-import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
 /**
  * Base class that tests Event Hubs.
@@ -181,22 +178,22 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         return Mono.usingWhen(
             Mono.fromCompletionStage(createSenderFuture),
             sender -> {
-                final ArrayList<EventDataBatch> batches = new ArrayList<>();
                 EventDataBatch currentBatch;
 
                 int numberOfMessages = totalMessagesToSend;
                 while (numberOfMessages > 0) {
                     currentBatch = sender.createBatch();
                     addEvents(currentBatch, numberOfMessages);
-                    batches.add(currentBatch);
-                    numberOfMessages = numberOfMessages - currentBatch.getSize();
+                    try {
+                        sender.sendSync(currentBatch);
+                        numberOfMessages = numberOfMessages - currentBatch.getSize();
+                    } catch (EventHubException e) {
+                        System.err.println("Could not send batch. Error: " + e);
+                    }
                 }
 
-                final List<Mono<Void>> sends = batches.stream()
-                    .map(batch -> Mono.fromCompletionStage(sender.send(batch)))
-                    .collect(Collectors.toList());
-
-                return Mono.when(sends);
+                System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend);
+                return Mono.empty();
             },
             sender -> Mono.fromCompletionStage(sender.close()));
     }
