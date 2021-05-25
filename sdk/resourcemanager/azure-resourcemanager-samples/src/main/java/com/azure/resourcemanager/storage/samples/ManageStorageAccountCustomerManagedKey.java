@@ -19,9 +19,12 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 
 import java.time.Duration;
 
@@ -30,6 +33,7 @@ import java.time.Duration;
  * - Create a storage account with system assigned managed service identity
  * - Create a key vault with purge protection enabled and access policy for managed service identity of storage account
  * - Create a RSA key
+ * - Create diagnostic setting for audit logs
  * - Update storage account to enable encryption with customer-managed key
  * - Revoke customer-managed key
  *
@@ -50,6 +54,8 @@ public final class ManageStorageAccountCustomerManagedKey {
         final String vaultName = Utils.randomResourceName(azureResourceManager, "kv", 8);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 8);
         final String containerName = "container";
+        final String auditStorageAccountName = Utils.randomResourceName(azureResourceManager, "sadiag", 12);
+        final String diagnosticSettingName = Utils.randomResourceName(azureResourceManager, "diag", 12);
 
         try {
             //============================================================
@@ -88,7 +94,22 @@ public final class ManageStorageAccountCustomerManagedKey {
 
             vault.keys().define("sakey")
                 .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(2048)
+                .withKeySize(4096)
+                .create();
+
+            //============================================================
+            // Create a diagnostic setting on key vault and save audit logs to storage account
+
+            StorageAccount auditStorageAccount = azureResourceManager.storageAccounts().define(auditStorageAccountName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .create();
+
+            azureResourceManager.diagnosticSettings().define(diagnosticSettingName)
+                .withResource(vault.id())
+                .withStorageAccount(auditStorageAccount.id())
+                .withLog("AuditEvent", 90)
                 .create();
 
             //============================================================
@@ -146,6 +167,19 @@ public final class ManageStorageAccountCustomerManagedKey {
             } catch (HttpResponseException e) {
                 System.out.println("blob download fails due to: " + e);
             }
+
+            //============================================================
+            // Browse audit logs saved in storage account
+
+            BlobContainerClient containerClient = new BlobContainerClientBuilder()
+                .connectionString(
+                    ResourceManagerUtils.getStorageConnectionString(
+                        auditStorageAccountName, auditStorageAccount.getKeys().iterator().next().value(),
+                        azureResourceManager.storageAccounts().manager().environment()))
+                .containerName("insights-logs-auditevent")
+                .buildClient();
+
+            containerClient.listBlobs().forEach(item -> System.out.println("blob name: " + item.getName()));
 
         } finally {
             try {

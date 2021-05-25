@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -72,6 +72,28 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.moditect</groupId>
+              <artifactId>moditect-maven-plugin</artifactId>
+              <version>1.0.0.RC1</version>  <!-- {x-version-update;org.moditect:moditect-maven-plugin;external_dependency} -->
+              <executions>
+                <execution>
+                  <id>add-module-infos</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>add-module-info</goal>
+                  </goals>
+                  <configuration>
+                    <overwriteExistingFiles>true</overwriteExistingFiles>
+                    <module>
+                      <moduleInfoFile>
+                        src/main/module-info.java
+                      </moduleInfoFile>
+                    </module>
+                  </configuration>
+                </execution>
+              </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
