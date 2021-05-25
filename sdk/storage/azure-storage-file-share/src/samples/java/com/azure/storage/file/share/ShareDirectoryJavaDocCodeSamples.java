@@ -276,8 +276,7 @@ public class ShareDirectoryJavaDocCodeSamples {
         shareDirectoryClient.listFilesAndDirectories(new ShareDirectoryListFilesAndDirectoriesOptions()
                 .setPrefix("subdir").setMaxResultsPerPage(10), Duration.ofSeconds(1), new Context(key1, value1))
             .forEach(fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
-                fileRef.isDirectory(), fileRef.getName())
-        );
+                fileRef.isDirectory(), fileRef.getName()));
         // END: com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareDirectoryListFilesAndDirectoriesOptions-duration-context
     }
 

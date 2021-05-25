@@ -25,6 +25,17 @@ public final class ShareFileItem {
      *
      * @param name Name of the file or the directory.
      * @param isDirectory A boolean set to true if the reference is a directory, false if the reference is a file.
+     * @param fileSize Size of a file. Pass {@code null} if the reference is a directory.
+     */
+    public ShareFileItem(final String name, final boolean isDirectory, final Long fileSize) {
+        this(name, isDirectory, null, null, null, null, fileSize);
+    }
+
+    /**
+     * Creates an instance of file or directory reference information about a specific Share.
+     *
+     * @param name Name of the file or the directory.
+     * @param isDirectory A boolean set to true if the reference is a directory, false if the reference is a file.
      * @param id ID of the file or directory.
      * @param properties Properties of the file or directory.
      * @param fileAttributes NTFS attributes of the file or directory.
