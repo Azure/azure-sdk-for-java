@@ -45,6 +45,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessages;
+import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -1007,12 +1008,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can receive a message from dead letter queue.
      */
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveFromDeadLetter(MessagingEntityType entityType) {
+    void receiveFromDeadLetter(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final Duration shortWait = Duration.ofSeconds(2);
-        final boolean isSessionEnabled = false;
         final int entityIndex = 0;
 
         setSender(entityType, entityIndex, isSessionEnabled);
@@ -1034,7 +1034,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient deadLetterReceiver;
         switch (entityType) {
             case QUEUE:
-                final String queueName = getQueueName(entityIndex);
+                final String queueName = isSessionEnabled ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 deadLetterReceiver = getBuilder(false).receiver()
@@ -1044,7 +1044,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSubscriptionBaseName();
+                final String subscriptionName = isSessionEnabled ? getSessionSubscriptionBaseName() : getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 

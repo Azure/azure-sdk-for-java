@@ -747,6 +747,21 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusSessionProcessorClientBuilder subQueue(SubQueue subQueue) {
+            this.sessionReceiverClientBuilder.subQueue(subQueue);
+            return this;
+        }
+
+        /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
          * @param subscriptionName Name of the subscription.
@@ -865,6 +880,7 @@ public final class ServiceBusClientBuilder {
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private SubQueue subQueue = SubQueue.NONE;
 
         private ServiceBusSessionReceiverClientBuilder() {
         }
@@ -962,6 +978,21 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusSessionReceiverClientBuilder subQueue(SubQueue subQueue) {
+            this.subQueue = subQueue;
+            return this;
+        }
+
+        /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
          *
@@ -1005,7 +1036,7 @@ public final class ServiceBusClientBuilder {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
-                SubQueue.NONE);
+                subQueue);
 
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
@@ -1156,6 +1187,21 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusProcessorClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
             serviceBusReceiverClientBuilder.receiveMode(receiveMode);
+            return this;
+        }
+
+        /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusProcessorClientBuilder subQueue(SubQueue subQueue) {
+            serviceBusReceiverClientBuilder.subQueue(subQueue);
             return this;
         }
 
