@@ -43,7 +43,7 @@ public class RecognizeCustomFormsAsyncWithSelectionMarks {
             .buildAsyncClient();
 
         // The form you are recognizing must be of the same type as the forms the custom model was trained on
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
                                        + "sample-forms/forms/selectionMarkForm.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";

@@ -45,7 +45,7 @@ public class RecognizeReceiptsAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller;

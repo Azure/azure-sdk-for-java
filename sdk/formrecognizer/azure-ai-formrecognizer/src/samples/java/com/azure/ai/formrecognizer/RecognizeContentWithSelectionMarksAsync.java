@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
-
+/**
+ * Async sample for recognizing content information with selection mark from a document given through a file.
+ */
 public class RecognizeContentWithSelectionMarksAsync {
     /**
      * Main method to invoke this demo.

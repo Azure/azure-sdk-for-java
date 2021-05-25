@@ -11,6 +11,9 @@ import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
 
+/**
+ * Sample for recognizing content information from a document given through a URL.
+ */
 public class RecognizeContentFromUrl {
     /**
      * Main method to invoke this demo.
