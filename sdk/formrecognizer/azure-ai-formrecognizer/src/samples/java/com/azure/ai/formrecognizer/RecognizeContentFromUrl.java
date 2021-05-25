@@ -13,7 +13,7 @@ import com.azure.core.util.polling.SyncPoller;
 import java.util.List;
 
 /**
- * Sample for recognizing content information from a document given through an URL.
+ * Sample for recognizing content information from a document given through a URL.
  */
 public class RecognizeContentFromUrl {
     /**
