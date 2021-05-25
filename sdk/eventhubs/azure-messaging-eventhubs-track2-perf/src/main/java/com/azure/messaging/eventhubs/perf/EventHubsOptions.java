@@ -13,8 +13,8 @@ import com.beust.jcommander.ParameterException;
  * Set of options for running event hubs performance tests.
  */
 public class EventHubsOptions extends PerfStressOptions {
-    private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
-    private static final String AZURE_EVENTHUBS_EVENTHUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
+    public static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    public static final String AZURE_EVENTHUBS_EVENTHUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
 
     @Parameter(names = {"--transportType"}, description = "TransportType for the connection",
         converter = TransportTypeConverter.class)
@@ -39,7 +39,8 @@ public class EventHubsOptions extends PerfStressOptions {
     }
 
     /**
-     * Gets the Event Hubs namespace connection string.
+     * Gets the Event Hubs namespace connection string. Either from command line or from {@link
+     * #AZURE_EVENTHUBS_CONNECTION_STRING} environment variable.
      *
      * @return the Event Hubs namespace connection string.
      */
@@ -58,7 +59,8 @@ public class EventHubsOptions extends PerfStressOptions {
     }
 
     /**
-     * Gets the name of the Event Hub.
+     * Gets the name of the Event Hub. Either from command line or from {@link #AZURE_EVENTHUBS_EVENTHUB_NAME}
+     * environment variable.
      *
      * @return The name of the Event Hub.
      */

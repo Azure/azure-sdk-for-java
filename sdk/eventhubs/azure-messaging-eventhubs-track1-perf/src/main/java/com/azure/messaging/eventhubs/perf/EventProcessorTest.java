@@ -99,12 +99,14 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                     for (String id : runtimeInformation.getPartitionIds()) {
                         partitionProcessorMap.put(id, new SamplePartitionProcessor());
                     }
+                    //
+                    // final List<Mono<Void>> allSends = Arrays.stream(runtimeInformation.getPartitionIds())
+                    //     .map(id -> sendMessages(client, id, options.getNumberOfEvents()))
+                    //     .collect(Collectors.toList());
+                    //
+                    // return Mono.when(allSends);
 
-                    final List<Mono<Void>> allSends = Arrays.stream(runtimeInformation.getPartitionIds())
-                        .map(id -> sendMessages(client, id, options.getNumberOfEvents()))
-                        .collect(Collectors.toList());
-
-                    return Mono.when(allSends);
+                    return Mono.empty();
                 }),
             client -> Mono.fromCompletionStage(client.close()));
     }

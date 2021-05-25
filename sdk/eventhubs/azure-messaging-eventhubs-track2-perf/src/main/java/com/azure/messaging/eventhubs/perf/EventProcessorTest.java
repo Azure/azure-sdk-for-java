@@ -107,8 +107,14 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
     @Override
     public Mono<Void> runAsync() {
+        if (containerClient == null) {
+            return Mono.error(new RuntimeException("ContainerClient should have been initialized."));
+        }
+
         return Mono.using(
             () -> {
+                System.out.println("Starting run.");
+
                 final BlobCheckpointStore checkpointStore = new BlobCheckpointStore(containerClient);
                 final EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
                     .connectionString(options.getConnectionString(), options.getEventHubName())
@@ -182,6 +188,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                 return Mono.when(Mono.delay(testDuration));
             },
             processor -> {
+                System.out.println("Completed run.");
                 endTime = System.nanoTime();
                 processor.stop();
             });
@@ -204,7 +211,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             } catch (IOException e) {
                 System.err.printf("Unable to open file: %s. %s%n", options.getOutputFile(), e);
             }
-        } else {
+        } else if (containerClient != null) {
             final BlobAsyncClient blobAsyncClient = containerClient.getBlobAsyncClient("results.txt");
             final ArrayList<ByteBuffer> byteBuffers = new ArrayList<>();
             final ParallelTransferOptions options = new ParallelTransferOptions().setMaxConcurrency(4);
@@ -215,6 +222,8 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             });
 
             return blobAsyncClient.upload(Flux.fromIterable(byteBuffers), options).then();
+        } else {
+            outputPartitionResults(System.out::println);
         }
 
         System.out.println("Done.");

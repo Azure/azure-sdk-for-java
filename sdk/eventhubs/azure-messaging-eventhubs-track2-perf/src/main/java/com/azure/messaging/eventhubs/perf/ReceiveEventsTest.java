@@ -88,7 +88,5 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
     private static void onReceive(PartitionEvent partitionEvent) {
         EventData event = partitionEvent.getData();
-        System.out.println("Sequence number: " + event.getSequenceNumber());
-        System.out.println("Contents: " + event.getBodyAsString());
     }
 }
