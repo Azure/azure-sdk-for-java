@@ -15,7 +15,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
     private String prefix;
     private Integer maxResultsPerPage;
     private EnumSet<ListFilesIncludeType> shareFileTraits;
-    private boolean includeExtendedInfo;
+    private Boolean includeExtendedInfo;
 
     /**
      * @return prefix for this listing operation.
@@ -90,7 +90,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      *
      * @return whether to include extended info on this listing operation.
      */
-    public boolean includeExtendedInfo() {
+    public Boolean includeExtendedInfo() {
         return includeExtendedInfo;
     }
 
@@ -104,7 +104,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @param includeExtendedInfo whether to include extended info..
      * @return updated options.
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeExtendedInfo(boolean includeExtendedInfo) {
+    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeExtendedInfo(Boolean includeExtendedInfo) {
         this.includeExtendedInfo = includeExtendedInfo;
         return this;
     }

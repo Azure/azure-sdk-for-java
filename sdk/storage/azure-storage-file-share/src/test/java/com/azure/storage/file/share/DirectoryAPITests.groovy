@@ -418,14 +418,14 @@ class DirectoryAPITests extends APISpec {
 
         where:
         extraPrefix | maxResults | traits                                          | includeExtendedInfo || expectingResults
-        ""          | null       | null                                            | false               || true
-        ""          | 1          | null                                            | false               || true
-        "noOp"      | 3          | null                                            | false               || false
-        ""          | null       | EnumSet.of(ListFilesIncludeType.ETAG)           | false               || true
-        ""          | null       | EnumSet.of(ListFilesIncludeType.ATTRIBUTES)     | false               || true
-        ""          | null       | EnumSet.of(ListFilesIncludeType.PERMISSION_KEY) | false               || true
-        ""          | null       | EnumSet.of(ListFilesIncludeType.TIMESTAMPS)     | false               || true
-        ""          | null       | EnumSet.allOf(ListFilesIncludeType.class)       | false               || true
+        ""          | null       | null                                            | null                || true
+        ""          | 1          | null                                            | null                || true
+        "noOp"      | 3          | null                                            | null                || false
+        ""          | null       | EnumSet.of(ListFilesIncludeType.ETAG)           | null                || true
+        ""          | null       | EnumSet.of(ListFilesIncludeType.ATTRIBUTES)     | null                || true
+        ""          | null       | EnumSet.of(ListFilesIncludeType.PERMISSION_KEY) | null                || true
+        ""          | null       | EnumSet.of(ListFilesIncludeType.TIMESTAMPS)     | null                || true
+        ""          | null       | EnumSet.allOf(ListFilesIncludeType.class)       | null                || true
         ""          | null       | null                                            | true                || true
     }
 

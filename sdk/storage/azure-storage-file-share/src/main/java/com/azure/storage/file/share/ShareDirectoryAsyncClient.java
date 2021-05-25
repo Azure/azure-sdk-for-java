@@ -647,13 +647,12 @@ public class ShareDirectoryAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
         List<ListFilesIncludeType> includeTypes = options.getShareFileTraits() != null
             ? new ArrayList<>(options.getShareFileTraits()) : null;
-        Boolean nullableIncludeExtendedInfo = options.includeExtendedInfo() ? true : null;
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever =
             (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, options.getPrefix(),
                     snapshot, marker, pageSize == null ? options.getMaxResultsPerPage() : pageSize, null, includeTypes,
-                    nullableIncludeExtendedInfo, context), timeout)
+                    options.includeExtendedInfo(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
