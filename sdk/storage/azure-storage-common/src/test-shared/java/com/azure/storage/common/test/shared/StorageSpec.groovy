@@ -38,6 +38,10 @@ class StorageSpec extends Specification {
         return namer
     }
 
+    protected getData() {
+        return TestDataFactory.getInstance();
+    }
+
     protected <T> T instrument(T builder) {
         // Groovy style reflection. All our builders follow this pattern.
         builder."httpClient"(getHttpClient())

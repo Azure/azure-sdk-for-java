@@ -1,5 +1,12 @@
 ## Release History
 
+## 4.16.0-beta.2 (Unreleased)
+
+### 4.16.0-beta.1 (2021-05-20)
+#### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
+
+
 ### 4.15.0 (2021-05-12)
 #### New Features
 * Added `backendLatencyInMs` in `CosmosDiagnostics` for `DIRECT` connection mode.

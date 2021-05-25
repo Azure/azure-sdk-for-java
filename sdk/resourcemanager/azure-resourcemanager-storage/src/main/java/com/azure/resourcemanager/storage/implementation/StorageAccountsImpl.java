@@ -45,7 +45,9 @@ public class StorageAccountsImpl
             .withSku(StorageAccountSkuType.STANDARD_RAGRS)
             .withGeneralPurposeAccountKindV2()
             .withOnlyHttpsTraffic()
-            .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2);
+            .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+            .withBlobEncryption()
+            .withFileEncryption();
     }
 
     @Override

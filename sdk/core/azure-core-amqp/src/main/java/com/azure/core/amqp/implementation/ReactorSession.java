@@ -266,9 +266,10 @@ public class ReactorSession implements AmqpSession {
      */
     private Mono<TransactionCoordinator> createTransactionCoordinator() {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+            return Mono.error(logger.logExceptionAsError(new AmqpException(true, String.format(
                 "connectionId[%s] sessionName[%s] Cannot create coordinator send link '%s' from a closed session.",
-                sessionHandler.getConnectionId(), sessionName, TRANSACTION_LINK_NAME))));
+                sessionHandler.getConnectionId(), sessionName, TRANSACTION_LINK_NAME),
+                sessionHandler.getErrorContext())));
         }
 
         final TransactionCoordinator existing = transactionCoordinator.get();
@@ -320,9 +321,10 @@ public class ReactorSession implements AmqpSession {
         ReceiverSettleMode receiverSettleMode) {
 
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+            return Mono.error(logger.logExceptionAsError(new AmqpException(true, String.format(
                 "connectionId[%s] sessionName[%s] entityPath[%s] linkName[%s] Cannot create receive link from a closed"
-                + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName))));
+                + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName),
+                sessionHandler.getErrorContext())));
         }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
@@ -404,9 +406,11 @@ public class ReactorSession implements AmqpSession {
         Map<Symbol, Object> linkProperties, boolean requiresAuthorization) {
 
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+            return Mono.error(logger.logExceptionAsError(new AmqpException(true,
+                String.format(
                 "connectionId[%s] sessionName[%s] entityPath[%s] linkName[%s] Cannot create send link from a closed"
-                    + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName))));
+                    + " session.", sessionHandler.getConnectionId(), sessionName, entityPath, linkName),
+                sessionHandler.getErrorContext())));
         }
 
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);

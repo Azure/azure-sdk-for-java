@@ -5,7 +5,6 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -124,6 +123,16 @@ public class RegistryArtifactJavaDocSnippets {
         // END: com.azure.containers.containerregistry.registryartifact.listTags
     }
 
+    public void listTagsWithOptionsNoContextCodeSnippet() {
+        RegistryArtifact client = getClient();
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptionsNoContext
+        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10).forEach(pagedResponse -> {
+            pagedResponse.getValue().stream().forEach(
+                tagProperties -> System.out.println(tagProperties.getDigest()));
+        });
+        // END: com.azure.containers.containerregistry.registryartifact.listTagsWithOptionsNoContext
+    }
+
     public void listTagsWithOptionsCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
@@ -133,10 +142,11 @@ public class RegistryArtifactJavaDocSnippets {
         });
         // END: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
     }
+
     public void updateTagPropertiesCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.updateTagProperties
-        ContentProperties properties = getContentProperties();
+        ArtifactTagProperties properties = getArtifactTagProperties();
         String tag = getTag();
         client.updateTagProperties(tag, properties);
         // END: com.azure.containers.containerregistry.registryartifact.updateTagProperties
@@ -145,7 +155,7 @@ public class RegistryArtifactJavaDocSnippets {
     public void updateTagPropertiesWithResponseCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.updateTagPropertiesWithResponse
-        ContentProperties properties = getContentProperties();
+        ArtifactTagProperties properties = getArtifactTagProperties();
         String tag = getTag();
         client.updateTagPropertiesWithResponse(tag, properties, Context.NONE);
         // END: com.azure.containers.containerregistry.registryartifact.updateTagPropertiesWithResponse
@@ -154,7 +164,7 @@ public class RegistryArtifactJavaDocSnippets {
     public void updateManifestPropertiesCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.updateManifestProperties
-        ContentProperties properties = getContentProperties();
+        ArtifactManifestProperties properties = getArtifactManifestProperties();
         client.updateManifestProperties(properties);
         // END: com.azure.containers.containerregistry.registryartifact.updateManifestProperties
     }
@@ -162,7 +172,7 @@ public class RegistryArtifactJavaDocSnippets {
     public void updateManifestPropertiesWithResponseCodeSnippet() {
         RegistryArtifact client = getClient();
         // BEGIN: com.azure.containers.containerregistry.registryartifact.updateManifestPropertiesWithResponse
-        ContentProperties properties = getContentProperties();
+        ArtifactManifestProperties properties = getArtifactManifestProperties();
         client.updateManifestPropertiesWithResponse(properties, Context.NONE);
         // END: com.azure.containers.containerregistry.registryartifact.updateManifestPropertiesWithResponse
     }
@@ -172,7 +182,7 @@ public class RegistryArtifactJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private ContentProperties getContentProperties() {
+    private ArtifactTagProperties getArtifactTagProperties() {
         return null;
     }
 
@@ -181,16 +191,7 @@ public class RegistryArtifactJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private String getTagOrDigest() {
-        return null;
-    }
-
-    /**
-     * Implementation not provided for this method.
-     *
-     * @return {@code null}
-     */
-    private String getTag() {
+    private ArtifactManifestProperties getArtifactManifestProperties() {
         return null;
     }
 
@@ -200,6 +201,15 @@ public class RegistryArtifactJavaDocSnippets {
      * @return {@code null}
      */
     private String getDigest() {
+        return null;
+    }
+
+    /**
+     * Implementation not provided for this method.
+     *
+     * @return {@code null}
+     */
+    private String getTag() {
         return null;
     }
 

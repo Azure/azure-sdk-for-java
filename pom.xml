@@ -709,6 +709,7 @@
         <module>sdk/batchai</module>
         <module>sdk/billing</module>
         <module>sdk/boms</module>
+        <module>sdk/botservice</module>
         <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/commerce</module>
@@ -778,6 +779,7 @@
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>

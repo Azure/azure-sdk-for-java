@@ -225,7 +225,6 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncAutoCloseable {
         close();
     }
 
-    @Override
     public void close() {
         closeAsync().block(retryOptions.getTryTimeout());
     }

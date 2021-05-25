@@ -78,9 +78,9 @@ class AppendBlobAPITest extends APISpec {
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                  | contentType
-        null         | null               | null            | null            | null                                                                                        | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.getBytes())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                       | contentType
+        null         | null               | null            | null            | null                                                                                             | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(data.defaultText.getBytes())) | "type"
     }
 
     @Unroll
@@ -195,7 +195,7 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block defaults"() {
         setup:
-        def appendResponse = bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+        def appendResponse = bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null,
             null)
 
         when:
@@ -203,7 +203,7 @@ class AppendBlobAPITest extends APISpec {
         bc.download(downloadStream)
 
         then:
-        downloadStream.toByteArray() == defaultData.array()
+        downloadStream.toByteArray() == data.defaultBytes
         validateBasicHeaders(appendResponse.getHeaders())
         appendResponse.getHeaders().getValue("x-ms-content-crc64") != null
         appendResponse.getValue().getBlobAppendOffset() != null
@@ -214,23 +214,23 @@ class AppendBlobAPITest extends APISpec {
     }
 
     def "Append block min"() {
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null,
             null).getStatusCode() == 201
     }
 
     @Unroll
     def "Append block IA"() {
         when:
-        bc.appendBlock(data, dataSize)
+        bc.appendBlock(stream, dataSize)
 
         then:
         thrown(exceptionType)
 
         where:
-        data                     | dataSize            | exceptionType
-        null                     | defaultDataSize     | NullPointerException
-        defaultInputStream.get() | defaultDataSize + 1 | UnexpectedLengthException
-        defaultInputStream.get() | defaultDataSize - 1 | UnexpectedLengthException
+        stream                   | dataSize                 | exceptionType
+        null                     | data.defaultDataSize     | NullPointerException
+        data.defaultInputStream | data.defaultDataSize + 1 | UnexpectedLengthException
+        data.defaultInputStream | data.defaultDataSize - 1 | UnexpectedLengthException
     }
 
     def "Append block empty body"() {
@@ -251,15 +251,15 @@ class AppendBlobAPITest extends APISpec {
 
     def "Append block transactionalMD5"() {
         setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.defaultBytes)
 
         expect:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, md5, null, null, null).statusCode == 201
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, md5, null, null, null).statusCode == 201
     }
 
     def "Append block transactionalMD5 fail"() {
         when:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize,
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize,
             MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null)
 
         then:
@@ -287,7 +287,7 @@ class AppendBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         expect:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, bac, null, null)
             .getStatusCode() == 201
 
         where:
@@ -320,13 +320,13 @@ class AppendBlobAPITest extends APISpec {
             .setTagsConditions(tags)
 
         when:
-        bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
+        bc.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, bac, null, null)
 
         then:
         thrown(BlobStorageException)
 
         cleanup:
-        defaultInputStream.get().reset()
+        data.defaultInputStream.reset()
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE | tags
@@ -345,7 +345,7 @@ class AppendBlobAPITest extends APISpec {
         bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
 
         when:
-        bc.appendBlock(defaultInputStream.get(), defaultDataSize)
+        bc.appendBlock(data.defaultInputStream, data.defaultDataSize)
 
         then:
         thrown(BlobStorageException)
@@ -360,12 +360,12 @@ class AppendBlobAPITest extends APISpec {
         ).getAppendBlobClient()
 
         when:
-        clientWithFailure.appendBlock(defaultInputStream.get(), defaultDataSize)
+        clientWithFailure.appendBlock(data.defaultInputStream, data.defaultDataSize)
 
         then:
         def os = new ByteArrayOutputStream()
         bc.download(os)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
     }
 
     def "Append block from URL min"() {
@@ -461,7 +461,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         expect:
@@ -499,7 +499,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         when:
@@ -527,7 +527,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         def smac = new BlobRequestConditions()
@@ -555,7 +555,7 @@ class AppendBlobAPITest extends APISpec {
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
-        sourceURL.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null)
+        sourceURL.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null)
             .getStatusCode()
 
         def smac = new BlobRequestConditions()

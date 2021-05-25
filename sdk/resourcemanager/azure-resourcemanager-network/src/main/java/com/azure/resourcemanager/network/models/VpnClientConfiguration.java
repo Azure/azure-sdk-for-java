@@ -41,6 +41,12 @@ public final class VpnClientConfiguration {
     private List<VpnClientProtocol> vpnClientProtocols;
 
     /*
+     * VPN authentication types for the virtual network gateway..
+     */
+    @JsonProperty(value = "vpnAuthenticationTypes")
+    private List<VpnAuthenticationType> vpnAuthenticationTypes;
+
+    /*
      * VpnClientIpsecPolicies for virtual network gateway P2S client.
      */
     @JsonProperty(value = "vpnClientIpsecPolicies")
@@ -168,6 +174,26 @@ public final class VpnClientConfiguration {
      */
     public VpnClientConfiguration withVpnClientProtocols(List<VpnClientProtocol> vpnClientProtocols) {
         this.vpnClientProtocols = vpnClientProtocols;
+        return this;
+    }
+
+    /**
+     * Get the vpnAuthenticationTypes property: VPN authentication types for the virtual network gateway..
+     *
+     * @return the vpnAuthenticationTypes value.
+     */
+    public List<VpnAuthenticationType> vpnAuthenticationTypes() {
+        return this.vpnAuthenticationTypes;
+    }
+
+    /**
+     * Set the vpnAuthenticationTypes property: VPN authentication types for the virtual network gateway..
+     *
+     * @param vpnAuthenticationTypes the vpnAuthenticationTypes value to set.
+     * @return the VpnClientConfiguration object itself.
+     */
+    public VpnClientConfiguration withVpnAuthenticationTypes(List<VpnAuthenticationType> vpnAuthenticationTypes) {
+        this.vpnAuthenticationTypes = vpnAuthenticationTypes;
         return this;
     }
 

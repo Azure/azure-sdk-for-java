@@ -21,8 +21,15 @@
   For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
 - Renamed the method `asCountry` to `asCountryRegion`.
 - Renamed value `COUNTRY` to `COUNTRY_REGION` in the model `FieldValuetype`.
+- Renamed the property `fieldBoundingBox` to `boundingBox` in the class `FormTable`.
 - Make `FormLine`, `FormPage`, `FormTable`, `FormSelectionMark`, `TextAppearance`, `CustomFormModel`, `CustomFormModelInfo`, `CustomFormModelProperties`
   `CustomFormSubmodel`, `TrainingDocumentInfo` model class immutable.
+
+## 3.0.8 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
 
 ## 3.0.7 (2021-04-07)
 ### Dependency updates
@@ -125,9 +132,10 @@ respectively
 - Renamed model `OperationResult` to `FormRecognizerOperationResult`
 - Changed param ordering for methods `beginRecognizeCustomForms` and `beginRecognizeCustomFormsFromUrl`
 
-### Key Bug Fixes
-- Fixed `getFields()` to preserve service side ordering of fields.
-
+### Bug Fixes
+- When using a security policy with `SecurityManager` turns on, it no longer throws the access denied error on 
+  `java.lang.reflect.ReflectPermission`. More information on https://github.com/Azure/azure-sdk-for-java/issues/17368
+  
 ## 1.0.0-beta.4 (2020-07-07)
 ### Breaking Changes
 - `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See

@@ -12,15 +12,8 @@ import java.util.function.Consumer;
 
 public abstract class SendSubscribeByGroupOperationTest<T extends SendOperation & SubscribeByGroupOperation>
     extends SendSubscribeOperationTest<T> {
+
     protected String consumerGroup = "group1";
-
-    public String getConsumerGroup() {
-        return consumerGroup;
-    }
-
-    public void setConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-    }
 
     @Override
     protected void subscribe(String destination, Consumer<Message<?>> consumer, Class<?> payloadType) {
