@@ -18,6 +18,10 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
         required = true)
     private String storageConnectionString;
 
+    @Parameter(names = {"-se", "--storageEndpoint"}, description = "Endpoint for storage account",
+        required = true)
+    private String storageEndpoint;
+
     @Parameter(names = {"-e", "--eventsToSend"}, description = "Number of events to send per partition.")
     private int numberOfEvents = 1000;
 
@@ -50,6 +54,15 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
      */
     public String getStorageConnectionString() {
         return storageConnectionString;
+    }
+
+    /**
+     * Gets the endpoint for the storage account. For example: {@literal https://foo.blob.core.windows.net/}
+     *
+     * @return The endpoint for the storage account.
+     */
+    public String getStorageEndpoint() {
+        return storageEndpoint;
     }
 
     /**
