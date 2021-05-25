@@ -66,11 +66,13 @@ public class ServerSocketTest {
          *  - Set the KeyManagerFactory to use that KeyStore.
          */
         ks = PropertyConvertorUtils.getKeyVaultKeyStore();
+        System.out.println(System.getProperty("ssl.KeyManagerFactory.algorithm") + " algorithm in before");
         System.out.println("getKs certificate" + ks.getCertificate("myalias"));
-
+        Security.setProperty("ssl.KeyManagerFactory.algorithm", "SunX509");
+        System.out.println(System.getProperty("ssl.KeyManagerFactory.algorithm") + " algorithm in then");
         kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "changeit".toCharArray());
-        System.out.println(kmf.getKeyManagers()[0].getClass() + " in before");
+        System.out.println(kmf.getKeyManagers()[0].getClass() + "in before");
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
@@ -174,7 +176,6 @@ public class ServerSocketTest {
 
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(ks);
-
         SSLContext context = SSLContext.getInstance("TLS");
         System.out.println(kmf.getKeyManagers().length + "kmf.length in serverSocketWithTrustManager");
         System.out.println(kmf.getKeyManagers()[0].getClass() + " in serverSocketWithTrustManager");
