@@ -237,7 +237,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints
-     * out the details of the created key.</p>
+     * out the details of the newly created key.</p>
+     *
      * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context}
      *
      * @param createEcKeyOptions The key options object containing information about the ec key being created.
@@ -251,8 +252,8 @@ public final class KeyClient {
     }
 
     /**
-     * Creates and stores a new AES key in Key Vault. If the named key already exists, Azure Key Vault creates a new
-     * version of the key. This operation requires the keys/create permission.
+     * Creates and stores a new symmetric key in Key Vault. If the named key already exists, Azure Key Vault creates
+     * a new version of the key. This operation requires the keys/create permission.
      *
      * <p>The {@link CreateOctKeyOptions} parameter is required. The {@link CreateOctKeyOptions#getExpiresOn() expires}
      * and {@link CreateOctKeyOptions#getNotBefore() notBefore} values are optional. The
@@ -262,8 +263,8 @@ public final class KeyClient {
      * Possible values include: {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new AES key. The key activates in one day and expires in one year. Prints out the details of the
-     * created key.</p>
+     * <p>Creates a new symmetric key. The key activates in one day and expires in one year. Prints out the details of
+     * the newly created key.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions}
      *
@@ -279,8 +280,8 @@ public final class KeyClient {
     }
 
     /**
-     * Creates and stores a new AES key in Key Vault. If the named key already exists, Azure Key Vault creates a new
-     * version of the key. This operation requires the keys/create permission.
+     * Creates and stores a new symmetric key in Key Vault. If the named key already exists, Azure Key Vault creates a
+     * new version of the key. This operation requires the keys/create permission.
      *
      * <p>The {@link CreateOctKeyOptions} parameter is required. The {@link CreateOctKeyOptions#getExpiresOn() expires}
      * and {@link CreateOctKeyOptions#getNotBefore() notBefore} values are optional. The
@@ -290,7 +291,8 @@ public final class KeyClient {
      * Possible values include: {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new AES key. The key activates in one day and expires in one year. Prints out the details of the
+     * <p>Creates a new symmetric key. The key activates in one day and expires in one year. Prints out the details of
+     * the
      * created key.</p>
      *
      * {@codesnippet com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions-Context}
