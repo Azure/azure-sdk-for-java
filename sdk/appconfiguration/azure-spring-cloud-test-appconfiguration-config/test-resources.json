@@ -8,6 +8,12 @@
                 "description": "The principal to assign the role to"
             }
         },
+        "testApplicationSecret": {
+            "type": "String"
+        },
+        "testApplicationOid": {
+            "type": "String"
+        },
         "builtInRoleType": {
             "type": "string",
             "defaultValue": "App Configuration Data Owner",
@@ -32,9 +38,8 @@
             "~2Fapplication~2Fconfig.message"
         ],
         "keyValueValues": [
-            "Test"
-        ],
-        "contentType": "",
+                  
+          "contentType": "",
         "tags": {},
         "App Configuration Data Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]"
     },
@@ -89,12 +94,12 @@
             "value": "[parameters('testApplicationId')]"
         },
         "AZURE_CLIENT_SECRET": {
-            "type": "string",
-            "value": "[parameters('testApplicationSecret')]"
-        },
-        "STORE_NAME": {
-            "type": "string",
-            "value": "[concat('https://', variables('configStoreName'), '.azconfig.io')]"
+                "type": "string",
+                "value": "[parameters('testApplicationSecret')]"
+            },
+            "STORE_NAME": {
+                "type": "string",
+                "value": "[concat('https://', variables('configStoreName'), '.azconfig.io')]"
+            }
         }
     }
-}
