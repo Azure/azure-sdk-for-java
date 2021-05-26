@@ -47,19 +47,6 @@
                 "contentType": "[variables('contentType')]",
                 "tags": "[variables('tags')]"
             }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2020-04-01-preview",
-            "name": "[variables('roleNameGuid')]",
-            "scope": "[concat('Microsoft.AppConfiguration/configurationStores', '/', variables('configStoreName'))]",
-            "dependsOn": [
-                "[variables('configStoreName')]"
-            ],
-            "properties": {
-                "roleDefinitionId": "[variables('roleDefinitionId')]",
-                "principalId": "[parameters('testApplicationOid')]"
-            }
         }
     ],
     "outputs": {
