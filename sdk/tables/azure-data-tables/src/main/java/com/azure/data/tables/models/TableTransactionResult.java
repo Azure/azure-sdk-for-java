@@ -32,14 +32,8 @@ public class TableTransactionResult {
         this.transactionActionResponses = transactionActionResponses;
         this.lookupMap = new HashMap<>();
 
-        if (transactionActions.size() == transactionActionResponses.size()) {
-            for (int i = 0; i < transactionActions.size(); i++) {
-                lookupMap.put(transactionActions.get(i).getEntity().getRowKey(), transactionActionResponses.get(i));
-            }
-
-            System.out.println("Done creating lookup map");
-        } else {
-            System.out.println("Different sizes WTF.");
+        for (int i = 0; i < transactionActions.size(); i++) {
+            lookupMap.put(transactionActions.get(i).getEntity().getRowKey(), transactionActionResponses.get(i));
         }
     }
 

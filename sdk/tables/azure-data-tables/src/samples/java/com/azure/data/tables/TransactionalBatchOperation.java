@@ -39,15 +39,15 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Red");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, firstEntity));
-        System.out.printf("Added create operation to transactional batch for entity with partition key: %s, and row " +
-            "key: %s\n", partitionKey, firstEntityRowKey);
+        System.out.printf("Added create operation to transactional batch for entity with partition key: %s, and row "
+            + "key: %s\n", partitionKey, firstEntityRowKey);
 
         TableEntity secondEntity = new TableEntity(partitionKey, secondEntityRowKey)
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, secondEntity));
-        System.out.printf("Added create operation to transactional batch for entity with partition key: %s, and row " +
-            "key: %s\n", partitionKey, secondEntityRowKey);
+        System.out.printf("Added create operation to transactional batch for entity with partition key: %s, and row "
+            + "key: %s\n", partitionKey, secondEntityRowKey);
 
         // Now let's update a different entity.
         String rowKeyForUpdate = "m003";
@@ -55,8 +55,8 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.UPDATE_MERGE, entityToUpdate));
-        System.out.printf("Added update operation to transactional batch for entity with partition key: %s, and row " +
-            "key: %s\n", partitionKey, rowKeyForUpdate);
+        System.out.printf("Added update operation to transactional batch for entity with partition key: %s, and row "
+            + "key: %s\n", partitionKey, rowKeyForUpdate);
 
         // And delete another one.
         String rowKeyForDelete = "m004";
@@ -64,8 +64,8 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.DELETE, entityToDelete));
-        System.out.printf("Added delete operation to transactional batch for entity with partition key: %s, and row " +
-            "key: %s\n", partitionKey, rowKeyForDelete);
+        System.out.printf("Added delete operation to transactional batch for entity with partition key: %s, and row "
+            + "key: %s\n", partitionKey, rowKeyForDelete);
 
         // Finally, let's submit the batch of operations and inspect all the responses.
         TableTransactionResult tableTransactionResult = tableClient.submitTransaction(transactionActions);
