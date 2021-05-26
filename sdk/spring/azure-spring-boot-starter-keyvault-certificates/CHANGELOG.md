@@ -1,6 +1,11 @@
 # Release History
 
-## 3.0.0-beta.7 (Unreleased)
+## 3.0.0-beta.8 (Unreleased)
+
+## 3.0.0-beta.6 (2021-04-19)
+- Remove configurable property of azure.keyvault.aad-authentication-url which is configured according to azure.keyvault.uri automatically [#20530](https://github.com/Azure/azure-sdk-for-java/pull/20530)
+
+## 3.0.0-beta.7 (2021-05-24)
 ### New Features
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
 - Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).

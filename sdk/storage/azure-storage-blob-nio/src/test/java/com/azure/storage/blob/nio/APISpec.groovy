@@ -5,9 +5,6 @@ package com.azure.storage.blob.nio
 
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
-import com.azure.core.util.CoreUtils
-import com.azure.core.util.logging.ClientLogger
-import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobContainerAsyncClient
@@ -21,10 +18,9 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
-import spock.lang.Requires
-import spock.lang.Shared
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
@@ -39,28 +35,12 @@ import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends StorageSpec {
-    @Shared
-    ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
     // both sync and async clients point to same container
     BlobContainerClient cc
     BlobContainerAsyncClient ccAsync
-
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    static int defaultDataSize = defaultData.remaining()
 
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
@@ -79,21 +59,17 @@ class APISpec extends StorageSpec {
      */
     static final String receivedEtag = "received"
 
-    static final int KB = 1024
-    static final int MB = 1024 * KB
-
     def setupSpec() {
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
-        System.out.println(String.format("--------%s---------", env.testMode))
     }
 
     def setup() {
-        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        alternateBlobServiceClient = setClient(env.secondaryAccount)
+        alternateBlobServiceClient = getServiceClient(env.secondaryAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -101,41 +77,28 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
-        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
-            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+        if (env.testMode != TestMode.PLAYBACK) {
+            def cleanupClient = new BlobServiceClientBuilder()
+                .httpClient(getHttpClient())
+                .credential(env.primaryAccount.credential)
+                .endpoint(env.primaryAccount.blobEndpoint)
+                .buildClient()
+            def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
+            for (BlobContainerItem container : cleanupClient.listBlobContainers(options, Duration.ofSeconds(120))) {
+                BlobContainerClient containerClient = cleanupClient.getBlobContainerClient(container.getName())
 
-            containerClient.delete()
+                containerClient.delete()
+            }
         }
-    }
-
-    BlobServiceClient setClient(TestAccount account) {
-        try {
-            return getServiceClient(account)
-        } catch (Exception ignore) {
-            return null
-        }
-    }
-
-    BlobServiceClient getServiceClient(String endpoint) {
-        return getServiceClient(null, endpoint, null)
     }
 
     BlobServiceClient getServiceClient(TestAccount account) {
         return getServiceClient(account.credential, account.blobEndpoint, null)
     }
 
-    BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
-        return getServiceClient(credential, endpoint, null)
-    }
-
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
-    }
-
-    BlobServiceClient getServiceClient(String sasToken, String endpoint) {
-        return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
@@ -147,13 +110,12 @@ class APISpec extends StorageSpec {
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -169,26 +131,10 @@ class APISpec extends StorageSpec {
     BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder
-    }
-
-    BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .httpClient(getHttpClient())
-
-        builder.addPolicy(getRecordPolicy())
-
-        builder.credential(credential).buildAsyncClient()
-    }
-
-    BlobClient getBlobClient(String sasToken, String endpoint, String blobName) {
-        return getBlobClient(sasToken, endpoint, blobName, null)
     }
 
     BlobClient getBlobClient(String sasToken, String endpoint, String blobName, String snapshotId) {
@@ -196,50 +142,10 @@ class APISpec extends StorageSpec {
             .endpoint(endpoint)
             .blobName(blobName)
             .snapshot(snapshotId)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder.sasToken(sasToken).buildClient()
-    }
-
-    BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(getHttpClient())
-
-        for (HttpPipelinePolicy policy : policies) {
-            builder.addPolicy(policy)
-        }
-
-        builder.addPolicy(getRecordPolicy())
-
-        return builder.credential(credential).buildClient()
-    }
-
-    BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .httpClient(getHttpClient())
-
-        builder.addPolicy(getRecordPolicy())
-
-        return builder.credential(credential).buildClient()
-    }
-
-    BlobClient getBlobClient(String endpoint, String sasToken) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(getHttpClient())
-
-        if (!CoreUtils.isNullOrEmpty(sasToken)) {
-            builder.sasToken(sasToken)
-        }
-
-        builder.addPolicy(getRecordPolicy())
-
-        return builder.buildClient()
     }
 
     Map<String, Object> initializeConfigMap(HttpPipelinePolicy... policies) {
@@ -300,9 +206,9 @@ class APISpec extends StorageSpec {
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
 
-        if (size > MB) {
-            for (def i = 0; i < size / MB; i++) {
-                def dataSize = Math.min(MB, size - i * MB)
+        if (size > Constants.MB) {
+            for (def i = 0; i < size / Constants.MB; i++) {
+                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
                 fos.write(getRandomByteArray(dataSize))
             }
         } else {
@@ -332,7 +238,7 @@ class APISpec extends StorageSpec {
 
     def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
-        def defaultReadBuffer = 128 * KB
+        def defaultReadBuffer = 128 * Constants.KB
         try {
             // If the amount we are going to read is smaller than the default buffer size use that instead.
             def bufferSize = (int) Math.min(defaultReadBuffer, count)

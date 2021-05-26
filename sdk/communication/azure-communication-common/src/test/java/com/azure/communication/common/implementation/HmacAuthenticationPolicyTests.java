@@ -245,7 +245,6 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         StepVerifier.create(pipeline.send(request))
-            .expectError(RuntimeException.class);
+            .verifyError(RuntimeException.class);
     }
-
 }

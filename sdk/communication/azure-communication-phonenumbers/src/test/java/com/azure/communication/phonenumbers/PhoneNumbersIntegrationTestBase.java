@@ -27,10 +27,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 public class PhoneNumbersIntegrationTestBase extends TestBase {
-    private static final String ENV_ACCESS_KEY =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY", "QWNjZXNzS2V5");
-    private static final String ENV_ENDPOINT =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
     protected static final String COUNTRY_CODE =
@@ -39,7 +35,10 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
 
     protected static final String PHONE_NUMBER =
-        Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
+        Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
+
+    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
+        .get("TEST_PACKAGES_ENABLED", "all");
 
     private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
         .get("TEST_PACKAGES_ENABLED", "all");
@@ -57,11 +56,15 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
+        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        String communicationEndpoint = communicationConnectionString.getEndpoint();
+        String communicationAccessKey = communicationConnectionString.getAccessKey(); 
+
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
             .httpClient(httpClient)
-            .endpoint(ENV_ENDPOINT)
-            .credential(new AzureKeyCredential(ENV_ACCESS_KEY));
+            .endpoint(communicationEndpoint)
+            .credential(new AzureKeyCredential(communicationAccessKey));
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();

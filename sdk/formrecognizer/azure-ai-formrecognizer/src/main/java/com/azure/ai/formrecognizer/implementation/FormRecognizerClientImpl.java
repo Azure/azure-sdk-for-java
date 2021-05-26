@@ -98,6 +98,18 @@ public final class FormRecognizerClientImpl {
         return this.endpoint;
     }
 
+    /** Form Recognizer API version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Form Recognizer API version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -128,15 +140,16 @@ public final class FormRecognizerClientImpl {
      * @param apiVersion Client Api Version.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(String apiVersion, String endpoint) {
+    FormRecognizerClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                apiVersion,
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -146,9 +159,10 @@ public final class FormRecognizerClientImpl {
      * @param apiVersion Client Api Version.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Form Recognizer API version.
      */
-    FormRecognizerClientImpl(HttpPipeline httpPipeline, String apiVersion, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion, endpoint);
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -159,13 +173,15 @@ public final class FormRecognizerClientImpl {
      * @param apiVersion Client Api Version.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Form Recognizer API version.
      */
     FormRecognizerClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion, String endpoint) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.apiVersion = apiVersion;
         this.endpoint = endpoint;
+        this.apiVersion = apiVersion;
         this.service =
                 RestProxy.create(FormRecognizerClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -176,7 +192,7 @@ public final class FormRecognizerClientImpl {
      */
     @Host("{endpoint}/formrecognizer/{ApiVersion}")
     @ServiceInterface(name = "FormRecognizerClient")
-    private interface FormRecognizerClientService {
+    public interface FormRecognizerClientService {
         @Post("/custom/models")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

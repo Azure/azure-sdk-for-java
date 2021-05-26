@@ -39,7 +39,7 @@ public class RecognizeIdentityDocuments {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/identityDocuments/license.jpg");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
@@ -62,12 +62,12 @@ public class RecognizeIdentityDocuments {
                 }
             }
 
-            FormField countryFormField = recognizedFields.get("Country");
-            if (countryFormField != null) {
-                if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                    String country = countryFormField.getValue().asCountry();
-                    System.out.printf("Country: %s, confidence: %.2f%n",
-                        country, countryFormField.getConfidence());
+            FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+            if (countryRegionFormField != null) {
+                if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                    String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                    System.out.printf("Country or region: %s, confidence: %.2f%n",
+                        countryRegion, countryRegionFormField.getConfidence());
                 }
             }
 

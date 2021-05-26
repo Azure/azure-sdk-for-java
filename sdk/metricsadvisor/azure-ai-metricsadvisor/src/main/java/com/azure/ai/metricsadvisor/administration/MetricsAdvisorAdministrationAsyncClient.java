@@ -7,11 +7,9 @@ import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAd
 import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationList;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationList;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
 import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
@@ -34,6 +32,8 @@ import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
+import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
@@ -58,8 +58,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -985,63 +983,71 @@ public class MetricsAdvisorAdministrationAsyncClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions}
      *
      * @param metricId The metric id.
+     * @param options th e additional configurable options to specify when querying the result.
      * @return The anomaly detection configurations.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId) {
-        try {
-            return new PagedFlux<>(() -> withContext(context -> listMetricAnomalyDetectionConfigsInternal(
-                metricId, context)),
-                null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId,
-                                                                                      Context context) {
-        return new PagedFlux<>(() -> listMetricAnomalyDetectionConfigsInternal(metricId, context),
-            null);
-    }
-
-    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsInternal(
+    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
         String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options) {
+        try {
+            return new PagedFlux<>(() ->
+                withContext(context ->
+                    listMetricAnomalyDetectionConfigsSinglePageAsync(metricId, options, context)),
+                continuationToken ->
+                    withContext(context -> listMetricAnomalyDetectionConfigsNextPageAsync(continuationToken,
+                        context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
+        }
+
+    }
+
+    PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options,
         Context context) {
-        Objects.requireNonNull(metricId, "metricId is required");
-        return service.getAnomalyDetectionConfigurationsByMetricWithResponseAsync(
-            UUID.fromString(metricId),
+        return new PagedFlux<>(() ->
+            listMetricAnomalyDetectionConfigsSinglePageAsync(metricId, options, context),
+            continuationToken ->
+                listMetricAnomalyDetectionConfigsNextPageAsync(continuationToken, context));
+    }
+
+    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsSinglePageAsync(
+        String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options,
+        Context context) {
+        if (options == null) {
+            options = new ListMetricAnomalyDetectionConfigsOptions();
+        }
+        return service.getAnomalyDetectionConfigurationsByMetricSinglePageAsync(
+            UUID.fromString(metricId), options.getSkip(), options.getMaxPageSize(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignoredValue -> logger.info("Listing all MetricAnomalyDetectionConfiguration for a metric"))
-            .doOnSuccess(response -> logger.info("Listed all MetricAnomalyDetectionConfiguration for a metric"))
-            .doOnError(error -> logger.warning(
-                "Failed to list MetricAnomalyDetectionConfiguration for a metric",
+            .doOnRequest(ignoredValue -> logger.info("Listing MetricAnomalyDetectionConfigs"))
+            .doOnSuccess(response -> logger.info("Listed MetricAnomalyDetectionConfigs {}", response))
+            .doOnError(error -> logger.warning("Failed to list the MetricAnomalyDetectionConfigs", error))
+            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
+    }
+
+    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsNextPageAsync(
+        String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
+        return service.getAnomalyDetectionConfigurationsByMetricNextSinglePageAsync(nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
+                nextPageLink,
+                response))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> {
-                final AnomalyDetectionConfigurationList innerConfigurationList = response.getValue();
-                List<AnomalyDetectionConfiguration> configurationList;
-                if (innerConfigurationList != null && innerConfigurationList.getValue() != null) {
-                    configurationList = innerConfigurationList.getValue()
-                        .stream()
-                        .map(innerConfiguration -> DetectionConfigurationTransforms.fromInner(innerConfiguration))
-                        .collect(Collectors.toList());
-                } else {
-                    configurationList = new ArrayList<>();
-                }
-
-                return new PagedResponseBase<Void, AnomalyDetectionConfiguration>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    configurationList,
-                    null,
-                    null);
-            });
-
+            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
     }
 
     /**
@@ -1585,9 +1591,10 @@ public class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions}
      *
      * @param detectionConfigurationId The id of the detection configuration.
+     * @param options th e additional configurable options to specify when querying the result.
      *
      * @return A {@link PagedFlux} containing information of all the
      * {@link AnomalyAlertConfiguration anomaly alert configurations} for the specified detection configuration.
@@ -1597,44 +1604,59 @@ public class MetricsAdvisorAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId) {
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listAnomalyAlertConfigsInternal(detectionConfigurationId, context)),
-                null);
+                withContext(context ->
+                    listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
+                        options,
+                        context)),
+                continuationToken ->
+                    withContext(context -> listAnomalyAlertConfigsNextPageAsync(continuationToken,
+                        context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
 
     PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId, Context context) {
-        return new PagedFlux<>(() -> listAnomalyAlertConfigsInternal(detectionConfigurationId, context), null);
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
+        return new PagedFlux<>(() ->
+            listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
+                options,
+                context),
+            continuationToken ->
+                listAnomalyAlertConfigsNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsInternal(
-        String detectionConfigurationId, Context context) {
+    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsSinglePageAsync(
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+        if (options == null) {
+            options = new ListAnomalyAlertConfigsOptions();
+        }
+        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePageAsync(
+            UUID.fromString(detectionConfigurationId), options.getSkip(), options.getMaxPageSize(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignoredValue -> logger.info("Listing AnomalyAlertConfigs"))
+            .doOnSuccess(response -> logger.info("Listed AnomalyAlertConfigs {}", response))
+            .doOnError(error -> logger.warning("Failed to list the AnomalyAlertConfigs", error))
+            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
+    }
 
-        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationWithResponseAsync(
-            UUID.fromString(detectionConfigurationId), withTracing)
-            .map(response -> {
-                List<AnomalyAlertConfiguration> configurationList;
-                final AnomalyAlertingConfigurationList innerConfigurationList = response.getValue();
-                if (innerConfigurationList == null || innerConfigurationList.getValue().isEmpty()) {
-                    configurationList = new ArrayList<>();
-                } else {
-                    configurationList = innerConfigurationList.getValue()
-                        .stream()
-                        .map(AlertConfigurationTransforms::fromInner)
-                        .collect(Collectors.toList());
-                }
-                return new PagedResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    configurationList,
-                    null, null);
-            });
+    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsNextPageAsync(
+        String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
+        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
+                nextPageLink,
+                response))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error))
+            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
     }
 }

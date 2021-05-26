@@ -68,6 +68,12 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
     @JsonProperty(value = "properties.enableIPForwarding")
     private Boolean enableIpForwarding;
 
+    /*
+     * Specify what happens to the network interface when the VM is deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
+
     /**
      * Get the name property: The network configuration name.
      *
@@ -232,6 +238,26 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetNetworkConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfiguration withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

@@ -72,6 +72,22 @@ public final class FormRecognizerClientImplBuilder {
     }
 
     /*
+     * Form Recognizer API version.
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Form Recognizer API version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the FormRecognizerClientImplBuilder.
+     */
+    public FormRecognizerClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -198,7 +214,7 @@ public final class FormRecognizerClientImplBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         FormRecognizerClientImpl client =
-                new FormRecognizerClientImpl(pipeline, serializerAdapter, apiVersion, endpoint);
+                new FormRecognizerClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

@@ -4,18 +4,24 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AnomalyDetectionConfigurationList model. */
-@Fluent
+@Immutable
 public final class AnomalyDetectionConfigurationList {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AnomalyDetectionConfiguration> value;
+
+    /*
+     * The @nextLink property.
+     */
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
 
     /**
      * Get the value property: The value property.
@@ -27,13 +33,11 @@ public final class AnomalyDetectionConfigurationList {
     }
 
     /**
-     * Set the value property: The value property.
+     * Get the nextLink property: The @nextLink property.
      *
-     * @param value the value value to set.
-     * @return the AnomalyDetectionConfigurationList object itself.
+     * @return the nextLink value.
      */
-    public AnomalyDetectionConfigurationList setValue(List<AnomalyDetectionConfiguration> value) {
-        this.value = value;
-        return this;
+    public String getNextLink() {
+        return this.nextLink;
     }
 }
