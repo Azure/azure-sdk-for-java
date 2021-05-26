@@ -18,14 +18,14 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private AzureApplicationInsightsParameter dataSourceParameter;
+    private AzureApplicationInsightsParameterPatch dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public AzureApplicationInsightsParameter getDataSourceParameter() {
+    public AzureApplicationInsightsParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -36,7 +36,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * @return the AzureApplicationInsightsDataFeedPatch object itself.
      */
     public AzureApplicationInsightsDataFeedPatch setDataSourceParameter(
-            AzureApplicationInsightsParameter dataSourceParameter) {
+            AzureApplicationInsightsParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

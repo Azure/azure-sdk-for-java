@@ -8,38 +8,56 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
+import com.azure.core.util.ServiceVersion
 import spock.lang.Specification
 
 class StorageSpec extends Specification {
-    protected static final TestEnvironment ENVIRONMENT = new TestEnvironment();
+    private static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance()
+    private static final HttpClient HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
 
-    private String testName
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
 
     def setup() {
-        testName = getTestName()
-        if (shouldUseThisToRecord()) {
-            interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
-            namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
-        }
+        def testName = getTestName()
+        interceptorManager = new InterceptorManager(testName, ENVIRONMENT.testMode)
+        namer = new StorageResourceNamer(testName, ENVIRONMENT.testMode, interceptorManager.getRecordedData())
         System.out.printf("========================= %s =========================%n", testName)
     }
 
     def cleanup() {
-        if (shouldUseThisToRecord()) {
-            interceptorManager.close()
-        }
+        interceptorManager.close()
     }
 
-    // TODO (kasobol-msft) Remove this when all modules are migrated.
-    protected shouldUseThisToRecord() {
-        return false
+    protected static TestEnvironment getEnv() {
+        return ENVIRONMENT
     }
 
     protected StorageResourceNamer getNamer() {
         Objects.requireNonNull(namer, "namer has not been initialized yet")
         return namer
+    }
+
+    protected getData() {
+        return TestDataFactory.getInstance();
+    }
+
+    protected <T> T instrument(T builder) {
+        // Groovy style reflection. All our builders follow this pattern.
+        builder."httpClient"(getHttpClient())
+        if (ENVIRONMENT.testMode == TestMode.RECORD) {
+            builder."addPolicy"(interceptorManager.getRecordPolicy())
+        }
+
+        if (ENVIRONMENT.serviceVersion != null) {
+            Class<ServiceVersion> serviceVersionClass = builder.class.methods
+                .find { it.name == "serviceVersion" && it.parameterCount == 1}.parameterTypes[0] as Class<ServiceVersion>
+            def parsedServiceVersion = Enum.valueOf(serviceVersionClass, ENVIRONMENT.serviceVersion)
+            builder."serviceVersion"(parsedServiceVersion)
+            builder."addPolicy"(new ServiceVersionValidationPolicy(parsedServiceVersion.version))
+        }
+
+        return builder
     }
 
     protected HttpPipelinePolicy getRecordPolicy() {
@@ -52,8 +70,7 @@ class StorageSpec extends Specification {
 
     protected HttpClient getHttpClient() {
         if (ENVIRONMENT.testMode != TestMode.PLAYBACK) {
-            NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-            return builder.build()
+            HTTP_CLIENT
         } else {
             return interceptorManager.getPlaybackClient()
         }

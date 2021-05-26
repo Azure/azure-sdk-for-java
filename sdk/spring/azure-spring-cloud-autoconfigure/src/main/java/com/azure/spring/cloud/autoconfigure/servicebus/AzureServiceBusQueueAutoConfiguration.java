@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
@@ -13,7 +14,6 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStrin
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
-import com.microsoft.azure.servicebus.QueueClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.ge
  */
 @Configuration
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
-@ConditionalOnClass(value = { QueueClient.class, ServiceBusQueueClientFactory.class })
+@ConditionalOnClass(value = { ServiceBusProcessorClient.class, ServiceBusQueueClientFactory.class })
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 public class AzureServiceBusQueueAutoConfiguration {
 

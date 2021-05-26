@@ -3,13 +3,13 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.experimental.geojson.GeoBoundingBox;
-import com.azure.core.experimental.geojson.GeoLineString;
-import com.azure.core.experimental.geojson.GeoLinearRing;
-import com.azure.core.experimental.geojson.GeoPoint;
-import com.azure.core.experimental.geojson.GeoPolygon;
-import com.azure.core.experimental.geojson.GeoPosition;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.models.GeoLineString;
+import com.azure.core.models.GeoLinearRing;
+import com.azure.core.models.GeoPoint;
+import com.azure.core.models.GeoPolygon;
+import com.azure.core.models.GeoPosition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

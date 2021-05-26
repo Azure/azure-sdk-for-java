@@ -1,6 +1,22 @@
 ## Release History
 
-### 4.15.0-beta.3 (Unreleased)
+## 4.16.0-beta.2 (Unreleased)
+
+### 4.16.0-beta.1 (2021-05-20)
+#### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
+
+
+### 4.15.0 (2021-05-12)
+#### New Features
+* Added `backendLatencyInMs` in `CosmosDiagnostics` for `DIRECT` connection mode.
+* Added `retryContext` in `CosmosDiagnostics` for query operations.
+
+#### Key Bug Fixes
+* Fixed ignored `HttpClient` decoder configuration issue.
+* Fixed incorrect connection mode issue in `CosmosDiagnostics`.
+* Fixed issue with handling collisions in the effective partition key.
+* Fixed `CosmosQueryRequestOptions` NPE in `readAllItems` API.
 
 ### 4.15.0-beta.2 (2021-04-26)
 #### Key Bug Fixes

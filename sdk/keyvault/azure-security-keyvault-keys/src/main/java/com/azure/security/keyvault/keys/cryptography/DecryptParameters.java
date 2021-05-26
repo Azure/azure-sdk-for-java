@@ -209,6 +209,45 @@ public class DecryptParameters {
     }
 
     /**
+     * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
+     * {@link EncryptionAlgorithm#RSA1_5}.
+     *
+     * @param ciphertext The content to be decrypted.
+     *
+     * @return The {@link DecryptParameters}.
+     */
+    public static DecryptParameters createRsa15Parameters(byte[] ciphertext) {
+        return new DecryptParameters(EncryptionAlgorithm.RSA1_5, ciphertext, null, null,
+            null);
+    }
+
+    /**
+     * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
+     * {@link EncryptionAlgorithm#RSA_OAEP}.
+     *
+     * @param ciphertext The content to be decrypted.
+     *
+     * @return The {@link DecryptParameters}.
+     */
+    public static DecryptParameters createRsaOaepParameters(byte[] ciphertext) {
+        return new DecryptParameters(EncryptionAlgorithm.RSA_OAEP, ciphertext, null, null,
+            null);
+    }
+
+    /**
+     * Factory method to create an instance of {@link DecryptParameters} with the given parameters for
+     * {@link EncryptionAlgorithm#RSA_OAEP_256}.
+     *
+     * @param ciphertext The content to be decrypted.
+     *
+     * @return The {@link DecryptParameters}.
+     */
+    public static DecryptParameters createRsaOaep256Parameters(byte[] ciphertext) {
+        return new DecryptParameters(EncryptionAlgorithm.RSA_OAEP_256, ciphertext, null, null,
+            null);
+    }
+
+    /**
      * Creates an instance of {@link DecryptParameters} with the given parameters.
      *
      * @param algorithm The algorithm to be used for decryption.

@@ -48,7 +48,7 @@ accept or deny access after validating access_token obtained from Azure AD. We w
 1. Accessing a resource server.
 1. Resource server accessing other resource servers.
 
-![B2C Web application & Web Api Overall](resource/b2c-webapp-webapi-overall.png)
+![B2C Web application & Web Api Overall](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/b2c-webapp-webapi-overall.png)
 
 ### Accessing a web application
 
@@ -70,7 +70,7 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
    select **Delegated permissions**, check **offline_access** and **openid** permissions, select **Add permission** to complete the process.
 
 1. Grant admin consent for ***Graph*** permissions.
-   ![Add Graph permissions](resource/add-graph-permissions.png)
+   ![Add Graph permissions](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-graph-permissions.png)
    
 1. Add the following dependencies in your *pom.xml*.
 
@@ -215,13 +215,13 @@ This scenario is based on **Accessing a web application** scenario to allow appl
     }
     ```
    
-   ![Configure WebApiA appRoles](resource/configure-app-roles.png)
+   ![Configure WebApiA appRoles](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/configure-app-roles.png)
 
 1. Select **API permissions** > **Add a permission** > **My APIs**, select ***WebApiA*** application name, 
    select **Application Permissions**, select **WebApiA.SampleScope** permission, select **Add permission** to complete the process.
    
 1. Grant admin consent for ***WebApiA*** permissions.
-   ![Add WebApiA permission](resource/add-webapia-permission.png)
+   ![Add WebApiA permission](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-webapia-permission.png)
    
 1. Add the following dependency on the basis of **Accessing a web application** scenario.
 
@@ -301,12 +301,10 @@ This scenario not support login. Just protect the server by validating the acces
 
 1. Add the following dependencies in your *pom.xml*.
 
-   [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
    ```xml
    <dependency>
      <groupId>com.azure.spring</groupId>
      <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-     <version>3.5.0-beta.1</version>
    </dependency>
 
    <dependency>
@@ -314,7 +312,6 @@ This scenario not support login. Just protect the server by validating the acces
      <artifactId>spring-boot-starter-web</artifactId>
    </dependency>
    ```
-   [//]: # "{x-version-update-end}"
 
 1. Add the following configuration.
 
@@ -388,10 +385,10 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
     }
     ```
 
-   ![Configure WebApiB appRoles](resource/expose-web-api-b-approle.png)
+   ![Configure WebApiB appRoles](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/expose-web-api-b-approle.png)
    
 1. Grant admin consent for ***WebApiB*** permissions.
-   ![Add WebApiB permission](resource/add-webapib-permission-to-webapia.png)
+   ![Add WebApiB permission](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c/resource/add-webapib-permission-to-webapia.png)
 
 1. On the basis of **Accessing a resource server**, add a dependency in your *pom.xml*.
    
@@ -488,7 +485,7 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
  
 ## Next steps
 
