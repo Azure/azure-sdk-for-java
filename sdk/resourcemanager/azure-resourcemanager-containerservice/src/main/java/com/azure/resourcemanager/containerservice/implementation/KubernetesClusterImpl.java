@@ -327,8 +327,12 @@ public class KubernetesClusterImpl
                 innerModel().agentPoolProfiles().stream()
                     .filter(p -> !name.equals(p.name()))
                     .collect(Collectors.toList()));
+
+            this.addDependency(context ->
+                manager().serviceClient().getAgentPools().deleteAsync(resourceGroupName(), name(), name)
+                    .then(context.voidMono()));
         }
-        return null;
+        return this;
     }
 
     @Override

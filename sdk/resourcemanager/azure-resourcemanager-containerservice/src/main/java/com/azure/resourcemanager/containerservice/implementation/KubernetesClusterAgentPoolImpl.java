@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
@@ -237,7 +238,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public KubernetesClusterAgentPoolImpl withNodeLabels(Map<String, String> nodeLabels) {
-        innerModel().withNodeLabels(nodeLabels);
+        innerModel().withNodeLabels(new TreeMap<>(nodeLabels));
         return this;
     }
 

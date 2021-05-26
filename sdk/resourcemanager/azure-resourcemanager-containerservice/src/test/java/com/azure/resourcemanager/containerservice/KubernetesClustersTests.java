@@ -16,6 +16,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -136,6 +137,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
+    @Disabled("in progress")
     public void canAutoScaleKubernetesCluster() throws Exception {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
@@ -180,7 +182,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
                 .withAgentPoolVirtualMachineCount(1)
                 .withAutoScaling(1, 3)
-                .withNodeLabels(ImmutableMap.of("environment", "dev", "app", "spring"))
+                .withNodeLabels(ImmutableMap.of("environment", "dev", "app.1", "spring"))
                 .withNodeTaints(ImmutableList.of("key=value:NoSchedule"))
                 .attach()
             .defineAgentPool(agentPoolName2)
@@ -202,11 +204,18 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertTrue(agentPoolProfile1.isAutoScalingEnabled());
         Assertions.assertEquals(1, agentPoolProfile1.minimumNodeCount());
         Assertions.assertEquals(3, agentPoolProfile1.maximumNodeCount());
-        Assertions.assertEquals(ImmutableMap.of("environment", "dev", "app", "spring"), agentPoolProfile1.nodeLabels());
+        Assertions.assertEquals(ImmutableMap.of("environment", "dev", "app.1", "spring"), agentPoolProfile1.nodeLabels());
         Assertions.assertEquals("key=value:NoSchedule", agentPoolProfile1.nodeTaints().iterator().next());
 
         KubernetesClusterAgentPool agentPoolProfile2 = kubernetesCluster.agentPools().get(agentPoolName2);
         Assertions.assertEquals(0, agentPoolProfile2.nodeCount());
+
+        kubernetesCluster.update()
+            .withoutAgentPool(agentPoolName1)
+            .withoutAgentPool(agentPoolName2)
+            .apply();
+
+        Assertions.assertEquals(1, kubernetesCluster.agentPools().size());
     }
 
     /**
