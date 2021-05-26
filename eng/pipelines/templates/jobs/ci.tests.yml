@@ -55,6 +55,10 @@ jobs:
       - template: ../variables/globals.yml
 
     steps:
+      - script: |
+          ls $JAVA_HOME/jre/lib/security
+        displayName: Dump security profiles
+
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
           AgentImage: $(OSVmImage)
