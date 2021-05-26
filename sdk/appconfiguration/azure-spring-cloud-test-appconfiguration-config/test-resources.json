@@ -2,53 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "configStoreName": {
-            "type": "string",
-            "defaultValue": "appconfigspringintegrationtests",
-            "metadata": {
-                "description": "Specifies the name of the App Configuration store."
-            }
-        },
-        "location": {
-            "type": "string",
-            "defaultValue": "[resourceGroup().location]",
-            "metadata": {
-                "description": "Specifies the Azure location where the app configuration store should be created."
-            }
-        },
-        "keyValueNames": {
-            "type": "array",
-            "defaultValue": [
-                "~2Fapplication~2Fconfig.message"
-            ],
-            "metadata": {
-                "description": "Specifies the names of the key-value resources. The name is a combination of key and label with $ as delimiter. The label is optional."
-            }
-        },
-        "keyValueValues": {
-            "type": "array",
-            "defaultValue": [
-                "Test"
-            ],
-            "metadata": {
-                "description": "Specifies the values of the key-value resources. It's optional"
-            }
-        },
-        "contentType": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Specifies the content type of the key-value resources. For feature flag, the value should be application/vnd.microsoft.appconfig.ff+json;charset=utf-8. For Key Value reference, the value should be application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8. Otherwise, it's optional."
-            }
-        },
-        "tags": {
-            "type": "object",
-            "defaultValue": {},
-            "metadata": {
-                "description": "Adds tags for the key-value resources. It's optional"
-            }
-        },
-        "principalId": {
+        "testApplicationId": {
             "type": "string",
             "metadata": {
                 "description": "The principal to assign the role to"
@@ -73,14 +27,19 @@
         }
     },
     "variables": {
+        "configStoreName": "[substring(toLower(concat('appconfig-', uniqueString(resourceGroup().id))), 0, 22)]",
+        "keyValueNames": ["~2Fapplication~2Fconfig.message"],
+        "keyValueValues": ["Test"],
+        "contentType": "",
+        "tags": {},
         "App Configuration Data Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]"
     },
     "resources": [
         {
+            "location": "[resourceGroup().location]",
             "type": "Microsoft.AppConfiguration/configurationStores",
             "apiVersion": "2020-07-01-preview",
-            "name": "[parameters('configStoreName')]",
-            "location": "[parameters('location')]",
+            "name": "[variables('configStoreName')]",
             "sku": {
                 "name": "standard"
             }
@@ -88,38 +47,38 @@
         {
             "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
             "apiVersion": "2020-07-01-preview",
-            "name": "[concat(parameters('configStoreName'), '/', parameters('keyValueNames')[copyIndex()])]",
+            "name": "[concat(variables('configStoreName'), '/', variables('keyValueNames')[copyIndex()])]",
             "copy": {
                 "name": "keyValueCopy",
-                "count": "[length(parameters('keyValueNames'))]"
+                "count": "[length(variables('keyValueNames'))]"
             },
             "dependsOn": [
-                "[parameters('configStoreName')]"
+                "[variables('configStoreName')]"
             ],
             "properties": {
-                "value": "[parameters('keyValueValues')[copyIndex()]]",
-                "contentType": "[parameters('contentType')]",
-                "tags": "[parameters('tags')]"
+                "value": "[variables('keyValueValues')[copyIndex()]]",
+                "contentType": "[variables('contentType')]",
+                "tags": "[variables('tags')]"
             }
         },
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "2020-04-01-preview",
             "name": "[parameters('roleNameGuid')]",
-            "scope": "[concat('Microsoft.AppConfiguration/configurationStores', '/', parameters('configStoreName'))]",
+            "scope": "[concat('Microsoft.AppConfiguration/configurationStores', '/', variables('configStoreName'))]",
             "dependsOn": [
-                "[parameters('configStoreName')]"
+                "[variables('configStoreName')]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables(parameters('builtInRoleType'))]",
-                "principalId": "[parameters('principalId')]"
+                "principalId": "[parameters('testApplicationId')]"
             }
         }
     ],
     "outputs": {
         "STORE_NAME": {
             "type": "string",
-            "value": "[concat('https://', parameters('configStoreName'), '.azconfig.io')]"
+            "value": "[concat('https://', variables('configStoreName'), '.azconfig.io')]"
         }
     }
 }
