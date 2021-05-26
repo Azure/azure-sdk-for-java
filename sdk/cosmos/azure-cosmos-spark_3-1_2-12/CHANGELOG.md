@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.1.0-beta.1 (2021-05-27)
+### 4.1.0 (2021-05-27)
 #### New Features
 * Added support for bulk deletes via `spark.cosmos.write.strategy` `ItemDelete` or `ItemDeleteIfNotModified`
 * Added support for enforcing custom queries via `spark.cosmos.read.customQuery`. Custom queries will be sent to the Cosmos backend instead of dynamically generating the query from predicate push-downs.
