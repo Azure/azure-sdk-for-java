@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import java.io.IOException;
@@ -21,7 +24,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import static java.util.logging.Level.WARNING;
 
-public class JreCertificates implements AzureCertificates {
+/**
+ * This class provides the certificates from jre key store. It only provides certificates. It does not provide key entries from jre key store.
+ */
+public final class JreCertificates implements AzureCertificates {
     /**
      * Stores the logger.
      */
@@ -49,15 +55,15 @@ public class JreCertificates implements AzureCertificates {
 
     static {
         JRE_KEY_STORE = JREKeyStore.getDefault();
-        List<String> JRE_KS_ALIASES1 = Collections.emptyList();
+        List<String> jreKsAliases = Collections.emptyList();
         if (null != JRE_KEY_STORE) {
             try {
-                JRE_KS_ALIASES1 = Collections.unmodifiableList(Collections.list(JRE_KEY_STORE.aliases()));
+                jreKsAliases = Collections.unmodifiableList(Collections.list(JRE_KEY_STORE.aliases()));
             } catch (KeyStoreException e) {
                 LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
             }
         }
-        JRE_KS_ALIASES = JRE_KS_ALIASES1;
+        JRE_KS_ALIASES = jreKsAliases;
         JRE_KS_CERTS = JRE_KS_ALIASES.stream()
             .collect(Collectors.toMap(a -> a, a -> {
                 try {
@@ -69,7 +75,12 @@ public class JreCertificates implements AzureCertificates {
             }));
     }
 
-    private JreCertificates() {}
+    /**
+     * Private constructor
+     */
+    private JreCertificates() {
+
+    }
 
     public static JreCertificates getInstance() {
         return INSTANCE;
@@ -88,12 +99,11 @@ public class JreCertificates implements AzureCertificates {
 
     @Override
     public Map<String, Key> getCertificateKeys() {
-        throw new UnsupportedOperationException();
+        return Collections.emptyMap();
     }
 
     @Override
     public void deleteEntry(String alias) {
-        throw new UnsupportedOperationException();
 
     }
 
@@ -125,7 +135,7 @@ public class JreCertificates implements AzureCertificates {
             } finally {
                 try {
                     inStream.close();
-                } catch (NullPointerException | IOException e ) {
+                } catch (NullPointerException | IOException e) {
                     LOGGER.log(WARNING, "", e);
                 }
             }
