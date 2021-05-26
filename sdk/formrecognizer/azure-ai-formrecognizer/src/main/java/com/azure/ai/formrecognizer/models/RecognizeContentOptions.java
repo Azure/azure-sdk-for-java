@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
@@ -67,10 +68,10 @@ public final class RecognizeContentOptions {
 
     /**
      * Get the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the language code for the text in the document.
      */
@@ -80,10 +81,10 @@ public final class RecognizeContentOptions {
 
     /**
      * Set the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @param language the language code value to set.
      * @return the updated {@code RecognizeContentOptions} value.
@@ -99,6 +100,8 @@ public final class RecognizeContentOptions {
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
      *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+     *
      * @return the list of custom page numbers for a multi page document.
      */
     public List<String> getPages() {
@@ -111,6 +114,8 @@ public final class RecognizeContentOptions {
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
      *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+     *
      * @param pages the custom page numbers value to set.
      * @return the updated {@code RecognizeContentOptions} value.
      */
@@ -122,6 +127,8 @@ public final class RecognizeContentOptions {
     /**
      * Get the order in which recognized text lines are returned.
      *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+     *
      * @return the order in which the recognized lines are returned.
      */
     public FormReadingOrder getReadingOrder() {
@@ -132,6 +139,8 @@ public final class RecognizeContentOptions {
      * Specifies the order in which recognized text lines are returned. As the sorting order
      * depends on the detected text, it may change across images and OCR version updates. Thus,
      * business logic should be built upon the actual line location instead of order.
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @param readingOrder the order specifies in which text lines are returned
      * @return the updated {@code RecognizeContentOptions} value.

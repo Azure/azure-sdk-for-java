@@ -4,11 +4,16 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TextStyleName. */
+/**
+ * Defines values for TextStyleName.
+ *
+ * This class is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+ */
 public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
     /** Static value other for TextStyleName. */
     public static final TextStyleName OTHER = fromString("other");
