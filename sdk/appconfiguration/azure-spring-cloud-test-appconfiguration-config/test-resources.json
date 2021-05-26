@@ -10,7 +10,7 @@
         },
         "builtInRoleType": {
             "type": "string",
-            "defaultValue":"App Configuration Data Owner",
+            "defaultValue": "App Configuration Data Owner",
             "allowedValues": [
                 "App Configuration Data Owner"
             ],
@@ -28,8 +28,12 @@
     },
     "variables": {
         "configStoreName": "[substring(toLower(concat('appconfig-', uniqueString(resourceGroup().id))), 0, 22)]",
-        "keyValueNames": ["~2Fapplication~2Fconfig.message"],
-        "keyValueValues": ["Test"],
+        "keyValueNames": [
+            "~2Fapplication~2Fconfig.message"
+        ],
+        "keyValueValues": [
+            "Test"
+        ],
         "contentType": "",
         "tags": {},
         "App Configuration Data Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]"
@@ -76,6 +80,18 @@
         }
     ],
     "outputs": {
+        "AZURE_TENANT_ID": {
+            "type": "string",
+            "value": "[parameters('tenantId')]"
+        },
+        "AZURE_CLIENT_ID": {
+            "type": "string",
+            "value": "[parameters('testApplicationId')]"
+        },
+        "AZURE_CLIENT_SECRET": {
+            "type": "string",
+            "value": "[parameters('testApplicationSecret')]"
+        },
         "STORE_NAME": {
             "type": "string",
             "value": "[concat('https://', variables('configStoreName'), '.azconfig.io')]"
