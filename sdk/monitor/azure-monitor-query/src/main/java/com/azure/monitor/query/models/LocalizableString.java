@@ -4,12 +4,14 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The localizable string class. */
 @Fluent
 public final class LocalizableString {
+    private final ClientLogger logger = new ClientLogger(LocalizableString.class);
     /*
      * the invariant value.
      */
@@ -68,7 +70,8 @@ public final class LocalizableString {
      */
     public void validate() {
         if (getValue() == null) {
-            throw new IllegalArgumentException("Missing required property value in model LocalizableString");
+            throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Missing required property value in model LocalizableString"));
         }
     }
 }
