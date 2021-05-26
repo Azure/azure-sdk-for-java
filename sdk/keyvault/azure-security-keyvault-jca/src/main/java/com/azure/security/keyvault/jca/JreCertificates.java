@@ -13,6 +13,7 @@ import java.security.PrivilegedAction;
 import java.security.AccessController;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -144,14 +145,10 @@ public class JreCertificates implements AzureCertificates {
                 storeProp = Paths.get(storePropName);
             }
 
-            Path[] fileNames =
-                new Path[]{storeProp, DEFAULT_STORE};
-            for (Path fileName : fileNames) {
-                if (Files.exists(fileName) && Files.isReadable(fileName)) {
-                    return fileName;
-                }
-            }
-            return null;
+            Path[] fileNames = new Path[]{storeProp, DEFAULT_STORE};
+            return Arrays.stream(fileNames)
+                .filter(a -> Files.exists(a) && Files.isReadable(a))
+                .findFirst().orElse(null);
         }
 
         private static String  privilegedGetProperty(String theProp, String defaultVal) {
