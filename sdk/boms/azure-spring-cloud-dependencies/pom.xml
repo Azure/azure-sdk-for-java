@@ -44,12 +44,14 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.cloud.version>${project.version}</azure.spring.cloud.version>
+    <azure.resourcemanager.version>2.4.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     <azure.spring.identity.version>1.5.0</azure.spring.identity.version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;dependency} -->
     <azure.spring.appconfigure.version>1.3.0</azure.spring.appconfigure.version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;dependency} -->
     <azure.core.version>1.16.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    <azure.identity.version>1.3.0</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     <azure.eventhub.version>5.7.1</azure.eventhub.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     <azure.eventhub.checkpoint.version>1.7.0</azure.eventhub.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
-    <azure.servicebus.version>3.6.1</azure.servicebus.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
+    <azure.core.serializer.json.jackson.version>7.2.1</azure.core.serializer.json.jackson.version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     <azure.storage.queue.version>12.9.1</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
   </properties>
 
@@ -191,6 +193,16 @@
         <version>${azure.core.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.azure.resourcemanager</groupId>
+        <artifactId>azure-resourcemanager</artifactId>
+        <version>${azure.resourcemanager.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>${azure.identity.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-messaging-eventhubs</artifactId>
         <version>${azure.eventhub.version}</version>
@@ -201,14 +213,19 @@
         <version>${azure.eventhub.checkpoint.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-servicebus</artifactId>
-        <version>${azure.servicebus.version}</version>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-messaging-servicebus</artifactId>
+        <version>${azure.messaging.servicebus.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-storage-queue</artifactId>
         <version>${azure.storage.queue.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-serializer-json-jackson</artifactId>
+        <version>${azure.core.serializer.json.jackson.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
