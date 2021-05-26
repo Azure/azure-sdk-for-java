@@ -3,7 +3,10 @@
 
 package com.azure.core.management.exception;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.Resource;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -40,6 +43,16 @@ public class ManagementExceptionTests {
         Assertions.assertEquals("ResourceGroupNotFound", managementError.getCode());
     }
 
+    @Test
+    public void testDeserializationInResource() throws IOException {
+        final String virtualMachineJson = "{\"properties\":{\"instanceView\":{\"patchStatus\":{\"availablePatchSummary\":{\"error\":{}}}}}}";
+
+        SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+        VirtualMachine virtualMachine = serializerAdapter.deserialize(virtualMachineJson, VirtualMachine.class, SerializerEncoding.JSON);
+
+        Assertions.assertNotNull(virtualMachine.instanceView.patchStatus.availablePatchSummary.error);
+    }
+
     @Immutable
     private static class WebError extends ManagementError {
         @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
@@ -55,5 +68,30 @@ public class ManagementExceptionTests {
         public List<WebError> getDetails() {
             return details;
         }
+    }
+
+    @JsonFlatten
+    @Fluent
+    private static final class VirtualMachine extends Resource {
+        @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
+        private VirtualMachineInstanceView instanceView;
+    }
+
+    @Fluent
+    public static final class VirtualMachineInstanceView {
+        @JsonProperty(value = "patchStatus")
+        private VirtualMachinePatchStatus patchStatus;
+    }
+
+    @Fluent
+    public static final class VirtualMachinePatchStatus {
+        @JsonProperty(value = "availablePatchSummary")
+        private AvailablePatchSummary availablePatchSummary;
+    }
+
+    @Immutable
+    public static final class AvailablePatchSummary {
+        @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
+        private ManagementError error;
     }
 }
