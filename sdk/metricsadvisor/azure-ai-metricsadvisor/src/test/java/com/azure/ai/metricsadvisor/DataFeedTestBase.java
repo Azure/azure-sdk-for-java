@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureCosmosDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
+import com.azure.ai.metricsadvisor.models.AzureLogAnalyticsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureTableDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedAutoRollUpMethod;
@@ -155,6 +156,14 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                     TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
                 break;
+            case AZURE_LOG_ANALYTICS:
+                dataFeed = new DataFeed().setSource(new AzureLogAnalyticsDataFeedSource(
+                    "tenant_id",
+                    "client_id",
+                    "client_secret",
+                    "workspace_id",
+                    TEMPLATE_QUERY));
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);
         }
@@ -295,6 +304,20 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     actualDataLakeFeedSource.getFileSystemName());
                 assertEquals(expDataLakeStorageGen2DataFeedSource.getFileTemplate(),
                     actualDataLakeFeedSource.getFileTemplate());
+                break;
+            case AZURE_LOG_ANALYTICS:
+                final AzureLogAnalyticsDataFeedSource expLogAnalyticsDataFeedSource =
+                    (AzureLogAnalyticsDataFeedSource) expectedDataFeed.getSource();
+                final AzureLogAnalyticsDataFeedSource logAnalyticsDataFeedSource =
+                    (AzureLogAnalyticsDataFeedSource) actualDataFeed.getSource();
+                assertNotNull(expLogAnalyticsDataFeedSource.getWorkspaceId());
+                assertNotNull(logAnalyticsDataFeedSource.getQuery());
+                assertEquals(expLogAnalyticsDataFeedSource.getClientId(),
+                    logAnalyticsDataFeedSource.getClientId());
+                assertEquals(expLogAnalyticsDataFeedSource.getClientSecret(),
+                    logAnalyticsDataFeedSource.getClientSecret());
+                assertEquals(expLogAnalyticsDataFeedSource.getTenantId(),
+                    logAnalyticsDataFeedSource.getTenantId());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);

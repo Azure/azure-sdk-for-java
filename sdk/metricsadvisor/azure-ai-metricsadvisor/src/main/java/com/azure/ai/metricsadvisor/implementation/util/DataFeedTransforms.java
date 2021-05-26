@@ -25,6 +25,10 @@ import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsParameter;
 import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsParameterPatch;
+import com.azure.ai.metricsadvisor.implementation.models.AzureLogAnalyticsDataFeed;
+import com.azure.ai.metricsadvisor.implementation.models.AzureLogAnalyticsDataFeedPatch;
+import com.azure.ai.metricsadvisor.implementation.models.AzureLogAnalyticsParameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureLogAnalyticsParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableParameter;
@@ -53,6 +57,7 @@ import com.azure.ai.metricsadvisor.models.AzureCosmosDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureEventHubsDataFeedSource;
+import com.azure.ai.metricsadvisor.models.AzureLogAnalyticsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureTableDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedAccessMode;
@@ -244,6 +249,15 @@ public final class DataFeedTransforms {
                 azureDataLakeStorageGen2Parameter.getFileTemplate()
             ));
             dataFeedSourceType = DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
+        } else if (dataFeedDetail instanceof AzureLogAnalyticsDataFeed) {
+            final AzureLogAnalyticsParameter azureLogAnalyticsDataFeed =
+                ((AzureLogAnalyticsDataFeed) dataFeedDetail).getDataSourceParameter();
+            dataFeed.setSource(new AzureLogAnalyticsDataFeedSource(azureLogAnalyticsDataFeed.getTenantId(),
+                azureLogAnalyticsDataFeed.getClientId(),
+                azureLogAnalyticsDataFeed.getClientSecret(),
+                azureLogAnalyticsDataFeed.getWorkspaceId(),
+                azureLogAnalyticsDataFeed.getQuery()));
+            dataFeedSourceType = DataFeedSourceType.AZURE_LOG_ANALYTICS;
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported", dataFeedDetail.getClass().getCanonicalName())));
@@ -350,6 +364,16 @@ public final class DataFeedTransforms {
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())
                     .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()));
+        } else if (dataFeedSource instanceof AzureLogAnalyticsDataFeedSource) {
+            final AzureLogAnalyticsDataFeedSource azureLogAnalyticsDataFeedSource =
+                ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
+            dataFeedDetail = new AzureLogAnalyticsDataFeed()
+                .setDataSourceParameter(new AzureLogAnalyticsParameter()
+                    .setTenantId(azureLogAnalyticsDataFeedSource.getTenantId())
+                    .setClientId(azureLogAnalyticsDataFeedSource.getClientId())
+                    .setClientSecret(azureLogAnalyticsDataFeedSource.getClientSecret())
+                    .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
+                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()));
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported", dataFeedSource.getClass().getCanonicalName())));
@@ -455,6 +479,16 @@ public final class DataFeedTransforms {
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())
                     .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()));
+        } else if (dataFeedSource instanceof AzureLogAnalyticsDataFeedSource) {
+            final AzureLogAnalyticsDataFeedSource azureDataLakeStorageGen2DataFeedSource =
+                ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
+            dataFeedDetailPatch = new AzureLogAnalyticsDataFeedPatch()
+                .setDataSourceParameter(new AzureLogAnalyticsParameterPatch()
+                    .setTenantId(azureDataLakeStorageGen2DataFeedSource.getTenantId())
+                    .setClientId(azureDataLakeStorageGen2DataFeedSource.getClientId())
+                    .setClientSecret(azureDataLakeStorageGen2DataFeedSource.getClientSecret())
+                    .setWorkspaceId(azureDataLakeStorageGen2DataFeedSource.getWorkspaceId())
+                    .setQuery(azureDataLakeStorageGen2DataFeedSource.getQuery()));
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported.",
