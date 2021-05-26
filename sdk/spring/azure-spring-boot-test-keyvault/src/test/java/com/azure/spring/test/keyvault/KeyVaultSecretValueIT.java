@@ -115,6 +115,12 @@ public class KeyVaultSecretValueIT {
             .webApps()
             .getByResourceGroup(SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);
 
+        // test
+        char[] springResourceGroup = SPRING_RESOURCE_GROUP.toCharArray();
+        for (Character c : springResourceGroup) {
+            LOGGER.info(c.toString());
+        }
+
         final MavenBasedProject app = new MavenBasedProject("../azure-spring-boot-test-application");
         app.packageUp();
 
@@ -140,7 +146,7 @@ public class KeyVaultSecretValueIT {
         webApp.restart();
         LOGGER.info("restarting app service finished...");
         final String resourceUrl = "https://" + webApp.name() + ".azurewebsites.net/get";
-        final ResponseEntity<String> response = curlWithRetry(resourceUrl, 3, 60_000, String.class);
+        final ResponseEntity<String> response = curlWithRetry(resourceUrl, 3, 150_000, String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(KEY_VAULT_SECRET_VALUE, response.getBody());
         LOGGER.info("keyVaultWithAppServiceMSI end.");
