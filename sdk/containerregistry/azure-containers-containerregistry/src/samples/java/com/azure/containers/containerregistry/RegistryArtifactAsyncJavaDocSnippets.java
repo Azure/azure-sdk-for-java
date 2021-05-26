@@ -5,7 +5,6 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContentProperties;
 import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -142,7 +141,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
     public void updateTagPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateTagProperties
-        ContentProperties properties = getContentProperties();
+        ArtifactTagProperties properties = getTagProperties();
         String tag = getTag();
         client.updateTagProperties(tag, properties).subscribe();
         // END: com.azure.containers.containerregistry.async.registryartifact.updateTagProperties
@@ -151,7 +150,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
     public void updateTagPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse
-        ContentProperties properties = getContentProperties();
+        ArtifactTagProperties properties = getTagProperties();
         String tag = getTag();
         client.updateTagPropertiesWithResponse(tag, properties).subscribe();
         // END: com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse
@@ -160,7 +159,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
     public void updateManifestPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateManifestProperties
-        ContentProperties properties = getContentProperties();
+        ArtifactManifestProperties properties = getArtifactManifestProperties();
         client.updateManifestProperties(properties).subscribe();
         // END: com.azure.containers.containerregistry.async.registryartifact.updateManifestProperties
     }
@@ -168,7 +167,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
     public void updateManifestPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
         // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateManifestPropertiesWithResponse
-        ContentProperties properties = getContentProperties();
+        ArtifactManifestProperties properties = getArtifactManifestProperties();
         client.updateManifestPropertiesWithResponse(properties).subscribe();
         // END: com.azure.containers.containerregistry.async.registryartifact.updateManifestPropertiesWithResponse
     }
@@ -178,7 +177,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private ContentProperties getContentProperties() {
+    private ArtifactTagProperties getTagProperties() {
         return null;
     }
 
@@ -187,16 +186,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private String getTagOrDigest() {
-        return null;
-    }
-
-    /**
-     * Implementation not provided for this method.
-     *
-     * @return {@code null}
-     */
-    private String getTag() {
+    private ArtifactManifestProperties getArtifactManifestProperties() {
         return null;
     }
 
@@ -206,6 +196,15 @@ public class RegistryArtifactAsyncJavaDocSnippets {
      * @return {@code null}
      */
     private String getDigest() {
+        return null;
+    }
+
+    /**
+     * Implementation not provided for this method.
+     *
+     * @return {@code null}
+     */
+    private String getTag() {
         return null;
     }
 

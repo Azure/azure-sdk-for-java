@@ -52,6 +52,13 @@ public interface CognitiveServicesManagementClient {
     AccountsClient getAccounts();
 
     /**
+     * Gets the DeletedAccountsClient object to access its operations.
+     *
+     * @return the DeletedAccountsClient object.
+     */
+    DeletedAccountsClient getDeletedAccounts();
+
+    /**
      * Gets the ResourceSkusClient object to access its operations.
      *
      * @return the ResourceSkusClient object.

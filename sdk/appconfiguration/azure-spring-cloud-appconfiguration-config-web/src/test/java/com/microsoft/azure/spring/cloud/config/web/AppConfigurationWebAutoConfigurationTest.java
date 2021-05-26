@@ -9,8 +9,6 @@ import static com.microsoft.azure.spring.cloud.config.web.TestConstants.TEST_STO
 import static com.microsoft.azure.spring.cloud.config.web.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.microsoft.azure.spring.cloud.config.AppConfigurationAutoConfiguration;
-import com.microsoft.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration;
 import org.junit.Test;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -18,8 +16,12 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.cloud.bus.BusProperties;
+import org.springframework.cloud.bus.event.PathDestinationFactory;
 import org.springframework.cloud.bus.event.RefreshRemoteApplicationEvent;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
+
+import com.microsoft.azure.spring.cloud.config.AppConfigurationAutoConfiguration;
+import com.microsoft.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration;
 
 public class AppConfigurationWebAutoConfigurationTest {
 
@@ -28,7 +30,7 @@ public class AppConfigurationWebAutoConfigurationTest {
             propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME))
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class,
             AppConfigurationAutoConfiguration.class, AppConfigurationWebAutoConfiguration.class,
-            RefreshAutoConfiguration.class))
+            RefreshAutoConfiguration.class, PathDestinationFactory.class))
         .withUserConfiguration(BusProperties.class);
 
     @Test
@@ -67,9 +69,19 @@ public class AppConfigurationWebAutoConfigurationTest {
     }
 
     @Test
+    public void pushRefresh() {
+        contextRunner
+            .run(context -> {
+                assertThat(context)
+                    .hasBean("appConfigurationRefreshEndpoint");
+            });
+    }
+
+    @Test
     public void busRefresh() {
         contextRunner
-            .run(context -> assertThat(context)
+            .run(context -> 
+            assertThat(context)
                 .hasBean("appConfigurationBusRefreshEndpoint"));
     }
 

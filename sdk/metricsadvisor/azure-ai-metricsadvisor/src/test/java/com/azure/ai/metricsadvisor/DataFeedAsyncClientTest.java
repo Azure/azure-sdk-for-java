@@ -45,8 +45,6 @@ import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_COSMOS
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_TABLE;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.ELASTIC_SEARCH;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.HTTP_REQUEST;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.INFLUX_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MONGO_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MYSQL_DB;
@@ -524,35 +522,6 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     }
 
     /**
-     * Verifies valid azure http data feed created for required data feed details.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void createHttpRequestDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        try {
-            // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, HTTP_REQUEST);
-                    })
-                    .verifyComplete(), HTTP_REQUEST);
-        } finally {
-            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
-                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-
-                StepVerifier.create(deleteDataFeed)
-                    .verifyComplete();
-            }
-        }
-    }
-
-    /**
      * Verifies valid influx data feed created for required data feed details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -690,35 +659,6 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
                     })
                     .verifyComplete(), AZURE_DATA_LAKE_STORAGE_GEN2);
-        } finally {
-            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
-                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
-                StepVerifier.create(deleteDataFeed)
-                    .verifyComplete();
-            }
-        }
-    }
-
-    /**
-     * Verifies valid elastic search data feed created for required data feed details.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void createElasticsearchDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        try {
-            // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
-            creatDataFeedRunner(expectedDataFeed ->
-
-                // Act & Assert
-                StepVerifier.create(client.createDataFeed(expectedDataFeed))
-                    .assertNext(createdDataFeed -> {
-                        assertNotNull(createdDataFeed);
-                        dataFeedId.set(createdDataFeed.getId());
-                        validateDataFeedResult(expectedDataFeed, createdDataFeed, ELASTIC_SEARCH);
-                    })
-                    .verifyComplete(), ELASTIC_SEARCH);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
