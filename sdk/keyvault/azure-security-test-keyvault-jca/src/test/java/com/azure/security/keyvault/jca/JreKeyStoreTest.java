@@ -10,6 +10,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -23,19 +24,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class JreKeyStoreTest {
-    @Test
-    public void testJreKS() throws Exception {
+    @BeforeAll
+    public static void init(){
         /*
          * Add JCA provider.
          */
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
+        /*
+         * Set system properties.
+         */
+
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
+    }
+
+    @Test
+    public void testJreKS() throws Exception {
+
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         ks.load(null);
         /*

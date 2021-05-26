@@ -41,12 +41,12 @@ public final class JreCertificates implements AzureCertificates {
     /**
      * Stores the jre key store aliases.
      */
-    private static final List<String> JRE_KS_ALIASES;
+    private static final List<String> ALIASES;
 
     /**
      * Stores the jre key store certificates.
      */
-    private static final  Map<String, Certificate> JRE_KS_CERTS;
+    private static final  Map<String, Certificate> CERTS;
 
     /**
      * Stores the singleton
@@ -63,8 +63,8 @@ public final class JreCertificates implements AzureCertificates {
                 LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
             }
         }
-        JRE_KS_ALIASES = jreKsAliases;
-        JRE_KS_CERTS = JRE_KS_ALIASES.stream()
+        ALIASES = jreKsAliases;
+        CERTS = ALIASES.stream()
             .collect(Collectors.toMap(a -> a, a -> {
                 try {
                     return JRE_KEY_STORE.getCertificate(a);
@@ -89,12 +89,12 @@ public final class JreCertificates implements AzureCertificates {
 
     @Override
     public List<String> getAliases() {
-        return JRE_KS_ALIASES;
+        return ALIASES;
     }
 
     @Override
     public Map<String, Certificate> getCertificates() {
-        return JRE_KS_CERTS;
+        return CERTS;
     }
 
     @Override
