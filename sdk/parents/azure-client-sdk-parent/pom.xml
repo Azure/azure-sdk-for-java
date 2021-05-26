@@ -947,41 +947,6 @@
       </build>
     </profile>
 
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>readme-codesnippet-windows</id>
-      <activation>
-        <property>
-          <name>readme-codesnippet-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>code-snippet-for-readme-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>${project.basedir}/README.md</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <!-- Profiles for updating README file using embedme tool to inject code snippets from compilable Java source files.
      Activate the profile below to update README files when corresponding Java files are updated. -->
     <profile>
@@ -1005,9 +970,10 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
+                    <argument>../../../eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
@@ -1018,44 +984,7 @@
       </build>
     </profile>
 
-    <profile>
-      <!-- separate profile for windows as the executable on windows is named npx.cmd and npx on other os families -->
-      <id>verify-readme-windows</id>
-      <activation>
-        <property>
-          <name>verify-readme-windows</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>verify-readme-codesnippet-windows</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>npx.cmd</executable>
-                  <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
-                    <argument>${project.basedir}/README.md</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Verify that there are no changes to readme file. Build fails if the there's a difference in README
-     after running the embedme tool. -->
+    <!-- Verify that there are no changes to readme file. Build fails if the there's a difference in README after running the embedme tool. -->
     <profile>
       <id>verify-readme</id>
       <activation>
@@ -1077,11 +1006,12 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npx</executable>
+                  <executable>python</executable>
                   <arguments>
-                    <argument>embedme</argument>
-                    <argument>--verify</argument>
+                    <argument>../../../eng/scripts/invoke_embedme.py</argument>
+                    <argument>--readme</argument>
                     <argument>${project.basedir}/README.md</argument>
+                    <argument>--verify</argument>
                   </arguments>
                 </configuration>
               </execution>
