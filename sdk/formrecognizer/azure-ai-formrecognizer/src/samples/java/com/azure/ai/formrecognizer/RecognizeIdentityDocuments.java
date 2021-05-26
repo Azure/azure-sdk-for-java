@@ -39,7 +39,7 @@ public class RecognizeIdentityDocuments {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/identityDocuments/license.jpg");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);

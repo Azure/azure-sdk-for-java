@@ -149,7 +149,7 @@ public final class GeoBoundingBox {
      * @throws IndexOutOfBoundsException If the {@link GeoBoundingBox} doesn't have altitude coordinates and {@code i}
      * is greater than {@code 3} or {@link GeoBoundingBox} has altitude coordinates and {@code i} is greater than
      */
-    public double get(int i) {
+    double get(int i) {
         if (minAltitude != null && maxAltitude != null) {
             switch (i) {
                 case 0:

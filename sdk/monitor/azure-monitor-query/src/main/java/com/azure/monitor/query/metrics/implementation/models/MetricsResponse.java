@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class MetricsResponse {
     /*
-     * The integer value representing the cost of the query, for data case.
+     * The integer value representing the relative cost of the query.
      */
     @JsonProperty(value = "cost")
     private Integer cost;
@@ -69,7 +69,7 @@ public final class MetricsResponse {
     }
 
     /**
-     * Get the cost property: The integer value representing the cost of the query, for data case.
+     * Get the cost property: The integer value representing the relative cost of the query.
      *
      * @return the cost value.
      */
@@ -78,7 +78,7 @@ public final class MetricsResponse {
     }
 
     /**
-     * Set the cost property: The integer value representing the cost of the query, for data case.
+     * Set the cost property: The integer value representing the relative cost of the query.
      *
      * @param cost the cost value to set.
      * @return the MetricsResponse object itself.

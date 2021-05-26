@@ -3,16 +3,15 @@
 
 package com.azure.security.keyvault.jca;
 
+import java.io.IOException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.List;
 
 public class PropertyConvertorUtils {
-
-    public static final List<String> SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_URI",
-        "AZURE_KEYVAULT_TENANT_ID",
-        "AZURE_KEYVAULT_CLIENT_ID",
-        "AZURE_KEYVAULT_CLIENT_SECRET");
 
     public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
         key.forEach(
@@ -25,8 +24,12 @@ public class PropertyConvertorUtils {
         );
     }
 
+    public static final List<String> SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_URI",
+        "AZURE_KEYVAULT_TENANT_ID",
+        "AZURE_KEYVAULT_CLIENT_ID",
+        "AZURE_KEYVAULT_CLIENT_SECRET");
 
-    public static KeyStore getKeyVaultKeyStore() throws Exception {
+    public static KeyStore getKeyVaultKeyStore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getenv("AZURE_KEYVAULT_URI"),
@@ -36,4 +39,5 @@ public class PropertyConvertorUtils {
         keyStore.load(parameter);
         return keyStore;
     }
+
 }

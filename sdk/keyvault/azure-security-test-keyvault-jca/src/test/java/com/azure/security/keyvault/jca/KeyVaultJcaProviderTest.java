@@ -8,9 +8,8 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.security.KeyStore;
 import java.security.Security;
+import java.util.Arrays;
 
-import static com.azure.security.keyvault.jca.PropertyConvertorUtils.SYSTEM_PROPERTIES;
-import static com.azure.security.keyvault.jca.PropertyConvertorUtils.getKeyVaultKeyStore;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -27,9 +26,14 @@ public class KeyVaultJcaProviderTest {
      */
     @Test
     public void testGetCertificate() throws Exception {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
         Security.addProvider(new KeyVaultJcaProvider());
-        KeyStore keyStore = getKeyVaultKeyStore();
-        assertNotNull(keyStore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
+        KeyStore keystore = PropertyConvertorUtils.getKeyVaultKeyStore();
+        assertNotNull(keystore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
     }
 }
