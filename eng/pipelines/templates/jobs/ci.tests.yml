@@ -56,8 +56,8 @@ jobs:
 
     steps:
       - script: |
-          ls $JAVA_HOME/jre/lib/security
-        displayName: Dump security profiles
+          cat $JAVA_HOME/jre/conf/security/java.security
+        displayName: Dump security policy
 
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
