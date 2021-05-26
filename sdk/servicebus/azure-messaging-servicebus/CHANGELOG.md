@@ -1,5 +1,5 @@
 # Release History
-## 7.2.2 (2021-05-25)
+## 7.2.2 (2021-05-26)
 ### Fixed
 - Fixed some connection retry issues when network errors happen.
 - Fixed an issue that caused `ServiceBusSenderClient` to keep running after it's already closed.
