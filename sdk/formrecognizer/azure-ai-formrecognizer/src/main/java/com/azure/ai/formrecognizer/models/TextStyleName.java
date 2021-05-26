@@ -12,7 +12,7 @@ import java.util.Collection;
 /**
  * Defines values for TextStyleName.
  *
- * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+ * This class is introduced since {@link FormRecognizerServiceVersion#V2_1}.
  */
 public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
     /** Static value other for TextStyleName. */
