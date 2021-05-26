@@ -7,8 +7,8 @@ import com.azure.spring.integration.core.api.SubscribeOperation;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class SubscribeOperationTest<O extends SubscribeOperation> {
 

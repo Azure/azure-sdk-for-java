@@ -5,18 +5,15 @@ package com.azure.spring.integration.test.support.reactor;
 
 import com.azure.spring.integration.core.api.reactor.SendOperation;
 import com.google.common.collect.ImmutableMap;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SendOperationTest<O extends SendOperation> {
@@ -28,19 +25,9 @@ public abstract class SendOperationTest<O extends SendOperation> {
     protected Mono<Void> mono = Mono.empty();
     protected String payload = "payload";
     protected O sendOperation;
-    private AutoCloseable closeable;
 
     protected abstract void setupError(String errorMessage);
 
-    @BeforeEach
-    void setup() {
-        this.closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void close() throws Exception {
-        this.closeable.close();
-    }
 
     @Test
     public void testSend() {
