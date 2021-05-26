@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
@@ -90,6 +91,8 @@ public final class RecognizeReceiptsOptions {
      * Get the locale information for the receipt.
      * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
      *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+     *
      * @return the locale value.
      */
     public FormRecognizerLocale getLocale() {
@@ -99,6 +102,8 @@ public final class RecognizeReceiptsOptions {
     /**
      * Set the locale information for the receipt.
      * Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US.
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @param locale the locale value to set.
      * @return the updated {@code RecognizeReceiptsOptions} value.
@@ -114,6 +119,8 @@ public final class RecognizeReceiptsOptions {
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
      *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+     *
      * @return the list of custom page numbers for a multi page document.
      */
     public List<String> getPages() {
@@ -125,6 +132,8 @@ public final class RecognizeReceiptsOptions {
      * pages you want to get the recognized result for.
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @param pages the custom page numbers value to set.
      * @return the updated {@code RecognizeReceiptsOptions} value.

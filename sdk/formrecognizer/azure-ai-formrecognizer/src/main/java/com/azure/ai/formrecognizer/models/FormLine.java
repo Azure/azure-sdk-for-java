@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormLineHelper;
 import com.azure.core.annotation.Immutable;
 
@@ -94,6 +95,8 @@ public final class FormLine extends FormElement {
 
     /**
      * Get the appearance of the text line.
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the appearance of the text line.
      */

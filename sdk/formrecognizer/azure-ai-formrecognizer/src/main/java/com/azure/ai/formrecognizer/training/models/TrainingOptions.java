@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
@@ -66,6 +67,8 @@ public final class TrainingOptions {
     /**
      * Get the optional model name defined by the user.
      *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+     *
      * @return the modelName.
      */
     public String getModelName() {
@@ -74,6 +77,8 @@ public final class TrainingOptions {
 
     /**
      * Set the optional model name defined by the user.
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @param modelName the user defined model name to set.
      *

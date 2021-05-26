@@ -3,10 +3,13 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
  * Defines values for the order in which recognized text lines are returned.
+ *
+ * This class is introduced since {@link FormRecognizerServiceVersion#V2_1}.
  */
 public final class FormReadingOrder extends ExpandableStringEnum<FormReadingOrder> {
 

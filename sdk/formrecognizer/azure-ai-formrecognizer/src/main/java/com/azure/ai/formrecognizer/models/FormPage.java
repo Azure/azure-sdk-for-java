@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
 import com.azure.core.annotation.Immutable;
@@ -160,6 +161,8 @@ public final class FormPage {
 
     /**
      * Get the selection marks in the input document.
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the selection marks.
      */

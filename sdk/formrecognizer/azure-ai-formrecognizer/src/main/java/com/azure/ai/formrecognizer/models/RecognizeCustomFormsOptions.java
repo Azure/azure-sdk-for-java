@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
@@ -91,6 +92,8 @@ public final class RecognizeCustomFormsOptions {
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
      *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
+     *
      * @return the list of custom page numbers for a multi page document.
      */
     public List<String> getPages() {
@@ -102,6 +105,8 @@ public final class RecognizeCustomFormsOptions {
      * pages you want to get the recognized result for.
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
+     *
+     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @param pages the custom page numbers value to set.
      * @return the updated {@code RecognizeCustomFormsOptions} value.
