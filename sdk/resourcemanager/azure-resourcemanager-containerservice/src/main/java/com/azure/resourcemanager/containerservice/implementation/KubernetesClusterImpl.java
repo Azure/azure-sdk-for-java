@@ -23,6 +23,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPool
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
@@ -182,6 +183,11 @@ public class KubernetesClusterImpl
     @Override
     public boolean enableRBAC() {
         return this.innerModel().enableRbac();
+    }
+
+    @Override
+    public PowerState powerState() {
+        return this.innerModel().powerState();
     }
 
     private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {

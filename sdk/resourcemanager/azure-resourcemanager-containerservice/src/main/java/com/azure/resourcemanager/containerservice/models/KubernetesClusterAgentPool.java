@@ -40,20 +40,28 @@ public interface KubernetesClusterAgentPool
     /** @return the ID of the virtual network used by each virtual machine in the agent pool */
     String networkId();
 
+    /** @return the list of availability zones */
     List<String> availabilityZones();
 
+    /** @return the map of node labels */
     Map<String, String> nodeLabels();
 
+    /** @return the list of node taints */
     List<String> nodeTaints();
 
+    /** @return the power state, Running or Stopped */
     PowerState powerState();
 
+    /** @return the number of agents (VMs) to host docker containers */
     int nodeCount();
 
+    /** @return whether auto-scaling is enabled */
     boolean isAutoScalingEnabled();
 
+    /** @return the minimum number of nodes for auto-scaling */
     int minimumNodeCount();
 
+    /** @return the maximum number of nodes for auto-scaling */
     int maximumNodeCount();
 
     // Fluent interfaces
@@ -191,7 +199,7 @@ public interface KubernetesClusterAgentPool
          */
         interface WithAutoScaling<ParentT> {
             /**
-             * Enabling the auto-scaling with maximum/minimum number of nodes.
+             * Enables the auto-scaling with maximum/minimum number of nodes.
              *
              * @param minimumNodeCount the minimum number of nodes for auto-scaling.
              * @param maximumNodeCount the maximum number of nodes for auto-scaling.
@@ -297,6 +305,7 @@ public interface KubernetesClusterAgentPool
     interface Update<ParentT>
         extends Settable<ParentT>,
             UpdateStages.WithAgentPoolVirtualMachineCount<ParentT>,
+            UpdateStages.WithAutoScaling<ParentT>,
             UpdateStages.WithAgentPoolMode<ParentT> { }
 
     /** Grouping of agent pool update stages. */
@@ -333,6 +342,29 @@ public interface KubernetesClusterAgentPool
              * @return the next stage of the update
              */
             Update<ParentT> withAgentPoolMode(AgentPoolMode agentPoolMode);
+        }
+
+        /**
+         * The stage of a container service agent pool definition allowing to specify auto-scaling.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithAutoScaling<ParentT> {
+            /**
+             * Enables the auto-scaling with maximum/minimum number of nodes.
+             *
+             * @param minimumNodeCount the minimum number of nodes for auto-scaling.
+             * @param maximumNodeCount the maximum number of nodes for auto-scaling.
+             * @return the next stage of the update
+             */
+            Update<ParentT> withAutoScaling(int minimumNodeCount, int maximumNodeCount);
+
+            /**
+             * Disables the auto-scaling with maximum/minimum number of nodes.
+             *
+             * @return the next stage of the update
+             */
+            Update<ParentT> withoutAutoScaling();
         }
     }
 }

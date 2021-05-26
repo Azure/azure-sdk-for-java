@@ -28,10 +28,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
-    private static final String SSH_KEY =
-        "ssh-rsa"
-            + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD"
-            + " azjava@javalib.Com";
+    private static final String SSH_KEY = sshPublicKey();
 
     @Test
     public void canCRUDKubernetesCluster() throws Exception {
@@ -144,6 +141,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName = generateRandomResourceName("ap0", 10);
         String agentPoolName1 = generateRandomResourceName("ap1", 10);
         String agentPoolName2 = generateRandomResourceName("ap2", 10);
+        String agentPoolName3 = generateRandomResourceName("ap2", 10);
         String servicePrincipalClientId = "spId";
         String servicePrincipalSecret = "spSecret";
 
@@ -193,6 +191,10 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("30s"))
             .create();
 
+        System.out.println(new String(kubernetesCluster.adminKubeConfigContent(), StandardCharsets.UTF_8));
+
+        Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
+
         KubernetesClusterAgentPool agentPoolProfile = kubernetesCluster.agentPools().get(agentPoolName);
         Assertions.assertEquals(3, agentPoolProfile.nodeCount());
         Assertions.assertFalse(agentPoolProfile.isAutoScalingEnabled());
@@ -211,11 +213,23 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(0, agentPoolProfile2.nodeCount());
 
         kubernetesCluster.update()
-            .withoutAgentPool(agentPoolName1)
-            .withoutAgentPool(agentPoolName2)
+            .updateAgentPool(agentPoolName1)
+                .withoutAutoScaling()
+                .parent()
             .apply();
 
-        Assertions.assertEquals(1, kubernetesCluster.agentPools().size());
+        kubernetesCluster.update()
+            .withoutAgentPool(agentPoolName1)
+            .withoutAgentPool(agentPoolName2)
+            .defineAgentPool(agentPoolName3)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                .withAgentPoolVirtualMachineCount(0)
+                .attach()
+            .apply();
+
+        Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
+
+        KubernetesClusterAgentPool agentPoolProfile3 = kubernetesCluster.agentPools().get(agentPoolName3);
     }
 
     /**

@@ -80,6 +80,9 @@ public interface KubernetesCluster
     /** @return true if Kubernetes Role-Based Access Control is enabled */
     boolean enableRBAC();
 
+    /** @return the power state */
+    PowerState powerState();
+
     // Fluent interfaces
 
     /** Interface for all the definitions related to a Kubernetes cluster. */

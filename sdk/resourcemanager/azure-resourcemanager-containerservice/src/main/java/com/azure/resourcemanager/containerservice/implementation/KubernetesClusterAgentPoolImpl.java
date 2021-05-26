@@ -231,6 +231,14 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
+    public Update<KubernetesClusterImpl> withoutAutoScaling() {
+        innerModel().withEnableAutoScaling(false);
+        innerModel().withMinCount(null);
+        innerModel().withMaxCount(null);
+        return this;
+    }
+
+    @Override
     public KubernetesClusterAgentPoolImpl withAvailabilityZones(Integer... zones) {
         innerModel().withAvailabilityZones(Arrays.stream(zones).map(String::valueOf).collect(Collectors.toList()));
         return this;
@@ -238,7 +246,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public KubernetesClusterAgentPoolImpl withNodeLabels(Map<String, String> nodeLabels) {
-        innerModel().withNodeLabels(new TreeMap<>(nodeLabels));
+        innerModel().withNodeLabels(nodeLabels == null ? null : new TreeMap<>(nodeLabels));
         return this;
     }
 
