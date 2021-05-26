@@ -337,17 +337,17 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /*
-     * Code snippet for {@link MetricsAdvisorAsyncClient#addFeeddback(String, MetricFeedback)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#addFeedback(String, MetricFeedback)}.
      */
     public void createMetricFeedback() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeeddback#String-MetricFeedback
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeedback#String-MetricFeedback
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final MetricChangePointFeedback metricChangePointFeedback
             = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT);
 
-        metricsAdvisorAsyncClient.addFeeddback(metricId, metricChangePointFeedback)
+        metricsAdvisorAsyncClient.addFeedback(metricId, metricChangePointFeedback)
             .subscribe(metricFeedback -> {
                 MetricChangePointFeedback createdMetricChangePointFeedback = (MetricChangePointFeedback) metricFeedback;
                 System.out.printf("Data Feed Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
@@ -358,7 +358,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Data Feed Metric feedback end time: %s%n",
                     createdMetricChangePointFeedback.getEndTime());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeeddback#String-MetricFeedback
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeedback#String-MetricFeedback
     }
 
     /**

@@ -560,10 +560,10 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
     }
 
     /*
-     * Code snippet for {@link MetricsAdvisorClient#addFeeddback(String, MetricFeedback)}.
+     * Code snippet for {@link MetricsAdvisorClient#addFeedback(String, MetricFeedback)}.
      */
     public void createMetricFeedback() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeeddback#String-MetricFeedback
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
@@ -581,7 +581,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
             createdMetricChangePointFeedback.getStartTime());
         System.out.printf("Data Feed Metric feedback end time: %s%n",
             createdMetricChangePointFeedback.getEndTime());
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeeddback#String-MetricFeedback
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback
     }
 
     /**

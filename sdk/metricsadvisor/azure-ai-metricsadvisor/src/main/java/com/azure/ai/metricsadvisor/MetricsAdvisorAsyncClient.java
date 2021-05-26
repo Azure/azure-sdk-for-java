@@ -1273,7 +1273,7 @@ public class MetricsAdvisorAsyncClient {
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeeddback#String-MetricFeedback}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.addFeedback#String-MetricFeedback}
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -1282,7 +1282,7 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException If {@code metricId}, {@code metricFeedback.dimensionFilter} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricFeedback> addFeeddback(String metricId, MetricFeedback metricFeedback) {
+    public Mono<MetricFeedback> addFeedback(String metricId, MetricFeedback metricFeedback) {
         return addFeedbackWithResponse(metricId, metricFeedback).flatMap(FluxUtil::toMono);
     }
 
