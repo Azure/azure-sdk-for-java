@@ -20,11 +20,7 @@
 
 import argparse
 import os
-import subprocess
 import sys
-
-# From this file get to the root path of the repo.
-root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
 
 # NPX command for Windows OS.
 windows_command = 'npx.cmd'
