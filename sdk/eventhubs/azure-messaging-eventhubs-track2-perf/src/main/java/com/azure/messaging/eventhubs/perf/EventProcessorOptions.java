@@ -28,6 +28,9 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
     @Parameter(names = {"--batch"}, description = "Use batched receive.")
     private boolean isBatched = false;
 
+    @Parameter(names = {"--publish"}, description = "Switch to indicate whether to publish messages or not.")
+    private boolean publishMessages = false;
+
     /**
      * Gets the connection string for the storage account.
      *
@@ -71,5 +74,14 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
      */
     public boolean isBatched() {
         return isBatched;
+    }
+
+    /**
+     * Gets whether to publish messages or not.
+     *
+     * @return Gets whether to publish messages to the event hub before running the test.
+     */
+    public boolean publishMessages() {
+        return publishMessages;
     }
 }

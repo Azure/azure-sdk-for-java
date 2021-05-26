@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
@@ -12,6 +13,7 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -64,7 +66,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                 "Test duration is too short. It should be at least " + MINIMUM_DURATION + " seconds"));
         }
 
-        final String containerName = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHMMss"));
+        final String containerName = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHmmss"));
 
         containerClient = new BlobContainerClientBuilder()
             .connectionString(options.getStorageConnectionString())
@@ -90,12 +92,18 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
                         return Flux.fromIterable(properties.getPartitionIds());
                     })
-                    // .flatMap(partitionId -> sendMessages(asyncClient, partitionId, options.getNumberOfEvents()))
+                    .flatMap(partitionId -> {
+                        if (options.publishMessages()) {
+                            return sendMessages(asyncClient, partitionId, options.getEventsToSend());
+                        } else {
+                            return Mono.empty();
+                        }
+                    })
                     .then();
 
                 return Mono.when(createContainerMono, sendMessagesMono);
             },
-            asyncClient -> asyncClient.close());
+            EventHubProducerAsyncClient::close);
     }
 
     @Override
@@ -109,8 +117,8 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             return Mono.error(new RuntimeException("ContainerClient should have been initialized."));
         }
 
-        return Mono.using(
-            () -> {
+        return Mono.usingWhen(
+            Mono.fromCallable(() -> {
                 System.out.println("Starting run.");
 
                 final BlobCheckpointStore checkpointStore = new BlobCheckpointStore(containerClient);
@@ -179,16 +187,17 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                 }
 
                 return builder.buildEventProcessorClient();
-            },
+            }),
             processor -> {
                 startTime = System.nanoTime();
                 processor.start();
-                return Mono.when(Mono.delay(testDuration));
+                return Mono.delay(testDuration).then();
             },
             processor -> {
                 System.out.println("Completed run.");
                 endTime = System.nanoTime();
-                processor.stop();
+                return Mono.delay(Duration.ofMillis(500), Schedulers.boundedElastic())
+                    .then(Mono.fromRunnable(() -> processor.stop()));
             });
     }
 
