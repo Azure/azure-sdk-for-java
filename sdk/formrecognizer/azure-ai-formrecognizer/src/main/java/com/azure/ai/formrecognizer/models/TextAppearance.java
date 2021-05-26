@@ -3,14 +3,11 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.TextAppearanceHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
  * The TextAppearance model representing the appearance of the text line.
- *
- * This class is introduced since {@link FormRecognizerServiceVersion#V2_1}.
  */
 @Immutable
 public final class TextAppearance {

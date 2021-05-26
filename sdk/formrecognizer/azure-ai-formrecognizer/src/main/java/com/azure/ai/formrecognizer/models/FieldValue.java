@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -212,8 +211,6 @@ public final class FieldValue {
     /**
      * Gets the value of the field as a selection mark state.
      *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
-     *
      * @return the value of the field as an unmodifiable selection mark state.
      * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
      * {@link FieldValueType#SELECTION_MARK_STATE}.
@@ -228,8 +225,6 @@ public final class FieldValue {
 
     /**
      * Gets the value of the field as a country or region in the world.
-     *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the value of the field as COUNTRY_REGION.
      * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not

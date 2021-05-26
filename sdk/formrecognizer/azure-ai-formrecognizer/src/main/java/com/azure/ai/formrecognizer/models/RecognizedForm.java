@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
 import com.azure.core.annotation.Immutable;
 
@@ -114,8 +113,6 @@ public final class RecognizedForm {
     /**
      * Get the confidence of the form type identified by the model.
      *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
-     *
      * @return the formTypeConfidence value.
      */
     public Float getFormTypeConfidence() {
@@ -124,8 +121,6 @@ public final class RecognizedForm {
 
     /**
      * Get the identifier of the model that was used for recognition, if not using a prebuilt model.
-     *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the modelId value.
      */

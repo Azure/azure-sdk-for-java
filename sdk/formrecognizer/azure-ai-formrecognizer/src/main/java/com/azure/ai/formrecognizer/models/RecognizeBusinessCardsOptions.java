@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
@@ -11,8 +10,6 @@ import java.util.List;
 
 /**
  * Options that may be passed when using recognize business card APIs on Form Recognizer client.
- *
- * This class is introduced since {@link FormRecognizerServiceVersion#V2_1}.
  */
 @Fluent
 public final class RecognizeBusinessCardsOptions {
