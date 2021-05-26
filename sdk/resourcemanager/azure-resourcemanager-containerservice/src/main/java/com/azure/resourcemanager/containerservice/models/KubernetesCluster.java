@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.core.management.Region;
