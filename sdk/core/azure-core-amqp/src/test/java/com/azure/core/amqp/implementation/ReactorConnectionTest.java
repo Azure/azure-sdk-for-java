@@ -422,7 +422,7 @@ class ReactorConnectionTest {
                 assertTrue(error instanceof AmqpException);
 
                 final AmqpException amqpException = (AmqpException) error;
-                assertFalse(amqpException.isTransient());
+                assertTrue(amqpException.isTransient());
                 assertNull(amqpException.getErrorCondition());
 
                 assertNotNull(amqpException.getMessage());
@@ -583,7 +583,7 @@ class ReactorConnectionTest {
                 Assertions.fail("Exception was not the correct type: " + error);
             }
 
-            assertFalse(amqpException.isTransient());
+            assertTrue(amqpException.isTransient());
         };
 
         when(event.getTransport()).thenReturn(transport);
