@@ -4,15 +4,12 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
  * The language code supported on the Form Recognizer service.
  * See supported language codes
  * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
- *
- * This class is introduced since {@link FormRecognizerServiceVersion#V2_1}.
  */
 public final class FormRecognizerLanguage extends ExpandableStringEnum<FormRecognizerLanguage> {
     /** Static value af for FormRecognizerLanguage. */

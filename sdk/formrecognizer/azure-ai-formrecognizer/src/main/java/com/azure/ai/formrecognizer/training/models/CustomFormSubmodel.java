@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper;
 import com.azure.core.annotation.Immutable;
 
@@ -89,8 +88,6 @@ public final class CustomFormSubmodel {
 
     /**
      * Get the unique identifier for the submodel.
-     *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the modelId value.
      */

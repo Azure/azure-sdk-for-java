@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
@@ -33,8 +32,6 @@ public final class FormContentType extends ExpandableStringEnum<FormContentType>
 
     /**
      * Static value Line for FormContentType.
-     *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      */
     public static final FormContentType IMAGE_BMP = fromString("image/bmp");
 

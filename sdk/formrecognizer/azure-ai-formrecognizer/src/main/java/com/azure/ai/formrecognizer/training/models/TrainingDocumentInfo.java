@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.TrainingDocumentInfoHelper;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.core.annotation.Immutable;
@@ -102,8 +101,6 @@ public final class TrainingDocumentInfo {
 
     /**
      * Get the Model identifier.
-     *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the {@code modelId} value.
      */

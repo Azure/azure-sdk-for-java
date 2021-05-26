@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.CustomFormModelInfoHelper;
 import com.azure.core.annotation.Immutable;
 
@@ -108,8 +107,6 @@ public final class CustomFormModelInfo {
     /**
      * Get model metadata properties.
      *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
-     *
      * @return the custom model metadata properties.
      */
     public CustomFormModelProperties getCustomModelProperties() {
@@ -118,8 +115,6 @@ public final class CustomFormModelInfo {
 
     /**
      * Get the user defined model display name.
-     *
-     * This property is introduced since {@link FormRecognizerServiceVersion#V2_1}.
      *
      * @return the modelName value.
      */
