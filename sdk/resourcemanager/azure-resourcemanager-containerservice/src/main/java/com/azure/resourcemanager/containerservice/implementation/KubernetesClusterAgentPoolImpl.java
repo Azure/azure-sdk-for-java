@@ -113,17 +113,22 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
-    public int nodeCount() {
+    public int nodeSize() {
         return ResourceManagerUtils.toPrimitiveInt(innerModel().count());
     }
 
     @Override
-    public int minimumNodeCount() {
+    public int maximumPodsPerNode() {
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().maxPods());
+    }
+
+    @Override
+    public int minimumNodeSize() {
         return ResourceManagerUtils.toPrimitiveInt(innerModel().minCount());
     }
 
     @Override
-    public int maximumNodeCount() {
+    public int maximumNodeSize() {
         return ResourceManagerUtils.toPrimitiveInt(innerModel().maxCount());
     }
 
@@ -223,10 +228,10 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
-    public KubernetesClusterAgentPoolImpl withAutoScaling(int minimumNodeCount, int maximumNodeCount) {
+    public KubernetesClusterAgentPoolImpl withAutoScaling(int minimumNodeSize, int maximumNodeSize) {
         innerModel().withEnableAutoScaling(true);
-        innerModel().withMinCount(minimumNodeCount);
-        innerModel().withMaxCount(maximumNodeCount);
+        innerModel().withMinCount(minimumNodeSize);
+        innerModel().withMaxCount(maximumNodeSize);
         return this;
     }
 

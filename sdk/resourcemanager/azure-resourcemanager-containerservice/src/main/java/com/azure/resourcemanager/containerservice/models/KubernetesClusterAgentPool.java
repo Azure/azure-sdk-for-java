@@ -53,16 +53,19 @@ public interface KubernetesClusterAgentPool
     PowerState powerState();
 
     /** @return the number of agents (VMs) to host docker containers */
-    int nodeCount();
+    int nodeSize();
+
+    /** @return the maximum number of pods per node */
+    int maximumPodsPerNode();
 
     /** @return whether auto-scaling is enabled */
     boolean isAutoScalingEnabled();
 
     /** @return the minimum number of nodes for auto-scaling */
-    int minimumNodeCount();
+    int minimumNodeSize();
 
     /** @return the maximum number of nodes for auto-scaling */
-    int maximumNodeCount();
+    int maximumNodeSize();
 
     // Fluent interfaces
 
@@ -201,11 +204,11 @@ public interface KubernetesClusterAgentPool
             /**
              * Enables the auto-scaling with maximum/minimum number of nodes.
              *
-             * @param minimumNodeCount the minimum number of nodes for auto-scaling.
-             * @param maximumNodeCount the maximum number of nodes for auto-scaling.
+             * @param minimumNodeSize the minimum number of nodes for auto-scaling.
+             * @param maximumNodeSize the maximum number of nodes for auto-scaling.
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoScaling(int minimumNodeCount, int maximumNodeCount);
+            WithAttach<ParentT> withAutoScaling(int minimumNodeSize, int maximumNodeSize);
         }
 
         /**
