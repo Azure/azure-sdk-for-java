@@ -33,6 +33,12 @@ public final class StatusCodesBasedTrigger {
     private Integer win32Status;
 
     /*
+     * Request Path
+     */
+    @JsonProperty(value = "path")
+    private String path;
+
+    /*
      * Request Count.
      */
     @JsonProperty(value = "count")
@@ -101,6 +107,26 @@ public final class StatusCodesBasedTrigger {
      */
     public StatusCodesBasedTrigger withWin32Status(Integer win32Status) {
         this.win32Status = win32Status;
+        return this;
+    }
+
+    /**
+     * Get the path property: Request Path.
+     *
+     * @return the path value.
+     */
+    public String path() {
+        return this.path;
+    }
+
+    /**
+     * Set the path property: Request Path.
+     *
+     * @param path the path value to set.
+     * @return the StatusCodesBasedTrigger object itself.
+     */
+    public StatusCodesBasedTrigger withPath(String path) {
+        this.path = path;
         return this;
     }
 

@@ -27,6 +27,7 @@ import com.azure.resourcemanager.resources.implementation.PolicyDefinitionsImpl;
 import com.azure.resourcemanager.resources.implementation.ProvidersImpl;
 import com.azure.resourcemanager.resources.implementation.ResourceGroupsImpl;
 import com.azure.resourcemanager.resources.implementation.SubscriptionsImpl;
+import com.azure.resourcemanager.resources.implementation.TagOperationsImpl;
 import com.azure.resourcemanager.resources.implementation.TenantsImpl;
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
@@ -37,6 +38,7 @@ import com.azure.resourcemanager.resources.models.PolicyDefinitions;
 import com.azure.resourcemanager.resources.models.Providers;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscriptions;
+import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -65,6 +67,8 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     private Subscriptions subscriptions;
     private Tenants tenants;
     private ManagementLocks managementLocks;
+    private TagOperations tagOperations;
+
     private ResourceManagerUtils.InternalRuntimeContext internalContext;
 
     /**
@@ -378,6 +382,16 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
             managementLocks = new ManagementLocksImpl(this);
         }
         return managementLocks;
+    }
+
+    /**
+     * @return the tag management API entry point
+     */
+    public TagOperations tagOperations() {
+        if (tagOperations == null) {
+            tagOperations = new TagOperationsImpl(this);
+        }
+        return tagOperations;
     }
 
     /**

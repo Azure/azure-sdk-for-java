@@ -6,14 +6,12 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.fluent.models.CommonExportPropertiesInner;
-import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the export. */
 @Fluent
-public final class ExportProperties extends CommonExportPropertiesInner {
+public final class ExportProperties extends CommonExportProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportProperties.class);
 
     /*
@@ -60,13 +58,6 @@ public final class ExportProperties extends CommonExportPropertiesInner {
     @Override
     public ExportProperties withDefinition(ExportDefinition definition) {
         super.withDefinition(definition);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ExportProperties withRunHistory(ExportExecutionListResultInner runHistory) {
-        super.withRunHistory(runHistory);
         return this;
     }
 

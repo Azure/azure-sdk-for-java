@@ -9,6 +9,7 @@ import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
+import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
@@ -71,6 +72,15 @@ public class AnomalyDetectionConfigurationAsyncSample {
                         System.out.printf("Updated detection configuration%n"));
             });
 
+        // List configurations
+        System.out.printf("Listing detection configurations%n");
+        PagedFlux<AnomalyDetectionConfiguration> detectionConfigsFlux
+            = advisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs(metricId,
+                new ListMetricAnomalyDetectionConfigsOptions());
+
+        detectionConfigsFlux.doOnNext(detectionConfig -> printDetectionConfiguration(detectionConfig))
+            .blockLast();
+
         // Delete the detection configuration.
         Mono<Void> deleteDetectionConfigMono = updateDetectionConfigMono.flatMap(detectionConfig -> {
             return advisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfiguration(detectionConfig.getId())
@@ -86,14 +96,6 @@ public class AnomalyDetectionConfigurationAsyncSample {
           It is used here to ensure the sample runs to completion.
         */
         deleteDetectionConfigMono.block();
-
-        // List configurations
-        System.out.printf("Listing detection configurations%n");
-        PagedFlux<AnomalyDetectionConfiguration> detectionConfigsFlux
-            = advisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs(metricId);
-
-        detectionConfigsFlux.doOnNext(detectionConfig -> printDetectionConfiguration(detectionConfig))
-            .blockLast();
     }
 
     private static AnomalyDetectionConfiguration prepareDetectionConfigurationObject() {

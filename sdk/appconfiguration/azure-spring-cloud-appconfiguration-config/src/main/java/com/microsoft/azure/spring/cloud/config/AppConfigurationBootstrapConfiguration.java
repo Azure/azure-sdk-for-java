@@ -2,17 +2,9 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
-import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
-import com.microsoft.azure.spring.cloud.config.resource.Connection;
-import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import java.util.List;
 import java.util.Optional;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -23,6 +15,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
+import com.microsoft.azure.spring.cloud.config.resource.Connection;
+import com.microsoft.azure.spring.cloud.config.resource.ConnectionPool;
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 
 @Configuration
 @EnableConfigurationProperties({AppConfigurationProperties.class, AppConfigurationProviderProperties.class})
@@ -38,7 +38,7 @@ public class AppConfigurationBootstrapConfiguration {
         List<ConfigStore> stores = properties.getStores();
 
         for (ConfigStore store : stores) {
-            if (StringUtils.hasText(store.getEndpoint()) && StringUtils.hasText(store.getConnectionString())) {
+            if (store.isEnabled() && StringUtils.hasText(store.getEndpoint()) && StringUtils.hasText(store.getConnectionString())) {
                 pool.put(store.getEndpoint(), new Connection(store.getConnectionString()));
             } else if (StringUtils.hasText(store.getEndpoint())) {
                 AppConfigManagedIdentityProperties msiProps = properties.getManagedIdentity();
@@ -54,11 +54,6 @@ public class AppConfigurationBootstrapConfiguration {
         Assert.notEmpty(pool.getAll(), "Connection string pool for the configuration stores is empty");
 
         return pool;
-    }
-
-    @Bean
-    public CloseableHttpClient closeableHttpClient() {
-        return HttpClients.createSystem();
     }
 
     @Bean

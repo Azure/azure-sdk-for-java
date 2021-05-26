@@ -4,10 +4,9 @@ Azure Key Vault Secrets Spring Boot Starter is Spring starter for [Azure Key Vau
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven](https://maven.apache.org/) 3.0 and above
+- [Environment checklist][environment_checklist]
 
 ### Include the package
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current})
@@ -15,7 +14,7 @@ Azure Key Vault Secrets Spring Boot Starter is Spring starter for [Azure Key Vau
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -45,7 +44,7 @@ described in the “keyvault-name” element of [About keys, secrets, and certif
 
 If your Spring property is using a name that does not honor the Key Vault secret
 key limitation use the following technique as described by 
-[Externalized Configuration](https://docs.spring.io/autorepo/docs/spring-boot/current/reference/html/spring-boot-features.html#boot-features-external-config-placeholders-in-properties) 
+[Externalized Configuration](https://docs.spring.io/autorepo/docs/spring-boot/current/reference/html/features.html#boot-features-external-config-placeholders-in-properties) 
 in the Spring Boot documentation.
 
 ## Examples
@@ -189,7 +188,7 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
  
 
 ## Next steps
@@ -208,6 +207,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

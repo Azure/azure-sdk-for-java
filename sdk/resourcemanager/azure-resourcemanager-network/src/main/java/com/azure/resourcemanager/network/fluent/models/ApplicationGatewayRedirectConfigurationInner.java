@@ -285,6 +285,13 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayRedirectConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

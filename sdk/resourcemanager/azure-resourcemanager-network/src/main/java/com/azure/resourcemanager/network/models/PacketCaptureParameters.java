@@ -25,13 +25,13 @@ public class PacketCaptureParameters {
      * Number of bytes captured per packet, the remaining bytes are truncated.
      */
     @JsonProperty(value = "bytesToCapturePerPacket")
-    private Integer bytesToCapturePerPacket;
+    private Long bytesToCapturePerPacket;
 
     /*
      * Maximum size of the capture output.
      */
     @JsonProperty(value = "totalBytesPerSession")
-    private Integer totalBytesPerSession;
+    private Long totalBytesPerSession;
 
     /*
      * Maximum duration of the capture session in seconds.
@@ -76,7 +76,7 @@ public class PacketCaptureParameters {
      *
      * @return the bytesToCapturePerPacket value.
      */
-    public Integer bytesToCapturePerPacket() {
+    public Long bytesToCapturePerPacket() {
         return this.bytesToCapturePerPacket;
     }
 
@@ -86,7 +86,7 @@ public class PacketCaptureParameters {
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureParameters object itself.
      */
-    public PacketCaptureParameters withBytesToCapturePerPacket(Integer bytesToCapturePerPacket) {
+    public PacketCaptureParameters withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
         this.bytesToCapturePerPacket = bytesToCapturePerPacket;
         return this;
     }
@@ -96,7 +96,7 @@ public class PacketCaptureParameters {
      *
      * @return the totalBytesPerSession value.
      */
-    public Integer totalBytesPerSession() {
+    public Long totalBytesPerSession() {
         return this.totalBytesPerSession;
     }
 
@@ -106,7 +106,7 @@ public class PacketCaptureParameters {
      * @param totalBytesPerSession the totalBytesPerSession value to set.
      * @return the PacketCaptureParameters object itself.
      */
-    public PacketCaptureParameters withTotalBytesPerSession(Integer totalBytesPerSession) {
+    public PacketCaptureParameters withTotalBytesPerSession(Long totalBytesPerSession) {
         this.totalBytesPerSession = totalBytesPerSession;
         return this;
     }

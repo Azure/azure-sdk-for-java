@@ -4,9 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
@@ -16,6 +17,8 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
+import com.azure.resourcemanager.eventgrid.models.TopicSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.TopicUpdateParameters;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.stream.Collectors;
 public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     private TopicInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -50,6 +53,10 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -111,7 +118,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -144,7 +151,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    TopicImpl(String name, EventGridManager serviceManager) {
+    TopicImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new TopicInner();
         this.serviceManager = serviceManager;
         this.topicName = name;
@@ -173,7 +180,7 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
-    TopicImpl(TopicInner innerObject, EventGridManager serviceManager) {
+    TopicImpl(TopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -200,6 +207,22 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         return this;
     }
 
+    public TopicSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.topics().listSharedAccessKeys(resourceGroupName, topicName);
+    }
+
+    public Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
+        return serviceManager.topics().listSharedAccessKeysWithResponse(resourceGroupName, topicName, context);
+    }
+
+    public TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest) {
+        return serviceManager.topics().regenerateKey(resourceGroupName, topicName, regenerateKeyRequest);
+    }
+
+    public TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return serviceManager.topics().regenerateKey(resourceGroupName, topicName, regenerateKeyRequest, context);
+    }
+
     public TopicImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -218,11 +241,6 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
             this.updateTopicUpdateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public TopicImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
-        return this;
     }
 
     public TopicImpl withInputSchema(InputSchema inputSchema) {

@@ -9,14 +9,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The AcsChatThreadPropertiesUpdatedPerUserEventData model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser
+ * event.
+ */
 @Fluent
 public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsChatThreadEventBaseProperties {
     /*
-     * The MRI of the user who updated the thread properties
+     * The communication identifier of the user who updated the thread
+     * properties
      */
-    @JsonProperty(value = "editedBy")
-    private String editedBy;
+    @JsonProperty(value = "editedByCommunicationIdentifier")
+    private CommunicationIdentifierModel editedByCommunicationIdentifier;
 
     /*
      * The time at which the properties of the thread were updated
@@ -31,22 +35,25 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     private Map<String, Object> properties;
 
     /**
-     * Get the editedBy property: The MRI of the user who updated the thread properties.
+     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
+     * properties.
      *
-     * @return the editedBy value.
+     * @return the editedByCommunicationIdentifier value.
      */
-    public String getEditedBy() {
-        return this.editedBy;
+    public CommunicationIdentifierModel getEditedByCommunicationIdentifier() {
+        return this.editedByCommunicationIdentifier;
     }
 
     /**
-     * Set the editedBy property: The MRI of the user who updated the thread properties.
+     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
+     * properties.
      *
-     * @param editedBy the editedBy value to set.
+     * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
-    public AcsChatThreadPropertiesUpdatedPerUserEventData setEditedBy(String editedBy) {
-        this.editedBy = editedBy;
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setEditedByCommunicationIdentifier(
+            CommunicationIdentifierModel editedByCommunicationIdentifier) {
+        this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         return this;
     }
 
@@ -87,6 +94,42 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
      */
     public AcsChatThreadPropertiesUpdatedPerUserEventData setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setCreateTime(OffsetDateTime createTime) {
+        super.setCreateTime(createTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setVersion(Long version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadPropertiesUpdatedPerUserEventData setThreadId(String threadId) {
+        super.setThreadId(threadId);
         return this;
     }
 }

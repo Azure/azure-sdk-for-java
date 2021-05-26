@@ -4,15 +4,18 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.storage.blob.models.BlobAccessPolicy;
+import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerItemProperties;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -22,21 +25,33 @@ import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
-import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobRetentionPolicy;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
+import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
+import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
 import com.azure.storage.file.datalake.models.CopyStatusType;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
+import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
+import com.azure.storage.file.datalake.models.DataLakeCorsRule;
+import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
+import com.azure.storage.file.datalake.models.DataLakeStaticWebsite;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryArrowField;
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization;
@@ -45,7 +60,6 @@ import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryHeaders;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
-import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
@@ -62,17 +76,21 @@ import com.azure.storage.file.datalake.models.LeaseDurationType;
 import com.azure.storage.file.datalake.models.LeaseStateType;
 import com.azure.storage.file.datalake.models.LeaseStatusType;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
+import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 class Transforms {
 
@@ -157,7 +175,8 @@ class Transforms {
             return null;
         }
         return new BlobContainerListDetails()
-            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata());
+            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata())
+            .setRetrieveDeleted(fileSystemListDetails.getRetrieveDeleted());
     }
 
     static ListBlobContainersOptions toListBlobContainersOptions(ListFileSystemsOptions listFileSystemsOptions) {
@@ -240,6 +259,8 @@ class Transforms {
         }
         return new FileSystemItem()
             .setName(blobContainerItem.getName())
+            .setDeleted(blobContainerItem.isDeleted())
+            .setVersion(blobContainerItem.getVersion())
             .setMetadata(blobContainerItem.getMetadata())
             .setProperties(Transforms.toFileSystemItemProperties(blobContainerItem.getProperties()));
     }
@@ -423,9 +444,16 @@ class Transforms {
         } else if (ser instanceof FileQueryArrowSerialization) {
             FileQueryArrowSerialization arrSer = (FileQueryArrowSerialization) ser;
             return new BlobQueryArrowSerialization().setSchema(toBlobQueryArrowSchema(arrSer.getSchema()));
+            // TODO (gapra): uncomment when parquet is released
+        /*} else if (ser instanceof FileQueryParquetSerialization) {
+            return new BlobQueryParquetSerialization(); */
         } else {
-            throw new IllegalArgumentException("serialization must be FileQueryJsonSerialization, "
-                + "FileQueryDelimitedSerialization, or FileQueryArrowSerialization");
+            throw new IllegalArgumentException(
+                String.format("'serialization' must be one of %s, %s, or %s",
+                    FileQueryJsonSerialization.class.getSimpleName(),
+                    FileQueryDelimitedSerialization.class.getSimpleName(),
+                    FileQueryArrowSerialization.class.getSimpleName()
+                    /*FileQueryParquetSerialization.class.getSimpleName()*/));
         }
     }
 
@@ -551,5 +579,183 @@ class Transforms {
                 .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
         }
 
+    }
+
+//    static BlobContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
+//        if (options == null) {
+//            return null;
+//        }
+//        return new BlobContainerRenameOptions(options.getDestinationFileSystemName())
+//            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
+//    }
+
+    static UndeleteBlobContainerOptions toBlobContainerUndeleteOptions(FileSystemUndeleteOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new UndeleteBlobContainerOptions(options.getDeletedFileSystemName(),
+            options.getDeletedFileSystemVersion()).setDestinationContainerName(options.getDestinationFileSystemName());
+    }
+
+    static DataLakeServiceProperties toDataLakeServiceProperties(BlobServiceProperties blobProps) {
+        if (blobProps == null) {
+            return null;
+        }
+
+        return new DataLakeServiceProperties()
+            .setDefaultServiceVersion(blobProps.getDefaultServiceVersion())
+            .setCors(blobProps.getCors().stream().map(Transforms::toDataLakeCorsRule).collect(Collectors.toList()))
+            .setDeleteRetentionPolicy(toDataLakeRetentionPolicy(blobProps.getDeleteRetentionPolicy()))
+            .setHourMetrics(toDataLakeMetrics(blobProps.getHourMetrics()))
+            .setMinuteMetrics(toDataLakeMetrics(blobProps.getMinuteMetrics()))
+            .setLogging(toDataLakeAnalyticsLogging(blobProps.getLogging()))
+            .setStaticWebsite(toDataLakeStaticWebsite(blobProps.getStaticWebsite()));
+    }
+
+    static DataLakeStaticWebsite toDataLakeStaticWebsite(StaticWebsite staticWebsite) {
+        if (staticWebsite == null) {
+            return null;
+        }
+
+        return new DataLakeStaticWebsite()
+            .setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
+            .setEnabled(staticWebsite.isEnabled())
+            .setErrorDocument404Path(staticWebsite.getErrorDocument404Path())
+            .setIndexDocument(staticWebsite.getIndexDocument());
+    }
+
+    static DataLakeAnalyticsLogging toDataLakeAnalyticsLogging(BlobAnalyticsLogging blobLogging) {
+        if (blobLogging == null) {
+            return null;
+        }
+
+        return new DataLakeAnalyticsLogging()
+            .setDelete(blobLogging.isDelete())
+            .setRead(blobLogging.isRead())
+            .setWrite(blobLogging.isWrite())
+            .setRetentionPolicy(toDataLakeRetentionPolicy(blobLogging.getRetentionPolicy()))
+            .setVersion(blobLogging.getVersion());
+    }
+
+    static DataLakeCorsRule toDataLakeCorsRule(BlobCorsRule blobRule) {
+        if (blobRule == null) {
+            return null;
+        }
+
+        return new DataLakeCorsRule()
+            .setAllowedHeaders(blobRule.getAllowedHeaders())
+            .setAllowedMethods(blobRule.getAllowedMethods())
+            .setAllowedOrigins(blobRule.getAllowedOrigins())
+            .setExposedHeaders(blobRule.getExposedHeaders())
+            .setMaxAgeInSeconds(blobRule.getMaxAgeInSeconds());
+    }
+
+    static DataLakeMetrics toDataLakeMetrics(BlobMetrics blobMetrics) {
+        if (blobMetrics == null) {
+            return null;
+        }
+
+        return new DataLakeMetrics()
+            .setEnabled(blobMetrics.isEnabled())
+            .setIncludeApis(blobMetrics.isIncludeApis())
+            .setVersion(blobMetrics.getVersion())
+            .setRetentionPolicy(toDataLakeRetentionPolicy(blobMetrics.getRetentionPolicy()));
+    }
+
+    static DataLakeRetentionPolicy toDataLakeRetentionPolicy(BlobRetentionPolicy blobPolicy) {
+        if (blobPolicy == null) {
+            return null;
+        }
+
+        return new DataLakeRetentionPolicy()
+            .setDays(blobPolicy.getDays())
+            .setEnabled(blobPolicy.isEnabled());
+    }
+
+    static BlobServiceProperties toBlobServiceProperties(DataLakeServiceProperties datalakeProperties) {
+        if (datalakeProperties == null) {
+            return null;
+        }
+
+        return new BlobServiceProperties()
+            .setDefaultServiceVersion(datalakeProperties.getDefaultServiceVersion())
+            .setCors(datalakeProperties.getCors().stream().map(Transforms::toBlobCorsRule).collect(Collectors.toList()))
+            .setDeleteRetentionPolicy(toBlobRetentionPolicy(datalakeProperties.getDeleteRetentionPolicy()))
+            .setHourMetrics(toBlobMetrics(datalakeProperties.getHourMetrics()))
+            .setMinuteMetrics(toBlobMetrics(datalakeProperties.getMinuteMetrics()))
+            .setLogging(toBlobAnalyticsLogging(datalakeProperties.getLogging()))
+            .setStaticWebsite(toBlobStaticWebsite(datalakeProperties.getStaticWebsite()));
+    }
+
+    static StaticWebsite toBlobStaticWebsite(DataLakeStaticWebsite staticWebsite) {
+        if (staticWebsite == null) {
+            return null;
+        }
+
+        return new StaticWebsite()
+            .setDefaultIndexDocumentPath(staticWebsite.getDefaultIndexDocumentPath())
+            .setEnabled(staticWebsite.isEnabled())
+            .setErrorDocument404Path(staticWebsite.getErrorDocument404Path())
+            .setIndexDocument(staticWebsite.getIndexDocument());
+    }
+
+    static BlobAnalyticsLogging toBlobAnalyticsLogging(DataLakeAnalyticsLogging datalakeLogging) {
+        if (datalakeLogging == null) {
+            return null;
+        }
+
+        return new BlobAnalyticsLogging()
+            .setDelete(datalakeLogging.isDelete())
+            .setRead(datalakeLogging.isRead())
+            .setWrite(datalakeLogging.isWrite())
+            .setRetentionPolicy(toBlobRetentionPolicy(datalakeLogging.getRetentionPolicy()))
+            .setVersion(datalakeLogging.getVersion());
+    }
+
+    static BlobCorsRule toBlobCorsRule(DataLakeCorsRule datalakeRule) {
+        if (datalakeRule == null) {
+            return null;
+        }
+
+        return new BlobCorsRule()
+            .setAllowedHeaders(datalakeRule.getAllowedHeaders())
+            .setAllowedMethods(datalakeRule.getAllowedMethods())
+            .setAllowedOrigins(datalakeRule.getAllowedOrigins())
+            .setExposedHeaders(datalakeRule.getExposedHeaders())
+            .setMaxAgeInSeconds(datalakeRule.getMaxAgeInSeconds());
+    }
+
+    static BlobMetrics toBlobMetrics(DataLakeMetrics datalakeMetrics) {
+        if (datalakeMetrics == null) {
+            return null;
+        }
+
+        return new BlobMetrics()
+            .setEnabled(datalakeMetrics.isEnabled())
+            .setIncludeApis(datalakeMetrics.isIncludeApis())
+            .setVersion(datalakeMetrics.getVersion())
+            .setRetentionPolicy(toBlobRetentionPolicy(datalakeMetrics.getRetentionPolicy()));
+    }
+
+    static BlobRetentionPolicy toBlobRetentionPolicy(DataLakeRetentionPolicy datalakePolicy) {
+        if (datalakePolicy == null) {
+            return null;
+        }
+
+        return new BlobRetentionPolicy()
+            .setDays(datalakePolicy.getDays())
+            .setEnabled(datalakePolicy.isEnabled());
+    }
+
+    static PathDeletedItem toPathDeletedItem(BlobItemInternal blobItem) {
+        if (blobItem == null) {
+            return null;
+        }
+        return new PathDeletedItem(blobItem.getName(), false, blobItem.getDeletionId(),
+            blobItem.getProperties().getDeletedTime(), blobItem.getProperties().getRemainingRetentionDays());
+    }
+
+    static PathDeletedItem toPathDeletedItem(BlobPrefix blobPrefix) {
+        return new PathDeletedItem(blobPrefix.getName(), true, null, null, null);
     }
 }

@@ -89,7 +89,7 @@ public class KeyVaultOperation {
                         LOG.error("Error of terminating Timer", runtimeException);
                     }
                 }
-                timer = new Timer();
+                timer = new Timer(true);
                 final TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
@@ -215,7 +215,7 @@ public class KeyVaultOperation {
             result = httpResponseException.getResponse().getStatusCode() < 500;
         } catch (HttpRequestException httpRequestException) {
             LOG.error("An HTTP error occurred while checking key vault connectivity", httpRequestException);
-            result = true;
+            result = false;
         } catch (RuntimeException runtimeException) {
             LOG.error("A runtime error occurred while checking key vault connectivity", runtimeException);
             result = false;

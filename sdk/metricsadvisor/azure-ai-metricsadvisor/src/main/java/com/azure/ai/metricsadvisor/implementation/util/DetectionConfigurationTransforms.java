@@ -3,23 +3,33 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationLogicType;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
+import com.azure.ai.metricsadvisor.implementation.models.ChangeThresholdConditionPatch;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupConfigurationConditionOperator;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
+import com.azure.ai.metricsadvisor.implementation.models.HardThresholdConditionPatch;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.SeriesConfigurationConditionOperator;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
+import com.azure.ai.metricsadvisor.implementation.models.SmartDetectionConditionPatch;
+import com.azure.ai.metricsadvisor.implementation.models.SuppressConditionPatch;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfigurationConditionOperator;
+import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfigurationPatch;
+import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
+import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,6 +41,32 @@ import java.util.stream.Stream;
  * model to REST API wire model and vice-versa.
  */
 public final class DetectionConfigurationTransforms {
+    private DetectionConfigurationTransforms() {
+    }
+
+    public static PagedResponse<AnomalyDetectionConfiguration> fromInnerPagedResponse(
+            PagedResponse<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration>
+                innerResponse) {
+        final List<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration>
+            innerConfigurationList = innerResponse.getValue();
+        List<AnomalyDetectionConfiguration> configurationList;
+        if (innerConfigurationList != null) {
+            configurationList = innerConfigurationList
+                .stream()
+                .map(innerConfiguration -> DetectionConfigurationTransforms.fromInner(innerConfiguration))
+                .collect(Collectors.toList());
+        } else {
+            configurationList = new ArrayList<>();
+        }
+        return new PagedResponseBase<Void, AnomalyDetectionConfiguration>(
+            innerResponse.getRequest(),
+            innerResponse.getStatusCode(),
+            innerResponse.getHeaders(),
+            configurationList,
+            innerResponse.getContinuationToken(),
+            null);
+    }
+
     /**
      * Transform configuration wire model to
      * {@link com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration}.
@@ -164,8 +200,7 @@ public final class DetectionConfigurationTransforms {
             throw logger.logExceptionAsError(
                 new NullPointerException("detectionConfiguration.wholeSeriesCondition is required"));
         }
-        innerDetectionConfiguration.setWholeMetricConfiguration(setupInnerWholeSeriesConfiguration(logger,
-            true,
+        innerDetectionConfiguration.setWholeMetricConfiguration(setupInnerWholeSeriesConfigurationForCreate(logger,
             wholeSeriesCondition));
 
         innerDetectionConfiguration.setDimensionGroupOverrideConfigurations(
@@ -201,8 +236,7 @@ public final class DetectionConfigurationTransforms {
         MetricWholeSeriesDetectionCondition wholeSeriesCondition
             = detectionConfiguration.getWholeSeriesDetectionCondition();
         if (wholeSeriesCondition != null) {
-            innerDetectionConfiguration.setWholeMetricConfiguration(setupInnerWholeSeriesConfiguration(logger,
-                false,
+            innerDetectionConfiguration.setWholeMetricConfiguration(setupInnerWholeSeriesConfigurationForUpdate(
                 wholeSeriesCondition));
         }
 
@@ -226,15 +260,14 @@ public final class DetectionConfigurationTransforms {
     }
 
     private static WholeMetricConfiguration
-        setupInnerWholeSeriesConfiguration(ClientLogger logger,
-        boolean isCreate,
-        MetricWholeSeriesDetectionCondition wholeSeriesCondition) {
+        setupInnerWholeSeriesConfigurationForCreate(ClientLogger logger,
+                                                    MetricWholeSeriesDetectionCondition wholeSeriesCondition) {
         WholeMetricConfiguration innerWholeSeriesCondition = new WholeMetricConfiguration();
         DetectionConditionsOperator crossConditionOperator = wholeSeriesCondition.getCrossConditionsOperator();
         if (crossConditionOperator != null) {
             innerWholeSeriesCondition.setConditionOperator(
-                WholeMetricConfigurationConditionOperator.fromString(crossConditionOperator.toString()));
-        } else if (isCreate && hasMultipleNestedConditions(wholeSeriesCondition)) {
+                AnomalyDetectionConfigurationLogicType.fromString(crossConditionOperator.toString()));
+        } else if (hasMultipleNestedConditions(wholeSeriesCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("detectionConfiguration.wholeSeriesCondition.crossConditionsOperator"
                     + " is required when multiple conditions are specified for the whole series."));
@@ -243,6 +276,80 @@ public final class DetectionConfigurationTransforms {
             .setSmartDetectionCondition(wholeSeriesCondition.getSmartDetectionCondition())
             .setChangeThresholdCondition(wholeSeriesCondition.getChangeThresholdCondition())
             .setHardThresholdCondition(wholeSeriesCondition.getHardThresholdCondition());
+
+        return innerWholeSeriesCondition;
+    }
+
+    private static WholeMetricConfigurationPatch
+        setupInnerWholeSeriesConfigurationForUpdate(MetricWholeSeriesDetectionCondition wholeSeriesCondition) {
+        WholeMetricConfigurationPatch innerWholeSeriesCondition = new WholeMetricConfigurationPatch();
+        DetectionConditionsOperator crossConditionOperator = wholeSeriesCondition.getCrossConditionsOperator();
+        if (crossConditionOperator != null) {
+            innerWholeSeriesCondition.setConditionOperator(
+                AnomalyDetectionConfigurationLogicType.fromString(crossConditionOperator.toString()));
+        }
+
+        if (wholeSeriesCondition.getSmartDetectionCondition() != null) {
+            SmartDetectionCondition smartDetectionCondition = wholeSeriesCondition.getSmartDetectionCondition();
+            SmartDetectionConditionPatch smartDetectionConditionForUpdate = new SmartDetectionConditionPatch();
+            smartDetectionConditionForUpdate
+                .setAnomalyDetectorDirection(smartDetectionCondition.getAnomalyDetectorDirection())
+                .setSensitivity(smartDetectionCondition.getSensitivity());
+
+            if (smartDetectionCondition.getSuppressCondition() != null) {
+                SuppressConditionPatch suppressConditionForUpdate = new SuppressConditionPatch();
+                suppressConditionForUpdate
+                    .setMinNumber(smartDetectionCondition.getSuppressCondition().getMinNumber())
+                    .setMinRatio(smartDetectionCondition.getSuppressCondition().getMinRatio());
+
+                smartDetectionConditionForUpdate.setSuppressCondition(suppressConditionForUpdate);
+
+            }
+            innerWholeSeriesCondition.setSmartDetectionCondition(smartDetectionConditionForUpdate);
+        }
+
+
+        if (wholeSeriesCondition.getChangeThresholdCondition() != null) {
+            ChangeThresholdCondition changeThresholdCondition = wholeSeriesCondition.getChangeThresholdCondition();
+            ChangeThresholdConditionPatch changeThresholdConditionForUpdate = new ChangeThresholdConditionPatch();
+
+            changeThresholdConditionForUpdate
+                .setAnomalyDetectorDirection(changeThresholdCondition.getAnomalyDetectorDirection())
+                .setChangePercentage(changeThresholdCondition.getChangePercentage())
+                .setShiftPoint(changeThresholdCondition.getShiftPoint())
+                .setWithinRange(changeThresholdCondition.isWithinRange());
+
+            if (changeThresholdCondition.getSuppressCondition() != null) {
+                SuppressConditionPatch suppressConditionForUpdate = new SuppressConditionPatch();
+                suppressConditionForUpdate
+                    .setMinNumber(changeThresholdCondition.getSuppressCondition().getMinNumber())
+                    .setMinRatio(changeThresholdCondition.getSuppressCondition().getMinRatio());
+
+                changeThresholdConditionForUpdate.setSuppressCondition(suppressConditionForUpdate);
+            }
+            innerWholeSeriesCondition.setChangeThresholdCondition(changeThresholdConditionForUpdate);
+        }
+
+        if (wholeSeriesCondition.getHardThresholdCondition() != null) {
+            HardThresholdCondition hardThresholdCondition = wholeSeriesCondition.getHardThresholdCondition();
+            HardThresholdConditionPatch hardThresholdConditionForUpdate = new HardThresholdConditionPatch();
+
+            hardThresholdConditionForUpdate
+                .setAnomalyDetectorDirection(hardThresholdCondition.getAnomalyDetectorDirection())
+                .setLowerBound(hardThresholdCondition.getLowerBound())
+                .setUpperBound(hardThresholdCondition.getUpperBound());
+
+
+            if (hardThresholdCondition.getSuppressCondition() != null) {
+                SuppressConditionPatch suppressConditionForUpdate = new SuppressConditionPatch();
+                suppressConditionForUpdate
+                    .setMinNumber(hardThresholdCondition.getSuppressCondition().getMinNumber())
+                    .setMinRatio(hardThresholdCondition.getSuppressCondition().getMinRatio());
+
+                hardThresholdConditionForUpdate.setSuppressCondition(suppressConditionForUpdate);
+            }
+            innerWholeSeriesCondition.setHardThresholdCondition(hardThresholdConditionForUpdate);
+        }
 
         return innerWholeSeriesCondition;
     }
@@ -265,7 +372,7 @@ public final class DetectionConfigurationTransforms {
         DetectionConditionsOperator groupConditionOperator = seriesGroupCondition.getCrossConditionsOperator();
         if (groupConditionOperator != null) {
             innerConfiguration.setConditionOperator(
-                DimensionGroupConfigurationConditionOperator.fromString(groupConditionOperator.toString()));
+                AnomalyDetectionConfigurationLogicType.fromString(groupConditionOperator.toString()));
         } else if (isCreate && hasMultipleNestedConditions(seriesGroupCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(
@@ -296,7 +403,7 @@ public final class DetectionConfigurationTransforms {
         DetectionConditionsOperator seriesConditionOperator = seriesCondition.getCrossConditionsOperator();
         if (seriesConditionOperator != null) {
             innerConfiguration.setConditionOperator(
-                SeriesConfigurationConditionOperator.fromString(seriesConditionOperator.toString()));
+                AnomalyDetectionConfigurationLogicType.fromString(seriesConditionOperator.toString()));
         } else if (isCreate && hasMultipleNestedConditions(seriesCondition)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException(

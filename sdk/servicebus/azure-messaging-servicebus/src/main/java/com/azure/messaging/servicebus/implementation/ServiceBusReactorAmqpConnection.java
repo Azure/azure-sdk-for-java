@@ -39,11 +39,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private static final String MANAGEMENT_ADDRESS = "$management";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
-    /**
-     * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
-     * load balance messages is the eventHubName.
-     */
-    private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
@@ -67,10 +62,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
-        String clientVersion) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
@@ -205,18 +199,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     @Override
-    public void dispose() {
-        logger.verbose("Disposing of connection.");
-        sendLinks.forEach((key, value) -> value.dispose());
-        sendLinks.clear();
-
-        super.dispose();
-    }
-
-    @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer,
-            RetryUtil.getRetryPolicy(retryOptions));
+        return new ServiceBusReactorSession(this, session, handler, sessionName, reactorProvider, handlerProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.AccessTier;
@@ -60,11 +61,23 @@ public class BlobParallelUploadOptions {
      * data provided in the {@link InputStream}.
      */
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
-        StorageImplUtils.assertNotNull("dataStream", length);
+        StorageImplUtils.assertNotNull("dataStream", dataStream);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
         this.length = length;
         this.dataFlux = null;
+    }
+
+    /**
+     * Constructs a new {@code BlobParallelUploadOptions}.
+     *
+     * @param data The data to write to the blob.
+     */
+    public BlobParallelUploadOptions(BinaryData data) {
+        StorageImplUtils.assertNotNull("data", data);
+        this.dataFlux = Flux.just(data.toByteBuffer());
+        this.dataStream = null;
+        this.length = -1;
     }
 
     /**

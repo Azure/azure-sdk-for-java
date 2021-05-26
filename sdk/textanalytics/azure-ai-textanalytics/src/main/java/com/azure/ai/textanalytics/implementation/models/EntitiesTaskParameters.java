@@ -17,10 +17,16 @@ public final class EntitiesTaskParameters {
     private String modelVersion;
 
     /*
+     * The loggingOptOut property.
+     */
+    @JsonProperty(value = "loggingOptOut")
+    private Boolean loggingOptOut;
+
+    /*
      * The stringIndexType property.
      */
     @JsonProperty(value = "stringIndexType")
-    private StringIndexTypeResponse stringIndexType;
+    private StringIndexType stringIndexType;
 
     /**
      * Get the modelVersion property: The model-version property.
@@ -43,11 +49,31 @@ public final class EntitiesTaskParameters {
     }
 
     /**
+     * Get the loggingOptOut property: The loggingOptOut property.
+     *
+     * @return the loggingOptOut value.
+     */
+    public Boolean isLoggingOptOut() {
+        return this.loggingOptOut;
+    }
+
+    /**
+     * Set the loggingOptOut property: The loggingOptOut property.
+     *
+     * @param loggingOptOut the loggingOptOut value to set.
+     * @return the EntitiesTaskParameters object itself.
+     */
+    public EntitiesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        this.loggingOptOut = loggingOptOut;
+        return this;
+    }
+
+    /**
      * Get the stringIndexType property: The stringIndexType property.
      *
      * @return the stringIndexType value.
      */
-    public StringIndexTypeResponse getStringIndexType() {
+    public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
 
@@ -57,7 +83,7 @@ public final class EntitiesTaskParameters {
      * @param stringIndexType the stringIndexType value to set.
      * @return the EntitiesTaskParameters object itself.
      */
-    public EntitiesTaskParameters setStringIndexType(StringIndexTypeResponse stringIndexType) {
+    public EntitiesTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
     }

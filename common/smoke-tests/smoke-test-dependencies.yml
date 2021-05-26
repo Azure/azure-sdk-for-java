@@ -1,0 +1,99 @@
+jobs:
+  - template: ./smoke-test-job.yml
+    parameters:
+      TestTask:
+        task: Maven@3
+        displayName: 'Run Smoke Tests'
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'exec:java'
+          options: '$(DefaultOptions) -Dexec.mainClass="com.azure.smoketest.App"'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+        env:
+          AZURE_LOG_LEVEL: 2
+
+      Matrix:
+        Java 8 Windows (AzureCloud):
+          JavaTestVersion: '1.8'
+          Pool: "azsdk-pool-mms-win-2019-general"
+          OSVmImage: "MMS2019"
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java LTS Windows (AzureCloud):
+          Pool: "azsdk-pool-mms-win-2019-general"
+          OSVmImage: "MMS2019"
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java 8 Linux (AzureCloud):
+          Pool: "azsdk-pool-mms-ubuntu-1804-general"
+          OSVmImage: "MMSUbuntu18.04"
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java LTS Linux (AzureCloud):
+          Pool: "azsdk-pool-mms-ubuntu-1804-general"
+          OSVmImage: "MMSUbuntu18.04"
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java LTS Linux (AzureCloud Canary):
+          Pool: "azsdk-pool-mms-ubuntu-1804-general"
+          OSVmImage: "MMSUbuntu18.04"
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          Location: 'eastus2euap'
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java 8 MacOS (AzureCloud):
+          JavaTestVersion: '1.8'
+          Pool: Azure Pipelines
+          OSVmImage: macOS-10.15
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java LTS MacOS (AzureCloud):
+          JavaTestVersion: '1.11'
+          Pool: Azure Pipelines
+          OSVmImage: macOS-10.15
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java 8 Windows (AzureUSGovernment):
+          Pool: "azsdk-pool-mms-win-2019-general"
+          OSVmImage: "MMS2019"
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+          ArmTemplateParameters: $(azureUSGovernmentArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java LTS Windows (AzureUSGovernment):
+          Pool: "azsdk-pool-mms-win-2019-general"
+          OSVmImage: "MMS2019"
+          SubscriptionConfiguration: $(sub-config-gov-test-resources)
+          ArmTemplateParameters: $(azureUSGovernmentArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java 8 Windows (AzureChinaCloud):
+          Pool: "azsdk-pool-mms-win-2019-general"
+          OSVmImage: "MMS2019"
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          ArmTemplateParameters: $(azureChinaCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+        Java LTS Windows (AzureChinaCloud):
+          Pool: "azsdk-pool-mms-win-2019-general"
+          OSVmImage: "MMS2019"
+          SubscriptionConfiguration: $(sub-config-cn-test-resources)
+          ArmTemplateParameters: $(azureChinaCloudArmParameters)
+          PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'

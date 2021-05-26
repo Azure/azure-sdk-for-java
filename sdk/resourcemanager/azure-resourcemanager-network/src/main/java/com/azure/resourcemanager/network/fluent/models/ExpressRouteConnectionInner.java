@@ -57,6 +57,12 @@ public class ExpressRouteConnectionInner extends SubResource {
     private Boolean enableInternetSecurity;
 
     /*
+     * Enable FastPath to vWan Firewall hub.
+     */
+    @JsonProperty(value = "properties.expressRouteGatewayBypass")
+    private Boolean expressRouteGatewayBypass;
+
+    /*
      * The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
      */
@@ -174,6 +180,26 @@ public class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
+     * Get the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
+     *
+     * @return the expressRouteGatewayBypass value.
+     */
+    public Boolean expressRouteGatewayBypass() {
+        return this.expressRouteGatewayBypass;
+    }
+
+    /**
+     * Set the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
+     *
+     * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to set.
+     * @return the ExpressRouteConnectionInner object itself.
+     */
+    public ExpressRouteConnectionInner withExpressRouteGatewayBypass(Boolean expressRouteGatewayBypass) {
+        this.expressRouteGatewayBypass = expressRouteGatewayBypass;
+        return this;
+    }
+
+    /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
      *
@@ -192,6 +218,13 @@ public class ExpressRouteConnectionInner extends SubResource {
      */
     public ExpressRouteConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
         this.routingConfiguration = routingConfiguration;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteConnectionInner withId(String id) {
+        super.withId(id);
         return this;
     }
 

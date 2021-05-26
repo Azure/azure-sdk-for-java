@@ -298,14 +298,20 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     private void close(T channel) {
-        if (channel instanceof AutoCloseable) {
+        if (channel instanceof AsyncAutoCloseable) {
+            ((AsyncAutoCloseable) channel).closeAsync().subscribe();
+        } else if (channel instanceof AutoCloseable) {
             try {
                 ((AutoCloseable) channel).close();
             } catch (Exception error) {
-                logger.warning("Error occurred closing item.", channel);
+                logger.warning("Error occurred closing AutoCloseable channel.", error);
             }
         } else if (channel instanceof Disposable) {
-            ((Disposable) channel).dispose();
+            try {
+                ((Disposable) channel).dispose();
+            } catch (Exception error) {
+                logger.warning("Error occurred closing Disposable channel.", error);
+            }
         }
     }
 
@@ -342,6 +348,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         public void onComplete() {
             if (!isCancelled()) {
                 actual.onComplete();
+                processor.subscribers.remove(this);
             }
         }
 
@@ -356,6 +363,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         public void onError(Throwable throwable) {
             if (!isCancelled()) {
                 actual.onError(throwable);
+                processor.subscribers.remove(this);
             } else {
                 Operators.onOperatorError(throwable, currentContext());
             }

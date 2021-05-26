@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
@@ -31,6 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
@@ -43,7 +45,7 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
     }
 
     @AfterAll
@@ -72,7 +74,8 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
                 // Act
                 final AtomicInteger i = new AtomicInteger(-1);
                 client.listAnomalyAlertConfigs(inputAnomalyAlertList.get(i.incrementAndGet())
-                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId())
+                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId(),
+                    new ListAnomalyAlertConfigsOptions())
                     .forEach(actualAnomalyAlertList::add);
 
                 expectedAnomalyAlertIdList.set(expectedAnomalyAlertList.stream()

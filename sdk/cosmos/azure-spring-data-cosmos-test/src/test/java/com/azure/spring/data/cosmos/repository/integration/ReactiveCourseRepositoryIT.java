@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -10,9 +11,9 @@ import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.junit.After;
-import org.junit.AfterClass;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,39 +56,23 @@ public class ReactiveCourseRepositoryIT {
     private static final Course COURSE_4 = new Course(COURSE_ID_4, COURSE_NAME_4, DEPARTMENT_NAME_1);
     private static final Course COURSE_5 = new Course(COURSE_ID_5, COURSE_NAME_5, DEPARTMENT_NAME_1);
 
-    private static final CosmosEntityInformation<Course, String> entityInformation =
-        new CosmosEntityInformation<>(Course.class);
-
-    private static ReactiveCosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;
 
     @Autowired
     private ReactiveCourseRepository repository;
+    private CosmosEntityInformation<Course, ?> entityInformation;
 
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
+        collectionManager.ensureContainersCreatedAndEmpty(template, Course.class);
+        entityInformation = collectionManager.getEntityInformation(Course.class);
         final Flux<Course> savedFlux = repository.saveAll(Arrays.asList(COURSE_1, COURSE_2,
             COURSE_3, COURSE_4));
         StepVerifier.create(savedFlux).thenConsumeWhile(course -> true).expectComplete().verify();
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        final Mono<Void> deletedMono = repository.deleteAll();
-        StepVerifier.create(deletedMono).thenAwait().verifyComplete();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     @Test
@@ -293,12 +280,18 @@ public class ReactiveCourseRepositoryIT {
             COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
         StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
     }
-    
+
     @Test
     public void testFindByNameAndDepartmentOrNameAndDepartment() {
         final Flux<Course> findResult = repository.findByNameAndDepartmentOrNameAndDepartment(
             COURSE_NAME_1, DEPARTMENT_NAME_3, COURSE_NAME_2, DEPARTMENT_NAME_2);
-        StepVerifier.create(findResult).expectNext(COURSE_1, COURSE_2).verifyComplete();
+        final Set<Course> courseResultSet = new HashSet<>();
+        courseResultSet.add(COURSE_1);
+        courseResultSet.add(COURSE_2);
+        StepVerifier.create(findResult).expectNextCount(2).thenConsumeWhile(value -> {
+            Assertions.assertThat(courseResultSet.contains(value)).isTrue();
+            return true;
+        }).verifyComplete();
     }
 
     @Test

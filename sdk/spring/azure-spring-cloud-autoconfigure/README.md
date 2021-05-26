@@ -6,9 +6,7 @@ This package is for Spring Cloud Starters of Azure services. It helps Spring Clo
 ## Getting started
 
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven][maven] 3.0 and above
+- [Environment checklist][environment_checklist]
 
 ### Include the Package
 To start a new project using Azure, go on [start.spring.io][spring_io] and select "Azure
@@ -20,9 +18,9 @@ dependency to your project and the Spring Cloud auto-configuration will kick-in:
 [//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-starter-eventhubs;current})
 ```xml
 <dependency>
-  <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-  <version>2.0.0-beta.1</version>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
+    <version>2.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -61,7 +59,7 @@ Spring allow all the supported logging systems to set logger levels set in the S
 
 The following example shows potential logging settings in `application.properties`:
 
-```
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
@@ -93,23 +91,22 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-autoconfigure
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
 [spring_io]: https://start.spring.io
-[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
-[app_configuration]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
+[app_configuration]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
 [cache]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-cache
 [event_hubs]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs
 [event_hubs_kafka]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
 [service_bus]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-servicebus
 [storage]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-starter-storage
 [storage_queue]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage-queue
-[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration
-[app_configuration_conversation_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete
+[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-appconfiguration-sample
+[app_configuration_conversation_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-appconfiguration-conversion-sample-complete
 [cache_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-cache
 [event_hubs_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs
 [event_hubs_kafka_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
 [service_bus_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [storage_queue_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

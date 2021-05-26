@@ -4,6 +4,12 @@
 package com.azure.search.documents;
 
 import com.azure.core.http.HttpMethod;
+import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.models.GeoLineString;
+import com.azure.core.models.GeoLinearRing;
+import com.azure.core.models.GeoPoint;
+import com.azure.core.models.GeoPolygon;
+import com.azure.core.models.GeoPosition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -11,7 +17,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -164,6 +173,7 @@ public class SearchFilterTests {
         assertEquals(expected, SearchFilter.create(formattableString, arg));
     }
 
+    @SuppressWarnings("UnnecessaryBoxing")
     private static Stream<Arguments> textArgumentSupplier() {
         return Stream.of(
             Arguments.of("Foo eq 'x'", "Foo eq %s", 'x'),
@@ -187,5 +197,68 @@ public class SearchFilterTests {
     @Test
     public void unknownTypeThrows() {
         assertThrows(IllegalArgumentException.class, () -> SearchFilter.create("Foo eq %s", HttpMethod.GET));
+    }
+
+    @ParameterizedTest
+    @MethodSource("geographyArgumentSupplier")
+    public void geographyArgument(Object geography, String formattableString, String expected) {
+        assertEquals(expected, SearchFilter.create(formattableString, geography));
+    }
+
+    private static Stream<Arguments> geographyArgumentSupplier() {
+        final String formattableString = "Foo eq %s";
+
+        final String expectedPointFilter = "Foo eq geography'POINT(0 0)'";
+        final String expectedPolygonFilter = "Foo eq geography'POLYGON((0 0,0 1,1 1,0 0))'";
+
+        final List<GeoPosition> polygonCoordinates = Arrays.asList(new GeoPosition(0D, 0D), new GeoPosition(0D, 1D),
+            new GeoPosition(1D, 1D), new GeoPosition(0D, 0D));
+
+        final List<GeoPosition> polygonCoordinatesWithAltitude = Arrays.asList(new GeoPosition(0D, 0D, 1D),
+            new GeoPosition(0D, 1D, 1D), new GeoPosition(1D, 1D, 1D), new GeoPosition(0D, 0D, 1D));
+
+        final GeoBoundingBox boundingBox = new GeoBoundingBox(-1D, -1D, 1D, 1D);
+
+        return Stream.of(
+            // GeoPosition
+            Arguments.of(new GeoPosition(0D, 0D), formattableString, expectedPointFilter),
+            Arguments.of(new GeoPosition(0D, 0D, 1D), formattableString, expectedPointFilter),
+
+            // GeoPoint
+            Arguments.of(new GeoPoint(0D, 0D), formattableString, expectedPointFilter),
+            Arguments.of(new GeoPoint(0D, 0D, 1D), formattableString, expectedPointFilter),
+            Arguments.of(new GeoPoint(new GeoPosition(0D, 0D)), formattableString, expectedPointFilter),
+            Arguments.of(new GeoPoint(new GeoPosition(0D, 0D, 1D)), formattableString, expectedPointFilter),
+            Arguments.of(new GeoPoint(new GeoPosition(0D, 0D), boundingBox, Collections.emptyMap()), formattableString,
+                expectedPointFilter),
+
+            // GeoLineString
+            Arguments.of(new GeoLineString(polygonCoordinates), formattableString, expectedPolygonFilter),
+            Arguments.of(new GeoLineString(polygonCoordinates, boundingBox, Collections.emptyMap()), formattableString,
+                expectedPolygonFilter),
+            Arguments.of(new GeoLineString(polygonCoordinatesWithAltitude), formattableString, expectedPolygonFilter),
+            Arguments.of(new GeoLineString(polygonCoordinatesWithAltitude, boundingBox, Collections.emptyMap()),
+                formattableString, expectedPolygonFilter),
+
+            // GeoPolygon
+            Arguments.of(new GeoPolygon(new GeoLinearRing(polygonCoordinates)), formattableString,
+                expectedPolygonFilter),
+            Arguments.of(new GeoPolygon(new GeoLinearRing(polygonCoordinates), boundingBox, Collections.emptyMap()),
+                formattableString, expectedPolygonFilter),
+            Arguments.of(new GeoPolygon(new GeoLinearRing(polygonCoordinatesWithAltitude)), formattableString,
+                expectedPolygonFilter),
+            Arguments.of(new GeoPolygon(new GeoLinearRing(polygonCoordinatesWithAltitude), boundingBox,
+                Collections.emptyMap()), formattableString, expectedPolygonFilter),
+
+            Arguments.of(new GeoPolygon(Collections.singletonList(new GeoLinearRing(polygonCoordinates))),
+                formattableString, expectedPolygonFilter),
+            Arguments.of(new GeoPolygon(Collections.singletonList(new GeoLinearRing(polygonCoordinates)), boundingBox,
+                Collections.emptyMap()), formattableString, expectedPolygonFilter),
+            Arguments.of(new GeoPolygon(Collections.singletonList(new GeoLinearRing(polygonCoordinatesWithAltitude))),
+                formattableString, expectedPolygonFilter),
+            Arguments.of(new GeoPolygon(Collections.singletonList(new GeoLinearRing(polygonCoordinatesWithAltitude)),
+                boundingBox, Collections.emptyMap()), formattableString, expectedPolygonFilter)
+
+        );
     }
 }

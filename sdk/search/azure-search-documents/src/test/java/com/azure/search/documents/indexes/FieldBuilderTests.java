@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.indexes;
 
+import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -18,10 +19,14 @@ import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields
 import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -59,6 +64,7 @@ public class FieldBuilderTests {
             SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setSearchable(true)
             .setKey(false)
+            .setHidden(false)
             .setFilterable(false)
             .setSortable(false)
             .setFacetable(false)
@@ -109,6 +115,139 @@ public class FieldBuilderTests {
     }
 
     @Test
+    public void supportedFields() {
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
+
+        assertEquals(17, fields.size());
+
+        Map<String, SearchFieldDataType> fieldToDataType = fields.stream()
+            .collect(Collectors.toMap(SearchField::getName, SearchField::getType));
+
+        assertEquals(SearchFieldDataType.INT32, fieldToDataType.get("nullableInt"));
+        assertEquals(SearchFieldDataType.INT32, fieldToDataType.get("primitiveInt"));
+        assertEquals(SearchFieldDataType.INT64, fieldToDataType.get("nullableLong"));
+        assertEquals(SearchFieldDataType.INT64, fieldToDataType.get("primitiveLong"));
+        assertEquals(SearchFieldDataType.DOUBLE, fieldToDataType.get("nullableDouble"));
+        assertEquals(SearchFieldDataType.DOUBLE, fieldToDataType.get("primitiveDouble"));
+        assertEquals(SearchFieldDataType.BOOLEAN, fieldToDataType.get("nullableBoolean"));
+        assertEquals(SearchFieldDataType.BOOLEAN, fieldToDataType.get("primitiveBoolean"));
+        assertEquals(SearchFieldDataType.STRING, fieldToDataType.get("string"));
+        assertEquals(SearchFieldDataType.STRING, fieldToDataType.get("charSequence"));
+        assertEquals(SearchFieldDataType.STRING, fieldToDataType.get("nullableChar"));
+        assertEquals(SearchFieldDataType.STRING, fieldToDataType.get("primitiveChar"));
+        assertEquals(SearchFieldDataType.DATE_TIME_OFFSET, fieldToDataType.get("date"));
+        assertEquals(SearchFieldDataType.DATE_TIME_OFFSET, fieldToDataType.get("offsetDateTime"));
+        assertEquals(SearchFieldDataType.GEOGRAPHY_POINT, fieldToDataType.get("geoPoint"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intArray"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intList"));
+    }
+
+    @SuppressWarnings({"unused", "UseOfObsoleteDateTimeApi"})
+    private static final class AllSupportedFields {
+        // 1. name = 'nullableInt', OData type = INT32
+        private Integer nullableInt;
+        public Integer getNullableInt() {
+            return nullableInt;
+        }
+
+        // 2. name = 'primitiveInt', OData type = INT32
+        private int primitiveInt;
+        public int getPrimitiveInt() {
+            return primitiveInt;
+        }
+
+        // 3. name = 'nullableLong', OData type = INT64
+        private Long nullableLong;
+        public Long getNullableLong() {
+            return nullableLong;
+        }
+
+        // 4. name = 'primitiveLong', OData type = INT64
+        private long primitiveLong;
+        public long getPrimitiveLong() {
+            return primitiveLong;
+        }
+
+        // 5. name = 'nullableDouble', OData type = DOUBLE
+        private Double nullableDouble;
+        public Double getNullableDouble() {
+            return nullableDouble;
+        }
+
+        // 6. name = 'primitiveDouble', OData type = DOUBLE
+        private double primitiveDouble;
+        public double getPrimitiveDouble() {
+            return primitiveDouble;
+        }
+
+        // 7. name = 'nullableBoolean', OData type = BOOLEAN
+        private Boolean nullableBoolean;
+        public Boolean getNullableBoolean() {
+            return nullableBoolean;
+        }
+
+        // 8. name = 'primitiveBoolean', OData type = BOOLEAN
+        private boolean primitiveBoolean;
+        public boolean isPrimitiveBoolean() {
+            return primitiveBoolean;
+        }
+
+        // 9. name = 'string', OData type = STRING
+        private String string;
+        public String getString() {
+            return string;
+        }
+
+        // 10. name = 'charSequence', OData type = STRING
+        private CharSequence charSequence;
+        public CharSequence getCharSequence() {
+            return charSequence;
+        }
+
+        // 11. name = 'nullableChar', OData type = STRING
+        private Character nullableChar;
+        public Character getNullableChar() {
+            return nullableChar;
+        }
+
+        // 12. name = 'primitiveChar', OData type = STRING
+        private char primitiveChar;
+        public char getPrimitiveChar() {
+            return primitiveChar;
+        }
+
+        // 13. name = 'date', OData type = DATE_TIME_OFFSET
+        private Date date;
+        public Date getDate() {
+            return date;
+        }
+
+        // 14. name = 'offsetDateTime', OData type = DATE_TIME_OFFSET
+        private OffsetDateTime offsetDateTime;
+        public OffsetDateTime getOffsetDateTime() {
+            return offsetDateTime;
+        }
+
+        // 15. name = 'geoPoint', OData type = GEOGRAPHY_POINT
+        private GeoPoint geoPoint;
+        public GeoPoint getGeoPoint() {
+            return geoPoint;
+        }
+
+        // 16. name = 'intArray', OData type = COMPLEX
+        private int[] intArray;
+        public int[] getIntArray() {
+            return intArray;
+        }
+
+        // 17. name = 'intList', OData type = COMPLEX
+        private List<Integer> intList;
+        public List<Integer> getIntList() {
+            return intList;
+        }
+    }
+
+    @Test
     public void unsupportedFields() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null));
@@ -147,11 +286,13 @@ public class FieldBuilderTests {
         SearchField hotelId = new SearchField("hotelId", SearchFieldDataType.STRING)
             .setKey(true)
             .setSortable(true)
+            .setHidden(false)
             .setSearchable(false)
             .setFacetable(false)
             .setFilterable(false);
         SearchField tags = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setKey(false)
+            .setHidden(false)
             .setSearchable(true)
             .setSortable(false)
             .setFilterable(false)

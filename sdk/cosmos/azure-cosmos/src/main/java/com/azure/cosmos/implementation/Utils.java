@@ -7,7 +7,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,6 +31,8 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -43,6 +47,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -454,6 +460,10 @@ public class Utils {
         return Utils.RFC_1123_DATE_TIME.format(offsetDateTime.atZoneSameInstant(GMT_ZONE_ID));
     }
 
+    public static String instantAsUTCRFC1123(Instant instant){
+        return Utils.RFC_1123_DATE_TIME.format(instant.atZone(GMT_ZONE_ID));
+    }
+
     public static int getValueOrDefault(Integer val, int defaultValue) {
         return val != null ? val.intValue() : defaultValue;
     }
@@ -661,6 +671,19 @@ public class Utils {
         }
     }
 
+    public static CosmosChangeFeedRequestOptions getEffectiveCosmosChangeFeedRequestOptions(
+        CosmosPagedFluxOptions pagedFluxOptions,
+        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestRequestOptions) {
+
+        checkNotNull(
+            cosmosChangeFeedRequestRequestOptions,
+            "Argument 'cosmosChangeFeedRequestRequestOptions' must not be null");
+
+        return ModelBridgeInternal
+            .getEffectiveChangeFeedRequestOptions(
+                cosmosChangeFeedRequestRequestOptions, pagedFluxOptions);
+    }
+
     static String escapeNonAscii(String partitionKeyJson) {
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
@@ -710,5 +733,16 @@ public class Utils {
         ObjectOutputStream os = new ObjectOutputStream(out);
         os.writeObject(obj);
         return out.toByteArray();
+    }
+
+    public static long getMaxIntegratedCacheStalenessInMillis(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        Duration maxIntegratedCacheStaleness = dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness();
+        if (maxIntegratedCacheStaleness.toNanos() > 0 && maxIntegratedCacheStaleness.toMillis() <= 0) {
+            throw new IllegalArgumentException("MaxIntegratedCacheStaleness granularity is milliseconds");
+        }
+        if (maxIntegratedCacheStaleness.toMillis() < 0) {
+            throw new IllegalArgumentException("MaxIntegratedCacheStaleness duration cannot be negative");
+        }
+        return maxIntegratedCacheStaleness.toMillis();
     }
 }

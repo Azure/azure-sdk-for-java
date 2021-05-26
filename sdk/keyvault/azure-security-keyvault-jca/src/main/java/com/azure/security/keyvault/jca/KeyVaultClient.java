@@ -8,12 +8,11 @@ import com.azure.security.keyvault.jca.model.CertificateListResult;
 import com.azure.security.keyvault.jca.model.CertificatePolicy;
 import com.azure.security.keyvault.jca.model.KeyProperties;
 import com.azure.security.keyvault.jca.model.SecretBundle;
-import java.io.BufferedReader;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -35,6 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import static com.azure.security.keyvault.jca.UriUtil.getAADLoginURIByKeyVaultBaseUri;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -47,11 +47,17 @@ class KeyVaultClient extends DelegateRestClient {
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultClient.class.getName());
+    private static final String HTTPS_PREFIX = "https://";
 
     /**
      * Stores the API version postfix.
      */
     private static final String API_VERSION_POSTFIX = "?api-version=7.1";
+
+    /**
+     * Stores the Key Vault cloud URI.
+     */
+    private String keyVaultBaseUri;
 
     /**
      * Stores the Azure Key Vault URL.
@@ -86,51 +92,65 @@ class KeyVaultClient extends DelegateRestClient {
     private String managedIdentity;
 
     /**
-     * Constructor.
+     * Constructor for authentication with system-assigned managed identity.
      *
      * @param keyVaultUri the Azure Key Vault URI.
      */
     KeyVaultClient(String keyVaultUri) {
-        super(RestClientFactory.createClient());
-        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
-        if (!keyVaultUri.endsWith("/")) {
-            keyVaultUri = keyVaultUri + "/";
-        }
-        this.keyVaultUrl = keyVaultUri;
+        this(keyVaultUri, null, null, null, null);
     }
 
     /**
-     * Constructor.
+     * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri the Azure Key Vault URI.
-     * @param managedIdentity the managed identity object ID.
+     * @param managedIdentity the user-assigned managed identity object ID.
      */
     KeyVaultClient(String keyVaultUri, String managedIdentity) {
-        super(RestClientFactory.createClient());
-        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
-        if (!keyVaultUri.endsWith("/")) {
-            keyVaultUri = keyVaultUri + "/";
-        }
-        this.keyVaultUrl = keyVaultUri;
-        this.managedIdentity = managedIdentity;
+        this(keyVaultUri, null, null, null, managedIdentity);
     }
 
     /**
-     * Constructor.
+     * Constructor for authentication with service principal.
      *
      * @param keyVaultUri the Azure Key Vault URI.
-     * @param aadAuthenticationUrl the Azure AD authentication URL.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    KeyVaultClient(final String keyVaultUri, final String aadAuthenticationUrl,
-            final String tenantId, final String clientId, final String clientSecret) {
-        this(keyVaultUri);
-        this.aadAuthenticationUrl = aadAuthenticationUrl;
+    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+        this(keyVaultUri, tenantId, clientId, clientSecret, null);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param keyVaultUri the Azure Key Vault URI.
+     * @param tenantId the tenant ID.
+     * @param clientId the client ID.
+     * @param clientSecret the client secret.
+     * @param managedIdentity the user-assigned managed identity object ID.
+     */
+    KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
+        super(RestClientFactory.createClient());
+        LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
+        if (!keyVaultUri.endsWith("/")) {
+            keyVaultUri = keyVaultUri + "/";
+        }
+        this.keyVaultUrl = keyVaultUri;
+        //Base Uri shouldn't end with a slash.
+        String domainNameSuffix = Optional.of(keyVaultUri)
+                                          .map(uri -> uri.split("\\.", 2)[1])
+                                          .map(suffix -> suffix.substring(0, suffix.length() - 1))
+                                          .get();
+        keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
+        aadAuthenticationUrl = getAADLoginURIByKeyVaultBaseUri(keyVaultBaseUri);
+
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.managedIdentity = managedIdentity;
     }
 
     /**
@@ -144,7 +164,7 @@ class KeyVaultClient extends DelegateRestClient {
         try {
             AuthClient authClient = new AuthClient();
 
-            String resource = URLEncoder.encode("https://vault.azure.net", "UTF-8");
+            String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
             if (managedIdentity != null) {
                 managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
             }
@@ -154,8 +174,8 @@ class KeyVaultClient extends DelegateRestClient {
             } else {
                 accessToken = authClient.getAccessToken(resource, managedIdentity);
             }
-        } catch (UnsupportedEncodingException uee) {
-            LOGGER.log(WARNING, "Unsupported encoding", uee);
+        } catch (Throwable throwable) {
+            LOGGER.log(WARNING, "Unsupported encoding or missing Httpclient", throwable);
         }
         LOGGER.exiting("KeyVaultClient", "getAccessToken", accessToken);
         return accessToken;
@@ -171,18 +191,25 @@ class KeyVaultClient extends DelegateRestClient {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
         String url = String.format("%scertificates%s", keyVaultUrl, API_VERSION_POSTFIX);
-        String response = get(url, headers);
-        CertificateListResult certificateListResult = null;
-        if (response != null) {
-            JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
-        }
-        if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
-            for (CertificateItem certificateItem : certificateListResult.getValue()) {
-                String id = certificateItem.getId();
-                String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
-                result.add(alias);
+
+        while (url != null && url.length() != 0) {
+            String response = get(url, headers);
+            CertificateListResult certificateListResult = null;
+            if (response != null) {
+                JsonConverter converter = JsonConverterFactory.createJsonConverter();
+                certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
+            } else {
+                url = null;
             }
+            if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
+                for (CertificateItem certificateItem : certificateListResult.getValue()) {
+                    String id = certificateItem.getId();
+                    String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
+                    result.add(alias);
+                }
+                url = certificateListResult.getNextLink();
+            }
+
         }
         return result;
     }
@@ -287,7 +314,7 @@ class KeyVaultClient extends DelegateRestClient {
             }
         }
 
-        // 
+        //
         // If the private key is not available the certificate cannot be
         // used for server side certificates or mTLS. Then we do not know
         // the intent of the usage at this stage we skip this key.
@@ -305,7 +332,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
      * */
-    private PrivateKey createPrivateKeyFromPem(String pemString) 
+    private PrivateKey createPrivateKeyFromPem(String pemString)
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
@@ -326,5 +353,13 @@ class KeyVaultClient extends DelegateRestClient {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(bytes);
         KeyFactory factory = KeyFactory.getInstance("RSA");
         return factory.generatePrivate(spec);
+    }
+
+    String getKeyVaultBaseUri() {
+        return keyVaultBaseUri;
+    }
+
+    String getAadAuthenticationUrl() {
+        return aadAuthenticationUrl;
     }
 }

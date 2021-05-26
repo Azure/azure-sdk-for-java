@@ -3,9 +3,8 @@
 package com.azure.core.tracing.opentelemetry.implementation;
 
 import com.azure.core.util.Context;
-import io.opentelemetry.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanContext;
 import org.junit.jupiter.api.Test;
-
 
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +32,7 @@ public class AmqpPropagationFormatUtilTest {
 
         // Assert
         assertNotNull(context);
-        assertFalse(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid(),
+        assertFalse(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).isValid(),
             "Invalid diagnostic Id, returns invalid SpanContext ");
     }
 
@@ -44,7 +43,7 @@ public class AmqpPropagationFormatUtilTest {
 
         // Assert
         assertNotNull(context);
-        assertTrue(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).getTraceId().isValid(),
+        assertTrue(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).isValid(),
             "Valid diagnostic Id, returns valid SpanContext ");
     }
 

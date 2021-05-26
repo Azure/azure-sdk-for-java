@@ -39,6 +39,12 @@ public class ConnectivityEndpoint {
     private Integer port;
 
     /**
+     * The private ip address of the endpoint.
+     */
+    @JsonProperty(value = "privateIPAddress")
+    private String privateIPAddress;
+
+    /**
      * Get the name of the endpoint.
      *
      * @return the name value
@@ -115,6 +121,26 @@ public class ConnectivityEndpoint {
      */
     public ConnectivityEndpoint withPort(Integer port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the private ip address of the endpoint.
+     *
+     * @return the privateIPAddress value
+     */
+    public String privateIPAddress() {
+        return this.privateIPAddress;
+    }
+
+    /**
+     * Set the private ip address of the endpoint.
+     *
+     * @param privateIPAddress the privateIPAddress value to set
+     * @return the ConnectivityEndpoint object itself.
+     */
+    public ConnectivityEndpoint withPrivateIPAddress(String privateIPAddress) {
+        this.privateIPAddress = privateIPAddress;
         return this;
     }
 

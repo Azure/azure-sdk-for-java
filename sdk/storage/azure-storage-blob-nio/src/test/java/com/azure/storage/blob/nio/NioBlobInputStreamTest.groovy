@@ -5,8 +5,9 @@ package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.BlobStorageException
-import org.apache.groovy.json.internal.IO
 import spock.lang.Unroll
+
+import java.nio.file.ClosedFileSystemException
 
 class NioBlobInputStreamTest extends APISpec {
 
@@ -128,19 +129,19 @@ class NioBlobInputStreamTest extends APISpec {
         nioStream.read()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
 
         when:
         nioStream.read(new byte[1])
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
 
         when:
         nioStream.read(new byte[10], 2, 5)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
 
@@ -202,7 +203,7 @@ class NioBlobInputStreamTest extends APISpec {
         nioStream.reset()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "Mark supported"() {
@@ -233,7 +234,7 @@ class NioBlobInputStreamTest extends APISpec {
         nioStream.skip(5)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "Close"() {
@@ -265,7 +266,7 @@ class NioBlobInputStreamTest extends APISpec {
         nioStream.close()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -289,6 +290,6 @@ class NioBlobInputStreamTest extends APISpec {
         nioStream.available()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 }

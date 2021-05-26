@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
@@ -25,9 +26,15 @@ public class TopicInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicInner.class);
 
     /*
+     * The system metadata relating to Topic resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
      * The privateEndpointConnections property.
      */
-    @JsonProperty(value = "properties.privateEndpointConnections")
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
@@ -82,23 +89,21 @@ public class TopicInner extends Resource {
     private List<InboundIpRule> inboundIpRules;
 
     /**
+     * Get the systemData property: The system metadata relating to Topic resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the privateEndpointConnections property: The privateEndpointConnections property.
      *
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
-    }
-
-    /**
-     * Set the privateEndpointConnections property: The privateEndpointConnections property.
-     *
-     * @param privateEndpointConnections the privateEndpointConnections value to set.
-     * @return the TopicInner object itself.
-     */
-    public TopicInner withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.privateEndpointConnections = privateEndpointConnections;
-        return this;
     }
 
     /**

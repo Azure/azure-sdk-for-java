@@ -112,7 +112,10 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(),
                         headers,
                         BridgeInternal.queryMetricsFromFeedResponse(t),
-                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t));
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
+                        false,
+                        false,
+                        t.getCosmosDiagnostics());
                 } else {
                     assert lastPage == false;
                     lastPage = true;
@@ -126,7 +129,10 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),
                         headers,
                         BridgeInternal.queryMetricsFromFeedResponse(t),
-                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t));
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
+                        false,
+                        false,
+                        t.getCosmosDiagnostics());
                 }
             }
         });

@@ -30,12 +30,12 @@ public class PercentageFilter implements FeatureFilter {
 
         boolean result = true;
 
-        if (value == null || Double.valueOf(value) < 0) {
+        if (value == null || Double.parseDouble(value) < 0) {
             LOGGER.warn("The {} feature filter does not have a valid {} value for feature {}.",
                 this.getClass().getSimpleName(), PERCENTAGE_FILTER_SETTING, context.getName());
             result = false;
         } else {
-            result = (Math.random() * 100) <= Double.valueOf(value);
+            result = (Math.random() * 100) <= Double.parseDouble(value);
         }
 
         return result;

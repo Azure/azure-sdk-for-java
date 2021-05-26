@@ -7,7 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QueryOptions model. */
+/** Parameter group. */
 @Fluent
 public final class QueryOptions {
     /*

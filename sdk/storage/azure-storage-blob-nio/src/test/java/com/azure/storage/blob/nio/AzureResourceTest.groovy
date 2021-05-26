@@ -10,6 +10,7 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import spock.lang.Unroll
 
 import java.nio.file.FileSystems
+import java.nio.file.Files
 import java.nio.file.attribute.FileAttribute
 import java.security.MessageDigest
 
@@ -70,8 +71,8 @@ class AzureResourceTest extends APISpec {
 
         // Create resources as necessary
         if (status == DirectoryStatus.NOT_A_DIRECTORY) {
-            blobClient1.upload(defaultInputStream.get(), defaultDataSize)
-            blobClient2.upload(defaultInputStream.get(), defaultDataSize)
+            blobClient1.upload(data.defaultInputStream, data.defaultDataSize)
+            blobClient2.upload(data.defaultInputStream, data.defaultDataSize)
         } else if (status == DirectoryStatus.EMPTY) {
             putDirectoryBlob(blobClient1.getBlockBlobClient())
             putDirectoryBlob(blobClient2.getBlockBlobClient())
@@ -80,8 +81,8 @@ class AzureResourceTest extends APISpec {
                 putDirectoryBlob(blobClient1.getBlockBlobClient())
                 putDirectoryBlob(blobClient2.getBlockBlobClient())
             }
-            childClient1.upload(defaultInputStream.get(), defaultDataSize)
-            childClient2.upload(defaultInputStream.get(), defaultDataSize)
+            childClient1.upload(data.defaultInputStream, data.defaultDataSize)
+            childClient2.upload(data.defaultInputStream, data.defaultDataSize)
         }
 
         expect:
@@ -102,6 +103,22 @@ class AzureResourceTest extends APISpec {
         DirectoryStatus.EMPTY           | false
         DirectoryStatus.NOT_EMPTY       | true
         DirectoryStatus.NOT_EMPTY       | false
+    }
+
+    @Unroll
+    def "Directory status files with same prefix"() {
+        setup:
+        def fs = createFS(config)
+        // Create two files with same prefix. Both paths should have DirectoryStatus.NOT_A_DIRECTORY
+        def pathName = generateBlobName()
+        def path1 = fs.getPath("/foo/bar/" + pathName + ".txt")
+        def path2 = fs.getPath("/foo/bar/" + pathName + ".txt.backup")
+        Files.createFile(path1)
+        Files.createFile(path2)
+
+        expect:
+        new AzureResource(path1).checkDirStatus() == DirectoryStatus.NOT_A_DIRECTORY
+        new AzureResource(path2).checkDirStatus() == DirectoryStatus.NOT_A_DIRECTORY
     }
 
     def "Parent dir exists false"() {
@@ -232,7 +249,7 @@ class AzureResourceTest extends APISpec {
         setup:
         def fs = createFS(config)
         def resource = new AzureResource(fs.getPath(generateBlobName()))
-        resource.getBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        resource.getBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         match = setupBlobMatchCondition(resource.getBlobClient(), match)
         def bac = new BlobRequestConditions()
             .setIfMatch(match)
@@ -260,7 +277,7 @@ class AzureResourceTest extends APISpec {
         setup:
         def fs = createFS(config)
         def resource = new AzureResource(fs.getPath(generateBlobName()))
-        resource.getBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        resource.getBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         noneMatch = setupBlobMatchCondition(resource.getBlobClient(), noneMatch)
         def bac = new BlobRequestConditions()
             .setIfMatch(match)

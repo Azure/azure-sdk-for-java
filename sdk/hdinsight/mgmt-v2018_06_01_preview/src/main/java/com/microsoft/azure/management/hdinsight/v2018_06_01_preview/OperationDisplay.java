@@ -34,6 +34,12 @@ public class OperationDisplay {
     private String operation;
 
     /**
+     * Localized friendly description for the operation.
+     */
+    @JsonProperty(value = "description")
+    private String description;
+
+    /**
      * Get the service provider: Microsoft.HDInsight.
      *
      * @return the provider value
@@ -90,6 +96,26 @@ public class OperationDisplay {
      */
     public OperationDisplay withOperation(String operation) {
         this.operation = operation;
+        return this;
+    }
+
+    /**
+     * Get localized friendly description for the operation.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set localized friendly description for the operation.
+     *
+     * @param description the description value to set
+     * @return the OperationDisplay object itself.
+     */
+    public OperationDisplay withDescription(String description) {
+        this.description = description;
         return this;
     }
 

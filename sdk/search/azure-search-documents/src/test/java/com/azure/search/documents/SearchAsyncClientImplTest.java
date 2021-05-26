@@ -3,6 +3,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.util.SearchPagedFlux;
 import org.junit.jupiter.api.Test;
@@ -110,7 +111,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-        //expectedDoc.put("Location", createPointGeometry(40.760586, -73.975403));
+        expectedDoc.put("Location", new GeoPoint(-73.975403, 40.760586));
 
         uploadDocument(asyncClient, expectedDoc);
 

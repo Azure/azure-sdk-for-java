@@ -381,6 +381,84 @@ public class CosmosDBManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The RestorableSqlDatabasesInner object to access its operations.
+     */
+    private RestorableSqlDatabasesInner restorableSqlDatabases;
+
+    /**
+     * Gets the RestorableSqlDatabasesInner object to access its operations.
+     * @return the RestorableSqlDatabasesInner object.
+     */
+    public RestorableSqlDatabasesInner restorableSqlDatabases() {
+        return this.restorableSqlDatabases;
+    }
+
+    /**
+     * The RestorableSqlContainersInner object to access its operations.
+     */
+    private RestorableSqlContainersInner restorableSqlContainers;
+
+    /**
+     * Gets the RestorableSqlContainersInner object to access its operations.
+     * @return the RestorableSqlContainersInner object.
+     */
+    public RestorableSqlContainersInner restorableSqlContainers() {
+        return this.restorableSqlContainers;
+    }
+
+    /**
+     * The RestorableSqlResourcesInner object to access its operations.
+     */
+    private RestorableSqlResourcesInner restorableSqlResources;
+
+    /**
+     * Gets the RestorableSqlResourcesInner object to access its operations.
+     * @return the RestorableSqlResourcesInner object.
+     */
+    public RestorableSqlResourcesInner restorableSqlResources() {
+        return this.restorableSqlResources;
+    }
+
+    /**
+     * The RestorableMongodbDatabasesInner object to access its operations.
+     */
+    private RestorableMongodbDatabasesInner restorableMongodbDatabases;
+
+    /**
+     * Gets the RestorableMongodbDatabasesInner object to access its operations.
+     * @return the RestorableMongodbDatabasesInner object.
+     */
+    public RestorableMongodbDatabasesInner restorableMongodbDatabases() {
+        return this.restorableMongodbDatabases;
+    }
+
+    /**
+     * The RestorableMongodbCollectionsInner object to access its operations.
+     */
+    private RestorableMongodbCollectionsInner restorableMongodbCollections;
+
+    /**
+     * Gets the RestorableMongodbCollectionsInner object to access its operations.
+     * @return the RestorableMongodbCollectionsInner object.
+     */
+    public RestorableMongodbCollectionsInner restorableMongodbCollections() {
+        return this.restorableMongodbCollections;
+    }
+
+    /**
+     * The RestorableMongodbResourcesInner object to access its operations.
+     */
+    private RestorableMongodbResourcesInner restorableMongodbResources;
+
+    /**
+     * Gets the RestorableMongodbResourcesInner object to access its operations.
+     * @return the RestorableMongodbResourcesInner object.
+     */
+    public RestorableMongodbResourcesInner restorableMongodbResources() {
+        return this.restorableMongodbResources;
+    }
+
+    /**
      * The PrivateLinkResourcesInner object to access its operations.
      */
     private PrivateLinkResourcesInner privateLinkResources;
@@ -460,6 +538,12 @@ public class CosmosDBManagementClientImpl extends AzureServiceClient {
         this.gremlinResources = new GremlinResourcesInner(restClient().retrofit(), this);
         this.restorableDatabaseAccounts = new RestorableDatabaseAccountsInner(restClient().retrofit(), this);
         this.notebookWorkspaces = new NotebookWorkspacesInner(restClient().retrofit(), this);
+        this.restorableSqlDatabases = new RestorableSqlDatabasesInner(restClient().retrofit(), this);
+        this.restorableSqlContainers = new RestorableSqlContainersInner(restClient().retrofit(), this);
+        this.restorableSqlResources = new RestorableSqlResourcesInner(restClient().retrofit(), this);
+        this.restorableMongodbDatabases = new RestorableMongodbDatabasesInner(restClient().retrofit(), this);
+        this.restorableMongodbCollections = new RestorableMongodbCollectionsInner(restClient().retrofit(), this);
+        this.restorableMongodbResources = new RestorableMongodbResourcesInner(restClient().retrofit(), this);
         this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);

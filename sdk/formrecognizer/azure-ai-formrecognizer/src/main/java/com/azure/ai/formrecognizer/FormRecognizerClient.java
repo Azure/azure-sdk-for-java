@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeBusinessCardsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeContentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -29,8 +30,8 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card and invoice data from documents,
- * recognizing layout information and analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
+ * input documents, recognizing layout information and analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
@@ -69,7 +70,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
         return beginRecognizeCustomFormsFromUrl(modelId, formUrl, null, Context.NONE);
@@ -96,7 +97,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String modelId, String formUrl,
         RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
@@ -124,7 +125,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, InputStream form, long length) {
         return beginRecognizeCustomForms(modelId, form, length, null, Context.NONE);
@@ -152,7 +153,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, InputStream form, long length,
         RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
@@ -177,7 +178,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
         return beginRecognizeContentFromUrl(formUrl, null, Context.NONE);
     }
@@ -205,7 +206,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(String formUrl,
         RecognizeContentOptions recognizeContentOptions, Context context) {
@@ -229,7 +230,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>>
         beginRecognizeContent(InputStream form, long length) {
         return beginRecognizeContent(form, length, null, Context.NONE);
@@ -259,7 +260,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(InputStream form,
         long length, RecognizeContentOptions recognizeContentOptions, Context context) {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
@@ -284,7 +285,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, null, Context.NONE);
@@ -310,7 +311,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl,
         RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
@@ -336,7 +337,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length) {
         return beginRecognizeReceipts(receipt, length, null, Context.NONE);
@@ -364,7 +365,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(InputStream receipt, long length,
         RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
@@ -390,7 +391,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCardUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
         String businessCardUrl) {
         return beginRecognizeBusinessCardsFromUrl(businessCardUrl, null, Context.NONE);
@@ -417,7 +418,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCardUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
         String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
         return client.beginRecognizeBusinessCardsFromUrl(businessCardUrl, recognizeBusinessCardsOptions, context)
@@ -443,7 +444,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCard} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
         InputStream businessCard, long length) {
         return beginRecognizeBusinessCards(businessCard, length, null, Context.NONE);
@@ -471,7 +472,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCard} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
         InputStream businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions,
         Context context) {
@@ -497,7 +498,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoiceUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeInvoicesFromUrl(String invoiceUrl) {
         return beginRecognizeInvoicesFromUrl(invoiceUrl, null, Context.NONE);
@@ -523,7 +524,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoiceUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeInvoicesFromUrl(String invoiceUrl,
         RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
@@ -549,7 +550,7 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoice} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeInvoices(InputStream invoice, long length) {
         return beginRecognizeInvoices(invoice, length, null, Context.NONE);
@@ -577,11 +578,118 @@ public final class FormRecognizerClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoice} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
-        beginRecognizeInvoices(InputStream invoice, long length,
-        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(InputStream invoice,
+        long length, RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(invoice);
         return client.beginRecognizeInvoices(buffer, length, recognizeInvoicesOptions, context).getSyncPoller();
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string}
+     *
+     * @param identityDocumentUrl The source URL to the input identity document.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize identity document operation until it has
+     * completed, has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl) {
+        return beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, null, Context.NONE);
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context}
+     *
+     * @param identityDocumentUrl The source URL to the input identity Document.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the recognize identity document operation until it has
+     * completed, has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocumentUrl} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocumentsFromUrl(
+        String identityDocumentUrl, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
+        Context context) {
+        return client.beginRecognizeIdentityDocumentsFromUrl(identityDocumentUrl, recognizeIdentityDocumentOptions,
+            context).getSyncPoller();
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long}
+     *
+     * @param identityDocument The data of the identity document to recognize identity document information from.
+     * @param length The exact length of the data.
+     *
+     * @return A {@link SyncPoller} that polls the recognize identity Document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocument} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        InputStream identityDocument, long length) {
+        return beginRecognizeIdentityDocuments(identityDocument, length, null, Context.NONE);
+    }
+
+    /**
+     * Analyze identity documents using optical character recognition (OCR) and a prebuilt model trained on identity
+     * documents model to extract key information from passports and US driver licenses.
+     * See <a href="https://aka.ms/formrecognizer/iddocumentfields">here</a> for fields found on an identity document.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context}
+     *
+     * @param identityDocument The data of the identity document to recognize information from.
+     * @param length The exact length of the data.
+     * @param recognizeIdentityDocumentOptions The additional configurable
+     * {@link RecognizeIdentityDocumentOptions options} that may be passed when analyzing an identity document.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the recognize identity document operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a list of {@link RecognizedForm}.
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * an {@link OperationStatus#FAILED}.
+     * @throws NullPointerException If {@code identityDocument} is null.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeIdentityDocuments(
+        InputStream identityDocument, long length, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
+        Context context) {
+        return client.beginRecognizeIdentityDocuments(toFluxByteBuffer(identityDocument), length,
+                recognizeIdentityDocumentOptions, context).getSyncPoller();
     }
 }

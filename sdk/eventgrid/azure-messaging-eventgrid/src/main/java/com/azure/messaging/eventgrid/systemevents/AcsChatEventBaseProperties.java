@@ -7,14 +7,14 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AcsChatEventBaseProperties model. */
+/** Schema of common properties of all chat events. */
 @Fluent
 public class AcsChatEventBaseProperties {
     /*
-     * The MRI of the target user
+     * The communication identifier of the target user
      */
-    @JsonProperty(value = "recipientId")
-    private String recipientId;
+    @JsonProperty(value = "recipientCommunicationIdentifier")
+    private CommunicationIdentifierModel recipientCommunicationIdentifier;
 
     /*
      * The transaction id will be used as co-relation vector
@@ -29,22 +29,23 @@ public class AcsChatEventBaseProperties {
     private String threadId;
 
     /**
-     * Get the recipientId property: The MRI of the target user.
+     * Get the recipientCommunicationIdentifier property: The communication identifier of the target user.
      *
-     * @return the recipientId value.
+     * @return the recipientCommunicationIdentifier value.
      */
-    public String getRecipientId() {
-        return this.recipientId;
+    public CommunicationIdentifierModel getRecipientCommunicationIdentifier() {
+        return this.recipientCommunicationIdentifier;
     }
 
     /**
-     * Set the recipientId property: The MRI of the target user.
+     * Set the recipientCommunicationIdentifier property: The communication identifier of the target user.
      *
-     * @param recipientId the recipientId value to set.
+     * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
-    public AcsChatEventBaseProperties setRecipientId(String recipientId) {
-        this.recipientId = recipientId;
+    public AcsChatEventBaseProperties setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        this.recipientCommunicationIdentifier = recipientCommunicationIdentifier;
         return this;
     }
 

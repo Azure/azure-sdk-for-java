@@ -22,10 +22,10 @@ public final class GalleryImageVersionStorageProfile {
     private GalleryArtifactVersionSource source;
 
     /*
-     * This is the disk image base class.
+     * This is the OS disk image.
      */
     @JsonProperty(value = "osDiskImage")
-    private GalleryDiskImage osDiskImage;
+    private GalleryOSDiskImage osDiskImage;
 
     /*
      * A list of data disk images.
@@ -54,21 +54,21 @@ public final class GalleryImageVersionStorageProfile {
     }
 
     /**
-     * Get the osDiskImage property: This is the disk image base class.
+     * Get the osDiskImage property: This is the OS disk image.
      *
      * @return the osDiskImage value.
      */
-    public GalleryDiskImage osDiskImage() {
+    public GalleryOSDiskImage osDiskImage() {
         return this.osDiskImage;
     }
 
     /**
-     * Set the osDiskImage property: This is the disk image base class.
+     * Set the osDiskImage property: This is the OS disk image.
      *
      * @param osDiskImage the osDiskImage value to set.
      * @return the GalleryImageVersionStorageProfile object itself.
      */
-    public GalleryImageVersionStorageProfile withOsDiskImage(GalleryDiskImage osDiskImage) {
+    public GalleryImageVersionStorageProfile withOsDiskImage(GalleryOSDiskImage osDiskImage) {
         this.osDiskImage = osDiskImage;
         return this;
     }

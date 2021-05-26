@@ -3,7 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
@@ -12,14 +14,17 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -102,6 +107,7 @@ public class DataLakeServiceClient {
      * @param fileSystemName Name of the file system to create
      * @return The {@link DataLakeFileSystemClient} used to interact with the file system created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileSystemClient createFileSystem(String fileSystemName) {
         return createFileSystemWithResponse(fileSystemName, null, null, Context.NONE).getValue();
     }
@@ -124,6 +130,7 @@ public class DataLakeServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient}
      * used to interact with the file system created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileSystemClient> createFileSystemWithResponse(String fileSystemName,
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
         DataLakeFileSystemClient client = getFileSystemClient(fileSystemName);
@@ -133,7 +140,7 @@ public class DataLakeServiceClient {
 
     /**
      * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -142,13 +149,14 @@ public class DataLakeServiceClient {
      *
      * @param fileSystemName Name of the file system to delete
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteFileSystem(String fileSystemName) {
         deleteFileSystemWithResponse(fileSystemName, null, Context.NONE).getValue();
     }
 
     /**
      * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -160,6 +168,7 @@ public class DataLakeServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileSystemWithResponse(String fileSystemName,
         DataLakeRequestConditions requestConditions, Context context) {
         return getFileSystemClient(fileSystemName).deleteWithResponse(requestConditions, null, context);
@@ -185,6 +194,7 @@ public class DataLakeServiceClient {
      *
      * @return The list of file systems.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemItem> listFileSystems() {
         return this.listFileSystems(new ListFileSystemsOptions(), null);
     }
@@ -199,11 +209,97 @@ public class DataLakeServiceClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration}
      *
      * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
+     * If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of file systems.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
         return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystemsWithOptionalTimeout(options, timeout));
+    }
+
+    /**
+     * Returns the resources's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @return The resource properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataLakeServiceProperties getProperties() {
+        return getPropertiesWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getPropertiesWithResponse#Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobServiceProperties> response = blobServiceClient.getPropertiesWithResponse(timeout, context);
+            return new SimpleResponse<>(response, Transforms.toDataLakeServiceProperties(response.getValue()));
+        }, logger);
+    }
+
+    /**
+     * Sets properties for a storage account's DataLake service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.setProperties#DataLakeServiceProperties}
+     *
+     * @param properties Configures the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setProperties(DataLakeServiceProperties properties) {
+        setPropertiesWithResponse(properties, null, Context.NONE);
+    }
+
+    /**
+     * Sets properties for a storage account's DataLake service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.setPropertiesWithResponse#DataLakeServiceProperties-Duration-Context}
+     *
+     * @param properties Configures the service.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The storage account properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setPropertiesWithResponse(DataLakeServiceProperties properties, Duration timeout,
+        Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobServiceClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties),
+                timeout, context), logger);
     }
 
     /**
@@ -218,6 +314,7 @@ public class DataLakeServiceClient {
      * @param expiry Expiration of the key's validity.
      * @return The user delegation key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
     }
@@ -236,6 +333,7 @@ public class DataLakeServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
@@ -288,4 +386,98 @@ public class DataLakeServiceClient {
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         return dataLakeServiceAsyncClient.generateAccountSas(accountSasSignatureValues, context);
     }
+
+    /**
+     * Restores a previously deleted file system.
+     * If the file system associated with provided <code>deletedFileSystemName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystem#String-String}
+     *
+     * @param deletedFileSystemName The name of the previously deleted file system.
+     * @param deletedFileSystemVersion The version of the previously deleted file system.
+     * @return The {@link DataLakeFileSystemClient} used to interact with the restored file system.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataLakeFileSystemClient undeleteFileSystem(String deletedFileSystemName, String deletedFileSystemVersion) {
+        return this.undeleteFileSystemWithResponse(
+            new FileSystemUndeleteOptions(deletedFileSystemName, deletedFileSystemVersion), null,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Restores a previously deleted file system. The restored file system
+     * will be renamed to the <code>destinationFileSystemName</code> if provided in <code>options</code>.
+     * Otherwise <code>deletedFileSystemName</code> is used as destination file system name.
+     * If the file system associated with provided <code>destinationFileSYstemName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context}
+     *
+     * @param options {@link FileSystemUndeleteOptions}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient}
+     * used to interact with the restored file system.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(
+        FileSystemUndeleteOptions options, Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
+                .undeleteBlobContainerWithResponse(Transforms.toBlobContainerUndeleteOptions(options), timeout,
+                    context);
+            return new SimpleResponse<>(response, getFileSystemClient(response.getValue().getBlobContainerName()));
+        }, logger);
+    }
+
+//    /**
+//     * Renames an existing file system.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String}
+//     *
+//     * @param sourceFileSystemName The current name of the file system.
+//     * @param destinationFileSystemName The new name of the file system.
+//     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public DataLakeFileSystemClient renameFileSystem(String sourceFileSystemName, String destinationFileSystemName) {
+//        return this.renameFileSystemWithResponse(sourceFileSystemName,
+//            new FileSystemRenameOptions(destinationFileSystemName), null, Context.NONE).getValue();
+//    }
+//
+//    /**
+//     * Renames an existing file system.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context}
+//     *
+//     * @param sourceFileSystemName The current name of the file system.
+//     * @param options {@link FileSystemRenameOptions}
+//     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+//     * @param context Additional context that is passed through the Http pipeline during the service call.
+//     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+//     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public Response<DataLakeFileSystemClient> renameFileSystemWithResponse(String sourceFileSystemName,
+//        FileSystemRenameOptions options, Duration timeout, Context context) {
+//        return DataLakeImplUtils.returnOrConvertException(() -> {
+//            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
+//                .renameBlobContainerWithResponse(sourceFileSystemName,
+//                    Transforms.toBlobContainerRenameOptions(options), timeout, context);
+//            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
+//        }, logger);
+//    }
 }

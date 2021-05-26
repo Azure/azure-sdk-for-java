@@ -6,6 +6,5 @@
 
 /**
  * This package contains the implementation classes for CosmosDBManagementClient.
- * Azure Cosmos DB Database Service Resource Provider REST API.
  */
 package com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.implementation;

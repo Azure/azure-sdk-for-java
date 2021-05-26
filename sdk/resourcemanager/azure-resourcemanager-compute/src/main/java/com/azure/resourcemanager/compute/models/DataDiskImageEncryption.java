@@ -47,6 +47,13 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DataDiskImageEncryption withDiskEncryptionSetId(String diskEncryptionSetId) {
+        super.withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

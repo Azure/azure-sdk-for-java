@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.MediaservicesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.EdgePoliciesInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
@@ -25,21 +24,22 @@ public final class MediaservicesImpl implements Mediaservices {
 
     private final MediaservicesClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public MediaservicesImpl(MediaservicesClient innerClient, MediaservicesManager serviceManager) {
+    public MediaservicesImpl(
+        MediaservicesClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<MediaService> listByResourceGroup(String resourceGroupName) {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MediaService> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public MediaService getByResourceGroup(String resourceGroupName, String accountName) {
@@ -110,34 +110,12 @@ public final class MediaservicesImpl implements Mediaservices {
 
     public PagedIterable<MediaService> list() {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MediaService> list(Context context) {
         PagedIterable<MediaServiceInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new MediaServiceImpl(inner1, this.manager()));
-    }
-
-    public MediaService getBySubscription(String accountName) {
-        MediaServiceInner inner = this.serviceClient().getBySubscription(accountName);
-        if (inner != null) {
-            return new MediaServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<MediaService> getBySubscriptionWithResponse(String accountName, Context context) {
-        Response<MediaServiceInner> inner = this.serviceClient().getBySubscriptionWithResponse(accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new MediaServiceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return Utils.mapPage(inner, inner1 -> new MediaServiceImpl(inner1, this.manager()));
     }
 
     public MediaService getById(String id) {
@@ -220,7 +198,7 @@ public final class MediaservicesImpl implements Mediaservices {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

@@ -9,17 +9,27 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
+import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
+import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A network interface in a resource group. */
 @JsonFlatten
 @Fluent
 public class NetworkInterfaceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceInner.class);
+
+    /*
+     * The extended location of the network interface.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -95,6 +105,13 @@ public class NetworkInterfaceInner extends Resource {
     private List<String> hostedWorkloads;
 
     /*
+     * A reference to the dscp configuration to which the network interface is
+     * linked.
+     */
+    @JsonProperty(value = "properties.dscpConfiguration", access = JsonProperty.Access.WRITE_ONLY)
+    private SubResource dscpConfiguration;
+
+    /*
      * The resource GUID property of the network interface resource.
      */
     @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
@@ -107,10 +124,48 @@ public class NetworkInterfaceInner extends Resource {
     private ProvisioningState provisioningState;
 
     /*
+     * Type of Network Interface resource.
+     */
+    @JsonProperty(value = "properties.nicType")
+    private NetworkInterfaceNicType nicType;
+
+    /*
+     * Privatelinkservice of the network interface resource.
+     */
+    @JsonProperty(value = "properties.privateLinkService")
+    private PrivateLinkServiceInner privateLinkService;
+
+    /*
+     * Migration phase of Network Interface resource.
+     */
+    @JsonProperty(value = "properties.migrationPhase")
+    private NetworkInterfaceMigrationPhase migrationPhase;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the network interface.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the network interface.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -276,6 +331,16 @@ public class NetworkInterfaceInner extends Resource {
     }
 
     /**
+     * Get the dscpConfiguration property: A reference to the dscp configuration to which the network interface is
+     * linked.
+     *
+     * @return the dscpConfiguration value.
+     */
+    public SubResource dscpConfiguration() {
+        return this.dscpConfiguration;
+    }
+
+    /**
      * Get the resourceGuid property: The resource GUID property of the network interface resource.
      *
      * @return the resourceGuid value.
@@ -291,6 +356,66 @@ public class NetworkInterfaceInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the nicType property: Type of Network Interface resource.
+     *
+     * @return the nicType value.
+     */
+    public NetworkInterfaceNicType nicType() {
+        return this.nicType;
+    }
+
+    /**
+     * Set the nicType property: Type of Network Interface resource.
+     *
+     * @param nicType the nicType value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withNicType(NetworkInterfaceNicType nicType) {
+        this.nicType = nicType;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkService property: Privatelinkservice of the network interface resource.
+     *
+     * @return the privateLinkService value.
+     */
+    public PrivateLinkServiceInner privateLinkService() {
+        return this.privateLinkService;
+    }
+
+    /**
+     * Set the privateLinkService property: Privatelinkservice of the network interface resource.
+     *
+     * @param privateLinkService the privateLinkService value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withPrivateLinkService(PrivateLinkServiceInner privateLinkService) {
+        this.privateLinkService = privateLinkService;
+        return this;
+    }
+
+    /**
+     * Get the migrationPhase property: Migration phase of Network Interface resource.
+     *
+     * @return the migrationPhase value.
+     */
+    public NetworkInterfaceMigrationPhase migrationPhase() {
+        return this.migrationPhase;
+    }
+
+    /**
+     * Set the migrationPhase property: Migration phase of Network Interface resource.
+     *
+     * @param migrationPhase the migrationPhase value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withMigrationPhase(NetworkInterfaceMigrationPhase migrationPhase) {
+        this.migrationPhase = migrationPhase;
+        return this;
     }
 
     /**
@@ -313,12 +438,29 @@ public class NetworkInterfaceInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public NetworkInterfaceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkInterfaceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (networkSecurityGroup() != null) {
             networkSecurityGroup().validate();
         }
@@ -333,6 +475,9 @@ public class NetworkInterfaceInner extends Resource {
         }
         if (dnsSettings() != null) {
             dnsSettings().validate();
+        }
+        if (privateLinkService() != null) {
+            privateLinkService().validate();
         }
     }
 }

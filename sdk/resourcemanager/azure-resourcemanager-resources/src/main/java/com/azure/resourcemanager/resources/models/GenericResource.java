@@ -53,6 +53,26 @@ public interface GenericResource extends
     Object properties();
 
     /**
+     * @return the kind of the resource
+     */
+    String kind();
+
+    /**
+     * @return the SKU of the resource
+     */
+    Sku sku();
+
+    /**
+     * @return the managed identity of the resource
+     */
+    Identity identity();
+
+    /**
+     * @return the ID of the resource that manages this resource
+     */
+    String managedBy();
+
+    /**
      * The entirety of the generic resource definition.
      */
     interface Definition extends
@@ -124,6 +144,14 @@ public interface GenericResource extends
             WithCreate withPlan(String name, String publisher, String product, String promotionCode);
 
             /**
+             * Specifies the plan of the resource. The plan can only be set for 3rd party resources.
+             *
+             * @param plan the plan
+             * @return the next stage of the definition.
+             */
+            WithCreate withPlan(Plan plan);
+
+            /**
              * Specifies the plan of the resource.
              *
              * @return the next stage of the definition
@@ -182,6 +210,30 @@ public interface GenericResource extends
              * @return the next stage of generic resource definition
              */
             WithCreate withProperties(Object properties);
+
+            /**
+             * Specifies resource kind.
+             *
+             * @param kind the kind of the resource
+             * @return the next stage of generic resource definition
+             */
+            WithCreate withKind(String kind);
+
+            /**
+             * Specifies resource SKU.
+             *
+             * @param sku the SKU of the resource
+             * @return the next stage of generic resource definition
+             */
+            WithCreate withSku(Sku sku);
+
+            /**
+             * Specifies managed identity.
+             *
+             * @param identity the managed identity
+             * @return the next stage of generic resource definition
+             */
+            WithCreate withIdentity(Identity identity);
 
             /**
              * Begins creating the Azure resource.
@@ -248,6 +300,14 @@ public interface GenericResource extends
             /**
              * Specifies the plan of the resource.
              *
+             * @param plan the plan
+             * @return the next stage of the generic resource update
+             */
+            Update withPlan(Plan plan);
+
+            /**
+             * Specifies the plan of the resource.
+             *
              * @return the next stage of the generic resource update
              */
             Update withoutPlan();
@@ -265,6 +325,52 @@ public interface GenericResource extends
              */
             Update withApiVersion(String apiVersion);
         }
+
+        /**
+         * The template for a generic resource update operation for specifying the resource kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies resource kind.
+             *
+             * @param kind the kind of the resource
+             * @return the next stage of generic resource update
+             */
+            Update withKind(String kind);
+        }
+
+        /**
+         * The template for a generic resource update operation for specifying the resource SKU.
+         */
+        interface WithSku {
+            /**
+             * Specifies resource SKU.
+             *
+             * @param sku the SKU of the resource
+             * @return the next stage of generic resource update
+             */
+            Update withSku(Sku sku);
+        }
+
+        /**
+         * The template for a generic resource update operation for specifying the managed identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies managed identity.
+             *
+             * @param identity the managed identity
+             * @return the next stage of generic resource update
+             */
+            Update withIdentity(Identity identity);
+
+            /**
+             * Specifies managed identity.
+             *
+             * @return the next stage of generic resource update
+             */
+            Update withoutIdentity();
+        }
     }
 
     /**
@@ -276,6 +382,9 @@ public interface GenericResource extends
             UpdateStages.WithPlan,
             UpdateStages.WithParentResource,
             UpdateStages.WithProperties,
+            UpdateStages.WithKind,
+            UpdateStages.WithSku,
+            UpdateStages.WithIdentity,
             Resource.UpdateWithTags<Update> {
     }
 }

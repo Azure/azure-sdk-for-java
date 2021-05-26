@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
@@ -268,6 +269,7 @@ public class SearchSyncTests extends SearchTestBase {
         }
     }
 
+    @SuppressWarnings("UseOfObsoleteDateTimeApi")
     @Test
     public void canRoundTripNonNullableValueTypes() {
         client = setupClient(this::createIndexWithNonNullableTypes);
@@ -299,6 +301,7 @@ public class SearchSyncTests extends SearchTestBase {
         assertObjectEquals(doc2, result.getValue().get(1).getDocument(NonNullableModel.class), true);
     }
 
+    @SuppressWarnings("UseOfObsoleteDateTimeApi")
     @Test
     public void canSearchWithDateInStaticModel() {
         client = getSearchClientBuilder(INDEX_NAME).buildClient();
@@ -409,9 +412,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         assertEquals(2, searchResultsList.size());
-
-        List<Object> hotelIds = searchResultsList.stream().map(r -> r.get("HotelId")).collect(Collectors.toList());
-        assertTrue(Arrays.asList("1", "5").containsAll(hotelIds));
+        assertEquals("1", searchResultsList.get(0).get("HotelId").toString());
+        assertEquals("5", searchResultsList.get(1).get("HotelId").toString());
     }
 
     @Test
@@ -618,22 +620,21 @@ public class SearchSyncTests extends SearchTestBase {
         assertEquals(0, resultsList.size());
     }
 
-//    @Test
-//    public void searchWithScoringProfileBoostsScore() {
-//        client = setupClient(this::createHotelIndex);
-//
-//        uploadDocumentsJson(client, HOTELS_DATA_JSON);
-//        SearchOptions searchOptions = new SearchOptions()
-//            .setScoringProfile("nearest")
-//            //.setScoringParameters(new ScoringParameter("myloc", createPointGeometry(49.0, -122.0)))
-//            .setFilter("Rating eq 5 or Rating eq 1");
-//
-//        List<Map<String, Object>> response = getSearchResults(client.search("hotel",
-//            searchOptions, Context.NONE));
-//        assertEquals(2, response.size());
-//        assertEquals(Arrays.asList("2", "1"),
-//            response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
-//    }
+    @Test
+    public void searchWithScoringProfileBoostsScore() {
+        client = setupClient(this::createHotelIndex);
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        SearchOptions searchOptions = new SearchOptions()
+            .setScoringProfile("nearest")
+            .setScoringParameters(new ScoringParameter("myloc", new GeoPoint(-122.0, 49.0)))
+            .setFilter("Rating eq 5 or Rating eq 1");
+
+        List<Map<String, Object>> response = getSearchResults(client.search("hotel", searchOptions, Context.NONE));
+        assertEquals(2, response.size());
+        assertEquals("2", response.get(0).get("HotelId").toString());
+        assertEquals("1", response.get(1).get("HotelId").toString());
+    }
 
     @Test
     public void searchWithScoringProfileEscaper() {

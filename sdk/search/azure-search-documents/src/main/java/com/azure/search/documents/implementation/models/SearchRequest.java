@@ -7,6 +7,8 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -150,6 +152,30 @@ public final class SearchRequest {
      */
     @JsonProperty(value = "searchMode")
     private SearchMode searchMode;
+
+    /*
+     * A value that specifies the language of the search query.
+     */
+    @JsonProperty(value = "queryLanguage")
+    private QueryLanguage queryLanguage;
+
+    /*
+     * A value that specified the type of the speller to use to spell-correct
+     * individual search query terms.
+     */
+    @JsonProperty(value = "speller")
+    private QuerySpeller speller;
+
+    /*
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns answers extracted from key passages in the highest
+     * ranked documents. The number of answers returned can be configured by
+     * appending the pipe character '|' followed by the 'count-<number of
+     * answers>' option after the answers parameter value, such as
+     * 'extractive|count-3'. Default count is 1.
+     */
+    @JsonProperty(value = "answers")
+    private String answers;
 
     /*
      * The comma-separated list of fields to retrieve. If unspecified, all
@@ -548,6 +574,74 @@ public final class SearchRequest {
      */
     public SearchRequest setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
+        return this;
+    }
+
+    /**
+     * Get the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @return the queryLanguage value.
+     */
+    public QueryLanguage getQueryLanguage() {
+        return this.queryLanguage;
+    }
+
+    /**
+     * Set the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @param queryLanguage the queryLanguage value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setQueryLanguage(QueryLanguage queryLanguage) {
+        this.queryLanguage = queryLanguage;
+        return this;
+    }
+
+    /**
+     * Get the speller property: A value that specified the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @return the speller value.
+     */
+    public QuerySpeller getSpeller() {
+        return this.speller;
+    }
+
+    /**
+     * Set the speller property: A value that specified the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @param speller the speller value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setSpeller(QuerySpeller speller) {
+        this.speller = speller;
+        return this;
+    }
+
+    /**
+     * Get the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
+     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
+     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     *
+     * @return the answers value.
+     */
+    public String getAnswers() {
+        return this.answers;
+    }
+
+    /**
+     * Set the answers property: This parameter is only valid if the query type is 'semantic'. If set, the query returns
+     * answers extracted from key passages in the highest ranked documents. The number of answers returned can be
+     * configured by appending the pipe character '|' followed by the 'count-&lt;number of answers&gt;' option after the
+     * answers parameter value, such as 'extractive|count-3'. Default count is 1.
+     *
+     * @param answers the answers value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setAnswers(String answers) {
+        this.answers = answers;
         return this;
     }
 

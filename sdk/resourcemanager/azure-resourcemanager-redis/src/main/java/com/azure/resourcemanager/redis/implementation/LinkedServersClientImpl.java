@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -67,9 +68,9 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
     private interface LinkedServersService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
                 + "/linkedServers/{linkedServerName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -81,13 +82,14 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RedisLinkedServerCreateParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
                 + "/linkedServers/{linkedServerName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
@@ -96,11 +98,12 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             @PathParam("linkedServerName") String linkedServerName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
                 + "/linkedServers/{linkedServerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -111,11 +114,12 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             @PathParam("linkedServerName") String linkedServerName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
                 + "/linkedServers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -125,14 +129,18 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisLinkedServerWithPropertiesList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -141,7 +149,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -178,6 +186,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -190,8 +199,9 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -200,7 +210,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -242,6 +252,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -252,6 +263,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -261,7 +273,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -292,7 +304,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -326,7 +338,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -348,7 +360,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -372,7 +384,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -392,7 +404,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -417,7 +429,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,7 +447,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,6 +501,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -500,8 +513,9 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                             linkedServerName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -542,6 +556,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -551,6 +566,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                 linkedServerName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -641,6 +657,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -652,8 +669,9 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                             linkedServerName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -694,6 +712,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -703,6 +722,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                 linkedServerName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -797,6 +817,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -807,6 +828,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                             name,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<RedisLinkedServerWithPropertiesInner>>map(
                 res ->
@@ -817,7 +839,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -853,6 +875,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -861,6 +884,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                 name,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -954,8 +978,15 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RedisLinkedServerWithPropertiesInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -965,7 +996,7 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -984,9 +1015,16 @@ public final class LinkedServersClientImpl implements LinkedServersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

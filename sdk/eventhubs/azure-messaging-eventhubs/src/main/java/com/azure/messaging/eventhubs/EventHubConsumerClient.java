@@ -30,8 +30,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * <p><strong>Consuming events from a single partition</strong></p>
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
- * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to `receive` completes and returns an
- * {@link IterableStream} when either the maximum number of events is received, or the timeout has elapsed.</p>
+ * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to {@code receiveFromPartition}
+ * completes and returns an {@link IterableStream} when either the maximum number of events is received, or the
+ * timeout has elapsed.</p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
  */

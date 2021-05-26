@@ -32,6 +32,7 @@ public final class FormRecognizerClientImplBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
+    /** Create an instance of the FormRecognizerClientImplBuilder. */
     public FormRecognizerClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -51,6 +52,22 @@ public final class FormRecognizerClientImplBuilder {
      */
     public FormRecognizerClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * Form Recognizer API version.
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Form Recognizer API version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the FormRecognizerClientImplBuilder.
+     */
+    public FormRecognizerClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -155,7 +172,7 @@ public final class FormRecognizerClientImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -180,7 +197,8 @@ public final class FormRecognizerClientImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        FormRecognizerClientImpl client = new FormRecognizerClientImpl(pipeline, serializerAdapter, endpoint);
+        FormRecognizerClientImpl client =
+                new FormRecognizerClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

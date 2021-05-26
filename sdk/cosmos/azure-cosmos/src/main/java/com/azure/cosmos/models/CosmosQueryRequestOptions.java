@@ -4,6 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.spark.OperationContext;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.util.Beta;
 
 import java.util.Map;
 
@@ -26,6 +32,10 @@ public class CosmosQueryRequestOptions {
     private boolean queryMetricsEnabled;
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
+    private FeedRange feedRange;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private String throughputControlGroupName;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
 
     /**
      * Instantiates a new query request options.
@@ -53,6 +63,17 @@ public class CosmosQueryRequestOptions {
         this.partitionkey = options.partitionkey;
         this.queryMetricsEnabled = options.queryMetricsEnabled;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
+        this.throughputControlGroupName = options.throughputControlGroupName;
+        this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
+        this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+    }
+
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
     }
 
     /**
@@ -371,5 +392,87 @@ public class CosmosQueryRequestOptions {
     CosmosQueryRequestOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
         return this;
+    }
+
+    /**
+     * Gets the {@link FeedRange}
+     * @return the {@link FeedRange}
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public FeedRange getFeedRange() {
+        return feedRange;
+    }
+
+    /**
+     * Sets the {@link FeedRange} that we want to query
+     * @param feedRange the {@link FeedRange}
+     * @return the CosmosQueryRequestOptions.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setFeedRange(FeedRange feedRange) {
+        this.feedRange = feedRange;
+        return this;
+    }
+
+    /**
+     * Get throughput control group name.
+     * @return The throughput control group name.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    /**
+     * Set the throughput control group name.
+     *
+     * @param throughputControlGroupName The throughput control group name.
+     * @return A {@link CosmosQueryRequestOptions}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
+        return this;
+    }
+
+    /**
+     * Gets the Dedicated Gateway Request Options
+     * @return the Dedicated Gateway Request Options
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return this.dedicatedGatewayRequestOptions;
+    }
+
+    /**
+     * Sets the Dedicated Gateway Request Options
+     * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
+     * @return the CosmosQueryRequestOptions
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
+        return this;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.setCosmosQueryRequestOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor() {
+
+                @Override
+                public void setOperationContext(CosmosQueryRequestOptions queryRequestOptions,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    queryRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.getOperationContextAndListenerTuple();
+                }
+            });
     }
 }

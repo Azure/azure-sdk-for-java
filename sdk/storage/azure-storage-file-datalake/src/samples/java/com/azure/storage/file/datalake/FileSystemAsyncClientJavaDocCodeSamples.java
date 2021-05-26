@@ -272,6 +272,23 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileSystemAsyncClient#undeletePath(String, String)}
+     */
+    public void restorePathCodeSnippet() {
+        String deletedPath = null;
+        String deletionId = null;
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String
+        client.undeletePath(deletedPath, deletionId).doOnSuccess(response -> System.out.println("Completed undelete"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String
+        client.undeletePathWithResponse(deletedPath, deletionId)
+            .doOnSuccess(response -> System.out.println("Completed undelete"));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String
+    }
+
+    /**
      * Code snippets for {@link DataLakeFileSystemAsyncClient#listPaths()} and
      * {@link DataLakeFileSystemAsyncClient#listPaths(ListPathsOptions)}
      */
@@ -287,6 +304,25 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
 
         client.listPaths(options).subscribe(path -> System.out.printf("Name: %s%n", path.getName()));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileSystemAsyncClient#listDeletedPaths()} and
+     * {@link DataLakeFileSystemAsyncClient#listDeletedPaths(String)}
+     */
+    public void listDeletedPaths() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
+        client.listDeletedPaths().subscribe(path -> System.out.printf("Name: %s%n", path.getPath()));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
+        int pageSize = 10;
+        client.listDeletedPaths("PathNamePrefixToMatch")
+            .byPage(pageSize)
+            .subscribe(page ->
+                page.getValue().forEach(path ->
+                    System.out.printf("Name: %s%n", path.getPath())));
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String
     }
 
     /**
@@ -415,5 +451,28 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context
     }
+
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemAsyncClient#rename(String)}
+//     */
+//    public void renameFileSystem() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String
+//        DataLakeFileSystemAsyncClient fileSystemAsyncClient =
+//            client.rename("newFileSystemName")
+//                .block();
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.rename#String
+//    }
+//
+//    /**
+//     * Code snippet for {@link DataLakeFileSystemAsyncClient#renameWithResponse(FileSystemRenameOptions)}
+//     */
+//    public void renameFileSystemWithResponse() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
+//        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
+//        DataLakeFileSystemAsyncClient fileSystemAsyncClient = client
+//            .renameWithResponse(new FileSystemRenameOptions( "newFileSystemName")
+//                .setRequestConditions(requestConditions)).block().getValue();
+//        // END: com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.renameWithResponse#FileSystemRenameOptions
+//    }
 
 }

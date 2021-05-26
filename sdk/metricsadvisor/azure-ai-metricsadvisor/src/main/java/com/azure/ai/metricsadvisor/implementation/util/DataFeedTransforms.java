@@ -6,46 +6,53 @@ package com.azure.ai.metricsadvisor.implementation.util;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsParameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureBlobDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureBlobDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureBlobParameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureBlobParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureCosmosDBDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureCosmosDBDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureCosmosDBParameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureCosmosDBParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataExplorerDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataExplorerDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataLakeStorageGen2DataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataLakeStorageGen2DataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureDataLakeStorageGen2Parameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureDataLakeStorageGen2ParameterPatch;
+import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsDataFeed;
+import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsDataFeedPatch;
+import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsParameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureEventHubsParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureTableParameter;
+import com.azure.ai.metricsadvisor.implementation.models.AzureTableParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetail;
 import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatch;
-import com.azure.ai.metricsadvisor.implementation.models.ElasticsearchDataFeed;
-import com.azure.ai.metricsadvisor.implementation.models.ElasticsearchDataFeedPatch;
-import com.azure.ai.metricsadvisor.implementation.models.ElasticsearchParameter;
-import com.azure.ai.metricsadvisor.implementation.models.HttpRequestDataFeed;
-import com.azure.ai.metricsadvisor.implementation.models.HttpRequestDataFeedPatch;
-import com.azure.ai.metricsadvisor.implementation.models.HttpRequestParameter;
 import com.azure.ai.metricsadvisor.implementation.models.InfluxDBDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.InfluxDBDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameter;
+import com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.MongoDBDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.MongoDBDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.MongoDBParameter;
+import com.azure.ai.metricsadvisor.implementation.models.MongoDBParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.MySqlDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.MySqlDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.PostgreSqlDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.PostgreSqlDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.SQLServerDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.SQLServerDataFeedPatch;
+import com.azure.ai.metricsadvisor.implementation.models.SQLSourceParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.SqlSourceParameter;
 import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureCosmosDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
+import com.azure.ai.metricsadvisor.models.AzureEventHubsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureTableDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedAccessMode;
@@ -63,8 +70,6 @@ import com.azure.ai.metricsadvisor.models.DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
-import com.azure.ai.metricsadvisor.models.ElasticsearchDataFeedSource;
-import com.azure.ai.metricsadvisor.models.HttpRequestDataFeedSource;
 import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MongoDBDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
@@ -128,7 +133,8 @@ public final class DataFeedTransforms {
         DataFeedHelper.setCreator(dataFeed, dataFeedDetail.getCreator());
         DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
         DataFeedHelper.setMetricIds(dataFeed,
-            dataFeedDetail.getMetrics().stream().map(DataFeedMetric::getId).collect(Collectors.toList()));
+            dataFeedDetail.getMetrics().stream()
+                .collect(Collectors.toMap(DataFeedMetric::getId, DataFeedMetric::getName)));
         return dataFeed;
     }
 
@@ -175,20 +181,19 @@ public final class DataFeedTransforms {
                 dataSourceParameter.getQuery()
             ));
             dataFeedSourceType = DataFeedSourceType.AZURE_DATA_EXPLORER;
+        } else if (dataFeedDetail instanceof AzureEventHubsDataFeed) {
+            final AzureEventHubsParameter azureEventHubsParameter =
+                ((AzureEventHubsDataFeed) dataFeedDetail).getDataSourceParameter();
+            dataFeed.setSource(new AzureEventHubsDataFeedSource(
+                azureEventHubsParameter.getConnectionString(),
+                azureEventHubsParameter.getConsumerGroup()));
+            dataFeedSourceType = DataFeedSourceType.AZURE_EVENT_HUBS;
         } else if (dataFeedDetail instanceof AzureTableDataFeed) {
             final AzureTableParameter dataSourceParameter = ((AzureTableDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
             dataFeed.setSource(new AzureTableDataFeedSource(dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getQuery(), dataSourceParameter.getTable()));
             dataFeedSourceType = DataFeedSourceType.AZURE_TABLE;
-        } else if (dataFeedDetail instanceof HttpRequestDataFeed) {
-            final HttpRequestParameter dataSourceParameter =
-                ((HttpRequestDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new HttpRequestDataFeedSource(
-                dataSourceParameter.getUrl(),
-                dataSourceParameter.getHttpMethod()
-            ));
-            dataFeedSourceType = DataFeedSourceType.HTTP_REQUEST;
         } else if (dataFeedDetail instanceof InfluxDBDataFeed) {
             final InfluxDBParameter dataSourceParameter = ((InfluxDBDataFeed) dataFeedDetail).getDataSourceParameter();
             dataFeed.setSource(new InfluxDBDataFeedSource(
@@ -228,16 +233,6 @@ public final class DataFeedTransforms {
                 dataSourceParameter.getCommand()
             ));
             dataFeedSourceType = DataFeedSourceType.MONGO_DB;
-        } else if (dataFeedDetail instanceof ElasticsearchDataFeed) {
-            final ElasticsearchParameter elasticsearchParameter =
-                ((ElasticsearchDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new ElasticsearchDataFeedSource(
-                elasticsearchParameter.getHost(),
-                elasticsearchParameter.getPort(),
-                elasticsearchParameter.getAuthHeader(),
-                elasticsearchParameter.getQuery()
-                ));
-            dataFeedSourceType = DataFeedSourceType.ELASTIC_SEARCH;
         } else if (dataFeedDetail instanceof AzureDataLakeStorageGen2DataFeed) {
             final AzureDataLakeStorageGen2Parameter azureDataLakeStorageGen2Parameter =
                 ((AzureDataLakeStorageGen2DataFeed) dataFeedDetail).getDataSourceParameter();
@@ -297,6 +292,13 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new SqlSourceParameter()
                     .setConnectionString(azureDataExplorerDataFeedSource.getConnectionString())
                     .setQuery(azureDataExplorerDataFeedSource.getQuery()));
+        } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
+            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
+                ((AzureEventHubsDataFeedSource) dataFeedSource);
+            dataFeedDetail = new AzureEventHubsDataFeed()
+                .setDataSourceParameter(new AzureEventHubsParameter()
+                    .setConnectionString(azureEventHubsDataFeedSource.getConnectionString())
+                    .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureTableDataFeed()
@@ -304,14 +306,6 @@ public final class DataFeedTransforms {
                     .setConnectionString(azureTableDataFeedSource.getConnectionString())
                     .setTable(azureTableDataFeedSource.getTableName())
                     .setQuery(azureTableDataFeedSource.getQueryScript()));
-        } else if (dataFeedSource instanceof HttpRequestDataFeedSource) {
-            final HttpRequestDataFeedSource httpRequestDataFeedSource = ((HttpRequestDataFeedSource) dataFeedSource);
-            dataFeedDetail = new HttpRequestDataFeed()
-                .setDataSourceParameter(new HttpRequestParameter()
-                    .setHttpHeader(httpRequestDataFeedSource.getHttpHeader())
-                    .setHttpMethod(httpRequestDataFeedSource.getHttpMethod())
-                    .setPayload(httpRequestDataFeedSource.getPayload())
-                    .setUrl(httpRequestDataFeedSource.getUrl()));
         } else if (dataFeedSource instanceof InfluxDBDataFeedSource) {
             final InfluxDBDataFeedSource influxDBDataFeedSource = ((InfluxDBDataFeedSource) dataFeedSource);
             dataFeedDetail = new InfluxDBDataFeed()
@@ -356,15 +350,6 @@ public final class DataFeedTransforms {
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())
                     .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()));
-        } else if (dataFeedSource instanceof ElasticsearchDataFeedSource) {
-            final ElasticsearchDataFeedSource elasticsearchDataFeedSource =
-                ((ElasticsearchDataFeedSource) dataFeedSource);
-            dataFeedDetail = new ElasticsearchDataFeed()
-                .setDataSourceParameter(new ElasticsearchParameter()
-                    .setAuthHeader(elasticsearchDataFeedSource.getAuthHeader())
-                    .setHost(elasticsearchDataFeedSource.getHost())
-                    .setPort(elasticsearchDataFeedSource.getPort())
-                    .setQuery(elasticsearchDataFeedSource.getQuery()));
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported", dataFeedSource.getClass().getCanonicalName())));
@@ -385,7 +370,7 @@ public final class DataFeedTransforms {
             final AzureAppInsightsDataFeedSource azureAppInsightsDataFeedSource =
                 ((AzureAppInsightsDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureApplicationInsightsDataFeedPatch()
-                .setDataSourceParameter(new AzureApplicationInsightsParameter()
+                .setDataSourceParameter(new AzureApplicationInsightsParameterPatch()
                     .setApiKey(azureAppInsightsDataFeedSource.getApiKey())
                     .setApplicationId(azureAppInsightsDataFeedSource.getApplicationId())
                     .setAzureCloud(azureAppInsightsDataFeedSource.getAzureCloud())
@@ -393,14 +378,14 @@ public final class DataFeedTransforms {
         } else if (dataFeedSource instanceof AzureBlobDataFeedSource) {
             final AzureBlobDataFeedSource azureBlobDataFeedSource = ((AzureBlobDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureBlobDataFeedPatch()
-                .setDataSourceParameter(new AzureBlobParameter()
+                .setDataSourceParameter(new AzureBlobParameterPatch()
                     .setConnectionString(azureBlobDataFeedSource.getConnectionString())
                     .setContainer(azureBlobDataFeedSource.getContainer())
                     .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()));
         } else if (dataFeedSource instanceof AzureCosmosDataFeedSource) {
             final AzureCosmosDataFeedSource azureCosmosDataFeedSource = ((AzureCosmosDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureCosmosDBDataFeedPatch()
-                .setDataSourceParameter(new AzureCosmosDBParameter()
+                .setDataSourceParameter(new AzureCosmosDBParameterPatch()
                     .setConnectionString(azureCosmosDataFeedSource.getConnectionString())
                     .setCollectionId(azureCosmosDataFeedSource.getCollectionId())
                     .setDatabase(azureCosmosDataFeedSource.getDatabase())
@@ -409,28 +394,27 @@ public final class DataFeedTransforms {
             final AzureDataExplorerDataFeedSource azureDataExplorerDataFeedSource =
                 ((AzureDataExplorerDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureDataExplorerDataFeedPatch()
-                .setDataSourceParameter(new SqlSourceParameter()
+                .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(azureDataExplorerDataFeedSource.getConnectionString())
                     .setQuery(azureDataExplorerDataFeedSource.getQuery()));
+        } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
+            final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
+                ((AzureEventHubsDataFeedSource) dataFeedSource);
+            dataFeedDetailPatch = new AzureEventHubsDataFeedPatch()
+                .setDataSourceParameter(new AzureEventHubsParameterPatch()
+                    .setConnectionString(azureEventHubsDataFeedSource.getConnectionString())
+                    .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureTableDataFeedPatch()
-                .setDataSourceParameter(new AzureTableParameter()
+                .setDataSourceParameter(new AzureTableParameterPatch()
                     .setConnectionString(azureTableDataFeedSource.getConnectionString())
                     .setTable(azureTableDataFeedSource.getTableName())
                     .setQuery(azureTableDataFeedSource.getQueryScript()));
-        } else if (dataFeedSource instanceof HttpRequestDataFeedSource) {
-            final HttpRequestDataFeedSource httpRequestDataFeedSource = ((HttpRequestDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new HttpRequestDataFeedPatch()
-                .setDataSourceParameter(new HttpRequestParameter()
-                    .setHttpHeader(httpRequestDataFeedSource.getHttpHeader())
-                    .setHttpMethod(httpRequestDataFeedSource.getHttpMethod())
-                    .setPayload(httpRequestDataFeedSource.getPayload())
-                    .setUrl(httpRequestDataFeedSource.getUrl()));
         } else if (dataFeedSource instanceof InfluxDBDataFeedSource) {
             final InfluxDBDataFeedSource influxDBDataFeedSource = ((InfluxDBDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new InfluxDBDataFeedPatch()
-                .setDataSourceParameter(new InfluxDBParameter()
+                .setDataSourceParameter(new InfluxDBParameterPatch()
                     .setConnectionString(influxDBDataFeedSource.getConnectionString())
                     .setDatabase(influxDBDataFeedSource.getDatabase())
                     .setQuery(influxDBDataFeedSource.getQuery())
@@ -439,25 +423,25 @@ public final class DataFeedTransforms {
         } else if (dataFeedSource instanceof MySqlDataFeedSource) {
             final MySqlDataFeedSource mySqlDataFeedSource = ((MySqlDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new MySqlDataFeedPatch()
-                .setDataSourceParameter(new SqlSourceParameter()
+                .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(mySqlDataFeedSource.getConnectionString())
                     .setQuery(mySqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof PostgreSqlDataFeedSource) {
             final PostgreSqlDataFeedSource postgreSqlDataFeedSource = ((PostgreSqlDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new PostgreSqlDataFeedPatch()
-                .setDataSourceParameter(new SqlSourceParameter()
+                .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(postgreSqlDataFeedSource.getConnectionString())
                     .setQuery(postgreSqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof SQLServerDataFeedSource) {
             final SQLServerDataFeedSource sqlServerDataFeedSource = ((SQLServerDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new SQLServerDataFeedPatch()
-                .setDataSourceParameter(new SqlSourceParameter()
+                .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(sqlServerDataFeedSource.getConnectionString())
                     .setQuery(sqlServerDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof MongoDBDataFeedSource) {
             final MongoDBDataFeedSource azureCosmosDataFeedSource = ((MongoDBDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new MongoDBDataFeedPatch()
-                .setDataSourceParameter(new MongoDBParameter()
+                .setDataSourceParameter(new MongoDBParameterPatch()
                     .setConnectionString(azureCosmosDataFeedSource.getConnectionString())
                     .setCommand(azureCosmosDataFeedSource.getCommand())
                     .setDatabase(azureCosmosDataFeedSource.getDatabase()));
@@ -465,21 +449,12 @@ public final class DataFeedTransforms {
             final AzureDataLakeStorageGen2DataFeedSource azureDataLakeStorageGen2DataFeedSource =
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureDataLakeStorageGen2DataFeedPatch()
-                .setDataSourceParameter(new AzureDataLakeStorageGen2Parameter()
+                .setDataSourceParameter(new AzureDataLakeStorageGen2ParameterPatch()
                     .setAccountKey(azureDataLakeStorageGen2DataFeedSource.getAccountKey())
                     .setAccountName(azureDataLakeStorageGen2DataFeedSource.getAccountName())
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())
                     .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()));
-        } else if (dataFeedSource instanceof ElasticsearchDataFeedSource) {
-            final ElasticsearchDataFeedSource elasticsearchDataFeedSource =
-                ((ElasticsearchDataFeedSource) dataFeedSource);
-            dataFeedDetailPatch = new ElasticsearchDataFeedPatch()
-                .setDataSourceParameter(new ElasticsearchParameter()
-                    .setAuthHeader(elasticsearchDataFeedSource.getAuthHeader())
-                    .setHost(elasticsearchDataFeedSource.getHost())
-                    .setPort(elasticsearchDataFeedSource.getPort())
-                    .setQuery(elasticsearchDataFeedSource.getQuery()));
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported.",

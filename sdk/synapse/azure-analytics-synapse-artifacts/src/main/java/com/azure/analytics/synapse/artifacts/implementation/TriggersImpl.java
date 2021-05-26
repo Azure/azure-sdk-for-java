@@ -62,7 +62,10 @@ public final class TriggersImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<TriggerListResponse>> getTriggersByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/triggers/{triggerName}")
         @ExpectedResponses({200, 202})
@@ -73,6 +76,7 @@ public final class TriggersImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") TriggerResource trigger,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/triggers/{triggerName}")
@@ -83,6 +87,7 @@ public final class TriggersImpl {
                 @PathParam("triggerName") String triggerName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/triggers/{triggerName}")
@@ -92,6 +97,7 @@ public final class TriggersImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("triggerName") String triggerName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/triggers/{triggerName}/subscribeToEvents")
@@ -101,6 +107,7 @@ public final class TriggersImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("triggerName") String triggerName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/triggers/{triggerName}/getEventSubscriptionStatus")
@@ -110,6 +117,7 @@ public final class TriggersImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("triggerName") String triggerName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/triggers/{triggerName}/unsubscribeFromEvents")
@@ -119,6 +127,7 @@ public final class TriggersImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("triggerName") String triggerName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/triggers/{triggerName}/start")
@@ -128,6 +137,7 @@ public final class TriggersImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("triggerName") String triggerName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/triggers/{triggerName}/stop")
@@ -137,6 +147,7 @@ public final class TriggersImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("triggerName") String triggerName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -145,6 +156,7 @@ public final class TriggersImpl {
         Mono<Response<TriggerListResponse>> getTriggersByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -157,10 +169,11 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getTriggersByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -183,7 +196,8 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceSinglePageAsync(Context context) {
-        return service.getTriggersByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getTriggersByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -266,6 +280,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponseAsync(
             String triggerName, TriggerResource trigger, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateTrigger(
@@ -274,6 +289,7 @@ public final class TriggersImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 trigger,
+                                accept,
                                 context));
     }
 
@@ -293,8 +309,9 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponseAsync(
             String triggerName, TriggerResource trigger, String ifMatch, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateTrigger(
-                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), ifMatch, trigger, context);
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), ifMatch, trigger, accept, context);
     }
 
     /**
@@ -439,6 +456,7 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerResource>> getTriggerWithResponseAsync(String triggerName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getTrigger(
@@ -446,6 +464,7 @@ public final class TriggersImpl {
                                 triggerName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -464,8 +483,9 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerResource>> getTriggerWithResponseAsync(
             String triggerName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getTrigger(
-                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -599,10 +619,11 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTriggerWithResponseAsync(String triggerName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteTrigger(
-                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -617,7 +638,9 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTriggerWithResponseAsync(String triggerName, Context context) {
-        return service.deleteTrigger(this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deleteTrigger(
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -689,10 +712,11 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>> subscribeTriggerToEventsWithResponseAsync(
             String triggerName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.subscribeTriggerToEvents(
-                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -708,8 +732,9 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>> subscribeTriggerToEventsWithResponseAsync(
             String triggerName, Context context) {
+        final String accept = "application/json";
         return service.subscribeTriggerToEvents(
-                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -799,10 +824,11 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>> getEventSubscriptionStatusWithResponseAsync(
             String triggerName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEventSubscriptionStatus(
-                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -818,8 +844,9 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>> getEventSubscriptionStatusWithResponseAsync(
             String triggerName, Context context) {
+        final String accept = "application/json";
         return service.getEventSubscriptionStatus(
-                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -910,10 +937,11 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>> unsubscribeTriggerFromEventsWithResponseAsync(
             String triggerName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.unsubscribeTriggerFromEvents(
-                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -929,8 +957,9 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TriggerSubscriptionOperationStatus>> unsubscribeTriggerFromEventsWithResponseAsync(
             String triggerName, Context context) {
+        final String accept = "application/json";
         return service.unsubscribeTriggerFromEvents(
-                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1020,10 +1049,11 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startTriggerWithResponseAsync(String triggerName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.startTrigger(
-                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -1038,7 +1068,9 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startTriggerWithResponseAsync(String triggerName, Context context) {
-        return service.startTrigger(this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.startTrigger(
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1109,10 +1141,11 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopTriggerWithResponseAsync(String triggerName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.stopTrigger(
-                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -1127,7 +1160,9 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopTriggerWithResponseAsync(String triggerName, Context context) {
-        return service.stopTrigger(this.client.getEndpoint(), triggerName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.stopTrigger(
+                this.client.getEndpoint(), triggerName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1198,8 +1233,11 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getTriggersByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
+                        context ->
+                                service.getTriggersByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1224,7 +1262,8 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getTriggersByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getTriggersByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

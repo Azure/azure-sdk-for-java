@@ -392,8 +392,14 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         getKeyClient(httpClient, serviceVersion);
+
+        /*if (!interceptorManager.isPlaybackMode()) {
+            return;
+        }*/
+
         listDeletedKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToDelete = keys;
+
             for (CreateKeyOptions key : keysToDelete.values()) {
                 assertKeyEquals(key, client.createKey(key));
             }
@@ -406,10 +412,12 @@ public class KeyClientTest extends KeyClientTestBase {
                     pollResponse = poller.poll();
                 }
             }
+
             sleepInRecordMode(300000);
 
             Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
             assertTrue(deletedKeys.iterator().hasNext());
+
             for (DeletedKey deletedKey : deletedKeys) {
                 assertNotNull(deletedKey.getDeletedOn());
                 assertNotNull(deletedKey.getRecoveryId());
@@ -453,37 +461,6 @@ public class KeyClientTest extends KeyClientTestBase {
             assertKeyEquals(createRsaKeyOptions, rsaKey);
             ByteBuffer wrappedArray = ByteBuffer.wrap(rsaKey.getKey().getE()); // Big-endian by default
             assertEquals(createRsaKeyOptions.getPublicExponent(), wrappedArray.getInt());
-        });
-    }
-
-    /**
-     * Tests that a key can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            client.createKey(createKeyOptions);
-            KeyVaultKey exportedKey = client.exportKey(createKeyOptions.getName(), "testEnvironment");
-            assertKeyEquals(createKeyOptions, exportedKey);
-        });
-    }
-
-    /**
-     * Tests that a specific key version can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            KeyVaultKey originalKey = client.createKey(createKeyOptions);
-            KeyVaultKey exportedKey =
-                client.exportKey(originalKey.getName(), originalKey.getProperties().getVersion(), "testEnvironment");
-            assertKeyEquals(createKeyOptions, exportedKey);
         });
     }
 

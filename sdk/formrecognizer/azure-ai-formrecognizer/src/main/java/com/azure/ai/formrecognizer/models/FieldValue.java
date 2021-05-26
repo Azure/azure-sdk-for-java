@@ -11,6 +11,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.ai.formrecognizer.models.FieldValueType.COUNTRY_REGION;
 import static com.azure.ai.formrecognizer.models.FieldValueType.DATE;
 import static com.azure.ai.formrecognizer.models.FieldValueType.FLOAT;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LIST;
@@ -22,7 +23,8 @@ import static com.azure.ai.formrecognizer.models.FieldValueType.STRING;
 import static com.azure.ai.formrecognizer.models.FieldValueType.TIME;
 
 /**
- * The FieldValue model.
+ * Represents the strongly-typed value of a field recognized from the input document and provides
+ * methods for converting it to the appropriate type.
  */
 @Fluent
 public final class FieldValue {
@@ -37,6 +39,7 @@ public final class FieldValue {
     private SelectionMarkState selectionMarkState;
     private String formFieldString;
     private String formFieldPhoneNumber;
+    private String formFieldCountryRegion;
 
     /**
      * Constructs a FieldValue object
@@ -74,6 +77,9 @@ public final class FieldValue {
                 break;
             case SELECTION_MARK_STATE:
                 selectionMarkState = (SelectionMarkState) value;
+                break;
+            case COUNTRY_REGION:
+                formFieldCountryRegion = (String) value;
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + valueType));
@@ -215,5 +221,20 @@ public final class FieldValue {
                 "Cannot get field as a %s from field value of type %s", SELECTION_MARK_STATE, this.getValueType()))));
         }
         return this.selectionMarkState;
+    }
+
+    /**
+     * Gets the value of the field as a country or region in the world.
+     *
+     * @return the value of the field as COUNTRY_REGION.
+     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
+     * {@link FieldValueType#COUNTRY_REGION}.
+     */
+    public String asCountryRegion() {
+        if (COUNTRY_REGION != this.getValueType()) {
+            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
+                "Cannot get field as a %s from field value of type %s", COUNTRY_REGION, this.getValueType()))));
+        }
+        return this.formFieldCountryRegion;
     }
 }

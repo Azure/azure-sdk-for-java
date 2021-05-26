@@ -4,29 +4,41 @@
 package com.azure.cosmos;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.cosmos.encryption.AzureKeyVaultCosmosEncryptor;
-import com.azure.cosmos.encryption.AzureKeyVaultKeyWrapMetadata;
-import com.azure.cosmos.encryption.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer;
-import com.azure.cosmos.encryption.EncryptionItemRequestOptions;
-import com.azure.cosmos.encryption.EncryptionOptions;
-import com.azure.cosmos.encryption.WithEncryption;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.ClientEncryptionIncludedPath;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.microsoft.data.encryption.AzureKeyVaultKeyStoreProvider.AzureKeyVaultKeyStoreProvider;
+import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.security.Security;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -46,35 +58,33 @@ public class Program {
     }
 
     private static final String databaseId = "samples";
-    private static final String containerId = "encryptedData";
-    private static final String keyContainerId = "keyContainer";
+    private static final String containerId = "encryptedContainer";
     private static final String dataEncryptionKeyId = "theDataEncryptionKey";
-    private static CosmosAsyncClient client = null;
-    private static EncryptionCosmosAsyncContainer containerWithEncryption = null;
+    private static CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = null;
+    private static CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = null;
+    private static CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = null;
+    private static AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = null;
 
     public static void main(String[] args) throws Exception {
         try {
-            // Read the Cosmos endpointUrl and masterKey from configuration.
-            // These values are available from the Azure Management Portal on the Cosmos Account Blade under "Keys".
-            // Keep these values in a safe and secure location. Together they provide administrative access to your
-            // Cosmos account.
+            //NOTE: Please provide credential information in src/samples/resources/settings.properties
             Properties configuration = args.length > 0 ? loadConfig(args[0]) : loadConfig();
-            Program.client = Program.createClientInstance(configuration);
-            Program.initialize(client, configuration);
-            Program.runDemo(client);
+            Program.cosmosEncryptionAsyncClient = Program.createClientInstance(configuration);
+            Program.initialize(cosmosEncryptionAsyncClient, configuration);
+            Program.runDemo(cosmosEncryptionAsyncContainer);
         } catch (CosmosException cre) {
             System.out.println(cre.toString());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            System.out.println("End of demo, press any key to exit.");
+            System.out.println("End of demo, press enter key to exit.");
             System.in.read();
             Program.cleanup();
-            client.close();
+            cosmosEncryptionAsyncClient.close();
         }
     }
 
-    private static CosmosAsyncClient createClientInstance(Properties configuration) {
+    private static CosmosEncryptionAsyncClient createClientInstance(Properties configuration) throws MicrosoftDataEncryptionException {
         String endpoint = configuration.getProperty("CosmosEndpointUrl");
         Preconditions.checkNotNull(endpoint, "Please specify a valid endpoint.");
 
@@ -82,47 +92,39 @@ public class Program {
         Preconditions.checkNotNull(endpoint, "Please specify a valid AuthorizationKey.");
 
         // TODO: moderakh, without contentResponseOnWriteEnabled = true this won't work we get NPE.
-        return new CosmosClientBuilder().endpoint(endpoint).key(authKey).contentResponseOnWriteEnabled(true).buildAsyncClient();
+        CosmosAsyncClient asyncClient =
+            new CosmosClientBuilder().endpoint(endpoint).key(authKey).contentResponseOnWriteEnabled(true).buildAsyncClient();
+
+        // Application credentials for authentication with Azure Key Vault.
+        // This application must have keys/wrapKey and keys/unwrapKey permissions
+        // on the keys that will be used for encryption.
+        TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
+        encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
+
+        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient, encryptionKeyStoreProvider);
     }
 
     /**
      * Administrative operations - create the database, container, and generate the necessary data encryption keys.
      * These are initializations and are expected to be invoked only once - do not invoke these before every item
      *
-     * @param client CosmosAsyncClient to be used
      * @param properties configuration
      * @throws Exception on failure throws
      */
-    private static void initialize(CosmosAsyncClient client, Properties properties) throws Exception {
-        client.createDatabaseIfNotExists(Program.databaseId).block();
-        CosmosAsyncDatabase database = client.getDatabase(Program.databaseId);
+    private static void initialize(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient, Properties properties) throws Exception {
+        cosmosEncryptionAsyncClient.getCosmosAsyncClient().createDatabaseIfNotExists(Program.databaseId).block();
+        cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(Program.databaseId);
 
         // Delete the existing container to prevent create item conflicts.
         try {
-            database.getContainer(Program.containerId).delete().block();
+            cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().getContainer(Program.containerId).delete().block();
         } catch (Exception e) {
         }
 
-        System.out.println("The demo will create a 1000 RU/s container, press any key to continue.");
+
+        System.out.println("The demo will create data encryption key from key vault key, press enter key to continue.");
         System.in.read();
 
-        // Create a container with the appropriate partition key definition (we choose the "AccountNumber" property
-        // here) and throughput (we choose 1000 here).
-        database.createContainer(Program.containerId, "/AccountNumber",
-            ThroughputProperties.createManualThroughput(1000)).block();
-
-        CosmosAsyncContainer container = database.getContainer(Program.containerId);
-
-        // Application credentials for authentication with Azure Key Vault.
-        // This application must have keys/wrapKey and keys/unwrapKey permissions
-        // on the keys that will be used for encryption.
-        TokenCredential tokenCredentials = Program.getTokenCredential(properties);
-
-        AzureKeyVaultCosmosEncryptor encryptor = new AzureKeyVaultCosmosEncryptor(
-            tokenCredentials);
-        encryptor.initialize(database, Program.keyContainerId);
-
-        Program.containerWithEncryption = WithEncryption.withEncryptor(container, encryptor);
 
         // Master key identifier: https://{keyvault-name}.vault.azure
         //.net/{object-type}/{object-name}/{object-version}
@@ -131,17 +133,38 @@ public class Program {
             throw new IllegalArgumentException("Please specify a valid MasterKeyUrl in the appSettings.json");
         }
 
-        URI masterKeyUri = new URI(masterKeyUrlFromConfig);
-
-        AzureKeyVaultKeyWrapMetadata wrapMetadata = new AzureKeyVaultKeyWrapMetadata(masterKeyUri.toURL());
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), dataEncryptionKeyId, masterKeyUrlFromConfig);
 
         /// Generates an encryption key, wraps it using the key wrap metadata provided
-        /// with the key wrapping provider configured on the client
         /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
-        encryptor.getDataEncryptionKeyContainer().createDataEncryptionKey(
+        CosmosClientEncryptionKeyProperties keyProperties = cosmosEncryptionAsyncDatabase.createClientEncryptionKey(
             dataEncryptionKeyId,
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED,
-            wrapMetadata, new CosmosItemRequestOptions()).block();
+            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata).block().getProperties();
+
+        System.out.println("The demo will create a 1000 RU/s container, with encryption policy on " +
+            "account number, press enter key to continue.");
+        System.in.read();
+
+        ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
+        includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
+        includedPath.setPath("/accountNumber");
+        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(includedPath);
+
+        // Create a container with the appropriate partition key definition (we choose the "PurchaseOrderNumber"
+        // property
+        // here) and throughput (we choose 1000 here).
+
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(Program.containerId,
+            "/purchaseOrderNumber");
+        containerProperties.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
+
+        cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(containerProperties,
+            ThroughputProperties.createManualThroughput(1000)).block();
+        cosmosEncryptionAsyncContainer =
+            cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerProperties.getId());
 
         System.out.println("Initialization completed.");
     }
@@ -180,34 +203,46 @@ public class Program {
         return credentials;
     }
 
-    private static void runDemo(CosmosAsyncClient client) {
+    private static void runDemo(CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer) throws IOException {
         String orderId = UUID.randomUUID().toString();
         String account = "Account1";
         SalesOrder order = Program.getSalesOrderSample(account, orderId);
 
-        EncryptionItemRequestOptions itemRequestOptions = new EncryptionItemRequestOptions();
-        EncryptionOptions encryptionOptions = new EncryptionOptions();
-        encryptionOptions.setDataEncryptionKeyId(Program.dataEncryptionKeyId);
-        encryptionOptions.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256_RANDOMIZED);
-        encryptionOptions.setPathsToEncrypt(ImmutableList.of("/TotalDue"));
-        itemRequestOptions.setEncryptionOptions(encryptionOptions);
+        System.out.println("Account number for SalesOrder going to get saved encrypted in container");
+        // Save the sales order into the container - all properties mentioned in client encryption policy on the
+        // container are encrypted using the encryption key saved in the database before sending to the Azure Cosmos
+        // DB service.
+        cosmosEncryptionAsyncContainer.createItem(order,
+            new PartitionKey(order.purchaseOrderNumber),
+            new CosmosItemRequestOptions()).block();
 
-        // Save the sales order into the container - all properties marked with the Encrypt attribute on the
-        // SalesOrder class
-        // are encrypted using the encryption key referenced below before sending to the Azure Cosmos DB service.
-        Program.containerWithEncryption.createItem(
-            order,
-            new PartitionKey(order.AccountNumber),
-            itemRequestOptions).block();
+        System.out.println("Sale order is created in database, account number = " + order.accountNumber);
 
-        // Read the item back - decryption happens automatically as the data contains the reference to the wrapped
+        // Read the item back - decryption happens automatically as the container contains the reference to the wrapped
         // form of the encryption key and
         // metadata in order to unwrap it.
-        CosmosItemResponse<SalesOrder> readResponse = Program.containerWithEncryption.readItem(orderId,
-            new PartitionKey(account), new CosmosItemRequestOptions(), SalesOrder.class).block();
+        System.out.println("For reading the created item, press enter key to continue.");
+        System.in.read();
+        CosmosItemResponse<SalesOrder> readResponse = cosmosEncryptionAsyncContainer.readItem(orderId,
+            new PartitionKey(order.purchaseOrderNumber), new CosmosItemRequestOptions(), SalesOrder.class).block();
         SalesOrder readOrder = readResponse.getItem();
+        System.out.println("Sale order is retrieved from readItem api, account number = " + readOrder.accountNumber);
 
-        System.out.println("Total due" + order.TotalDue + " After roundtripping: " + readOrder.TotalDue);
+        System.out.println("For querying on encrypted accountNumber, press enter key to continue.");
+        //System.in.read();
+        System.in.read();
+        SqlParameter parameter = new SqlParameter("@accountNumber", "Account1");
+        String query = "SELECT * FROM c where c.accountNumber = @accountNumber";
+        SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption = new SqlQuerySpecWithEncryption(new SqlQuerySpec(query));
+        sqlQuerySpecWithEncryption.addEncryptionParameter("/accountNumber", parameter);
+        FeedResponse<SalesOrder> salesOrderFeedResponse =
+            cosmosEncryptionAsyncContainer.queryItemsOnEncryptedProperties(sqlQuerySpecWithEncryption,
+                new CosmosQueryRequestOptions(), SalesOrder.class).byPage().blockFirst();
+        if (salesOrderFeedResponse.getResults().size() < 1) {
+            throw new IllegalStateException("Error while querying on encrpted field");
+        }
+        System.out.println("Sale order is retrieved from query on account number = " + salesOrderFeedResponse.getResults().get(0).accountNumber);
+
         System.out.println("running demo completed.");
     }
 
@@ -218,41 +253,28 @@ public class Program {
     private static SalesOrder getSalesOrderSample(String account, String orderId) {
         SalesOrder salesOrder = new SalesOrder();
         salesOrder.id = orderId;
-        salesOrder.AccountNumber = account;
-        salesOrder.PurchaseOrderNumber = "PO18009186470";
-        salesOrder.TotalDue = 985.01;
-
-        // TODO update other fields
-        //        {
-        //            Id = orderId,
-        //                AccountNumber = account,
-        //                PurchaseOrderNumber = "PO18009186470",
-        //                OrderDate = new DateTime(2005, 7, 1),
-        //                SubTotal = 419.4589m,
-        //            TaxAmount = 12.5838m,
-        //            Freight = 472.3108m,
-        //            TotalDue = 985.018m,
-        //            Items = new SalesOrderDetail[]
-        //                {
-        //                    new SalesOrderDetail
-        //                    {
-        //                        OrderQty = 1,
-        //                        ProductId = 760,
-        //                        UnitPrice = 419.4589m,
-        //                        LineTotal = 419.4589m
-        //                    }
-        //                },
-        //        };
-
-        // Set the "ttl" property to auto-expire sales orders in 30 days
-        salesOrder.TimeToLive = 60 * 60 * 24 * 30;
+        salesOrder.accountNumber = account;
+        salesOrder.purchaseOrderNumber = "PO18009186470";
+        salesOrder.totalDue = 985.01;
+        salesOrder.subTotal = 985.01;
+        salesOrder.orderDate = Instant.now();
+        salesOrder.shippedDate = salesOrder.orderDate.plus(Duration.ofDays(5));
+        salesOrder.freight = 472.3108;
+        salesOrder.taxAmount = 12.5838;
+        salesOrder.items = new SalesOrder.SalesOrderDetail[1];
+        salesOrder.items[0] = new SalesOrder.SalesOrderDetail();
+        salesOrder.items[0].lineTotal = 419.4589;
+        salesOrder.items[0].unitPrice = 419.4589;
+        salesOrder.items[0].productId = 760;
+        salesOrder.items[0].orderQty = 1;
+        salesOrder.timeToLive = 60 * 60 * 24 * 30;
 
         return salesOrder;
     }
 
     private static void cleanup() {
         try {
-            client.getDatabase(databaseId).delete().block();
+            cosmosEncryptionAsyncClient.getCosmosAsyncClient().getDatabase(databaseId).delete().block();
         } catch (Exception e) {
         }
     }
@@ -268,13 +290,15 @@ public class Program {
 
     // load config from resource samples/resoruces/settings.properties
     private static Properties loadConfig() throws IOException {
-        try (InputStream input = Program.class.getClassLoader().getResourceAsStream("settings.properties")) {
+
+        try (InputStream input = new FileInputStream("src/samples/resources/settings.properties")) {
             Properties prop = new Properties();
             prop.load(input);
             return prop;
         }
     }
 }
+
 
 
 

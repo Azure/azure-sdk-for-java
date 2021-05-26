@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcsChatThreadEventBaseProperties model. */
+/** Schema of common properties of all chat thread events. */
 @Fluent
 public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties {
     /*
@@ -60,6 +60,28 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
      */
     public AcsChatThreadEventBaseProperties setVersion(Long version) {
         this.version = version;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadEventBaseProperties setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadEventBaseProperties setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadEventBaseProperties setThreadId(String threadId) {
+        super.setThreadId(threadId);
         return this;
     }
 }

@@ -38,6 +38,7 @@ import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ApplicationGatewayTests extends ResourceManagerTestBase {
@@ -80,6 +81,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("TODO refactor to avoid pfx")
     public void testAppGatewaysInternalComplex() throws Exception {
         new TestApplicationGateway().new PrivateComplex(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
@@ -101,7 +103,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
         String testId = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
-        String password = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("Abc.123", 12);
+        String password = ResourceManagerTestBase.password();
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
 
@@ -271,6 +273,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("TODO refactor to avoid pfx")
     public void testAppGatewaysInternalMinimal() throws Exception {
         new TestApplicationGateway().new PrivateMinimal(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
@@ -385,6 +388,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("TODO refactor to avoid pfx")
     public void testAppGatewaysInternetFacingMinimal() throws Exception {
         new TestApplicationGateway().new PublicMinimal(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());
@@ -396,6 +400,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
      * @throws Exception
      */
     @Test
+    @Disabled("Refactor to avoid to use pfx")
     public void testAppGatewaysInternetFacingComplex() throws Exception {
         new TestApplicationGateway().new PublicComplex(azureResourceManager.resourceGroups().manager().internalContext())
             .runTest(azureResourceManager.applicationGateways(), azureResourceManager.resourceGroups());

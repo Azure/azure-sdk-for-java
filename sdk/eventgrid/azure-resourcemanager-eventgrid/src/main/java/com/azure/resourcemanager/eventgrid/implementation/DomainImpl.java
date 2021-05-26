@@ -4,13 +4,16 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.models.Domain;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
+import com.azure.resourcemanager.eventgrid.models.DomainSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.DomainUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
@@ -25,7 +28,7 @@ import java.util.stream.Collectors;
 public final class DomainImpl implements Domain, Domain.Definition, Domain.Update {
     private DomainInner innerObject;
 
-    private final EventGridManager serviceManager;
+    private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -50,6 +53,10 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -111,7 +118,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this.innerObject;
     }
 
-    private EventGridManager manager() {
+    private com.azure.resourcemanager.eventgrid.EventGridManager manager() {
         return this.serviceManager;
     }
 
@@ -144,7 +151,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this;
     }
 
-    DomainImpl(String name, EventGridManager serviceManager) {
+    DomainImpl(String name, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = new DomainInner();
         this.serviceManager = serviceManager;
         this.domainName = name;
@@ -173,7 +180,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this;
     }
 
-    DomainImpl(DomainInner innerObject, EventGridManager serviceManager) {
+    DomainImpl(DomainInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -200,6 +207,25 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this;
     }
 
+    public DomainSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.domains().listSharedAccessKeys(resourceGroupName, domainName);
+    }
+
+    public Response<DomainSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
+        return serviceManager.domains().listSharedAccessKeysWithResponse(resourceGroupName, domainName, context);
+    }
+
+    public DomainSharedAccessKeys regenerateKey(DomainRegenerateKeyRequest regenerateKeyRequest) {
+        return serviceManager.domains().regenerateKey(resourceGroupName, domainName, regenerateKeyRequest);
+    }
+
+    public Response<DomainSharedAccessKeys> regenerateKeyWithResponse(
+        DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return serviceManager
+            .domains()
+            .regenerateKeyWithResponse(resourceGroupName, domainName, regenerateKeyRequest, context);
+    }
+
     public DomainImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -218,11 +244,6 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
             this.updateDomainUpdateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public DomainImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
-        return this;
     }
 
     public DomainImpl withInputSchema(InputSchema inputSchema) {

@@ -27,7 +27,6 @@ import com.azure.digitaltwins.core.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -38,6 +37,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client for interacting asynchronously with an Azure Digital Twins instance.
@@ -55,11 +55,12 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = DigitalTwinsClientBuilder.class, isAsync = true)
 public final class DigitalTwinsAsyncClient {
     private static final ClientLogger logger = new ClientLogger(DigitalTwinsAsyncClient.class);
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
     private static final Boolean includeModelDefinitionOnGet = true;
     private final JsonSerializer serializer;
+    private static final String DIGITAL_TWINS_TRACING_NAMESPACE_VALUE = "Microsoft.DigitalTwins";
 
     DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
@@ -149,9 +150,17 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateOrReplaceDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .addWithResponseAsync(digitalTwinId, digitalTwin, OptionsConverter.toProtocolLayerOptions(options), context)
+            .addWithResponseAsync(
+                digitalTwinId,
+                digitalTwin,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -191,7 +200,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getDigitalTwin(String digitalTwinId, Class<T> clazz)
     {
-        return getDigitalTwinWithResponse(digitalTwinId, clazz, null)
+        return getDigitalTwinWithResponse(digitalTwinId, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -223,9 +232,16 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .getByIdWithResponseAsync(digitalTwinId, null, context)
+            .getByIdWithResponseAsync(
+                digitalTwinId,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -273,7 +289,8 @@ public final class DigitalTwinsAsyncClient {
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
-     * @return A {@link DigitalTwinsResponse}
+     * @return A {@link DigitalTwinsResponse}. This response object includes an HTTP header that gives you the updated
+     * ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options)
@@ -282,9 +299,17 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .updateWithResponseAsync(digitalTwinId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
+            .updateWithResponseAsync(
+                digitalTwinId,
+                jsonPatch,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -326,9 +351,16 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .deleteWithResponseAsync(digitalTwinId, OptionsConverter.toProtocolLayerOptions(options), context);
+            .deleteWithResponseAsync(
+                digitalTwinId,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     //endregion Digital twin APIs
@@ -390,9 +422,18 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> createOrReplaceRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateOrReplaceRelationshipOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .addRelationshipWithResponseAsync(digitalTwinId, relationshipId, relationship, OptionsConverter.toProtocolLayerOptions(options), context)
+            .addRelationshipWithResponseAsync(
+                digitalTwinId,
+                relationshipId,
+                relationship,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -427,7 +468,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
-        return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, null)
+        return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -456,9 +497,17 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .getRelationshipByIdWithResponseAsync(digitalTwinId, relationshipId, null, context)
+            .getRelationshipByIdWithResponseAsync(
+                digitalTwinId,
+                relationshipId,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -503,7 +552,8 @@ public final class DigitalTwinsAsyncClient {
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                     This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
-     * @return A {@link DigitalTwinsResponse} containing no parsed payload object.
+     * @return A {@link DigitalTwinsResponse} containing no parsed payload object. This response object includes an
+     * HTTP header that gives you the updated ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options) {
@@ -511,9 +561,18 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .updateRelationshipWithResponseAsync(digitalTwinId, relationshipId, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
+            .updateRelationshipWithResponseAsync(
+                digitalTwinId,
+                relationshipId,
+                jsonPatch,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -555,9 +614,17 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .deleteRelationshipWithResponseAsync(digitalTwinId, relationshipId, OptionsConverter.toProtocolLayerOptions(options), context);
+            .deleteRelationshipWithResponseAsync(
+                digitalTwinId,
+                relationshipId,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -578,7 +645,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> clazz) {
-        return listRelationships(digitalTwinId, null, clazz, null);
+        return listRelationships(digitalTwinId, null, clazz);
     }
 
     /**
@@ -607,14 +674,21 @@ public final class DigitalTwinsAsyncClient {
 
     <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
         return new PagedFlux<>(
-            () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context),
-            nextLink -> listRelationshipsNextPage(nextLink, clazz, context));
+            () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context != null ? context : Context.NONE),
+            nextLink -> listRelationshipsNextPage(nextLink, clazz, context != null ? context : Context.NONE));
     }
 
     <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .listRelationshipsSinglePageAsync(digitalTwinId, relationshipName, null, context)
+            .listRelationshipsSinglePageAsync(
+                digitalTwinId, relationshipName,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(
                 objectPagedResponse -> {
                     List<T> list = objectPagedResponse.getValue().stream()
@@ -640,9 +714,16 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<PagedResponse<T>> listRelationshipsNextPage(String nextLink, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
-            .listRelationshipsNextSinglePageAsync(nextLink, null, context)
+            .listRelationshipsNextSinglePageAsync(
+                nextLink,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(objectPagedResponse -> {
                 List<T> stringList = objectPagedResponse.getValue().stream()
                     .map(object -> {
@@ -684,17 +765,33 @@ public final class DigitalTwinsAsyncClient {
 
     PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, Context context) {
         return new PagedFlux<>(
-            () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context),
-            nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
+            () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context != null ? context : Context.NONE),
+            nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context != null ? context : Context.NONE ));
     }
 
-    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, Context context){
-        return protocolLayer.getDigitalTwins().listIncomingRelationshipsSinglePageAsync(digitalTwinId, null, context)
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer.getDigitalTwins()
+            .listIncomingRelationshipsSinglePageAsync(
+                digitalTwinId,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
-    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, Context context){
-        return protocolLayer.getDigitalTwins().listIncomingRelationshipsNextSinglePageAsync(nextLink, null, context)
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer.getDigitalTwins()
+            .listIncomingRelationshipsNextSinglePageAsync(
+                nextLink,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
@@ -729,7 +826,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> dtdlModels) {
-        return createModelsWithResponse(dtdlModels, null)
+        return createModelsWithResponse(dtdlModels)
             .map(Response::getValue);
     }
 
@@ -750,6 +847,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> dtdlModels, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         List<Object> modelsPayload = new ArrayList<>();
         for (String model : dtdlModels) {
             try {
@@ -761,7 +862,10 @@ public final class DigitalTwinsAsyncClient {
             }
         }
 
-        return protocolLayer.getDigitalTwinModels().addWithResponseAsync(modelsPayload, null, context)
+        return protocolLayer.getDigitalTwinModels().addWithResponseAsync(
+            modelsPayload,
+            null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(listResponse -> {
                 Iterable<DigitalTwinsModelData> convertedList = listResponse.getValue().stream()
                     .map(DigitalTwinsModelDataConverter::map)
@@ -783,7 +887,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsModelData> getModel(String modelId) {
-        return getModelWithResponse(modelId, null)
+        return getModelWithResponse(modelId)
             .map(Response::getValue);
     }
 
@@ -802,10 +906,18 @@ public final class DigitalTwinsAsyncClient {
         return withContext(context -> getModelWithResponse(modelId, context));
     }
 
-    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, Context context){
+    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwinModels()
-            .getByIdWithResponseAsync(modelId, includeModelDefinitionOnGet, null, context)
+            .getByIdWithResponseAsync(
+                modelId,
+                includeModelDefinitionOnGet,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
                 com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData modelData = response.getValue();
                 return new SimpleResponse<>(
@@ -847,13 +959,17 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, options, context)));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(ListModelsOptions options, Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ListModelsOptions options, Context context) {
         return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(options, context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, options, context));
+            () -> listModelsSinglePageAsync(options, context != null ? context : Context.NONE),
+            nextLink -> listModelsNextSinglePageAsync(nextLink, options, context != null ? context : Context.NONE));
     }
 
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelsOptions options, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelsOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         // default values for these options
         List<String> getDependenciesFor = null;
         boolean includeModelDefinition = true; //service default is false, but we expect customers to want the model definitions by default
@@ -868,7 +984,7 @@ public final class DigitalTwinsAsyncClient {
             getDependenciesFor,
             includeModelDefinition,
             protocolLayerOptions,
-            context)
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(
                 objectPagedResponse -> {
                     List<DigitalTwinsModelData> convertedList = objectPagedResponse.getValue().stream()
@@ -886,7 +1002,11 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, ListModelsOptions options, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, ListModelsOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = null;
         if (options != null) {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
@@ -896,7 +1016,7 @@ public final class DigitalTwinsAsyncClient {
         return protocolLayer.getDigitalTwinModels().listNextSinglePageAsync(
             nextLink,
             protocolLayerOptions,
-            context)
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(objectPagedResponse -> {
                 List<DigitalTwinsModelData> convertedList = objectPagedResponse.getValue().stream()
                     .map(DigitalTwinsModelDataConverter::map)
@@ -924,7 +1044,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
-        return deleteModelWithResponse(modelId, null)
+        return deleteModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -943,8 +1063,16 @@ public final class DigitalTwinsAsyncClient {
         return withContext(context -> deleteModelWithResponse(modelId, context));
     }
 
-    Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context){
-        return protocolLayer.getDigitalTwinModels().deleteWithResponseAsync(modelId, null, context);
+    Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer.getDigitalTwinModels()
+            .deleteWithResponseAsync(
+                modelId,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -959,7 +1087,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> decommissionModel(String modelId) {
-        return decommissionModelWithResponse(modelId, null)
+        return decommissionModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -979,10 +1107,18 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> decommissionModelWithResponse(String modelId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         JsonPatchDocument updateOperation = new JsonPatchDocument()
             .appendReplace("/decommissioned", true);
 
-        return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(modelId, updateOperation, null, context);
+        return protocolLayer.getDigitalTwinModels().updateWithResponseAsync(
+            modelId,
+            updateOperation,
+            null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     //endregion Model APIs
@@ -1004,7 +1140,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getComponent(String digitalTwinId, String componentName, Class<T> clazz) {
-        return getComponentWithResponse(digitalTwinId, componentName, clazz, null)
+        return getComponentWithResponse(digitalTwinId, componentName, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -1027,7 +1163,16 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, Context context) {
-        return protocolLayer.getDigitalTwins().getComponentWithResponseAsync(digitalTwinId, componentName, null, context)
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer.getDigitalTwins()
+            .getComponentWithResponseAsync(
+                digitalTwinId,
+                componentName,
+                null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -1072,7 +1217,8 @@ public final class DigitalTwinsAsyncClient {
      * @param jsonPatch The JSON patch to apply to the specified digital twin's relationship.
      *                                  This argument can be created using {@link JsonPatchDocument}.
      * @param options The optional parameters for this request. If null, the default option values will be used.
-     * @return A {@link DigitalTwinsResponse} containing an empty Mono.
+     * @return A {@link DigitalTwinsResponse} containing an empty Mono. This response object includes an HTTP header
+     * that gives you the updated ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options) {
@@ -1080,7 +1226,17 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options, Context context) {
-        return protocolLayer.getDigitalTwins().updateComponentWithResponseAsync(digitalTwinId, componentName, jsonPatch, OptionsConverter.toProtocolLayerOptions(options), context)
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return protocolLayer.getDigitalTwins()
+            .updateComponentWithResponseAsync(
+                digitalTwinId,
+                componentName,
+                jsonPatch,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
@@ -1152,16 +1308,23 @@ public final class DigitalTwinsAsyncClient {
 
     <T> PagedFlux<T> query(String query, Class<T> clazz, QueryOptions options, Context context) {
         return new PagedFlux<T>(
-            () -> queryFirstPage(query, clazz, options, context),
-            nextLink -> queryNextPage(nextLink, clazz, options, context));
+            () -> queryFirstPage(query, clazz, options, context != null ? context : Context.NONE),
+            nextLink -> queryNextPage(nextLink, clazz, options, context != null ? context : Context.NONE));
     }
 
     <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, QueryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
 
         return protocolLayer
             .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
+            .queryTwinsWithResponseAsync(
+                querySpecification,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(objectPagedResponse -> new PagedResponseBase<>(
                 objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(),
@@ -1182,11 +1345,18 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<PagedResponse<T>> queryNextPage(String nextLink, Class<T> clazz, QueryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
 
         return protocolLayer
             .getQueries()
-            .queryTwinsWithResponseAsync(querySpecification, OptionsConverter.toProtocolLayerOptions(options), context)
+            .queryTwinsWithResponseAsync(
+                querySpecification,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(objectPagedResponse -> new PagedResponseBase<>(
                 objectPagedResponse.getRequest(),
                 objectPagedResponse.getStatusCode(),
@@ -1225,7 +1395,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute)
     {
-        return createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, null)
+        return createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -1249,7 +1419,11 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, Context context)
     {
-        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), null, context);
+         return this.protocolLayer.getEventRoutes().addWithResponseAsync(
+            eventRouteId,
+            EventRouteConverter.map(eventRoute),
+            null,
+            context != null ? context : Context.NONE);
     }
 
     /**
@@ -1265,7 +1439,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsEventRoute> getEventRoute(String eventRouteId)
     {
-        return getEventRouteWithResponse(eventRouteId, null)
+        return getEventRouteWithResponse(eventRouteId)
             .map(Response::getValue);
     }
 
@@ -1287,7 +1461,14 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
     {
-        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(eventRouteId, null, context)
+        if (context == null) {
+            context = Context.NONE;
+        }
+
+        return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(
+            eventRouteId,
+            null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(eventRouteResponse -> new SimpleResponse<>(
                 eventRouteResponse.getRequest(),
                 eventRouteResponse.getStatusCode(),
@@ -1308,7 +1489,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEventRoute(String eventRouteId)
     {
-        return deleteEventRouteWithResponse(eventRouteId, null)
+        return deleteEventRouteWithResponse(eventRouteId)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -1330,7 +1511,10 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, Context context)
     {
-        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, null, context);
+        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(
+            eventRouteId,
+            null,
+            context != null ? context : Context.NONE);
     }
 
     /**
@@ -1372,25 +1556,38 @@ public final class DigitalTwinsAsyncClient {
     PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options, Context context)
     {
         return new PagedFlux<>(
-            () -> listEventRoutesFirstPage(options, context),
-            nextLink -> listEventRoutesNextPage(nextLink, options, context));
+            () -> listEventRoutesFirstPage(options, context != null ? context : Context.NONE),
+            nextLink -> listEventRoutesNextPage(nextLink, options, context != null ? context : Context.NONE));
     }
 
     Mono<PagedResponse<DigitalTwinsEventRoute>> listEventRoutesFirstPage(ListDigitalTwinsEventRoutesOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getEventRoutes()
-            .listSinglePageAsync(OptionsConverter.toProtocolLayerOptions(options), context)
+            .listSinglePageAsync(
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(pagedEventRouteMappingFunction);
     }
 
     Mono<PagedResponse<DigitalTwinsEventRoute>> listEventRoutesNextPage(String nextLink, ListDigitalTwinsEventRoutesOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getEventRoutes()
-            .listNextSinglePageAsync(nextLink, OptionsConverter.toProtocolLayerOptions(options), context)
+            .listNextSinglePageAsync(
+                nextLink,
+                OptionsConverter.toProtocolLayerOptions(options),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(pagedEventRouteMappingFunction);
     }
 
-    private Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.EventRoute>, PagedResponse<DigitalTwinsEventRoute>> pagedEventRouteMappingFunction = (pagedEventRouteResponse) -> {
+    private final Function<PagedResponse<com.azure.digitaltwins.core.implementation.models.EventRoute>, PagedResponse<DigitalTwinsEventRoute>> pagedEventRouteMappingFunction = (pagedEventRouteResponse) -> {
         List<DigitalTwinsEventRoute> convertedList = pagedEventRouteResponse.getValue().stream()
             .map(EventRouteConverter::map)
             .filter(Objects::nonNull)
@@ -1462,6 +1659,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, PublishTelemetryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         if (messageId == null || messageId.isEmpty()) {
             messageId = UUID.randomUUID().toString();
         }
@@ -1476,7 +1677,7 @@ public final class DigitalTwinsAsyncClient {
             payload,
             options.getTimestamp().toString(),
             null,
-            context);
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -1534,6 +1735,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, PublishComponentTelemetryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         if (messageId == null || messageId.isEmpty()) {
             messageId = UUID.randomUUID().toString();
         }
@@ -1549,7 +1754,7 @@ public final class DigitalTwinsAsyncClient {
             payload,
             options.getTimestamp().toString(),
             null,
-            context);
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     //endregion Telemetry APIs

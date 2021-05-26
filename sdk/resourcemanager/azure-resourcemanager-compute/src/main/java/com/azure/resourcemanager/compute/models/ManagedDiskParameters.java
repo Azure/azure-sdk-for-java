@@ -28,7 +28,7 @@ public final class ManagedDiskParameters extends SubResource {
      * managed disk.
      */
     @JsonProperty(value = "diskEncryptionSet")
-    private SubResource diskEncryptionSet;
+    private DiskEncryptionSetParameters diskEncryptionSet;
 
     /**
      * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
@@ -58,7 +58,7 @@ public final class ManagedDiskParameters extends SubResource {
      *
      * @return the diskEncryptionSet value.
      */
-    public SubResource diskEncryptionSet() {
+    public DiskEncryptionSetParameters diskEncryptionSet() {
         return this.diskEncryptionSet;
     }
 
@@ -69,8 +69,15 @@ public final class ManagedDiskParameters extends SubResource {
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the ManagedDiskParameters object itself.
      */
-    public ManagedDiskParameters withDiskEncryptionSet(SubResource diskEncryptionSet) {
+    public ManagedDiskParameters withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedDiskParameters withId(String id) {
+        super.withId(id);
         return this;
     }
 
@@ -80,5 +87,8 @@ public final class ManagedDiskParameters extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (diskEncryptionSet() != null) {
+            diskEncryptionSet().validate();
+        }
     }
 }

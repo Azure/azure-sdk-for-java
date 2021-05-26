@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -44,7 +46,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * and operations on the service are available on {@link BlobServiceClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
@@ -105,6 +107,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * @return The information of the created appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem create() {
         return create(false);
     }
@@ -120,6 +123,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * @return The information of the created appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem create(boolean overwrite) {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
         if (!overwrite) {
@@ -145,6 +149,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
@@ -165,6 +170,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Duration timeout,
         Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
@@ -188,6 +194,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * data emitted by the {@code Flux}.
      * @return The information of the append blob operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem appendBlock(InputStream data, long length) {
         return appendBlockWithResponse(data, length, null, null, null, Context.NONE).getValue();
     }
@@ -218,6 +225,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
@@ -241,6 +249,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param sourceRange The source {@link BlobRange} to copy.
      * @return The information of the append blob operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem appendBlockFromUrl(String sourceUrl, BlobRange sourceRange) {
         return appendBlockFromUrlWithResponse(sourceUrl, sourceRange, null, null, null, null, Context.NONE).getValue();
     }
@@ -265,6 +274,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the append blob operation.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMd5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
@@ -280,6 +290,7 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.seal}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void seal() {
         sealWithResponse(new AppendBlobSealOptions(), null, Context.NONE);
     }
@@ -296,6 +307,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sealWithResponse(AppendBlobSealOptions options, Duration timeout, Context context) {
         Mono<Response<Void>> response = appendBlobAsyncClient.sealWithResponse(options, context);
 

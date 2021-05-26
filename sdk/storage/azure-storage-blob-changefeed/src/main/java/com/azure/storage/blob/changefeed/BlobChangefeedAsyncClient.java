@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 
 import java.time.OffsetDateTime;
 
@@ -34,7 +36,7 @@ public class BlobChangefeedAsyncClient {
      * Changefeed events are returned in approximate temporal order.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -42,6 +44,7 @@ public class BlobChangefeedAsyncClient {
      *
      * @return A reactive response emitting the changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedFlux getEvents() {
         return getEvents(null, null);
     }
@@ -53,7 +56,7 @@ public class BlobChangefeedAsyncClient {
      * Changefeed events are returned in approximate temporal order.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -67,6 +70,7 @@ public class BlobChangefeedAsyncClient {
      * all events from the hour are returned, round the end time up by an hour.
      * @return A reactive response emitting the changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedFlux getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
         return new BlobChangefeedPagedFlux(changefeedFactory, startTime, endTime);
     }
@@ -78,7 +82,7 @@ public class BlobChangefeedAsyncClient {
      * Changefeed events are returned in approximate temporal order.
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -88,6 +92,7 @@ public class BlobChangefeedAsyncClient {
      * take place after the event identified by the cursor will be returned.
      * @return A reactive response emitting the changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedFlux getEvents(String cursor) {
         return new BlobChangefeedPagedFlux(changefeedFactory, cursor);
     }

@@ -10,10 +10,14 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -128,16 +132,44 @@ public class ClientStore {
     }
 
     /**
-     * Gets the latest Configuration Setting from the revisions given config store that match the Setting Selector
-     * criteria.
+     * Gets the Configuration Setting for the given config store that match the Setting Selector
+     * criteria. Follows retry-after-ms heards.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @param storeName Name of the App Configuration store to query against.
-     * @return List of Configuration Settings.
+     * @return The first returned configuration.
      */
-    public final ConfigurationSetting getRevison(SettingSelector settingSelector, String storeName) {
+    public final ConfigurationSetting getWatchKey(SettingSelector settingSelector, String storeName) {
+        PagedResponse<ConfigurationSetting> watchedKey = null;
+        int retryCount = 0;
+
         ConfigurationAsyncClient client = getClient(storeName);
-        return client.listRevisions(settingSelector).blockFirst();
+        while (retryCount <= appProperties.getMaxRetries()) {
+            watchedKey =  client.listConfigurationSettings(settingSelector).byPage(100).blockFirst();
+            if (watchedKey != null
+                && watchedKey.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
+                HttpHeader retryAfterHeader = watchedKey.getHeaders().get("retry-after-ms");
+
+                if (retryAfterHeader != null) {
+                    try {
+                        Integer retryAfter = Integer.valueOf(retryAfterHeader.getValue());
+
+                        Thread.sleep(retryAfter);
+                    } catch (NumberFormatException e) {
+                        LOGGER.warn("Unable to parse Retry After value.", e);
+                    } catch (InterruptedException e) {
+                        LOGGER.warn("Failed to wait after getting 429.", e);
+                    }
+                }
+                watchedKey = null;
+            } else if (watchedKey != null && watchedKey.getValue().size() > 0) {
+                return watchedKey.getValue().get(0);
+            } else {
+                return null;
+            }
+            retryCount++;
+        }
+        return null;
     }
 
     /**

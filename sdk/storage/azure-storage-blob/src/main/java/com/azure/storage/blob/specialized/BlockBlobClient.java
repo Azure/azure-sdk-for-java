@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -50,7 +52,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a> for more information.
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
@@ -95,6 +97,9 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the block blob.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -105,6 +110,9 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the block blob.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -126,6 +134,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
@@ -142,6 +153,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
@@ -166,6 +180,9 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param options {@link BlockBlobOutputStreamOptions}
      * @return A {@link BlobOutputStream} object used to write data to the blob.
@@ -211,6 +228,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockBlobItem upload(InputStream data, long length) {
         return upload(data, length, false);
     }
@@ -235,6 +253,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return The information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockBlobItem upload(InputStream data, long length, boolean overwrite) {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
         if (!overwrite) {
@@ -280,6 +299,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws NullPointerException if the input data is null.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -311,6 +331,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws NullPointerException if the input data is null.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
@@ -337,6 +358,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param sourceUrl The source URL to upload from.
      * @return The information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockBlobItem uploadFromUrl(String sourceUrl) {
         return uploadFromUrl(sourceUrl, false);
     }
@@ -357,6 +379,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return The information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockBlobItem uploadFromUrl(String sourceUrl, boolean overwrite) {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
         if (!overwrite) {
@@ -387,6 +410,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the uploaded block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
                                                              Context context) {
         StorageImplUtils.assertNotNull("options", options);
@@ -415,6 +439,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void stageBlock(String base64BlockId, InputStream data, long length) {
         stageBlockWithResponse(base64BlockId, data, length, null, null, null, Context.NONE);
     }
@@ -448,6 +473,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
@@ -461,7 +487,7 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -477,13 +503,14 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param sourceRange {@link BlobRange}
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void stageBlockFromUrl(String base64BlockId, String sourceUrl, BlobRange sourceRange) {
         stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange, null, null, null, null, Context.NONE);
     }
 
     /**
      * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -509,6 +536,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @return A response containing status code and HTTP headers
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
             byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Duration timeout,
             Context context) {
@@ -530,6 +558,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @return The list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockList listBlocks(BlockListType listType) {
         return this.listBlocksWithResponse(listType, null, null, Context.NONE).getValue();
     }
@@ -549,6 +578,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @return The list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockListType listType, String leaseId, Duration timeout,
         Context context) {
         return listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId), timeout, context);
@@ -568,6 +598,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @return The list of blocks.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
         Context context) {
         return blockWithOptionalTimeout(client.listBlocksWithResponse(options, context), timeout);
@@ -588,6 +619,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return The information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockBlobItem commitBlockList(List<String> base64BlockIds) {
         return commitBlockList(base64BlockIds, false);
     }
@@ -608,6 +640,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return The information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public BlockBlobItem commitBlockList(List<String> base64BlockIds, boolean overwrite) {
         BlobRequestConditions requestConditions = null;
         if (!overwrite) {
@@ -642,6 +675,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @return The information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(List<String> base64BlockIds, BlobHttpHeaders headers,
             Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout,
             Context context) {
@@ -670,6 +704,7 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @return The information of the block blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(

@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.jms;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +26,8 @@ public class AzureServiceBusJMSProperties {
 
     private int idleTimeout = 1800000;
 
+    private String pricingTier;
+
     public String getConnectionString() {
         return connectionString;
     }
@@ -41,6 +44,14 @@ public class AzureServiceBusJMSProperties {
         this.topicClientId = topicClientId;
     }
 
+    public String getPricingTier() {
+        return pricingTier;
+    }
+
+    public void setPricingTier(String pricingTier) {
+        this.pricingTier = pricingTier;
+    }
+
     public int getIdleTimeout() {
         return idleTimeout;
     }
@@ -54,11 +65,15 @@ public class AzureServiceBusJMSProperties {
      *
      * @throws IllegalArgumentException If connectionString is empty.
      */
+    @SuppressFBWarnings
     @PostConstruct
     public void validate() {
         if (!StringUtils.hasText(connectionString)) {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
 
+        if (!pricingTier.matches("(?i)premium|standard|basic")) {
+            throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
+        }
     }
 }

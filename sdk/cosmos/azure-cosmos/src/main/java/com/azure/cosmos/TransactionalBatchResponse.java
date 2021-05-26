@@ -179,6 +179,17 @@ public class TransactionalBatchResponse {
     }
 
     /**
+     * Get the length of the response of a batch operation
+     * change it in the down path.
+     *
+     * @return length of the response.
+     */
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public int getResponseLength() {
+        return BatchExecUtils.getResponseLength(this.responseHeaders);
+    }
+
+    /**
      * Gets the end-to-end request latency for the current request to Azure Cosmos DB service.
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.

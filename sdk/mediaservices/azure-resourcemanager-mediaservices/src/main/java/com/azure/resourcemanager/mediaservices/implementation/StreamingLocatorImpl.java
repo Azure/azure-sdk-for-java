@@ -4,9 +4,12 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingLocatorInner;
+import com.azure.resourcemanager.mediaservices.models.ListContentKeysResponse;
+import com.azure.resourcemanager.mediaservices.models.ListPathsResponse;
 import com.azure.resourcemanager.mediaservices.models.StreamingLocator;
 import com.azure.resourcemanager.mediaservices.models.StreamingLocatorContentKey;
 import java.time.OffsetDateTime;
@@ -17,9 +20,11 @@ import java.util.UUID;
 public final class StreamingLocatorImpl implements StreamingLocator, StreamingLocator.Definition {
     private StreamingLocatorInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    StreamingLocatorImpl(StreamingLocatorInner innerObject, MediaservicesManager serviceManager) {
+    StreamingLocatorImpl(
+        StreamingLocatorInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,6 +39,10 @@ public final class StreamingLocatorImpl implements StreamingLocator, StreamingLo
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String assetName() {
@@ -90,7 +99,7 @@ public final class StreamingLocatorImpl implements StreamingLocator, StreamingLo
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -127,7 +136,7 @@ public final class StreamingLocatorImpl implements StreamingLocator, StreamingLo
         return this;
     }
 
-    StreamingLocatorImpl(String name, MediaservicesManager serviceManager) {
+    StreamingLocatorImpl(String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new StreamingLocatorInner();
         this.serviceManager = serviceManager;
         this.streamingLocatorName = name;
@@ -151,6 +160,26 @@ public final class StreamingLocatorImpl implements StreamingLocator, StreamingLo
                 .getWithResponse(resourceGroupName, accountName, streamingLocatorName, context)
                 .getValue();
         return this;
+    }
+
+    public ListContentKeysResponse listContentKeys() {
+        return serviceManager.streamingLocators().listContentKeys(resourceGroupName, accountName, streamingLocatorName);
+    }
+
+    public Response<ListContentKeysResponse> listContentKeysWithResponse(Context context) {
+        return serviceManager
+            .streamingLocators()
+            .listContentKeysWithResponse(resourceGroupName, accountName, streamingLocatorName, context);
+    }
+
+    public ListPathsResponse listPaths() {
+        return serviceManager.streamingLocators().listPaths(resourceGroupName, accountName, streamingLocatorName);
+    }
+
+    public Response<ListPathsResponse> listPathsWithResponse(Context context) {
+        return serviceManager
+            .streamingLocators()
+            .listPathsWithResponse(resourceGroupName, accountName, streamingLocatorName, context);
     }
 
     public StreamingLocatorImpl withAssetName(String assetName) {

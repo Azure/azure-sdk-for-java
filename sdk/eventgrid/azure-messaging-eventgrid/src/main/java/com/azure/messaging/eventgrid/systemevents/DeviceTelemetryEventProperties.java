@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DeviceTelemetryEventProperties model. */
+/** Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry). */
 @Fluent
 public class DeviceTelemetryEventProperties {
     /*

@@ -35,10 +35,11 @@ import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64;
 
 /**
  * This class accesses IntelliJ Azure Tools credentials cache via JNA.
@@ -61,8 +62,9 @@ public class IntelliJCacheAccessor {
         this.keePassDatabasePath = keePassDatabasePath;
     }
 
-    private String getAzureToolsforIntelliJPluginConfigPath() {
-        return Paths.get(System.getProperty("user.home"), "AzureToolsForIntelliJ").toString();
+    private List<String> getAzureToolsforIntelliJPluginConfigPaths() {
+        return Arrays.asList(Paths.get(System.getProperty("user.home"), "AzureToolsForIntelliJ").toString(),
+            Paths.get(System.getProperty("user.home"), ".AzureToolsForIntelliJ").toString());
     }
 
     /**
@@ -236,10 +238,16 @@ public class IntelliJCacheAccessor {
      * @throws IOException if an error is encountered while reading the auth details file.
      */
     public IntelliJAuthMethodDetails getAuthDetailsIfAvailable() throws IOException {
-        String authMethodDetailsPath =
-                Paths.get(getAzureToolsforIntelliJPluginConfigPath(), "AuthMethodDetails.json").toString();
-        File authFile = new File(authMethodDetailsPath);
-        if (!authFile.exists()) {
+        File authFile = null;
+        for (String metadataPath : getAzureToolsforIntelliJPluginConfigPaths()) {
+            String authMethodDetailsPath =
+                Paths.get(metadataPath, "AuthMethodDetails.json").toString();
+            authFile = new File(authMethodDetailsPath);
+            if (authFile.exists()) {
+                break;
+            }
+        }
+        if (authFile == null || !authFile.exists()) {
             throw logger.logExceptionAsError(
                     new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
         }

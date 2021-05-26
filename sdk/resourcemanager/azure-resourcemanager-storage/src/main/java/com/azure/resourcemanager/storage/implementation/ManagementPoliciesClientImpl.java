@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,7 +59,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface ManagementPoliciesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
@@ -71,9 +72,10 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
@@ -87,6 +89,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("managementPolicyName") ManagementPolicyName managementPolicyName,
             @BodyParam("application/json") ManagementPolicyInner properties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -144,6 +147,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -155,8 +159,9 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             managementPolicyName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -199,6 +204,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter managementPolicyName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -208,6 +214,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 managementPolicyName,
+                accept,
                 context);
     }
 
@@ -285,7 +292,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicies Rules. See more details in:
+     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -324,6 +331,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         if (policy != null) {
             policy.validate();
         }
+        final String accept = "application/json";
         ManagementPolicyInner properties = new ManagementPolicyInner();
         properties.withPolicy(policy);
         return FluxUtil
@@ -338,8 +346,9 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                             this.client.getSubscriptionId(),
                             managementPolicyName,
                             properties,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -350,7 +359,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicies Rules. See more details in:
+     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,6 +400,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
         if (policy != null) {
             policy.validate();
         }
+        final String accept = "application/json";
         ManagementPolicyInner properties = new ManagementPolicyInner();
         properties.withPolicy(policy);
         context = this.client.mergeContext(context);
@@ -403,6 +413,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                 this.client.getSubscriptionId(),
                 managementPolicyName,
                 properties,
+                accept,
                 context);
     }
 
@@ -414,7 +425,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicies Rules. See more details in:
+     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -494,7 +505,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicies Rules. See more details in:
+     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
      *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -564,7 +575,7 @@ public final class ManagementPoliciesClientImpl implements ManagementPoliciesCli
                             this.client.getSubscriptionId(),
                             managementPolicyName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

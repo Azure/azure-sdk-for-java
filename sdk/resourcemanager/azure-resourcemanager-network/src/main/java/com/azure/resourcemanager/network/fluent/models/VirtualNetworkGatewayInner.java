@@ -11,6 +11,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
@@ -20,12 +21,19 @@ import com.azure.resourcemanager.network.models.VpnType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A common class for general resource information. */
 @JsonFlatten
 @Fluent
 public class VirtualNetworkGatewayInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayInner.class);
+
+    /*
+     * The extended location of type local virtual network gateway.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -139,10 +147,37 @@ public class VirtualNetworkGatewayInner extends Resource {
     private String inboundDnsForwardingEndpoint;
 
     /*
+     * Customer vnet resource id. VirtualNetworkGateway of type local gateway
+     * is associated with the customer vnet.
+     */
+    @JsonProperty(value = "properties.vNetExtendedLocationResourceId")
+    private String vNetExtendedLocationResourceId;
+
+    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of type local virtual network gateway.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of type local virtual network gateway.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -455,6 +490,28 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
+     * Get the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
+     * gateway is associated with the customer vnet.
+     *
+     * @return the vNetExtendedLocationResourceId value.
+     */
+    public String vNetExtendedLocationResourceId() {
+        return this.vNetExtendedLocationResourceId;
+    }
+
+    /**
+     * Set the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
+     * gateway is associated with the customer vnet.
+     *
+     * @param vNetExtendedLocationResourceId the vNetExtendedLocationResourceId value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withVNetExtendedLocationResourceId(String vNetExtendedLocationResourceId) {
+        this.vNetExtendedLocationResourceId = vNetExtendedLocationResourceId;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -474,12 +531,29 @@ public class VirtualNetworkGatewayInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }

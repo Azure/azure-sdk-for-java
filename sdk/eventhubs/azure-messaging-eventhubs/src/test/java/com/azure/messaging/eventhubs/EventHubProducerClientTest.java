@@ -62,7 +62,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -71,6 +71,8 @@ import static org.mockito.Mockito.when;
 public class EventHubProducerClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
+    private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
     @Mock
     private AmqpSendLink sendLink;
@@ -86,8 +88,6 @@ public class EventHubProducerClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private EventHubProducerAsyncClient asyncProducer;
-    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
-    private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConnectionProcessor connectionProcessor;
 
     @BeforeEach
@@ -103,7 +103,7 @@ public class EventHubProducerClientTest {
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), new ClientOptions(),
-            SslDomain.VerifyMode.ANONYMOUS_PEER);
+            SslDomain.VerifyMode.ANONYMOUS_PEER, "test-product", "test-client-version");
         connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 "event-hub-path", connectionOptions.getRetry()));
@@ -204,7 +204,7 @@ public class EventHubProducerClientTest {
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -255,7 +255,7 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1)).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -320,7 +320,7 @@ public class EventHubProducerClientTest {
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -404,7 +404,7 @@ public class EventHubProducerClientTest {
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**

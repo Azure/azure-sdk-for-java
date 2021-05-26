@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Service End point policy resource. */
 @JsonFlatten
@@ -24,6 +25,13 @@ public class ServiceEndpointPolicyInner extends Resource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * Kind of service endpoint policy. This is metadata used for the Azure
+     * portal experience.
+     */
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
 
     /*
      * A collection of service endpoint policy definitions of the service
@@ -63,6 +71,15 @@ public class ServiceEndpointPolicyInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the kind property: Kind of service endpoint policy. This is metadata used for the Azure portal experience.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
     }
 
     /**
@@ -132,6 +149,20 @@ public class ServiceEndpointPolicyInner extends Resource {
      */
     public ServiceEndpointPolicyInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceEndpointPolicyInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceEndpointPolicyInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

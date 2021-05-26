@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TableServiceProperties model. */
+/** Table Service Properties. */
 @Fluent
 public final class TableServiceProperties {
     /*

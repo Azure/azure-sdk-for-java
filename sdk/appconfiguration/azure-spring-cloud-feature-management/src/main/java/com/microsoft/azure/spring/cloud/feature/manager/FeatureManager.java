@@ -2,16 +2,13 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.feature.manager;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.microsoft.azure.spring.cloud.feature.manager.entities.Feature;
-import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -20,17 +17,23 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.microsoft.azure.spring.cloud.feature.manager.entities.Feature;
+import com.microsoft.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+
 import reactor.core.publisher.Mono;
 
 /**
  * Holds information on Feature Management properties and can check if a given feature is enabled.
  */
-@SuppressWarnings("serial")
 @Component("FeatureManagement")
 @ConfigurationProperties(prefix = "feature-management")
 public class FeatureManager extends HashMap<String, Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManager.class);
+
     private static final long serialVersionUID = -5941681857165566018L;
 
     @Autowired
@@ -38,16 +41,16 @@ public class FeatureManager extends HashMap<String, Object> {
 
     private transient FeatureManagementConfigProperties properties;
 
-    private transient HashMap<String, Feature> featureManagement;
+    private transient Map<String, Feature> featureManagement;
 
-    private HashMap<String, Boolean> onOff;
+    private Map<String, Boolean> onOff;
 
     private ObjectMapper mapper = new ObjectMapper();
 
     public FeatureManager(FeatureManagementConfigProperties properties) {
         this.properties = properties;
-        featureManagement = new HashMap<String, Feature>();
-        onOff = new HashMap<String, Boolean>();
+        featureManagement = new HashMap<>();
+        onOff = new HashMap<>();
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
     }
 
@@ -142,6 +145,10 @@ public class FeatureManager extends HashMap<String, Object> {
             return;
         }
 
+        // Need to reset or switch between on/off to conditional doesn't work
+        featureManagement = new HashMap<>();
+        onOff = new HashMap<>();
+
         if (m.size() == 1 && m.containsKey("featureManagement")) {
             m = (Map<? extends String, ? extends Object>) m.get("featureManagement");
         }
@@ -157,7 +164,7 @@ public class FeatureManager extends HashMap<String, Object> {
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {
-        Set<String> allFeatures = new HashSet<String>();
+        Set<String> allFeatures = new HashSet<>();
 
         allFeatures.addAll(onOff.keySet());
         allFeatures.addAll(featureManagement.keySet());
@@ -167,14 +174,14 @@ public class FeatureManager extends HashMap<String, Object> {
     /**
      * @return the featureManagement
      */
-    HashMap<String, Feature> getFeatureManagement() {
+    Map<String, Feature> getFeatureManagement() {
         return featureManagement;
     }
 
     /**
      * @return the onOff
      */
-    HashMap<String, Boolean> getOnOff() {
+    Map<String, Boolean> getOnOff() {
         return onOff;
     }
 

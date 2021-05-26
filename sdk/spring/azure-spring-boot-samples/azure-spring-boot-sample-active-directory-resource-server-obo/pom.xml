@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.7.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.azure.spring</groupId>
@@ -14,37 +14,35 @@
   <name>Azure Spring Boot Azure AD Starter Sample - Resource Server OBO</name>
   <description>Azure AD Spring Security Integration Spring Boot Resource Server OBO</description>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+        <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-security</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-      <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+      <version>3.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+    </dependency>
+
+    <!-- spring boot starter dependencies. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-resource-server</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>msal4j</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>5.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
   </dependencies>
 

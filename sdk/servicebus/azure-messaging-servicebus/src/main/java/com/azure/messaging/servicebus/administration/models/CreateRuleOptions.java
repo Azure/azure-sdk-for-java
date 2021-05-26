@@ -4,11 +4,16 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 
 import java.util.Objects;
 
 /**
  * A set of options for creating a rule.
+ *
+ * @see ServiceBusAdministrationClient#createRule(String, String, String, CreateRuleOptions)
+ * @see ServiceBusAdministrationAsyncClient#createRule(String, String, String, CreateRuleOptions)
  */
 @Fluent
 public final class CreateRuleOptions {

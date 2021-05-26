@@ -4,13 +4,15 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.ai.formrecognizer.implementation.FormLineHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * The FormLine model.
+ * Represents a line of text and its appearance.
  */
+@Immutable
 public final class FormLine extends FormElement {
 
     /*
@@ -18,13 +20,16 @@ public final class FormLine extends FormElement {
      */
     private final List<FormWord> words;
 
-    private Appearance appearance;
+    /*
+     * Line text appearance properties.
+     */
+    private TextAppearance appearance;
 
     static {
         FormLineHelper.setAccessor(new FormLineHelper.FormLineAccessor() {
             @Override
-            public void setAppearance(FormLine formLine, Appearance appearance) {
-                formLine.setAppearance(appearance);
+            public void setAppearance(FormLine formLine, TextAppearance textAppearance) {
+                formLine.setAppearance(textAppearance);
             }
         });
     }
@@ -82,7 +87,7 @@ public final class FormLine extends FormElement {
      *
      * @param appearance the appearance text line.
      */
-    private FormLine setAppearance(Appearance appearance) {
+    private FormLine setAppearance(TextAppearance appearance) {
         this.appearance = appearance;
         return this;
     }
@@ -92,7 +97,7 @@ public final class FormLine extends FormElement {
      *
      * @return the appearance of the text line.
      */
-    public Appearance getAppearance() {
+    public TextAppearance getAppearance() {
         return appearance;
     }
 }

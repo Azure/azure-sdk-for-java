@@ -12,6 +12,7 @@ import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * The implementation of {@link Subscription}.
@@ -50,7 +51,7 @@ final class SubscriptionImpl extends
 
     @Override
     public PagedIterable<Location> listLocations() {
-        return client.listLocations(this.subscriptionId()).mapPage(LocationImpl::new);
+        return PagedConverter.mapPage(client.listLocations(this.subscriptionId()), LocationImpl::new);
     }
 
     @Override

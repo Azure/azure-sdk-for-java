@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -69,7 +70,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface PacketCapturesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}")
@@ -83,9 +84,10 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PacketCaptureInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}")
@@ -98,9 +100,10 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             @PathParam("packetCaptureName") String packetCaptureName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}")
@@ -113,9 +116,10 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             @PathParam("packetCaptureName") String packetCaptureName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}/stop")
@@ -128,9 +132,10 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             @PathParam("packetCaptureName") String packetCaptureName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/packetCaptures/{packetCaptureName}/queryStatus")
@@ -143,9 +148,10 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             @PathParam("packetCaptureName") String packetCaptureName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/packetCaptures")
@@ -157,6 +163,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
             @PathParam("networkWatcherName") String networkWatcherName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -204,7 +211,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -217,8 +225,9 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -270,7 +279,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -281,6 +291,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -510,7 +521,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -522,8 +534,9 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                             packetCaptureName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -565,7 +578,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -575,6 +589,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 packetCaptureName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -675,7 +690,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -687,8 +703,9 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                             packetCaptureName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -730,7 +747,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -740,6 +758,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 packetCaptureName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -929,7 +948,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -941,8 +961,9 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                             packetCaptureName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -984,7 +1005,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .stop(
@@ -994,6 +1016,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 packetCaptureName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1183,7 +1206,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1195,8 +1219,9 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                             packetCaptureName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1238,7 +1263,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getStatus(
@@ -1248,6 +1274,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 packetCaptureName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1448,7 +1475,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1459,12 +1487,13 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                             networkWatcherName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<PacketCaptureResultInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1501,7 +1530,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1510,6 +1540,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                 networkWatcherName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->

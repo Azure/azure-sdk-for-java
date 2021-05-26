@@ -11,11 +11,18 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
+import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
+import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
+import com.azure.resourcemanager.network.models.FirewallPolicySku;
+import com.azure.resourcemanager.network.models.FirewallPolicySnat;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
+import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** FirewallPolicy Resource. */
 @JsonFlatten
@@ -28,6 +35,12 @@ public class FirewallPolicyInner extends Resource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * The identity of the firewall policy.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * List of references to FirewallPolicyRuleCollectionGroups.
@@ -73,10 +86,40 @@ public class FirewallPolicyInner extends Resource {
     private FirewallPolicyThreatIntelWhitelist threatIntelWhitelist;
 
     /*
+     * Insights on Firewall Policy.
+     */
+    @JsonProperty(value = "properties.insights")
+    private FirewallPolicyInsights insights;
+
+    /*
+     * The private IP addresses/IP ranges to which traffic will not be SNAT.
+     */
+    @JsonProperty(value = "properties.snat")
+    private FirewallPolicySnat snat;
+
+    /*
      * DNS Proxy Settings definition.
      */
     @JsonProperty(value = "properties.dnsSettings")
     private DnsSettings dnsSettings;
+
+    /*
+     * The configuration for Intrusion detection.
+     */
+    @JsonProperty(value = "properties.intrusionDetection")
+    private FirewallPolicyIntrusionDetection intrusionDetection;
+
+    /*
+     * TLS Configuration definition.
+     */
+    @JsonProperty(value = "properties.transportSecurity")
+    private FirewallPolicyTransportSecurity transportSecurity;
+
+    /*
+     * The Firewall Policy SKU.
+     */
+    @JsonProperty(value = "properties.sku")
+    private FirewallPolicySku sku;
 
     /*
      * Resource ID.
@@ -91,6 +134,26 @@ public class FirewallPolicyInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the identity property: The identity of the firewall policy.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the firewall policy.
+     *
+     * @param identity the identity value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -190,6 +253,46 @@ public class FirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the insights property: Insights on Firewall Policy.
+     *
+     * @return the insights value.
+     */
+    public FirewallPolicyInsights insights() {
+        return this.insights;
+    }
+
+    /**
+     * Set the insights property: Insights on Firewall Policy.
+     *
+     * @param insights the insights value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withInsights(FirewallPolicyInsights insights) {
+        this.insights = insights;
+        return this;
+    }
+
+    /**
+     * Get the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
+     *
+     * @return the snat value.
+     */
+    public FirewallPolicySnat snat() {
+        return this.snat;
+    }
+
+    /**
+     * Set the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
+     *
+     * @param snat the snat value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withSnat(FirewallPolicySnat snat) {
+        this.snat = snat;
+        return this;
+    }
+
+    /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
      *
      * @return the dnsSettings value.
@@ -206,6 +309,66 @@ public class FirewallPolicyInner extends Resource {
      */
     public FirewallPolicyInner withDnsSettings(DnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
+        return this;
+    }
+
+    /**
+     * Get the intrusionDetection property: The configuration for Intrusion detection.
+     *
+     * @return the intrusionDetection value.
+     */
+    public FirewallPolicyIntrusionDetection intrusionDetection() {
+        return this.intrusionDetection;
+    }
+
+    /**
+     * Set the intrusionDetection property: The configuration for Intrusion detection.
+     *
+     * @param intrusionDetection the intrusionDetection value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withIntrusionDetection(FirewallPolicyIntrusionDetection intrusionDetection) {
+        this.intrusionDetection = intrusionDetection;
+        return this;
+    }
+
+    /**
+     * Get the transportSecurity property: TLS Configuration definition.
+     *
+     * @return the transportSecurity value.
+     */
+    public FirewallPolicyTransportSecurity transportSecurity() {
+        return this.transportSecurity;
+    }
+
+    /**
+     * Set the transportSecurity property: TLS Configuration definition.
+     *
+     * @param transportSecurity the transportSecurity value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withTransportSecurity(FirewallPolicyTransportSecurity transportSecurity) {
+        this.transportSecurity = transportSecurity;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The Firewall Policy SKU.
+     *
+     * @return the sku value.
+     */
+    public FirewallPolicySku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Firewall Policy SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withSku(FirewallPolicySku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -229,17 +392,49 @@ public class FirewallPolicyInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (threatIntelWhitelist() != null) {
             threatIntelWhitelist().validate();
         }
+        if (insights() != null) {
+            insights().validate();
+        }
+        if (snat() != null) {
+            snat().validate();
+        }
         if (dnsSettings() != null) {
             dnsSettings().validate();
+        }
+        if (intrusionDetection() != null) {
+            intrusionDetection().validate();
+        }
+        if (transportSecurity() != null) {
+            transportSecurity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
     }
 }

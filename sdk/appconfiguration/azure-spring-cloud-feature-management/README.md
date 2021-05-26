@@ -34,20 +34,18 @@ The feature management library supports application.yml or bootstrap.yml as a fe
 
 ```yaml
 feature-management:
-  feature-set:
-    features:
-      feature-t: false
-      feature-u:
-        enabled-for:
-          -
-            name: Random
-      feature-v:
-        enabled-for:
-          -
-            name: TimeWindowFilter
-            parameters:
-              time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-              time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+  feature-t: false
+  feature-u:
+    enabled-for:
+      -
+        name: Random
+  feature-v:
+    enabled-for:
+      -
+        name: TimeWindowFilter
+        parameters:
+          time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT"
+          time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
 The `feature-management` section of the YAML document is used by convention to load feature flags. In the section above, we see that we have provided three different features. Features define their filters using the `enabled-for`  property. We can see that feature `feature-t` is set to false with no filters set. `feature-t` will always return false, this can also be done for true. `feature-u` which has only one feature filter `Random` which does not require any configuration so it only has the name property. `feature-v` it specifies a feature filter named `TimeWindow`. This is an example of a configurable feature filter. We can see in the example that the filter has a parameter's property. This is used to configure the filter. In this case, the start and end times for the feature to be active are configured.
@@ -107,7 +105,6 @@ public class DisabledFeaturesHandler implements IDisabledFeaturesHandler{
     }
 
 }
-
 ```
 
 #### Routing
@@ -168,14 +165,12 @@ This filter provides the capability to enable a feature based on a set percentag
 
 ```yaml
 feature-management:
-  feature-set:
-    features:
-      feature-v:
-        enabled-for:
-          -
-            name: PercentageFilter
-            parameters:
-              percentage-filter-setting: 50
+  feature-v:
+    enabled-for:
+      -
+        name: PercentageFilter
+        parameters:
+          percentage-filter-setting: 50
 ```
 
 #### TimeWindowFilter
@@ -184,15 +179,13 @@ This filter provides the capability to enable a feature based on a time window. 
 
 ```yaml
 feature-management:
-  feature-set:
-    features:
-      feature-v:
-        enabled-for:
-          -
-            name: TimeWindowFilter
-            parameters:
-              time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-              time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+  feature-v:
+    enabled-for:
+      -
+       name: TimeWindowFilter
+        parameters:
+          time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
+          time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
 #### TargetingFilter
@@ -237,7 +230,7 @@ The following steps demonstrate an example of a progressive rollout for a new 'B
 
 An example web application that uses the targeting feature filter is available in the [example project][example_project].
 
-To begin using the `TargetingFilter` in an application it must be added as a `@Bean` like any other Feature Filter. `TargetingFilter` relies on another `@Bean` to be added to the application, [`ITargetingContextAccessor`][ITargetingContextAccessor]. The `ITargetingContextAccessor` allows for defining the current `TargetingContext` to be used for defining the current user id and groups. An example of this is:
+To begin using the `TargetingFilter` in an application it must be added as a `@Bean` like any other Feature Filter. `TargetingFilter` relies on another `@Bean` to be added to the application, `ITargetingContextAccessor`. The `ITargetingContextAccessor` allows for defining the current `TargetingContext` to be used for defining the current user id and groups. An example of this is:
 
 ```java
 public class TargetingContextAccessor implements ITargetingContextAccessor {
@@ -274,5 +267,4 @@ Options are available to customize how targeting evaluation is performed across 
 ## Contributing
 
 <!-- Links -->
-[example_project]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web
-[ITargetingContextAccessor]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-feature-management-web/src/main/java/com/azure/spring/sample/featuremanagement/web/TargetingContextAccessor.java
+[example_project]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/feature-management-web-sample

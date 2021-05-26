@@ -4,9 +4,11 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import spock.lang.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
+
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.stream.Stream
@@ -33,7 +35,7 @@ class ChangefeedNetworkTest extends APISpec {
             .verifyComplete()
     }
 
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "historical"() {
         setup:
         /* Uncomment when recording. */
@@ -55,7 +57,7 @@ class ChangefeedNetworkTest extends APISpec {
             .verifyComplete()
     }
 
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "last hour"() {
         setup:
         /* Uncomment when recording. */
@@ -80,7 +82,7 @@ class ChangefeedNetworkTest extends APISpec {
      * To setup recording have an account where changes are generated quite frequently (i.e. every 1 minute).
      * This test runs long in recording mode as it waits multiple times for events.
      */
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "tail events"() {
         setup:
         /* Uncomment when recording. */
@@ -90,7 +92,7 @@ class ChangefeedNetworkTest extends APISpec {
         /* Update and uncomment after recording. */
         OffsetDateTime startTime = OffsetDateTime.of(2020, 8, 11, 23, 3, 10, 987532200, ZoneOffset.UTC)
 
-        Long pollInterval = testMode == TestMode.PLAYBACK ? 0 : 1000 * 60 * 3
+        Long pollInterval = env.testMode == TestMode.PLAYBACK ? 0 : 1000 * 60 * 3
 
         Set<String> eventIds1 = new HashSet<>()
         Set<String> eventIds2 = new HashSet<>()
@@ -145,7 +147,7 @@ class ChangefeedNetworkTest extends APISpec {
         eventIds2.intersect(eventIds3).size() == 0
     }
 
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "page size"() {
         setup:
         int pageSize1 = 50
@@ -199,7 +201,7 @@ class ChangefeedNetworkTest extends APISpec {
 
     }
 
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "resume from the middle of a chunk"() {
         setup:
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */
@@ -291,7 +293,7 @@ class ChangefeedNetworkTest extends APISpec {
      * However. Some shards should be empty. Easiest way to set this up is to have just one blob and keep modifying it.
      * Changes related to same blobName are guaranteed to end up in same shard.
      */
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "resume from the middle of a chunk with some empty shards"() {
         setup:
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */
@@ -388,7 +390,7 @@ class ChangefeedNetworkTest extends APISpec {
      * However. Some shards should be empty. Easiest way to set this up is to have just one blob and keep modifying it.
      * Changes related to same blobName are guaranteed to end up in same shard.
      */
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "resume from the middle of a chunk with many non-empty shards"() {
         setup:
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */
@@ -482,7 +484,7 @@ class ChangefeedNetworkTest extends APISpec {
         allEventIds == unionIds
     }
 
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "resume from historical yields no events"() {
         setup:
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */
@@ -512,7 +514,7 @@ class ChangefeedNetworkTest extends APISpec {
         eventIds1.size() > 0
     }
 
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "immediate resume from last hour yields no events"() {
         /* Uncomment when recording. */
 //        OffsetDateTime startTime = OffsetDateTime.now()
@@ -550,7 +552,7 @@ class ChangefeedNetworkTest extends APISpec {
      * To setup account for this test have a steady stream of events (i.e. some changes every 1 minute) that covers at least from an hour before start time
      * to an hour after end time.
      */
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "already rounded boundaries"() {
         setup:
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */
@@ -576,7 +578,7 @@ class ChangefeedNetworkTest extends APISpec {
      * To setup account for this test have a steady stream of events (i.e. some changes every 1 minute) that covers at least from an hour before start time
      * to an hour after end time.
      */
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "non rounded boundaries"() {
         setup:
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */
@@ -600,7 +602,7 @@ class ChangefeedNetworkTest extends APISpec {
         !events.any { event -> event.getEventTime().isAfter(roundedEndTime.plusMinutes(15)) } /* There is no event 15 minutes after end */
     }
 
-    @Requires( { playbackMode() })
+    @PlaybackOnly
     def "cursor format"() {
         setup:
         /* Hardcoded for playback stability. If modifying, make sure to re-record. */

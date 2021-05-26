@@ -8,17 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesAutoApproval;
+import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesVisibility;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.ResourceSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Private link service resource. */
 @JsonFlatten
 @Fluent
 public class PrivateLinkServiceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceInner.class);
+
+    /*
+     * The extended location of the load balancer.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -61,13 +70,13 @@ public class PrivateLinkServiceInner extends Resource {
      * The visibility list of the private link service.
      */
     @JsonProperty(value = "properties.visibility")
-    private ResourceSet visibility;
+    private PrivateLinkServicePropertiesVisibility visibility;
 
     /*
      * The auto-approval list of the private link service.
      */
     @JsonProperty(value = "properties.autoApproval")
-    private ResourceSet autoApproval;
+    private PrivateLinkServicePropertiesAutoApproval autoApproval;
 
     /*
      * The list of Fqdn.
@@ -92,6 +101,26 @@ public class PrivateLinkServiceInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the load balancer.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the load balancer.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the PrivateLinkServiceInner object itself.
+     */
+    public PrivateLinkServiceInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -178,7 +207,7 @@ public class PrivateLinkServiceInner extends Resource {
      *
      * @return the visibility value.
      */
-    public ResourceSet visibility() {
+    public PrivateLinkServicePropertiesVisibility visibility() {
         return this.visibility;
     }
 
@@ -188,7 +217,7 @@ public class PrivateLinkServiceInner extends Resource {
      * @param visibility the visibility value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
-    public PrivateLinkServiceInner withVisibility(ResourceSet visibility) {
+    public PrivateLinkServiceInner withVisibility(PrivateLinkServicePropertiesVisibility visibility) {
         this.visibility = visibility;
         return this;
     }
@@ -198,7 +227,7 @@ public class PrivateLinkServiceInner extends Resource {
      *
      * @return the autoApproval value.
      */
-    public ResourceSet autoApproval() {
+    public PrivateLinkServicePropertiesAutoApproval autoApproval() {
         return this.autoApproval;
     }
 
@@ -208,7 +237,7 @@ public class PrivateLinkServiceInner extends Resource {
      * @param autoApproval the autoApproval value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
-    public PrivateLinkServiceInner withAutoApproval(ResourceSet autoApproval) {
+    public PrivateLinkServiceInner withAutoApproval(PrivateLinkServicePropertiesAutoApproval autoApproval) {
         this.autoApproval = autoApproval;
         return this;
     }
@@ -282,12 +311,29 @@ public class PrivateLinkServiceInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkServiceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkServiceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (loadBalancerFrontendIpConfigurations() != null) {
             loadBalancerFrontendIpConfigurations().forEach(e -> e.validate());
         }

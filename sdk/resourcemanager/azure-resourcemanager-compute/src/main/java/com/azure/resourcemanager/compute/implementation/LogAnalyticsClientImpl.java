@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -27,8 +28,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.compute.fluent.models.LogAnalyticsOperationResultInner;
-import com.azure.resourcemanager.compute.models.LogAnalyticsInputBase;
 import com.azure.resourcemanager.compute.models.RequestRateByIntervalInput;
+import com.azure.resourcemanager.compute.models.ThrottledRequestsInput;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -61,7 +62,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface LogAnalyticsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
                 + "/getRequestRateByInterval")
@@ -73,9 +74,10 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RequestRateByIntervalInput parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
                 + "/getThrottledRequests")
@@ -86,7 +88,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LogAnalyticsInputBase parameters,
+            @BodyParam("application/json") ThrottledRequestsInput parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -95,7 +98,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -124,7 +127,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2021-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -135,8 +139,9 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -144,7 +149,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -174,11 +179,18 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2021-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .exportRequestRateByInterval(
-                this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
+                this.client.getEndpoint(),
+                location,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
@@ -186,7 +198,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +223,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -239,7 +251,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,7 +268,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -274,7 +286,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -293,7 +305,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,7 +325,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -330,7 +342,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -347,7 +359,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,7 +367,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters) {
+        String location, ThrottledRequestsInput parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -376,7 +388,8 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2021-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -387,15 +400,16 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -404,7 +418,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters, Context context) {
+        String location, ThrottledRequestsInput parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -425,18 +439,25 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2021-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .exportThrottledRequests(
-                this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), parameters, context);
+                this.client.getEndpoint(),
+                location,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -444,7 +465,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters) {
+        beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters);
         return this
             .client
@@ -460,7 +481,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -469,7 +490,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters, Context context) {
+        beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = exportThrottledRequestsWithResponseAsync(location, parameters, context);
         return this
@@ -486,7 +507,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -494,7 +515,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters) {
         return beginExportThrottledRequestsAsync(location, parameters).getSyncPoller();
     }
 
@@ -502,7 +523,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -511,7 +532,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context) {
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters, Context context) {
         return beginExportThrottledRequestsAsync(location, parameters, context).getSyncPoller();
     }
 
@@ -519,7 +540,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -527,7 +548,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
-        String location, LogAnalyticsInputBase parameters) {
+        String location, ThrottledRequestsInput parameters) {
         return beginExportThrottledRequestsAsync(location, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -537,7 +558,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -546,7 +567,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
-        String location, LogAnalyticsInputBase parameters, Context context) {
+        String location, ThrottledRequestsInput parameters, Context context) {
         return beginExportThrottledRequestsAsync(location, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -556,14 +577,15 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogAnalyticsOperationResultInner exportThrottledRequests(String location, LogAnalyticsInputBase parameters) {
+    public LogAnalyticsOperationResultInner exportThrottledRequests(
+        String location, ThrottledRequestsInput parameters) {
         return exportThrottledRequestsAsync(location, parameters).block();
     }
 
@@ -571,7 +593,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -580,7 +602,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsOperationResultInner exportThrottledRequests(
-        String location, LogAnalyticsInputBase parameters, Context context) {
+        String location, ThrottledRequestsInput parameters, Context context) {
         return exportThrottledRequestsAsync(location, parameters, context).block();
     }
 }

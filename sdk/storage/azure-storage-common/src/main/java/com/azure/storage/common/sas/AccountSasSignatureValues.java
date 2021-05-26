@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
  * values here are set, use the generateSas method on the desired service client to obtain a representation of the SAS
  * which can then be applied to a new client using the .sasToken(String) method on the desired client builder.
  *
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class AccountSasSignatureValues {
@@ -179,6 +179,7 @@ public final class AccountSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated AccountSasSignatureValues object.
      */

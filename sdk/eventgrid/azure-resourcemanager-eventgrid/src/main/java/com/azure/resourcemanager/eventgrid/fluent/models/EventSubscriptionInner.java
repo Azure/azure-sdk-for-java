@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
 import com.azure.resourcemanager.eventgrid.models.EventDeliverySchema;
@@ -24,6 +25,12 @@ import java.util.List;
 @Fluent
 public class EventSubscriptionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionInner.class);
+
+    /*
+     * The system metadata relating to Event Subscription resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * Name of the topic of the event subscription.
@@ -80,6 +87,15 @@ public class EventSubscriptionInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.deadLetterDestination")
     private DeadLetterDestination deadLetterDestination;
+
+    /**
+     * Get the systemData property: The system metadata relating to Event Subscription resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the topic property: Name of the topic of the event subscription.

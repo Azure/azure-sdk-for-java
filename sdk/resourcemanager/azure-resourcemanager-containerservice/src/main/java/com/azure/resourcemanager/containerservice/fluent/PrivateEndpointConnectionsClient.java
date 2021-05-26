@@ -145,7 +145,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,7 +164,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -183,7 +183,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -202,7 +202,7 @@ public interface PrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param parameters A private endpoint connection.
+     * @param parameters Parameters supplied to the Update a private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

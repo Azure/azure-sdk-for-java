@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -67,6 +69,15 @@ public final class QueueServiceClient {
     }
 
     /**
+     * Gets the message encoding the client is using.
+     *
+     * @return the message encoding the client is using.
+     */
+    public QueueMessageEncoding getMessageEncoding() {
+        return client.getMessageEncoding();
+    }
+
+    /**
      * Constructs a QueueClient that interacts with the specified queue.
      *
      * This will not create the queue in the storage account if it doesn't exist.
@@ -91,6 +102,7 @@ public final class QueueServiceClient {
      * @return A response containing the QueueClient and the status of creating the queue
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueClient createQueue(String queueName) {
         return createQueueWithResponse(queueName, null, null, Context.NONE).getValue();
     }
@@ -115,6 +127,7 @@ public final class QueueServiceClient {
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Duration timeout, Context context) {
 
@@ -135,6 +148,7 @@ public final class QueueServiceClient {
      * @param queueName Name of the queue
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteQueue(String queueName) {
         deleteQueueWithResponse(queueName, null, Context.NONE);
     }
@@ -156,6 +170,7 @@ public final class QueueServiceClient {
      * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteQueueWithResponse(queueName, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -171,10 +186,11 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @return {@link QueueItem Queues} in the storage account
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueues() {
         return listQueues(null, null, Context.NONE);
     }
@@ -192,15 +208,17 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
-     * @param options Options for listing queues
+     * @param options Options for listing queues. If iterating by page, the page size passed to byPage methods such as
+     *      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueues(QueuesSegmentOptions options, Duration timeout, Context context) {
         return listQueues(null, options, timeout, context);
     }
@@ -212,7 +230,8 @@ public final class QueueServiceClient {
      * for the queues.
      *
      * @param marker Starting point to list the queues
-     * @param options Options for listing queues
+     * @param options Options for listing queues. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.S
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -235,11 +254,12 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @return Storage account Queue service properties
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueServiceProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
@@ -255,7 +275,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -264,6 +284,7 @@ public final class QueueServiceClient {
      * @return A response containing the Storage account Queue service properties
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueServiceProperties>> response = client.getPropertiesWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -288,7 +309,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
@@ -306,6 +327,7 @@ public final class QueueServiceClient {
      * PUT</li>
      * </ul>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(QueueServiceProperties properties) {
         setPropertiesWithResponse(properties, null, Context.NONE);
     }
@@ -329,7 +351,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
@@ -351,6 +373,7 @@ public final class QueueServiceClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.setPropertiesWithResponse(properties, context);
@@ -367,10 +390,11 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatistics}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @return The geo replication information about the Queue service
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueServiceStatistics getStatistics() {
         return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
@@ -385,7 +409,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
@@ -393,6 +417,7 @@ public final class QueueServiceClient {
      * @return A response containing the geo replication information about the Queue service
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueServiceStatistics>> response = client.getStatisticsWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

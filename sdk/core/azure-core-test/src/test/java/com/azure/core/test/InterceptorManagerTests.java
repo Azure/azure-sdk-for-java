@@ -31,6 +31,7 @@ public class InterceptorManagerTests {
      * Validates that {@link InterceptorManager#getRecordedData()} is {@code null} when {@code doNotRecord} is passed as
      * {@code true}.
      */
+    @SuppressWarnings("deprecation")
     @Test
     public void recordedDataIsNullWhenDoNotRecord() {
         assertNull(new InterceptorManager(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD))

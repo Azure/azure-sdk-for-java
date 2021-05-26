@@ -30,6 +30,12 @@ public class LoadBalancerBackendAddress {
     private SubResource virtualNetwork;
 
     /*
+     * Reference to an existing subnet.
+     */
+    @JsonProperty(value = "properties.subnet")
+    private SubResource subnet;
+
+    /*
      * IP Address belonging to the referenced virtual network.
      */
     @JsonProperty(value = "properties.ipAddress")
@@ -40,6 +46,13 @@ public class LoadBalancerBackendAddress {
      */
     @JsonProperty(value = "properties.networkInterfaceIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource networkInterfaceIpConfiguration;
+
+    /*
+     * Reference to the frontend ip address configuration defined in regional
+     * loadbalancer.
+     */
+    @JsonProperty(value = "properties.loadBalancerFrontendIPConfiguration")
+    private SubResource loadBalancerFrontendIpConfiguration;
 
     /**
      * Get the name property: Name of the backend address.
@@ -82,6 +95,26 @@ public class LoadBalancerBackendAddress {
     }
 
     /**
+     * Get the subnet property: Reference to an existing subnet.
+     *
+     * @return the subnet value.
+     */
+    public SubResource subnet() {
+        return this.subnet;
+    }
+
+    /**
+     * Set the subnet property: Reference to an existing subnet.
+     *
+     * @param subnet the subnet value to set.
+     * @return the LoadBalancerBackendAddress object itself.
+     */
+    public LoadBalancerBackendAddress withSubnet(SubResource subnet) {
+        this.subnet = subnet;
+        return this;
+    }
+
+    /**
      * Get the ipAddress property: IP Address belonging to the referenced virtual network.
      *
      * @return the ipAddress value.
@@ -108,6 +141,29 @@ public class LoadBalancerBackendAddress {
      */
     public SubResource networkInterfaceIpConfiguration() {
         return this.networkInterfaceIpConfiguration;
+    }
+
+    /**
+     * Get the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
+     * in regional loadbalancer.
+     *
+     * @return the loadBalancerFrontendIpConfiguration value.
+     */
+    public SubResource loadBalancerFrontendIpConfiguration() {
+        return this.loadBalancerFrontendIpConfiguration;
+    }
+
+    /**
+     * Set the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
+     * in regional loadbalancer.
+     *
+     * @param loadBalancerFrontendIpConfiguration the loadBalancerFrontendIpConfiguration value to set.
+     * @return the LoadBalancerBackendAddress object itself.
+     */
+    public LoadBalancerBackendAddress withLoadBalancerFrontendIpConfiguration(
+        SubResource loadBalancerFrontendIpConfiguration) {
+        this.loadBalancerFrontendIpConfiguration = loadBalancerFrontendIpConfiguration;
+        return this;
     }
 
     /**

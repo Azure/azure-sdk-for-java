@@ -223,7 +223,7 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {

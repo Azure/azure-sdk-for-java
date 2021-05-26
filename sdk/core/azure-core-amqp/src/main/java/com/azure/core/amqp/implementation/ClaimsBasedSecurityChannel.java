@@ -88,7 +88,7 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     public void close() {
         final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.getTryTimeout());
         if (channel != null) {
-            channel.dispose();
+            channel.closeAsync().block();
         }
     }
 }

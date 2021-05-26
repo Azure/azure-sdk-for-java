@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the create operation.
- */
-public final class QueuesCreateResponse extends ResponseBase<QueueCreateHeaders, Void> {
+/** Contains all response data for the create operation. */
+public final class QueuesCreateResponse extends ResponseBase<QueuesCreateHeaders, Void> {
     /**
      * Creates an instance of QueuesCreateResponse.
      *
@@ -21,7 +19,8 @@ public final class QueuesCreateResponse extends ResponseBase<QueueCreateHeaders,
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public QueuesCreateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, QueueCreateHeaders headers) {
+    public QueuesCreateResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, QueuesCreateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

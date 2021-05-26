@@ -5,28 +5,33 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
+import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
+import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +40,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.test.context.ContextConfiguration;
@@ -63,6 +69,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_3;
 import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -83,10 +90,12 @@ public class CosmosTemplateIT {
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
     private static String containerName;
-    private static boolean initialized;
 
     private Person insertedPerson;
 
@@ -98,10 +107,12 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+    @Autowired
+    private AuditableRepository auditableRepository;
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
+        if (cosmosTemplate == null) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
@@ -115,29 +126,29 @@ public class CosmosTemplateIT {
                 null);
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter);
-            cosmosTemplate.createContainerIfNotExists(personInfo);
-            cosmosTemplate.createContainerIfNotExists(CosmosEntityInformation.getInstance(GenIdEntity.class));
-            initialized = true;
         }
+
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class,
+                                                          GenIdEntity.class, AuditableEntity.class);
 
         insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getLastName()));
     }
 
-    @After
-    public void cleanup() {
-        cosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class);
+    private void insertPerson(Person person) {
+        cosmosTemplate.insert(person,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(person)));
     }
 
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(personInfo.getContainerName());
-    }
-
-    @Test(expected = CosmosAccessException.class)
-    public void testInsertDuplicateId() {
-        cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+    @Test
+    public void testInsertDuplicateIdShouldFailWithConflictException() {
+        try {
+            cosmosTemplate.insert(Person.class.getSimpleName(), TEST_PERSON,
+                new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(ex.getCosmosException() instanceof ConflictException);
+        }
     }
 
     @Test(expected = CosmosAccessException.class)
@@ -377,7 +388,7 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<Person> page2 = cosmosTemplate.findAll(page1.getPageable(), Person.class,
+        final Page<Person> page2 = cosmosTemplate.findAll(page1.nextPageable(), Person.class,
             containerName);
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
@@ -417,6 +428,33 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testFindWithSortAndLimit() {
+        final Person testPerson4 = new Person("id_4", "fred", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
+        final Person testPerson5 = new Person("id_5", "barney", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
+        final Person testPerson6 = new Person("id_6", "george", NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE);
+
+        insertPerson(testPerson4);
+        insertPerson(testPerson5);
+        insertPerson(testPerson6);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "lastName",
+            Collections.singletonList(NEW_LAST_NAME), Part.IgnoreCaseType.ALWAYS);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        query.with(Sort.by(Sort.Direction.ASC, "firstName"));
+
+        final List<Person> result = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.get(0).getFirstName()).isEqualTo("barney");
+        assertThat(result.get(1).getFirstName()).isEqualTo("fred");
+        assertThat(result.get(2).getFirstName()).isEqualTo("george");
+
+        query.setLimit(1);
+        final List<Person> resultWithLimit = TestUtils.toList(cosmosTemplate.find(query, Person.class, containerName));
+        assertThat(resultWithLimit.size()).isEqualTo(1);
+        assertThat(resultWithLimit.get(0).getFirstName()).isEqualTo("barney");
     }
 
     @Test
@@ -475,7 +513,7 @@ public class CosmosTemplateIT {
         assertThat(firstPageResults.get(1).getFirstName()).isEqualTo(FIRST_NAME);
         assertThat(firstPageResults.get(2).getFirstName()).isEqualTo(testPerson5.getFirstName());
 
-        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.getPageable(), Person.class,
+        final Page<Person> secondPage = cosmosTemplate.findAll(firstPage.nextPageable(), Person.class,
             containerName);
 
         assertThat(secondPage.getContent().size()).isEqualTo(2);
@@ -523,5 +561,52 @@ public class CosmosTemplateIT {
         List<Person> people = TestUtils.toList(cosmosTemplate.find(new CosmosQuery(ageBetween), Person.class,
             containerName));
         assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testRunQueryWithSimpleReturnType() {
+        Criteria ageBetween = Criteria.getInstance(CriteriaType.BETWEEN, "age", Arrays.asList(AGE - 1, AGE + 1),
+                                                   Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(ageBetween));
+        List<Person> people = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, Person.class, Person.class));
+        assertThat(people).containsExactly(TEST_PERSON);
+    }
+
+    @Test
+    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        auditableRepository.save(entity);
+
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
+        assertEquals(results.size(), 1);
+        AuditableEntity foundEntity = results.get(0);
+        assertEquals(entity.getId(), foundEntity.getId());
+        assertNotNull(foundEntity.getCreatedDate());
+        assertNotNull(foundEntity.getLastModifiedByDate());
+    }
+
+    @Test
+    public void testSliceQuery() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+
+        final Slice<Person> slice = cosmosTemplate.sliceQuery(query, Person.class, containerName);
+        assertThat(slice.getContent().size()).isEqualTo(1);
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 }

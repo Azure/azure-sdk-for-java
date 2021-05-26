@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class CosmosItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
-
+    private String throughputControlGroupName;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
 
     /**
      * copy constructor
@@ -36,6 +38,8 @@ public class CosmosItemRequestOptions {
         ifMatchETag = options.ifMatchETag;
         ifNoneMatchETag = options.ifNoneMatchETag;
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
+        throughputControlGroupName = options.throughputControlGroupName;
+        dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
     }
 
 
@@ -250,6 +254,26 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the Dedicated Gateway Request Options
+     * @return the Dedicated Gateway Request Options
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return this.dedicatedGatewayRequestOptions;
+    }
+
+    /**
+     * Sets the Dedicated Gateway Request Options
+     * @param dedicatedGatewayRequestOptions Dedicated Gateway Request Options
+     * @return the CosmosItemRequestOptions
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
+        return this;
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -281,6 +305,18 @@ public class CosmosItemRequestOptions {
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        requestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         return requestOptions;
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
     }
 }

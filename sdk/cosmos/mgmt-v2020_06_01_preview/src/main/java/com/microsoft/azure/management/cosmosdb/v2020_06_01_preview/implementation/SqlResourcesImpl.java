@@ -22,6 +22,8 @@ import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlContainerG
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlStoredProcedureGetResults;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlUserDefinedFunctionGetResults;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlTriggerGetResults;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlRoleDefinitionGetResults;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SqlRoleAssignmentGetResults;
 
 class SqlResourcesImpl extends WrapperImpl<SqlResourcesInner> implements SqlResources {
     private final CosmosDBManager manager;
@@ -60,6 +62,16 @@ class SqlResourcesImpl extends WrapperImpl<SqlResourcesInner> implements SqlReso
         return wrapTriggerModel(name);
     }
 
+    @Override
+    public SqlRoleDefinitionGetResultsImpl defineSqlRoleDefinition(String name) {
+        return wrapSqlRoleDefinitionModel(name);
+    }
+
+    @Override
+    public SqlRoleAssignmentGetResultsImpl defineSqlRoleAssignment(String name) {
+        return wrapSqlRoleAssignmentModel(name);
+    }
+
     private SqlDatabaseGetResultsImpl wrapSqlDatabasisModel(String name) {
         return new SqlDatabaseGetResultsImpl(name, this.manager());
     }
@@ -80,6 +92,14 @@ class SqlResourcesImpl extends WrapperImpl<SqlResourcesInner> implements SqlReso
         return new SqlTriggerGetResultsImpl(name, this.manager());
     }
 
+    private SqlRoleDefinitionGetResultsImpl wrapSqlRoleDefinitionModel(String name) {
+        return new SqlRoleDefinitionGetResultsImpl(name, this.manager());
+    }
+
+    private SqlRoleAssignmentGetResultsImpl wrapSqlRoleAssignmentModel(String name) {
+        return new SqlRoleAssignmentGetResultsImpl(name, this.manager());
+    }
+
     private SqlDatabaseGetResultsImpl wrapSqlDatabaseGetResultsModel(SqlDatabaseGetResultsInner inner) {
         return  new SqlDatabaseGetResultsImpl(inner, manager());
     }
@@ -98,6 +118,14 @@ class SqlResourcesImpl extends WrapperImpl<SqlResourcesInner> implements SqlReso
 
     private SqlTriggerGetResultsImpl wrapSqlTriggerGetResultsModel(SqlTriggerGetResultsInner inner) {
         return  new SqlTriggerGetResultsImpl(inner, manager());
+    }
+
+    private SqlRoleDefinitionGetResultsImpl wrapSqlRoleDefinitionGetResultsModel(SqlRoleDefinitionGetResultsInner inner) {
+        return  new SqlRoleDefinitionGetResultsImpl(inner, manager());
+    }
+
+    private SqlRoleAssignmentGetResultsImpl wrapSqlRoleAssignmentGetResultsModel(SqlRoleAssignmentGetResultsInner inner) {
+        return  new SqlRoleAssignmentGetResultsImpl(inner, manager());
     }
 
     private Observable<SqlDatabaseGetResultsInner> getSqlDatabaseGetResultsInnerUsingSqlResourcesInnerAsync(String id) {
@@ -145,6 +173,22 @@ class SqlResourcesImpl extends WrapperImpl<SqlResourcesInner> implements SqlReso
         String triggerName = IdParsingUtils.getValueFromIdByName(id, "triggers");
         SqlResourcesInner client = this.inner();
         return client.getSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName);
+    }
+
+    private Observable<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionGetResultsInnerUsingSqlResourcesInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
+        String roleDefinitionId = IdParsingUtils.getValueFromIdByName(id, "sqlRoleDefinitions");
+        SqlResourcesInner client = this.inner();
+        return client.getSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName);
+    }
+
+    private Observable<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentGetResultsInnerUsingSqlResourcesInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
+        String roleAssignmentId = IdParsingUtils.getValueFromIdByName(id, "sqlRoleAssignments");
+        SqlResourcesInner client = this.inner();
+        return client.getSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName);
     }
 
     @Override
@@ -393,6 +437,86 @@ class SqlResourcesImpl extends WrapperImpl<SqlResourcesInner> implements SqlReso
     public Completable deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         SqlResourcesInner client = this.inner();
         return client.deleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName).toCompletable();
+    }
+
+    @Override
+    public Observable<SqlRoleDefinitionGetResults> getSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        SqlResourcesInner client = this.inner();
+        return client.getSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName)
+        .flatMap(new Func1<SqlRoleDefinitionGetResultsInner, Observable<SqlRoleDefinitionGetResults>>() {
+            @Override
+            public Observable<SqlRoleDefinitionGetResults> call(SqlRoleDefinitionGetResultsInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SqlRoleDefinitionGetResults)wrapSqlRoleDefinitionGetResultsModel(inner));
+                }
+            }
+       });
+    }
+
+    @Override
+    public Observable<SqlRoleDefinitionGetResults> listSqlRoleDefinitionsAsync(String resourceGroupName, String accountName) {
+        SqlResourcesInner client = this.inner();
+        return client.listSqlRoleDefinitionsAsync(resourceGroupName, accountName)
+        .flatMap(new Func1<List<SqlRoleDefinitionGetResultsInner>, Observable<SqlRoleDefinitionGetResultsInner>>() {
+            @Override
+            public Observable<SqlRoleDefinitionGetResultsInner> call(List<SqlRoleDefinitionGetResultsInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<SqlRoleDefinitionGetResultsInner, SqlRoleDefinitionGetResults>() {
+            @Override
+            public SqlRoleDefinitionGetResults call(SqlRoleDefinitionGetResultsInner inner) {
+                return wrapSqlRoleDefinitionGetResultsModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+        SqlResourcesInner client = this.inner();
+        return client.deleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName).toCompletable();
+    }
+
+    @Override
+    public Observable<SqlRoleAssignmentGetResults> getSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        SqlResourcesInner client = this.inner();
+        return client.getSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName)
+        .flatMap(new Func1<SqlRoleAssignmentGetResultsInner, Observable<SqlRoleAssignmentGetResults>>() {
+            @Override
+            public Observable<SqlRoleAssignmentGetResults> call(SqlRoleAssignmentGetResultsInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SqlRoleAssignmentGetResults)wrapSqlRoleAssignmentGetResultsModel(inner));
+                }
+            }
+       });
+    }
+
+    @Override
+    public Observable<SqlRoleAssignmentGetResults> listSqlRoleAssignmentsAsync(String resourceGroupName, String accountName) {
+        SqlResourcesInner client = this.inner();
+        return client.listSqlRoleAssignmentsAsync(resourceGroupName, accountName)
+        .flatMap(new Func1<List<SqlRoleAssignmentGetResultsInner>, Observable<SqlRoleAssignmentGetResultsInner>>() {
+            @Override
+            public Observable<SqlRoleAssignmentGetResultsInner> call(List<SqlRoleAssignmentGetResultsInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<SqlRoleAssignmentGetResultsInner, SqlRoleAssignmentGetResults>() {
+            @Override
+            public SqlRoleAssignmentGetResults call(SqlRoleAssignmentGetResultsInner inner) {
+                return wrapSqlRoleAssignmentGetResultsModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+        SqlResourcesInner client = this.inner();
+        return client.deleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName).toCompletable();
     }
 
 }

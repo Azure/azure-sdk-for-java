@@ -5,9 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
@@ -24,13 +26,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -44,6 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.mock;
@@ -76,6 +79,7 @@ class EventHubPartitionAsyncConsumerTest {
     private final EventPosition originalPosition = EventPosition.latest();
     private final AtomicReference<Supplier<EventPosition>> currentPosition = new AtomicReference<>(() -> originalPosition);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
+    private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
 
     private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumerTest.class);
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
@@ -98,12 +102,19 @@ class EventHubPartitionAsyncConsumerTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
+        when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
+
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
+        when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
+
+        when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
     }
 
     @AfterEach
     void teardown() {
+        Mockito.framework().clearInlineMocks();
+
         if (consumer != null) {
             consumer.close();
         }
@@ -115,9 +126,10 @@ class EventHubPartitionAsyncConsumerTest {
     @ValueSource(strings = {"true", "false"})
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
+            PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
@@ -135,6 +147,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Act & Assert
         StepVerifier.create(consumer.receive())
             .then(() -> {
+                endpointProcessorSink.next(AmqpEndpointState.ACTIVE);
                 messageProcessorSink.next(message1);
                 messageProcessorSink.next(message2);
             })
@@ -155,24 +168,27 @@ class EventHubPartitionAsyncConsumerTest {
             .thenCancel()
             .verify();
 
-        // The emitter processor is not closed until the partition consumer is.
-        Assertions.assertFalse(linkProcessor.isTerminated());
+        Assertions.assertTrue(linkProcessor.isTerminated());
         Assertions.assertSame(originalPosition, currentPosition.get().get());
     }
 
     @Test
     void receiveMultipleTimes() {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
+            PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
         final String lastOffset = "65";
-        final EventData event1 = new EventData("Foo".getBytes(), getSystemProperties("25", 14), Context.NONE);
-        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties(secondOffset, 21), Context.NONE);
-        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(lastOffset, 53), Context.NONE);
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties("25", 14),
+            Context.NONE);
+        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()),
+            getSystemProperties(secondOffset, 21), Context.NONE);
+        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()),
+            getSystemProperties(lastOffset, 53), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -204,24 +220,13 @@ class EventHubPartitionAsyncConsumerTest {
         Assertions.assertFalse(firstPosition.isInclusive());
 
         StepVerifier.create(consumer.receive())
-            .then(() -> messageProcessorSink.next(message3))
-            .assertNext(partitionEvent -> {
-                verifyPartitionContext(partitionEvent.getPartitionContext());
-                verifyLastEnqueuedInformation(false, null, partitionEvent.getLastEnqueuedEventProperties());
-                Assertions.assertSame(event3, partitionEvent.getData());
-            })
-            .then(() -> consumer.close())
             .expectComplete()
             .verify();
 
+        consumer.close();
+
         // We terminated the processor. This should be terminated as well.
         Assertions.assertTrue(linkProcessor.isTerminated());
-
-        // Assert that we have that last position.
-        final EventPosition actual = currentPosition.get().get();
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(lastOffset, actual.getOffset());
-        Assertions.assertFalse(actual.isInclusive());
     }
 
 
@@ -231,49 +236,33 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void listensToShutdownSignals() throws InterruptedException {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));
+        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, parentConnection));
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
-            CONSUMER_GROUP, PARTITION_ID, currentPosition, false, Schedulers.parallel());
+            CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
         final String secondOffset = "54";
         final String lastOffset = "65";
-        final EventData event1 = new EventData("Foo".getBytes(), getSystemProperties("25", 14), Context.NONE);
-        final EventData event2 = new EventData("Bar".getBytes(), getSystemProperties(secondOffset, 21), Context.NONE);
-        final EventData event3 = new EventData("Baz".getBytes(), getSystemProperties(lastOffset, 53), Context.NONE);
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties("25", 14),
+            Context.NONE);
+        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()), getSystemProperties(secondOffset,
+            21), Context.NONE);
+        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()), getSystemProperties(lastOffset,
+            53), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
         when(messageSerializer.deserialize(same(message3), eq(EventData.class))).thenReturn(event3);
 
-        final CountDownLatch shutdownReceived = new CountDownLatch(3);
-
-        final Disposable.Composite subscriptions = Disposables.composite(
-            consumer.receive()
+        final CountDownLatch shutdownReceived = new CountDownLatch(1);
+        final Disposable subscriptions = consumer.receive()
                 .subscribe(
                     event -> logger.info("1. Received: {}", event.getData().getSequenceNumber()),
                     error -> Assertions.fail(error.toString()),
                     () -> {
                         logger.info("1. Shutdown received");
                         shutdownReceived.countDown();
-                    }),
-
-            consumer.receive()
-                .subscribe(
-                    event -> logger.info("2. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("2. Shutdown received");
-                        shutdownReceived.countDown();
-                    }),
-            consumer.receive()
-                .subscribe(
-                    event -> logger.info("3. Received: {}", event.getData().getSequenceNumber()),
-                    error -> Assertions.fail(error.toString()),
-                    () -> {
-                        logger.info("3. Shutdown received");
-                        shutdownReceived.countDown();
-                    }));
+                    });
 
         // Act
         messageProcessorSink.next(message1);

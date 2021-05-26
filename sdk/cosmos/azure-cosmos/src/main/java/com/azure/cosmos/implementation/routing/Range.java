@@ -48,11 +48,11 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
     }
 
     public static <T extends Comparable<T>> Range<T> getPointRange(T value) {
-        return new Range<T>(value, value, true, true);
+        return new Range<>(value, value, true, true);
     }
 
     public static <T extends Comparable<T>> Range<T> getEmptyRange(T value) {
-        return new Range<T>(value, value, true, false);
+        return new Range<>(value, value, true, false);
     }
 
     public static <T extends Comparable<T>> boolean checkOverlapping(Range<T> range1, Range<T> range2) {
@@ -101,11 +101,16 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     @JsonProperty("isMinInclusive")
     public boolean isMinInclusive() {
-        return Boolean.TRUE.equals(super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY));
+        // isMinInclusive == true is the default - so if the property hasn't been serialized TRUE is the default
+        return !Boolean.FALSE.equals(super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY));
     }
 
     public void setMinInclusive(boolean isMinInclusive) {
-        BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, isMinInclusive);
+        if (isMinInclusive) {
+            BridgeInternal.remove(this, Range.IS_MIN_INCLUSIVE_PROPERTY);
+        } else {
+            BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, false);
+        }
     }
 
     @JsonProperty("isMaxInclusive")
@@ -114,7 +119,11 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
     }
 
     public void setMaxInclusive(boolean isMaxInclusive) {
-        BridgeInternal.setProperty(this, Range.IS_MAX_INCLUSIVE_PROPERTY, isMaxInclusive);
+        if (isMaxInclusive) {
+            BridgeInternal.setProperty(this, Range.IS_MAX_INCLUSIVE_PROPERTY, true);
+        } else {
+            BridgeInternal.remove(this, Range.IS_MAX_INCLUSIVE_PROPERTY);
+        }
     }
 
     public boolean isSingleValue() {

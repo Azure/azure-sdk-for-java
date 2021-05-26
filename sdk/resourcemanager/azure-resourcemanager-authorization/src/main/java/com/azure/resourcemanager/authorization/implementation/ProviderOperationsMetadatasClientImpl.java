@@ -6,6 +6,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,7 +61,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     private interface ProviderOperationsMetadatasService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Authorization/providerOperations/{resourceProviderNamespace}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -69,9 +70,10 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Authorization/providerOperations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -79,14 +81,18 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderOperationsMetadataListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -115,10 +121,12 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
                         "Parameter resourceProviderNamespace is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion, expand, context))
+                    service
+                        .get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion, expand, accept, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -149,8 +157,9 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
                         "Parameter resourceProviderNamespace is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion, expand, context);
+        return service.get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion, expand, accept, context);
     }
 
     /**
@@ -249,8 +258,9 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, expand, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, expand, accept, context))
             .<PagedResponse<ProviderOperationsMetadataInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -282,9 +292,10 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, expand, context)
+            .list(this.client.getEndpoint(), apiVersion, expand, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -342,6 +353,19 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
     /**
      * Gets provider operations metadata for all resource providers.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for all resource providers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ProviderOperationsMetadataInner> list() {
+        final String expand = null;
+        return new PagedIterable<>(listAsync(expand));
+    }
+
+    /**
+     * Gets provider operations metadata for all resource providers.
+     *
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,19 +376,6 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderOperationsMetadataInner> list(String expand, Context context) {
         return new PagedIterable<>(listAsync(expand, context));
-    }
-
-    /**
-     * Gets provider operations metadata for all resource providers.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for all resource providers.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProviderOperationsMetadataInner> list() {
-        final String expand = null;
-        return new PagedIterable<>(listAsync(expand));
     }
 
     /**
@@ -381,8 +392,15 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ProviderOperationsMetadataInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -411,9 +429,16 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -259,7 +259,7 @@ public final class BulkOperations {
 
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
-        
+
         if (requestOptions == null) {
             requestOptions = new BulkItemRequestOptions();
         }
@@ -270,6 +270,62 @@ public final class BulkOperations {
             partitionKey,
             requestOptions.toRequestOptions(),
             item
+        );
+    }
+
+    /**
+     * Instantiate an operation for a patch in Bulk execution.
+     *
+     * @param id  the item id.
+     * @param partitionKey the partition key for the operation.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public static CosmosItemOperation getPatchItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
+        return getPatchItemOperation(id, partitionKey, cosmosPatchOperations, new BulkPatchItemRequestOptions());
+    }
+
+    /**
+     * Instantiate an operation for a patch in Bulk execution.
+     *
+     * @param id  the item id.
+     * @param partitionKey the partition key for the operation.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param requestOptions The options for the item request.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public static CosmosItemOperation getPatchItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        BulkPatchItemRequestOptions requestOptions) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
+        if (requestOptions == null) {
+            requestOptions = new BulkPatchItemRequestOptions();
+        }
+
+        return new ItemBulkOperation<>(
+            CosmosItemOperationType.PATCH,
+            id,
+            partitionKey,
+            requestOptions.toRequestOptions(),
+            cosmosPatchOperations
         );
     }
 }

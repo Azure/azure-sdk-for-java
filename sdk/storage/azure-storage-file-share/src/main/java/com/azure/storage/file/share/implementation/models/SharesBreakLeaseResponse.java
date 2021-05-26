@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the breakLease operation.
- */
-public final class SharesBreakLeaseResponse extends ResponseBase<ShareBreakLeaseHeaders, Void> {
+/** Contains all response data for the breakLease operation. */
+public final class SharesBreakLeaseResponse extends ResponseBase<SharesBreakLeaseHeaders, Void> {
     /**
      * Creates an instance of SharesBreakLeaseResponse.
      *
@@ -21,7 +19,8 @@ public final class SharesBreakLeaseResponse extends ResponseBase<ShareBreakLease
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SharesBreakLeaseResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ShareBreakLeaseHeaders headers) {
+    public SharesBreakLeaseResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, SharesBreakLeaseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

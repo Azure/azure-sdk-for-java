@@ -59,7 +59,7 @@ public final class ManageUsersGroupsAndRoles {
             ActiveDirectoryUser user = azureResourceManager.accessManagement().activeDirectoryUsers()
                     .define(userName)
                     .withEmailAlias(userEmail)
-                    .withPassword("StrongPass!12")
+                    .withPassword(Utils.password())
                     .create();
 
             System.out.println("Created AD user " + userName);
@@ -94,7 +94,7 @@ public final class ManageUsersGroupsAndRoles {
             // Create Service Principal
 
             ServicePrincipal sp = azureResourceManager.accessManagement().servicePrincipals().define(spName)
-                    .withNewApplication("http://" + spName)
+                    .withNewApplication()
                     .create();
             // wait till service principal created and propagated
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));

@@ -2,19 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Contact;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.util.Lists;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,11 +40,8 @@ public class ContactRepositoryIT {
     private static final Contact TEST_CONTACT4 = new Contact("testId4", "faketitle4", 43, true);
     private static final Contact TEST_CONTACT5 = new Contact("testId5", "faketitle3", 43, true);
 
-    private static final CosmosEntityInformation<Contact, String> entityInformation =
-        new CosmosEntityInformation<>(Contact.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     ContactRepository repository;
@@ -53,28 +49,14 @@ public class ContactRepositoryIT {
     @Autowired
     private CosmosTemplate template;
 
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
-    }
-
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
+        collectionManager.ensureContainersCreatedAndEmpty(template, Contact.class);
         repository.save(TEST_CONTACT1);
         repository.save(TEST_CONTACT2);
         repository.save(TEST_CONTACT3);
         repository.save(TEST_CONTACT4);
         repository.save(TEST_CONTACT5);
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        repository.deleteAll();
     }
 
     @Test

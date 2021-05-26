@@ -9,6 +9,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
@@ -52,7 +53,8 @@ public class BackupAndRestoreOperations {
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setKeyReusable(true)
-            .setKeyCurveName(CertificateKeyCurveName.P_256);
+            .setKeyCurveName(CertificateKeyCurveName.P_256)
+            .setKeyType(CertificateKeyType.EC);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
