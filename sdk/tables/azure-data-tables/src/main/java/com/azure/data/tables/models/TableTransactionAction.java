@@ -14,7 +14,9 @@ public class TableTransactionAction {
      * Initializes a new instance of the {@link TableTransactionAction}.
      *
      * @param actionType The operation type to be applied to the {@code entity}.
-     * @param entity The table entity to which the {@code actionType} will be applied.
+     * @param entity The table entity to which the {@code actionType} will be applied. If the an entity's ETag does not
+     * match during a delete operation, the deletion will not occur and an exception will be thrown. If no ETag is
+     * present in the {@link TableEntity} in a delete operation, the deletion will occur indiscriminately.
      */
     public TableTransactionAction(TableTransactionActionType actionType, TableEntity entity) {
         this(actionType, entity, false);
@@ -24,7 +26,9 @@ public class TableTransactionAction {
      * Initializes a new instance of the {@link TableTransactionAction}.
      *
      * @param actionType The operation type to be applied to the {@code entity}.
-     * @param entity The table entity to which the {@code actionType} will be applied.
+     * @param entity The table entity to which the {@code actionType} will be applied. If the an entity's ETag does not
+     * match during a delete operation, the deletion will not occur and an exception will be thrown. If no ETag is
+     * present in the {@link TableEntity} in a delete operation, the deletion will occur indiscriminately.
      * @param ifUnchanged When {@code true}, the ETag of the provided entity must
      * match the ETag of the entity in the Table service. If the values do not match, the update will not occur and
      * an exception will be thrown. This value is only applied for update operations.

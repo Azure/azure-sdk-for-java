@@ -117,7 +117,8 @@ public final class TableAsyncClient {
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
-        this.transactionalBatchImplementation = new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
+        this.transactionalBatchImplementation =
+            new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
         this.tableName = tableName;
         this.pipeline = tablesImplementation.getHttpPipeline();
         this.transactionalBatchClient = new TableAsyncClient(this, serviceVersion, tablesSerializer);
@@ -364,15 +365,17 @@ public final class TableAsyncClient {
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
-                return tablesImplementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, null, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
+                        null, null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
-                return tablesImplementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, null, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null
+                        , null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -481,15 +484,17 @@ public final class TableAsyncClient {
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
-                return tablesImplementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, eTag, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
+                        null, eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
-                return tablesImplementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, eTag, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null
+                        , eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -597,8 +602,8 @@ public final class TableAsyncClient {
         }
 
         try {
-            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam,
-                null, null, null, context)
+            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey,
+                matchParam, null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -1001,15 +1006,16 @@ public final class TableAsyncClient {
             Context finalContext = context;
             Function<String, Mono<PagedResponse<TableSignedIdentifier>>> retriever =
                 marker ->
-                    tablesImplementation.getTables().getAccessPolicyWithResponseAsync(tableName, null, null, finalContext)
-                    .map(response -> new PagedResponseBase<>(response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        response.getValue().stream()
-                            .map(this::toTableSignedIdentifier)
-                            .collect(Collectors.toList()),
-                        null,
-                        response.getDeserializedHeaders()));
+                    tablesImplementation.getTables()
+                        .getAccessPolicyWithResponseAsync(tableName, null, null, finalContext)
+                        .map(response -> new PagedResponseBase<>(response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            response.getValue().stream()
+                                .map(this::toTableSignedIdentifier)
+                                .collect(Collectors.toList()),
+                            null,
+                            response.getDeserializedHeaders()));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException e) {
@@ -1165,8 +1171,9 @@ public final class TableAsyncClient {
 
                     break;
                 case DELETE:
-                    operations.add(new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity().getPartitionKey(),
-                        transactionAction.getEntity().getRowKey(), transactionAction.getEntity().getETag()));
+                    operations.add(
+                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity().getPartitionKey(),
+                            transactionAction.getEntity().getRowKey(), transactionAction.getEntity().getETag()));
 
                     break;
                 default:
@@ -1179,7 +1186,8 @@ public final class TableAsyncClient {
             .collect(TransactionalBatchRequestBody::new, (body, pair) ->
                 body.addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
             .flatMap(body ->
-                transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null, finalContext).zipWith(Mono.just(body)))
+                transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
+                    finalContext).zipWith(Mono.just(body)))
             .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
             .map(response ->
                 new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
