@@ -58,7 +58,7 @@ public final class MetricsImpl {
                 @PathParam(value = "resourceUri", encoded = true) String resourceUri,
                 @QueryParam("timespan") String timespan,
                 @QueryParam("interval") Duration interval,
-                @QueryParam("metricnames") String metricnames,
+                @QueryParam("metric") String metric,
                 @QueryParam("aggregation") String aggregation,
                 @QueryParam("top") Integer top,
                 @QueryParam("orderby") String orderby,
@@ -77,7 +77,7 @@ public final class MetricsImpl {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metric The name of the metric to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
@@ -103,7 +103,7 @@ public final class MetricsImpl {
             String resourceUri,
             String timespan,
             Duration interval,
-            String metricnames,
+            String metric,
             String aggregation,
             Integer top,
             String orderby,
@@ -125,7 +125,7 @@ public final class MetricsImpl {
                                 resourceUri,
                                 timespan,
                                 interval,
-                                metricnames,
+                                metric,
                                 aggregation,
                                 top,
                                 orderby,
@@ -144,7 +144,7 @@ public final class MetricsImpl {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metric The name of the metric to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
@@ -171,7 +171,7 @@ public final class MetricsImpl {
             String resourceUri,
             String timespan,
             Duration interval,
-            String metricnames,
+            String metric,
             String aggregation,
             Integer top,
             String orderby,
@@ -192,7 +192,7 @@ public final class MetricsImpl {
                 resourceUri,
                 timespan,
                 interval,
-                metricnames,
+                metric,
                 aggregation,
                 top,
                 orderby,
@@ -211,7 +211,7 @@ public final class MetricsImpl {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metric The name of the metric to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
@@ -237,7 +237,7 @@ public final class MetricsImpl {
             String resourceUri,
             String timespan,
             Duration interval,
-            String metricnames,
+            String metric,
             String aggregation,
             Integer top,
             String orderby,
@@ -248,7 +248,7 @@ public final class MetricsImpl {
                         resourceUri,
                         timespan,
                         interval,
-                        metricnames,
+                        metric,
                         aggregation,
                         top,
                         orderby,
@@ -272,7 +272,7 @@ public final class MetricsImpl {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metric The name of the metric to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
@@ -299,7 +299,7 @@ public final class MetricsImpl {
             String resourceUri,
             String timespan,
             Duration interval,
-            String metricnames,
+            String metric,
             String aggregation,
             Integer top,
             String orderby,
@@ -311,7 +311,7 @@ public final class MetricsImpl {
                         resourceUri,
                         timespan,
                         interval,
-                        metricnames,
+                        metric,
                         aggregation,
                         top,
                         orderby,
@@ -336,7 +336,7 @@ public final class MetricsImpl {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metric The name of the metric to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
@@ -362,7 +362,7 @@ public final class MetricsImpl {
             String resourceUri,
             String timespan,
             Duration interval,
-            String metricnames,
+            String metric,
             String aggregation,
             Integer top,
             String orderby,
@@ -373,7 +373,7 @@ public final class MetricsImpl {
                         resourceUri,
                         timespan,
                         interval,
-                        metricnames,
+                        metric,
                         aggregation,
                         top,
                         orderby,
@@ -390,7 +390,7 @@ public final class MetricsImpl {
      * @param timespan The timespan of the query. It is a string with the following format
      *     'startDateTime_ISO/endDateTime_ISO'.
      * @param interval The interval (i.e. timegrain) of the query.
-     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param metric The name of the metric to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * @param top The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
      * @param orderby The aggregation to use for sorting results and the direction of the sort. Only one order can be
@@ -417,7 +417,7 @@ public final class MetricsImpl {
             String resourceUri,
             String timespan,
             Duration interval,
-            String metricnames,
+            String metric,
             String aggregation,
             Integer top,
             String orderby,
@@ -429,7 +429,7 @@ public final class MetricsImpl {
                         resourceUri,
                         timespan,
                         interval,
-                        metricnames,
+                        metric,
                         aggregation,
                         top,
                         orderby,

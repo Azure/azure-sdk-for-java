@@ -5,6 +5,7 @@ package com.azure.ai.metricsadvisor.administration;
 
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
@@ -95,7 +96,8 @@ public class MetricsAnomalyAlertConfigOperationsSample {
 
         // List DataPointAnomaly alert configs.
         System.out.printf("Listing DataPoint Anomaly alert configs for a detection configurations%n");
-        advisorAdministrationClient.listAnomalyAlertConfigs(detectionConfigurationId1)
+        advisorAdministrationClient.listAnomalyAlertConfigs(detectionConfigurationId1,
+            new ListAnomalyAlertConfigsOptions())
             .forEach(anomalyAlertConfigurationItem -> {
                 System.out.printf("DataPoint Anomaly alert config Id : %s%n", anomalyAlertConfigurationItem.getId());
                 System.out.printf("DataPoint Anomaly alert config name : %s%n", anomalyAlertConfigurationItem.getName());
