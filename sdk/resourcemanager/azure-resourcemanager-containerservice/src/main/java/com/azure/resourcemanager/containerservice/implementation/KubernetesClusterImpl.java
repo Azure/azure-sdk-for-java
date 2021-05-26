@@ -21,9 +21,12 @@ import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentP
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesIdentityProfileValue;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
@@ -190,6 +193,19 @@ public class KubernetesClusterImpl
         return this.innerModel().powerState();
     }
 
+    @Override
+    public String systemAssignedManagedServiceIdentityPrincipalId() {
+        String objectId = null;
+        if (this.innerModel().identityProfile() != null) {
+            ManagedClusterPropertiesIdentityProfileValue identity =
+                this.innerModel().identityProfile().get("kubeletidentity");
+            if (identity != null) {
+                objectId = identity.objectId();
+            }
+        }
+        return objectId;
+    }
+
     private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {
         return this
             .manager()
@@ -293,6 +309,18 @@ public class KubernetesClusterImpl
     public KubernetesClusterImpl withServicePrincipalClientId(String clientId) {
         this.innerModel().withServicePrincipalProfile(
             new ManagedClusterServicePrincipalProfile().withClientId(clientId));
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withSystemAssignedManagedServiceIdentity() {
+        this.innerModel().withIdentity(new ManagedClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED));
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl enableRoleBasedAccessControl() {
+        this.innerModel().withEnableRbac(true);
         return this;
     }
 
