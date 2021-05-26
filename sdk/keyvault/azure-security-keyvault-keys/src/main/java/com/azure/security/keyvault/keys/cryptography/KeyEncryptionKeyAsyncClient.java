@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 /**
  * A key client which is used to asynchronously wrap or unwrap another key.
  */
-@ServiceClient(builder = KeyEncryptionKeyClientBuilder.class)
+@ServiceClient(builder = KeyEncryptionKeyClientBuilder.class, isAsync = true)
 public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient implements AsyncKeyEncryptionKey {
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyAsyncClient.class);
 
