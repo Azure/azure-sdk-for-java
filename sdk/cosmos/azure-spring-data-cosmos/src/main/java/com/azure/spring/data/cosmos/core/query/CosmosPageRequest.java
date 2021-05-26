@@ -90,7 +90,7 @@ public class CosmosPageRequest extends PageRequest {
     }
 
     @Override
-    public Pageable next() {
+    public PageRequest next() {
         return new CosmosPageRequest(this.offset + (long) this.getPageSize(),
             this.getPageNumber() + 1, getPageSize(), this.requestContinuation, getSort());
     }

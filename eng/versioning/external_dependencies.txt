@@ -352,6 +352,7 @@ microsoft_azure_storage_blob_org.spockframework:spock-core;1.3-groovy-2.5
 
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
+spring_org.springframework.kafka:spring-kafka;2.6.6
 
 # sdk\appconfiguration\azure-spring-cloud-appconfiguration-config\pom.xml
 # sdk\appconfiguration\azure-spring-cloud-feature-management\pom.xml
