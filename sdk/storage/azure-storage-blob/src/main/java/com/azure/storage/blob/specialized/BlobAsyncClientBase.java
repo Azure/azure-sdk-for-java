@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -1009,25 +1010,33 @@ public class BlobAsyncClientBase {
 
     private Mono<ReliableDownload> downloadHelper(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
-        range = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        HttpGetterInfo info = new HttpGetterInfo()
-            .setOffset(range.getOffset())
-            .setCount(range.getCount())
-            .setETag(requestConditions.getIfMatch());
+        final BlobRange effectiveRange = (range == null) ? new BlobRange(0) : range;
+        final BlobRequestConditions effectiveRequestConditions = (requestConditions == null)
+            ? new BlobRequestConditions()
+            : requestConditions;
+        final HttpGetterInfo info = new HttpGetterInfo()
+            .setOffset(effectiveRange.getOffset())
+            .setCount(effectiveRange.getCount())
+            .setETag(effectiveRequestConditions.getIfMatch());
 
-        return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            customerProvidedKey, context)
+        return downloadWithResponseAsync(effectiveRange, effectiveRequestConditions, getRangeContentMd5, context)
             .map(response -> {
                 info.setETag(ModelHelper.getETag(response.getHeaders()));
                 return new ReliableDownload(response, options, info, updatedInfo ->
                     downloadHelper(new BlobRange(updatedInfo.getOffset(), updatedInfo.getCount()), options,
                         new BlobRequestConditions().setIfMatch(info.getETag()), false, context));
             });
+    }
+
+    private Mono<StreamResponse> downloadWithResponseAsync(BlobRange range, BlobRequestConditions requestConditions,
+        boolean getRangeContentMd5, Context context) {
+        final Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
+
+        return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
+            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
+            context);
     }
 
     /**

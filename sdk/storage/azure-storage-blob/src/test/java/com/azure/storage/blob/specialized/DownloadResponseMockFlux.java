@@ -112,8 +112,8 @@ class DownloadResponseMockFlux {
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
-                    if (this.info.getOffset() != (this.tryNumber - 1) * 256
-                        || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                    if (this.info.getOffset() != (this.tryNumber - 1) * 256L
+                        || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256L) {
                         return Flux.error(new IllegalArgumentException("Info values are incorrect."));
                     }
 
@@ -128,8 +128,8 @@ class DownloadResponseMockFlux {
 
                     return dataStream.concatWith(Flux.error(e));
                 }
-                if (this.info.getOffset() != (this.tryNumber - 1) * 256
-                    || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
+                if (this.info.getOffset() != (this.tryNumber - 1) * 256L
+                    || this.info.getCount() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256L) {
                     return Flux.error(new IllegalArgumentException("Info values are incorrect."));
                 }
                 ByteBuffer toSend = this.scenarioData.duplicate();
@@ -181,8 +181,9 @@ class DownloadResponseMockFlux {
         this.info = info;
         long contentUpperBound = info.getCount() == null
             ? this.scenarioData.remaining() - 1 : info.getOffset() + info.getCount() - 1;
-        StreamResponse rawResponse = new StreamResponse(null, 200, new HttpHeaders().put("Content-Range", String.format("%d-%d/%d",
-            info.getOffset(), contentUpperBound, this.scenarioData.remaining())), this.getDownloadStream());
+        StreamResponse rawResponse = new StreamResponse(null, 200, new HttpHeaders().set("Content-Range",
+            String.format("%d-%d/%d", info.getOffset(), contentUpperBound, this.scenarioData.remaining())),
+            this.getDownloadStream());
         ReliableDownload response = new ReliableDownload(rawResponse, options, info, this::getter);
 
         switch (this.scenario) {

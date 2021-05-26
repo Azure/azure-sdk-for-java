@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.StreamResponse
 import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HttpGetterInfo
@@ -47,15 +48,15 @@ class DownloadResponseTest extends APISpec {
             @Override
             Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 return next.process()
-                .flatMap({ response ->
-                    HttpHeader eTagHeader = response.getHeaders().get("eTag")
-                    if (eTagHeader == null) {
-                        return  Mono.just(response);
-                    }
-                    HttpHeaders headers = response.getHeaders()
-                    headers.remove("eTag")
-                    return  Mono.just(getStubDownloadResponse(response, response.getStatusCode(), response.getBody(), headers));
-                })
+                    .flatMap({response ->
+                        HttpHeader eTagHeader = response.getHeaders().get("eTag")
+                        if (eTagHeader == null) {
+                            return Mono.just(response)
+                        }
+                        HttpHeaders headers = response.getHeaders()
+                        headers.remove("eTag")
+                        return Mono.just(getStubDownloadResponse(response, response.getStatusCode(), response.getBody(), headers))
+                    })
             }
         }
         def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), removeEtagPolicy).buildClient()
@@ -131,7 +132,8 @@ class DownloadResponseTest extends APISpec {
         def info = null
 
         when:
-        new ReliableDownload(null, null, info, { HttpGetterInfo newInfo -> flux.getter(newInfo) })
+        new ReliableDownload(null, null, info, {HttpGetterInfo newInfo -> flux.getter(newInfo)
+        })
 
         then:
         thrown(NullPointerException)
@@ -189,12 +191,16 @@ class DownloadResponseTest extends APISpec {
 
         when:
         def bufferMono = flux.setOptions(options).getter(info)
-            .flatMapMany({ it.getValue() })
+            .flatMapMany({
+                it.getValue()
+            })
 
         then:
         StepVerifier.create(bufferMono)
             .expectSubscription()
-            .verifyErrorMatches({ Exceptions.unwrap(it) instanceof TimeoutException })
+            .verifyErrorMatches({
+                Exceptions.unwrap(it) instanceof TimeoutException
+            })
 
         where:
         // We test retry count elsewhere. Just using small numbers to speed up the test.
