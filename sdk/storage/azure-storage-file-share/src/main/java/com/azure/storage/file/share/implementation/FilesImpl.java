@@ -45,11 +45,10 @@ import com.azure.storage.file.share.implementation.models.StorageErrorException;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.SourceModifiedAccessConditions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.nio.ByteBuffer;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Files. */
 public final class FilesImpl {
@@ -224,6 +223,7 @@ public final class FilesImpl {
                 @HeaderParam("x-ms-source-if-none-match-crc64") String sourceIfNoneMatchCrc64,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -803,6 +803,8 @@ public final class FilesImpl {
      * @param sourceContentCrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
      *     source.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param sourceModifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -821,6 +823,7 @@ public final class FilesImpl {
             String sourceRange,
             byte[] sourceContentCrc64,
             String leaseId,
+            String copySourceAuthorization,
             SourceModifiedAccessConditions sourceModifiedAccessConditions,
             Context context) {
         final String comp = "range";
@@ -855,6 +858,7 @@ public final class FilesImpl {
                 sourceIfNoneMatchCrc64Converted,
                 this.client.getVersion(),
                 leaseId,
+                copySourceAuthorization,
                 accept,
                 context);
     }

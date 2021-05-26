@@ -89,8 +89,8 @@ public final class BlobContainerItemProperties {
     /*
      * Indicates if version level worm is enabled on this container.
      */
-    @JsonProperty(value = "ImmutableStorageWithVersioningEnabled")
-    private Boolean isImmutableStorageWithVersioningEnabled;
+    @JsonProperty(value = "VersionLevelWormEnabled")
+    private Boolean isVersionLevelWormEnabled;
 
     /**
      * Get the lastModified property: The Last-Modified property.
@@ -348,25 +348,22 @@ public final class BlobContainerItemProperties {
     }
 
     /**
-     * Get the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
-     * container.
+     * Get the isVersionLevelWormEnabled property: Indicates if version level worm is enabled on this container.
      *
-     * @return the isImmutableStorageWithVersioningEnabled value.
+     * @return the isVersionLevelWormEnabled value.
      */
-    public Boolean isImmutableStorageWithVersioningEnabled() {
-        return this.isImmutableStorageWithVersioningEnabled;
+    public Boolean isVersionLevelWormEnabled() {
+        return this.isVersionLevelWormEnabled;
     }
 
     /**
-     * Set the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
-     * container.
+     * Set the isVersionLevelWormEnabled property: Indicates if version level worm is enabled on this container.
      *
-     * @param isImmutableStorageWithVersioningEnabled the isImmutableStorageWithVersioningEnabled value to set.
+     * @param isVersionLevelWormEnabled the isVersionLevelWormEnabled value to set.
      * @return the BlobContainerItemProperties object itself.
      */
-    public BlobContainerItemProperties setIsImmutableStorageWithVersioningEnabled(
-            Boolean isImmutableStorageWithVersioningEnabled) {
-        this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
+    public BlobContainerItemProperties setIsVersionLevelWormEnabled(Boolean isVersionLevelWormEnabled) {
+        this.isVersionLevelWormEnabled = isVersionLevelWormEnabled;
         return this;
     }
 }

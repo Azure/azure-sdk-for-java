@@ -561,6 +561,7 @@ public final class BlobsImpl {
                 @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
                 @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
                 @HeaderParam("x-ms-legal-hold") Boolean legalHold,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -2167,6 +2168,8 @@ public final class BlobsImpl {
      * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
      * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
      * @param legalHold Specified if a legal hold should be set on the blob.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws StorageErrorException thrown if the request is rejected by server.
@@ -2197,6 +2200,7 @@ public final class BlobsImpl {
             OffsetDateTime immutabilityPolicyExpiry,
             BlobImmutabilityPolicyMode immutabilityPolicyMode,
             Boolean legalHold,
+            String copySourceAuthorization,
             Context context) {
         final String xMsRequiresSync = "true";
         final String accept = "application/xml";
@@ -2237,6 +2241,7 @@ public final class BlobsImpl {
                 immutabilityPolicyExpiryConverted,
                 immutabilityPolicyMode,
                 legalHold,
+                copySourceAuthorization,
                 accept,
                 context);
     }

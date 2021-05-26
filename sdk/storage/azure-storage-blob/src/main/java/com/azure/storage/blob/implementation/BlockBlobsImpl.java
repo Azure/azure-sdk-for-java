@@ -148,6 +148,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-tags") String blobTagsString,
                 @HeaderParam("x-ms-copy-source") URL copySource,
                 @HeaderParam("x-ms-copy-source-blob-properties") Boolean copySourceBlobProperties,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -201,6 +202,7 @@ public final class BlockBlobsImpl {
                 @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -473,6 +475,8 @@ public final class BlockBlobsImpl {
      * @param blobTagsString Optional. Used to set blob tags in various blob operations.
      * @param copySourceBlobProperties Optional, default is true. Indicates if properties from the source blob should be
      *     copied.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param blobHttpHeaders Parameter group.
      * @param cpkInfo Parameter group.
      * @param encryptionScope Parameter group.
@@ -507,6 +511,7 @@ public final class BlockBlobsImpl {
             byte[] sourceContentMD5,
             String blobTagsString,
             Boolean copySourceBlobProperties,
+            String copySourceAuthorization,
             BlobHttpHeaders blobHttpHeaders,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScope,
@@ -611,6 +616,7 @@ public final class BlockBlobsImpl {
                 blobTagsString,
                 copySource,
                 copySourceBlobProperties,
+                copySourceAuthorization,
                 accept,
                 context);
     }
@@ -729,6 +735,8 @@ public final class BlockBlobsImpl {
      * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param cpkInfo Parameter group.
      * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
@@ -754,6 +762,7 @@ public final class BlockBlobsImpl {
             String sourceIfMatch,
             String sourceIfNoneMatch,
             String requestId,
+            String copySourceAuthorization,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScope,
             Context context) {
@@ -808,6 +817,7 @@ public final class BlockBlobsImpl {
                 sourceIfNoneMatch,
                 this.client.getVersion(),
                 requestId,
+                copySourceAuthorization,
                 accept,
                 context);
     }
