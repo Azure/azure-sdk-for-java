@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import org.apache.http.HttpResponse;
@@ -27,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class JreKeyStoreTest {
     @BeforeAll
-    public static void init(){
+    public static void init() {
         /*
          * Add JCA provider.
          */
