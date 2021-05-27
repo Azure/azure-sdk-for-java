@@ -17,12 +17,11 @@ jobs:
     pool:
       vmImage: 'ubuntu-18.04'
     steps:
+    - template: ../steps/cache-maven-repository.yml
+
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
     - template: templates/steps/install-reporting-tools.yml
-      parameters:
-        Options: --batch-mode
-        MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
     - task: Maven@3
       displayName: 'Build All Libraries'
@@ -88,6 +87,9 @@ jobs:
       condition: succeededOrFailed()
       displayName: 'Publish Report Artifacts'
       artifact: reports
+
+    - template: ../steps/upload-repository-on-failure.yml
+
   - job: Compliance
     displayName: Analyze (no build)
     timeoutInMinutes: 120
@@ -142,7 +144,7 @@ jobs:
             endColumn = $_.locations.physicalLocation.region.endColumn
             level = $_.level
           }
-        } 
+        }
         $csvRows | Export-Csv -Path "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.csv" -NoTypeInformation
       displayName: Add converted csv file for CredScan-matches.sarif
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
