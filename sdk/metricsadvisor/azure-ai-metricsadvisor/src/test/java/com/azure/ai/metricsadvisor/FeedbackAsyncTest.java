@@ -110,7 +110,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
 
     /**
      * Verifies the result of the list metric feedback  method to return only 3 results using
-     * {@link ListMetricFeedbackOptions#setTop(int)}.
+     * {@link ListMetricFeedbackOptions#setMaxPageSize(int)}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -120,7 +120,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setTop(3)).byPage())
+        StepVerifier.create(client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setMaxPageSize(3)).byPage())
             .thenConsumeWhile(metricFeedbackPagedResponse -> 3 >= metricFeedbackPagedResponse.getValue().size())
             // page size should be less than or equal to 3
             .verifyComplete();
@@ -170,7 +170,7 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
                     .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
                     .setStartTime(firstFeedbackCreatedTime.minusDays(1))
                     .setEndTime(firstFeedbackCreatedTime.plusDays(1))
-                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10)))
+                    .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setMaxPageSize(10)))
                 .thenConsumeWhile(metricFeedback ->
                     metricFeedback.getDimensionFilter().asMap().keySet().stream().anyMatch(DIMENSION_FILTER::containsKey))
                 .verifyComplete();

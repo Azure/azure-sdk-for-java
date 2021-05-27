@@ -91,7 +91,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
         final ListMetricSeriesDefinitionOptions options
             = new ListMetricSeriesDefinitionOptions()
-            .setTop(10)
+            .setMaxPageSize(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                     put("Dim2", Collections.singletonList("Angelfish"));
                 }});
@@ -149,7 +149,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     public void listMetricDimensionValuesWithOptions() {
         // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions
         metricsAdvisorAsyncClient.listMetricDimensionValues("metricId", "dimension1",
-            new ListMetricDimensionValuesOptions().setDimensionValueToFilter("value1").setTop(3))
+            new ListMetricDimensionValuesOptions().setDimensionValueToFilter("value1").setMaxPageSize(3))
             .subscribe(System.out::println);
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions
     }
@@ -162,7 +162,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
 
         metricsAdvisorAsyncClient.listIncidents(
             alertConfigurationId,
@@ -221,7 +221,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
         metricsAdvisorAsyncClient.listAnomalies(
             alertConfigurationId,
             alertId,
@@ -250,7 +250,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
         final ListAlertOptions options = new ListAlertOptions()
             .setAlertQueryTimeMode(timeMode)
-            .setTop(10);
+            .setMaxPageSize(10);
 
         metricsAdvisorAsyncClient.listAlerts(alertConfigurationId, startTime, endTime, options)
             .subscribe(alert -> {
@@ -272,7 +272,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final ListAnomalyDimensionValuesOptions options
             = new ListAnomalyDimensionValuesOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
 
         metricsAdvisorAsyncClient.listAnomalyDimensionValues(detectionConfigurationId,
             dimensionName,
@@ -292,7 +292,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
         final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
-            .setTop(1000);
+            .setMaxPageSize(1000);
 
         PagedFlux<AnomalyIncident> incidentsFlux
             = metricsAdvisorAsyncClient.listIncidents(detectionConfigurationId, startTime, endTime, options);
@@ -320,7 +320,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
             .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
-            .setTop(10)
+            .setMaxPageSize(10)
             .setFilter(filter);
         metricsAdvisorAsyncClient.listAnomalies(detectionConfigurationId,
                 startTime, endTime, options)
@@ -553,7 +553,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final ListIncidentsDetectedOptions options
             = new ListIncidentsDetectedOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
 
         metricsAdvisorAsyncClient.listIncidents(detectionConfigurationId, startTime, endTime, options)
             .flatMap(incident -> {
@@ -576,7 +576,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
-        final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions().setTop(10);
+        final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions().setMaxPageSize(10);
 
         metricsAdvisorAsyncClient.listMetricEnrichmentStatus(metricId, startTime, endTime, options)
             .subscribe(enrichmentStatus -> {

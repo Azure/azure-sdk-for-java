@@ -29,7 +29,7 @@ public class ListsAnomaliesForDetectionConfigSample {
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
             .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
-            .setTop(10)
+            .setMaxPageSize(10)
             .setFilter(filter);
         PagedIterable<DataPointAnomaly> anomaliesIterable
             = advisorClient.listAnomalies(detectionConfigurationId,

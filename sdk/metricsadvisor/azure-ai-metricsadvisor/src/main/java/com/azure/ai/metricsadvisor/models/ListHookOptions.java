@@ -11,7 +11,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class ListHookOptions {
     private String hookNameFilter;
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
 
     /**
@@ -26,10 +26,10 @@ public final class ListHookOptions {
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maxPageSize value.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -57,11 +57,11 @@ public final class ListHookOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The top value.
+     * @param maxPageSize The maxPageSize value.
      * @return The ListHookOptions object itself.
      */
-    public ListHookOptions setTop(int top) {
-        this.top = top;
+    public ListHookOptions setMaxPageSize(int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 
