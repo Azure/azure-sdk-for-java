@@ -7,7 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
-import com.azure.core.implementation.ReliableDownloadFlux;
+import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscriber;
@@ -137,7 +137,7 @@ public final class FluxUtil {
     }
 
     /**
-     * Creates a {@link Flux} that is capable of reliably downloading by applying reply logic when an error occurs.
+     * Creates a {@link Flux} that is capable of resuming a download by applying retry logic when an error occurs.
      *
      * @param downloadSupplier Supplier of the initial download.
      * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
@@ -145,13 +145,13 @@ public final class FluxUtil {
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @return A {@link Flux} that downloads reliably.
      */
-    public static Flux<ByteBuffer> createReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+    public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries) {
-        return createReliableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, 0L);
+        return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, 0L);
     }
 
     /**
-     * Creates a {@link Flux} that is capable of reliably downloading by applying reply logic when an error occurs.
+     * Creates a {@link Flux} that is capable of resuming a download by applying retry logic when an error occurs.
      *
      * @param downloadSupplier Supplier of the initial download.
      * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
@@ -160,9 +160,9 @@ public final class FluxUtil {
      * @param position The initial offset for the download.
      * @return A {@link Flux} that downloads reliably.
      */
-    public static Flux<ByteBuffer> createReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+    public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
-        return new ReliableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
+        return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
     }
 
     /**

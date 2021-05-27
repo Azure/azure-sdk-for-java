@@ -11,10 +11,10 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
- * A {@code Flux<ByteBuffer>} implementation which is capable of performing a reliable download by applying a resume
+ * A {@code Flux<ByteBuffer>} implementation which is capable of performing a retriable download by applying a resume
  * operation if an error occurs during the download.
  */
-public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
+public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
     private final Supplier<Flux<ByteBuffer>> downloadSupplier;
     private final BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume;
     private final int maxRetries;
@@ -22,7 +22,7 @@ public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
     private final int retryCount;
 
     /**
-     * Creates a ReliableDownloadFlux.
+     * Creates a RetriableDownloadFlux.
      *
      * @param downloadSupplier Supplier of the initial download.
      * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
@@ -30,12 +30,12 @@ public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @param position The initial offset for the download.
      */
-    public ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+    public RetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
         this(downloadSupplier, onDownloadErrorResume, maxRetries, position, 0);
     }
 
-    private ReliableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+    private RetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position,
         int retryCount) {
         this.downloadSupplier = downloadSupplier;
@@ -61,7 +61,7 @@ public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
                     return Flux.error(throwable);
                 }
 
-                return new ReliableDownloadFlux(() -> onDownloadErrorResume.apply(throwable, currentPosition[0]),
+                return new RetriableDownloadFlux(() -> onDownloadErrorResume.apply(throwable, currentPosition[0]),
                     onDownloadErrorResume, maxRetries, currentPosition[0], updatedRetryCount);
             })
             .subscribe(actual);
