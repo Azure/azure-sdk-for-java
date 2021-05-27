@@ -12,22 +12,34 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
+import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import io.opentelemetry.api.trace.Span;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 public class TracerProvider {
     private Tracer tracer;
+    private final static String JSON_STRING = "JSON";
     public final static String DB_TYPE_VALUE = "Cosmos";
     public final static String DB_TYPE = "db.type";
     public final static String DB_INSTANCE = "db.instance";
@@ -73,6 +85,22 @@ public class TracerProvider {
     }
 
     /**
+     * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
+     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline</p>
+     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.</p>
+     *
+     * @param name the name of the event.
+     * @param attributes the additional attributes to be set for the event.
+     * @param timestamp The instant, in UTC, at which the event will be associated to the span.
+     * @throws NullPointerException if {@code eventName} is {@code null}.
+     */
+    public void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
+        tracer.addEvent(name, attributes, timestamp);
+    }
+
+    /**
      * Given a context containing the current tracing span the span is marked completed with status info from
      * {@link Signal}.  For each tracer plugged into the SDK the current tracing span is marked as completed.
      *
@@ -114,7 +142,7 @@ public class TracerProvider {
                                                                                      String databaseId,
                                                                                      String endpoint) {
         return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
-            (T response) -> response.getStatusCode());
+            (T response) -> response.getStatusCode(), (T response) -> response.getDiagnostics());
     }
 
     public Mono<TransactionalBatchResponse> traceEnabledBatchResponsePublisher(Mono<TransactionalBatchResponse> resultPublisher,
@@ -133,7 +161,8 @@ public class TracerProvider {
             consistencyLevel,
             operationType,
             resourceType,
-            TransactionalBatchResponse::getStatusCode);
+            TransactionalBatchResponse::getStatusCode,
+            TransactionalBatchResponse::getDiagnostics);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosItemResponse<T>> resultPublisher,
@@ -152,7 +181,8 @@ public class TracerProvider {
             consistencyLevel,
             operationType,
             resourceType,
-            CosmosItemResponse::getStatusCode);
+            CosmosItemResponse::getStatusCode,
+            CosmosItemResponse::getDiagnostics);
     }
 
     private <T> Mono<T> traceEnabledPublisher(Mono<T> resultPublisher,
@@ -160,7 +190,8 @@ public class TracerProvider {
                                               String spanName,
                                               String databaseId,
                                               String endpoint,
-                                              Function<T, Integer> statusCodeFunc) {
+                                              Function<T, Integer> statusCodeFunc,
+                                              Function<T, CosmosDiagnostics> diagnosticFunc) {
         final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
         Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
         final boolean isNestedCall = callDepth.isPresent();
@@ -172,10 +203,27 @@ public class TracerProvider {
                 }
             }).doOnSuccess(response -> {
                 if (isEnabled() && !isNestedCall) {
+                    ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
+                    CosmosDiagnostics cosmosDiagnostics = diagnosticFunc.apply(response);
+                    try {
+                        addDiagnosticsOnTracerEvent(cosmosDiagnostics);
+                    } catch (JsonProcessingException e) {
+                        // do nothing
+                    }
                     this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
                 }
             }).doOnError(throwable -> {
                 if (isEnabled() && !isNestedCall) {
+                    ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
+                    Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+                    if (unwrappedException instanceof CosmosException) {
+                        CosmosException dce = (CosmosException) unwrappedException;
+                        try {
+                            addDiagnosticsOnTracerEvent(dce.getDiagnostics());
+                        } catch (JsonProcessingException e) {
+                            // do nothing
+                        }
+                    }
                     this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
                 }
             });
@@ -191,8 +239,9 @@ public class TracerProvider {
                                                      ConsistencyLevel consistencyLevel,
                                                      OperationType operationType,
                                                      ResourceType resourceType,
-                                                     Function<T, Integer> statusCodeFunc) {
-        Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc);
+                                                     Function<T, Integer> statusCodeFunc,
+                                                     Function<T, CosmosDiagnostics> diagnosticFunc) {
+        Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc, diagnosticFunc);
         return tracerMono
             .doOnSuccess(response -> {
                 if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosItemResponse) {
@@ -228,6 +277,7 @@ public class TracerProvider {
         }
         tracer.end(statusCode, throwable, context);
     }
+
 
     private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
                                     CosmosDiagnostics cosmosDiagnostics,
@@ -300,5 +350,118 @@ public class TracerProvider {
         reportPayload.setResource(resourceType);
         reportPayload.setStatusCode(statusCode);
         return reportPayload;
+    }
+
+    private void addDiagnosticsOnTracerEvent(CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
+        if(cosmosDiagnostics == null) {
+            return;
+        }
+
+        ClientSideRequestStatistics clientSideRequestStatistics =
+            BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
+
+        Map<String, Object> attributes = null;
+        //adding Supplemental StoreResponse
+        int counter = 1;
+        for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
+            clientSideRequestStatistics.getResponseStatisticsList()) {
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(storeResponseStatistics));
+            Iterator<RequestTimeline.Event> eventIterator = null;
+            try {
+                eventIterator = DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.storeResult.toResponse()).iterator();
+            } catch (CosmosException ex) {
+                eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
+            }
+
+            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(storeResponseStatistics.requestResponseTimeUTC, ZoneOffset.UTC);
+            while (eventIterator.hasNext()) {
+                RequestTimeline.Event event = eventIterator.next();
+                if(event.getName().equals("created")) {
+                    requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                    break;
+                }
+            }
+
+            this.addEvent("StoreResponse" + counter++, attributes, requestStartTime);
+        }
+
+        //adding Supplemental StoreResponse
+        counter = 1;
+        for (ClientSideRequestStatistics.StoreResponseStatistics statistics :
+            ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(statistics));
+            Iterator<RequestTimeline.Event> eventIterator = DirectBridgeInternal.getRequestTimeline(statistics.storeResult.toResponse()).iterator();
+            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.requestResponseTimeUTC, ZoneOffset.UTC);
+                while (eventIterator.hasNext()) {
+                    RequestTimeline.Event event = eventIterator.next();
+                    if(event.getName().equals("created")) {
+                        requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                        break;
+                    }
+            }
+
+            this.addEvent("Supplemental StoreResponse" + counter++, attributes, requestStartTime);
+        }
+
+        //adding Supplemental StoreResponse
+        if (clientSideRequestStatistics.getGatewayStatistics() != null) {
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING,
+                Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
+            Iterator<RequestTimeline.Event> eventIterator =
+                clientSideRequestStatistics.getGatewayStatistics().requestTimeline.iterator();
+            OffsetDateTime requestStartTime =
+                OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
+            while (eventIterator.hasNext()) {
+                RequestTimeline.Event event = eventIterator.next();
+                if (event.getName().equals("created")) {
+                    requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                    break;
+                }
+            }
+            this.addEvent("GatewayStatistics", attributes, requestStartTime);
+        }
+
+        //adding retry context
+        if(clientSideRequestStatistics.getRetryContext().getRetryStartTime() != null) {
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRetryContext()));
+            this.addEvent("Retry Context", attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRetryContext().getRetryStartTime(), ZoneOffset.UTC));
+        }
+
+        //adding addressResolutionStatistics
+        counter = 1;
+        for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics: clientSideRequestStatistics.getAddressResolutionStatistics().values()) {
+            attributes = new HashMap<>();
+            attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(addressResolutionStatistics));
+            this.addEvent("AddressResolutionStatistics" + counter++, attributes, OffsetDateTime.ofInstant(addressResolutionStatistics.startTimeUTC, ZoneOffset.UTC));
+        }
+
+        //adding serializationDiagnosticsContext
+        if(clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList != null) {
+            for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics : clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
+                attributes = new HashMap<>();
+                attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(serializationDiagnostics));
+                this.addEvent("SerializationDiagnostics " + serializationDiagnostics.serializationType, attributes, OffsetDateTime.ofInstant(serializationDiagnostics.startTimeUTC, ZoneOffset.UTC));
+            }
+        }
+
+        //adding systemInformation
+        attributes = new HashMap<>();
+        attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+        this.addEvent("RegionContacted" , attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+
+
+        //adding systemInformation
+        attributes = new HashMap<>();
+        attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(ClientSideRequestStatistics.fetchSystemInformation()));
+        this.addEvent("SystemInformation" , attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
+
+        //adding clientCfgs
+        attributes = new HashMap<>();
+        attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+        this.addEvent("ClientCfgs" , attributes, OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
     }
 }

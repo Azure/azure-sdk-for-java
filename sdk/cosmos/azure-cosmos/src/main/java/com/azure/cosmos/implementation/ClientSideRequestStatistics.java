@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -30,7 +30,6 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private final DiagnosticsClientContext clientContext;
     private final DiagnosticsClientContext diagnosticsClientContext;
 
     private List<StoreResponseStatistics> responseStatisticsList;
@@ -50,7 +49,6 @@ public class ClientSideRequestStatistics {
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientContext = diagnosticsClientContext;
-        this.clientContext = null;
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
@@ -66,6 +64,14 @@ public class ClientSideRequestStatistics {
 
     public Duration getDuration() {
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
+    }
+
+    public Instant getRequestStartTimeUTC() {
+        return requestStartTimeUTC;
+    }
+
+    public DiagnosticsClientContext getDiagnosticsClientContext() {
+        return diagnosticsClientContext;
     }
 
     public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
@@ -135,6 +141,7 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.requestCharge = storeResponse
                                                            .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
+                this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
@@ -225,15 +232,31 @@ public class ClientSideRequestStatistics {
         return retryContext;
     }
 
+    public List<StoreResponseStatistics> getResponseStatisticsList() {
+        return responseStatisticsList;
+    }
+
+    public List<StoreResponseStatistics> getSupplementalResponseStatisticsList() {
+        return supplementalResponseStatisticsList;
+    }
+
+    public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
+        return addressResolutionStatistics;
+    }
+
+    public GatewayStatistics getGatewayStatistics() {
+        return gatewayStatistics;
+    }
+
     public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
-        StoreResult storeResult;
+        public StoreResult storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant requestResponseTimeUTC;
+        public Instant requestResponseTimeUTC;
         @JsonSerialize
-        ResourceType requestResourceType;
+        public ResourceType requestResourceType;
         @JsonSerialize
-        OperationType requestOperationType;
+        public OperationType requestOperationType;
     }
 
     private static class SystemInformation {
@@ -278,20 +301,7 @@ public class ClientSideRequestStatistics {
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
-            int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
-            int initialIndex =
-                Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
-            if (initialIndex != 0) {
-                List<StoreResponseStatistics> subList = statistics.supplementalResponseStatisticsList
-                                                            .subList(initialIndex,
-                                                                     supplementalResponseStatisticsListCount);
-                generator.writeObjectField("supplementalResponseStatisticsList", subList);
-            } else {
-                generator
-                    .writeObjectField("supplementalResponseStatisticsList",
-                                      statistics.supplementalResponseStatisticsList);
-            }
-
+            generator.writeObjectField("supplementalResponseStatisticsList", getCappedSupplementalResponseStatisticsList(statistics.supplementalResponseStatisticsList));
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
@@ -300,17 +310,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
             try {
-                SystemInformation systemInformation = new SystemInformation();
-                Runtime runtime = Runtime.getRuntime();
-                long totalMemory = runtime.totalMemory() / 1024;
-                long freeMemory = runtime.freeMemory() / 1024;
-                long maxMemory = runtime.maxMemory() / 1024;
-                systemInformation.usedMemory = totalMemory - freeMemory + " KB";
-                systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
-                systemInformation.availableProcessors = runtime.availableProcessors();
-
-                // TODO: other system related info also can be captured using a similar approach
-                systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+                SystemInformation systemInformation = fetchSystemInformation();
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
@@ -321,15 +321,28 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private static class AddressResolutionStatistics {
+    public static List<StoreResponseStatistics> getCappedSupplementalResponseStatisticsList(List<StoreResponseStatistics> supplementalResponseStatisticsList) {
+        int supplementalResponseStatisticsListCount = supplementalResponseStatisticsList.size();
+        int initialIndex =
+            Math.max(supplementalResponseStatisticsListCount - MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING, 0);
+        if (initialIndex != 0) {
+            List<StoreResponseStatistics> subList = supplementalResponseStatisticsList
+                .subList(initialIndex,
+                    supplementalResponseStatisticsListCount);
+            return subList;
+        }
+        return supplementalResponseStatisticsList;
+    }
+
+    public static class AddressResolutionStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant startTimeUTC;
+        public Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        Instant endTimeUTC;
+        public Instant endTimeUTC;
         @JsonSerialize
-        String targetEndpoint;
+        public String targetEndpoint;
         @JsonSerialize
-        String errorMessage;
+        public String errorMessage;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
@@ -338,7 +351,7 @@ public class ClientSideRequestStatistics {
         boolean inflightRequest = true;
     }
 
-    private static class GatewayStatistics {
+    public static class GatewayStatistics {
         String sessionToken;
         OperationType operationType;
         ResourceType resourceType;
@@ -346,6 +359,8 @@ public class ClientSideRequestStatistics {
         int subStatusCode;
         String requestCharge;
         RequestTimeline requestTimeline;
+        @JsonIgnore
+        String partitionKeyRangeId;
 
         public String getSessionToken() {
             return sessionToken;
@@ -374,5 +389,24 @@ public class ClientSideRequestStatistics {
         public ResourceType getResourceType() {
             return resourceType;
         }
+
+        public String getPartitionKeyRangeId() {
+            return partitionKeyRangeId;
+        }
+    }
+
+    public static SystemInformation fetchSystemInformation() {
+        SystemInformation systemInformation = new SystemInformation();
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory() / 1024;
+        long freeMemory = runtime.freeMemory() / 1024;
+        long maxMemory = runtime.maxMemory() / 1024;
+        systemInformation.usedMemory = totalMemory - freeMemory + " KB";
+        systemInformation.availableMemory = (maxMemory - (totalMemory - freeMemory)) + " KB";
+        systemInformation.availableProcessors = runtime.availableProcessors();
+
+        // TODO: other system related info also can be captured using a similar approach
+        systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+        return systemInformation;
     }
 }

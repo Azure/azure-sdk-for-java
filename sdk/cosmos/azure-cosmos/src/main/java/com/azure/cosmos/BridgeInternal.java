@@ -200,6 +200,15 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics) {
+        if (cosmosDiagnostics.getFeedResponseDiagnostics() != null) {
+            return cosmosDiagnostics.getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext();
+        }
+
+        return null;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
                          List<ClientSideRequestStatistics> requestStatistics) {
         cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
@@ -527,6 +536,15 @@ public final class BridgeInternal {
             }
         }
         return clientSideRequestStatisticsList;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+        if (cosmosDiagnostics != null) {
+            return cosmosDiagnostics.getFeedResponseDiagnostics();
+        }
+
+        return null;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

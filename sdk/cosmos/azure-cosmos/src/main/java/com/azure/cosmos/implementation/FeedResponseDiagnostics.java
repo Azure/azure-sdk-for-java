@@ -88,6 +88,10 @@ public class FeedResponseDiagnostics {
         this.diagnosticsContext = diagnosticsContext;
     }
 
+    public QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+        return diagnosticsContext;
+    }
+
     /**
      * Getter for property 'clientSideRequestStatisticsList'.
      *
