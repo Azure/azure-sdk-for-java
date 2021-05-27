@@ -16,6 +16,7 @@ import java.security.PrivilegedAction;
 import java.security.AccessController;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.Collections;
 import java.util.List;
@@ -55,15 +56,14 @@ public final class JreCertificates implements AzureCertificates {
 
     static {
         JRE_KEY_STORE = JREKeyStore.getDefault();
-        List<String> jreKsAliases = Collections.emptyList();
-        if (null != JRE_KEY_STORE) {
+        ALIASES = Optional.of(JRE_KEY_STORE).map(a -> {
             try {
-                jreKsAliases = Collections.unmodifiableList(Collections.list(JRE_KEY_STORE.aliases()));
+                return Collections.unmodifiableList(Collections.list(a.aliases()));
             } catch (KeyStoreException e) {
                 LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
+                return Collections.<String>emptyList();
             }
-        }
-        ALIASES = jreKsAliases;
+        }).orElse(Collections.emptyList());
         CERTS = ALIASES.stream()
             .collect(Collectors.toMap(a -> a, a -> {
                 try {
