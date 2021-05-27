@@ -578,29 +578,6 @@ public class MetricsAdvisorClient {
      * Fetch the incidents in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions}
-     *
-     * @param alertConfigurationId The anomaly alert configuration id.
-     * @param alertId The alert id.
-     * @param options The additional parameters.
-     *
-     * @return The incidents.
-     * @throws IllegalArgumentException thrown if {@code alertConfigurationId} or {@code alertId} does not
-     * conform to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyIncident> listIncidents(
-        String alertConfigurationId,
-        String alertId,
-        ListIncidentsAlertedOptions options) {
-        return listIncidents(alertConfigurationId, alertId, options, Context.NONE);
-    }
-
-    /**
-     * Fetch the incidents in an alert.
-     *
-     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions-Context}
      *
      * @param alertConfigurationId The anomaly alert configuration id.

@@ -203,38 +203,6 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorClient#listIncidents(String, String, ListIncidentsAlertedOptions)}.
-     */
-    public void listIncidentsForAlert() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions
-        final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
-        final String alertId = "1746b031c00";
-        final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
-            .setMaxPageSize(10);
-
-        PagedIterable<AnomalyIncident> incidentsIterable = metricsAdvisorClient.listIncidents(
-            alertConfigurationId,
-            alertId,
-            options);
-
-        for (AnomalyIncident anomalyIncident : incidentsIterable) {
-            System.out.printf("Data Feed Metric Id: %s%n", anomalyIncident.getMetricId());
-            System.out.printf("Detection Configuration Id: %s%n", anomalyIncident.getDetectionConfigurationId());
-            System.out.printf("Anomaly Incident Id: %s%n", anomalyIncident.getId());
-            System.out.printf("Anomaly Incident Start Time: %s%n", anomalyIncident.getStartTime());
-            System.out.printf("Anomaly Incident AnomalySeverity: %s%n", anomalyIncident.getSeverity());
-            System.out.printf("Anomaly Incident Status: %s%n", anomalyIncident.getStatus());
-            System.out.printf("Root DataFeedDimension Key:");
-            DimensionKey rootDimension = anomalyIncident.getRootDimensionKey();
-            for (Map.Entry<String, String> dimension : rootDimension.asMap().entrySet()) {
-                System.out.printf("DimensionName: %s DimensionValue:%s%n",
-                    dimension.getKey(), dimension.getValue());
-            }
-        }
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions
-    }
-
-    /**
      * Code snippet for {@link MetricsAdvisorClient#listIncidents(String, String, ListIncidentsAlertedOptions, Context)}.
      */
     public void listIncidentsForAlertWithContext() {

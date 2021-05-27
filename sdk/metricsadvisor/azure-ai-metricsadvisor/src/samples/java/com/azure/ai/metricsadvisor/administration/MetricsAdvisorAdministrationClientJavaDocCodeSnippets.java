@@ -529,23 +529,22 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationClient#listDataFeedIngestionStatus(String, ListDataFeedIngestionOptions)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listDataFeedIngestionStatus(String)}.
      */
     public void listDataFeedIngestionStatus() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String
         final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final ListDataFeedIngestionOptions options = new ListDataFeedIngestionOptions(startTime, endTime);
         PagedIterable<DataFeedIngestionStatus> ingestionStatuses
-            = metricsAdvisorAdminClient.listDataFeedIngestionStatus(dataFeedId, options);
+            = metricsAdvisorAdminClient.listDataFeedIngestionStatus(dataFeedId);
 
         for (DataFeedIngestionStatus ingestionStatus : ingestionStatuses) {
             System.out.printf("Timestamp: %s%n", ingestionStatus.getTimestamp());
             System.out.printf("Status: %s%n", ingestionStatus.getStatus());
             System.out.printf("Message: %s%n", ingestionStatus.getMessage());
         }
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String
     }
 
     /**
@@ -1066,14 +1065,13 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationClient#listMetricAnomalyDetectionConfigs(String, ListMetricAnomalyDetectionConfigsOptions)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listMetricAnomalyDetectionConfigs(String)}.
      */
     public void listDetectionConfigurations() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         PagedIterable<AnomalyDetectionConfiguration> configsIterable
-            = metricsAdvisorAdminClient.listMetricAnomalyDetectionConfigs(metricId,
-                new ListMetricAnomalyDetectionConfigsOptions());
+            = metricsAdvisorAdminClient.listMetricAnomalyDetectionConfigs(metricId);
 
         for (AnomalyDetectionConfiguration detectionConfig : configsIterable) {
             System.out.printf("Detection config Id: %s%n", detectionConfig.getId());

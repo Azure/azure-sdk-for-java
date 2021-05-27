@@ -56,8 +56,7 @@ public class AnomalyDetectionConfigurationSample {
         // List configurations
         System.out.printf("Listing detection configurations%n");
         PagedIterable<AnomalyDetectionConfiguration> detectionConfigsIterable
-            = advisorAdministrationClient.listMetricAnomalyDetectionConfigs(metricId,
-                new ListMetricAnomalyDetectionConfigsOptions());
+            = advisorAdministrationClient.listMetricAnomalyDetectionConfigs(metricId);
 
         for (AnomalyDetectionConfiguration detectionConfig : detectionConfigsIterable) {
             printDetectionConfiguration(detectionConfig);

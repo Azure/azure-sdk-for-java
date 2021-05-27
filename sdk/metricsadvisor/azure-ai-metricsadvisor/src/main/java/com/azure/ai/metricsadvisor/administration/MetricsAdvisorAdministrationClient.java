@@ -214,10 +214,9 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the ingestion status of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String}
      *
      * @param dataFeedId The data feed id.
-     * @param options The additional parameters.
      * @return The ingestion statuses.
      * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
      * @throws NullPointerException If {@code dataFeedId}, {@code options}, {@code options.startTime},
@@ -225,9 +224,8 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId,
-        ListDataFeedIngestionOptions options) {
-        return listDataFeedIngestionStatus(dataFeedId, options, Context.NONE);
+        String dataFeedId) {
+        return listDataFeedIngestionStatus(dataFeedId, null, Context.NONE);
     }
 
     /**
@@ -519,19 +517,17 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String}
      *
      * @param metricId The metric id.
-     * @param options th e additional configurable options to specify when querying the result.
      * @return The anomaly detection configurations.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
-        String metricId,
-        ListMetricAnomalyDetectionConfigsOptions options) {
-        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, options,
+        String metricId) {
+        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, null,
             Context.NONE));
     }
 

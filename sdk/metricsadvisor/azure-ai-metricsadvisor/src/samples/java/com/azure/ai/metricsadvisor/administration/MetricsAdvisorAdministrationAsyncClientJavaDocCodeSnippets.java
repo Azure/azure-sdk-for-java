@@ -543,10 +543,24 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks#ListHookOptions
     }
 
+    public void listDataFeedIngestionStatus() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String
+        final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
+        final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
+        metricsAdvisorAdminAsyncClient.listDataFeedIngestionStatus(dataFeedId)
+            .subscribe(ingestionStatus -> {
+                System.out.printf("Timestamp: %s%n", ingestionStatus.getTimestamp());
+                System.out.printf("Status: %s%n", ingestionStatus.getStatus());
+                System.out.printf("Message: %s%n", ingestionStatus.getMessage());
+            });
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String
+    }
+
     /**
      * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDataFeedIngestionStatus(String, ListDataFeedIngestionOptions)}.
      */
-    public void listDataFeedIngestionStatus() {
+    public void listDataFeedIngestionStatusWithOptions() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions
         final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
@@ -1065,10 +1079,23 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getMetricAnomalyDetectionConfigWithResponse#String
     }
 
+    public void listDetectionConfigurations() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String
+        final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
+        metricsAdvisorAdminAsyncClient.listMetricAnomalyDetectionConfigs(metricId)
+            .subscribe(detectionConfig -> {
+                System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
+                System.out.printf("Name: %s%n", detectionConfig.getName());
+                System.out.printf("Description: %s%n", detectionConfig.getDescription());
+                System.out.printf("MetricId: %s%n", detectionConfig.getMetricId());
+            });
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String
+    }
+
     /**
      * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listMetricAnomalyDetectionConfigs(String, ListMetricAnomalyDetectionConfigsOptions)}.
      */
-    public void listDetectionConfigurations() {
+    public void listDetectionConfigurationsWithOptions() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         metricsAdvisorAdminAsyncClient.listMetricAnomalyDetectionConfigs(metricId,

@@ -501,6 +501,25 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the ingestion status of a data feed.
      *
      * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String}
+     *
+     * @param dataFeedId The data feed id.
+     *
+     * @return The ingestion statuses.
+     * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
+     * @throws NullPointerException If {@code dataFeedId}, {@code options}, {@code options.startTime},
+     * {@code options.endTime}  is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DataFeedIngestionStatus> listDataFeedIngestionStatus(
+        String dataFeedId) {
+        return listDataFeedIngestionStatus(dataFeedId);
+    }
+
+    /**
+     * Fetch the ingestion status of a data feed.
+     *
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions}
      *
      * @param dataFeedId The data feed id.
@@ -982,6 +1001,23 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Deleting MetricAnomalyDetectionConfiguration"))
             .doOnSuccess(response -> logger.info("Deleted MetricAnomalyDetectionConfiguration"))
             .doOnError(error -> logger.warning("Failed to delete MetricAnomalyDetectionConfiguration", error));
+    }
+
+    /**
+     * Given a metric id, retrieve all anomaly detection configurations applied to it.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String}
+     *
+     * @param metricId The metric id.
+     * @return The anomaly detection configurations.
+     * @throws NullPointerException thrown if the {@code metricId} is null.
+     * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId) {
+        return listMetricAnomalyDetectionConfigs(metricId);
     }
 
     /**
