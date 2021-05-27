@@ -13,6 +13,7 @@
     <profile>
       <id>coverage</id>
       <modules>
+        <module>azure-communication-callingserver</module>
         <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
@@ -21,6 +22,11 @@
       </modules>
 
       <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-communication-callingserver</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+        </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-chat</artifactId>
@@ -83,6 +89,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-communication-callingserver</module>
         <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
