@@ -4,68 +4,51 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.containers.containerregistry.models.ArtifactArchitecture;
-import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
-import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 
-/** Manifest details. */
+/** Properties of this repository. */
 @JsonFlatten
 @Fluent
-public class ManifestAttributesBase {
+public class ContainerRepositoryProperties {
     /*
-     * Manifest
+     * Registry login server name.  This is likely to be similar to
+     * {registry-name}.azurecr.io
      */
-    @JsonProperty(value = "digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String digest;
+    @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String registryLoginServer;
 
     /*
-     * Image size
+     * Image name
      */
-    @JsonProperty(value = "imageSize", access = JsonProperty.Access.WRITE_ONLY)
-    private Long size;
+    @JsonProperty(value = "imageName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
 
     /*
-     * Created time
+     * Image created time
      */
     @JsonProperty(value = "createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
-     * Last update time
+     * Image last update time
      */
     @JsonProperty(value = "lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
-     * CPU architecture
+     * Number of the manifests
      */
-    @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
-    private ArtifactArchitecture architecture;
+    @JsonProperty(value = "manifestCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private int manifestCount;
 
     /*
-     * Operating system
+     * Number of the tags
      */
-    @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
-    private ArtifactOperatingSystem operatingSystem;
-
-    /*
-     * List of artifacts that are referenced by this manifest list, with
-     * information about the platform each supports.  This list will be empty
-     * if this is a leaf manifest and not a manifest list.
-     */
-    @JsonProperty(value = "references", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ArtifactManifestPlatform> relatedArtifacts;
-
-    /*
-     * List of tags
-     */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> tags;
+    @JsonProperty(value = "tagCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private int tagCount;
 
     /*
      * Delete enabled
@@ -91,26 +74,34 @@ public class ManifestAttributesBase {
     @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
 
-    /**
-     * Get the digest property: Manifest.
-     *
-     * @return the digest value.
+    /*
+     * Enables Teleport functionality on new images in the repository improving
+     * Container startup performance
      */
-    public String getDigest() {
-        return this.digest;
+    @JsonProperty(value = "changeableAttributes.teleportEnabled")
+    private Boolean teleportEnabled;
+
+    /**
+     * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
+     *
+     * @return the registryLoginServer value.
+     */
+    public String getRegistryLoginServer() {
+        return this.registryLoginServer;
     }
 
     /**
-     * Get the size property: Image size.
+     * Get the name property: Image name.
      *
-     * @return the size value.
+     * @return the name value.
      */
-    public Long getSize() {
-        return this.size;
+    public String getName() {
+        return this.name;
     }
 
     /**
-     * Get the createdOn property: Created time.
+     * Get the createdOn property: Image created time.
      *
      * @return the createdOn value.
      */
@@ -119,7 +110,7 @@ public class ManifestAttributesBase {
     }
 
     /**
-     * Get the lastUpdatedOn property: Last update time.
+     * Get the lastUpdatedOn property: Image last update time.
      *
      * @return the lastUpdatedOn value.
      */
@@ -128,40 +119,21 @@ public class ManifestAttributesBase {
     }
 
     /**
-     * Get the architecture property: CPU architecture.
+     * Get the manifestCount property: Number of the manifests.
      *
-     * @return the architecture value.
+     * @return the manifestCount value.
      */
-    public ArtifactArchitecture getArchitecture() {
-        return this.architecture;
+    public int getManifestCount() {
+        return this.manifestCount;
     }
 
     /**
-     * Get the operatingSystem property: Operating system.
+     * Get the tagCount property: Number of the tags.
      *
-     * @return the operatingSystem value.
+     * @return the tagCount value.
      */
-    public ArtifactOperatingSystem getOperatingSystem() {
-        return this.operatingSystem;
-    }
-
-    /**
-     * Get the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
-     * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
-     *
-     * @return the relatedArtifacts value.
-     */
-    public List<ArtifactManifestPlatform> getRelatedArtifacts() {
-        return this.relatedArtifacts;
-    }
-
-    /**
-     * Get the tags property: List of tags.
-     *
-     * @return the tags value.
-     */
-    public List<String> getTags() {
-        return this.tags;
+    public int getTagCount() {
+        return this.tagCount;
     }
 
     /**
@@ -177,9 +149,9 @@ public class ManifestAttributesBase {
      * Set the deleteEnabled property: Delete enabled.
      *
      * @param deleteEnabled the deleteEnabled value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
-    public ManifestAttributesBase setDeleteEnabled(Boolean deleteEnabled) {
+    public ContainerRepositoryProperties setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
     }
@@ -197,9 +169,9 @@ public class ManifestAttributesBase {
      * Set the writeEnabled property: Write enabled.
      *
      * @param writeEnabled the writeEnabled value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
-    public ManifestAttributesBase setWriteEnabled(Boolean writeEnabled) {
+    public ContainerRepositoryProperties setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
     }
@@ -217,9 +189,9 @@ public class ManifestAttributesBase {
      * Set the listEnabled property: List enabled.
      *
      * @param listEnabled the listEnabled value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
-    public ManifestAttributesBase setListEnabled(Boolean listEnabled) {
+    public ContainerRepositoryProperties setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
     }
@@ -237,10 +209,32 @@ public class ManifestAttributesBase {
      * Set the readEnabled property: Read enabled.
      *
      * @param readEnabled the readEnabled value to set.
-     * @return the ManifestAttributesBase object itself.
+     * @return the ContainerRepositoryProperties object itself.
      */
-    public ManifestAttributesBase setReadEnabled(Boolean readEnabled) {
+    public ContainerRepositoryProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
+        return this;
+    }
+
+    /**
+     * Get the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
+     * Container startup performance.
+     *
+     * @return the teleportEnabled value.
+     */
+    public Boolean isTeleportEnabled() {
+        return this.teleportEnabled;
+    }
+
+    /**
+     * Set the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
+     * Container startup performance.
+     *
+     * @param teleportEnabled the teleportEnabled value to set.
+     * @return the ContainerRepositoryProperties object itself.
+     */
+    public ContainerRepositoryProperties setTeleportEnabled(Boolean teleportEnabled) {
+        this.teleportEnabled = teleportEnabled;
         return this;
     }
 }

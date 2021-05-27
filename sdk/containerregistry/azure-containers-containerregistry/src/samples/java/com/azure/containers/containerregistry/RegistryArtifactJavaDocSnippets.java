@@ -5,7 +5,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.TagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -55,9 +55,9 @@ public class RegistryArtifactJavaDocSnippets {
 
     public void deleteRegistryArtifactWithResponseCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.deleteWithResponse
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.deleteWithResponse#Context
         client.deleteWithResponse(Context.NONE);
-        // END: com.azure.containers.containerregistry.registryartifact.deleteWithResponse
+        // END: com.azure.containers.containerregistry.registryartifact.deleteWithResponse#Context
     }
 
     public void deleteTagCodeSnippet() {
@@ -113,34 +113,40 @@ public class RegistryArtifactJavaDocSnippets {
         // END: com.azure.containers.containerregistry.registryartifact.getTagPropertiesWithResponse
     }
 
-    public void listTagsCodeSnippet() {
+    public void listTagPropertiesCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTags
-        client.listTags().iterableByPage(10).forEach(pagedResponse -> {
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagProperties
+        client.listTagProperties().iterableByPage(10).forEach(pagedResponse -> {
             pagedResponse.getValue().stream().forEach(
                 tagProperties -> System.out.println(tagProperties.getDigest()));
         });
-        // END: com.azure.containers.containerregistry.registryartifact.listTags
+        // END: com.azure.containers.containerregistry.registryartifact.listTagProperties
     }
 
-    public void listTagsWithOptionsNoContextCodeSnippet() {
+    public void listTagPropertiesWithOptionsNoContextCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptionsNoContext
-        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10).forEach(pagedResponse -> {
-            pagedResponse.getValue().stream().forEach(
-                tagProperties -> System.out.println(tagProperties.getDigest()));
-        });
-        // END: com.azure.containers.containerregistry.registryartifact.listTagsWithOptionsNoContext
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagPropertiesWithOptionsNoContext
+        client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING)
+            .iterableByPage(10)
+            .forEach(pagedResponse -> {
+                pagedResponse.getValue()
+                    .stream()
+                    .forEach(tagProperties -> System.out.println(tagProperties.getDigest()));
+            });
+        // END: com.azure.containers.containerregistry.registryartifact.listTagPropertiesWithOptionsNoContext
     }
 
-    public void listTagsWithOptionsCodeSnippet() {
+    public void listTagPropertiesWithOptionsCodeSnippet() {
         RegistryArtifact client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
-        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10).forEach(pagedResponse -> {
-            pagedResponse.getValue().stream().forEach(
-                tagProperties -> System.out.println(tagProperties.getDigest()));
-        });
-        // END: com.azure.containers.containerregistry.registryartifact.listTagsWithOptions
+        // BEGIN: com.azure.containers.containerregistry.registryartifact.listTagPropertiesWithOptions
+        client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE)
+            .iterableByPage(10)
+            .forEach(pagedResponse -> {
+                pagedResponse.getValue()
+                    .stream()
+                    .forEach(tagProperties -> System.out.println(tagProperties.getDigest()));
+            });
+        // END: com.azure.containers.containerregistry.registryartifact.listTagPropertiesWithOptions
     }
 
     public void updateTagPropertiesCodeSnippet() {

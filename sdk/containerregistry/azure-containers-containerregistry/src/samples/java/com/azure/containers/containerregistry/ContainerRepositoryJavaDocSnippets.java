@@ -3,8 +3,8 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ManifestOrderBy;
-import com.azure.containers.containerregistry.models.RepositoryProperties;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -67,7 +67,7 @@ public class ContainerRepositoryJavaDocSnippets {
     public void getPropertiesCodeSnippet() {
         ContainerRepository client = getClient();
         // BEGIN: com.azure.containers.containerregistry.repository.getProperties
-        RepositoryProperties properties = client.getProperties();
+        ContainerRepositoryProperties properties = client.getProperties();
         System.out.printf("Name:%s,", properties.getName());
         // END: com.azure.containers.containerregistry.repository.getProperties
     }
@@ -75,8 +75,8 @@ public class ContainerRepositoryJavaDocSnippets {
     public void getPropertiesWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
         // BEGIN: com.azure.containers.containerregistry.repository.getPropertiesWithResponse
-        Response<RepositoryProperties> response = client.getPropertiesWithResponse(Context.NONE);
-        final RepositoryProperties properties = response.getValue();
+        Response<ContainerRepositoryProperties> response = client.getPropertiesWithResponse(Context.NONE);
+        final ContainerRepositoryProperties properties = response.getValue();
         System.out.printf("Name:%s,", properties.getName());
         // END: com.azure.containers.containerregistry.repository.getPropertiesWithResponse
     }
@@ -84,7 +84,7 @@ public class ContainerRepositoryJavaDocSnippets {
     public void updatePropertiesCodeSnippet() {
         ContainerRepository client = getClient();
         // BEGIN: com.azure.containers.containerregistry.repository.updateProperties
-        RepositoryProperties properties = getRepositoryProperties();
+        ContainerRepositoryProperties properties = getRepositoryProperties();
         client.updateProperties(properties);
         // END: com.azure.containers.containerregistry.repository.updateProperties
     }
@@ -92,42 +92,42 @@ public class ContainerRepositoryJavaDocSnippets {
     public void updatePropertiesWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
         // BEGIN: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
-        RepositoryProperties properties = getRepositoryProperties();
+        ContainerRepositoryProperties properties = getRepositoryProperties();
         client.updatePropertiesWithResponse(properties, Context.NONE);
         // END: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
     }
 
     public void listManifestPropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifests
-        client.listManifests().iterableByPage(10)
+        // BEGIN: com.azure.containers.containerregistry.repository.listManifestProperties
+        client.listManifestProperties().iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifests
+        // END: com.azure.containers.containerregistry.repository.listManifestProperties
     }
 
     public void listManifestPropertiesWithOptionsNoContextCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifestsWithOptionsNoContext
-        client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10)
+        // BEGIN: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptionsNoContext
+        client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifestsWithOptionsNoContext
+        // END: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptionsNoContext
     }
 
     public void listManifestPropertiesWithOptionsCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifestsWithOptions
-        client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
+        // BEGIN: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptions
+        client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifestsWithOptions
+        // END: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptions
     }
 
     /**
@@ -135,7 +135,7 @@ public class ContainerRepositoryJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private RepositoryProperties getRepositoryProperties() {
+    private ContainerRepositoryProperties getRepositoryProperties() {
         return null;
     }
 

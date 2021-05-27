@@ -12,8 +12,8 @@ import com.azure.containers.containerregistry.implementation.models.ManifestWrit
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -51,9 +51,10 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class RegistryArtifactAsync {
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
-    private final String fullyQualifiedName;
+    private final String fullyQualifiedReference;
     private final String endpoint;
     private final String apiVersion;
+    private final String tagOrDigest;
     private String digest;
 
     private final ClientLogger logger = new ClientLogger(RegistryArtifactAsync.class);
@@ -67,7 +68,7 @@ public final class RegistryArtifactAsync {
      * @param httpPipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
-    RegistryArtifactAsync(String repositoryName, String digest, HttpPipeline httpPipeline, String endpoint, String version) {
+    RegistryArtifactAsync(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
         if (repositoryName == null) {
             throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null"));
         }
@@ -76,11 +77,11 @@ public final class RegistryArtifactAsync {
             throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty"));
         }
 
-        if (digest == null) {
+        if (tagOrDigest == null) {
             throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null"));
         }
 
-        if (digest.isEmpty()) {
+        if (tagOrDigest.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
         }
 
@@ -90,16 +91,16 @@ public final class RegistryArtifactAsync {
 
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
+        this.tagOrDigest = tagOrDigest;
 
         try {
             URL endpointUrl = new URL(endpoint);
-            this.fullyQualifiedName = endpointUrl.getHost() + "/" + this.repositoryName;
+            this.fullyQualifiedReference = endpointUrl.getHost() + "/" + this.repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
         } catch (MalformedURLException ex) {
             // This will not happen.
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
 
-        this.digest = digest;
         this.serviceClient = registryImpl.getContainerRegistries();
         this.apiVersion = version;
     }
@@ -113,12 +114,12 @@ public final class RegistryArtifactAsync {
     }
 
     /**
-     * Gets the fully qualified name for the current instance.
-     * @return Fully qualified name of the current instance.
+     * Gets the fully qualified reference for the current instance.
+     * @return Fully qualified reference of the current instance.
      * */
-    public String getFullyQualifiedName() {
+    public String getFullyQualifiedReference() {
 
-        return this.fullyQualifiedName;
+        return this.fullyQualifiedReference;
     }
 
     /**
@@ -130,18 +131,18 @@ public final class RegistryArtifactAsync {
         return this.repositoryName;
     }
 
-    /**
-     * Gets the digest for the current instance.
-     * @return Digest information for the current instance.
-     * */
-    public String getDigest() {
-        return this.digest;
+    private boolean isDigest(String tagOrDigest) {
+        return tagOrDigest.contains(":");
     }
 
     private Mono<String> getDigestMono() {
-        Mono<String> getTagMono = digest.contains(":")
-            ? Mono.just(digest)
-            : this.getTagProperties(digest).map(a -> a.getDigest());
+        if (this.digest != null) {
+            return Mono.just(digest);
+        }
+
+        Mono<String> getTagMono = isDigest(tagOrDigest)
+            ? Mono.just(tagOrDigest)
+            : this.getTagProperties(tagOrDigest).map(a -> a.getDigest());
 
         return getTagMono.flatMap(res -> {
             this.digest = res;
@@ -372,7 +373,7 @@ public final class RegistryArtifactAsync {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy)}  listTags}
+     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrderBy)}  listTagProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -380,15 +381,15 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.listTagPropertiesWithOptions}.
      *
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactTagProperties> listTags() {
-        return listTags(TagOrderBy.NONE);
+    public PagedFlux<ArtifactTagProperties> listTagProperties() {
+        return listTagProperties(ArtifactTagOrderBy.NONE);
     }
 
     /**
@@ -403,7 +404,7 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.listTagPropertiesWithOptions}.
      *
      * @param orderBy The order in which the tags should be returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
@@ -411,25 +412,25 @@ public final class RegistryArtifactAsync {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactTagProperties> listTags(TagOrderBy orderBy) {
+    public PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy) {
         return new PagedFlux<>(
-            (pageSize) -> withContext(context -> listTagsSinglePageAsync(pageSize, orderBy, context)),
-            (token, pageSize) -> withContext(context -> listTagsNextSinglePageAsync(token, context)));
+            (pageSize) -> withContext(context -> listTagPropertiesSinglePageAsync(pageSize, orderBy, context)),
+            (token, pageSize) -> withContext(context -> listTagPropertiesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<ArtifactTagProperties> listTags(TagOrderBy orderBy, Context context) {
+    PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy, Context context) {
         return new PagedFlux<>(
-            (pageSize) -> listTagsSinglePageAsync(pageSize, orderBy, context),
-            (token, pageSize) -> listTagsNextSinglePageAsync(token, context));
+            (pageSize) -> listTagPropertiesSinglePageAsync(pageSize, orderBy, context),
+            (token, pageSize) -> listTagPropertiesNextSinglePageAsync(token, context));
     }
 
-    Mono<PagedResponse<ArtifactTagProperties>> listTagsSinglePageAsync(Integer pageSize, TagOrderBy orderBy, Context context) {
+    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrderBy orderBy, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            final String orderByString = orderBy.equals(TagOrderBy.NONE) ? null : orderBy.toString();
+            final String orderByString = orderBy.equals(ArtifactTagOrderBy.NONE) ? null : orderBy.toString();
 
             return this.getDigestMono()
                 .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(repositoryName, null, pageSize, orderByString, res, context))
@@ -459,7 +460,7 @@ public final class RegistryArtifactAsync {
         }).collect(Collectors.toList());
     }
 
-    Mono<PagedResponse<ArtifactTagProperties>> listTagsNextSinglePageAsync(String nextLink, Context context) {
+    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
             return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context)
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getTagProperties));

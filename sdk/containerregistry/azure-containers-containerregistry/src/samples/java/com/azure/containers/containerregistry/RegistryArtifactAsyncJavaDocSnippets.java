@@ -5,7 +5,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.TagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -116,26 +116,28 @@ public class RegistryArtifactAsyncJavaDocSnippets {
         // END: com.azure.containers.containerregistry.async.registryartifact.getTagPropertiesWithResponse
     }
 
-    public void listTagsCodeSnippet() {
+    public void listTagPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.listTags
-        client.listTags().byPage(10)
+        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.listTagProperties
+        client.listTagProperties().byPage(10)
             .subscribe(tagPropertiesPagedResponse -> {
                 tagPropertiesPagedResponse.getValue().stream().forEach(
                     tagProperties -> System.out.println(tagProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.async.registryartifact.listTags
+        // END: com.azure.containers.containerregistry.async.registryartifact.listTagProperties
     }
 
-    public void listTagsWithOptionsCodeSnippet() {
+    public void listTagPropertiesWithOptionsCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions
-        client.listTags(TagOrderBy.LAST_UPDATED_ON_DESCENDING).byPage(10)
+        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.listTagPropertiesWithOptions
+        client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING)
+            .byPage(10)
             .subscribe(tagPropertiesPagedResponse -> {
-                tagPropertiesPagedResponse.getValue().stream().forEach(
-                    tagProperties -> System.out.println(tagProperties.getDigest()));
+                tagPropertiesPagedResponse.getValue()
+                    .stream()
+                    .forEach(tagProperties -> System.out.println(tagProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions
+        // END: com.azure.containers.containerregistry.async.registryartifact.listTagPropertiesWithOptions
     }
 
     public void updateTagPropertiesCodeSnippet() {

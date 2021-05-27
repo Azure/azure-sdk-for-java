@@ -18,9 +18,9 @@ public class ListTagsAsync {
 
         RegistryArtifactAsync image = anonymousClient.getArtifact(REPOSITORY_NAME, DIGEST);
 
-        System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
+        System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedReference()));
 
-        image.listTags().subscribe(tag -> {
+        image.listTagProperties().subscribe(tag -> {
             System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), ENDPOINT, tag.getName()));
         }, error -> {
             System.out.println("There was an error while trying to list tags" + error);

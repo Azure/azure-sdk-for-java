@@ -6,7 +6,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.TagOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -53,29 +53,21 @@ public final class RegistryArtifact {
     }
 
     /**
-     * Gets the tag or digest for the current instance.
-     * @return Tag or digest information for the current instance.
+     * Gets the fully qualified reference for the current instance.
+     * @return Fully qualified reference of the current instance.
      * */
-    public String getDigest() {
-        return this.asyncClient.getDigest();
+    public String getFullyQualifiedReference() {
+        return this.asyncClient.getFullyQualifiedReference();
     }
 
     /**
-     * Gets the fully qualified name for the current instance.
-     * @return Fully qualified name of the current instance.
-     * */
-    public String getFullyQualifiedName() {
-        return this.asyncClient.getFullyQualifiedName();
-    }
-
-    /**
-     * Deletes the registry artifact with the matching digest {@link #getDigest()} in the given {@link #getRepositoryName() respository}.
+     * Deletes the registry artifact with the digest and repository associated with the instance.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the registry artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.deleteWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.deleteWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A REST response containing the result of the service call.
@@ -88,7 +80,7 @@ public final class RegistryArtifact {
     }
 
     /**
-     * Deletes the registry artifact with the matching digest {@link #getDigest()} in the given {@link #getRepositoryName() respository}.
+     * Deletes the registry artifact with the digest and repository associated with the instance.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -242,7 +234,7 @@ public final class RegistryArtifact {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy, Context)}  listTags}
+     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrderBy, Context)}  listTagProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -250,15 +242,15 @@ public final class RegistryArtifact {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagPropertiesWithOptions}.
      *
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTags() {
-        return listTags(TagOrderBy.NONE, Context.NONE);
+    public PagedIterable<ArtifactTagProperties> listTagProperties() {
+        return listTagProperties(ArtifactTagOrderBy.NONE, Context.NONE);
     }
 
     /**
@@ -273,7 +265,7 @@ public final class RegistryArtifact {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagsWithOptionsNoContext}.
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagPropertiesWithOptionsNoContext}.
      *
      * @param orderBy The order in which the tags should be returned by the service.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
@@ -281,8 +273,8 @@ public final class RegistryArtifact {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTags(TagOrderBy orderBy) {
-        return this.listTags(orderBy, Context.NONE);
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy) {
+        return this.listTagProperties(orderBy, Context.NONE);
     }
 
     /**
@@ -297,7 +289,7 @@ public final class RegistryArtifact {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.registryartifact.listTagPropertiesWithOptions}.
      *
      * @param orderBy The order in which the tags should be returned by the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -306,8 +298,8 @@ public final class RegistryArtifact {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTags(TagOrderBy orderBy, Context context) {
-        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTags(orderBy, context));
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy, Context context) {
+        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTagProperties(orderBy, context));
     }
 
     /**

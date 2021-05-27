@@ -18,8 +18,10 @@ import com.azure.core.util.Context;
  * that can be used to perform operations on repository and artifacts.
  *
  * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
+ * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.instantiation}
  *
- * {@codesnippet com.azure.containers.containerregistry.repository.instantiation}
+ * <p><strong>Instantiating a synchronous Container Registry client with custom pipeline</strong></p>
+ * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation}
  *
  * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -44,7 +46,11 @@ public final class ContainerRegistryClient {
     /**
      * List all the repository names in this registry.
      *
-     * @return list of repositories.
+     * <p><strong>List the repository names in the registry.</strong></p>
+     *
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames}
+     *
+     * @return list of repository names.
      * @throws ClientAuthenticationException thrown if the client credentials do not have access to perform this operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -54,6 +60,9 @@ public final class ContainerRegistryClient {
 
     /**
      * List all the repository names in this registry.
+     *
+     * <p><strong>List the repository names in the registry.</strong></p>
+     * {@codesnippet com.azure.containers.containerregistry.listRepositoryNames#Context}
      *
      * @param context The context to associate with this operation.
      * @return list of repositories.
@@ -67,6 +76,9 @@ public final class ContainerRegistryClient {
     /**
      * Delete the repository identified by 'repositoryName'.
      *
+     * <p><strong>Delete a repository in the registry.</strong></p>
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepository#String}
+     *
      * @param repositoryName Name of the repository (including the namespace).
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the 'repositoryName' is null.
@@ -79,6 +91,9 @@ public final class ContainerRegistryClient {
 
     /**
      * Delete the repository identified by 'repositoryName'.
+     *
+     *  <p><strong>Delete a repository in the registry.</strong></p>
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepositoryWithResponse#String-Context}
      *
      * @param repositoryName Name of the repository (including the namespace).
      * @param context The context to associate with this operation.
@@ -95,6 +110,9 @@ public final class ContainerRegistryClient {
     /**
      * Creates a new instance of {@link ContainerRepository} object for the specified repository.
      *
+     *  <p><strong>Create a ContainerRegistry helper instance.</strong></p>
+     * {@codesnippet com.azure.containers.containerregistry.getRepository}
+     *
      * @param repositoryName Name of the repository to reference.
      * @return A new {@link ContainerRepository} for the desired repository.
      * @throws NullPointerException if 'repositoryName' is null.
@@ -106,6 +124,10 @@ public final class ContainerRegistryClient {
 
     /**
      * Creates a new instance of {@link RegistryArtifact} object for the specified artifact.
+     *
+     *  <p><strong>Create a RegistryArtifact helper instance.</strong></p>
+     * {@codesnippet com.azure.containers.containerregistry.getArtifact}
+     *
      *
      * @param repositoryName Name of the repository to reference.
      * @param digest Either a tag or digest that uniquely identifies the artifact.

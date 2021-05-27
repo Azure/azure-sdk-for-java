@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Manifest attributes details. */
 @Immutable
-public final class ArtifactManifestReference {
+public final class ArtifactManifestPlatform {
     /*
      * Manifest digest
      */
@@ -19,13 +19,13 @@ public final class ArtifactManifestReference {
     /*
      * CPU architecture
      */
-    @JsonProperty(value = "architecture", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "architecture", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
-    @JsonProperty(value = "os", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactOperatingSystem operatingSystem;
 
     /**

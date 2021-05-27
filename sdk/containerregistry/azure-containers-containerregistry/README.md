@@ -125,9 +125,9 @@ ContainerRegistryClient anonymousClient = new ContainerRegistryClientBuilder()
     .buildClient();
 
 RegistryArtifact image = anonymousClient.getArtifact(repositoryName, digest);
-PagedIterable<ArtifactTagProperties> tags = image.listTags();
+PagedIterable<ArtifactTagProperties> tags = image.listTagProperties();
 
-System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedName()));
+System.out.printf(String.format("%s has the following aliases:", image.getFullyQualifiedReference()));
 
 for (ArtifactTagProperties tag : tags) {
     System.out.printf(String.format("%s/%s:%s", anonymousClient.getEndpoint(), repositoryName, tag.getName()));
@@ -171,8 +171,8 @@ for (String repositoryName : client.listRepositoryNames()) {
 
     // Obtain the images ordered from newest to oldest
     PagedIterable<ArtifactManifestProperties> imageManifests =
-        repository.listManifests(
-            ManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
+        repository.listManifestProperties(
+            ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
             Context.NONE);
 
     imageManifests.stream().skip(imagesCountToKeep)
