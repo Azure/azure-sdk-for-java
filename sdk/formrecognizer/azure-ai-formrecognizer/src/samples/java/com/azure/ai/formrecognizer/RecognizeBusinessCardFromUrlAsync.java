@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Asynchronous sample for recognizing business card information from an URL.
+ * Asynchronous sample for recognizing business card information from a URL.
  */
 public class RecognizeBusinessCardFromUrlAsync {
     /**

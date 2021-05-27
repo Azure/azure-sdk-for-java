@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Async sample for recognizing content information from a document given through an URL.
+ * Async sample for recognizing content information from a document given through a URL.
  */
 public class RecognizeContentFromUrlAsync {
 

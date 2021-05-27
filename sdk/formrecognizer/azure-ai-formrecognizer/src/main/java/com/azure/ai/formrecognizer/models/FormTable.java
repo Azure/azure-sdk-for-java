@@ -112,6 +112,7 @@ public final class FormTable {
 
     /**
      * Get the bounding box information for the the form table.
+     *
      * @return the bounding box information for the the form table.
      */
     public FieldBoundingBox getBoundingBox() {

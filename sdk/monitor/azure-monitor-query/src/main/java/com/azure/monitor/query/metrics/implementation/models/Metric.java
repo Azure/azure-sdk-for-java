@@ -33,10 +33,22 @@ public final class Metric {
     private LocalizableString name;
 
     /*
-     * the metricsUnit of the metric.
+     * Detailed description of this metric.
+     */
+    @JsonProperty(value = "displayDescription", required = true)
+    private String displayDescription;
+
+    /*
+     * 'Success' or the error details on query failures for this metric.
+     */
+    @JsonProperty(value = "errorCode")
+    private String errorCode;
+
+    /*
+     * the unit of the metric.
      */
     @JsonProperty(value = "unit", required = true)
-    private MetricsUnit metricsUnit;
+    private MetricsUnit unit;
 
     /*
      * the time series returned when a data query is performed.
@@ -50,7 +62,8 @@ public final class Metric {
      * @param id the id value to set.
      * @param type the type value to set.
      * @param name the name value to set.
-     * @param metricsUnit the metricsUnit value to set.
+     * @param displayDescription the displayDescription value to set.
+     * @param unit the unit value to set.
      * @param timeseries the timeseries value to set.
      */
     @JsonCreator
@@ -58,12 +71,14 @@ public final class Metric {
             @JsonProperty(value = "id", required = true) String id,
             @JsonProperty(value = "type", required = true) String type,
             @JsonProperty(value = "name", required = true) LocalizableString name,
-            @JsonProperty(value = "unit", required = true) MetricsUnit metricsUnit,
+            @JsonProperty(value = "displayDescription", required = true) String displayDescription,
+            @JsonProperty(value = "unit", required = true) MetricsUnit unit,
             @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
         this.name = name;
-        this.metricsUnit = metricsUnit;
+        this.displayDescription = displayDescription;
+        this.unit = unit;
         this.timeseries = timeseries;
     }
 
@@ -95,12 +110,41 @@ public final class Metric {
     }
 
     /**
-     * Get the metricsUnit property: the metricsUnit of the metric.
+     * Get the displayDescription property: Detailed description of this metric.
      *
-     * @return the metricsUnit value.
+     * @return the displayDescription value.
+     */
+    public String getDisplayDescription() {
+        return this.displayDescription;
+    }
+
+    /**
+     * Get the errorCode property: 'Success' or the error details on query failures for this metric.
+     *
+     * @return the errorCode value.
+     */
+    public String getErrorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode property: 'Success' or the error details on query failures for this metric.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the Metric object itself.
+     */
+    public Metric setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the unit property: the unit of the metric.
+     *
+     * @return the unit value.
      */
     public MetricsUnit getUnit() {
-        return this.metricsUnit;
+        return this.unit;
     }
 
     /**
@@ -129,8 +173,11 @@ public final class Metric {
         } else {
             getName().validate();
         }
+        if (getDisplayDescription() == null) {
+            throw new IllegalArgumentException("Missing required property displayDescription in model Metric");
+        }
         if (getUnit() == null) {
-            throw new IllegalArgumentException("Missing required property metricsUnit in model Metric");
+            throw new IllegalArgumentException("Missing required property unit in model Metric");
         }
         if (getTimeseries() == null) {
             throw new IllegalArgumentException("Missing required property timeseries in model Metric");
