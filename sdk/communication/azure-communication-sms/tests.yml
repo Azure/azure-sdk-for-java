@@ -1,8 +1,5 @@
 trigger: none
 
-variables:
-  AdditionalArgs: '-Djacoco.skip=true'
-
 stages:
   - template: /sdk/communication/communication-tests-template.yml
     parameters:
