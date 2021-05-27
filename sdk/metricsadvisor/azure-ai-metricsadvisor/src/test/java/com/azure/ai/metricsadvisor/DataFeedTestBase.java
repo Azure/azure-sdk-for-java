@@ -310,14 +310,9 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (AzureLogAnalyticsDataFeedSource) expectedDataFeed.getSource();
                 final AzureLogAnalyticsDataFeedSource logAnalyticsDataFeedSource =
                     (AzureLogAnalyticsDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(expLogAnalyticsDataFeedSource.getWorkspaceId());
                 assertNotNull(logAnalyticsDataFeedSource.getQuery());
                 assertEquals(expLogAnalyticsDataFeedSource.getClientId(),
                     logAnalyticsDataFeedSource.getClientId());
-                assertEquals(expLogAnalyticsDataFeedSource.getClientSecret(),
-                    logAnalyticsDataFeedSource.getClientSecret());
-                assertEquals(expLogAnalyticsDataFeedSource.getTenantId(),
-                    logAnalyticsDataFeedSource.getTenantId());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);
