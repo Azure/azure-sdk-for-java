@@ -37,26 +37,34 @@ public final class JreCertificates implements AzureCertificates {
     /**
      * Stores the jre key store.
      */
-    private static final KeyStore JRE_KEY_STORE;
+    private final KeyStore jreKeyStore;
 
     /**
      * Stores the jre key store aliases.
      */
-    private static final List<String> ALIASES;
+    private final List<String> aliases;
 
     /**
      * Stores the jre key store certificates.
      */
-    private static final  Map<String, Certificate> CERTS;
+    private final  Map<String, Certificate> certs;
+
+    /**
+     * Stores the jre key store keys
+     */
+    private final  Map<String, Key> keys;
 
     /**
      * Stores the singleton
      */
     private static final JreCertificates INSTANCE = new JreCertificates();
 
-    static {
-        JRE_KEY_STORE = JREKeyStore.getDefault();
-        ALIASES = Optional.of(JRE_KEY_STORE).map(a -> {
+    /**
+     * Private constructor
+     */
+    private JreCertificates() {
+        jreKeyStore = JREKeyStore.getDefault();
+        aliases = Optional.of(jreKeyStore).map(a -> {
             try {
                 return Collections.unmodifiableList(Collections.list(a.aliases()));
             } catch (KeyStoreException e) {
@@ -64,22 +72,16 @@ public final class JreCertificates implements AzureCertificates {
                 return Collections.<String>emptyList();
             }
         }).orElse(Collections.emptyList());
-        CERTS = ALIASES.stream()
+        certs = aliases.stream()
             .collect(Collectors.toMap(a -> a, a -> {
                 try {
-                    return JRE_KEY_STORE.getCertificate(a);
+                    return jreKeyStore.getCertificate(a);
                 } catch (KeyStoreException e) {
                     LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
                 }
                 return null;
             }));
-    }
-
-    /**
-     * Private constructor
-     */
-    private JreCertificates() {
-
+        keys = Collections.emptyMap();
     }
 
     /**
@@ -93,17 +95,17 @@ public final class JreCertificates implements AzureCertificates {
 
     @Override
     public List<String> getAliases() {
-        return ALIASES;
+        return aliases;
     }
 
     @Override
     public Map<String, Certificate> getCertificates() {
-        return CERTS;
+        return certs;
     }
 
     @Override
     public Map<String, Key> getCertificateKeys() {
-        return Collections.emptyMap();
+        return keys;
     }
 
     @Override

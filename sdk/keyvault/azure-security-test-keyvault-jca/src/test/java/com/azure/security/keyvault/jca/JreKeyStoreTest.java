@@ -18,9 +18,11 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.Security;
+import java.security.cert.Certificate;
 import java.util.Arrays;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class JreKeyStoreTest {
@@ -44,7 +46,18 @@ public class JreKeyStoreTest {
     }
 
     @Test
-    public void testJreKS() throws Exception {
+    public void testJreKsEntries() {
+        JreCertificates jreCertificates = JreCertificates.getInstance();
+        assertNotNull(jreCertificates);
+        assertNotNull(jreCertificates.getAliases());
+        Map<String, Certificate> certs = jreCertificates.getCertificates();
+        assertTrue(certs.containsKey("globalsignr2ca [jdk]"));
+        assertNotNull(certs.get("globalsignr2ca [jdk]"));
+        assertNotNull(jreCertificates.getCertificateKeys());
+    }
+
+    @Test
+    public void testJreKsTrustPeer() throws Exception {
 
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         ks.load(null);

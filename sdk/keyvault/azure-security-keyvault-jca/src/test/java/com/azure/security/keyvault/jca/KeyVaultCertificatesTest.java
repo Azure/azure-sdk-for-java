@@ -51,7 +51,7 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
-    public void testRefreshAndGetAliasByCertificate() throws InterruptedException{
+    public void testRefreshAndGetAliasByCertificate() throws InterruptedException {
         Assertions.assertEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
         when(keyVaultClient.getAliases()).thenReturn(null);
         Thread.sleep(1 );
