@@ -3,9 +3,12 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Describes the additional parameters for the API to list hooks.
  */
+@Fluent
 public final class ListHookOptions {
     private String hookNameFilter;
     private Integer top;

@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.stream.IntStream;
 /**
  * A hook that describes email based incident alerts notification.
  */
+@Fluent
 public final class EmailNotificationHook extends NotificationHook {
     private String name;
     private String description;

@@ -4,10 +4,12 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.ServicePrincipalInKeyVaultCredentialEntityAccessor;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The service principal stored in a key vault representing the credential entity for a data source.
  */
+@Fluent
 public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSourceCredentialEntity {
     private String id;
     private String name;

@@ -3,10 +3,13 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Defines conditions to decide whether the detected anomalies should be
  * included in an alert or not.
  */
+@Fluent
 public final class MetricAnomalyAlertConditions {
     private MetricBoundaryCondition boundaryCondition;
     private SeverityCondition severityCondition;

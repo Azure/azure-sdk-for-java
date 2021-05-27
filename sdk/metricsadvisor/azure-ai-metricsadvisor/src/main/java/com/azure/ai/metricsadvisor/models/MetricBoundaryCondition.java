@@ -4,11 +4,13 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.MetricBoundaryConditionHelper;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Defines the boundary conditions for the anomaly (abnormal data points)
  * to be included in the alert.
  */
+@Fluent
 public final class MetricBoundaryCondition {
     private BoundaryDirection boundaryDirection;
     private Double lowerBoundary;

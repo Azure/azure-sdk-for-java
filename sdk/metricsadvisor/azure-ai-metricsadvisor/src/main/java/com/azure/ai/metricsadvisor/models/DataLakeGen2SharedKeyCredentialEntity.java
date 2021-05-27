@@ -4,10 +4,12 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.DataLakeGen2SharedKeyCredentialEntityAccessor;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The shared key credential entity for DataLakeGen2.
  */
+@Fluent
 public final class DataLakeGen2SharedKeyCredentialEntity extends DataSourceCredentialEntity {
     private String id;
     private String name;

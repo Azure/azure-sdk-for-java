@@ -3,11 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 
 /**
  * Describes the additional parameters for the API to list data feed ingestion status.
  */
+@Fluent
 public final class ListDataFeedIngestionOptions {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;

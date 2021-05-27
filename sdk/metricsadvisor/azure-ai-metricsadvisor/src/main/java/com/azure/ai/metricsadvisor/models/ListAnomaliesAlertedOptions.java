@@ -3,9 +3,12 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Describes the additional parameters for the API to list anomalies in an alert.
  */
+@Fluent
 public final class ListAnomaliesAlertedOptions {
     private Integer top;
     private Integer skip;

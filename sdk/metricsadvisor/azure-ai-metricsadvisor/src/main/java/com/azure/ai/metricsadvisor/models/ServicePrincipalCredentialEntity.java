@@ -4,10 +4,12 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.ServicePrincipalCredentialEntityAccessor;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The service principal credential entity for data source..
  */
+@Fluent
 public final class ServicePrincipalCredentialEntity extends DataSourceCredentialEntity {
     private String id;
     private String name;

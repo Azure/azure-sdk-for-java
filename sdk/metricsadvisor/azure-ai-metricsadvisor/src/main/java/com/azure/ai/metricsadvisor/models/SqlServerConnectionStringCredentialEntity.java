@@ -4,10 +4,12 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.SqlServerConnectionStringCredentialEntityAccessor;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The connection credential entity for SQLServer.
  */
+@Fluent
 public final class SqlServerConnectionStringCredentialEntity extends DataSourceCredentialEntity {
     private String id;
     private String name;

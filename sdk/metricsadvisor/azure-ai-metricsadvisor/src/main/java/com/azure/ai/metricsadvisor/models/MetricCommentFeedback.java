@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  * The feedback that allows adding comments in plain text providing more
  * context about the data.
  */
-@Immutable
+@Fluent
 public final class MetricCommentFeedback extends MetricFeedback {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;

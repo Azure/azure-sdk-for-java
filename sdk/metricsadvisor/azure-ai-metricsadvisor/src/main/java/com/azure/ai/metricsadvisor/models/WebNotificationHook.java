@@ -3,11 +3,13 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 
 /**
  * A hook that describes web-hook based incident alerts notification.
  */
+@Fluent
 public final class WebNotificationHook extends NotificationHook {
     private String name;
     private String description;

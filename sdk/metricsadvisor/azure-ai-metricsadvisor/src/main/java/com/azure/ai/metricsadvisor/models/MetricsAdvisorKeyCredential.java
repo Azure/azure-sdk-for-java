@@ -3,9 +3,12 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * The MetricsAdvisorKeyCredential class.
  */
+@Fluent
 public final class MetricsAdvisorKeyCredential {
     private volatile String subscriptionKey;
     private volatile String apiKey;

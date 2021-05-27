@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.AnomalyDetectionConfigurationHelper;
+import com.azure.core.annotation.Fluent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * Configuration to detect anomalies in metric time series.
  */
+@Fluent
 public final class AnomalyDetectionConfiguration {
     private String id;
     private String metricId;

@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  * The Feedback that allows the user to mark the exact change point when the time series has
  * a trend change. This helps the anomaly detector in future analysis.
  */
-@Immutable
+@Fluent
 public final class MetricChangePointFeedback extends MetricFeedback {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;

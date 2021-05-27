@@ -3,13 +3,13 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The Feedback that helps the service in estimating period(seasonality)
  * of the time series.
  */
-@Immutable
+@Fluent
 public final class MetricPeriodFeedback extends MetricFeedback {
     private final PeriodType periodType;
     private final int periodValue;

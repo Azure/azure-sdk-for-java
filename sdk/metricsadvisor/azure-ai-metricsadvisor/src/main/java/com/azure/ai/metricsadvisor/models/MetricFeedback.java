@@ -4,6 +4,7 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackHelper;
+import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
@@ -18,6 +19,7 @@ import java.time.OffsetDateTime;
  * @see MetricCommentFeedback
  * @see MetricPeriodFeedback
  */
+@Fluent
 public abstract class MetricFeedback {
     private String id;
     private String metricId;

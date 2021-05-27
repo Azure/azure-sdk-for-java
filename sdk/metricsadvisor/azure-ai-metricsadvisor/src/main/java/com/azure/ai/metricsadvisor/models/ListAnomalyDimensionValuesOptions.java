@@ -3,9 +3,12 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Describes the additional parameters for the API to list values of a dimension that have anomalies.
  */
+@Fluent
 public final class ListAnomalyDimensionValuesOptions {
     private Integer top;
     private Integer skip;

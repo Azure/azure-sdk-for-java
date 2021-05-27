@@ -3,9 +3,12 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Describes the additional parameters for the API to list incidents in an alert.
  */
+@Fluent
 public final class ListIncidentsAlertedOptions {
     private Integer top;
     private Integer skip;
