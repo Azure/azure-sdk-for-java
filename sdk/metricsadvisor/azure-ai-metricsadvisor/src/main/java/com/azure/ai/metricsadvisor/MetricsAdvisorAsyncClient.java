@@ -481,11 +481,11 @@ public class MetricsAdvisorAsyncClient {
      * a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime}
      *
-     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
      *     identified by the keys in {@code seriesKeys}.
+     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param startTime The start time of the time range within which the enriched data is returned.
      * @param endTime The end time of the time range within which the enriched data is returned.
      * @return The enriched time series.
@@ -495,31 +495,33 @@ public class MetricsAdvisorAsyncClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(List<DimensionKey> seriesKeys,
-                                                                            String detectionConfigurationId,
+    public PagedFlux<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
+                                                                            List<DimensionKey> seriesKeys,
                                                                             OffsetDateTime startTime,
                                                                             OffsetDateTime endTime) {
         try {
-            return new PagedFlux<>(() -> withContext(context -> listMetricEnrichedSeriesDataInternal(seriesKeys,
-                detectionConfigurationId, startTime, endTime, context)), null);
+            return new PagedFlux<>(() -> withContext(context -> listMetricEnrichedSeriesDataInternal(
+                detectionConfigurationId,
+                seriesKeys,
+                startTime, endTime, context)), null);
         } catch (RuntimeException e) {
             return new PagedFlux<>(() -> monoError(logger, e));
         }
     }
 
-    PagedFlux<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(List<DimensionKey> seriesKeys,
-                                                                     String detectionConfigurationId,
+    PagedFlux<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
+                                                                     List<DimensionKey> seriesKeys,
                                                                      OffsetDateTime startTime,
                                                                      OffsetDateTime endTime,
                                                                      Context context) {
-        return new PagedFlux<>(() -> listMetricEnrichedSeriesDataInternal(seriesKeys,
-            detectionConfigurationId,
+        return new PagedFlux<>(() -> listMetricEnrichedSeriesDataInternal(detectionConfigurationId,
+            seriesKeys,
             startTime, endTime, context), null);
     }
 
     private Mono<PagedResponse<MetricEnrichedSeriesData>>
-        listMetricEnrichedSeriesDataInternal(List<DimensionKey> seriesKeys,
-                                             String detectionConfigurationId,
+        listMetricEnrichedSeriesDataInternal(String detectionConfigurationId,
+                                             List<DimensionKey> seriesKeys,
                                              OffsetDateTime startTime,
                                              OffsetDateTime endTime,
                                              Context context) {

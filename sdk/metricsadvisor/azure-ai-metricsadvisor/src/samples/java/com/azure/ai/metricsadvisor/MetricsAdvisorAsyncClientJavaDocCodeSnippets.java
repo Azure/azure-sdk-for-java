@@ -589,10 +589,10 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listMetricEnrichedSeriesData(List, String, OffsetDateTime, OffsetDateTime)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listMetricEnrichedSeriesData(String, List, OffsetDateTime, OffsetDateTime)}.
      */
     public void listEnrichedSeries() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime
         final String detectionConfigurationId = "e87d899d-a5a0-4259-b752-11aea34d5e34";
         final DimensionKey seriesKey = new DimensionKey()
             .put("Dim1", "Common Lime")
@@ -601,8 +601,8 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-12T00:00:00Z");
 
         PagedFlux<MetricEnrichedSeriesData> enrichedDataFlux
-            = metricsAdvisorAsyncClient.listMetricEnrichedSeriesData(Arrays.asList(seriesKey),
-            detectionConfigurationId,
+            = metricsAdvisorAsyncClient.listMetricEnrichedSeriesData(detectionConfigurationId,
+            Arrays.asList(seriesKey),
             startTime,
             endTime);
 
@@ -619,6 +619,6 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
             System.out.println("the periods calculated for the data points in the time series:");
             System.out.println(enrichedData.getPeriods());
         });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime
     }
 }

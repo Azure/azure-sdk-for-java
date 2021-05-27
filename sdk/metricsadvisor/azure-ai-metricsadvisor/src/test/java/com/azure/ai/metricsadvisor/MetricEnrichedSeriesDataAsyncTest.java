@@ -40,8 +40,9 @@ public class MetricEnrichedSeriesDataAsyncTest extends MetricEnrichedSeriesDataT
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         PagedFlux<MetricEnrichedSeriesData> enrichedDataFlux
-            = client.listMetricEnrichedSeriesData(GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
+            = client.listMetricEnrichedSeriesData(
             GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
+            GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
             GetEnrichedSeriesDataInput.INSTANCE.startTime,
             GetEnrichedSeriesDataInput.INSTANCE.endTime);
 

@@ -42,8 +42,9 @@ public final class MetricEnrichedSeriesDataTest extends MetricEnrichedSeriesData
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
         PagedIterable<MetricEnrichedSeriesData> enrichedDataIterable
-            = client.listMetricEnrichedSeriesData(GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
+            = client.listMetricEnrichedSeriesData(
             GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
+            GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
             GetEnrichedSeriesDataInput.INSTANCE.startTime,
             GetEnrichedSeriesDataInput.INSTANCE.endTime);
 

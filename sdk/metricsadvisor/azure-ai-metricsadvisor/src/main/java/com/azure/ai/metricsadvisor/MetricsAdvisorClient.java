@@ -210,11 +210,11 @@ public class MetricsAdvisorClient {
      * a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime}
      *
-     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
      *     identified by the keys in {@code seriesKeys}.
+     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param startTime The start time.
      * @param endTime The end time.
      * @return The enriched time series.
@@ -224,12 +224,12 @@ public class MetricsAdvisorClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(List<DimensionKey> seriesKeys,
-                                                                                String detectionConfigurationId,
+    public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
+                                                                                List<DimensionKey> seriesKeys,
                                                                                 OffsetDateTime startTime,
                                                                                 OffsetDateTime endTime) {
-        return listMetricEnrichedSeriesData(seriesKeys,
-            detectionConfigurationId,
+        return listMetricEnrichedSeriesData(detectionConfigurationId,
+            seriesKeys,
             startTime,
             endTime,
             Context.NONE);
@@ -240,11 +240,11 @@ public class MetricsAdvisorClient {
      * a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context}
      *
-     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
      *     identified by the keys in {@code seriesKeys}.
+     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param startTime The start time of the time range within which the enriched data is returned.
      * @param endTime The end time of the time range within which the enriched data is returned.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -256,13 +256,13 @@ public class MetricsAdvisorClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(
-        List<DimensionKey> seriesKeys,
         String detectionConfigurationId,
+        List<DimensionKey> seriesKeys,
         OffsetDateTime startTime,
         OffsetDateTime endTime,
         Context context) {
-        return new PagedIterable<>(client.listMetricEnrichedSeriesData(seriesKeys,
-            detectionConfigurationId,
+        return new PagedIterable<>(client.listMetricEnrichedSeriesData(detectionConfigurationId,
+            seriesKeys,
             startTime,
             endTime,
             context == null ? Context.NONE : context));
