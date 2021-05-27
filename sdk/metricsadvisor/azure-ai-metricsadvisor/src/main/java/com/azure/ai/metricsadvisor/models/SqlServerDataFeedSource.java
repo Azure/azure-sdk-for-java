@@ -3,52 +3,171 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.SqlServerDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The SqlServerDataFeedSource model.
+ * The SQLServerDataFeedSource model.
  */
 @Immutable
 public final class SqlServerDataFeedSource extends DataFeedSource {
     /*
-     * Database connection string
+     * SQL Server database connection string
      */
     private final String connectionString;
 
     /*
-     * Query script
+     * Get the query that retrieves the values to be analyzed for anomalies.
      */
     private final String query;
 
-    /**
-     * Create a SqlServerDataFeedSource instance
-     *
-     * @param connectionString the database connection string.
-     * @param query the query value.
+    /*
+     * The id of the credential resource to authenticate the data source.
      */
-    public SqlServerDataFeedSource(final String connectionString, final String query) {
+    private final String credentialId;
+
+    /*
+     * The authentication type to access the data source.
+     */
+    private final DataSourceAuthenticationType authType;
+
+    static {
+        SqlServerDataFeedSourceAccessor.setAccessor(
+            new SqlServerDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(SqlServerDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
+    private SqlServerDataFeedSource(final String connectionString,
+                                    final String query,
+                                    final String credentialId,
+                                    final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.query = query;
+        this.credentialId = credentialId;
+        this.authType = authType;
     }
 
     /**
-     * Get the connectionString property: Database connection string.
+     * Create a SQLServerDataFeedSource with credential included in the {@code connectionString} as plain text.
      *
-     * @return the connectionString value.
+     * @param connectionString The SQL server connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     *
+     * @return The SQLServerDataFeedSource.
      */
-    public String getConnectionString() {
-        return this.connectionString;
+    public static SqlServerDataFeedSource usingBasicCredential(final String connectionString,
+                                                               final String query) {
+        return new SqlServerDataFeedSource(connectionString, query, null, DataSourceAuthenticationType.BASIC);
     }
 
+    /**
+     * Create a SQLServerDataFeedSource with the {@code connectionString} containing the resource
+     * id of the SQL server on which metrics advisor has MSI access.
+     *
+     * @param connectionString The SQL server connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     * @return The SQLServerDataFeedSource.
+     */
+    public static SqlServerDataFeedSource usingManagedIdentityCredential(final String connectionString,
+                                                                         final String query) {
+        return new SqlServerDataFeedSource(connectionString,
+            query,
+            null,
+            DataSourceAuthenticationType.MANAGED_IDENTITY);
+    }
 
     /**
-     * Get the query property: Query script.
+     * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
+     * entity of type {@link SqlServerConnectionStringCredentialEntity} that contains the SQL
+     * connection string.
      *
-     * @return the query value.
+     * @param credentialEntityId The unique id of a credential entity of type
+     * {@link SqlServerConnectionStringCredentialEntity}.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     * @return The SQLServerDataFeedSource.
+     */
+    public static SqlServerDataFeedSource usingConnectionStringCredential(final String credentialEntityId,
+                                                                          final String query) {
+        return new SqlServerDataFeedSource(null,
+            query,
+            credentialEntityId,
+            DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
+    }
+
+    /**
+     * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
+     * entity of type {@link ServicePrincipalCredentialEntity}, the entity contains
+     * Service Principal to access the SQL Server.
+     *
+     * @param connectionString The SQL server connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     * @param credentialId The unique id of a credential entity of type
+     * {@link ServicePrincipalCredentialEntity}.
+     *
+     * @return The SQLServerDataFeedSource.
+     */
+    public static SqlServerDataFeedSource usingServicePrincipalCredential(final String connectionString,
+                                                                          final String query,
+                                                                          final String credentialId) {
+        return new SqlServerDataFeedSource(connectionString,
+            query,
+            credentialId,
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
+    }
+
+    /**
+     * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
+     * entity of type {@link ServicePrincipalInKeyVaultCredentialEntity}, the entity contains
+     * details of the KeyVault holding the Service Principal to access the SQL Server.
+     *
+     * @param connectionString The SQL server connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     * @param credentialId The unique id of a credential entity of type
+     * {@link ServicePrincipalInKeyVaultCredentialEntity}.
+     *
+     * @return The SQLServerDataFeedSource.
+     */
+    public static SqlServerDataFeedSource usingServicePrincipalInKeyVaultCredential(final String connectionString,
+                                                                                    final String query,
+                                                                                    final String credentialId) {
+        return new SqlServerDataFeedSource(connectionString,
+            query,
+            credentialId,
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+    }
+
+    /**
+     * Get the query that retrieves the values to be analyzed for anomalies.
+     *
+     * @return the query.
      */
     public String getQuery() {
         return this.query;
     }
 
+    /**
+     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
+     *
+     * @return The credential resource id.
+     */
+    public String getCredentialId() {
+        return this.credentialId;
+    }
 
+    /**
+     * Gets the authentication type to access the data source.
+     *
+     * @return The authentication type.
+     */
+    public DataSourceAuthenticationType getAuthenticationType() {
+        return this.authType;
+    }
+
+    private String getConnectionString() {
+        return this.connectionString;
+    }
 }

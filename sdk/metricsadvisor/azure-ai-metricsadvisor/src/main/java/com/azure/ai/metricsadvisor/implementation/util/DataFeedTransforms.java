@@ -160,7 +160,7 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureBlobDataFeed) {
             final AzureBlobParameter dataSourceParameter = ((AzureBlobDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
-            dataFeed.setSource(new AzureBlobDataFeedSource(dataSourceParameter.getConnectionString(),
+            dataFeed.setSource(AzureBlobDataFeedSource.usingBasicCredential(dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getContainer(), dataSourceParameter.getBlobTemplate()));
             dataFeedSourceType = DataFeedSourceType.AZURE_BLOB;
         } else if (dataFeedDetail instanceof AzureCosmosDBDataFeed) {
@@ -176,7 +176,7 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureDataExplorerDataFeed) {
             final SqlSourceParameter dataSourceParameter =
                 ((AzureDataExplorerDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new AzureDataExplorerDataFeedSource(
+            dataFeed.setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
                 dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getQuery()
             ));
@@ -222,7 +222,7 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof SQLServerDataFeed) {
             final SqlSourceParameter dataSourceParameter = ((SQLServerDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
-            dataFeed.setSource(new SqlServerDataFeedSource(dataSourceParameter.getConnectionString(),
+            dataFeed.setSource(SqlServerDataFeedSource.usingBasicCredential(dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getQuery()));
             dataFeedSourceType = DataFeedSourceType.SQL_SERVER_DB;
         } else if (dataFeedDetail instanceof MongoDBDataFeed) {
@@ -236,7 +236,7 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureDataLakeStorageGen2DataFeed) {
             final AzureDataLakeStorageGen2Parameter azureDataLakeStorageGen2Parameter =
                 ((AzureDataLakeStorageGen2DataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new AzureDataLakeStorageGen2DataFeedSource(
+            dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
                 azureDataLakeStorageGen2Parameter.getAccountName(),
                 azureDataLakeStorageGen2Parameter.getAccountKey(),
                 azureDataLakeStorageGen2Parameter.getFileSystemName(),
@@ -274,14 +274,15 @@ public final class DataFeedTransforms {
             final AzureBlobDataFeedSource azureBlobDataFeedSource = ((AzureBlobDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureBlobDataFeed()
                 .setDataSourceParameter(new AzureBlobParameter()
-                    .setConnectionString(azureBlobDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
                     .setContainer(azureBlobDataFeedSource.getContainer())
                     .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()));
         } else if (dataFeedSource instanceof AzureCosmosDataFeedSource) {
             final AzureCosmosDataFeedSource azureCosmosDataFeedSource = ((AzureCosmosDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureCosmosDBDataFeed()
                 .setDataSourceParameter(new AzureCosmosDBParameter()
-                    .setConnectionString(azureCosmosDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureCosmosDataFeedSourceAccessor
+                        .getConnectionString(azureCosmosDataFeedSource))
                     .setCollectionId(azureCosmosDataFeedSource.getCollectionId())
                     .setDatabase(azureCosmosDataFeedSource.getDatabase())
                     .setSqlQuery(azureCosmosDataFeedSource.getSqlQuery()));
@@ -290,20 +291,23 @@ public final class DataFeedTransforms {
                 ((AzureDataExplorerDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureDataExplorerDataFeed()
                 .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(azureDataExplorerDataFeedSource.getConnectionString())
+                    .setConnectionString(
+                        AzureDataExplorerDataFeedSourceAccessor.getConnectionString(azureDataExplorerDataFeedSource))
                     .setQuery(azureDataExplorerDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
             final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
                 ((AzureEventHubsDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureEventHubsDataFeed()
                 .setDataSourceParameter(new AzureEventHubsParameter()
-                    .setConnectionString(azureEventHubsDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureEventHubsDataFeedSourceAccessor.
+                        getConnectionString(azureEventHubsDataFeedSource))
                     .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureTableDataFeed()
                 .setDataSourceParameter(new AzureTableParameter()
-                    .setConnectionString(azureTableDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureTableDataFeedSourceAccessor
+                        .getConnectionString(azureTableDataFeedSource))
                     .setTable(azureTableDataFeedSource.getTableName())
                     .setQuery(azureTableDataFeedSource.getQueryScript()));
         } else if (dataFeedSource instanceof InfluxDbDataFeedSource) {
@@ -313,31 +317,31 @@ public final class DataFeedTransforms {
                     .setConnectionString(influxDBDataFeedSource.getConnectionString())
                     .setDatabase(influxDBDataFeedSource.getDatabase())
                     .setQuery(influxDBDataFeedSource.getQuery())
-                    .setPassword(influxDBDataFeedSource.getPassword())
+                    .setPassword(InfluxDbDataFeedSourceAccessor.getPassword(influxDBDataFeedSource))
                     .setUserName(influxDBDataFeedSource.getUserName()));
         } else if (dataFeedSource instanceof MySqlDataFeedSource) {
             final MySqlDataFeedSource mySqlDataFeedSource = ((MySqlDataFeedSource) dataFeedSource);
             dataFeedDetail = new MySqlDataFeed()
                 .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(mySqlDataFeedSource.getConnectionString())
+                    .setConnectionString(MySqlDataFeedSourceAccessor.getConnectionString(mySqlDataFeedSource))
                     .setQuery(mySqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof PostgreSqlDataFeedSource) {
             final PostgreSqlDataFeedSource postgreSqlDataFeedSource = ((PostgreSqlDataFeedSource) dataFeedSource);
             dataFeedDetail = new PostgreSqlDataFeed()
                 .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(postgreSqlDataFeedSource.getConnectionString())
+                    .setConnectionString(PostgreSqlDataFeedSourceAccessor.getConnectionString(postgreSqlDataFeedSource))
                     .setQuery(postgreSqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof SqlServerDataFeedSource) {
             final SqlServerDataFeedSource sqlServerDataFeedSource = ((SqlServerDataFeedSource) dataFeedSource);
             dataFeedDetail = new SQLServerDataFeed()
                 .setDataSourceParameter(new SqlSourceParameter()
-                    .setConnectionString(sqlServerDataFeedSource.getConnectionString())
+                    .setConnectionString(SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
                     .setQuery(sqlServerDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
             final MongoDbDataFeedSource azureCosmosDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
             dataFeedDetail = new MongoDBDataFeed()
                 .setDataSourceParameter(new MongoDBParameter()
-                    .setConnectionString(azureCosmosDataFeedSource.getConnectionString())
+                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(azureCosmosDataFeedSource))
                     .setCommand(azureCosmosDataFeedSource.getCommand())
                     .setDatabase(azureCosmosDataFeedSource.getDatabase()));
         } else if (dataFeedSource instanceof AzureDataLakeStorageGen2DataFeedSource) {
@@ -345,7 +349,8 @@ public final class DataFeedTransforms {
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureDataLakeStorageGen2DataFeed()
                 .setDataSourceParameter(new AzureDataLakeStorageGen2Parameter()
-                    .setAccountKey(azureDataLakeStorageGen2DataFeedSource.getAccountKey())
+                    .setAccountKey(AzureDataLakeStorageGen2DataFeedSourceAccessor
+                        .getAccountKey(azureDataLakeStorageGen2DataFeedSource))
                     .setAccountName(azureDataLakeStorageGen2DataFeedSource.getAccountName())
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())
@@ -379,14 +384,15 @@ public final class DataFeedTransforms {
             final AzureBlobDataFeedSource azureBlobDataFeedSource = ((AzureBlobDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureBlobDataFeedPatch()
                 .setDataSourceParameter(new AzureBlobParameterPatch()
-                    .setConnectionString(azureBlobDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
                     .setContainer(azureBlobDataFeedSource.getContainer())
                     .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()));
         } else if (dataFeedSource instanceof AzureCosmosDataFeedSource) {
             final AzureCosmosDataFeedSource azureCosmosDataFeedSource = ((AzureCosmosDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureCosmosDBDataFeedPatch()
                 .setDataSourceParameter(new AzureCosmosDBParameterPatch()
-                    .setConnectionString(azureCosmosDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureCosmosDataFeedSourceAccessor
+                        .getConnectionString(azureCosmosDataFeedSource))
                     .setCollectionId(azureCosmosDataFeedSource.getCollectionId())
                     .setDatabase(azureCosmosDataFeedSource.getDatabase())
                     .setSqlQuery(azureCosmosDataFeedSource.getSqlQuery()));
@@ -395,20 +401,22 @@ public final class DataFeedTransforms {
                 ((AzureDataExplorerDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureDataExplorerDataFeedPatch()
                 .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(azureDataExplorerDataFeedSource.getConnectionString())
+                    .setConnectionString(
+                        AzureDataExplorerDataFeedSourceAccessor.getConnectionString(azureDataExplorerDataFeedSource))
                     .setQuery(azureDataExplorerDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
             final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
                 ((AzureEventHubsDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureEventHubsDataFeedPatch()
                 .setDataSourceParameter(new AzureEventHubsParameterPatch()
-                    .setConnectionString(azureEventHubsDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureEventHubsDataFeedSourceAccessor
+                        .getConnectionString(azureEventHubsDataFeedSource))
                     .setConsumerGroup(azureEventHubsDataFeedSource.getConsumerGroup()));
         } else if (dataFeedSource instanceof AzureTableDataFeedSource) {
             final AzureTableDataFeedSource azureTableDataFeedSource = ((AzureTableDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureTableDataFeedPatch()
                 .setDataSourceParameter(new AzureTableParameterPatch()
-                    .setConnectionString(azureTableDataFeedSource.getConnectionString())
+                    .setConnectionString(AzureTableDataFeedSourceAccessor.getConnectionString(azureTableDataFeedSource))
                     .setTable(azureTableDataFeedSource.getTableName())
                     .setQuery(azureTableDataFeedSource.getQueryScript()));
         } else if (dataFeedSource instanceof InfluxDbDataFeedSource) {
@@ -418,31 +426,31 @@ public final class DataFeedTransforms {
                     .setConnectionString(influxDBDataFeedSource.getConnectionString())
                     .setDatabase(influxDBDataFeedSource.getDatabase())
                     .setQuery(influxDBDataFeedSource.getQuery())
-                    .setPassword(influxDBDataFeedSource.getPassword())
+                    .setPassword(InfluxDbDataFeedSourceAccessor.getPassword(influxDBDataFeedSource))
                     .setUserName(influxDBDataFeedSource.getUserName()));
         } else if (dataFeedSource instanceof MySqlDataFeedSource) {
             final MySqlDataFeedSource mySqlDataFeedSource = ((MySqlDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new MySqlDataFeedPatch()
                 .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(mySqlDataFeedSource.getConnectionString())
+                    .setConnectionString(MySqlDataFeedSourceAccessor.getConnectionString(mySqlDataFeedSource))
                     .setQuery(mySqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof PostgreSqlDataFeedSource) {
             final PostgreSqlDataFeedSource postgreSqlDataFeedSource = ((PostgreSqlDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new PostgreSqlDataFeedPatch()
                 .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(postgreSqlDataFeedSource.getConnectionString())
+                    .setConnectionString(PostgreSqlDataFeedSourceAccessor.getConnectionString(postgreSqlDataFeedSource))
                     .setQuery(postgreSqlDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof SqlServerDataFeedSource) {
             final SqlServerDataFeedSource sqlServerDataFeedSource = ((SqlServerDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new SQLServerDataFeedPatch()
                 .setDataSourceParameter(new SQLSourceParameterPatch()
-                    .setConnectionString(sqlServerDataFeedSource.getConnectionString())
+                    .setConnectionString(SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
                     .setQuery(sqlServerDataFeedSource.getQuery()));
         } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
             final MongoDbDataFeedSource azureCosmosDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new MongoDBDataFeedPatch()
                 .setDataSourceParameter(new MongoDBParameterPatch()
-                    .setConnectionString(azureCosmosDataFeedSource.getConnectionString())
+                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(azureCosmosDataFeedSource))
                     .setCommand(azureCosmosDataFeedSource.getCommand())
                     .setDatabase(azureCosmosDataFeedSource.getDatabase()));
         } else if (dataFeedSource instanceof AzureDataLakeStorageGen2DataFeedSource) {
@@ -450,7 +458,8 @@ public final class DataFeedTransforms {
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureDataLakeStorageGen2DataFeedPatch()
                 .setDataSourceParameter(new AzureDataLakeStorageGen2ParameterPatch()
-                    .setAccountKey(azureDataLakeStorageGen2DataFeedSource.getAccountKey())
+                    .setAccountKey(AzureDataLakeStorageGen2DataFeedSourceAccessor
+                        .getAccountKey(azureDataLakeStorageGen2DataFeedSource))
                     .setAccountName(azureDataLakeStorageGen2DataFeedSource.getAccountName())
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())

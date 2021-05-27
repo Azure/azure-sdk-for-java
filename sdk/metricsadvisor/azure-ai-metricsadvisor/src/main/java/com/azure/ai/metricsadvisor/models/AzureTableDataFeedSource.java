@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AzureTableDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -25,6 +26,16 @@ public final class AzureTableDataFeedSource extends DataFeedSource {
      */
     private final String table;
 
+    static {
+        AzureTableDataFeedSourceAccessor.setAccessor(
+            new AzureTableDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(AzureTableDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
     /**
      * Create a AzureTableDataFeedSource instance.
      *
@@ -36,15 +47,6 @@ public final class AzureTableDataFeedSource extends DataFeedSource {
         this.connectionString = connectionString;
         this.script = script;
         this.table = table;
-    }
-
-    /**
-     * Get the connectionString property: Azure Table connection string.
-     *
-     * @return the connectionString value.
-     */
-    public String getConnectionString() {
-        return this.connectionString;
     }
 
     /**
@@ -63,5 +65,9 @@ public final class AzureTableDataFeedSource extends DataFeedSource {
      */
     public String getTableName() {
         return this.table;
+    }
+
+    private String getConnectionString() {
+        return this.connectionString;
     }
 }

@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Expose transformation methods to transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration}
+ * Expose transformation methods to transform {@link AnomalyDetectionConfiguration}
  * model to REST API wire model and vice-versa.
  */
 public final class DetectionConfigurationTransforms {
@@ -175,7 +175,7 @@ public final class DetectionConfigurationTransforms {
     }
 
     /**
-     * Transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration} to create API wire model.
+     * Transform {@link AnomalyDetectionConfiguration} to create API wire model.
      *
      * @param metricId The metric id.
      * @param detectionConfiguration The custom model instance.
@@ -222,7 +222,7 @@ public final class DetectionConfigurationTransforms {
     }
 
     /**
-     * Transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration} to update API wire model.
+     * Transform {@link AnomalyDetectionConfiguration} to update API wire model.
      *
      * @param detectionConfiguration The custom model instance.
      * @return The wire model instance.

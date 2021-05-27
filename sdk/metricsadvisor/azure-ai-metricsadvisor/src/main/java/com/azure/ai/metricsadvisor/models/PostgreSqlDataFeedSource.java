@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.PostgreSqlDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -20,6 +21,16 @@ public final class PostgreSqlDataFeedSource extends DataFeedSource {
      */
     private final String query;
 
+    static {
+        PostgreSqlDataFeedSourceAccessor.setAccessor(
+            new PostgreSqlDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(PostgreSqlDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
     /**
      * Create a PostgreSqlDataFeedSource instance.
      *
@@ -32,20 +43,15 @@ public final class PostgreSqlDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Get the connectionString property: Database connection string.
-     *
-     * @return the connectionString value.
-     */
-    public String getConnectionString() {
-        return this.connectionString;
-    }
-
-    /**
      * Get the query property: Query script.
      *
      * @return the query value.
      */
     public String getQuery() {
         return this.query;
+    }
+
+    private String getConnectionString() {
+        return this.connectionString;
     }
 }

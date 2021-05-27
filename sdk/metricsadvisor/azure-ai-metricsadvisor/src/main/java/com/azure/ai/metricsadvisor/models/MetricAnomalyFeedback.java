@@ -37,8 +37,8 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
      * @param anomalyValue the value of the anomaly.
      */
     public MetricAnomalyFeedback(OffsetDateTime startTime,
-                                 OffsetDateTime endTime,
-                                 AnomalyValue anomalyValue) {
+        OffsetDateTime endTime,
+        AnomalyValue anomalyValue) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.anomalyValue = anomalyValue;

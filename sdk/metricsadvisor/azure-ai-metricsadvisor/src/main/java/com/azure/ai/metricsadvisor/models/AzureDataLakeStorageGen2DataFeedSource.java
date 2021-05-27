@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AzureDataLakeStorageGen2DataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -35,22 +36,151 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      */
     private final String fileTemplate;
 
-    /**
-     * Constructs a AzureDataLakeStorageGen2DataFeedSource object.
-     *
-     * @param accountName the name of the storage account.
-     * @param accountKey the key of the storage account.
-     * @param fileSystemName the file system name.
-     * @param directoryTemplate the directoty template of the storage account.
-     * @param fileTemplate the file template.
+    /*
+     * The id of the credential resource to authenticate the data source.
      */
-    public AzureDataLakeStorageGen2DataFeedSource(final String accountName, final String accountKey,
-        final String fileSystemName, final String directoryTemplate, final String fileTemplate) {
+    private final String credentialId;
+
+    /*
+     * The authentication type to access the data source.
+     */
+    private final DataSourceAuthenticationType authType;
+
+    static {
+        AzureDataLakeStorageGen2DataFeedSourceAccessor.setAccessor(
+            new AzureDataLakeStorageGen2DataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getAccountKey(AzureDataLakeStorageGen2DataFeedSource feedSource) {
+                    return feedSource.getAccountKey();
+                }
+            });
+    }
+
+    private AzureDataLakeStorageGen2DataFeedSource(final String accountName,
+                                                   final String accountKey,
+                                                   final String fileSystemName,
+                                                   final String directoryTemplate,
+                                                   final String fileTemplate,
+                                                   final String credentialId,
+                                                   final DataSourceAuthenticationType authType) {
         this.accountName = accountName;
         this.accountKey = accountKey;
         this.fileSystemName = fileSystemName;
         this.directoryTemplate = directoryTemplate;
         this.fileTemplate = fileTemplate;
+        this.credentialId = credentialId;
+        this.authType = authType;
+    }
+
+    /**
+     * Create a AzureDataLakeStorageGen2DataFeedSource with the given {@code accountKey} for authentication.
+     *
+     * @param accountName the name of the storage account.
+     * @param accountKey the key of the storage account.
+     * @param fileSystemName the file system name.
+     * @param directoryTemplate the directory template of the storage account.
+     * @param fileTemplate the file template.
+     *
+     * @return The AzureDataLakeStorageGen2DataFeedSource.
+     */
+    public static AzureDataLakeStorageGen2DataFeedSource usingBasicCredential(final String accountName,
+                                                                              final String accountKey,
+                                                                              final String fileSystemName,
+                                                                              final String directoryTemplate,
+                                                                              final String fileTemplate) {
+        return new AzureDataLakeStorageGen2DataFeedSource(accountName,
+            accountKey,
+            fileSystemName,
+            directoryTemplate,
+            fileTemplate,
+            null,
+            DataSourceAuthenticationType.BASIC);
+    }
+
+    /**
+     * Create a AzureDataLakeStorageGen2DataFeedSource with the {@code credentialId} identifying
+     * a credential entity of type {@link SqlServerConnectionStringCredentialEntity} that contains
+     * the shared access key.
+     *
+     * @param accountName the name of the storage account.
+     * @param fileSystemName the file system name.
+     * @param directoryTemplate the directory template of the storage account.
+     * @param fileTemplate the file template.
+     * @param credentialId The unique id of a credential entity of type
+     * {@link DataLakeGen2SharedKeyCredentialEntity}.
+     *
+     * @return The AzureDataLakeStorageGen2DataFeedSource.
+     */
+    public static AzureDataLakeStorageGen2DataFeedSource usingSharedKeyCredential(
+        final String accountName,
+        final String fileSystemName,
+        final String directoryTemplate,
+        final String fileTemplate,
+        final String credentialId) {
+        return new AzureDataLakeStorageGen2DataFeedSource(accountName,
+            null,
+            fileSystemName,
+            directoryTemplate,
+            fileTemplate,
+            credentialId,
+            DataSourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY);
+    }
+
+    /**
+     * Create a AzureDataLakeStorageGen2DataFeedSource with the {@code credentialId}
+     * identifying a credential entity of type {@link ServicePrincipalCredentialEntity},
+     * the entity contains Service Principal to access the Data Lake storage.
+     *
+     * @param accountName the name of the storage account.
+     * @param fileSystemName the file system name.
+     * @param directoryTemplate the directory template of the storage account.
+     * @param fileTemplate the file template.
+     * @param credentialId The unique id of a credential entity of type
+     * {@link ServicePrincipalCredentialEntity}.
+     *
+     * @return The AzureDataLakeStorageGen2DataFeedSource.
+     */
+    public static AzureDataLakeStorageGen2DataFeedSource usingServicePrincipalCredential(final String accountName,
+                                                                                         final String fileSystemName,
+                                                                                         final String directoryTemplate,
+                                                                                         final String fileTemplate,
+                                                                                         final String credentialId) {
+        return new AzureDataLakeStorageGen2DataFeedSource(accountName,
+            null,
+            fileSystemName,
+            directoryTemplate,
+            fileTemplate,
+            credentialId,
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
+    }
+
+    /**
+     * Create a AzureDataLakeStorageGen2DataFeedSource with the {@code credentialId} identifying
+     * a credential entity of type {@link ServicePrincipalInKeyVaultCredentialEntity}, the entity
+     * contains details of the KeyVault holding the Service Principal to access the Data Lake storage.
+     *
+     * @param accountName the name of the storage account.
+     * @param fileSystemName the file system name.
+     * @param directoryTemplate the directory template of the storage account.
+     * @param fileTemplate the file template.
+     * @param credentialId The unique id of a credential entity of type
+     * {@link ServicePrincipalInKeyVaultCredentialEntity}
+     *
+     * @return The AzureDataLakeStorageGen2DataFeedSource.
+     */
+    public static AzureDataLakeStorageGen2DataFeedSource usingServicePrincipalInKeyVaultCredential(
+        final String accountName,
+        final String fileSystemName,
+        final String directoryTemplate,
+        final String fileTemplate,
+        final String credentialId) {
+        return new AzureDataLakeStorageGen2DataFeedSource(accountName,
+            null,
+            fileSystemName,
+            directoryTemplate,
+            fileTemplate,
+            credentialId,
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
     /**
@@ -60,15 +190,6 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      */
     public String getAccountName() {
         return this.accountName;
-    }
-
-    /**
-     * Get the account key value for the AzureDataLakeStorageGen2DataFeedSource.
-     *
-     * @return the accountKey value.
-     */
-    public String getAccountKey() {
-        return this.accountKey;
     }
 
     /**
@@ -96,5 +217,27 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      */
     public String getFileTemplate() {
         return this.fileTemplate;
+    }
+
+    /**
+     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
+     *
+     * @return The credential resource id.
+     */
+    public String getCredentialId() {
+        return this.credentialId;
+    }
+
+    /**
+     * Gets the authentication type to access the data source.
+     *
+     * @return The authentication type.
+     */
+    public DataSourceAuthenticationType getAuthenticationType() {
+        return this.authType;
+    }
+
+    private String getAccountKey() {
+        return this.accountKey;
     }
 }

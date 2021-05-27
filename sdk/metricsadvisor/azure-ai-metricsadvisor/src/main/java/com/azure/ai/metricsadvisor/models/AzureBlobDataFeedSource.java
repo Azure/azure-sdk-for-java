@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AzureBlobDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -25,6 +26,21 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      */
     private final String blobTemplate;
 
+    /*
+     * The authentication type to access the data source.
+     */
+    private final DataSourceAuthenticationType authType;
+
+    static {
+        AzureBlobDataFeedSourceAccessor.setAccessor(
+            new AzureBlobDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(AzureBlobDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
     /**
      * Create a AzureBlobDataFeedSource instance.
      *
@@ -32,21 +48,49 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      * @param container the container name
      * @param blobTemplate the blob template name
      */
-    public AzureBlobDataFeedSource(final String connectionString, final String container, final String blobTemplate) {
+    private AzureBlobDataFeedSource(final String connectionString,
+                                    final String container,
+                                    final String blobTemplate,
+                                    final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.container = container;
         this.blobTemplate = blobTemplate;
+        this.authType = authType;
     }
 
     /**
-     * Get the Azure Blob connection string.
+     * Create a AzureBlobDataFeedSource with credential included in the {@code connectionString} as plain text.
      *
-     * @return the connectionString value.
+     * @param connectionString the Azure Blob connection string
+     * @param container the container name
+     * @param blobTemplate the blob template name
+     *
+     * @return The AzureBlobDataFeedSource.
      */
-    public String getConnectionString() {
-        return this.connectionString;
+    public static AzureBlobDataFeedSource usingBasicCredential(final String connectionString,
+                                                               final String container,
+                                                               final String blobTemplate) {
+        return new AzureBlobDataFeedSource(connectionString, container, blobTemplate, DataSourceAuthenticationType.BASIC);
     }
 
+    /**
+     * Create a SQLServerDataFeedSource with the {@code connectionString} containing the resource
+     * id of the SQL server on which metrics advisor has MSI access.
+     *
+     * @param connectionString the Azure Blob connection string
+     * @param container the container name
+     * @param blobTemplate the blob template name
+     *
+     * @return The AzureBlobDataFeedSource.
+     */
+    public static AzureBlobDataFeedSource usingManagedIdentityCredential(final String connectionString,
+                                                                         final String container,
+                                                                         final String blobTemplate) {
+        return new AzureBlobDataFeedSource(connectionString,
+            container,
+            blobTemplate,
+            DataSourceAuthenticationType.MANAGED_IDENTITY);
+    }
 
     /**
      * Get the container name.
@@ -57,7 +101,6 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
         return this.container;
     }
 
-
     /**
      * Get the blob template name.
      *
@@ -67,5 +110,16 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
         return this.blobTemplate;
     }
 
+    /**
+     * Gets the authentication type to access the data source.
+     *
+     * @return The authentication type.
+     */
+    public DataSourceAuthenticationType getAuthenticationType() {
+        return this.authType;
+    }
 
+    private String getConnectionString() {
+        return this.connectionString;
+    }
 }

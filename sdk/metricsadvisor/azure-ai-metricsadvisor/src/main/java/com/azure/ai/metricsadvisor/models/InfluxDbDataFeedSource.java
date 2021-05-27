@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.InfluxDbDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -34,6 +35,16 @@ public final class InfluxDbDataFeedSource extends DataFeedSource {
      * Query script
      */
     private final String query;
+
+    static {
+        InfluxDbDataFeedSourceAccessor.setAccessor(
+            new InfluxDbDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getPassword(InfluxDbDataFeedSource feedSource) {
+                    return feedSource.getPassword();
+                }
+            });
+    }
 
     /**
      * Create a InfluxDbDataFeedSource instance.
@@ -82,17 +93,6 @@ public final class InfluxDbDataFeedSource extends DataFeedSource {
         return this.userName;
     }
 
-
-    /**
-     * Get the password property: Database access password.
-     *
-     * @return the password value.
-     */
-    public String getPassword() {
-        return this.password;
-    }
-
-
     /**
      * Get the query property: Query script.
      *
@@ -102,5 +102,7 @@ public final class InfluxDbDataFeedSource extends DataFeedSource {
         return this.query;
     }
 
-
+    private String getPassword() {
+        return this.password;
+    }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MongoDbDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /** The MongoDbDataFeedSource model. */
@@ -23,6 +24,16 @@ public final class MongoDbDataFeedSource extends DataFeedSource {
      */
     private final String command;
 
+    static {
+        MongoDbDataFeedSourceAccessor.setAccessor(
+            new MongoDbDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(MongoDbDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
     /**
      * Create a MongoDbDataFeedSource instance.
      *
@@ -35,16 +46,6 @@ public final class MongoDbDataFeedSource extends DataFeedSource {
         this.database = database;
         this.command = command;
     }
-
-    /**
-     * Get the connectionString property: MongoDB connection string.
-     *
-     * @return the connectionString value.
-     */
-    public String getConnectionString() {
-        return this.connectionString;
-    }
-
 
     /**
      * Get the database property: Database name.
@@ -65,4 +66,7 @@ public final class MongoDbDataFeedSource extends DataFeedSource {
         return this.command;
     }
 
+    private String getConnectionString() {
+        return this.connectionString;
+    }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AzureDataExplorerDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -20,26 +21,127 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      */
     private final String query;
 
-    /**
-     * Create a AzureDataExplorerDataFeedSource instance.
-     *
-     * @param connectionString the database connection string.
-     * @param query the query script.
+    /*
+     * The id of the credential resource to authenticate the data source.
      */
-    public AzureDataExplorerDataFeedSource(final String connectionString, final String query) {
+    private final String credentialId;
+
+    /*
+     * The authentication type to access the data source.
+     */
+    private final DataSourceAuthenticationType authType;
+
+    static {
+        AzureDataExplorerDataFeedSourceAccessor.setAccessor(
+            new AzureDataExplorerDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(AzureDataExplorerDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
+    private AzureDataExplorerDataFeedSource(final String connectionString,
+                                    final String query,
+                                    final String credentialId,
+                                    final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.query = query;
+        this.credentialId = credentialId;
+        this.authType = authType;
     }
 
     /**
-     * Get the connectionString property: Database connection string.
+     * Create a AzureDataExplorerDataFeedSource with credential included in the {@code connectionString} as plain text.
      *
-     * @return the connectionString value.
+     * @param connectionString The connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     *
+     * @return The AzureDataExplorerDataFeedSource.
      */
-    public String getConnectionString() {
-        return this.connectionString;
+    public static AzureDataExplorerDataFeedSource usingBasicCredential(final String connectionString,
+                                                               final String query) {
+        return new AzureDataExplorerDataFeedSource(connectionString, query, null, DataSourceAuthenticationType.BASIC);
     }
 
+    /**
+     * Create a AzureDataExplorerDataFeedSource with the {@code connectionString} containing the resource
+     * id of the SQL server on which metrics advisor has MSI access.
+     *
+     * @param connectionString The connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     *
+     * @return The AzureDataExplorerDataFeedSource.
+     */
+    public static AzureDataExplorerDataFeedSource usingManagedIdentityCredential(final String connectionString,
+                                                                                 final String query) {
+        return new AzureDataExplorerDataFeedSource(connectionString,
+            query,
+            null,
+            DataSourceAuthenticationType.MANAGED_IDENTITY);
+    }
+
+    /**
+     * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
+     * entity of type {@link SqlServerConnectionStringCredentialEntity} that contains the SQL
+     * connection string.
+     *
+     * @param credentialEntityId The unique id of a credential entity of type
+     * {@link SqlServerConnectionStringCredentialEntity}.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     *
+     * @return The AzureDataExplorerDataFeedSource.
+     */
+    public static AzureDataExplorerDataFeedSource usingConnectionStringCredential(final String credentialEntityId,
+                                                                                  final String query) {
+        return new AzureDataExplorerDataFeedSource(null,
+            query,
+            credentialEntityId,
+            DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
+    }
+
+    /**
+     * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
+     * entity of type {@link ServicePrincipalCredentialEntity}, the entity contains
+     * Service Principal to access the SQL Server.
+     *
+     * @param connectionString The connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     * @param credentialId The unique id of a credential entity of type
+     * {@link ServicePrincipalCredentialEntity}.
+     *
+     * @return The SQLServerDataFeedSource.
+     */
+    public static AzureDataExplorerDataFeedSource usingServicePrincipalCredential(final String connectionString,
+                                                                                  final String query,
+                                                                                  final String credentialId) {
+        return new AzureDataExplorerDataFeedSource(connectionString,
+            query,
+            credentialId,
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
+    }
+
+    /**
+     * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
+     * entity of type {@link ServicePrincipalInKeyVaultCredentialEntity}, the entity contains
+     * details of the KeyVault holding the Service Principal to access the SQL Server.
+     *
+     * @param connectionString The connection string.
+     * @param query The query that retrieves the values to be analyzed for anomalies.
+     * @param credentialId The unique id of a credential entity of type
+     * {@link ServicePrincipalInKeyVaultCredentialEntity}.
+     *
+     * @return The AzureDataExplorerDataFeedSource.
+     */
+    public static AzureDataExplorerDataFeedSource usingServicePrincipalInKeyVaultCredential(
+        final String connectionString,
+        final String query,
+        final String credentialId) {
+        return new AzureDataExplorerDataFeedSource(connectionString,
+            query,
+            credentialId,
+            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+    }
 
     /**
      * Get the query property: Query script.
@@ -50,4 +152,25 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return this.query;
     }
 
+    /**
+     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
+     *
+     * @return The credential resource id.
+     */
+    public String getCredentialId() {
+        return this.credentialId;
+    }
+
+    /**
+     * Gets the authentication type to access the data source.
+     *
+     * @return The authentication type.
+     */
+    public DataSourceAuthenticationType getAuthenticationType() {
+        return this.authType;
+    }
+
+    private String getConnectionString() {
+        return this.connectionString;
+    }
 }

@@ -26,8 +26,8 @@ public final class MetricCommentFeedback extends MetricFeedback {
      * @param comment the value of the comment.
      */
     public MetricCommentFeedback(OffsetDateTime startTime,
-                                 OffsetDateTime endTime,
-                                 String comment) {
+        OffsetDateTime endTime,
+        String comment) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.comment = comment;

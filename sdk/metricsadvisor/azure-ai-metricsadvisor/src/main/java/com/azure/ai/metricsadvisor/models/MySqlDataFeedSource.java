@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MySqlDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -20,6 +21,16 @@ public final class MySqlDataFeedSource extends DataFeedSource {
      */
     private final String query;
 
+    static {
+        MySqlDataFeedSourceAccessor.setAccessor(
+            new MySqlDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(MySqlDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
     /**
      * Create a MySqlDataFeedSource instance.
      *
@@ -32,16 +43,6 @@ public final class MySqlDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Get the connectionString property: Database connection string.
-     *
-     * @return the connectionString value.
-     */
-    public String getConnectionString() {
-        return this.connectionString;
-    }
-
-
-    /**
      * Get the query property: Query script.
      *
      * @return the query value.
@@ -50,4 +51,7 @@ public final class MySqlDataFeedSource extends DataFeedSource {
         return this.query;
     }
 
+    private String getConnectionString() {
+        return this.connectionString;
+    }
 }

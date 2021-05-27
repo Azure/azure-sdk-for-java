@@ -131,7 +131,7 @@ public final class TestUtils {
     }
 
     static DataFeed getSQLDataFeedSample() {
-        return new DataFeed().setSource(new SqlServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
+        return new DataFeed().setSource(SqlServerDataFeedSource.usingBasicCredential(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY)).setSchema(new DataFeedSchema(Arrays.asList(
                 new DataFeedMetric().setName("cost"),
                 new DataFeedMetric().setName("revenue")))
@@ -144,7 +144,7 @@ public final class TestUtils {
     }
 
     static DataFeed getAzureBlobDataFeedSample() {
-        return new DataFeed().setSource(new AzureBlobDataFeedSource(BLOB_CONNECTION_STRING,
+        return new DataFeed().setSource(AzureBlobDataFeedSource.usingBasicCredential(BLOB_CONNECTION_STRING,
             "BLOB_CONTAINER", "BLOB_TEMPLATE_NAME")).setSchema(new DataFeedSchema(Arrays.asList(
                 new DataFeedMetric().setName("cost"),
                 new DataFeedMetric().setName("revenue")))

@@ -789,7 +789,8 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
-        DataFeed dataFeed = new DataFeed().setSource(new SqlServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
+        DataFeed dataFeed = new DataFeed().setSource(SqlServerDataFeedSource.usingBasicCredential(
+            SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY));
         dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
             new DataFeedMetric().setName("cost").setDisplayName("cost"),

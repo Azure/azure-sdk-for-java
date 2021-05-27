@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AzureCosmosDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -30,29 +31,32 @@ public final class AzureCosmosDataFeedSource extends DataFeedSource {
      */
     private final String collectionId;
 
+    static {
+        AzureCosmosDataFeedSourceAccessor.setAccessor(
+            new AzureCosmosDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(AzureCosmosDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
     /**
-     * Create a AzureCosmosDataFeedSource instance
+     * Create a AzureCosmosDataFeedSource.
      *
      * @param connectionString the Azure CosmosDB connection string.
      * @param sqlQuery the query script.
      * @param database the database name.
      * @param collectionId the collection Id value.
      */
-    public AzureCosmosDataFeedSource(final String connectionString, final String sqlQuery, final String database,
-        final String collectionId) {
+    public AzureCosmosDataFeedSource(final String connectionString,
+                                     final String sqlQuery,
+                                     final String database,
+                                     final String collectionId) {
         this.connectionString = connectionString;
         this.sqlQuery = sqlQuery;
         this.database = database;
         this.collectionId = collectionId;
-    }
-
-    /**
-     * Get the connectionString property: Azure CosmosDB connection string.
-     *
-     * @return the connectionString value.
-     */
-    public String getConnectionString() {
-        return this.connectionString;
     }
 
     /**
@@ -84,4 +88,7 @@ public final class AzureCosmosDataFeedSource extends DataFeedSource {
         return this.collectionId;
     }
 
+    private String getConnectionString() {
+        return this.connectionString;
+    }
 }

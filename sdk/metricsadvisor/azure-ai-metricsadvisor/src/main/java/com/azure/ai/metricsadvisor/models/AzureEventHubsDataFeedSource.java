@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AzureEventHubsDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -19,6 +20,16 @@ public final class AzureEventHubsDataFeedSource extends DataFeedSource {
      */
     private final String consumerGroup;
 
+    static {
+        AzureEventHubsDataFeedSourceAccessor.setAccessor(
+            new AzureEventHubsDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(AzureEventHubsDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
+    }
+
     /**
      * Create a AzureEventHubsDataFeedSource instance
      *
@@ -31,20 +42,15 @@ public final class AzureEventHubsDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Gets the Azure EventHub connection string.
-     *
-     * @return the connectionString value.
-     */
-    public String getConnectionString() {
-        return this.connectionString;
-    }
-
-    /**
      * Gets the Azure EventHub consumer group.
      *
      * @return the consumerGroup value.
      */
     public String getConsumerGroup() {
         return this.consumerGroup;
+    }
+
+    private String getConnectionString() {
+        return this.connectionString;
     }
 }

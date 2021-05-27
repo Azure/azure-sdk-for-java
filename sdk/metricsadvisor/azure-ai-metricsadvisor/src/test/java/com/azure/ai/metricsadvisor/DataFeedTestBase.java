@@ -113,12 +113,14 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     APP_INSIGHTS_APPLICATION_ID, APP_INSIGHTS_API_KEY, TestUtils.AZURE_CLOUD, APP_INSIGHTS_QUERY));
                 break;
             case AZURE_BLOB:
-                dataFeed = new DataFeed().setSource(new AzureBlobDataFeedSource(BLOB_CONNECTION_STRING,
+                dataFeed = new DataFeed().setSource(AzureBlobDataFeedSource.usingBasicCredential(
+                    BLOB_CONNECTION_STRING,
                     TEST_DB_NAME, BLOB_TEMPLATE));
                 break;
             case AZURE_DATA_EXPLORER:
                 dataFeed =
-                    new DataFeed().setSource(new AzureDataExplorerDataFeedSource(DATA_EXPLORER_CONNECTION_STRING,
+                    new DataFeed().setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
+                        DATA_EXPLORER_CONNECTION_STRING,
                         DATA_EXPLORER_QUERY));
                 break;
             case AZURE_TABLE:
@@ -142,7 +144,8 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     TEMPLATE_QUERY));
                 break;
             case SQL_SERVER_DB:
-                dataFeed = new DataFeed().setSource(new SqlServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
+                dataFeed = new DataFeed().setSource(SqlServerDataFeedSource.usingBasicCredential(
+                    SQL_SERVER_CONNECTION_STRING,
                     TEMPLATE_QUERY));
                 break;
             case AZURE_COSMOS_DB:
@@ -150,7 +153,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     TEMPLATE_QUERY, TEST_DB_NAME, TEST_DB_NAME));
                 break;
             case AZURE_DATA_LAKE_STORAGE_GEN2:
-                dataFeed = new DataFeed().setSource(new AzureDataLakeStorageGen2DataFeedSource(
+                dataFeed = new DataFeed().setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
                     "adsampledatalakegen2",
                     AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                     TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
