@@ -2,7 +2,7 @@
 
 ## 3.1.0 (2021-05-26)
 ### Features Added
-- This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.4`.
+- This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.3`.
 - Added `clientOptions()` and `getDefaultLogOptions()` methods to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
 - We are able to support multiple service API versions now: `V2_0` and `V2_1`.
 - Add more static values to `FormRecognizerLanguage` expandable string class.
