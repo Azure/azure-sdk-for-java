@@ -82,6 +82,10 @@ public final class JreCertificates implements AzureCertificates {
 
     }
 
+    /**
+     *
+     * @return the singleton.
+     */
     public static JreCertificates getInstance() {
         return INSTANCE;
     }
