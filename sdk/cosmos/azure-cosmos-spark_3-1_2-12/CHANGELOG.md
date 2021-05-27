@@ -1,5 +1,7 @@
 ## Release History
 
+### 4.2.0-beta.1 (Unreleased)
+
 ### 4.1.0 (2021-05-27)
 #### New Features
 * Added support for bulk deletes via `spark.cosmos.write.strategy` `ItemDelete` or `ItemDeleteIfNotModified`
