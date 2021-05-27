@@ -44,6 +44,7 @@ import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_BLOB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_COSMOS_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
+import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_LOG_ANALYTICS;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_TABLE;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.INFLUX_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MONGO_DB;
@@ -115,7 +116,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
     /**
      * Verifies the result of the list data feed method to return only 3 results using
-     * {@link ListDataFeedOptions#setTop(int)}.
+     * {@link ListDataFeedOptions#setMaxPageSize(int)}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -124,7 +125,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setTop(3)).byPage())
+        StepVerifier.create(client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3)).byPage())
             .thenConsumeWhile(dataFeedPagedResponse -> 3 >= dataFeedPagedResponse.getValue().size())
             // page size should be less than or equal to 3
             .verifyComplete();
@@ -610,7 +611,7 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
     }
 
     /**
-     * Verifies valid mongo db data feed created for required data feed details.
+     * Verifies valid PostgreSQL data feed created for required data feed details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -659,6 +660,35 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                         validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
                     })
                     .verifyComplete(), AZURE_DATA_LAKE_STORAGE_GEN2);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
+                StepVerifier.create(deleteDataFeed)
+                    .verifyComplete();
+            }
+        }
+    }
+
+    /**
+     * Verifies valid log analytics data feed created for required data feed details.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    public void createLogAnalyticsDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            creatDataFeedRunner(expectedDataFeed ->
+
+                // Act & Assert
+                StepVerifier.create(client.createDataFeed(expectedDataFeed))
+                    .assertNext(createdDataFeed -> {
+                        assertNotNull(createdDataFeed);
+                        dataFeedId.set(createdDataFeed.getId());
+                        validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_LOG_ANALYTICS);
+                    })
+                    .verifyComplete(), AZURE_LOG_ANALYTICS);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 Mono<Void> deleteDataFeed = client.deleteDataFeed(dataFeedId.get());
