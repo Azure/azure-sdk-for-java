@@ -22,25 +22,15 @@ import argparse
 import os
 import sys
 
-# NPX command for Windows OS.
-windows_command = 'npx.cmd'
-
-# NPX command for Posix OSes.
-posix_command = 'npx'
+# NPX command.
+npx_command = 'npx embedme'
 
 # Invoke embedme.
 def invoke_embedme(readme: str, verify: bool, debug: bool):
-    command = ''
-    if os.name == 'nt':
-        command = windows_command
-    else:
-        command = posix_command
-
-    command += ' embedme'
+    command = npx_command
 
     # If the passed README path was relative
     command += ' ' + os.path.abspath(readme)
-    
 
     if verify:
         command += ' --verify'
