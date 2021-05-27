@@ -32,7 +32,7 @@ public class ListsAnomaliesForDetectionConfigSample {
             .setTop(10)
             .setFilter(filter);
         PagedIterable<DataPointAnomaly> anomaliesIterable
-            = advisorClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
+            = advisorClient.listAnomalies(detectionConfigurationId,
                 startTime, endTime);
 
         for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {

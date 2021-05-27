@@ -25,7 +25,7 @@ public class ListsAnomaliesForAlertsSample {
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
             .setTop(10);
 
-        PagedIterable<DataPointAnomaly> anomaliesIterable = advisorClient.listAnomaliesForAlert(
+        PagedIterable<DataPointAnomaly> anomaliesIterable = advisorClient.listAnomalies(
             alertConfigurationId,
             alertId,
             options,

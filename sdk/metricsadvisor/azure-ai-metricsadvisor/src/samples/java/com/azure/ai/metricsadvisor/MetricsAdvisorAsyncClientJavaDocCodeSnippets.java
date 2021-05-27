@@ -186,14 +186,14 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomaliesForAlert(String, String)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomalies(String, String)}.
      */
     public void listAnomaliesForAlert() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForAlert#String-String
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-String
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
 
-        metricsAdvisorAsyncClient.listAnomaliesForAlert(
+        metricsAdvisorAsyncClient.listAnomalies(
             alertConfigurationId,
             alertId)
             .subscribe(anomaly -> {
@@ -210,19 +210,19 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                         dimension.getKey(), dimension.getValue());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForAlert#String-String
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomaliesForAlert(String, String, ListAnomaliesAlertedOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomalies(String, String, ListAnomaliesAlertedOptions)}.
      */
     public void listAnomaliesForAlertWithOptions() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-String-ListAnomaliesAlertedOptions
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
             .setTop(10);
-        metricsAdvisorAsyncClient.listAnomaliesForAlert(
+        metricsAdvisorAsyncClient.listAnomalies(
             alertConfigurationId,
             alertId,
             options)
@@ -236,7 +236,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Series Key:");
                 System.out.println(anomaly.getSeriesKey().asMap());
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-String-ListAnomaliesAlertedOptions
     }
 
     /**
@@ -310,10 +310,10 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomaliesForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListAnomaliesDetectedOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listAnomalies(String, OffsetDateTime, OffsetDateTime, ListAnomaliesDetectedOptions)}.
      */
     public void listAnomaliesForDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
@@ -322,7 +322,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setTop(10)
             .setFilter(filter);
-        metricsAdvisorAsyncClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
+        metricsAdvisorAsyncClient.listAnomalies(detectionConfigurationId,
                 startTime, endTime, options)
             .subscribe(anomaly -> {
                 System.out.printf("DataPoint Anomaly AnomalySeverity: %s%n", anomaly.getSeverity());
@@ -333,7 +333,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                         dimension.getKey(), dimension.getValue());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions
     }
 
     /*
