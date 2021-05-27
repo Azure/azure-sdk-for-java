@@ -22,13 +22,6 @@ public interface NetworkProfile extends
     UpdatableWithTags<NetworkProfile> {
 
     /**
-     * Gets the containerNetworkInterfaces property: List of child container network interfaces.
-     *
-     * @return the containerNetworkInterfaces value.
-     */
-    List<ContainerNetworkInterface> containerNetworkInterfaces();
-
-    /**
      * Gets the containerNetworkInterfaceConfigurations property: List of chid container network interface
      * configurations.
      *
@@ -36,17 +29,11 @@ public interface NetworkProfile extends
      */
     List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations();
 
-    /**
-     * Gets the resourceGuid property: The resource GUID property of the network profile resource.
-     *
-     * @return the resourceGuid value.
-     */
-    String resourceGuid();
-
     /** The entirety of the NetworkProfile definition. */
     interface Definition
         extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
+            DefinitionStages.WithContainerNetworkInterfaceConfigurations,
             DefinitionStages.WithCreate {
     }
     /** The NetworkProfile definition stages. */
@@ -62,7 +49,8 @@ public interface NetworkProfile extends
          * The stage of the NetworkProfile definition allowing to specify parent resource.
          */
         interface WithGroup extends
-            GroupableResource.DefinitionStages.WithGroup<NetworkProfile.DefinitionStages.WithCreate> {
+            GroupableResource.DefinitionStages.WithGroup
+                <NetworkProfile.DefinitionStages.WithContainerNetworkInterfaceConfigurations> {
         }
 
         /**
@@ -71,23 +59,36 @@ public interface NetworkProfile extends
          */
         interface WithCreate
             extends Creatable<NetworkProfile>,
-            Resource.DefinitionWithTags<NetworkProfile.DefinitionStages.WithCreate>,
-            WithContainerNetworkInterfaceConfigurations {
+            Resource.DefinitionWithTags<NetworkProfile.DefinitionStages.WithCreate> {
         }
 
         /**
-         * The stage of the NetworkProfile definition allowing to specify containerNetworkInterfaceConfigurations.
+         * The stage of the NetworkProfile definition allowing to specify network interface configurations for
+         * container.
          */
         interface WithContainerNetworkInterfaceConfigurations {
             /**
-             * Specifies the containerNetworkInterfaceConfigurations property: List of chid container network interface
-             * configurations..
+             * Specifies the network interface configuration for container.
              *
-             * @param containerNetworkInterfaceConfigurations List of chid container network interface configurations.
-             * @return the next definition stage.
+             * @param name the name
+             * @param ipConfigName the name of ip configuration
+             * @param virtualNetworkId the ID of the virtual network
+             * @param subnetName the name of the subnet
+             * @return the next stage
              */
-            WithCreate withContainerNetworkInterfaceConfigurations(
-                List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations);
+            WithCreate withContainerNetworkInterfaceConfiguration(
+                String name, String ipConfigName, String virtualNetworkId, String subnetName);
+
+            /**
+             * Specifies the network interface configuration for container.
+             *
+             * @param name the name
+             * @param ipConfigName the name of ip configuration
+             * @param subnet the Subnet resource
+             * @return the next stage
+             */
+            WithCreate withContainerNetworkInterfaceConfiguration(
+                String name, String ipConfigName, Subnet subnet);
         }
     }
 

@@ -4,10 +4,12 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.IpConfigurationProfileInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkProfileInner;
-import com.azure.resourcemanager.network.models.ContainerNetworkInterface;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.NetworkProfile;
+import com.azure.resourcemanager.network.models.Subnet;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -21,15 +23,7 @@ final class NetworkProfileImpl extends
         super(name, innerObject, manager);
     }
 
-    public List<ContainerNetworkInterface> containerNetworkInterfaces() {
-        List<ContainerNetworkInterface> inner = this.innerModel().containerNetworkInterfaces();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
+    @Override
     public List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations() {
         List<ContainerNetworkInterfaceConfiguration> inner =
             this.innerModel().containerNetworkInterfaceConfigurations();
@@ -38,16 +32,6 @@ final class NetworkProfileImpl extends
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String resourceGuid() {
-        return this.innerModel().resourceGuid();
-    }
-
-    public NetworkProfileImpl withContainerNetworkInterfaceConfigurations(
-        List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations) {
-        this.innerModel().withContainerNetworkInterfaceConfigurations(containerNetworkInterfaceConfigurations);
-        return this;
     }
 
     @Override
@@ -82,4 +66,32 @@ final class NetworkProfileImpl extends
     }
 
 
+    @Override
+    public NetworkProfileImpl withContainerNetworkInterfaceConfiguration(
+        String name, String ipConfigName, String virtualNetworkId, String subnetName) {
+        String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
+        return withContainerNetworkInterfaceConfiguration(name, ipConfigName, subnetId);
+    }
+
+    @Override
+    public NetworkProfileImpl withContainerNetworkInterfaceConfiguration(
+        String name, String ipConfigName, Subnet subnet) {
+        return withContainerNetworkInterfaceConfiguration(name, ipConfigName, subnet.id());
+    }
+
+    private NetworkProfileImpl withContainerNetworkInterfaceConfiguration(
+        String name, String ipConfigName, String subnetId) {
+        this.innerModel().withContainerNetworkInterfaceConfigurations(
+            Collections
+                .singletonList(
+                    new ContainerNetworkInterfaceConfiguration()
+                        .withName(name)
+                        .withIpConfigurations(
+                            Collections
+                                .singletonList(
+                                    new IpConfigurationProfileInner()
+                                        .withName(ipConfigName)
+                                        .withSubnet(new SubnetInner().withId(subnetId))))));
+        return this;
+    }
 }
