@@ -11,7 +11,7 @@ import java.util.Objects;
  * Represents a range of bytes within an HTTP resource.
  * <p>
  * The range starts at the {@link #getOffset() offset} inclusively and ends at {@link #getOffset() offset} + {@link
- * #getLength() legnth} exclusively, or offset + length - 1.
+ * #getLength() length} exclusively, or offset + length - 1.
  * <p>
  * If {@link #getLength() length} is unspecified, null, then the range extends to the end of the HTTP resource.
  */
@@ -97,12 +97,14 @@ public final class HttpRange {
      * Gets the string representation of the range.
      * <p>
      * If length is null the returned string will be {@code "bytes=<offset>-"}, if length is not null the returned
-     * string will be {@code "bytes=<offset>-<length>"}.
+     * string will be {@code "bytes=<offset>-<offset + length - 1>"}.
      *
      * @return The string representation of the range.
      */
     @Override
     public String toString() {
-        return (length == null) ? "bytes=" + offset + "-" : "bytes=" + offset + "-" + length;
+        return (length == null)
+            ? "bytes=" + offset + "-"
+            : "bytes=" + offset + "-" + (offset + length - 1);
     }
 }

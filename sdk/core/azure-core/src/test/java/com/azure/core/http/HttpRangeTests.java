@@ -42,7 +42,8 @@ public class HttpRangeTests {
         return Stream.of(
             Arguments.of(new HttpRange(0), "bytes=0-"),
             Arguments.of(new HttpRange(0, null), "bytes=0-"),
-            Arguments.of(new HttpRange(0, 10L), "bytes=0-10")
+            Arguments.of(new HttpRange(0, 10L), "bytes=0-9"),
+            Arguments.of(new HttpRange(10, 10L), "bytes=10-19")
         );
     }
 
