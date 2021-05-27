@@ -56,8 +56,8 @@ jobs:
 
     steps:
       - script: |
-          cat $JAVA_HOME/conf/security/java.security
-        displayName: Dump security policy
+          ls -R $JAVA_HOME
+        displayName: Dump JRE folder
 
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
         parameters:
