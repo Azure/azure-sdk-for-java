@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.UUID;
 
 public class KubernetesCniTests extends ResourceManagerTestBase {
 
@@ -36,7 +35,6 @@ public class KubernetesCniTests extends ResourceManagerTestBase {
     private String rgName;
 
     private final Region region = Region.US_EAST;
-    private final String vnAddressSpace = "10.0.0.0/28";
 
     @Override
     protected HttpPipeline buildHttpPipeline(
