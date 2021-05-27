@@ -774,7 +774,7 @@ class APISpec extends StorageSpec {
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(1) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {

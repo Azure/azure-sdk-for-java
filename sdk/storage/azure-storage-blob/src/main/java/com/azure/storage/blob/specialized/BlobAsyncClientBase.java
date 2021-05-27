@@ -2145,6 +2145,7 @@ public class BlobAsyncClientBase {
 
     Mono<Response<BlobImmutabilityPolicy>> setImmutabilityPolicyWithResponse(
         BlobImmutabilityPolicy immutabilityPolicy, BlobRequestConditions requestConditions, Context context) {
+        context = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy finalImmutabilityPolicy = immutabilityPolicy == null ? new BlobImmutabilityPolicy()
             : immutabilityPolicy;
         if (BlobImmutabilityPolicyMode.MUTABLE.equals(finalImmutabilityPolicy.getPolicyMode())) {
@@ -2210,6 +2211,7 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<Void>> deleteImmutabilityPolicyWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs().deleteImmutabilityPolicyWithResponseAsync(containerName, blobName,
             null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -2258,6 +2260,7 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<BlobLegalHoldResult>> setLegalHoldWithResponse(boolean legalHold, Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs().setLegalHoldWithResponseAsync(containerName, blobName,
             legalHold, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
