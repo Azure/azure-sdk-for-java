@@ -18,9 +18,8 @@ public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
     private final Supplier<Flux<ByteBuffer>> downloadSupplier;
     private final BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume;
     private final int maxRetries;
-
-    private long position;
-    private int retryCount;
+    private final long position;
+    private final int retryCount;
 
     /**
      * Creates a ReliableDownloadFlux.
@@ -48,17 +47,22 @@ public final class ReliableDownloadFlux extends Flux<ByteBuffer> {
 
     @Override
     public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-        downloadSupplier.get()
-            .doOnNext(buffer -> position += buffer.remaining())
-            .onErrorResume(throwable -> {
-                retryCount++;
+        final long[] currentPosition = new long[]{position};
 
-                if (retryCount > maxRetries) {
+        downloadSupplier.get()
+            .map(buffer -> {
+                currentPosition[0] += buffer.remaining();
+                return buffer;
+            })
+            .onErrorResume(throwable -> {
+                int updatedRetryCount = retryCount + 1;
+
+                if (updatedRetryCount > maxRetries) {
                     return Flux.error(throwable);
                 }
 
-                return new ReliableDownloadFlux(() -> onDownloadErrorResume.apply(throwable, position),
-                    onDownloadErrorResume, maxRetries, position, retryCount);
+                return new ReliableDownloadFlux(() -> onDownloadErrorResume.apply(throwable, currentPosition[0]),
+                    onDownloadErrorResume, maxRetries, currentPosition[0], updatedRetryCount);
             })
             .subscribe(actual);
     }
