@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+
 ## 1.0.0-beta.2 (2021-05-27)
 
 - Update README with more service documentation.
