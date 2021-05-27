@@ -3,7 +3,7 @@
 ## 2.5.0-beta.1 (Unreleased)
 
 - Supported system-assigned managed identity and auto-scaler profile for `KubernetesCluster`.
-- Supported auto-scaling, availability zones, note labels and taints for agent pool of `KubernetesCluster`.
+- Supported auto-scaling, availability zones, node labels and taints for agent pool of `KubernetesCluster`.
 
 ## 2.4.0 (2021-04-28)
 
