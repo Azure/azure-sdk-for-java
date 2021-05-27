@@ -55,10 +55,6 @@ jobs:
       - template: ../variables/globals.yml
 
     steps:
-      - script: |
-          ls -R $JAVA_HOME
-        displayName: Dump JRE folder
-
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
