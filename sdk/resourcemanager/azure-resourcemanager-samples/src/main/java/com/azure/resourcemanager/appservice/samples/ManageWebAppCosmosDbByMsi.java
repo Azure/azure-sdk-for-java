@@ -80,7 +80,7 @@ public final class ManageWebAppCosmosDbByMsi {
                 .define(vaultName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .enableRoleBasedAccessControl()
+                .withRoleBasedAccessControl()
                 .create();
 
             //============================================================
