@@ -14,3 +14,6 @@ stages:
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+      TestStepMavenInputs:
+        options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+        goals: "verify"
