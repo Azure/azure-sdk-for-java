@@ -33,7 +33,7 @@ public class ServiceBusQueueAndTopicBinderIT {
 
     private static String message = UUID.randomUUID().toString();
 
-    public static CountDownLatch latch = new CountDownLatch(2);
+    private static CountDownLatch latch = new CountDownLatch(2);
 
     @Autowired
     private Sinks.Many<Message<String>> manyQueue;
