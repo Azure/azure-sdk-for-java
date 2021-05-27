@@ -3,54 +3,44 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-/**
- * Defines values for LeaseStateType.
- */
-public enum DataFeedRollupType {
+import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
+/**
+ * Defines values for DataFeedRollupType.
+ */
+public final class DataFeedRollupType extends ExpandableStringEnum<DataFeedRollupType> {
     /**
      * Enum value NoRollup.
      */
-    NO_ROLLUP("NoRollup"),
+    public static final DataFeedRollupType NO_ROLLUP = fromString("NoRollup");
 
     /**
      * Enum value NeedRollup.
      */
-    AUTO_ROLLUP("NeedRollup"),
+    public static final DataFeedRollupType AUTO_ROLLUP = fromString("NeedRollup");
 
     /**
      * Enum value AlreadyRollup.
      */
-    ALREADY_ROLLUP("AlreadyRollup");
+    public static final DataFeedRollupType ALREADY_ROLLUP = fromString("AlreadyRollup");
 
     /**
-    /**
-     * The actual serialized value for a DataFeedRollupType instance.
-     */
-    private final String value;
-
-    DataFeedRollupType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DataFeedRollupType instance.
+     * Creates or finds a DataFeedRollupType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed DataFeedRollupType object, or null if unable to parse.
+     * @param name a name to look for.
+     *
+     * @return the corresponding DataFeedRollupType.
      */
-    public static DataFeedRollupType fromString(String value) {
-        DataFeedRollupType[] items = DataFeedRollupType.values();
-        for (DataFeedRollupType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static DataFeedRollupType fromString(String name) {
+        return fromString(name, DataFeedRollupType.class);
     }
 
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known DataFeedRollupType values.
+     */
+    public static Collection<DataFeedRollupType> values() {
+        return values(DataFeedRollupType.class);
     }
 }

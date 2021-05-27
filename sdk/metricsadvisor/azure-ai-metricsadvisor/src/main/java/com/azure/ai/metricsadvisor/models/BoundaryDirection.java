@@ -3,20 +3,42 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+
+import java.util.Collection;
+
 /**
  * Describes the direction of boundary used in anomaly boundary conditions.
  */
-public enum BoundaryDirection {
+public final class BoundaryDirection extends ExpandableStringEnum<BoundaryDirection> {
     /**
      * Defines the lower boundary in a boundary condition.
      */
-    LOWER,
+    public static final  BoundaryDirection LOWER = fromString("LOWER");
     /**
      * Defines the upper boundary in a boundary condition.
      */
-    UPPER,
+    public static final  BoundaryDirection UPPER = fromString("UPPER");
     /**
      * Defines both lower and upper boundary in a boundary condition.
      */
-    BOTH
+    public static final  BoundaryDirection BOTH = fromString("BOTH");
+
+    /**
+     * Creates or finds a BoundaryDirection from its string representation.
+     *
+     * @param name a name to look for.
+     *
+     * @return the corresponding BoundaryDirection.
+     */
+    public static BoundaryDirection fromString(String name) {
+        return fromString(name, BoundaryDirection.class);
+    }
+
+    /**
+     * @return known BoundaryDirection values.
+     */
+    public static Collection<BoundaryDirection> values() {
+        return values(BoundaryDirection.class);
+    }
 }

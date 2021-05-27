@@ -99,8 +99,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
 
                 // Assert
                 assertEquals(inputDataFeedList.size(), actualList.size());
-                expectedDataFeedList.sort(Comparator.comparing(DataFeed::getSourceType));
-                actualList.sort(Comparator.comparing(DataFeed::getSourceType));
+                expectedDataFeedList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
+                actualList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 final AtomicInteger i = new AtomicInteger(-1);
                 final List<DataFeedSourceType> dataFeedSourceTypes = Arrays.asList(AZURE_BLOB, SQL_SERVER_DB);
                 expectedDataFeedList.forEach(expectedDataFeed -> validateDataFeedResult(expectedDataFeed,

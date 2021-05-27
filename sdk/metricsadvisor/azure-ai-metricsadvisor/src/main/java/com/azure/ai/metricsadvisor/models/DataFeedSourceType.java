@@ -3,114 +3,95 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+
+import java.util.Collection;
+
 /**
- * Defines values for DataFeedSourceType.
+ * Defines values for all supported data sources types.
  */
-public enum DataFeedSourceType {
+public final class DataFeedSourceType extends ExpandableStringEnum<DataFeedSourceType> {
 
     /**
-     * Enum value AzureApplicationInsights.
+     * Static value AzureApplicationInsights for DataFeedSourceType.
      */
-    AZURE_APP_INSIGHTS("AzureApplicationInsights"),
+    public static final  DataFeedSourceType AZURE_APP_INSIGHTS = fromString("AzureApplicationInsights");
 
     /**
-     * Enum value AzureBlob.
+     * Static value AzureBlob for DataFeedSourceType.
      */
-    AZURE_BLOB("AzureBlob"),
+    public static final  DataFeedSourceType AZURE_BLOB = fromString("AzureBlob");
 
     /**
-     * Enum value AzureDataExplorer.
+     * Static value AzureDataExplorer for DataFeedSourceType..
      */
-    AZURE_DATA_EXPLORER("AzureDataExplorer"),
+    public static final  DataFeedSourceType AZURE_DATA_EXPLORER = fromString("AzureDataExplorer");
 
     /**
-     * Enum value AzureEventHubs.
+     * Static value AzureEventHubs for DataFeedSourceType..
      */
-    AZURE_EVENT_HUBS("AzureEventHubs"),
+    public static final  DataFeedSourceType AZURE_EVENT_HUBS = fromString("AzureEventHubs");
 
     /**
-     * Enum value AzureTable.
+     * Static value AzureTable for DataFeedSourceType..
      */
-    AZURE_TABLE("AzureTable"),
+    public static final  DataFeedSourceType AZURE_TABLE = fromString("AzureTable");
 
     /**
-     * Enum value HttpRequest.
+     * Static value InfluxDB for DataFeedSourceType..
      */
-    HTTP_REQUEST("HttpRequest"),
+    public static final  DataFeedSourceType INFLUX_DB = fromString("InfluxDB");
 
     /**
-     * Enum value InfluxDB.
+     * Static value MongoDB for DataFeedSourceType..
      */
-    INFLUX_DB("InfluxDB"),
+    public static final  DataFeedSourceType MONGO_DB = fromString("MongoDB");
 
     /**
-     * Enum value MongoDB.
+     * Static value MySql for DataFeedSourceType..
      */
-    MONGO_DB("MongoDB"),
+    public static final  DataFeedSourceType MYSQL_DB = fromString("MySql");
 
     /**
-     * Enum value MySql.
+     * Static value PostgreSql for DataFeedSourceType..
      */
-    MYSQL_DB("MySql"),
+    public static final  DataFeedSourceType POSTGRE_SQL_DB = fromString("PostgreSql");
 
     /**
-     * Enum value PostgreSql.
+     * Static value SqlServer.
      */
-    POSTGRE_SQL_DB("PostgreSql"),
+    public static final  DataFeedSourceType SQL_SERVER_DB = fromString("SqlServer");
 
     /**
-     * Enum value SqlServer.
+     * Static value AzureCosmosDB for DataFeedSourceType..
      */
-    SQL_SERVER_DB("SqlServer"),
+    public static final  DataFeedSourceType AZURE_COSMOS_DB = fromString("AzureCosmosDB");
 
     /**
-     * Enum value AzureCosmosDB.
+     * Enum value AzureDataLakeStorageGen2 for DataFeedSourceType..
      */
-    AZURE_COSMOS_DB("AzureCosmosDB"),
+    public static final  DataFeedSourceType AZURE_DATA_LAKE_STORAGE_GEN2 = fromString("AzureDataLakeStorageGen2");
 
     /**
-     * Enum value SqlServer.
+     * Enum value AzureLogAnalytics for DataFeedSourceType..
      */
-    ELASTIC_SEARCH("Elasticsearch"),
+    public static final  DataFeedSourceType AZURE_LOG_ANALYTICS = fromString("AzureLogAnalytics");
 
     /**
-     * Enum value AzureDataLakeStorageGen2.
-     */
-    AZURE_DATA_LAKE_STORAGE_GEN2("AzureDataLakeStorageGen2"),
-
-    /**
-     * Enum value AzureLogAnalytics.
-     */
-    AZURE_LOG_ANALYTICS("AzureLogAnalytics");
-
-    /**
-     /**
-     * The actual serialized value for a DataFeedSourceType instance.
-     */
-    private final String value;
-
-    DataFeedSourceType(final String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DataFeedSourceType instance.
+     * Creates or finds a DataFeedSourceType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed DataFeedSourceType object, or null if unable to parse.
+     * @param name a name to look for.
+     *
+     * @return the corresponding DataFeedSourceType.
      */
-    public static DataFeedSourceType fromString(final String value) {
-        final DataFeedSourceType[] items = DataFeedSourceType.values();
-        for (final DataFeedSourceType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static DataFeedSourceType fromString(String name) {
+        return fromString(name, DataFeedSourceType.class);
     }
 
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known DataFeedSourceType values.
+     */
+    public static Collection<DataFeedSourceType> values() {
+        return values(DataFeedSourceType.class);
     }
 }

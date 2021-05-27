@@ -3,16 +3,38 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+
+import java.util.Collection;
+
 /**
  * Defines values for SingleBoundaryDirection.
  */
-public enum SingleBoundaryDirection {
+public final class SingleBoundaryDirection extends ExpandableStringEnum<SingleBoundaryDirection> {
     /**
-     * Enum value lower boundary.
+     * Defines the lower boundary in a boundary condition.
      */
-    LOWER,
+    public static final  SingleBoundaryDirection LOWER = fromString("LOWER");
     /**
-     * Enum value upper boundary.
+     * Defines the upper boundary in a boundary condition.
      */
-    UPPER
+    public static final  SingleBoundaryDirection UPPER = fromString("UPPER");
+
+    /**
+     * Creates or finds a BoundaryDirection from its string representation.
+     *
+     * @param name a name to look for.
+     *
+     * @return the corresponding BoundaryDirection.
+     */
+    public static SingleBoundaryDirection fromString(String name) {
+        return fromString(name, SingleBoundaryDirection.class);
+    }
+
+    /**
+     * @return known BoundaryDirection values.
+     */
+    public static Collection<SingleBoundaryDirection> values() {
+        return values(SingleBoundaryDirection.class);
+    }
 }

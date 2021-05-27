@@ -1673,7 +1673,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataSourceCredentialEntity> createDataSourceCredentialEntity(
+    public Mono<DataSourceCredentialEntity> createCredentialEntity(
         DataSourceCredentialEntity credentialEntity) {
         return createCredentialEntityWithResponse(credentialEntity)
             .map(Response::getValue);

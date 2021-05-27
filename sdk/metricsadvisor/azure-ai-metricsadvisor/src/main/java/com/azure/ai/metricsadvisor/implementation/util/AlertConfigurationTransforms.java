@@ -136,19 +136,15 @@ public final class AlertConfigurationTransforms {
                 ValueCondition innerValueCondition = new ValueCondition();
                 if (boundaryConditions != null) {
                     BoundaryDirection direction = boundaryConditions.getDirection();
-                    switch (direction) {
-                        case LOWER:
-                            innerValueCondition.setDirection(Direction.DOWN);
-                            break;
-                        case UPPER:
-                            innerValueCondition.setDirection(Direction.UP);
-                            break;
-                        case BOTH:
-                            innerValueCondition.setDirection(Direction.BOTH);
-                            break;
-                        default:
-                            throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: "
-                                + direction));
+                    if (direction == BoundaryDirection.LOWER) {
+                        innerValueCondition.setDirection(Direction.DOWN);
+                    } else if (direction == BoundaryDirection.UPPER) {
+                        innerValueCondition.setDirection(Direction.UP);
+                    } else if (direction == BoundaryDirection.BOTH) {
+                        innerValueCondition.setDirection(Direction.BOTH);
+                    } else {
+                        throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: "
+                            + direction));
                     }
                     innerValueCondition.setLower(boundaryConditions.getLowerBoundary());
                     innerValueCondition.setUpper(boundaryConditions.getUpperBoundary());
