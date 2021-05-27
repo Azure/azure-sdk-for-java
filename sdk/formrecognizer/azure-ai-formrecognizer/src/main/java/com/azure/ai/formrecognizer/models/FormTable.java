@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The FormTable model.
+ * Represents a table recognized from the input document.
  */
 @Immutable
 public final class FormTable {
@@ -35,13 +35,13 @@ public final class FormTable {
      */
     private final int pageNumber;
 
-    private FieldBoundingBox fieldBoundingBox;
+    private FieldBoundingBox boundingBox;
 
     static {
         FormTableHelper.setAccessor(new FormTableHelper.FormTableAccessor() {
             @Override
-            public void setBoundingBox(FormTable formTable, FieldBoundingBox fieldBoundingBox) {
-                formTable.setFieldBoundingBox(fieldBoundingBox);
+            public void setBoundingBox(FormTable formTable, FieldBoundingBox boundingBox) {
+                formTable.setBoundingBox(boundingBox);
             }
         });
     }
@@ -102,19 +102,20 @@ public final class FormTable {
      * The private setter to set the appearance property
      * via {@link FormTableHelper.FormTableAccessor}.
      *
-     * @param fieldBoundingBox the bounding box of the form table.
+     * @param boundingBox the bounding box of the form table.
      * @return the updated FormTable object.
      */
-    private FormTable setFieldBoundingBox(FieldBoundingBox fieldBoundingBox) {
-        this.fieldBoundingBox = fieldBoundingBox;
+    private FormTable setBoundingBox(FieldBoundingBox boundingBox) {
+        this.boundingBox = boundingBox;
         return this;
     }
 
     /**
      * Get the bounding box information for the the form table.
+     *
      * @return the bounding box information for the the form table.
      */
-    public FieldBoundingBox getFieldBoundingBox() {
-        return fieldBoundingBox;
+    public FieldBoundingBox getBoundingBox() {
+        return boundingBox;
     }
 }

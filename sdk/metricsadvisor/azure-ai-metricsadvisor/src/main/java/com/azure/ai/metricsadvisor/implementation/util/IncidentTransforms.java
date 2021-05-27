@@ -42,6 +42,9 @@ public class IncidentTransforms {
     private static AnomalyIncident fromInner(IncidentResult innerIncident) {
         AnomalyIncident incident = new AnomalyIncident();
         IncidentHelper.setId(incident, innerIncident.getIncidentId());
+        if (innerIncident.getDataFeedId() != null) {
+            IncidentHelper.setDataFeedId(incident, innerIncident.getDataFeedId().toString());
+        }
         if (innerIncident.getMetricId() != null) {
             IncidentHelper.setMetricId(incident, innerIncident.getMetricId().toString());
         }
@@ -56,6 +59,8 @@ public class IncidentTransforms {
         if (innerIncident.getProperty() != null) {
             IncidentHelper.setSeverity(incident, innerIncident.getProperty().getMaxSeverity());
             IncidentHelper.setStatus(incident, innerIncident.getProperty().getIncidentStatus());
+            IncidentHelper.setValue(incident, innerIncident.getProperty().getValueOfRootNode());
+            IncidentHelper.setExpectedValue(incident, innerIncident.getProperty().getExpectedValueOfRootNode());
         }
 
         IncidentHelper.setStartTime(incident, innerIncident.getStartTime());

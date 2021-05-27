@@ -33,13 +33,7 @@ public class KeyVaultJcaProviderTest {
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
         Security.addProvider(new KeyVaultJcaProvider());
-        KeyStore keystore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        keystore.load(parameter);
+        KeyStore keystore = PropertyConvertorUtils.getKeyVaultKeyStore();
         assertNotNull(keystore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
     }
 }
