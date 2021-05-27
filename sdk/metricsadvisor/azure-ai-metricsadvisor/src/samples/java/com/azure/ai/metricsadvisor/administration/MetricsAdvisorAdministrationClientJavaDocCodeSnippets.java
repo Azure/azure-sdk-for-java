@@ -529,22 +529,23 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationClient#listDataFeedIngestionStatus(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listDataFeedIngestionStatus(String, ListDataFeedIngestionOptions)}.
      */
     public void listDataFeedIngestionStatus() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions
         final String dataFeedId = "4957a2f7-a0f4-4fc0-b8d7-d866c1df0f4c";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
+        final ListDataFeedIngestionOptions options = new ListDataFeedIngestionOptions(startTime, endTime);
         PagedIterable<DataFeedIngestionStatus> ingestionStatuses
-            = metricsAdvisorAdminClient.listDataFeedIngestionStatus(dataFeedId);
+            = metricsAdvisorAdminClient.listDataFeedIngestionStatus(dataFeedId, options);
 
         for (DataFeedIngestionStatus ingestionStatus : ingestionStatuses) {
             System.out.printf("Timestamp: %s%n", ingestionStatus.getTimestamp());
             System.out.printf("Status: %s%n", ingestionStatus.getStatus());
             System.out.printf("Message: %s%n", ingestionStatus.getMessage());
         }
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions
     }
 
     /**

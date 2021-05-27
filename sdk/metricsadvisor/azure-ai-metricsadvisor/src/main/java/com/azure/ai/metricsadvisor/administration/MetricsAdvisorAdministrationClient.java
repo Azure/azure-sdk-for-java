@@ -214,9 +214,10 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the ingestion status of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions}
      *
      * @param dataFeedId The data feed id.
+     * @param options The additional parameters.
      * @return The ingestion statuses.
      * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
      * @throws NullPointerException If {@code dataFeedId}, {@code options}, {@code options.startTime},
@@ -224,8 +225,8 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId) {
-        return listDataFeedIngestionStatus(dataFeedId, null, Context.NONE);
+        String dataFeedId, ListDataFeedIngestionOptions options) {
+        return listDataFeedIngestionStatus(dataFeedId, options, Context.NONE);
     }
 
     /**

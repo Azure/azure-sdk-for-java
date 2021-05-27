@@ -8,7 +8,6 @@ import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
 
@@ -30,7 +29,7 @@ public class DataFeedIngestionSample {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final ListDataFeedIngestionOptions options = new ListDataFeedIngestionOptions(startTime, endTime);
         PagedIterable<DataFeedIngestionStatus> ingestionStatusIterable
-            = advisorAdministrationClient.listDataFeedIngestionStatus(dataFeedId, options, Context.NONE);
+            = advisorAdministrationClient.listDataFeedIngestionStatus(dataFeedId, options);
 
         for (DataFeedIngestionStatus ingestionStatus : ingestionStatusIterable) {
             System.out.printf("Timestamp: %s%n", ingestionStatus.getTimestamp());

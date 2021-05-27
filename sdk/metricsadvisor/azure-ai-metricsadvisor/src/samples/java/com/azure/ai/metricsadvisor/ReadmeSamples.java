@@ -32,13 +32,12 @@ import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
+import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.SuppressCondition;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
@@ -158,8 +157,7 @@ public class ReadmeSamples {
             dataFeedId,
             new ListDataFeedIngestionOptions(
                 OffsetDateTime.parse("2020-01-01T00:00:00Z"),
-                OffsetDateTime.parse("2020-09-09T00:00:00Z")),
-            Context.NONE
+                OffsetDateTime.parse("2020-09-09T00:00:00Z"))
         ).forEach(dataFeedIngestionStatus -> {
             System.out.printf("Message : %s%n", dataFeedIngestionStatus.getMessage());
             System.out.printf("Timestamp value : %s%n", dataFeedIngestionStatus.getTimestamp());
