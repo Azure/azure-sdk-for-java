@@ -72,7 +72,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public synchronized Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String accessKey = credential.getKey();
         byte[] key = Base64.getDecoder().decode(accessKey);
         Mac sha256HMAC;
@@ -109,7 +109,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
+    private Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents.collect(() -> {
             try {
                 return MessageDigest.getInstance("SHA-256");
@@ -136,7 +136,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         return headers;
     }
 
-    private void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
+    private synchronized void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
         final String signedHeaderNames = String.join(";", SIGNED_HEADERS);
         final String signedHeaderValues = Arrays.stream(SIGNED_HEADERS)
             .map(httpHeaders::get)
@@ -148,7 +148,6 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         }
 
         // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
-        // Signed headers: "host;x-ms-date;x-ms-content-sha256"
         // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
         String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signedHeaderValues;
         final String signature =
