@@ -424,15 +424,15 @@ public interface KubernetesCluster
             WithCreate withSystemAssignedManagedServiceIdentity();
         }
 
-        /** The stage of the Kubernetes cluster definition allowing to specify Kubernetes Role-Based Access Control. */
-        interface WithRoleBasedAccessControl {
-            /**
-             * Enables Kubernetes Role-Based Access Control.
-             *
-             * @return the next stage
-             */
-            WithCreate enableRoleBasedAccessControl();
-        }
+//        /** The stage of the Kubernetes cluster definition allowing to specify Kubernetes Role-Based Access Control. */
+//        interface WithRoleBasedAccessControl {
+//            /**
+//             * Enables Kubernetes Role-Based Access Control.
+//             *
+//             * @return the next stage
+//             */
+//            WithCreate enableRoleBasedAccessControl();
+//        }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
@@ -447,7 +447,7 @@ public interface KubernetesCluster
                 WithAccessProfiles,
                 WithAutoScalerProfile,
                 WithManagedServiceIdentity,
-                WithRoleBasedAccessControl,
+//                WithRoleBasedAccessControl,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }

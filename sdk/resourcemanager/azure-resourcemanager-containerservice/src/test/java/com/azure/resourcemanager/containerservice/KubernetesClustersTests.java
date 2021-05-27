@@ -16,7 +16,6 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

@@ -318,11 +318,11 @@ public class KubernetesClusterImpl
         return this;
     }
 
-    @Override
-    public KubernetesClusterImpl enableRoleBasedAccessControl() {
-        this.innerModel().withEnableRbac(true);
-        return this;
-    }
+//    @Override
+//    public KubernetesClusterImpl enableRoleBasedAccessControl() {
+//        this.innerModel().withEnableRbac(true);
+//        return this;
+//    }
 
     @Override
     public KubernetesClusterImpl withServicePrincipalSecret(String secret) {

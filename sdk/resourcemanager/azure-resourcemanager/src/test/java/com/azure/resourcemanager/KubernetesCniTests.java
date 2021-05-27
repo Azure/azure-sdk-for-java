@@ -115,7 +115,6 @@ public class KubernetesCniTests extends ResourceManagerTestBase {
                 .withDockerBridgeCidr("172.17.0.1/16")
                 .withLoadBalancerSku(LoadBalancerSku.STANDARD)
                 .attach()
-            .enableRoleBasedAccessControl()
             .create();
 
         azureResourceManager.accessManagement().roleAssignments().define(roleAssignmentName)
