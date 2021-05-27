@@ -29,7 +29,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-sdk-for-js/blob/1998b841dcfa3fd17f0d8e0a4973ea61a25d2ecb/sdk/containerregistry/container-registry/swagger/containerregistry.json
+input-file: containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
@@ -40,7 +40,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ContentProperties,DeleteRepositoryResult,RegistryArtifactOrderBy,TagOrderBy,RepositoryProperties
+custom-types: ManifestOrderBy,TagOrderBy,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestReference,RepositoryProperties
 custom-types-subpackage: models
 ```
 
@@ -116,6 +116,62 @@ directive:
   transform: >
     $["properties"]["imageName"].readOnly = true;
     $["properties"]["tag"].readOnly = true;
+```
+
+### Set modelAsString flag for the enum values of TagOrderBy
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TagOrderBy
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+```
+
+### Set modelAsString flag for the enum values of ManifestOrderBy
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ManifestOrderBy
+  transform: >
+    $["x-ms-enum"].modelAsString = true;
+```
+
+### Delete Quarantine fields from the manifest attributes.
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ManifestChangeableAttributes
+  transform: >
+    $["properties"]["deleteEnabled"]["x-ms-client-name"] = "deleteEnabled";
+    $["properties"]["writeEnabled"]["x-ms-client-name"] = "writeEnabled";
+    $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
+    $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
+    delete  $["properties"]["quarantineState"];
+    delete  $["properties"]["quarantineDetails"];
+```
+
+### Update the field names for RepositoryChangeableAttributes
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RepositoryChangeableAttributes
+  transform: >
+    $["properties"]["deleteEnabled"]["x-ms-client-name"] = "deleteEnabled";
+    $["properties"]["writeEnabled"]["x-ms-client-name"] = "writeEnabled";
+    $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
+    $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
+```
+
+### Update the field names for TagChangeableAttributes
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TagChangeableAttributes
+  transform: >
+    $["properties"]["deleteEnabled"]["x-ms-client-name"] = "deleteEnabled";
+    $["properties"]["writeEnabled"]["x-ms-client-name"] = "writeEnabled";
+    $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
+    $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
 
 

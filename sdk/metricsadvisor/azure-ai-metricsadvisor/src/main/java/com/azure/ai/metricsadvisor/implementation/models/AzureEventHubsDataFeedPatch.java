@@ -18,14 +18,14 @@ public final class AzureEventHubsDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private AzureEventHubsParameter dataSourceParameter;
+    private AzureEventHubsParameterPatch dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public AzureEventHubsParameter getDataSourceParameter() {
+    public AzureEventHubsParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -35,7 +35,7 @@ public final class AzureEventHubsDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureEventHubsDataFeedPatch object itself.
      */
-    public AzureEventHubsDataFeedPatch setDataSourceParameter(AzureEventHubsParameter dataSourceParameter) {
+    public AzureEventHubsDataFeedPatch setDataSourceParameter(AzureEventHubsParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

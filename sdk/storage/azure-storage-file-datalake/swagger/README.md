@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2020-02-10/DataLakeStorage.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.StorageDataLake/stable/2020-06-12/DataLakeStorage.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.datalake
@@ -189,6 +189,58 @@ directive:
   where: $["x-ms-paths"]["/{filesystem}?resource=filesystem"].get
   transform: >
     delete $["x-ms-pageable"];
+```
+
+### Adds FileSystem parameter to /{filesystem}?restype=container&comp=list&hierarchy
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}?restype=container&comp=list&hierarchy"]
+  transform: >
+    let param = $.get.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        $.get.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
+### Delete Container_ListBlobHierarchySegment x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}?restype=container&comp=list&hierarchy"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### ListBlobsHierarchySegmentResponse
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ListBlobsHierarchySegmentResponse
+  transform: >
+    if (!$.required.includes("Prefix")) {
+      $.required.push("Prefix");
+      $.required.push("Marker");
+      $.required.push("MaxResults");
+      $.required.push("Delimiter");
+      $.required.push("NextMarker");
+    }
+```
+
+### Adds FileSystem and Path parameter to /{filesystem}/{path}?comp=undelete
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{filesystem}/{path}?comp=undelete"].put
+  transform: >
+    let param = $.parameters[0];
+    if (!param["$ref"].endsWith("FileSystem")) {
+        const fileSystemPath = param["$ref"].replace(/[#].*$/, "#/parameters/FileSystem");
+        const pathPath = param["$ref"].replace(/[#].*$/, "#/parameters/Path");
+        $.parameters.splice(0, 0, { "$ref": fileSystemPath });
+        $.parameters.splice(1, 0, { "$ref": pathPath });
+    }
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)

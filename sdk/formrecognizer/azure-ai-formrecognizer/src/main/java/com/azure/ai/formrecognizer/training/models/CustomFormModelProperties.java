@@ -4,10 +4,12 @@
 package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.implementation.CustomFormModelPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The metadata properties for a custom model.
  */
+@Immutable
 public final class CustomFormModelProperties {
     private boolean isComposed;
 

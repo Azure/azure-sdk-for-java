@@ -15,39 +15,47 @@ private case class FilterAnalyzer() {
   // TODO: moderakh it is worth looking at DOM/AST:
   // https://github.com/Azure/azure-cosmos-dotnet-v3/tree/master/Microsoft.Azure.Cosmos/src/SqlObjects
   // https://github.com/Azure/azure-sdk-for-java/pull/17789#discussion_r530574888
-  def analyze(filters: Array[Filter]): AnalyzedFilters = {
-    val queryBuilder = new StringBuilder
-    queryBuilder.append("SELECT * FROM r")
-    val list = ListBuffer[(String, Any)]()
+  def analyze(filters: Array[Filter], cosmosReadConfig: CosmosReadConfig): AnalyzedFilters = {
 
-    val filtersToBePushedDownToCosmos = ListBuffer[Filter]()
-    val filtersNotSupportedByCosmos = ListBuffer[Filter]()
+    if (cosmosReadConfig.customQuery.isDefined) {
+      AnalyzedFilters(
+        cosmosReadConfig.customQuery.get,
+        Array.empty[Filter],
+        filters)
+    } else {
+      val queryBuilder = new StringBuilder
+      queryBuilder.append("SELECT * FROM r")
+      val list = ListBuffer[(String, Any)]()
 
-    val whereClauseBuilder = new StringBuilder
+      val filtersToBePushedDownToCosmos = ListBuffer[Filter]()
+      val filtersNotSupportedByCosmos = ListBuffer[Filter]()
 
-    for (filter <- filters) {
-      val filterAsCosmosPredicate = new StringBuilder()
-      val canBePushedDownToCosmos = appendCosmosQueryPredicate(filterAsCosmosPredicate, list, filter)
-      if (canBePushedDownToCosmos) {
-        if (filtersToBePushedDownToCosmos.nonEmpty) {
-          whereClauseBuilder.append(" AND ")
+      val whereClauseBuilder = new StringBuilder
+
+      for (filter <- filters) {
+        val filterAsCosmosPredicate = new StringBuilder()
+        val canBePushedDownToCosmos = appendCosmosQueryPredicate(filterAsCosmosPredicate, list, filter)
+        if (canBePushedDownToCosmos) {
+          if (filtersToBePushedDownToCosmos.nonEmpty) {
+            whereClauseBuilder.append(" AND ")
+          }
+          filtersToBePushedDownToCosmos.append(filter)
+          whereClauseBuilder.append(filterAsCosmosPredicate)
+        } else {
+          filtersNotSupportedByCosmos.append(filter)
         }
-        filtersToBePushedDownToCosmos.append(filter)
-        whereClauseBuilder.append(filterAsCosmosPredicate)
-      } else {
-        filtersNotSupportedByCosmos.append(filter)
       }
-    }
 
-    if (whereClauseBuilder.nonEmpty) {
-      queryBuilder.append(" WHERE ")
-      queryBuilder.append(whereClauseBuilder)
-    }
+      if (whereClauseBuilder.nonEmpty) {
+        queryBuilder.append(" WHERE ")
+        queryBuilder.append(whereClauseBuilder)
+      }
 
-    AnalyzedFilters(
-      CosmosParameterizedQuery(queryBuilder.toString(), list.map(f => f._1).toList, list.map(f => f._2).toList),
-      filtersToBePushedDownToCosmos.toArray,
-      filtersNotSupportedByCosmos.toArray)
+      AnalyzedFilters(
+        CosmosParameterizedQuery(queryBuilder.toString(), list.map(f => f._1).toList, list.map(f => f._2).toList),
+        filtersToBePushedDownToCosmos.toArray,
+        filtersNotSupportedByCosmos.toArray)
+    }
   }
 
   /**
@@ -124,17 +132,17 @@ private case class FilterAnalyzer() {
         true
 
       case StringStartsWith(attr, value: String) =>
-        queryBuilder.append("STARTSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
+        queryBuilder.append("STARTSWITH(").append(canonicalCosmosFieldPath(attr)).append(",").append(pName).append(")")
         list.append((pName, value))
         true
 
       case StringEndsWith(attr, value: String) =>
-        queryBuilder.append("ENDSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
+        queryBuilder.append("ENDSWITH(").append(canonicalCosmosFieldPath(attr)).append(",").append(pName).append(")")
         list.append((pName, value))
         true
 
       case StringContains(attr, value: String) =>
-        queryBuilder.append("CONTAINS(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
+        queryBuilder.append("CONTAINS(").append(canonicalCosmosFieldPath(attr)).append(",").append(pName).append(")")
         list.append((pName, value))
         true
 

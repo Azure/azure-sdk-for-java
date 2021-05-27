@@ -4,25 +4,23 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
 
 public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     private static final Path TEMP_FILE;
+    private static final String TEMP_FILE_PATH;
 
     static {
         try {
             TEMP_FILE = Files.createTempFile(null, null);
+            TEMP_FILE_PATH = TEMP_FILE.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,13 +41,10 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
     }
 
     private Mono<Void> createTempFile() {
-        try (InputStream inputStream = createRandomInputStream(options.getSize());
-             OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
-            copyStream(inputStream, outputStream);
-            return Mono.empty();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return Mono.fromCallable(() -> {
+            TestDataCreationHelper.writeToFile(TEMP_FILE_PATH, options.getSize(), DEFAULT_BUFFER_SIZE);
+            return 1;
+        }).then();
     }
 
     private Mono<Void> deleteTempFile() {
@@ -63,11 +58,11 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        blobClient.uploadFromFile(TEMP_FILE.toString(), true);
+        blobClient.uploadFromFile(TEMP_FILE_PATH, true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadFromFile(TEMP_FILE.toString(), true);
+        return blobAsyncClient.uploadFromFile(TEMP_FILE_PATH, true);
     }
 }

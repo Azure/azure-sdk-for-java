@@ -40,15 +40,15 @@ class SASTest extends APISpec {
 
     def setup() {
         pathName = generatePathName()
-        sasClient = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        sasClient = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
-        sasClient.append(defaultInputStream.get(), 0, defaultDataSize)
-        sasClient.flush(defaultDataSize)
+        sasClient.append(data.defaultInputStream, 0, data.defaultDataSize)
+        sasClient.flush(data.defaultDataSize)
     }
 
     DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
-        return new DataLakeServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-            .setStartTime(getUTCNow().minusDays(1))
+        return new DataLakeServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
             .setCacheControl("cache")
             .setContentDisposition("disposition")
@@ -67,10 +67,10 @@ class SASTest extends APISpec {
     }
 
     UserDelegationKey getUserDelegationInfo() {
-        def key = getOAuthServiceClient().getUserDelegationKey(getUTCNow().minusDays(1), getUTCNow().plusDays(1))
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def key = getOAuthServiceClient().getUserDelegationKey(namer.getUtcNow().minusDays(1), namer.getUtcNow().plusDays(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
         return key
     }
@@ -101,7 +101,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
@@ -109,7 +109,7 @@ class SASTest extends APISpec {
     def "directory sas permission"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -146,7 +146,7 @@ class SASTest extends APISpec {
     def "directory sas permission fail"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission() /* No read permission. */
             .setWritePermission(true)
@@ -171,7 +171,7 @@ class SASTest extends APISpec {
         def identifier = new DataLakeSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new DataLakeAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))
         fsc.setAccessPolicy(null, Arrays.asList(identifier))
 
         // Check containerSASPermissions
@@ -187,7 +187,7 @@ class SASTest extends APISpec {
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new DataLakeServiceSasSignatureValues(identifier.getId())
@@ -236,7 +236,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
@@ -244,7 +244,7 @@ class SASTest extends APISpec {
     def "directory user delegation"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -301,14 +301,14 @@ class SASTest extends APISpec {
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         when:
@@ -324,7 +324,7 @@ class SASTest extends APISpec {
 
     def "file user delegation saoid"() {
         setup:
-        def saoid = getRandomUUID()
+        def saoid = namer.getRandomUuid()
         def pathName = generatePathName()
 
         def permissions = new PathSasPermission()
@@ -338,17 +338,17 @@ class SASTest extends APISpec {
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         when:
         /* Grant userOID on root folder. */
-        def rootClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), "")
+        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
         ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
         PathAccessControlEntry ace = new PathAccessControlEntry()
             .setAccessControlType(AccessControlType.USER)
@@ -364,15 +364,15 @@ class SASTest extends APISpec {
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
 
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         then:
         notThrown(DataLakeStorageException)
         sasWithPermissions.contains("saoid=" + saoid)
 
         when:
-        client = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         def accessControl = client.getAccessControl()
 
         then:
@@ -382,7 +382,7 @@ class SASTest extends APISpec {
 
     def "file user delegation suoid"() {
         setup:
-        def suoid = getRandomUUID()
+        def suoid = namer.getRandomUuid()
         def pathName = generatePathName()
 
         def permissions = new PathSasPermission()
@@ -396,12 +396,12 @@ class SASTest extends APISpec {
             .setExecutePermission(true)
             .setManageOwnershipPermission(true)
             .setManageAccessControlPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         when: "User is not authorized yet."
@@ -411,8 +411,8 @@ class SASTest extends APISpec {
 
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         then:
         thrown(DataLakeStorageException)
@@ -420,7 +420,7 @@ class SASTest extends APISpec {
 
         when: "User is now authorized."
         /* Grant userOID on root folder. */
-        def rootClient = getDirectoryClient(primaryCredential, fsc.getFileSystemUrl(), "")
+        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
         ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
         PathAccessControlEntry ace = new PathAccessControlEntry()
             .setAccessControlType(AccessControlType.USER)
@@ -436,10 +436,10 @@ class SASTest extends APISpec {
         client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
 
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
-        client = getFileClient(primaryCredential, fsc.getFileSystemUrl(), pathName)
+        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
 
         then:
         notThrown(DataLakeStorageException)
@@ -448,7 +448,7 @@ class SASTest extends APISpec {
 
         when: "Use random other suoid. User should not be authorized."
         sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
-            .setAgentObjectId(getRandomUUID())
+            .setAgentObjectId(namer.getRandomUuid())
         sasWithPermissions = rootClient.generateUserDelegationSas(sasValues, key)
 
         client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
@@ -464,17 +464,17 @@ class SASTest extends APISpec {
         def permissions = new FileSystemSasPermission()
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
-        def cid = getRandomUUID()
+        def cid = namer.getRandomUuid()
 
         when:
         def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
@@ -494,14 +494,14 @@ class SASTest extends APISpec {
         def permissions = new FileSystemSasPermission()
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         def cid = "invalidcid"
@@ -524,8 +524,8 @@ class SASTest extends APISpec {
         def pathName = generatePathName()
         def fc = fsc.getFileClient(pathName)
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -535,7 +535,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -545,7 +545,7 @@ class SASTest extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == defaultText
+        os.toString() == data.defaultText
     }
 
     def "account sas file delete error"() {
@@ -562,7 +562,7 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -585,7 +585,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(false)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -608,7 +608,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -631,7 +631,7 @@ class SASTest extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
@@ -645,7 +645,7 @@ class SASTest extends APISpec {
         def fsc = getFileSystemClientBuilder(primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "?" + sas).buildClient()
         fsc.listPaths()
 
-        def fc = getFileClient(primaryCredential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
+        def fc = getFileClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
 
         fc.create()
 
@@ -673,7 +673,7 @@ class SASTest extends APISpec {
         } else {
             v = new DataLakeServiceSasSignatureValues(e, p)
         }
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
 
         v.setPermissions(p)
 
@@ -695,7 +695,7 @@ class SASTest extends APISpec {
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(util.getCanonicalName(primaryCredential.getAccountName()))
+        def sasToken = util.stringToSign(util.getCanonicalName(env.dataLakeAccount.name))
 
         then:
         sasToken == expected
@@ -728,7 +728,7 @@ class SASTest extends APISpec {
         p.setReadPermission(true)
 
         def v = new DataLakeServiceSasSignatureValues(e, p)
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
 
         p.setReadPermission(true)
         v.setPermissions(p)
@@ -762,7 +762,7 @@ class SASTest extends APISpec {
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(key, util.getCanonicalName(primaryCredential.getAccountName()))
+        def sasToken = util.stringToSign(key, util.getCanonicalName(env.dataLakeAccount.name))
 
         then:
         sasToken == expected
@@ -802,22 +802,16 @@ class SASTest extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
-        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            recordPolicy = interceptorManager.getRecordPolicy()
-        }
         def pathName = generatePathName()
         fsc.createDirectory(pathName)
 
         when:
-        new DataLakeFileSystemClientBuilder()
+        instrument(new DataLakeFileSystemClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -825,11 +819,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeFileSystemClientBuilder()
+        instrument(new DataLakeFileSystemClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -837,10 +829,8 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeFileSystemClientBuilder()
-            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new DataLakeFileSystemClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -848,12 +838,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildDirectoryClient()
             .getProperties()
 
@@ -861,12 +849,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildDirectoryClient()
             .getProperties()
 
@@ -874,11 +860,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .pathName(pathName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .pathName(pathName))
             .buildDirectoryClient()
             .getProperties()
 
@@ -886,12 +870,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildFileClient()
             .getProperties()
 
@@ -899,12 +881,10 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
             .pathName(pathName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildFileClient()
             .getProperties()
 
@@ -912,11 +892,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakePathClientBuilder()
+        instrument(new DataLakePathClientBuilder()
             .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .pathName(pathName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .pathName(pathName))
             .buildFileClient()
             .getProperties()
 
@@ -924,11 +902,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeServiceClientBuilder()
+        instrument(new DataLakeServiceClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -936,11 +912,9 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeServiceClientBuilder()
+        instrument(new DataLakeServiceClientBuilder()
             .endpoint(fsc.getFileSystemUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -948,10 +922,8 @@ class SASTest extends APISpec {
         noExceptionThrown()
 
         when:
-        new DataLakeServiceClientBuilder()
-            .endpoint(fsc.getFileSystemUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new DataLakeServiceClientBuilder()
+            .endpoint(fsc.getFileSystemUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 

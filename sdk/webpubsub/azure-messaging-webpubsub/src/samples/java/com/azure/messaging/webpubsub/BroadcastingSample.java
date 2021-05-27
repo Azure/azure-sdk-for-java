@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.util.Configuration;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 
 public class BroadcastingSample {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CS");
@@ -16,11 +17,11 @@ public class BroadcastingSample {
             .buildClient();
 
         // send a text message to the entire hub
-        chatHub.sendToAll("Hi there!");
+        chatHub.sendToAll("{\"message\": \"Hello world!\"}");
 
         // send a text message to a particular group
         WebPubSubGroup adminGroup = chatHub.getGroup("admin");
-        adminGroup.sendToAll("Hi admins!");
+        adminGroup.sendToAll("Hi admins!", WebPubSubContentType.TEXT_PLAIN);
 
         // send binary data to the entire hub
         byte[] data = new byte[10];

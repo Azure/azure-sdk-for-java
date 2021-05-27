@@ -10,6 +10,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -87,7 +88,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginSelectiveRestore(HttpClient httpClient) {
+    public void beginSelectiveKeyRestore(HttpClient httpClient) {
         if (getTestMode() != TestMode.PLAYBACK) {
             // Currently there is no Managed HSM environment for pipeline testing.
             // TODO: Remove once there is a proper cloud environment available.
@@ -103,18 +104,12 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultRestoreOperation, Void> selectiveRestorePoller =
-            client.beginSelectiveRestore("testKey", backupFolderUrl, sasToken);
+        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, Void> selectiveKeyRestorePoller =
+            client.beginSelectiveKeyRestore("testKey", backupFolderUrl, sasToken);
 
-        PollResponse<KeyVaultRestoreOperation> response = selectiveRestorePoller.poll();
+        selectiveKeyRestorePoller.waitForCompletion();
 
-        assertNotNull(response);
-        assertEquals(LongRunningOperationStatus.IN_PROGRESS, response.getStatus());
-        assertNotNull(response.getValue());
-
-        selectiveRestorePoller.waitForCompletion();
-
-        response = selectiveRestorePoller.poll();
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> response = selectiveKeyRestorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }

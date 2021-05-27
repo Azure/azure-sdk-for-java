@@ -25,15 +25,10 @@ class CPKTest extends APISpec {
 
     def setup() {
         key = new CustomerProvidedKey(getRandomKey())
-        def builder = new BlobContainerClientBuilder()
+        def builder = instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl().toString())
             .customerProvidedKey(key)
-            .httpClient(getHttpClient())
-            .credential(primaryCredential)
-
-        if (ENVIRONMENT.testMode == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+            .credential(env.primaryAccount.credential))
 
         cpkContainer = builder.buildClient()
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -41,7 +36,7 @@ class CPKTest extends APISpec {
         cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).getAppendBlobClient()
 
         def existingBlobSetup = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
-        existingBlobSetup.upload(defaultInputStream.get(), defaultDataSize)
+        existingBlobSetup.upload(data.defaultInputStream, data.defaultDataSize)
         cpkExistingBlob = existingBlobSetup
     }
 
@@ -57,7 +52,7 @@ class CPKTest extends APISpec {
 
     def "Put blob with CPK"() {
         when:
-        def response = cpkBlockBlob.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null,
+        def response = cpkBlockBlob.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null,
             null, null, null, null)
 
         then:
@@ -68,7 +63,7 @@ class CPKTest extends APISpec {
 
     def "Get blob with CPK"() {
         setup:
-        cpkBlockBlob.upload(defaultInputStream.get(), defaultDataSize)
+        cpkBlockBlob.upload(data.defaultInputStream, data.defaultDataSize)
         def datastream = new ByteArrayOutputStream()
 
         when:
@@ -76,12 +71,12 @@ class CPKTest extends APISpec {
 
         then:
         response.getStatusCode() == 200
-        datastream.toByteArray() == defaultData.array()
+        datastream.toByteArray() == data.defaultBytes
     }
 
     def "Put block with CPK"() {
         when:
-        def response = cpkBlockBlob.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize,
+        def response = cpkBlockBlob.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize,
             null, null, null, null)
 
         then:
@@ -93,7 +88,7 @@ class CPKTest extends APISpec {
         setup:
         def blobName = generateBlobName()
         def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
@@ -101,7 +96,7 @@ class CPKTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
 
         def response = cpkBlockBlob.stageBlockFromUrlWithResponse(getBlockID(), sourceBlob.getBlobUrl().toString() + "?" + sas,
@@ -116,7 +111,7 @@ class CPKTest extends APISpec {
         setup:
         def blockIDList = [getBlockID(), getBlockID()]
         for (def blockId in blockIDList) {
-            cpkBlockBlob.stageBlock(blockId, defaultInputStream.get(), defaultDataSize)
+            cpkBlockBlob.stageBlock(blockId, data.defaultInputStream, data.defaultDataSize)
         }
 
         when:
@@ -158,7 +153,7 @@ class CPKTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
 
         def response = cpkPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -190,7 +185,7 @@ class CPKTest extends APISpec {
         cpkAppendBlob.create()
 
         when:
-        def response = cpkAppendBlob.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null,
+        def response = cpkAppendBlob.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
             null, null)
 
         then:
@@ -204,7 +199,7 @@ class CPKTest extends APISpec {
         cpkAppendBlob.create()
         def blobName = generateBlobName()
         def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
@@ -212,7 +207,7 @@ class CPKTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         def response = cpkAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)

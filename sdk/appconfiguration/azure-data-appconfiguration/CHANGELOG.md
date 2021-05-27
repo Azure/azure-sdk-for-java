@@ -2,6 +2,10 @@
 
 ## 1.2.0-beta.2 (Unreleased)
 
+## 1.1.12 (2021-05-18)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
 
 ## 1.2.0-beta.1 (2021-04-09)
 ### New Features
@@ -71,14 +75,6 @@
 
 ### Breaking changes
 - SettingSelector takes a filter instead of taking a list of strings. Supported `SettingSelector` literal special character and wild card functions. 
-
-## 1.0.0-beta.7 (2019-11-26)
-- Added support for Azure Activity Directory authentication.
-- Added service API version support
-
-### Breaking Changes
-- Removed clearReadOnly API, updated setReadOnly API to support setting and clearing read only based on the flag passed.
-- Removed Range class, SettingSelector no longer supports Range.
 
 ## 1.0.0-preview.6 (2019-10-31)
 - Renamed addSetting, getSetting, deleteSetting, setSetting, listSettings, listSettingRevisions to
@@ -157,3 +153,11 @@ and
 demonstrate the new API.
 
 - Initial release. Please see the README and wiki for information on the new design.
+## 1.0.0-beta.7 (2019-11-26)
+- Added support for Azure Activity Directory authentication.
+- Added service API version support
+
+### Breaking Changes
+- Removed clearReadOnly API, updated setReadOnly API to support setting and clearing read only based on the flag passed.
+- Removed Range class, SettingSelector no longer supports Range.
+

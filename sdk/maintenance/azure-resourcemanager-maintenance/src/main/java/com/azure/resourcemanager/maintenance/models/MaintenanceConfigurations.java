@@ -14,7 +14,7 @@ public interface MaintenanceConfigurations {
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -26,7 +26,7 @@ public interface MaintenanceConfigurations {
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +40,7 @@ public interface MaintenanceConfigurations {
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,7 +52,7 @@ public interface MaintenanceConfigurations {
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

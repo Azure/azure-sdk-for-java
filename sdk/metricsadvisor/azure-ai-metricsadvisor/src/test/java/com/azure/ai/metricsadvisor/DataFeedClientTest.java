@@ -52,8 +52,6 @@ import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_COSMOS
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_TABLE;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.ELASTIC_SEARCH;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.HTTP_REQUEST;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.INFLUX_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MONGO_DB;
 import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MYSQL_DB;
@@ -500,32 +498,6 @@ public class DataFeedClientTest extends DataFeedTestBase {
     }
 
     /**
-     * Verifies valid azure http data feed created for required data feed details.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void createHttpRequestDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            // Arrange
-            creatDataFeedRunner(expectedDataFeed -> {
-                // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
-
-                assertNotNull(createdDataFeed);
-                dataFeedId.set(createdDataFeed.getId());
-
-                validateDataFeedResult(expectedDataFeed, createdDataFeed, HTTP_REQUEST);
-            }, HTTP_REQUEST);
-        } finally {
-            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
-                client.deleteDataFeed(dataFeedId.get());
-            }
-        }
-    }
-
-    /**
      * Verifies valid influx data feed created for required data feed details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -649,32 +621,6 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, AZURE_DATA_LAKE_STORAGE_GEN2);
             }, AZURE_DATA_LAKE_STORAGE_GEN2);
-        } finally {
-            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
-                client.deleteDataFeed(dataFeedId.get());
-            }
-        }
-    }
-
-    /**
-     * Verifies valid mongo db data feed created for required data feed details.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void createElasticsearchDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        try {
-            // Arrange
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            creatDataFeedRunner(expectedDataFeed -> {
-                // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
-
-                assertNotNull(createdDataFeed);
-                dataFeedId.set(createdDataFeed.getId());
-
-                validateDataFeedResult(expectedDataFeed, createdDataFeed, ELASTIC_SEARCH);
-            }, ELASTIC_SEARCH);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 client.deleteDataFeed(dataFeedId.get());
