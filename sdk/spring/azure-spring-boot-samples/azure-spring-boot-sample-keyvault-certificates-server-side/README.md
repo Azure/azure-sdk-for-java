@@ -70,7 +70,7 @@ Make sure the managed identity can access target Key Vault.
    source setup.sh <your subscription id> <resource group name> <region> <key vault name>
    ```
 
-1. follow the above step of [Using TLS](#Using TLS) or [Using MTLS](#Using MTLS).
+1. follow the above step of [Using TLS](#using-tls) or [Using MTLS](#using-mtls).
 
 ## Examples
 ## Troubleshooting
