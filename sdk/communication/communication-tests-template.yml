@@ -4,7 +4,7 @@ parameters:
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    - ${{ if startsWith(variables['System.StageName'], 'Public') }}:
+    ${{ if startsWith(variables['System.StageName'], 'Public') }}:
       - bash: echo "##vso[task.setvariable variable=AdditionalArgs]'-Djacoco.skip=false'"
     parameters:
       CloudConfig:
