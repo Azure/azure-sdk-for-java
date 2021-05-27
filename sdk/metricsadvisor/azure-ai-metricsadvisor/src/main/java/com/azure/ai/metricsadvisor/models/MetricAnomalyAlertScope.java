@@ -29,7 +29,7 @@ public final class MetricAnomalyAlertScope {
     }
 
     private MetricAnomalyAlertScope(TopNGroupScope topNGroup) {
-        this.scopeType = MetricAnomalyAlertScopeType.TOPN;
+        this.scopeType = MetricAnomalyAlertScopeType.TOP_N;
         this.topNGroup = topNGroup;
         this.seriesGroupId = null;
     }

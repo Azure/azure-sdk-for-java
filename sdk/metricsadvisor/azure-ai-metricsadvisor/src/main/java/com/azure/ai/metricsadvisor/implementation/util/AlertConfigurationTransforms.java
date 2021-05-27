@@ -123,7 +123,7 @@ public final class AlertConfigurationTransforms {
                             .getSeriesGroupInScope()
                             .asMap());
                 innerMetricAlertConfiguration.setDimensionAnomalyScope(innerId);
-            } else if (alertScope.getScopeType() == MetricAnomalyAlertScopeType.TOPN) {
+            } else if (alertScope.getScopeType() == MetricAnomalyAlertScopeType.TOP_N) {
                 innerMetricAlertConfiguration.setAnomalyScopeType(AnomalyScope.TOPN);
                 innerMetricAlertConfiguration.setTopNAnomalyScope(alertScope.getTopNGroupInScope());
             }

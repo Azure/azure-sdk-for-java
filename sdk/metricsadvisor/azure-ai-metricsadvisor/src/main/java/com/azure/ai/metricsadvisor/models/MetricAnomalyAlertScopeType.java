@@ -22,7 +22,7 @@ public final class MetricAnomalyAlertScopeType extends ExpandableStringEnum<Metr
     /**
      * Indicate that alert is scoped to TopN time series.
      */
-    public static final MetricAnomalyAlertScopeType TOPN = fromString("TopN");
+    public static final MetricAnomalyAlertScopeType TOP_N = fromString("TopN");
 
     /**
      * Creates or finds a MetricAnomalyAlertScopeType from its string representation.

@@ -68,6 +68,16 @@ public final class DimensionKey {
     }
 
     /**
+     * Gets dimension value for the given {@code dimensionName}.
+     *
+     * @param dimensionName The dimension name.
+     * @return The dimension value if exists, {@code null} otherwise.
+     */
+    public String get(String dimensionName) {
+        return this.dimensions.get(dimensionName);
+    }
+
+    /**
      * Removes a dimension name-value from the key.
      *
      * @param dimensionName The name of the dimension to remove.
