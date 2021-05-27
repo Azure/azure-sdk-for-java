@@ -10,6 +10,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 
 /** Base class for direct method calls. */
 @Fluent
@@ -37,14 +38,15 @@ public class MethodRequest {
     /**
      * Get the payload as JSON: the serialized form of the request body
      *
+     * @throws UnsupportedEncodingException UnsupportedEncodingException
      * @return the payload as JSON
      */
     @JsonIgnore
-    public String getPayloadAsJson() {
+    public String getPayloadAsJson() throws UnsupportedEncodingException {
         ObjectSerializer serializer = JsonSerializerProviders.createInstance();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         serializer.serialize(outputStream, this);
-        String payload = outputStream.toString();
+        String payload = outputStream.toString("UTF-8");
         return payload;
     }
 }

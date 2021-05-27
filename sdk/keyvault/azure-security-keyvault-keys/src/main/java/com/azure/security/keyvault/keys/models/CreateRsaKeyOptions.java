@@ -14,7 +14,7 @@ import java.util.Map;
 @Fluent
 public class CreateRsaKeyOptions extends CreateKeyOptions {
     /**
-     * The AES key size.
+     * The RSA key size.
      */
     private Integer keySize;
 

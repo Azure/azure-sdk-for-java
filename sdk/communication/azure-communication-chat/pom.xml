@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-chat</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+  <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
 
   <name>Microsoft Azure client library for chat application</name>
   <description>
@@ -50,12 +50,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -107,6 +107,15 @@
             <include>com/azure/communication/chat/*.class</include>
           </includes>
         </configuration>
+        <executions>
+          <execution>
+            <id>coverage-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

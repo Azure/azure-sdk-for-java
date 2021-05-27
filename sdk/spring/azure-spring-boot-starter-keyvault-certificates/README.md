@@ -174,15 +174,15 @@ Configure a `RestTemplate` bean which set the `AzureKeyVault` as trust store:
 ```java
 @Bean
 public RestTemplate restTemplateWithTLS() throws Exception {
-    KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+    KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
     KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
         System.getProperty("azure.keyvault.client-secret"));
-    trustStore.load(parameter);
+    azureKeyVaultKeyStore.load(parameter);
     SSLContext sslContext = SSLContexts.custom()
-                                       .loadTrustMaterial(trustStore, null)
+                                       .loadTrustMaterial(azureKeyVaultKeyStore, null)
                                        .build();
     SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
                                                                               (hostname, session) -> true);
@@ -249,16 +249,16 @@ Step 2. On the client side, update `RestTemplate`. Example:
 ```java
 @Bean
 public RestTemplate restTemplateWithMTLS() throws Exception {
-    KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+    KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
     KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
         System.getProperty("azure.keyvault.uri"),
         System.getProperty("azure.keyvault.tenant-id"),
         System.getProperty("azure.keyvault.client-id"),
         System.getProperty("azure.keyvault.client-secret"));
-    azuerKeyVaultKeyStore.load(parameter);
+    azureKeyVaultKeyStore.load(parameter);
     SSLContext sslContext = SSLContexts.custom()
-                                       .loadTrustMaterial(azuerKeyVaultKeyStore, null)
-                                       .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                       .loadTrustMaterial(azureKeyVaultKeyStore, null)
+                                       .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
                                        .build();
     SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
         (hostname, session) -> true);
@@ -316,6 +316,41 @@ spring:
           useInsecureTrustManager: true
 ```
 
+### Refresh certificates when have un trust certificate
+
+When the inbound certificate is not trusted, the KeyVaultKeyStore can fetch 
+certificates from KeyVault if the following property is configured:
+
+```yaml
+azure:
+  keyvault:
+    jca:
+      refresh-certificates-when-have-un-trust-certificate: true
+```
+
+Note: If you set refresh-certificates-when-have-un-trust-certificate=true, your server will be vulnerable
+to attack, because every untrusted certificate will cause your application to send a re-acquire certificate request.
+
+### Refresh certificate periodically
+
+KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
+
+```yaml
+azure:
+  keyvault:
+    jca:
+       certificates-refresh-interval: 1800000
+```
+
+Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.
+
+### Refresh certificate by java code
+
+You can also manually refresh the certificate by calling this method:
+```java
+KeyVaultCertificates.refreshCertsInfo();
+```
+
 ### Side-loading certificates
 
 This starter allows you to side-load certificates by supplying them as part of
@@ -348,7 +383,7 @@ logging:
       hibernate: ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
 
 ## Next steps
 The following section provide a sample project illustrating how to use the starter.
