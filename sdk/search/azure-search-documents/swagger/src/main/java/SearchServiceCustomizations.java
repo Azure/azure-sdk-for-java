@@ -64,7 +64,6 @@ public class SearchServiceCustomizations extends Customization {
         customizeImageAnalysisSkill(publicCustomization.getClass("ImageAnalysisSkill"));
         customizeEntityRecognitionSkill(publicCustomization.getClass("EntityRecognitionSkill"));
         customizeCustomEntityLookupSkill(publicCustomization.getClass("CustomEntityLookupSkill"));
-        customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
         customizeSearchField(publicCustomization.getClass("SearchField"));
         customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
         customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
@@ -149,12 +148,6 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeCustomEntityLookupSkill(ClassCustomization classCustomization) {
         changeClassModifier(classCustomization, PUBLIC_FINAL);
         addVarArgsOverload(classCustomization, "inlineEntitiesDefinition", "CustomEntity");
-    }
-
-    private void customizeCustomNormalizer(ClassCustomization classCustomization) {
-        changeClassModifier(classCustomization, PUBLIC_FINAL);
-        addVarArgsOverload(classCustomization, "tokenFilters", "TokenFilterName");
-        addVarArgsOverload(classCustomization, "charFilters", "CharFilterName");
     }
 
     private void customizeSearchField(ClassCustomization classCustomization) {

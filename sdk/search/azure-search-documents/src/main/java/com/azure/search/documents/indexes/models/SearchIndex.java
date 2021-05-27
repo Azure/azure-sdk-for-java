@@ -80,12 +80,6 @@ public final class SearchIndex {
     private List<CharFilter> charFilters;
 
     /*
-     * The normalizers for the index.
-     */
-    @JsonProperty(value = "normalizers")
-    private List<LexicalNormalizer> normalizers;
-
-    /*
      * A description of an encryption key that you create in Azure Key Vault.
      * This key is used to provide an additional level of encryption-at-rest
      * for your data when you want full assurance that no one, not even
@@ -415,38 +409,6 @@ public final class SearchIndex {
     @JsonSetter
     public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
-        return this;
-    }
-
-    /**
-     * Get the normalizers property: The normalizers for the index.
-     *
-     * @return the normalizers value.
-     */
-    public List<LexicalNormalizer> getNormalizers() {
-        return this.normalizers;
-    }
-
-    /**
-     * Set the normalizers property: The normalizers for the index.
-     *
-     * @param normalizers the normalizers value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setNormalizers(LexicalNormalizer... normalizers) {
-        this.normalizers = (normalizers == null) ? null : Arrays.asList(normalizers);
-        return this;
-    }
-
-    /**
-     * Set the normalizers property: The normalizers for the index.
-     *
-     * @param normalizers the normalizers value to set.
-     * @return the SearchIndex object itself.
-     */
-    @JsonSetter
-    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
-        this.normalizers = normalizers;
         return this;
     }
 
