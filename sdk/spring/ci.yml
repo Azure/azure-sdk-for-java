@@ -201,3 +201,7 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-storage-queue-operation
         groupId: com.azure.spring
+      - name: azure-core
+        groupId: com.azure
+      - name: azure-core-amqp
+        groupId: com.azure

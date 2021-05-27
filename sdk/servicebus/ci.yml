@@ -48,3 +48,7 @@ extends:
         groupId: com.azure
       - name: azure-messaging-servicebus-track2-perf
         groupId: com.azure
+      - name: azure-core
+        groupId: com.azure
+      - name: azure-core-amqp
+        groupId: com.azure

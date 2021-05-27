@@ -34,3 +34,8 @@ extends:
       - name: azure-search-documents
         groupId: com.azure
         safeName: azuresearch
+    AdditionalModules:
+      - name: azure-core
+        groupId: com.azure
+      - name: azure-core-amqp
+        groupId: com.azure

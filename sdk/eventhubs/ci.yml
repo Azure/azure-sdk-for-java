@@ -48,3 +48,8 @@ extends:
       - name: azure-messaging-eventhubs-checkpointstore-blob
         groupId: com.azure
         safeName: azuremessagingeventhubscheckpointstoreblob
+    AdditionalModules:
+      - name: azure-core
+        groupId: com.azure
+      - name: azure-core-amqp
+        groupId: com.azure
