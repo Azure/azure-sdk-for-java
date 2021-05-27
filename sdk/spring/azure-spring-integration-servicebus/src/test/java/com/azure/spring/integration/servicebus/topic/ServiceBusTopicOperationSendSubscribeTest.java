@@ -27,7 +27,6 @@ public class ServiceBusTopicOperationSendSubscribeTest
     private AutoCloseable closeable;
 
     @BeforeEach
-    @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory);
@@ -58,7 +57,7 @@ public class ServiceBusTopicOperationSendSubscribeTest
         assertTrue(message.getHeaders().containsKey(RECEIVED_MESSAGE_CONTEXT));
         final ServiceBusReceivedMessageContext receivedMessageContext = message.getHeaders()
                                                                                .get(RECEIVED_MESSAGE_CONTEXT,
-                                                                                    ServiceBusReceivedMessageContext.class);
+                                                                                   ServiceBusReceivedMessageContext.class);
         assertNotNull(receivedMessageContext);
 
         receivedMessageContext.complete();
@@ -69,7 +68,7 @@ public class ServiceBusTopicOperationSendSubscribeTest
     }
 
     protected void verifyCompleteCalledTimes(int times) {
-        waitMillis(25);
+        waitMillis(500);
         final int actualTimes = ((ServiceBusTopicTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
 
         if (actualTimes != times) {
@@ -78,7 +77,7 @@ public class ServiceBusTopicOperationSendSubscribeTest
     }
 
     protected void verifyAbandonCalledTimes(int times) {
-        waitMillis(25);
+        waitMillis(500);
         final int actualTimes = ((ServiceBusTopicTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
 
         if (actualTimes != times) {
