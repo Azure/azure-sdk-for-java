@@ -74,9 +74,14 @@ public enum DataFeedSourceType {
     ELASTIC_SEARCH("Elasticsearch"),
 
     /**
-     * Enum value AzureCosmosDB.
+     * Enum value AzureDataLakeStorageGen2.
      */
-    AZURE_DATA_LAKE_STORAGE_GEN2("AzureDataLakeStorageGen2");
+    AZURE_DATA_LAKE_STORAGE_GEN2("AzureDataLakeStorageGen2"),
+
+    /**
+     * Enum value AzureLogAnalytics.
+     */
+    AZURE_LOG_ANALYTICS("AzureLogAnalytics");
 
     /**
      /**

@@ -2,6 +2,11 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 
+### Features added
+- Added support for Azure Log Analytics DataFeed source.
+
+### Breaking changes
+- Renamed `top` parameter to `maxPageSize`
 
 ## 1.0.0-beta.3 (2021-02-09)
 - Support Azure Active Directory (AAD) authentication for Metrics Advisor clients. 
