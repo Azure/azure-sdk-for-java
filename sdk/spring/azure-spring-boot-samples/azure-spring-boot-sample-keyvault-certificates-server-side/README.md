@@ -17,12 +17,28 @@ This sample can work together with [azure-spring-boot-sample-keyvault-certificat
 
 ### Run Sample with service principal
 1. Run command `az login` to login to the Azure CLI.
+1. Open `scripts/export_environment_variables.sh` and enter the following information:
+   ```
+    # Set your Azure Subscription id where all required resources will be created.
+    export SUBSCRIPTION_ID=
+    
+    # Set the name for your Azure resource group to be created.
+    export RESOURCE_GROUP_NAME=
+    
+    # Set the region for all resources to be created.
+    export REGION_NAME=
+    
+    # Set the name for your Azure Key Vault to be created.
+    export KEY_VAULT_NAME=
+    
+    # Set the name for your Service Principal to be created. It should be NULL if using managed identity. ====
+    export SERVICE_PRINCIPAL_NAME=
+   ```
 1. Build up required Azure resources by running command. 
    ```
-   cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
-   source setup.sh <your subscription id> <resource group name> <region> <key vault name> <service principal name>
+   source script/setup.sh
    ```
-#### Using TLS
+#### Using TLS with service principal
 1. Run command `mvn spring-boot:run`
 1. Access https://localhost:8443/
 
@@ -31,7 +47,7 @@ Then you will get
 Hello World
 ``` 
 
-#### Using MTLS
+#### Using MTLS with service principal
 
 1. Add properties in application.yml on the base of current configuration:
 ```yaml
@@ -64,13 +80,26 @@ server:
 Make sure the managed identity can access target Key Vault.
 
 1. Run command `az login` to login to the Azure CLI.
+1. Open `scripts/export_environment_variables.sh` and enter the following information:
+   ```
+    # Set your Azure Subscription id where all required resources will be created.
+    export SUBSCRIPTION_ID=
+    
+    # Set the name for your Azure resource group to be created.
+    export RESOURCE_GROUP_NAME=
+    
+    # Set the region for all resources to be created.
+    export REGION_NAME=
+    
+    # Set the name for your Azure Key Vault to be created.
+    export KEY_VAULT_NAME=
+   ```
 1. Build up required Azure resources by running command
    ```
-   cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
-   source setup.sh <your subscription id> <resource group name> <region> <key vault name>
+   source script/setup.sh
    ```
 
-1. follow the above step of [Using TLS](#using-tls) or [Using MTLS](#using-mtls).
+1. Follow the above step of [Using TLS with service principal](#using-tls-with-service-principal) or [Using MTLS with service principal](#using-mtls-with-service-principal).
 
 ## Examples
 ## Troubleshooting
