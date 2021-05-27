@@ -7,6 +7,7 @@ while protecting the identities of your customers at the same time.
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+- (Optional) You can refer to sample project to learn how to use this artifact: [ms-identity-java-spring-tutorial].
 
 ### Prerequisites
 - [Environment checklist][environment_checklist]
@@ -515,3 +516,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [web_application_accessing_resource_servers]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c#web-application-accessing-resource-servers
 [azure-spring-boot-sample-active-directory-b2c-oidc]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 [azure-spring-boot-sample-active-directory-b2c-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-resource-server
+[ms-identity-java-spring-tutorial]:https://github.com/Azure-Samples/ms-identity-java-spring-tutorial
