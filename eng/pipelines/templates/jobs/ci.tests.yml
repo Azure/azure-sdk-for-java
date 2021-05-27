@@ -58,7 +58,7 @@ jobs:
       - script: |
           ls -R $JAVA_HOME
         displayName: Dump JRE folder
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
