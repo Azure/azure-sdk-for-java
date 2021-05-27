@@ -269,7 +269,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Test
     public void signVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         // TODO: Uncomment after fixing https://github.com/Azure/azure-sdk-for-java/issues/21677
-        /*Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
+        Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
         curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
         curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
         curveToSignature.put(KeyCurveName.P_521, SignatureAlgorithm.ES512);
@@ -318,7 +318,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
             Boolean verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plainText, signature).isValid();
             assertTrue(verifyStatus);
-        }*/
+        }
     }
 
     @Test
