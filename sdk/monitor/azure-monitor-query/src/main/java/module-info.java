@@ -11,4 +11,5 @@ module com.azure.monitor.query {
     exports com.azure.monitor.query.models;
     opens com.azure.monitor.query.metrics.implementation.models to com.fasterxml.jackson.databind;
     opens com.azure.monitor.query.log.implementation.models to com.fasterxml.jackson.databind;
+    opens com.azure.monitor.query.models to com.fasterxml.jackson.databind;
 }

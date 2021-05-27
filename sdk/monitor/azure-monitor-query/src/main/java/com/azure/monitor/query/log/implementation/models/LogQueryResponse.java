@@ -6,7 +6,6 @@ package com.azure.monitor.query.log.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 /** The LogQueryResponse model. */
@@ -25,21 +24,17 @@ public final class LogQueryResponse {
     private Integer status;
 
     /*
-     * Contains the tables, columns & rows resulting from a query.
+     * Contains the tables, columns & rows resulting from the query or the
+     * error details if the query failed.
      */
     @JsonProperty(value = "body")
-    private QueryResults body;
+    private LogQueryResult body;
 
+    /*
+     * Dictionary of <string>
+     */
     @JsonProperty(value = "headers")
-    private Map<String, String> responseHeaders;
-
-    public Map<String, String> getResponseHeaders() {
-        return responseHeaders;
-    }
-
-    public void setResponseHeaders(Map<String, String> responseHeaders) {
-        this.responseHeaders = responseHeaders;
-    }
+    private Map<String, String> headers;
 
     /**
      * Get the id property: The id property.
@@ -47,7 +42,6 @@ public final class LogQueryResponse {
      * @return the id value.
      */
     public String getId() {
-
         return this.id;
     }
 
@@ -83,22 +77,44 @@ public final class LogQueryResponse {
     }
 
     /**
-     * Get the body property: Contains the tables, columns &amp; rows resulting from a query.
+     * Get the body property: Contains the tables, columns &amp; rows resulting from the query or the error details if
+     * the query failed.
      *
      * @return the body value.
      */
-    public QueryResults getBody() {
+    public LogQueryResult getBody() {
         return this.body;
     }
 
     /**
-     * Set the body property: Contains the tables, columns &amp; rows resulting from a query.
+     * Set the body property: Contains the tables, columns &amp; rows resulting from the query or the error details if
+     * the query failed.
      *
      * @param body the body value to set.
      * @return the LogQueryResponse object itself.
      */
-    public LogQueryResponse setBody(QueryResults body) {
+    public LogQueryResponse setBody(LogQueryResult body) {
         this.body = body;
+        return this;
+    }
+
+    /**
+     * Get the headers property: Dictionary of &lt;string&gt;.
+     *
+     * @return the headers value.
+     */
+    public Map<String, String> getHeaders() {
+        return this.headers;
+    }
+
+    /**
+     * Set the headers property: Dictionary of &lt;string&gt;.
+     *
+     * @param headers the headers value to set.
+     * @return the LogQueryResponse object itself.
+     */
+    public LogQueryResponse setHeaders(Map<String, String> headers) {
+        this.headers = headers;
         return this;
     }
 

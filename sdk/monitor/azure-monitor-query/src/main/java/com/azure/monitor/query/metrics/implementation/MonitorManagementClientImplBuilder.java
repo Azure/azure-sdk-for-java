@@ -211,7 +211,7 @@ public final class MonitorManagementClientImplBuilder {
             this.host = "https://management.azure.com";
         }
         if (apiVersion == null) {
-            this.apiVersion = "2018-01-01";
+            this.apiVersion = "2017-05-01-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

@@ -9,23 +9,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The HttpRequestDataFeedPatch model. */
+/** The AzureLogAnalyticsDataFeedPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
-@JsonTypeName("HttpRequest")
+@JsonTypeName("AzureLogAnalytics")
 @Fluent
-public final class HttpRequestDataFeedPatch extends DataFeedDetailPatch {
+public final class AzureLogAnalyticsDataFeedPatch extends DataFeedDetailPatch {
     /*
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private HttpRequestParameter dataSourceParameter;
+    private AzureLogAnalyticsParameterPatch dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public HttpRequestParameter getDataSourceParameter() {
+    public AzureLogAnalyticsParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -33,9 +33,9 @@ public final class HttpRequestDataFeedPatch extends DataFeedDetailPatch {
      * Set the dataSourceParameter property: The dataSourceParameter property.
      *
      * @param dataSourceParameter the dataSourceParameter value to set.
-     * @return the HttpRequestDataFeedPatch object itself.
+     * @return the AzureLogAnalyticsDataFeedPatch object itself.
      */
-    public HttpRequestDataFeedPatch setDataSourceParameter(HttpRequestParameter dataSourceParameter) {
+    public AzureLogAnalyticsDataFeedPatch setDataSourceParameter(AzureLogAnalyticsParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

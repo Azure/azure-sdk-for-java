@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureCosmosDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
+import com.azure.ai.metricsadvisor.models.AzureLogAnalyticsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureTableDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedAutoRollUpMethod;
@@ -23,8 +24,6 @@ import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.ElasticsearchDataFeedSource;
-import com.azure.ai.metricsadvisor.models.HttpRequestDataFeedSource;
 import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.models.MongoDBDataFeedSource;
@@ -53,10 +52,7 @@ import static com.azure.ai.metricsadvisor.TestUtils.COSMOS_DB_CONNECTION_STRING;
 import static com.azure.ai.metricsadvisor.TestUtils.DATA_EXPLORER_CONNECTION_STRING;
 import static com.azure.ai.metricsadvisor.TestUtils.DATA_EXPLORER_QUERY;
 import static com.azure.ai.metricsadvisor.TestUtils.DIRECTORY_TEMPLATE;
-import static com.azure.ai.metricsadvisor.TestUtils.ELASTIC_SEARCH_AUTH_HEADER;
-import static com.azure.ai.metricsadvisor.TestUtils.ELASTIC_SEARCH_HOST;
 import static com.azure.ai.metricsadvisor.TestUtils.FILE_TEMPLATE;
-import static com.azure.ai.metricsadvisor.TestUtils.HTTP_URL;
 import static com.azure.ai.metricsadvisor.TestUtils.INFLUX_DB_CONNECTION_STRING;
 import static com.azure.ai.metricsadvisor.TestUtils.INFLUX_DB_PASSWORD;
 import static com.azure.ai.metricsadvisor.TestUtils.INGESTION_START_TIME;
@@ -130,9 +126,6 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 dataFeed = new DataFeed().setSource(new AzureTableDataFeedSource(TABLE_CONNECTION_STRING,
                     TABLE_QUERY, TEST_DB_NAME));
                 break;
-            case HTTP_REQUEST:
-                dataFeed = new DataFeed().setSource(new HttpRequestDataFeedSource(HTTP_URL, "GET"));
-                break;
             case INFLUX_DB:
                 dataFeed = new DataFeed().setSource(new InfluxDBDataFeedSource(INFLUX_DB_CONNECTION_STRING,
                     TEST_DB_NAME, "adreadonly", INFLUX_DB_PASSWORD, TEMPLATE_QUERY));
@@ -157,15 +150,19 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 dataFeed = new DataFeed().setSource(new AzureCosmosDataFeedSource(COSMOS_DB_CONNECTION_STRING,
                     TEMPLATE_QUERY, TEST_DB_NAME, TEST_DB_NAME));
                 break;
-            case ELASTIC_SEARCH:
-                dataFeed = new DataFeed().setSource(new ElasticsearchDataFeedSource(ELASTIC_SEARCH_HOST, "9200",
-                    ELASTIC_SEARCH_AUTH_HEADER, TEMPLATE_QUERY));
-                break;
             case AZURE_DATA_LAKE_STORAGE_GEN2:
                 dataFeed = new DataFeed().setSource(new AzureDataLakeStorageGen2DataFeedSource(
                     "adsampledatalakegen2",
                     AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                     TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
+                break;
+            case AZURE_LOG_ANALYTICS:
+                dataFeed = new DataFeed().setSource(new AzureLogAnalyticsDataFeedSource(
+                    "tenant_id",
+                    "client_id",
+                    "client_secret",
+                    "workspace_id",
+                    TEMPLATE_QUERY));
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);
@@ -230,7 +227,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (AzureDataExplorerDataFeedSource) expectedDataFeed.getSource();
                 final AzureDataExplorerDataFeedSource actualExplorerDataFeedSource =
                     (AzureDataExplorerDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualExplorerDataFeedSource.getConnectionString());
+                // assertNotNull(actualExplorerDataFeedSource.getConnectionString());
                 assertEquals(expExplorerDataFeedSource.getQuery(), actualExplorerDataFeedSource.getQuery());
                 break;
             case AZURE_TABLE:
@@ -238,19 +235,9 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (AzureTableDataFeedSource) expectedDataFeed.getSource();
                 final AzureTableDataFeedSource actualTableDataFeedSource =
                     (AzureTableDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualTableDataFeedSource.getConnectionString());
+                // assertNotNull(actualTableDataFeedSource.getConnectionString());
                 assertEquals(expTableDataFeedSource.getTableName(), actualTableDataFeedSource.getTableName());
                 assertEquals(expTableDataFeedSource.getQueryScript(), actualTableDataFeedSource.getQueryScript());
-                break;
-            case HTTP_REQUEST:
-                final HttpRequestDataFeedSource expHttpDataFeedSource =
-                    (HttpRequestDataFeedSource) expectedDataFeed.getSource();
-                final HttpRequestDataFeedSource actualHttpDataFeedSource =
-                    (HttpRequestDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualHttpDataFeedSource.getUrl());
-                assertEquals(expHttpDataFeedSource.getHttpHeader(), actualHttpDataFeedSource.getHttpHeader());
-                assertEquals(expHttpDataFeedSource.getPayload(), actualHttpDataFeedSource.getPayload());
-                assertEquals(expHttpDataFeedSource.getHttpMethod(), actualHttpDataFeedSource.getHttpMethod());
                 break;
             case INFLUX_DB:
                 final InfluxDBDataFeedSource expInfluxDataFeedSource =
@@ -259,7 +246,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (InfluxDBDataFeedSource) actualDataFeed.getSource();
                 assertNotNull(actualInfluxDataFeedSource.getConnectionString());
                 assertEquals(expInfluxDataFeedSource.getDatabase(), actualInfluxDataFeedSource.getDatabase());
-                assertNotNull(actualInfluxDataFeedSource.getPassword());
+                // assertNotNull(actualInfluxDataFeedSource.getPassword());
                 assertNotNull(actualInfluxDataFeedSource.getUserName());
                 break;
             case MONGO_DB:
@@ -267,14 +254,14 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (MongoDBDataFeedSource) expectedDataFeed.getSource();
                 final MongoDBDataFeedSource actualMongoDataFeedSource =
                     (MongoDBDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualMongoDataFeedSource.getConnectionString());
+                // assertNotNull(actualMongoDataFeedSource.getConnectionString());
                 assertEquals(expMongoDataFeedSource.getDatabase(), actualMongoDataFeedSource.getDatabase());
                 assertEquals(expMongoDataFeedSource.getCommand(), actualMongoDataFeedSource.getCommand());
                 break;
             case MYSQL_DB:
                 final MySqlDataFeedSource expMySqlDataFeedSource = (MySqlDataFeedSource) expectedDataFeed.getSource();
                 final MySqlDataFeedSource actualMySqlDataFeedSource = (MySqlDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualMySqlDataFeedSource.getConnectionString());
+                // assertNotNull(actualMySqlDataFeedSource.getConnectionString());
                 assertEquals(expMySqlDataFeedSource.getQuery(), actualMySqlDataFeedSource.getQuery());
                 break;
             case POSTGRE_SQL_DB:
@@ -282,7 +269,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     (PostgreSqlDataFeedSource) expectedDataFeed.getSource();
                 final PostgreSqlDataFeedSource actualPostGreDataFeedSource =
                     (PostgreSqlDataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualPostGreDataFeedSource.getConnectionString());
+                // assertNotNull(actualPostGreDataFeedSource.getConnectionString());
                 assertEquals(expPostGreDataFeedSource.getQuery(), actualPostGreDataFeedSource.getQuery());
                 break;
             case SQL_SERVER_DB:
@@ -300,27 +287,16 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 final AzureCosmosDataFeedSource actualCosmosDataFeedSource =
                     (AzureCosmosDataFeedSource) actualDataFeed.getSource();
                 assertEquals(expCosmosDataFeedSource.getCollectionId(), actualCosmosDataFeedSource.getCollectionId());
-                assertNotNull(actualCosmosDataFeedSource.getConnectionString());
+                // assertNotNull(actualCosmosDataFeedSource.getConnectionString());
                 assertEquals(expCosmosDataFeedSource.getDatabase(), actualCosmosDataFeedSource.getDatabase());
                 assertEquals(expCosmosDataFeedSource.getSqlQuery(), actualCosmosDataFeedSource.getSqlQuery());
-                break;
-            case ELASTIC_SEARCH:
-                final ElasticsearchDataFeedSource expElasticsearchDataFeedSource =
-                    (ElasticsearchDataFeedSource) expectedDataFeed.getSource();
-                final ElasticsearchDataFeedSource actualDataFeedSource =
-                    (ElasticsearchDataFeedSource) actualDataFeed.getSource();
-                // Auth header is no longer returned from the service.
-                // assertNotNull(actualDataFeedSource.getAuthHeader());
-                assertNotNull(actualDataFeedSource.getHost());
-                assertEquals(expElasticsearchDataFeedSource.getPort(), actualDataFeedSource.getPort());
-                assertEquals(expElasticsearchDataFeedSource.getQuery(), actualDataFeedSource.getQuery());
                 break;
             case AZURE_DATA_LAKE_STORAGE_GEN2:
                 final AzureDataLakeStorageGen2DataFeedSource expDataLakeStorageGen2DataFeedSource =
                     (AzureDataLakeStorageGen2DataFeedSource) expectedDataFeed.getSource();
                 final AzureDataLakeStorageGen2DataFeedSource actualDataLakeFeedSource =
                     (AzureDataLakeStorageGen2DataFeedSource) actualDataFeed.getSource();
-                assertNotNull(actualDataLakeFeedSource.getAccountKey());
+                // assertNotNull(actualDataLakeFeedSource.getAccountKey());
                 assertNotNull(actualDataLakeFeedSource.getAccountName());
                 assertEquals(expDataLakeStorageGen2DataFeedSource.getDirectoryTemplate(),
                     actualDataLakeFeedSource.getDirectoryTemplate());
@@ -328,6 +304,15 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     actualDataLakeFeedSource.getFileSystemName());
                 assertEquals(expDataLakeStorageGen2DataFeedSource.getFileTemplate(),
                     actualDataLakeFeedSource.getFileTemplate());
+                break;
+            case AZURE_LOG_ANALYTICS:
+                final AzureLogAnalyticsDataFeedSource expLogAnalyticsDataFeedSource =
+                    (AzureLogAnalyticsDataFeedSource) expectedDataFeed.getSource();
+                final AzureLogAnalyticsDataFeedSource logAnalyticsDataFeedSource =
+                    (AzureLogAnalyticsDataFeedSource) actualDataFeed.getSource();
+                assertNotNull(logAnalyticsDataFeedSource.getQuery());
+                assertEquals(expLogAnalyticsDataFeedSource.getClientId(),
+                    logAnalyticsDataFeedSource.getClientId());
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);

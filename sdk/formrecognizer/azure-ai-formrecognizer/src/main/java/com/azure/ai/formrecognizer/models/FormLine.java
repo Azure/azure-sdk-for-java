@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The FormLine model.
+ * Represents a line of text and its appearance.
  */
 @Immutable
 public final class FormLine extends FormElement {

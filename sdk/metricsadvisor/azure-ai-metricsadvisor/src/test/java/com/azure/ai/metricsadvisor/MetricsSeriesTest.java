@@ -52,7 +52,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<String> actualDimensionValues = client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME,
-            new ListMetricDimensionValuesOptions().setTop(20).setSkip(20), Context.NONE)
+            new ListMetricDimensionValuesOptions().setMaxPageSize(20).setSkip(20), Context.NONE)
             .stream().sorted().collect(Collectors.toList());
 
         Assertions.assertIterableEquals(EXPECTED_DIMENSION_VALUES, actualDimensionValues);

@@ -47,7 +47,7 @@ public final class MetricValue {
      * number of values that contributed to the average value.
      */
     @JsonProperty(value = "count")
-    private Double count;
+    private Long count;
 
     /**
      * Creates an instance of MetricValue class.
@@ -154,7 +154,7 @@ public final class MetricValue {
      *
      * @return the count value.
      */
-    public Double getCount() {
+    public Long getCount() {
         return this.count;
     }
 
@@ -165,7 +165,7 @@ public final class MetricValue {
      * @param count the count value to set.
      * @return the MetricValue object itself.
      */
-    public MetricValue setCount(Double count) {
+    public MetricValue setCount(Long count) {
         this.count = count;
         return this;
     }
