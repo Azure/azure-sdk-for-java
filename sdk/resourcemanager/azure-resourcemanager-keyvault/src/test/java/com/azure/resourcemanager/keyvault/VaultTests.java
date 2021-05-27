@@ -124,13 +124,13 @@ public class VaultTests extends KeyVaultManagementTest {
         Vault vault = keyVaultManager.vaults().define(vaultName)
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName)
-            .enableRoleBasedAccessControl()
+            .withRoleBasedAccessControl()
             .create();
 
         Assertions.assertTrue(vault.roleBasedAccessControlEnabled());
 
         vault.update()
-            .disableRoleBasedAccessControl()
+            .withoutRoleBasedAccessControl()
             .apply();
 
         Assertions.assertFalse(vault.roleBasedAccessControlEnabled());
