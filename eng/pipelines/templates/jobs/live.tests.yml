@@ -22,7 +22,7 @@ parameters:
 jobs:
   - job:
     dependsOn: ${{ parameters.DependsOn }}
-    condition: ne(${{ parameters.Matrix }}, '{}')
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]

@@ -53,15 +53,34 @@ jobs:
             - '!sdk/**/test-recordings'
             - '!sdk/**/session-records'
 
-      - script: |
-          echo "##vso[build.addbuildtag]Scheduled"
-        displayName: 'Tag scheduled builds'
-        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
           versionSpec: '3.6'
+
+      # This step needs to run before we update to using dev versions otherwise dependency
+      # check in the script will not fully work because the versions will mismatch
+      - task: PythonScript@0
+        displayName: 'Generate directories variable for sparse checkout'
+        inputs:
+          scriptPath: 'eng/scripts/generate_from_source_pom.py'
+          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
+
+      - script: |
+          echo "##vso[build.addbuildtag]Scheduled"
+        displayName: 'Tag scheduled builds'
+        condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
@@ -91,23 +110,6 @@ jobs:
           python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Apply version settings to repository
-
-      - template: ../steps/generate-project-list.yml
-        parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
-
-      - task: PythonScript@0
-        displayName: 'Generate directories variable for sparse checkout'
-        inputs:
-          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths: $(CheckoutDirectories)
-          SkipDefaultCheckout: true
 
       - script: |
           pip install markdown2 BeautifulSoup4
