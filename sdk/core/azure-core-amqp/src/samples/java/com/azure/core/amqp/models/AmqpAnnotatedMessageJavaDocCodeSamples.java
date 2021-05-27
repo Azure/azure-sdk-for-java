@@ -3,6 +3,9 @@
 
 package com.azure.core.amqp.models;
 
+import org.junit.jupiter.api.Test;
+import java.nio.charset.StandardCharsets;
+
 /**
  * Class contains sample code snippets that will be used in javadocs.
  */
@@ -10,8 +13,10 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
     /**
      * Get message body from {@link AmqpAnnotatedMessage}.
      */
+    @Test
     public void checkBodyType() {
-        AmqpAnnotatedMessage amqpAnnotatedMessage = null;
+        AmqpAnnotatedMessage amqpAnnotatedMessage =
+            new AmqpAnnotatedMessage(AmqpMessageBody.fromData("my-amqp-message".getBytes(StandardCharsets.UTF_8)));
         // BEGIN: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
         // If client do not check `AmqpMessageBody.getBodyType()` and payload is not of type `AmqpMessageBodyType.DATA`,
         // calling `getFirstData()` or `getData()` on `AmqpMessageBody` will throw Runtime exception.
