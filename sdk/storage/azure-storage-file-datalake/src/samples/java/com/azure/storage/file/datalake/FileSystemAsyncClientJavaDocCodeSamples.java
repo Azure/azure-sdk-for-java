@@ -168,7 +168,7 @@ public class FileSystemAsyncClientJavaDocCodeSamples {
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
-            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+            .setIfModifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.setMetadataWithResponse(metadata, requestConditions).subscribe(response ->
             System.out.printf("Set metadata completed with status %d%n", response.getStatusCode()));
