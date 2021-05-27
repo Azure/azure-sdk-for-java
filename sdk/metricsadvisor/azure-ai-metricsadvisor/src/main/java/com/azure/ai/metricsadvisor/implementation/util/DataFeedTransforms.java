@@ -70,11 +70,11 @@ import com.azure.ai.metricsadvisor.models.DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
-import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
-import com.azure.ai.metricsadvisor.models.MongoDBDataFeedSource;
+import com.azure.ai.metricsadvisor.models.InfluxDbDataFeedSource;
+import com.azure.ai.metricsadvisor.models.MongoDbDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
+import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -196,7 +196,7 @@ public final class DataFeedTransforms {
             dataFeedSourceType = DataFeedSourceType.AZURE_TABLE;
         } else if (dataFeedDetail instanceof InfluxDBDataFeed) {
             final InfluxDBParameter dataSourceParameter = ((InfluxDBDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new InfluxDBDataFeedSource(
+            dataFeed.setSource(new InfluxDbDataFeedSource(
                 dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getDatabase(),
                 dataSourceParameter.getUserName(),
@@ -222,12 +222,12 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof SQLServerDataFeed) {
             final SqlSourceParameter dataSourceParameter = ((SQLServerDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
-            dataFeed.setSource(new SQLServerDataFeedSource(dataSourceParameter.getConnectionString(),
+            dataFeed.setSource(new SqlServerDataFeedSource(dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getQuery()));
             dataFeedSourceType = DataFeedSourceType.SQL_SERVER_DB;
         } else if (dataFeedDetail instanceof MongoDBDataFeed) {
             final MongoDBParameter dataSourceParameter = ((MongoDBDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new MongoDBDataFeedSource(
+            dataFeed.setSource(new MongoDbDataFeedSource(
                 dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getDatabase(),
                 dataSourceParameter.getCommand()
@@ -306,8 +306,8 @@ public final class DataFeedTransforms {
                     .setConnectionString(azureTableDataFeedSource.getConnectionString())
                     .setTable(azureTableDataFeedSource.getTableName())
                     .setQuery(azureTableDataFeedSource.getQueryScript()));
-        } else if (dataFeedSource instanceof InfluxDBDataFeedSource) {
-            final InfluxDBDataFeedSource influxDBDataFeedSource = ((InfluxDBDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof InfluxDbDataFeedSource) {
+            final InfluxDbDataFeedSource influxDBDataFeedSource = ((InfluxDbDataFeedSource) dataFeedSource);
             dataFeedDetail = new InfluxDBDataFeed()
                 .setDataSourceParameter(new InfluxDBParameter()
                     .setConnectionString(influxDBDataFeedSource.getConnectionString())
@@ -327,14 +327,14 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new SqlSourceParameter()
                     .setConnectionString(postgreSqlDataFeedSource.getConnectionString())
                     .setQuery(postgreSqlDataFeedSource.getQuery()));
-        } else if (dataFeedSource instanceof SQLServerDataFeedSource) {
-            final SQLServerDataFeedSource sqlServerDataFeedSource = ((SQLServerDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof SqlServerDataFeedSource) {
+            final SqlServerDataFeedSource sqlServerDataFeedSource = ((SqlServerDataFeedSource) dataFeedSource);
             dataFeedDetail = new SQLServerDataFeed()
                 .setDataSourceParameter(new SqlSourceParameter()
                     .setConnectionString(sqlServerDataFeedSource.getConnectionString())
                     .setQuery(sqlServerDataFeedSource.getQuery()));
-        } else if (dataFeedSource instanceof MongoDBDataFeedSource) {
-            final MongoDBDataFeedSource azureCosmosDataFeedSource = ((MongoDBDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
+            final MongoDbDataFeedSource azureCosmosDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
             dataFeedDetail = new MongoDBDataFeed()
                 .setDataSourceParameter(new MongoDBParameter()
                     .setConnectionString(azureCosmosDataFeedSource.getConnectionString())
@@ -411,8 +411,8 @@ public final class DataFeedTransforms {
                     .setConnectionString(azureTableDataFeedSource.getConnectionString())
                     .setTable(azureTableDataFeedSource.getTableName())
                     .setQuery(azureTableDataFeedSource.getQueryScript()));
-        } else if (dataFeedSource instanceof InfluxDBDataFeedSource) {
-            final InfluxDBDataFeedSource influxDBDataFeedSource = ((InfluxDBDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof InfluxDbDataFeedSource) {
+            final InfluxDbDataFeedSource influxDBDataFeedSource = ((InfluxDbDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new InfluxDBDataFeedPatch()
                 .setDataSourceParameter(new InfluxDBParameterPatch()
                     .setConnectionString(influxDBDataFeedSource.getConnectionString())
@@ -432,14 +432,14 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(postgreSqlDataFeedSource.getConnectionString())
                     .setQuery(postgreSqlDataFeedSource.getQuery()));
-        } else if (dataFeedSource instanceof SQLServerDataFeedSource) {
-            final SQLServerDataFeedSource sqlServerDataFeedSource = ((SQLServerDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof SqlServerDataFeedSource) {
+            final SqlServerDataFeedSource sqlServerDataFeedSource = ((SqlServerDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new SQLServerDataFeedPatch()
                 .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(sqlServerDataFeedSource.getConnectionString())
                     .setQuery(sqlServerDataFeedSource.getQuery()));
-        } else if (dataFeedSource instanceof MongoDBDataFeedSource) {
-            final MongoDBDataFeedSource azureCosmosDataFeedSource = ((MongoDBDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
+            final MongoDbDataFeedSource azureCosmosDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new MongoDBDataFeedPatch()
                 .setDataSourceParameter(new MongoDBParameterPatch()
                     .setConnectionString(azureCosmosDataFeedSource.getConnectionString())

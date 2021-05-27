@@ -6,10 +6,10 @@ package com.azure.ai.metricsadvisor.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The InfluxDBDataFeedSource model.
+ * The InfluxDbDataFeedSource model.
  */
 @Immutable
-public final class InfluxDBDataFeedSource extends DataFeedSource {
+public final class InfluxDbDataFeedSource extends DataFeedSource {
     /*
      * InfluxDB connection string
      */
@@ -36,7 +36,7 @@ public final class InfluxDBDataFeedSource extends DataFeedSource {
     private final String query;
 
     /**
-     * Create a InfluxDBDataFeedSource instance.
+     * Create a InfluxDbDataFeedSource instance.
      *
      * @param connectionString InfluxDB connection string
      * @param database the database name.
@@ -44,9 +44,9 @@ public final class InfluxDBDataFeedSource extends DataFeedSource {
      * @param password the database access password.
      * @param query the query value.
      */
-    public InfluxDBDataFeedSource(final String connectionString, final String database, final String userName,
-        final String password,
-        final String query) {
+    public InfluxDbDataFeedSource(final String connectionString, final String database, final String userName,
+                                  final String password,
+                                  final String query) {
         this.connectionString = connectionString;
         this.database = database;
         this.userName = userName;

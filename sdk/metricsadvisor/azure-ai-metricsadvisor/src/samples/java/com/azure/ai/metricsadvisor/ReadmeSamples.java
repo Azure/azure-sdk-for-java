@@ -32,7 +32,7 @@ import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
+import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.models.SuppressCondition;
@@ -143,7 +143,7 @@ public class ReadmeSamples {
 
         if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
             System.out.printf("Data feed sql server query: %s%n",
-                ((SQLServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
+                ((SqlServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
         }
     }
 

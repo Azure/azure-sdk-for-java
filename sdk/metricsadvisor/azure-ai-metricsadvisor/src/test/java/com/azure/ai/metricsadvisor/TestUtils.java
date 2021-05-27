@@ -12,7 +12,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
+import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -131,7 +131,7 @@ public final class TestUtils {
     }
 
     static DataFeed getSQLDataFeedSample() {
-        return new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
+        return new DataFeed().setSource(new SqlServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY)).setSchema(new DataFeedSchema(Arrays.asList(
                 new DataFeedMetric().setName("cost"),
                 new DataFeedMetric().setName("revenue")))

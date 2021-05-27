@@ -21,7 +21,7 @@ import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
+import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.models.SuppressCondition;
 import com.azure.core.http.HttpClient;
@@ -789,7 +789,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
-        DataFeed dataFeed = new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
+        DataFeed dataFeed = new DataFeed().setSource(new SqlServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY));
         dataFeed.setSchema(new DataFeedSchema(Arrays.asList(
             new DataFeedMetric().setName("cost").setDisplayName("cost"),

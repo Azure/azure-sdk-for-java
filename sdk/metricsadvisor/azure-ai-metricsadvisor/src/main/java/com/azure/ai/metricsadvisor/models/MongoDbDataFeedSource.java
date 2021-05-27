@@ -5,9 +5,9 @@ package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** The MongoDBDataFeedSource model. */
+/** The MongoDbDataFeedSource model. */
 @Immutable
-public final class MongoDBDataFeedSource extends DataFeedSource {
+public final class MongoDbDataFeedSource extends DataFeedSource {
     /*
      * MongoDB connection string
      */
@@ -24,13 +24,13 @@ public final class MongoDBDataFeedSource extends DataFeedSource {
     private final String command;
 
     /**
-     * Create a MongoDBDataFeedSource instance.
+     * Create a MongoDbDataFeedSource instance.
      *
      * @param connectionString The connection string.
      * @param database The database name.
      * @param command The command value.
      */
-    public MongoDBDataFeedSource(final String connectionString, final String database, final String command) {
+    public MongoDbDataFeedSource(final String connectionString, final String database, final String command) {
         this.connectionString = connectionString;
         this.database = database;
         this.command = command;

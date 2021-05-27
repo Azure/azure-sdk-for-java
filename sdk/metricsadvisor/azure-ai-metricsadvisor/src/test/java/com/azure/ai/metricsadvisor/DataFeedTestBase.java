@@ -23,12 +23,12 @@ import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
+import com.azure.ai.metricsadvisor.models.InfluxDbDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.MongoDBDataFeedSource;
+import com.azure.ai.metricsadvisor.models.MongoDbDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
+import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
@@ -126,11 +126,11 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     TABLE_QUERY, TEST_DB_NAME));
                 break;
             case INFLUX_DB:
-                dataFeed = new DataFeed().setSource(new InfluxDBDataFeedSource(INFLUX_DB_CONNECTION_STRING,
+                dataFeed = new DataFeed().setSource(new InfluxDbDataFeedSource(INFLUX_DB_CONNECTION_STRING,
                     TEST_DB_NAME, "adreadonly", INFLUX_DB_PASSWORD, TEMPLATE_QUERY));
                 break;
             case MONGO_DB:
-                dataFeed = new DataFeed().setSource(new MongoDBDataFeedSource(MONGO_DB_CONNECTION_STRING,
+                dataFeed = new DataFeed().setSource(new MongoDbDataFeedSource(MONGO_DB_CONNECTION_STRING,
                     TEST_DB_NAME, MONGO_COMMAND));
                 break;
             case MYSQL_DB:
@@ -142,7 +142,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                     TEMPLATE_QUERY));
                 break;
             case SQL_SERVER_DB:
-                dataFeed = new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
+                dataFeed = new DataFeed().setSource(new SqlServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
                     TEMPLATE_QUERY));
                 break;
             case AZURE_COSMOS_DB:
@@ -231,20 +231,20 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 assertEquals(expTableDataFeedSource.getQueryScript(), actualTableDataFeedSource.getQueryScript());
                 break;
             case INFLUX_DB:
-                final InfluxDBDataFeedSource expInfluxDataFeedSource =
-                    (InfluxDBDataFeedSource) expectedDataFeed.getSource();
-                final InfluxDBDataFeedSource actualInfluxDataFeedSource =
-                    (InfluxDBDataFeedSource) actualDataFeed.getSource();
+                final InfluxDbDataFeedSource expInfluxDataFeedSource =
+                    (InfluxDbDataFeedSource) expectedDataFeed.getSource();
+                final InfluxDbDataFeedSource actualInfluxDataFeedSource =
+                    (InfluxDbDataFeedSource) actualDataFeed.getSource();
                 assertNotNull(actualInfluxDataFeedSource.getConnectionString());
                 assertEquals(expInfluxDataFeedSource.getDatabase(), actualInfluxDataFeedSource.getDatabase());
                 // assertNotNull(actualInfluxDataFeedSource.getPassword());
                 assertNotNull(actualInfluxDataFeedSource.getUserName());
                 break;
             case MONGO_DB:
-                final MongoDBDataFeedSource expMongoDataFeedSource =
-                    (MongoDBDataFeedSource) expectedDataFeed.getSource();
-                final MongoDBDataFeedSource actualMongoDataFeedSource =
-                    (MongoDBDataFeedSource) actualDataFeed.getSource();
+                final MongoDbDataFeedSource expMongoDataFeedSource =
+                    (MongoDbDataFeedSource) expectedDataFeed.getSource();
+                final MongoDbDataFeedSource actualMongoDataFeedSource =
+                    (MongoDbDataFeedSource) actualDataFeed.getSource();
                 // assertNotNull(actualMongoDataFeedSource.getConnectionString());
                 assertEquals(expMongoDataFeedSource.getDatabase(), actualMongoDataFeedSource.getDatabase());
                 assertEquals(expMongoDataFeedSource.getCommand(), actualMongoDataFeedSource.getCommand());
@@ -264,10 +264,10 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 assertEquals(expPostGreDataFeedSource.getQuery(), actualPostGreDataFeedSource.getQuery());
                 break;
             case SQL_SERVER_DB:
-                final SQLServerDataFeedSource expSqlServerDataFeedSource =
-                    (SQLServerDataFeedSource) expectedDataFeed.getSource();
-                final SQLServerDataFeedSource actualSqlServerDataFeedSource =
-                    (SQLServerDataFeedSource) actualDataFeed.getSource();
+                final SqlServerDataFeedSource expSqlServerDataFeedSource =
+                    (SqlServerDataFeedSource) expectedDataFeed.getSource();
+                final SqlServerDataFeedSource actualSqlServerDataFeedSource =
+                    (SqlServerDataFeedSource) actualDataFeed.getSource();
                 // connection string is no longer returned from the service.
                 // assertNotNull(actualSqlServerDataFeedSource.getConnectionString());
                 assertEquals(expSqlServerDataFeedSource.getQuery(), actualSqlServerDataFeedSource.getQuery());

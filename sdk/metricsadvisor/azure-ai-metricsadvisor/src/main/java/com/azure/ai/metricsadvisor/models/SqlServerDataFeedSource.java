@@ -6,10 +6,10 @@ package com.azure.ai.metricsadvisor.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The SQLServerDataFeedSource model.
+ * The SqlServerDataFeedSource model.
  */
 @Immutable
-public final class SQLServerDataFeedSource extends DataFeedSource {
+public final class SqlServerDataFeedSource extends DataFeedSource {
     /*
      * Database connection string
      */
@@ -21,12 +21,12 @@ public final class SQLServerDataFeedSource extends DataFeedSource {
     private final String query;
 
     /**
-     * Create a SQLServerDataFeedSource instance
+     * Create a SqlServerDataFeedSource instance
      *
      * @param connectionString the database connection string.
      * @param query the query value.
      */
-    public SQLServerDataFeedSource(final String connectionString, final String query) {
+    public SqlServerDataFeedSource(final String connectionString, final String query) {
         this.connectionString = connectionString;
         this.query = query;
     }
