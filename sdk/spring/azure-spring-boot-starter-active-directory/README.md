@@ -11,6 +11,7 @@ The `azure-spring-boot-starter-active-directory` (`aad-starter` for short) provi
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+- (Optional) You can refer to sample project to learn how to use this artifact: [ms-identity-java-spring-tutorial].
 
 ### Prerequisites
 - [Environment checklist][environment_checklist]
@@ -615,6 +616,9 @@ public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapte
   
 ## Examples
 
+### Microsoft Identity In Spring.
+Please refer to [ms-identity-java-spring-tutorial].
+
 ### Web application visiting resource servers
 Please refer to [azure-spring-boot-sample-active-directory-webapp].
 
@@ -684,3 +688,4 @@ Please follow [instructions here] to build from source or contribute.
 [configure webapiA]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo#configure-your-middle-tier-web-api-a
 [configure webapiB]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md#configure-web-api
 [configure webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md#configure-access-other-resources-server
+[ms-identity-java-spring-tutorial]:https://github.com/Azure-Samples/ms-identity-java-spring-tutorial
