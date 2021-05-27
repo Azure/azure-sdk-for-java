@@ -1,6 +1,5 @@
 variables:
-  - name: AdditionalArgs
-    value: '-Djacoco.skip=true'
+  AdditionalArgs: '-Djacoco.skip=true'
 
 parameters:
   PackageName: not-specified
