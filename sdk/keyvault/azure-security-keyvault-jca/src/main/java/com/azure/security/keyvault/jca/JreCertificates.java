@@ -16,7 +16,7 @@ import java.security.PrivilegedAction;
 import java.security.AccessController;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.Arrays;
+import java.util.stream.Stream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -146,8 +146,7 @@ public final class JreCertificates implements AzureCertificates {
         }
 
         private static Path getKeyStoreFile() {
-            String storePropName = privilegedGetProperty(
-                "javax.net.ssl.keyStore", "");
+            String storePropName = privilegedGetProperty("javax.net.ssl.keyStore", "");
             return getStoreFile(storePropName);
         }
 
@@ -158,24 +157,17 @@ public final class JreCertificates implements AzureCertificates {
             } else {
                 storeProp = Paths.get(storePropName);
             }
-
-            Path[] fileNames = new Path[]{storeProp, DEFAULT_STORE};
-            return Arrays.stream(fileNames)
+            return Stream.of(storeProp, DEFAULT_STORE)
                 .filter(a -> Files.exists(a) && Files.isReadable(a))
                 .findFirst().orElse(null);
         }
 
         private static String  privilegedGetProperty(String theProp, String defaultVal) {
-            if (System.getSecurityManager() == null) {
-                String value = System.getProperty(theProp, "");
-                return (value.isEmpty()) ? defaultVal : value;
-            } else {
-                return AccessController.doPrivileged(
-                    (PrivilegedAction<String>) () -> {
-                        String value = System.getProperty(theProp, "");
-                        return (value.isEmpty()) ? defaultVal : value;
-                    });
-            }
+            return AccessController.doPrivileged(
+                (PrivilegedAction<String>) () -> {
+                    String value = System.getProperty(theProp, "");
+                    return (value.isEmpty()) ? defaultVal : value;
+                });
         }
     }
 }
