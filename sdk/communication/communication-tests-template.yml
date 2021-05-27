@@ -1,6 +1,3 @@
-variables:
-  AdditionalArgs: '-Djacoco.skip=true'
-
 parameters:
   PackageName: not-specified
   SafeName: notspecified
