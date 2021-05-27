@@ -29,7 +29,7 @@ public class ListIncidentsDetectedSample {
             .setTop(1000);
 
         PagedIterable<AnomalyIncident> incidentsIterable
-            = advisorClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options,
+            = advisorClient.listIncidents(detectionConfigurationId, startTime, endTime, options,
             Context.NONE);
 
         for (AnomalyIncident anomalyIncident : incidentsIterable) {

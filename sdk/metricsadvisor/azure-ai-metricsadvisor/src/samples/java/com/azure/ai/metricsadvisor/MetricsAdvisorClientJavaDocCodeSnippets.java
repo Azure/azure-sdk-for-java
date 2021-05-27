@@ -203,16 +203,16 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorClient#listIncidentsForAlert(String, String, ListIncidentsAlertedOptions)}.
+     * Code snippet for {@link MetricsAdvisorClient#listIncidents(String, String, ListIncidentsAlertedOptions)}.
      */
     public void listIncidentsForAlert() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setTop(10);
 
-        PagedIterable<AnomalyIncident> incidentsIterable = metricsAdvisorClient.listIncidentsForAlert(
+        PagedIterable<AnomalyIncident> incidentsIterable = metricsAdvisorClient.listIncidents(
             alertConfigurationId,
             alertId,
             options);
@@ -231,20 +231,20 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                     dimension.getKey(), dimension.getValue());
             }
         }
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorClient#listIncidentsForAlert(String, String, ListIncidentsAlertedOptions, Context)}.
+     * Code snippet for {@link MetricsAdvisorClient#listIncidents(String, String, ListIncidentsAlertedOptions, Context)}.
      */
     public void listIncidentsForAlertWithContext() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions-Context
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setTop(10);
 
-        PagedIterable<AnomalyIncident> incidentsIterable = metricsAdvisorClient.listIncidentsForAlert(
+        PagedIterable<AnomalyIncident> incidentsIterable = metricsAdvisorClient.listIncidents(
             alertConfigurationId,
             alertId,
             options,
@@ -270,7 +270,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                 }
             }
         });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions-Context
     }
 
     /**
@@ -435,16 +435,16 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime)}.
+     * Code snippet for {@link MetricsAdvisorClient#listIncidents(String, OffsetDateTime, OffsetDateTime)}.
      */
     public void listIncidentsForDetectionConfig() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-OffsetDateTime-OffsetDateTime
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
 
         PagedIterable<AnomalyIncident> incidentsIterable
-            = metricsAdvisorClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime);
+            = metricsAdvisorClient.listIncidents(detectionConfigurationId, startTime, endTime);
 
         for (AnomalyIncident anomalyIncident : incidentsIterable) {
             System.out.printf("Data Feed Metric Id: %s%n", anomalyIncident.getMetricId());
@@ -455,14 +455,14 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
             System.out.printf("Anomaly Incident Status: %s%n", anomalyIncident.getStatus());
             System.out.printf("Root DataFeedDimension Key: %s%n", anomalyIncident.getRootDimensionKey().asMap());
         }
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-OffsetDateTime-OffsetDateTime
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions, Context)}.
+     * Code snippet for {@link MetricsAdvisorClient#listIncidents(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions, Context)}.
      */
     public void listIncidentsForDetectionConfigWithContext() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
@@ -470,7 +470,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
             .setTop(1000);
 
         PagedIterable<AnomalyIncident> incidentsIterable
-            = metricsAdvisorClient.listIncidentsForDetectionConfig(detectionConfigurationId,
+            = metricsAdvisorClient.listIncidents(detectionConfigurationId,
                 startTime, endTime, options,
             Context.NONE);
 
@@ -491,7 +491,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                 System.out.printf("Root DataFeedDimension Key: %s%n", anomalyIncident.getRootDimensionKey().asMap());
             }
         });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context
     }
 
     /*
@@ -798,7 +798,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
 
-        metricsAdvisorClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime)
+        metricsAdvisorClient.listIncidents(detectionConfigurationId, startTime, endTime)
             .forEach(incident -> {
                 metricsAdvisorClient.listIncidentRootCauses(incident)
                     .forEach(incidentRootCause -> {

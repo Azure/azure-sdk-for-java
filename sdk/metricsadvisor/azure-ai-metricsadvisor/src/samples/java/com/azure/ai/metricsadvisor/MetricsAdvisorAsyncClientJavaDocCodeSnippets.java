@@ -155,16 +155,16 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentsForAlert(String, String, ListIncidentsAlertedOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidents(String, String, ListIncidentsAlertedOptions)}.
      */
     public void listIncidentsForAlert() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-String-ListIncidentsAlertedOptions
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final String alertId = "1746b031c00";
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setTop(10);
 
-        metricsAdvisorAsyncClient.listIncidentsForAlert(
+        metricsAdvisorAsyncClient.listIncidents(
             alertConfigurationId,
             alertId,
             options)
@@ -182,7 +182,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                         dimension.getKey(), dimension.getValue());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-String-ListIncidentsAlertedOptions
     }
 
     /**
@@ -284,10 +284,10 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions)}.
+     * Code snippet for {@link MetricsAdvisorAsyncClient#listIncidents(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions)}.
      */
     public void listIncidentsForDetectionConfig() {
-        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
@@ -295,7 +295,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
             .setTop(1000);
 
         PagedFlux<AnomalyIncident> incidentsFlux
-            = metricsAdvisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options);
+            = metricsAdvisorAsyncClient.listIncidents(detectionConfigurationId, startTime, endTime, options);
 
         incidentsFlux.subscribe(incident -> {
             System.out.printf("Data Feed Metric Id: %s%n", incident.getMetricId());
@@ -306,7 +306,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
             System.out.printf("Anomaly Incident Status: %s%n", incident.getStatus());
             System.out.printf("Root DataFeedDimension Key: %s%n", incident.getRootDimensionKey().asMap());
         });
-        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions
     }
 
     /**
@@ -555,7 +555,7 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
             = new ListIncidentsDetectedOptions()
             .setTop(10);
 
-        metricsAdvisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options)
+        metricsAdvisorAsyncClient.listIncidents(detectionConfigurationId, startTime, endTime, options)
             .flatMap(incident -> {
                 return metricsAdvisorAsyncClient.listIncidentRootCauses(incident);
             })

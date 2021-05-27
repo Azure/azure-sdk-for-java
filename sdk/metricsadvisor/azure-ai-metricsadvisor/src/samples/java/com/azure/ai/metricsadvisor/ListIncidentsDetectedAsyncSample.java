@@ -28,7 +28,7 @@ public class ListIncidentsDetectedAsyncSample {
             .setTop(1000);
 
         PagedFlux<AnomalyIncident> incidentsFlux
-            = advisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options);
+            = advisorAsyncClient.listIncidents(detectionConfigurationId, startTime, endTime, options);
 
         incidentsFlux.doOnNext(incident -> {
             System.out.printf("Data Feed Metric Id: %s%n", incident.getMetricId());

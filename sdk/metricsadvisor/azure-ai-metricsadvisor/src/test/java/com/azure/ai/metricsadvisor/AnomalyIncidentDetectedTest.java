@@ -39,7 +39,7 @@ public class AnomalyIncidentDetectedTest extends IncidentDetectedTestBase {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
         PagedIterable<AnomalyIncident> incidentsIterable
-            = client.listIncidentsForDetectionConfig(
+            = client.listIncidents(
                 ListIncidentsDetectedInput.INSTANCE.detectionConfigurationId,
             ListIncidentsDetectedInput.INSTANCE.startTime, ListIncidentsDetectedInput.INSTANCE.endTime,
             ListIncidentsDetectedInput.INSTANCE.options, Context.NONE);

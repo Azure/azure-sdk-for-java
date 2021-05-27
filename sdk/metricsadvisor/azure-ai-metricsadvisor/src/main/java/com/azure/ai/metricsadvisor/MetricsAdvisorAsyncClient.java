@@ -685,7 +685,7 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the incidents were detected.
@@ -698,7 +698,7 @@ public class MetricsAdvisorAsyncClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
+    public PagedFlux<AnomalyIncident> listIncidents(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options) {
         try {
@@ -715,7 +715,7 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyIncident> listIncidentsForDetectionConfig(
+    PagedFlux<AnomalyIncident> listIncidents(
         String detectionConfigurationId,
         OffsetDateTime startTime, OffsetDateTime endTime, ListIncidentsDetectedOptions options, Context context) {
         return new PagedFlux<>(() ->
@@ -1198,7 +1198,7 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the incidents in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-String-ListIncidentsAlertedOptions}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -1209,7 +1209,7 @@ public class MetricsAdvisorAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyIncident> listIncidentsForAlert(
+    public PagedFlux<AnomalyIncident> listIncidents(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options) {
@@ -1225,7 +1225,7 @@ public class MetricsAdvisorAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyIncident> listIncidentsForAlert(
+    PagedFlux<AnomalyIncident> listIncidents(
         String alertConfigurationId,
         String alertId,
         ListIncidentsAlertedOptions options, Context context) {

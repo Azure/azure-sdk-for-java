@@ -24,7 +24,7 @@ public class ListIncidentsAlertedSample {
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setTop(10);
 
-        PagedIterable<AnomalyIncident> incidentsIterable = advisorClient.listIncidentsForAlert(
+        PagedIterable<AnomalyIncident> incidentsIterable = advisorClient.listIncidents(
             alertConfigurationId,
             alertId,
             options);

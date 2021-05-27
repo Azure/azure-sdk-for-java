@@ -39,7 +39,7 @@ public class AnomalyIncidentForAlertAsyncTest extends IncidentForAlertTestBase {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         PagedFlux<AnomalyIncident> incidentsFlux
-            = client.listIncidentsForAlert(
+            = client.listIncidents(
             ListIncidentsForAlertInput.INSTANCE.alertConfigurationId,
             ListIncidentsForAlertInput.INSTANCE.alertId,
             ListIncidentsForAlertInput.INSTANCE.options);
