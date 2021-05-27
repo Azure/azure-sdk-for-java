@@ -19,7 +19,6 @@ import reactor.core.publisher.Sinks;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -34,7 +33,7 @@ public class ServiceBusQueueAndTopicBinderIT {
 
     private static String message = UUID.randomUUID().toString();
 
-    private static final AtomicInteger count = new AtomicInteger(0);
+    public static CountDownLatch latch = new CountDownLatch(2);
 
     @Autowired
     private Sinks.Many<Message<String>> manyQueue;
@@ -44,8 +43,6 @@ public class ServiceBusQueueAndTopicBinderIT {
 
     @EnableAutoConfiguration
     public static class TestQueueConfig {
-
-        public static CountDownLatch latch = new CountDownLatch(2);
 
         @Bean
         public Sinks.Many<Message<String>> manyQueue() {
@@ -62,9 +59,8 @@ public class ServiceBusQueueAndTopicBinderIT {
         @Bean
         public Consumer<Message<String>> queueConsume() {
             return message -> {
-                LOGGER.info("New message received: '{}'", message);
+                LOGGER.info("Test queue new message received: '{}'", message);
                 Assertions.assertEquals(message.getPayload(), ServiceBusQueueAndTopicBinderIT.message);
-                count.addAndGet(1);
                 latch.countDown();
             };
         }
@@ -72,8 +68,6 @@ public class ServiceBusQueueAndTopicBinderIT {
 
     @EnableAutoConfiguration
     public static class TestTopicConfig {
-
-        public static CountDownLatch latch = new CountDownLatch(1);
 
         @Bean
         public Sinks.Many<Message<String>> manyTopic() {
@@ -90,29 +84,24 @@ public class ServiceBusQueueAndTopicBinderIT {
         @Bean
         public Consumer<Message<String>> topicConsume() {
             return message -> {
-                try {
-                    TestQueueConfig.latch.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                LOGGER.info("New message received: '{}'", message);
+                LOGGER.info("Test topic new message received: '{}'", message);
                 Assertions.assertEquals(message.getPayload(), ServiceBusQueueAndTopicBinderIT.message);
-                count.addAndGet(1);
-                this.latch.countDown();
+                latch.countDown();
             };
         }
     }
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
+        LOGGER.info("testSendAndReceiveMessage begin.");
         GenericMessage<String> genericMessage = new GenericMessage<>(message);
+        LOGGER.info("Send a message to the queue.");
         manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
+        LOGGER.info("Send a message to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
-        TestQueueConfig.latch.await(3, TimeUnit.SECONDS);
-        Assertions.assertEquals(1, count.get());
-        TestQueueConfig.latch.countDown();
-        assertThat(TestTopicConfig.latch.await(5, TimeUnit.SECONDS)).isTrue();
-        Assertions.assertEquals(2, count.get());
+
+        assertThat(ServiceBusQueueAndTopicBinderIT.latch.await(10, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("testSendAndReceiveMessage end.");
     }
 
 }
