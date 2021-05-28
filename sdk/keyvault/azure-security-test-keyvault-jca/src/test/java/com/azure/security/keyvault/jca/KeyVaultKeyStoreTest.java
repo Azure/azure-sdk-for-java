@@ -168,7 +168,6 @@ public class KeyVaultKeyStoreTest {
         KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
         Certificate certificate = ks.getCertificate(certificateName);
         ks.deleteEntry(certificateName);
-        Thread.sleep(10);
         assertEquals(ks.getCertificateAlias(certificate), certificateName);
     }
 
