@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Processes a single partition.
  */
-public class SamplePartitionProcessor implements IEventProcessor {
+class SamplePartitionProcessor implements IEventProcessor {
     private final Logger logger = LoggerFactory.getLogger(SamplePartitionProcessor.class);
     private final ConcurrentLinkedQueue<EventsCounter> currentCounters = new ConcurrentLinkedQueue<>();
     private final ArrayList<EventsCounter> allCounters = new ArrayList<>();
@@ -29,12 +29,14 @@ public class SamplePartitionProcessor implements IEventProcessor {
      *
      * @return the event counters opened while processing this partition.
      */
-    public List<EventsCounter> getCounters() {
+    List<EventsCounter> getCounters() {
         return allCounters;
     }
 
     /**
-     * {@inheritDoc}
+     * Invoked when partition is claimed.
+     *
+     * @param context Context associated with partition.
      */
     @Override
     public void onOpen(PartitionContext context) {
@@ -51,7 +53,12 @@ public class SamplePartitionProcessor implements IEventProcessor {
     }
 
     /**
-     * {@inheritDoc}
+     * Invoked when partition is closed.
+     *
+     * @param context Context associated with partition.
+     * @param reason Reason for losing partition.
+     *
+     * @throws RuntimeException if a counter that is started could not be found.
      */
     @Override
     public void onClose(PartitionContext context, CloseReason reason) {
@@ -72,7 +79,12 @@ public class SamplePartitionProcessor implements IEventProcessor {
     }
 
     /**
-     * {@inheritDoc}
+     * Invoked when partition events are received.
+     *
+     * @param context Context associated with partition.
+     * @param events Events received.
+     *
+     * @throws RuntimeException if a counter that is started could not be found.
      */
     @Override
     public void onEvents(PartitionContext context, Iterable<EventData> events) {
@@ -92,7 +104,10 @@ public class SamplePartitionProcessor implements IEventProcessor {
     }
 
     /**
-     * {@inheritDoc}
+     * Invoked when an error occurs.
+     *
+     * @param context Context associated with partition.
+     * @param error Error received.
      */
     @Override
     public void onError(PartitionContext context, Throwable error) {
@@ -102,7 +117,7 @@ public class SamplePartitionProcessor implements IEventProcessor {
     /**
      * Stops the partition processor entirely and closes any open EventCounters.
      */
-    public void onStop() {
+    void onStop() {
         if (isStopped.getAndSet(true)) {
             return;
         }
