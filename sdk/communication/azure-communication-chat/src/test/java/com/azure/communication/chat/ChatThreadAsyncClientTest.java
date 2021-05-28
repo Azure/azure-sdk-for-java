@@ -199,7 +199,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddListAndRemoveMembersWithOptionsAsync(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient, "canAddListAndRemoveMembersAsync");
+        setupTest(httpClient, "canAddListAndRemoveMembersWithOptionsAsync");
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
@@ -798,7 +798,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         matches = "(?i)(true)")
     public void canSendThenListReadReceiptsWithOptions(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient, "canSendThenListReadReceipts");
+        setupTest(httpClient, "canSendThenListReadReceiptsWithOptions");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         AtomicReference<String> messageResponseRef = new AtomicReference<>();
 
