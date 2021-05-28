@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
@@ -133,7 +132,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
         jreCertificates = JreCertificates.getInstance();
-        fileSystemCertificates = new FileSystemCertificates(Arrays.asList(customPath, wellKnowPath));
+        fileSystemCertificates = FileSystemCertificates.getInstance(Arrays.asList(customPath, wellKnowPath));
         allCertificates = Arrays.asList(keyVaultCertificates, classpathCertificates, jreCertificates, fileSystemCertificates);
     }
 

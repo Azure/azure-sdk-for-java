@@ -29,7 +29,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * Store certificates loaded from file system.
  */
-public class FileSystemCertificates implements AzureCertificates {
+final class FileSystemCertificates implements AzureCertificates {
 
     /**
      * Stores the logger.
@@ -49,6 +49,24 @@ public class FileSystemCertificates implements AzureCertificates {
     private final Map<String, Key> certificateKeys = new HashMap<>();
 
     private final List<String> certPaths;
+
+    private static volatile FileSystemCertificates fileSystemCertificatesInstance;
+
+    /**
+     * Get instance
+     * @return FileSystemCertificates instance
+     */
+    static FileSystemCertificates getInstance(List<String> certPaths) {
+        if (fileSystemCertificatesInstance == null) {
+            synchronized (FileSystemCertificates.class) {
+                if (fileSystemCertificatesInstance == null) {
+                    fileSystemCertificatesInstance = new FileSystemCertificates(certPaths);
+                }
+            }
+        }
+        return fileSystemCertificatesInstance;
+    }
+
 
     @Override
     public List<String> getAliases() {
@@ -75,7 +93,7 @@ public class FileSystemCertificates implements AzureCertificates {
         certificateKeys.remove(alias);
     }
 
-    FileSystemCertificates(List<String> certPaths) {
+    private FileSystemCertificates(List<String> certPaths) {
         this.certPaths = certPaths;
     }
 

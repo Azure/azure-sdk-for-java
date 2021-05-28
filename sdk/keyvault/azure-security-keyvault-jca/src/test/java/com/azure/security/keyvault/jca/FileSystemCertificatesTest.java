@@ -19,7 +19,7 @@ public class FileSystemCertificatesTest {
 
     @Test
     public void testSetCertificateEntry() {
-        fileSystemCertificates = new FileSystemCertificates(Arrays.asList(getFilePath()));
+        fileSystemCertificates = FileSystemCertificates.getInstance(Arrays.asList(getFilePath()));
         fileSystemCertificates.loadCertificatesFromFileSystem();
         Assertions.assertTrue(fileSystemCertificates.getAliases().contains("sideload"));
     }
