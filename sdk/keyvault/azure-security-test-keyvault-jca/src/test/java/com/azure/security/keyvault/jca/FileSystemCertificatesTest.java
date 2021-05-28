@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +21,7 @@ public class FileSystemCertificatesTest {
 
     @BeforeAll
     public static void setEnvironmentProperty() {
+        System.setProperty("azure.jca.path-of-custom-certs", getFilePath());
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
             Arrays.asList("AZURE_KEYVAULT_URI",
                 "AZURE_KEYVAULT_TENANT_ID",
@@ -36,7 +40,6 @@ public class FileSystemCertificatesTest {
 
     @Test
     public void testGetFileSystemCertificate() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
-        System.setProperty("azure.jca.path-of-custom-certs", getFilePath());
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         Assertions.assertNotNull(keyStore.getCertificate("sideload"));
     }

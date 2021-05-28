@@ -95,6 +95,7 @@ final class FileSystemCertificates implements AzureCertificates {
 
     private FileSystemCertificates(List<String> certPaths) {
         this.certPaths = certPaths;
+        loadCertificatesFromFileSystem();
     }
 
     /**
