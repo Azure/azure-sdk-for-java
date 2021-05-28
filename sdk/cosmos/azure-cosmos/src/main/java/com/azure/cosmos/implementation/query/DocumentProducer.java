@@ -81,7 +81,11 @@ class DocumentProducer<T extends Resource> {
                                 fetchExecutionRangeAccumulator.getExecutionRanges(),
                                 Arrays.asList(schedulingTimeSpanMap)
                         ), pageResult.getActivityId());
-                BridgeInternal.putQueryMetricsIntoMap(pageResult, feedRange.getRange().toString(), qm);
+                String partitionKeyRange = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                if(StringUtils.isEmpty(partitionKeyRange)) {
+                    partitionKeyRange = "0";
+                }
+                BridgeInternal.putQueryMetricsIntoMap(pageResult, partitionKeyRange, qm);
             }
         }
     }

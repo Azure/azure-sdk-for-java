@@ -15,8 +15,10 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TracerProvider;
@@ -290,8 +292,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 OffsetDateTime.ofInstant(queryPlanDiagnosticsContext.getStartTimeUTC(), ZoneOffset.UTC));
         }
 
+        FeedResponseDiagnostics feedResponseDiagnostics = BridgeInternal.getFeedResponseDiagnostics(cosmosDiagnostics);
+        if(feedResponseDiagnostics.getQueryMetricsMap() != null && feedResponseDiagnostics.getQueryMetricsMap().size() > 0) {
+            for(Map.Entry<String, QueryMetrics> entry : feedResponseDiagnostics.getQueryMetricsMap().entrySet()) {
+                attributes = new HashMap<>();
+                attributes.put("Query Metrics", entry.getValue().toString());
+                tracerProvider.addEvent("Query Metrics for PKRange " + entry.getKey(), attributes,
+                    OffsetDateTime.now());
+            }
+        }
 
-        int clientSideRequestStatisticsCounter = 1;
+        int queryDiagnosticsCounter = 1;
         for (ClientSideRequestStatistics clientSideRequestStatistics :
             BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics)) {
             attributes = new HashMap<>();
@@ -355,9 +366,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             attributes.put("ClientCfgs",
                 Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
 
-            if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0) {
+            if (clientSideRequestStatistics.getResponseStatisticsList() != null && clientSideRequestStatistics.getResponseStatisticsList().size() > 0
+                && clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
                 String eventName =
-                    "Diagnostics for PKRange " + clientSideRequestStatistics.getResponseStatisticsList().get(0).storeResult.partitionKeyRangeId;
+                    "Diagnostics for PKRange " + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId;
                 tracerProvider.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
             } else if (clientSideRequestStatistics.getGatewayStatistics() != null) {
@@ -367,7 +379,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
 
             } else {
-                String eventName = "Diagnostics " + clientSideRequestStatisticsCounter++;
+                String eventName = "Diagnostics " + queryDiagnosticsCounter++;
                 tracerProvider.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC));
             }

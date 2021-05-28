@@ -186,7 +186,11 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),
                                                     Arrays.asList(schedulingTimeSpanMap)),
                                             tFeedResponse.getActivityId());
-                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_RANGE, qm);
+                            String partitionKeyRange = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                            if(StringUtils.isEmpty(partitionKeyRange)) {
+                                partitionKeyRange = "0";
+                            }
+                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, partitionKeyRange, qm);
                         }
                         return tFeedResponse;
                     });

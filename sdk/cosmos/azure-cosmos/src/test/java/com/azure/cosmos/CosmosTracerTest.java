@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.LifeCycleUtils;
+import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -474,7 +475,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                                          Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
         ClientSideRequestStatistics clientSideRequestStatistics =
             BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
-
+        int counter = 1;
         if (clientSideRequestStatistics != null) {
             //verifying add event call for systemInformation
             Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("SystemInformation")
@@ -518,19 +519,18 @@ public class CosmosTracerTest extends TestSuiteBase {
             }
 
             //verifying add event call for storeResponseStatistics
-            int counter = 1;
             for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
                 clientSideRequestStatistics.getResponseStatisticsList()) {
                 Iterator<RequestTimeline.Event> eventIterator = null;
                 try {
                     eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.storeResult.toResponse()).iterator();
+                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
                 } catch (CosmosException ex) {
                     eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
                 }
 
                 OffsetDateTime requestStartTime =
-                    OffsetDateTime.ofInstant(storeResponseStatistics.requestResponseTimeUTC, ZoneOffset.UTC);
+                    OffsetDateTime.ofInstant(storeResponseStatistics.getRequestResponseTimeUTC(), ZoneOffset.UTC);
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
@@ -552,13 +552,13 @@ public class CosmosTracerTest extends TestSuiteBase {
                 Iterator<RequestTimeline.Event> eventIterator = null;
                 try {
                     eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.storeResult.toResponse()).iterator();
+                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
                 } catch (CosmosException ex) {
                     eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
                 }
 
                 OffsetDateTime requestStartTime =
-                    OffsetDateTime.ofInstant(storeResponseStatistics.requestResponseTimeUTC, ZoneOffset.UTC);
+                    OffsetDateTime.ofInstant(storeResponseStatistics.getRequestResponseTimeUTC(), ZoneOffset.UTC);
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
@@ -573,12 +573,13 @@ public class CosmosTracerTest extends TestSuiteBase {
                 counter++;
             }
 
-            counter =1;
+            counter = 1;
             for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics :
                 BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics).getAddressResolutionStatistics().values()) {
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("AddressResolutionStatistics" + counter)
                     , ArgumentMatchers.any(),
-                    Mockito.eq(OffsetDateTime.ofInstant(addressResolutionStatistics.startTimeUTC, ZoneOffset.UTC)));
+                    Mockito.eq(OffsetDateTime.ofInstant(addressResolutionStatistics.getStartTimeUTC(),
+                        ZoneOffset.UTC)));
                 assertThat(attributesMap.get("AddressResolutionStatistics" + counter).get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(addressResolutionStatistics));
                 counter++;
             }
@@ -593,7 +594,36 @@ public class CosmosTracerTest extends TestSuiteBase {
                     Mockito.eq(OffsetDateTime.ofInstant(feedResponseDiagnostics.getQueryPlanDiagnosticsContext().getStartTimeUTC(),
                         ZoneOffset.UTC)));
                 assertThat(attributesMap.get("Query Plan Statistics").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(feedResponseDiagnostics.getQueryPlanDiagnosticsContext()));
+            }
 
+            counter = 1;
+            for (ClientSideRequestStatistics clientSideStatistics :
+                feedResponseDiagnostics.getClientSideRequestStatisticsList()) {
+                if (clientSideStatistics.getResponseStatisticsList() != null && clientSideStatistics.getResponseStatisticsList().size() > 0
+                    && clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult() != null) {
+                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange " + clientSideStatistics.getResponseStatisticsList().get(0).getStoreResult().partitionKeyRangeId)
+                        , ArgumentMatchers.any(),
+                        Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
+                            ZoneOffset.UTC)));
+                } else if (clientSideStatistics.getGatewayStatistics() != null) {
+                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics for PKRange " + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId())
+                        , ArgumentMatchers.any(),
+                        Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
+                            ZoneOffset.UTC)));
+                } else {
+                    Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Diagnostics " + counter++)
+                        , ArgumentMatchers.any(),
+                        Mockito.eq(OffsetDateTime.ofInstant(clientSideStatistics.getRequestStartTimeUTC(),
+                            ZoneOffset.UTC)));
+                }
+            }
+
+            for (Map.Entry<String, QueryMetrics> queryMetrics : feedResponseDiagnostics.getQueryMetricsMap().entrySet()) {
+                Mockito.verify(tracerProvider, Mockito.atLeast(1)).addEvent(Mockito.eq("Query Metrics for PKRange " + queryMetrics.getKey())
+                    , ArgumentMatchers.any(),
+                    ArgumentMatchers.any());
+                assertThat(attributesMap.get("Query Metrics for PKRange " + queryMetrics.getKey()).get("Query " +
+                    "Metrics")).isEqualTo(queryMetrics.getValue().toString());
             }
         }
     }

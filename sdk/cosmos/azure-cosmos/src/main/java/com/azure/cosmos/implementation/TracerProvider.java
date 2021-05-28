@@ -224,6 +224,7 @@ public class TracerProvider {
                             // do nothing
                         }
                     }
+
                     this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
                 }
             });
@@ -362,7 +363,7 @@ public class TracerProvider {
 
         Map<String, Object> attributes = null;
         //adding Supplemental StoreResponse
-        int counter = 1;
+        int diagnosticsCounter = 1;
         for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
             clientSideRequestStatistics.getResponseStatisticsList()) {
             attributes = new HashMap<>();
@@ -383,26 +384,27 @@ public class TracerProvider {
                 }
             }
 
-            this.addEvent("StoreResponse" + counter++, attributes, requestStartTime);
+            this.addEvent("StoreResponse" + diagnosticsCounter++, attributes, requestStartTime);
         }
 
         //adding Supplemental StoreResponse
-        counter = 1;
+        diagnosticsCounter = 1;
         for (ClientSideRequestStatistics.StoreResponseStatistics statistics :
             ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(statistics));
-            Iterator<RequestTimeline.Event> eventIterator = DirectBridgeInternal.getRequestTimeline(statistics.storeResult.toResponse()).iterator();
             OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.requestResponseTimeUTC, ZoneOffset.UTC);
+            if(statistics.storeResult != null) {
+                Iterator<RequestTimeline.Event> eventIterator = DirectBridgeInternal.getRequestTimeline(statistics.storeResult.toResponse()).iterator();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
-                    if(event.getName().equals("created")) {
+                    if (event.getName().equals("created")) {
                         requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                         break;
                     }
+                }
             }
-
-            this.addEvent("Supplemental StoreResponse" + counter++, attributes, requestStartTime);
+            this.addEvent("Supplemental StoreResponse" + diagnosticsCounter++, attributes, requestStartTime);
         }
 
         //adding Supplemental StoreResponse
@@ -410,15 +412,17 @@ public class TracerProvider {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING,
                 Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
-            Iterator<RequestTimeline.Event> eventIterator =
-                clientSideRequestStatistics.getGatewayStatistics().requestTimeline.iterator();
             OffsetDateTime requestStartTime =
                 OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
-            while (eventIterator.hasNext()) {
-                RequestTimeline.Event event = eventIterator.next();
-                if (event.getName().equals("created")) {
-                    requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
-                    break;
+            if(clientSideRequestStatistics.getGatewayStatistics().requestTimeline != null) {
+                Iterator<RequestTimeline.Event> eventIterator =
+                    clientSideRequestStatistics.getGatewayStatistics().requestTimeline.iterator();
+                while (eventIterator.hasNext()) {
+                    RequestTimeline.Event event = eventIterator.next();
+                    if (event.getName().equals("created")) {
+                        requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                        break;
+                    }
                 }
             }
             this.addEvent("GatewayStatistics", attributes, requestStartTime);
@@ -432,11 +436,11 @@ public class TracerProvider {
         }
 
         //adding addressResolutionStatistics
-        counter = 1;
+        diagnosticsCounter = 1;
         for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics: clientSideRequestStatistics.getAddressResolutionStatistics().values()) {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(addressResolutionStatistics));
-            this.addEvent("AddressResolutionStatistics" + counter++, attributes, OffsetDateTime.ofInstant(addressResolutionStatistics.startTimeUTC, ZoneOffset.UTC));
+            this.addEvent("AddressResolutionStatistics" + diagnosticsCounter++, attributes, OffsetDateTime.ofInstant(addressResolutionStatistics.startTimeUTC, ZoneOffset.UTC));
         }
 
         //adding serializationDiagnosticsContext

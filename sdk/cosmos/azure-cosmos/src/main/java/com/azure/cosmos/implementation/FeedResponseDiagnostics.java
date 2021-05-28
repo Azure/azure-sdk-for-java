@@ -33,7 +33,7 @@ public class FeedResponseDiagnostics {
         this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
     }
 
-    Map<String, QueryMetrics> getQueryMetricsMap() {
+    public Map<String, QueryMetrics> getQueryMetricsMap() {
         return queryMetricsMap;
     }
 

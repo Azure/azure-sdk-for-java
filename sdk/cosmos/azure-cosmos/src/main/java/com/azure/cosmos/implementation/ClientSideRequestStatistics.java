@@ -250,13 +250,21 @@ public class ClientSideRequestStatistics {
 
     public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
-        public StoreResult storeResult;
+        StoreResult storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        public Instant requestResponseTimeUTC;
+        Instant requestResponseTimeUTC;
         @JsonSerialize
-        public ResourceType requestResourceType;
+        ResourceType requestResourceType;
         @JsonSerialize
-        public OperationType requestOperationType;
+        OperationType requestOperationType;
+
+        public StoreResult getStoreResult() {
+            return storeResult;
+        }
+
+        public Instant getRequestResponseTimeUTC() {
+            return requestResponseTimeUTC;
+        }
     }
 
     private static class SystemInformation {
@@ -336,19 +344,23 @@ public class ClientSideRequestStatistics {
 
     public static class AddressResolutionStatistics {
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        public Instant startTimeUTC;
+        Instant startTimeUTC;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
-        public Instant endTimeUTC;
+        Instant endTimeUTC;
         @JsonSerialize
-        public String targetEndpoint;
+        String targetEndpoint;
         @JsonSerialize
-        public String errorMessage;
+        String errorMessage;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
         // indicating background addressResolution is still inflight
         @JsonSerialize
         boolean inflightRequest = true;
+
+        public Instant getStartTimeUTC() {
+            return startTimeUTC;
+        }
     }
 
     public static class GatewayStatistics {
