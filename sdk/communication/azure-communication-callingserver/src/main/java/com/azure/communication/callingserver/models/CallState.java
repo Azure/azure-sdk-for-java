@@ -19,7 +19,9 @@ public enum CallState {
     /** The call has just been received. */
     INCOMING("Incoming"),
 
-    /** The call establishment is in progress after initiating or accepting the call. */
+    /**
+     * The call establishment is in progress after initiating or accepting the call.
+     */
     ESTABLISHING("Establishing"),
 
     /** The call is established. */

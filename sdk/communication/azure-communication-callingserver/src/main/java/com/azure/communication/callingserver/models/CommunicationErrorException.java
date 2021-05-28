@@ -7,12 +7,15 @@ package com.azure.communication.callingserver.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with CommunicationError information. */
+/**
+ * Exception thrown for an invalid response with CommunicationError information.
+ */
 public final class CommunicationErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the CommunicationErrorException class.
      *
-     * @param message the exception message or the response content if a message is not available.
+     * @param message the exception message or the response content if a message is
+     * not available.
      * @param response the HTTP response.
      */
     public CommunicationErrorException(String message, HttpResponse response) {
@@ -22,7 +25,8 @@ public final class CommunicationErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the CommunicationErrorException class.
      *
-     * @param message the exception message or the response content if a message is not available.
+     * @param message the exception message or the response content if a message is
+     * not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
