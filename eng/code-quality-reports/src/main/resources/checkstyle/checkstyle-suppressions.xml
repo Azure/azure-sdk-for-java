@@ -581,5 +581,12 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress checks on sample for Video Analyzer -->
   <suppress checks="AvoidStarImport" files="com.azure.media.videoanalyzer.edge.LvaInvokeModuleSample"/>
 
-
+  <!-- Event Hubs perf tests should not be using ClientLogger when outputting results. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.messaging.eventhubs.perf[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.messaging.eventhubs.perf[/\\].*\.java"/>
+  <!-- Fields are set via reflection using JCommander. Setting them to final fields will break it. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.messaging.eventhubs.perf[/\\].*Options\.java"/>
 </suppressions>
