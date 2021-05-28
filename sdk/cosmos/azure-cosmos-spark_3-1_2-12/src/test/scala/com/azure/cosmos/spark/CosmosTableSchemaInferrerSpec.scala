@@ -212,6 +212,21 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     schema.fields(0).nullable shouldBe true
   }
 
+  it should "map duplicate properties when the other is nullable" in {
+    val idVal1 = 20
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.putNull("id")
+    val objectNode2: ObjectNode = objectMapper.createObjectNode()
+    objectNode2.put("id", idVal1)
+    val docs = List[ObjectNode](objectNode, objectNode2)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe IntegerType
+    schema.fields(0).nullable shouldBe true
+  }
+
   it should "map unsupported properties to StringType" in {
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     val initValue = 5
