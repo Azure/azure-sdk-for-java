@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.DataSourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipalInKeyVault;
 
 public final class DataSourceServicePrincipalInKeyVaultAccessor {
     private static Accessor accessor;
@@ -13,17 +13,17 @@ public final class DataSourceServicePrincipalInKeyVaultAccessor {
 
     /**
      * Type defining the methods to set the non-public properties of
-     * an {@link DataSourceServicePrincipalInKeyVault} instance.
+     * an {@link DatasourceServicePrincipalInKeyVault} instance.
      */
     public interface Accessor {
-        void setId(DataSourceServicePrincipalInKeyVault entity, String id);
-        String getKeyVaultClientSecret(DataSourceServicePrincipalInKeyVault entity);
-        String getSecretNameForDataSourceClientId(DataSourceServicePrincipalInKeyVault entity);
-        String getSecretNameForDataSourceClientSecret(DataSourceServicePrincipalInKeyVault entity);
+        void setId(DatasourceServicePrincipalInKeyVault entity, String id);
+        String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity);
+        String getSecretNameForDataSourceClientId(DatasourceServicePrincipalInKeyVault entity);
+        String getSecretNameForDataSourceClientSecret(DatasourceServicePrincipalInKeyVault entity);
     }
 
     /**
-     * The method called from {@link DataSourceServicePrincipalInKeyVault} to set it's accessor.
+     * The method called from {@link DatasourceServicePrincipalInKeyVault} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -31,19 +31,19 @@ public final class DataSourceServicePrincipalInKeyVaultAccessor {
         DataSourceServicePrincipalInKeyVaultAccessor.accessor = accessor;
     }
 
-    public static void setId(DataSourceServicePrincipalInKeyVault entity, String id) {
+    public static void setId(DatasourceServicePrincipalInKeyVault entity, String id) {
         accessor.setId(entity, id);
     }
 
-    public static String getKeyVaultClientSecret(DataSourceServicePrincipalInKeyVault entity) {
+    public static String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity) {
         return accessor.getKeyVaultClientSecret(entity);
     }
 
-    public static String getSecretNameForDataSourceClientId(DataSourceServicePrincipalInKeyVault entity) {
+    public static String getSecretNameForDataSourceClientId(DatasourceServicePrincipalInKeyVault entity) {
         return accessor.getSecretNameForDataSourceClientId(entity);
     }
 
-    public static String getSecretNameForDataSourceClientSecret(DataSourceServicePrincipalInKeyVault entity) {
+    public static String getSecretNameForDataSourceClientSecret(DatasourceServicePrincipalInKeyVault entity) {
         return accessor.getSecretNameForDataSourceClientSecret(entity);
     }
 }

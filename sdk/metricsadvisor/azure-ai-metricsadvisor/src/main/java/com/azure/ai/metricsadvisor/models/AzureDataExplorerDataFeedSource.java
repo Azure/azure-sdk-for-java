@@ -83,11 +83,11 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
 
     /**
      * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DataSourceSqlServerConnectionString} that contains the SQL
+     * entity of type {@link DatasourceSqlServerConnectionString} that contains the SQL
      * connection string.
      *
      * @param credentialEntityId The unique id of a credential entity of type
-     * {@link DataSourceSqlServerConnectionString}.
+     * {@link DatasourceSqlServerConnectionString}.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      *
      * @return The AzureDataExplorerDataFeedSource.
@@ -102,13 +102,13 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
 
     /**
      * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DataSourceServicePrincipal}, the entity contains
+     * entity of type {@link DatasourceServicePrincipal}, the entity contains
      * Service Principal to access the SQL Server.
      *
      * @param connectionString The connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DataSourceServicePrincipal}.
+     * {@link DatasourceServicePrincipal}.
      *
      * @return The SQLServerDataFeedSource.
      */
@@ -123,13 +123,13 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
 
     /**
      * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DataSourceServicePrincipalInKeyVault}, the entity contains
+     * entity of type {@link DatasourceServicePrincipalInKeyVault}, the entity contains
      * details of the KeyVault holding the Service Principal to access the SQL Server.
      *
      * @param connectionString The connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DataSourceServicePrincipalInKeyVault}.
+     * {@link DatasourceServicePrincipalInKeyVault}.
      *
      * @return The AzureDataExplorerDataFeedSource.
      */
@@ -153,7 +153,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
+     * Gets the id of the {@link DatasourceCredentialEntity credential resource} to authenticate the data source.
      *
      * @return The credential resource id.
      */

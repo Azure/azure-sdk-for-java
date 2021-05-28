@@ -35,7 +35,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
 import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.models.ListCredentialEntityOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
@@ -1685,42 +1685,42 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Create a data source credential entity.
      *
-     * @param credentialEntity The credential entity.
-     * @return A {@link Mono} containing the created {@link DataSourceCredentialEntity}.
+     * @param datasourceCredential The credential entity.
+     * @return A {@link Mono} containing the created {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataSourceCredentialEntity> createDataSourceCredential(
-        DataSourceCredentialEntity credentialEntity) {
-        return createDataSourceCredentialWithResponse(credentialEntity)
+    public Mono<DatasourceCredentialEntity> createDatasourceCredential(
+        DatasourceCredentialEntity datasourceCredential) {
+        return createDatasourceCredentialWithResponse(datasourceCredential)
             .map(Response::getValue);
     }
 
     /**
      * Create a data source credential entity with REST response.
      *
-     * @param credentialEntity The credential entity.
-     * @return A {@link Mono} containing the created {@link DataSourceCredentialEntity}.
+     * @param datasourceCredential The credential entity.
+     * @return A {@link Mono} containing the created {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataSourceCredentialEntity>> createDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity credentialEntity) {
+    public Mono<Response<DatasourceCredentialEntity>> createDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential) {
         try {
-            return withContext(context -> createDataSourceCredentialWithResponse(credentialEntity,
+            return withContext(context -> createDatasourceCredentialWithResponse(datasourceCredential,
                 context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<DataSourceCredentialEntity>> createDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity credentialEntity,
+    Mono<Response<DatasourceCredentialEntity>> createDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential,
         Context context) {
-        Objects.requireNonNull(credentialEntity, "credentialEntity is required");
+        Objects.requireNonNull(datasourceCredential, "datasourceCredential is required");
 
         final DataSourceCredential
-            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForCreate(credentialEntity);
+            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForCreate(datasourceCredential);
         return service.createCredentialWithResponseAsync(innerDataSourceCredential,
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Creating DataSourceCredentialEntity"))
@@ -1729,8 +1729,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .flatMap(response -> {
                 final String credentialId
                     = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
-                return this.getDataSourceCredentialWithResponse(credentialId, context)
-                    .map(configurationResponse -> new ResponseBase<Void, DataSourceCredentialEntity>(
+                return this.getDatasourceCredentialWithResponse(credentialId, context)
+                    .map(configurationResponse -> new ResponseBase<Void, DatasourceCredentialEntity>(
                         response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1742,51 +1742,51 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Update a data source credential entity.
      *
-     * @param credentialEntity The credential entity.
-     * @return A {@link Mono} containing the updated {@link DataSourceCredentialEntity}.
+     * @param datasourceCredential The credential entity.
+     * @return A {@link Mono} containing the updated {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataSourceCredentialEntity> updateDataSourceCredential(
-        DataSourceCredentialEntity credentialEntity) {
-        return updateDataSourceCredentialWithResponse(credentialEntity)
+    public Mono<DatasourceCredentialEntity> updateDatasourceCredential(
+        DatasourceCredentialEntity datasourceCredential) {
+        return updateDatasourceCredentialWithResponse(datasourceCredential)
             .map(Response::getValue);
     }
 
     /**
      * Update a data source credential entity with REST response.
      *
-     * @param credentialEntity The credential entity.
-     * @return A {@link Mono} containing the updated {@link DataSourceCredentialEntity}.
+     * @param datasourceCredential The credential entity.
+     * @return A {@link Mono} containing the updated {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataSourceCredentialEntity>> updateDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity credentialEntity) {
+    public Mono<Response<DatasourceCredentialEntity>> updateDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential) {
         try {
-            return withContext(context -> updateDataSourceCredentialWithResponse(credentialEntity,
+            return withContext(context -> updateDatasourceCredentialWithResponse(datasourceCredential,
                 context));
         } catch (RuntimeException e) {
             return FluxUtil.monoError(logger, e);
         }
     }
 
-    Mono<Response<DataSourceCredentialEntity>> updateDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity credentialEntity,
+    Mono<Response<DatasourceCredentialEntity>> updateDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential,
         Context context) {
-        Objects.requireNonNull(credentialEntity, "credentialEntity is required");
+        Objects.requireNonNull(datasourceCredential, "datasourceCredential is required");
 
         final DataSourceCredentialPatch
-            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForUpdate(credentialEntity);
-        return service.updateCredentialWithResponseAsync(UUID.fromString(credentialEntity.getId()),
+            innerDataSourceCredential = DataSourceCredentialEntityTransforms.toInnerForUpdate(datasourceCredential);
+        return service.updateCredentialWithResponseAsync(UUID.fromString(datasourceCredential.getId()),
             innerDataSourceCredential,
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Updating DataSourceCredentialEntity"))
             .doOnSuccess(response -> logger.info("Updated DataSourceCredentialEntity"))
             .doOnError(error -> logger.warning("Failed to update DataSourceCredentialEntity", error))
             .flatMap(response -> {
-                return this.getDataSourceCredentialWithResponse(credentialEntity.getId(), context)
-                    .map(configurationResponse -> new ResponseBase<Void, DataSourceCredentialEntity>(
+                return this.getDatasourceCredentialWithResponse(datasourceCredential.getId(), context)
+                    .map(configurationResponse -> new ResponseBase<Void, DatasourceCredentialEntity>(
                         response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1798,15 +1798,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Get a data source credential entity by its id.
      *
-     * @param credentialEntityId The data source credential entity unique id.
+     * @param credentialId The data source credential entity unique id.
      *
      * @return The data source credential entity for the provided id.
      * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataSourceCredentialEntity> getDataSourceCredential(String credentialEntityId) {
-        return getDataSourceCredentialWithResponse(credentialEntityId).flatMap(FluxUtil::toMono);
+    public Mono<DatasourceCredentialEntity> getDataSourceCredential(String credentialId) {
+        return getDatasourceCredentialWithResponse(credentialId).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1819,20 +1819,20 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataSourceCredentialEntity>> getDataSourceCredentialWithResponse(
+    public Mono<Response<DatasourceCredentialEntity>> getDatasourceCredentialWithResponse(
         String credentialEntityId) {
         try {
-            return withContext(context -> getDataSourceCredentialWithResponse(credentialEntityId, context));
+            return withContext(context -> getDatasourceCredentialWithResponse(credentialEntityId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<DataSourceCredentialEntity>> getDataSourceCredentialWithResponse(String credentialEntityId,
+    Mono<Response<DatasourceCredentialEntity>> getDatasourceCredentialWithResponse(String credentialId,
                                                                                    Context context) {
-        Objects.requireNonNull(credentialEntityId, "'credentialEntityId' cannot be null.");
+        Objects.requireNonNull(credentialId, "'credentialId' cannot be null.");
 
-        return service.getCredentialWithResponseAsync(UUID.fromString(credentialEntityId), context)
+        return service.getCredentialWithResponseAsync(UUID.fromString(credentialId), context)
             .map(response -> new SimpleResponse<>(response,
                 DataSourceCredentialEntityTransforms.fromInner(response.getValue())));
     }
@@ -1840,7 +1840,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Deletes the data source credential entity identified by {@code credentialEntityId}.
      *
-     * @param credentialEntityId The data source credential entity id.
+     * @param credentialId The data source credential entity id.
      *
      * @return An empty Mono.
      * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the
@@ -1848,14 +1848,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDataSourceCredential(String credentialEntityId) {
-        return deleteDataSourceCredentialWithResponse(credentialEntityId).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteDatasourceCredential(String credentialId) {
+        return deleteDatasourceCredentialWithResponse(credentialId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes the data source credential entity identified by {@code credentialEntityId}.
      *
-     * @param credentialEntityId The data source credential entity id.
+     * @param credentialId The data source credential entity id.
      *
      * @return A response containing status code and headers returned after the operation.
      * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the
@@ -1863,36 +1863,36 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDataSourceCredentialWithResponse(String credentialEntityId) {
+    public Mono<Response<Void>> deleteDatasourceCredentialWithResponse(String credentialId) {
         try {
-            return withContext(context -> deleteDataSourceCredentialWithResponse(credentialEntityId, context));
+            return withContext(context -> deleteDatasourceCredentialWithResponse(credentialId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteDataSourceCredentialWithResponse(String credentialEntityId, Context context) {
-        Objects.requireNonNull(credentialEntityId, "'credentialEntityId' is required.");
+    Mono<Response<Void>> deleteDatasourceCredentialWithResponse(String credentialId, Context context) {
+        Objects.requireNonNull(credentialId, "'credentialId' is required.");
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
-        return service.deleteCredentialWithResponseAsync(UUID.fromString(credentialEntityId),
+        return service.deleteCredentialWithResponseAsync(UUID.fromString(credentialId),
             withTracing)
             .doOnSubscribe(ignoredValue -> logger.info("Deleting deleteDataSourceCredentialEntity - {}",
-                credentialEntityId))
+                credentialId))
             .doOnSuccess(response -> logger.info("Deleted deleteDataSourceCredentialEntity - {}", response))
             .doOnError(error -> logger.warning("Failed to delete deleteDataSourceCredentialEntity - {}",
-                credentialEntityId, error));
+                credentialId, error));
     }
 
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
-     * @return A {@link PagedFlux} containing information of all the {@link DataSourceCredentialEntity data feeds}
+     * @return A {@link PagedFlux} containing information of all the {@link DatasourceCredentialEntity data feeds}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials() {
-        return listDataSourceCredentials(new ListCredentialEntityOptions());
+    public PagedFlux<DatasourceCredentialEntity> listDatasourceCredentials() {
+        return listDatasourceCredentials(new ListCredentialEntityOptions());
     }
 
     /**
@@ -1901,11 +1901,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering
      *               the output result.
      *
-     * @return A {@link PagedFlux} containing information of all the {@link DataSourceCredentialEntity data feeds}
+     * @return A {@link PagedFlux} containing information of all the {@link DatasourceCredentialEntity data feeds}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions options) {
+    public PagedFlux<DatasourceCredentialEntity> listDatasourceCredentials(ListCredentialEntityOptions options) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
@@ -1917,7 +1917,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions options,
+    PagedFlux<DatasourceCredentialEntity> listDatasourceCredentials(ListCredentialEntityOptions options,
                                                                     Context context) {
         return new PagedFlux<>(() ->
             listCredentialEntitiesSinglePageAsync(options, context),
@@ -1925,7 +1925,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 listCredentialEntitiesSNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSinglePageAsync(
+    private Mono<PagedResponse<DatasourceCredentialEntity>> listCredentialEntitiesSinglePageAsync(
         ListCredentialEntityOptions options, Context context) {
         options = options != null ? options : new ListCredentialEntityOptions();
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
@@ -1943,7 +1943,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 null));
     }
 
-    private Mono<PagedResponse<DataSourceCredentialEntity>> listCredentialEntitiesSNextPageAsync(
+    private Mono<PagedResponse<DatasourceCredentialEntity>> listCredentialEntitiesSNextPageAsync(
         String nextPageLink, Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();

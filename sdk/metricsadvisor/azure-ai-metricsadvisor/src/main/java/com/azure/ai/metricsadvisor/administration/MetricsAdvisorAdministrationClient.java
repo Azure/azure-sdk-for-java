@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.models.DataSourceCredentialEntity;
+import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
 import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.models.ListCredentialEntityOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
@@ -917,29 +917,29 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * Create a data source credential entity.
      *
-     * @param credentialEntity The credential entity.
-     * @return The created {@link DataSourceCredentialEntity}.
+     * @param datasourceCredential The credential entity.
+     * @return The created {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity createDataSourceCredential(DataSourceCredentialEntity credentialEntity) {
-        return createDataSourceCredentialWithResponse(credentialEntity, Context.NONE).getValue();
+    public DatasourceCredentialEntity createDatasourceCredential(DatasourceCredentialEntity datasourceCredential) {
+        return createDatasourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
     }
 
     /**
      * Create a data source credential entity with REST response.
      *
-     * @param credentialEntity The credential entity.
+     * @param datasourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link Response} containing the created {@link DataSourceCredentialEntity}.
+     * @return A {@link Response} containing the created {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> createDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity credentialEntity, Context context) {
-        return client.createDataSourceCredentialWithResponse(credentialEntity, context).block();
+    public Response<DatasourceCredentialEntity> createDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential, Context context) {
+        return client.createDatasourceCredentialWithResponse(datasourceCredential, context).block();
     }
 
     /**
@@ -952,8 +952,8 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity getDataSourceCredential(String credentialId) {
-        return getDataSourceCredentialWithResponse(credentialId, Context.NONE).getValue();
+    public DatasourceCredentialEntity getDatasourceCredential(String credentialId) {
+        return getDatasourceCredentialWithResponse(credentialId, Context.NONE).getValue();
     }
 
     /**
@@ -967,37 +967,37 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code dataFeedId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> getDataSourceCredentialWithResponse(String credentialId,
+    public Response<DatasourceCredentialEntity> getDatasourceCredentialWithResponse(String credentialId,
                                                                                     Context context) {
-        return client.getDataSourceCredentialWithResponse(credentialId, context).block();
+        return client.getDatasourceCredentialWithResponse(credentialId, context).block();
     }
 
     /**
      * Update a data source credential entity.
      *
-     * @param credentialEntity The credential entity.
+     * @param datasourceCredential The credential entity.
      *
-     * @return The updated {@link DataSourceCredentialEntity}.
+     * @return The updated {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity updateDataSourceCredential(DataSourceCredentialEntity credentialEntity) {
-        return updateDataSourceCredentialWithResponse(credentialEntity, Context.NONE).getValue();
+    public DatasourceCredentialEntity updateDatasourceCredential(DatasourceCredentialEntity datasourceCredential) {
+        return updateDatasourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
     }
 
     /**
      * Update a data source credential entity.
      *
-     * @param credentialEntity The credential entity.
+     * @param datasourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link Response} containing the updated {@link DataSourceCredentialEntity}.
+     * @return A {@link Response} containing the updated {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> updateDataSourceCredentialWithResponse(
-        DataSourceCredentialEntity credentialEntity, Context context) {
-        return client.updateDataSourceCredentialWithResponse(credentialEntity, context).block();
+    public Response<DatasourceCredentialEntity> updateDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential, Context context) {
+        return client.updateDatasourceCredentialWithResponse(datasourceCredential, context).block();
     }
 
     /**
@@ -1009,8 +1009,8 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataSourceCredential(String credentialId) {
-        deleteDataSourceCredentialWithResponse(credentialId, Context.NONE);
+    public void deleteDatasourceCredential(String credentialId) {
+        deleteDatasourceCredentialWithResponse(credentialId, Context.NONE);
     }
 
     /**
@@ -1024,19 +1024,19 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code dataFeedId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
+    public Response<Void> deleteDatasourceCredentialWithResponse(String credentialId, Context context) {
         return client.deleteDataFeedWithResponse(credentialId, context).block();
     }
 
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
-     * @return A {@link PagedIterable} containing information of all the {@link DataSourceCredentialEntity}
+     * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials() {
-        return listDataSourceCredentials(null, Context.NONE);
+    public PagedIterable<DatasourceCredentialEntity> listDatasourceCredentials() {
+        return listDatasourceCredentials(null, Context.NONE);
     }
 
     /**
@@ -1046,12 +1046,12 @@ public final class MetricsAdvisorAdministrationClient {
      *               result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link PagedIterable} containing information of all the {@link DataSourceCredentialEntity}
+     * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials(
+    public PagedIterable<DatasourceCredentialEntity> listDatasourceCredentials(
         ListCredentialEntityOptions options, Context context) {
-        return new PagedIterable<>(client.listDataSourceCredentials(options, context));
+        return new PagedIterable<>(client.listDatasourceCredentials(options, context));
     }
 }

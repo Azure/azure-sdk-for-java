@@ -99,7 +99,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
 
     /**
      * Create a AzureDataLakeStorageGen2DataFeedSource with the {@code credentialId} identifying
-     * a credential entity of type {@link DataSourceSqlServerConnectionString} that contains
+     * a credential entity of type {@link DatasourceSqlServerConnectionString} that contains
      * the shared access key.
      *
      * @param accountName the name of the storage account.
@@ -128,7 +128,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
 
     /**
      * Create a AzureDataLakeStorageGen2DataFeedSource with the {@code credentialId}
-     * identifying a credential entity of type {@link DataSourceServicePrincipal},
+     * identifying a credential entity of type {@link DatasourceServicePrincipal},
      * the entity contains Service Principal to access the Data Lake storage.
      *
      * @param accountName the name of the storage account.
@@ -136,7 +136,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      * @param directoryTemplate the directory template of the storage account.
      * @param fileTemplate the file template.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DataSourceServicePrincipal}.
+     * {@link DatasourceServicePrincipal}.
      *
      * @return The AzureDataLakeStorageGen2DataFeedSource.
      */
@@ -156,7 +156,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
 
     /**
      * Create a AzureDataLakeStorageGen2DataFeedSource with the {@code credentialId} identifying
-     * a credential entity of type {@link DataSourceServicePrincipalInKeyVault}, the entity
+     * a credential entity of type {@link DatasourceServicePrincipalInKeyVault}, the entity
      * contains details of the KeyVault holding the Service Principal to access the Data Lake storage.
      *
      * @param accountName the name of the storage account.
@@ -164,7 +164,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      * @param directoryTemplate the directory template of the storage account.
      * @param fileTemplate the file template.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DataSourceServicePrincipalInKeyVault}
+     * {@link DatasourceServicePrincipalInKeyVault}
      *
      * @return The AzureDataLakeStorageGen2DataFeedSource.
      */
@@ -220,7 +220,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
     }
 
     /**
-     * Gets the id of the {@link DataSourceCredentialEntity credential resource} to authenticate the data source.
+     * Gets the id of the {@link DatasourceCredentialEntity credential resource} to authenticate the data source.
      *
      * @return The credential resource id.
      */

@@ -8,11 +8,11 @@ package com.azure.ai.metricsadvisor.models;
  * that service uses to access the data sources {@link DataFeedSource}.
  *
  * @see DataSourceDataLakeGen2SharedKey
- * @see DataSourceServicePrincipal
- * @see DataSourceServicePrincipalInKeyVault
- * @see DataSourceSqlServerConnectionString
+ * @see DatasourceServicePrincipal
+ * @see DatasourceServicePrincipalInKeyVault
+ * @see DatasourceSqlServerConnectionString
  */
-public abstract class DataSourceCredentialEntity {
+public abstract class DatasourceCredentialEntity {
     /**
      * Gets the credential id.
      *

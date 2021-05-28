@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * The connection credential entity for SQLServer.
  */
 @Fluent
-public final class DataSourceSqlServerConnectionString extends DataSourceCredentialEntity {
+public final class DatasourceSqlServerConnectionString extends DatasourceCredentialEntity {
     private String id;
     private String name;
     private String description;
@@ -20,12 +20,12 @@ public final class DataSourceSqlServerConnectionString extends DataSourceCredent
         DataSourceSqlServerConnectionStringAccessor.setAccessor(
             new DataSourceSqlServerConnectionStringAccessor.Accessor() {
                 @Override
-                public void setId(DataSourceSqlServerConnectionString entity, String id) {
+                public void setId(DatasourceSqlServerConnectionString entity, String id) {
                     entity.setId(id);
                 }
 
                 @Override
-                public String getConnectionString(DataSourceSqlServerConnectionString entity) {
+                public String getConnectionString(DatasourceSqlServerConnectionString entity) {
                     return entity.getConnectionString();
                 }
             });
@@ -52,7 +52,7 @@ public final class DataSourceSqlServerConnectionString extends DataSourceCredent
      * @param name The name
      * @param connectionString The connection string
      */
-    public DataSourceSqlServerConnectionString(String name, String connectionString) {
+    public DatasourceSqlServerConnectionString(String name, String connectionString) {
         this.name = name;
         this.connectionString = connectionString;
     }
@@ -63,7 +63,7 @@ public final class DataSourceSqlServerConnectionString extends DataSourceCredent
      * @param name The name
      * @return an updated object with name set
      */
-    public DataSourceSqlServerConnectionString setName(String name) {
+    public DatasourceSqlServerConnectionString setName(String name) {
         this.name = name;
         return this;
     }
@@ -74,7 +74,7 @@ public final class DataSourceSqlServerConnectionString extends DataSourceCredent
      * @param connectionString The connection string
      * @return an updated object with connection string set
      */
-    public DataSourceSqlServerConnectionString setConnectionString(String connectionString) {
+    public DatasourceSqlServerConnectionString setConnectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
     }
@@ -85,7 +85,7 @@ public final class DataSourceSqlServerConnectionString extends DataSourceCredent
      * @param description The description.
      * @return an updated object with description set
      */
-    public DataSourceSqlServerConnectionString setDescription(String description) {
+    public DatasourceSqlServerConnectionString setDescription(String description) {
         this .description = description;
         return this;
     }

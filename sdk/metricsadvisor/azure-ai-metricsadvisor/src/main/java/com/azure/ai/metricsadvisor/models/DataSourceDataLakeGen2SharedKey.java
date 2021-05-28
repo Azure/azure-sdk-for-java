@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * The shared key credential entity for DataLakeGen2.
  */
 @Fluent
-public final class DataSourceDataLakeGen2SharedKey extends DataSourceCredentialEntity {
+public final class DataSourceDataLakeGen2SharedKey extends DatasourceCredentialEntity {
     private String id;
     private String name;
     private String description;
