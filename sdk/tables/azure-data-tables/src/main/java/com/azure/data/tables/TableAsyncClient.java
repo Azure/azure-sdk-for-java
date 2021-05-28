@@ -16,13 +16,20 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.ModelHelper;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.models.AccessPolicy;
+import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
+import com.azure.data.tables.implementation.models.TransactionalBatchAction;
+import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
+import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
+import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -30,6 +37,8 @@ import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
+import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
@@ -37,9 +46,15 @@ import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
+import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionFailedException;
+import com.azure.data.tables.models.TableTransactionResult;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -51,6 +66,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
+import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
 /**
  * Provides an asynchronous service client for accessing a table in the Azure Tables service.
@@ -68,15 +84,15 @@ public final class TableAsyncClient {
     private static final String DELIMITER_CONTINUATION_TOKEN = ";";
     private final ClientLogger logger = new ClientLogger(TableAsyncClient.class);
     private final String tableName;
-    private final AzureTableImpl implementation;
-    private final SerializerAdapter serializerAdapter;
+    private final AzureTableImpl tablesImplementation;
+    private final TransactionalBatchImpl transactionalBatchImplementation;
     private final String accountName;
     private final String tableEndpoint;
     private final HttpPipeline pipeline;
+    private final TableAsyncClient transactionalBatchClient;
 
-    private TableAsyncClient(String tableName, AzureTableImpl implementation, SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
-
+    TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
+                     SerializerAdapter tablesSerializer, SerializerAdapter transactionalBatchSerializer) {
         try {
             if (tableName == null) {
                 throw new NullPointerException("'tableName' must not be null to create a TableClient.");
@@ -86,7 +102,7 @@ public final class TableAsyncClient {
                 throw new IllegalArgumentException("'tableName' must not be empty to create a TableClient.");
             }
 
-            final URI uri = URI.create(implementation.getUrl());
+            final URI uri = URI.create(serviceUrl);
             this.accountName = uri.getHost().split("\\.", 2)[0];
             this.tableEndpoint = uri.resolve("/" + tableName).toString();
 
@@ -95,21 +111,34 @@ public final class TableAsyncClient {
             throw logger.logExceptionAsError(ex);
         }
 
-        this.implementation = implementation;
+        this.tablesImplementation = new AzureTableImplBuilder()
+            .url(serviceUrl)
+            .serializerAdapter(tablesSerializer)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+        this.transactionalBatchImplementation =
+            new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
         this.tableName = tableName;
-        this.pipeline = implementation.getHttpPipeline();
+        this.pipeline = tablesImplementation.getHttpPipeline();
+        this.transactionalBatchClient = new TableAsyncClient(this, serviceVersion, tablesSerializer);
     }
 
-    TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
-                     SerializerAdapter serializerAdapter) {
-        this(tableName, new AzureTableImplBuilder()
-                .url(serviceUrl)
-                .serializerAdapter(serializerAdapter)
-                .pipeline(pipeline)
-                .version(serviceVersion.getVersion())
-                .buildClient(),
-            serializerAdapter
-        );
+    // Create a hollow client to be used for obtaining the body of a transaction operation to submit.
+    TableAsyncClient(TableAsyncClient client, ServiceVersion serviceVersion, SerializerAdapter tablesSerializer) {
+        this.accountName = client.getAccountName();
+        this.tableEndpoint = client.getTableEndpoint();
+        this.pipeline = BuilderHelper.buildNullClientPipeline();
+        this.tablesImplementation = new AzureTableImplBuilder()
+            .url(client.getTablesImplementation().getUrl())
+            .serializerAdapter(tablesSerializer)
+            .pipeline(this.pipeline)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+        this.tableName = client.getTableName();
+        // A batch prep client does not need its own batch prep client nor batch implementation.
+        this.transactionalBatchImplementation = null;
+        this.transactionalBatchClient = null;
     }
 
     /**
@@ -153,8 +182,8 @@ public final class TableAsyncClient {
      *
      * @return This client's {@link AzureTableImpl}.
      */
-    AzureTableImpl getImplementation() {
-        return implementation;
+    AzureTableImpl getTablesImplementation() {
+        return tablesImplementation;
     }
 
     /**
@@ -163,30 +192,7 @@ public final class TableAsyncClient {
      * @return The REST API version used by this client.
      */
     public TableServiceVersion getServiceVersion() {
-        return TableServiceVersion.fromString(implementation.getVersion());
-    }
-
-    /**
-     * Creates a new {@link TableAsyncBatch} object. Batch objects allow you to enqueue multiple create, update, upsert,
-     * and/or delete operations on entities that share the same partition key. When the batch is executed, all of the
-     * operations will be performed as part of a single transaction. As a result, either all operations in the batch
-     * will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation in a batch
-     * must operate on a distinct row key. Attempting to add multiple operations to a batch that share the same row key
-     * will cause an exception to be thrown.
-     *
-     * @param partitionKey The partition key shared by all operations in the batch.
-     *
-     * @return An object representing the batch, to which operations can be added.
-     *
-     * @throws IllegalArgumentException If the provided partition key is {@code null} or empty.
-     */
-    public TableAsyncBatch createBatch(String partitionKey) {
-        if (isNullOrEmpty(partitionKey)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'partitionKey' cannot be null or empty."));
-        }
-
-        return new TableAsyncBatch(partitionKey, this);
+        return TableServiceVersion.fromString(tablesImplementation.getVersion());
     }
 
     /**
@@ -218,7 +224,7 @@ public final class TableAsyncClient {
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
-            return implementation.getTables().createWithResponseAsync(properties, null,
+            return tablesImplementation.getTables().createWithResponseAsync(properties, null,
                 ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response ->
@@ -271,7 +277,7 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
-            return implementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
+            return tablesImplementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
                 ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response ->
@@ -359,15 +365,17 @@ public final class TableAsyncClient {
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
-                return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, null, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
+                        null, null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
-                return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, null, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
+                        null, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -422,7 +430,7 @@ public final class TableAsyncClient {
      *
      * @param entity The entity to update.
      * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
+     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
      * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return An empty reactive result.
@@ -447,7 +455,7 @@ public final class TableAsyncClient {
      *
      * @param entity The entity to update.
      * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
+     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
      * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return A reactive result containing the HTTP response.
@@ -463,8 +471,8 @@ public final class TableAsyncClient {
         return withContext(context -> updateEntityWithResponse(entity, updateMode, ifUnchanged, context));
     }
 
-    Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged,
-                                                  Context context) {
+    Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                  boolean ifUnchanged, Context context) {
         context = context == null ? Context.NONE : context;
 
         if (entity == null) {
@@ -476,15 +484,17 @@ public final class TableAsyncClient {
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
-                return implementation.getTables().updateEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, eTag, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
+                        null, eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
-                return implementation.getTables().mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(),
-                    entity.getRowKey(), null, null, eTag, entity.getProperties(), null, context)
+                return tablesImplementation.getTables()
+                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
+                        eTag, entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -523,7 +533,7 @@ public final class TableAsyncClient {
         context = context == null ? Context.NONE : context;
 
         try {
-            return implementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            return tablesImplementation.getTables().deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -570,7 +580,7 @@ public final class TableAsyncClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
+     * @param eTag The value to compare with the ETag of the entity in the Tables service. If the values do not match,
      * the delete will not occur and an exception will be thrown.
      *
      * @return A reactive result containing the response.
@@ -592,8 +602,8 @@ public final class TableAsyncClient {
         }
 
         try {
-            return implementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, matchParam,
-                null, null, null, context)
+            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey,
+                matchParam, null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -688,7 +698,7 @@ public final class TableAsyncClient {
      * @return A paged reactive result containing matching entities within the table.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
-     * @throws TableServiceErrorException If the request is rejected by the service.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     PagedFlux<TableEntity> listEntities(ListEntitiesOptions options, Context context) {
         return new PagedFlux<>(
@@ -739,7 +749,7 @@ public final class TableAsyncClient {
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         try {
-            return implementation.getTables().queryEntitiesWithResponseAsync(tableName, null, null,
+            return tablesImplementation.getTables().queryEntitiesWithResponseAsync(tableName, null, null,
                 nextPartitionKey, nextRowKey, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(response -> {
@@ -952,7 +962,7 @@ public final class TableAsyncClient {
         }
 
         try {
-            return implementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
+            return tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
                 partitionKey, rowKey, null, null, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .handle((response, sink) -> {
@@ -996,15 +1006,16 @@ public final class TableAsyncClient {
             Context finalContext = context;
             Function<String, Mono<PagedResponse<TableSignedIdentifier>>> retriever =
                 marker ->
-                    implementation.getTables().getAccessPolicyWithResponseAsync(tableName, null, null, finalContext)
-                    .map(response -> new PagedResponseBase<>(response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        response.getValue().stream()
-                            .map(this::toTableSignedIdentifier)
-                            .collect(Collectors.toList()),
-                        null,
-                        response.getDeserializedHeaders()));
+                    tablesImplementation.getTables()
+                        .getAccessPolicyWithResponseAsync(tableName, null, null, finalContext)
+                        .map(response -> new PagedResponseBase<>(response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            response.getValue().stream()
+                                .map(this::toTableSignedIdentifier)
+                                .collect(Collectors.toList()),
+                            null,
+                            response.getDeserializedHeaders()));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException e) {
@@ -1055,7 +1066,7 @@ public final class TableAsyncClient {
         context = context == null ? Context.NONE : context;
 
         try {
-            return implementation.getTables()
+            return tablesImplementation.getTables()
                 .setAccessPolicyWithResponseAsync(tableName, null, null,
                     tableSignedIdentifiers.stream().map(this::toSignedIdentifier).collect(Collectors.toList()), context)
                 .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -1075,5 +1086,180 @@ public final class TableAsyncClient {
             .setExpiry(tableAccessPolicy.getExpiresOn())
             .setStart(tableAccessPolicy.getStartsOn())
             .setPermission(tableAccessPolicy.getPermissions());
+    }
+
+    /**
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
+     *
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * in a table.
+     *
+     * @return A reactive result containing a list of {@link TableTransactionActionResponse sub-responses} that
+     * correspond to each operation in the transaction
+     *
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public synchronized Mono<TableTransactionResult> submitTransaction(List<TableTransactionAction> transactionActions) {
+        return submitTransactionWithResponse(transactionActions)
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
+    }
+
+    /**
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
+     *
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * in a table.
+     *
+     * @return A reactive result containing the HTTP response produced for the transaction itself. The response's
+     * value will contain a list of {@link TableTransactionActionResponse sub-responses} that correspond to each
+     * operation in the transaction.
+     *
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public synchronized Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions) {
+        return withContext(context -> submitTransactionWithResponse(transactionActions, context));
+    }
+
+    Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+
+        if (transactionActions.size() == 0) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("A transaction must contain at least one operation."));
+        }
+
+        final List<TransactionalBatchAction> operations = new ArrayList<>();
+
+        for (TableTransactionAction transactionAction : transactionActions) {
+            switch (transactionAction.getActionType()) {
+                case CREATE:
+                    operations.add(new TransactionalBatchAction.CreateEntity(transactionAction.getEntity()));
+
+                    break;
+                case UPSERT_MERGE:
+                    operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
+                        TableEntityUpdateMode.MERGE));
+
+                    break;
+                case UPSERT_REPLACE:
+                    operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
+                        TableEntityUpdateMode.REPLACE));
+
+                    break;
+                case UPDATE_MERGE:
+                    operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
+                        TableEntityUpdateMode.MERGE, transactionAction.getIfUnchanged()));
+
+                    break;
+                case UPDATE_REPLACE:
+                    operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
+                        TableEntityUpdateMode.REPLACE, transactionAction.getIfUnchanged()));
+
+                    break;
+                case DELETE:
+                    operations.add(
+                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity().getPartitionKey(),
+                            transactionAction.getEntity().getRowKey(), transactionAction.getEntity().getETag()));
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return Flux.fromIterable(operations)
+            .flatMapSequential(op -> op.prepareRequest(transactionalBatchClient).zipWith(Mono.just(op)))
+            .collect(TransactionalBatchRequestBody::new, (body, pair) ->
+                body.addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
+            .flatMap(body ->
+                transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
+                    finalContext).zipWith(Mono.just(body)))
+            .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
+            .map(response ->
+                new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    new TableTransactionResult(transactionActions, response.getValue())));
+    }
+
+    private Mono<Response<List<TableTransactionActionResponse>>> parseResponse(TransactionalBatchRequestBody requestBody,
+                                                                               TransactionalBatchResponse response) {
+        TableServiceError error = null;
+        String errorMessage = null;
+        TransactionalBatchChangeSet changes = null;
+        TransactionalBatchAction failedAction = null;
+        Integer failedIndex = null;
+
+        if (requestBody.getContents().get(0) instanceof TransactionalBatchChangeSet) {
+            changes = (TransactionalBatchChangeSet) requestBody.getContents().get(0);
+        }
+
+        for (int i = 0; i < response.getValue().length; i++) {
+            TableTransactionActionResponse subResponse = response.getValue()[i];
+
+            // Attempt to attach a sub-request to each batch sub-response
+            if (changes != null && changes.getContents().get(i) != null) {
+                ModelHelper.updateTableTransactionActionResponse(subResponse,
+                    changes.getContents().get(i).getHttpRequest());
+            }
+
+            // If one sub-response was an error, we need to throw even though the service responded with 202
+            if (subResponse.getStatusCode() >= 400 && error == null && errorMessage == null) {
+                if (subResponse.getValue() instanceof TableServiceError) {
+                    error = (TableServiceError) subResponse.getValue();
+
+                    // Make a best effort to locate the failed operation and include it in the message
+                    if (changes != null && error.getOdataError() != null
+                        && error.getOdataError().getMessage() != null
+                        && error.getOdataError().getMessage().getValue() != null) {
+
+                        String message = error.getOdataError().getMessage().getValue();
+
+                        try {
+                            failedIndex = Integer.parseInt(message.substring(0, message.indexOf(":")));
+                            failedAction = changes.getContents().get(failedIndex).getOperation();
+                        } catch (NumberFormatException e) {
+                            // Unable to parse failed operation from batch error message - this just means
+                            // the service did not indicate which request was the one that failed. Since
+                            // this is optional, just swallow the exception.
+                        }
+                    }
+                } else if (subResponse.getValue() instanceof String) {
+                    errorMessage = "The service returned the following data for the failed operation: "
+                        + subResponse.getValue();
+                } else {
+                    errorMessage =
+                        "The service returned the following status code for the failed operation: "
+                            + subResponse.getStatusCode();
+                }
+            }
+        }
+
+        if (error != null || errorMessage != null) {
+            String message = "An operation within the batch failed, the transaction has been rolled back.";
+
+            if (failedAction != null) {
+                message += " The failed operation was: " + failedAction;
+            } else if (errorMessage != null) {
+                message += " " + errorMessage;
+            }
+
+            return monoError(logger,
+                new TableTransactionFailedException(message, null, toTableServiceError(error), failedIndex));
+        } else {
+            return Mono.just(new SimpleResponse<>(response, Arrays.asList(response.getValue())));
+        }
     }
 }

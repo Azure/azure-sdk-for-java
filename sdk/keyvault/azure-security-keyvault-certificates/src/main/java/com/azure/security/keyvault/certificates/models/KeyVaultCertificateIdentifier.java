@@ -14,12 +14,12 @@ import java.net.URL;
  * calling methods of {@link CertificateClient} or {@link CertificateAsyncClient}.
  */
 public final class KeyVaultCertificateIdentifier {
-    private final String certificateId, vaultUrl, name, version;
+    private final String sourceId, vaultUrl, name, version;
 
     /**
      * Create a new {@link KeyVaultCertificateIdentifier} from a given certificate identifier.
      *
-     * <p>Valid examples are:
+     * <p>Some examples:
      *
      * <ul>
      *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}</li>
@@ -28,18 +28,18 @@ public final class KeyVaultCertificateIdentifier {
      *     <li>https://{key-vault-name}.vault.azure.net/deletedcertificates/{deleted-certificate-name}</li>
      * </ul>
      *
-     * @param certificateId The certificate identifier to extract information from.
+     * @param id The identifier to extract information from.
      *
      * @throws IllegalArgumentException If {@code certificateId} is an invalid Key Vault Certificate identifier.
      * @throws NullPointerException If {@code certificateId} is {@code null}.
      */
-    public KeyVaultCertificateIdentifier(String certificateId) {
-        if (certificateId == null) {
+    public KeyVaultCertificateIdentifier(String id) {
+        if (id == null) {
             throw new NullPointerException("'certificateId' cannot be null");
         }
 
         try {
-            final URL url = new URL(certificateId);
+            final URL url = new URL(id);
             // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
             final String[] pathSegments = url.getPath().split("/");
 
@@ -50,7 +50,7 @@ public final class KeyVaultCertificateIdentifier {
                 throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
             }
 
-            this.certificateId = certificateId;
+            this.sourceId = id;
             this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
@@ -64,8 +64,8 @@ public final class KeyVaultCertificateIdentifier {
      *
      * @return The certificate identifier.
      */
-    public String getCertificateId() {
-        return certificateId;
+    public String getSourceId() {
+        return sourceId;
     }
 
     /**

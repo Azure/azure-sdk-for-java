@@ -136,6 +136,7 @@ public class ImplementationBridgeHelpers {
         public interface CosmosItemRequestOptionsAccessor {
             void setOperationContext(CosmosItemRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions queryRequestOptions);
+            CosmosItemRequestOptions clone(CosmosItemRequestOptions options);
         }
     }
 

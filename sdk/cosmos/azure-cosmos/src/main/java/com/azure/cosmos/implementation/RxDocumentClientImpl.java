@@ -76,7 +76,6 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -660,7 +659,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, Database.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in deleting a database. due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -971,7 +970,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a collection, due to [{}]", e.getMessage(), e);
@@ -979,14 +978,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
+    private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy, OperationContextAndListenerTuple operationContextAndListenerTuple) {
         return populateHeaders(request, RequestVerb.DELETE)
             .flatMap(requestPopulated -> {
                 if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
                     documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
-                return getStoreProxy(requestPopulated).processMessage(requestPopulated);
+                return getStoreProxy(requestPopulated).processMessage(requestPopulated, operationContextAndListenerTuple);
             });
     }
 
@@ -1917,7 +1916,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
 
             return requestObs.flatMap(req -> this
-                .delete(req, retryPolicyInstance)
+                .delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
                 .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
 
         } catch (Exception e) {
@@ -2581,7 +2580,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, StoredProcedure.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, StoredProcedure.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -2859,7 +2858,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, Trigger.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Trigger.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Trigger due to [{}]", e.getMessage(), e);
@@ -3050,7 +3049,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, UserDefinedFunction.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
@@ -3203,7 +3202,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     retryPolicyInstance.onBeforeSendRequest(request);
                 }
 
-                return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, Conflict.class));
+                return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Conflict.class));
             });
 
         } catch (Exception e) {
@@ -3325,7 +3324,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, User.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, User.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a User due to [{}]", e.getMessage(), e);
@@ -3628,7 +3627,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            return this.delete(request, retryPolicyInstance).map(response -> toResourceResponse(response, Permission.class));
+            return this.delete(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, Permission.class));
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Permission due to [{}]", e.getMessage(), e);

@@ -398,7 +398,7 @@ private object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified = Value
 }
 
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,

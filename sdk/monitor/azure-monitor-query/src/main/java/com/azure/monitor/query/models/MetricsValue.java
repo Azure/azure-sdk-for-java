@@ -17,7 +17,7 @@ public final class MetricsValue {
     private final Double minimum;
     private final Double maximum;
     private final Double total;
-    private final Double count;
+    private final Long count;
 
     /**
      * Creates an instance of {@link MetricsValue}.
@@ -28,7 +28,8 @@ public final class MetricsValue {
      * @param total the sum of all of the values in the time range.
      * @param count the number of samples in the time range.
      */
-    public MetricsValue(OffsetDateTime timeStamp, Double average, Double minimum, Double maximum, Double total, Double count) {
+    public MetricsValue(OffsetDateTime timeStamp, Double average, Double minimum, Double maximum, Double total,
+                        Long count) {
         this.timeStamp = timeStamp;
         this.average = average;
         this.minimum = minimum;
@@ -81,7 +82,7 @@ public final class MetricsValue {
      * Returns the number of samples in the time range.
      * @return the number of samples in the time range.
      */
-    public Double getCount() {
+    public Long getCount() {
         return count;
     }
 }

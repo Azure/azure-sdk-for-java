@@ -36,7 +36,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -48,7 +48,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param iv Initialization vector for the encryption operation.
      *
      * @return The {@link EncryptParameters}.
@@ -61,7 +61,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -73,7 +73,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param iv Initialization vector for the encryption operation.
      *
      * @return The {@link EncryptParameters}.
@@ -86,7 +86,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -98,7 +98,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A128GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      *
      * @return The {@link EncryptParameters}.
@@ -111,7 +111,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -123,7 +123,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param iv Initialization vector for the encryption operation.
      *
      * @return The {@link EncryptParameters}.
@@ -136,7 +136,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -148,7 +148,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param iv Initialization vector for the encryption operation.
      *
      * @return The {@link EncryptParameters}.
@@ -161,7 +161,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -173,7 +173,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A192GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      *
      * @return The {@link EncryptParameters}.
@@ -186,7 +186,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -198,7 +198,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param iv Initialization vector for the encryption operation.
      *
      * @return The {@link EncryptParameters}.
@@ -211,7 +211,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -223,7 +223,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param iv Initialization vector for the encryption operation.
      *
      * @return The {@link EncryptParameters}.
@@ -236,7 +236,7 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      *
      * @return The {@link EncryptParameters}.
      */
@@ -248,13 +248,49 @@ public class EncryptParameters {
      * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
      * {@link EncryptionAlgorithm#A256GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plaintext The content to be encrypted.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      *
      * @return The {@link EncryptParameters}.
      */
     public static EncryptParameters createA256GcmParameters(byte[] plaintext, byte[] additionalAuthenticatedData) {
         return new EncryptParameters(EncryptionAlgorithm.A256GCM, plaintext, null, additionalAuthenticatedData);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
+     * {@link EncryptionAlgorithm#RSA1_5}.
+     *
+     * @param plaintext The content to be encrypted.
+     *
+     * @return The {@link EncryptParameters}.
+     */
+    public static EncryptParameters createRsa15Parameters(byte[] plaintext) {
+        return new EncryptParameters(EncryptionAlgorithm.RSA1_5, plaintext, null, null);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
+     * {@link EncryptionAlgorithm#RSA_OAEP}.
+     *
+     * @param plaintext The content to be encrypted.
+     *
+     * @return The {@link EncryptParameters}.
+     */
+    public static EncryptParameters createRsaOaepParameters(byte[] plaintext) {
+        return new EncryptParameters(EncryptionAlgorithm.RSA_OAEP, plaintext, null, null);
+    }
+
+    /**
+     * Factory method to create an instance of {@link EncryptParameters} with the given parameters for
+     * {@link EncryptionAlgorithm#RSA_OAEP_256}.
+     *
+     * @param plaintext The content to be encrypted.
+     *
+     * @return The {@link EncryptParameters}.
+     */
+    public static EncryptParameters createRsaOaep256Parameters(byte[] plaintext) {
+        return new EncryptParameters(EncryptionAlgorithm.RSA_OAEP_256, plaintext, null, null);
     }
 
     /**

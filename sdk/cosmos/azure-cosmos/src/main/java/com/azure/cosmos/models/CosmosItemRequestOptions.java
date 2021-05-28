@@ -43,6 +43,7 @@ public class CosmosItemRequestOptions {
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
         throughputControlGroupName = options.throughputControlGroupName;
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        operationContextAndListenerTuple = options.operationContextAndListenerTuple;
     }
 
 
@@ -349,6 +350,11 @@ public class CosmosItemRequestOptions {
                 @Override
                 public OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions itemRequestOptions) {
                     return itemRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                public CosmosItemRequestOptions clone(CosmosItemRequestOptions options) {
+                    return new CosmosItemRequestOptions(options);
                 }
             });
     }

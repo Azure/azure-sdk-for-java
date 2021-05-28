@@ -7,6 +7,7 @@ import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAs
 import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
@@ -143,7 +144,8 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 })
                 .verifyComplete();
 
-            StepVerifier.create(client.listMetricAnomalyDetectionConfigs(costMetricId))
+            StepVerifier.create(client.listMetricAnomalyDetectionConfigs(costMetricId,
+                new ListMetricAnomalyDetectionConfigsOptions()))
                 // Expect 2 config: Default + the one just created.
                 .assertNext(configuration -> assertNotNull(configuration))
                 .assertNext(configuration -> assertNotNull(configuration))
