@@ -40,7 +40,7 @@ public final class KeyVaultCertificateIdentifier {
 
         try {
             final URL url = new URL(sourceId);
-            // We expect an sourceId with either 3 or 4 path segments: key vault + collection + name + "pending"/version
+            // We expect a sourceId with either 3 or 4 path segments: key vault + collection + name [+ "pending"/version]
             final String[] pathSegments = url.getPath().split("/");
 
             // More or less segments in the URI than expected.
