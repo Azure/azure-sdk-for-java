@@ -48,6 +48,7 @@
                         </goals>
                         <configuration>
                             <createSourcesJar>true</createSourcesJar>
+                            <shadeSourcesContent>true</shadeSourcesContent>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
@@ -57,6 +58,10 @@
                                     <pattern>org.apache.commons</pattern>
                                     <shadedPattern>com.azure.keyvault.jca.org.apache.commons</shadedPattern>
                                 </relocation>
+                              <relocation>
+                                <pattern>org.apache.http</pattern>
+                                <shadedPattern>com.azure.keyvault.jca.org.apache.http</shadedPattern>
+                              </relocation>
                                 <relocation>
                                     <pattern>mozilla</pattern>
                                     <shadedPattern>com.azure.keyvault.jca.mozilla</shadedPattern>
