@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class EventHubPartitionBinderTests extends
     AzurePartitionBinderTests<EventHubTestBinder, ExtendedConsumerProperties<EventHubConsumerProperties>,
         ExtendedProducerProperties<EventHubProducerProperties>> {
-    //TODO It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
+    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
     EventHubClientFactory clientFactory;

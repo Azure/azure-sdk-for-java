@@ -36,7 +36,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
 @PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
 @PrepareForTest({ DefaultEventHubClientFactory.class })
 public class DefaultEventHubClientFactoryTest {
-    //TODO Due to Powermock, it is currently impossible to upgrade JUnit 4 to JUnit 5.
+    //TODO (Xiaobing Zhu): Due to Powermock, it is currently impossible to upgrade JUnit 4 to JUnit 5.
 
     @Mock
     EventHubConsumerAsyncClient eventHubConsumerClient;

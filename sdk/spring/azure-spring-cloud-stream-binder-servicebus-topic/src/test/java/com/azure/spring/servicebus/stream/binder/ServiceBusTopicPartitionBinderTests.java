@@ -27,7 +27,7 @@ public class ServiceBusTopicPartitionBinderTests
                                          ExtendedConsumerProperties<ServiceBusConsumerProperties>,
                                          ExtendedProducerProperties<ServiceBusProducerProperties>> {
 
-    //TODO It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
+    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
     ServiceBusTopicClientFactory clientFactory;
