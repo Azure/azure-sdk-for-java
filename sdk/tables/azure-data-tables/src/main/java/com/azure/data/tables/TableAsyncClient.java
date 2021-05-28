@@ -555,55 +555,54 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEntity(String partitionKey, String rowKey) {
-        return deleteEntityWithResponse(partitionKey, rowKey, null).flatMap(FluxUtil::toMono);
+        return deleteEntityWithResponse(partitionKey, rowKey, null, false, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an entity from the table.
      *
-     * @param tableEntity The table entity to delete.
+     * @param entity The table entity to delete.
      *
-     * @return An empty reactive result.
-     *
-     * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
-     * {@code null} or empty.
-     * @throws TableServiceException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntity(TableEntity tableEntity) {
-        return deleteEntityWithResponse(tableEntity.getPartitionKey(), tableEntity.getRowKey(), tableEntity.getETag(),
-            null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes an entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the ETag of the entity in the Tables service. If the values do not match,
-     * the delete will not occur and an exception will be thrown.
-     *
-     * @return A reactive result containing the response.
+     * @return A reactive result containing an HTTP response.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag) {
-        return withContext(context -> deleteEntityWithResponse(partitionKey, rowKey, eTag, context));
+    public Mono<Void> deleteEntity(TableEntity entity) {
+        return deleteEntityWithResponse(entity, false).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Context context) {
+    /**
+     * Deletes an entity from the table.
+     *
+     * @param entity The table entity to delete.
+     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
+     * service. If the values do not match, the update will not occur and an exception will be thrown.
+     *
+     * @return A reactive result containing an HTTP response.
+     *
+     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
+     * @throws TableServiceException If the request is rejected by the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged) {
+        return withContext(context -> deleteEntityWithResponse(entity.getPartitionKey(), entity.getRowKey(),
+            entity.getETag(), ifUnchanged, context));
+    }
+
+    Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
+                                                  Context context) {
         context = context == null ? Context.NONE : context;
-        String matchParam = eTag == null ? "*" : eTag;
+        eTag = ifUnchanged ? eTag : "*";
 
         if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
         try {
-            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey,
-                matchParam, null, null, null, context)
+            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, eTag,
+                null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -1172,8 +1171,8 @@ public final class TableAsyncClient {
                     break;
                 case DELETE:
                     operations.add(
-                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity().getPartitionKey(),
-                            transactionAction.getEntity().getRowKey(), transactionAction.getEntity().getETag()));
+                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity(),
+                            transactionAction.getIfUnchanged()));
 
                     break;
                 default:
