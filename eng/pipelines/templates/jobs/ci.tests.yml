@@ -55,18 +55,6 @@ jobs:
       - template: ../variables/globals.yml
 
     steps:
-      - task: Maven@3
-        displayName: 'Print security providers'
-        inputs:
-          mavenPomFile: 'java-security/demo/pom.xml'
-          goals: 'compile exec:java'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '11'
-          jdkArchitectureOption: 'x64'
-          options: '-Dexec.mainClass="com.example.App"'
-          publishJUnitResults: false
-
-
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
@@ -80,6 +68,18 @@ jobs:
         parameters:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
+      - task: Maven@3
+        displayName: 'Print security providers'
+        inputs:
+          mavenPomFile: 'java-security/demo/pom.xml'
+          goals: 'compile exec:java'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '11'
+          jdkArchitectureOption: 'x64'
+          options: '-Dexec.mainClass="com.example.App"'
+          publishJUnitResults: false
+
 
       - ${{ parameters.PreTestSteps }}
 
