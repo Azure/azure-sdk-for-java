@@ -17,6 +17,7 @@ Thank you in advance for your collaboration. We really appreciate your time!
 Various documentation is available to help you get started
 
 - [API reference documentation][docs]
+- [Service documentation][service_docs]
 
 ## Getting started
 
@@ -99,3 +100,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
+[service_docs]: https://docs.microsoft.com/en-us/azure/iot-dps
