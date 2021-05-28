@@ -3,16 +3,25 @@
 
 package com.azure.security.keyvault.jca;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.File;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Arrays;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -71,9 +80,10 @@ public class FileSystemCertificates implements AzureCertificates {
     }
 
     /**
-     * Add certificate.
+     * Add alias
+     * @param filePath file path for certificate
      * @param alias certificate alias
-     * @param certificate certificate
+     * @param certificate certificate value
      */
     public void setCertificateEntry(String filePath, String alias, Certificate certificate) {
         List<String> allAlias = fileSystemAlias.values()

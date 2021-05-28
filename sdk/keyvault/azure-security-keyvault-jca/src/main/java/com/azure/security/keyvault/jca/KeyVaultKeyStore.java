@@ -20,10 +20,18 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.Arrays;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -75,10 +83,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
-    String customPath = Optional.ofNullable(System.getProperty("azure.jca.path-of-custom-certs"))
+    private final String customPath = Optional.ofNullable(System.getProperty("azure.jca.path-of-custom-certs"))
         .orElse("etc/jca/custom-certs/");
-    String wellKnowPath = Optional.ofNullable(System.getProperty("azure.jca.path-of-well-known-certs"))
+    private final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.jca.path-of-well-known-certs"))
         .orElse("etc/jca/well-known-certs/");
+
     /**
      * Constructor.
      *
@@ -207,20 +216,20 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Key engineGetKey(String alias, char[] password) {
         return Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
-            .map(AzureCertificates::getCertificateKeys)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificateKeys -> certificateKeys.get(alias))
-            .orElse(null);
+                     .map(AzureCertificates::getCertificateKeys)
+                     .filter(a -> a.containsKey(alias))
+                     .findFirst()
+                     .map(certificateKeys -> certificateKeys.get(alias))
+                     .orElse(null);
     }
 
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         return Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
-            .map(AzureCertificates::getAliases)
-            .flatMap(Collection::stream)
-            .distinct()
-            .anyMatch(a -> Objects.equals(a, alias));
+                     .map(AzureCertificates::getAliases)
+                     .flatMap(Collection::stream)
+                     .distinct()
+                     .anyMatch(a -> Objects.equals(a, alias));
     }
 
     @Override
@@ -234,14 +243,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
             if (parameter.getClientId() != null) {
                 keyVaultClient = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getTenantId(),
-                    parameter.getClientId(),
-                    parameter.getClientSecret());
+                        parameter.getUri(),
+                        parameter.getTenantId(),
+                        parameter.getClientId(),
+                        parameter.getClientSecret());
             } else if (parameter.getManagedIdentity() != null) {
                 keyVaultClient = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getManagedIdentity()
+                        parameter.getUri(),
+                        parameter.getManagedIdentity()
                 );
             } else {
                 keyVaultClient = new KeyVaultClient(parameter.getUri());
@@ -294,11 +303,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public int engineSize() {
         return Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
-            .map(AzureCertificates::getAliases)
-            .flatMap(Collection::stream)
-            .distinct()
-            .collect(Collectors.toList())
-            .size();
+                     .map(AzureCertificates::getAliases)
+                     .flatMap(Collection::stream)
+                     .distinct()
+                     .collect(Collectors.toList())
+                     .size();
     }
 
     @Override
@@ -372,10 +381,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                             try {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                    new ByteArrayInputStream(bytes));
+                                        new ByteArrayInputStream(bytes));
                                 engineSetClasspathCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                    new Object[]{alias, filename});
+                                        new Object[]{alias, filename});
                             } catch (CertificateException e) {
                                 LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
                             }
