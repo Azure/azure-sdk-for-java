@@ -30,6 +30,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -39,6 +40,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Async client that supports server call operations.
@@ -89,17 +91,28 @@ public final class CallAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateCallResult>> createCallWithResponse(CommunicationIdentifier source,
             Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
+        return createCallWithResponse(source, targets, createCallOptions, null);
+    }
+
+    Mono<Response<CreateCallResult>> createCallWithResponse(CommunicationIdentifier source,
+            Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions, Context context) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(targets, "'targets' cannot be null.");
             Objects.requireNonNull(createCallOptions, "'CreateCallOptions' cannot be null.");
 
             CreateCallRequestInternal request = createCreateCallRequest(source, targets, createCallOptions);
-            return this.callClient.createCallWithResponseAsync(request)
-                    .flatMap((Response<CreateCallResponse> response) -> {
-                        CreateCallResult createCallResult = convertCreateCallWithResponse(response.getValue());
-                        return Mono.just(new SimpleResponse<>(response, createCallResult));
-                    });
+
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.callClient.createCallWithResponseAsync(request)
+                        .flatMap((Response<CreateCallResponse> response) -> {
+                            CreateCallResult createCallResult = convertCreateCallWithResponse(response.getValue());
+                            return Mono.just(new SimpleResponse<>(response, createCallResult));
+                        });
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -137,14 +150,22 @@ public final class CallAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResult>> playAudioWithResponse(String callId, PlayAudioRequest request) {
+        return playAudioWithResponse(callId, request, null);
+    }
+  
+    Mono<Response<PlayAudioResult>> playAudioWithResponse(String callId, PlayAudioRequest request, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
-
-            return this.callClient.playAudioWithResponseAsync(callId, convertPlayAudioRequest(request)).flatMap((
-                    Response<com.azure.communication.callingserver.implementation.models.PlayAudioResponse> response) -> {
-                PlayAudioResult playAudioResult = convertPlayAudioResponse(response.getValue());
-                return Mono.just(new SimpleResponse<>(response, playAudioResult));
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.callClient.playAudioWithResponseAsync(callId, convertPlayAudioRequest(request)).flatMap((
+                        Response<com.azure.communication.callingserver.implementation.models.PlayAudioResponse> response) -> {
+                    PlayAudioResult playAudioResult = convertPlayAudioResponse(response.getValue());
+                    return Mono.just(new SimpleResponse<>(response, playAudioResult));
+                });
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -176,10 +197,18 @@ public final class CallAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupCallWithResponse(String callId) {
+        return hangupCallWithResponse(callId, null);
+    }
+
+    Mono<Response<Void>> hangupCallWithResponse(String callId, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
-
-            return this.callClient.hangupCallWithResponseAsync(callId);
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.callClient.hangupCallWithResponseAsync(callId);
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -210,14 +239,22 @@ public final class CallAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCallWithResponse(String callId) {
+        return deleteCallWithResponse(callId, null);
+    }
+ 
+    Mono<Response<Void>> deleteCallWithResponse(String callId, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
-
-            return this.callClient.deleteCallWithResponseAsync(callId);
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.callClient.deleteCallWithResponseAsync(callId);
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
+    }    
 
     /**
      * Cancel Media Processing.
@@ -255,18 +292,27 @@ public final class CallAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CancelMediaProcessingResult>> cancelMediaProcessingWithResponse(String callId,
             CancelMediaProcessingRequest request) {
+        return cancelMediaProcessingWithResponse(callId, request, null);
+    }
+
+    Mono<Response<CancelMediaProcessingResult>> cancelMediaProcessingWithResponse(String callId,
+            CancelMediaProcessingRequest request, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
-
-            return this.callClient
-                    .cancelMediaProcessingWithResponseAsync(callId, convertCancelMediaProcessingRequest(request))
-                    .flatMap((
-                            Response<com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse> response) -> {
-                        CancelMediaProcessingResult cancelMediaProcessingResult = convertCancelMediaProcessingResponse(
-                                response.getValue());
-                        return Mono.just(new SimpleResponse<>(response, cancelMediaProcessingResult));
-                    });
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.callClient
+                        .cancelMediaProcessingWithResponseAsync(callId, convertCancelMediaProcessingRequest(request))
+                        .flatMap((
+                                Response<com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse> response) -> {
+                            CancelMediaProcessingResult cancelMediaProcessingResult = convertCancelMediaProcessingResponse(
+                                    response.getValue());
+                            return Mono.just(new SimpleResponse<>(response, cancelMediaProcessingResult));
+                        });
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -300,12 +346,20 @@ public final class CallAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> inviteParticipantsWithResponse(String callId, InviteParticipantsRequest request) {
+        return inviteParticipantsWithResponse(callId, request, null);
+    }
+
+    Mono<Response<Void>> inviteParticipantsWithResponse(String callId, InviteParticipantsRequest request, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
-
-            return this.callClient.inviteParticipantsWithResponseAsync(callId,
-                    InviteParticipantsRequestConverter.convert(request));
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.callClient.inviteParticipantsWithResponseAsync(callId,
+                        InviteParticipantsRequestConverter.convert(request));
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -339,11 +393,22 @@ public final class CallAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeParticipantWithResponse(String callId, String participantId) {
+        return removeParticipantWithResponse(callId, participantId, null);
+    }
+
+    /**
+     * cancelMediaProcessingWithResponse method for use by sync client
+     */  
+    Mono<Response<Void>> removeParticipantWithResponse(String callId, String participantId, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(participantId, "'request' cannot be null.");
-
-            return this.callClient.removeParticipantWithResponseAsync(callId, participantId);
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.callClient.removeParticipantWithResponseAsync(callId, participantId);
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -9,6 +9,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 import java.net.URI;
 
@@ -40,12 +41,13 @@ public final class ConversationClient {
      *
      * @param conversationId The conversation id.
      * @param recordingStateCallbackUri The uri to send state change callbacks.
+     * @param context A {@link Context} representing the request context. 
      * @return response for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResult> startRecordingWithResponse(String conversationId,
-            URI recordingStateCallbackUri) {
-        return conversationAsyncClient.startRecordingWithResponse(conversationId, recordingStateCallbackUri).block();
+            URI recordingStateCallbackUri, Context context) {
+        return conversationAsyncClient.startRecordingWithResponse(conversationId, recordingStateCallbackUri, context).block();
     }
 
     /**
@@ -65,11 +67,12 @@ public final class ConversationClient {
      *
      * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful stopRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String conversationId, String recordingId) {
-        return conversationAsyncClient.stopRecordingWithResponse(conversationId, recordingId).block();
+    public Response<Void> stopRecordingWithResponse(String conversationId, String recordingId, Context context) {
+        return conversationAsyncClient.stopRecordingWithResponse(conversationId, recordingId, context).block();
     }
 
     /**
@@ -89,11 +92,12 @@ public final class ConversationClient {
      *
      * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful pauseRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String conversationId, String recordingId) {
-        return conversationAsyncClient.pauseRecordingWithResponse(conversationId, recordingId).block();
+    public Response<Void> pauseRecordingWithResponse(String conversationId, String recordingId, Context context) {
+        return conversationAsyncClient.pauseRecordingWithResponse(conversationId, recordingId, context).block();
     }
 
     /**
@@ -113,11 +117,12 @@ public final class ConversationClient {
      *
      * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful resumeRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resumeRecordingWithResponse(String conversationId, String recordingId) {
-        return conversationAsyncClient.resumeRecordingWithResponse(conversationId, recordingId).block();
+    public Response<Void> resumeRecordingWithResponse(String conversationId, String recordingId, Context context) {
+        return conversationAsyncClient.resumeRecordingWithResponse(conversationId, recordingId, context).block();
     }
 
     /**
@@ -137,11 +142,12 @@ public final class ConversationClient {
      *
      * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetCallRecordingStateResult> getRecordingStateWithResponse(String conversationId,
-            String recordingId) {
-        return conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId).block();
+            String recordingId, Context context) {
+        return conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId, context).block();
     }
 }
