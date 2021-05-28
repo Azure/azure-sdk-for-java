@@ -3,6 +3,7 @@
 ## 2.5.0-beta.1 (Unreleased)
 
 - Updated `api-version` to `2020-11-01`
+- Supported `NetworkProfile`
 
 ## 2.4.0 (2021-04-28)
 
