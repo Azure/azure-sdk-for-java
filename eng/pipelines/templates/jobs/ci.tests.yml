@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - script: |
-          ls $JAVA_HOME
+          ls $JAVA_HOME/bin
 
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
