@@ -9,11 +9,10 @@ import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import reactor.core.publisher.Mono;
 
-public interface BatchOperation {
-
+public interface TransactionalBatchAction {
     Mono<HttpRequest> prepareRequest(TableAsyncClient preparer);
 
-    class CreateEntity implements BatchOperation {
+    class CreateEntity implements TransactionalBatchAction {
         private final TableEntity entity;
 
         public CreateEntity(TableEntity entity) {
@@ -38,7 +37,7 @@ public interface BatchOperation {
         }
     }
 
-    class UpsertEntity implements BatchOperation {
+    class UpsertEntity implements TransactionalBatchAction {
         private final TableEntity entity;
         private final TableEntityUpdateMode updateMode;
 
@@ -70,7 +69,7 @@ public interface BatchOperation {
         }
     }
 
-    class UpdateEntity implements BatchOperation {
+    class UpdateEntity implements TransactionalBatchAction {
         private final TableEntity entity;
         private final TableEntityUpdateMode updateMode;
         private final boolean ifUnchanged;
@@ -109,40 +108,35 @@ public interface BatchOperation {
         }
     }
 
-    class DeleteEntity implements BatchOperation {
-        private final String partitionKey;
-        private final String rowKey;
-        private final String eTag;
+    class DeleteEntity implements TransactionalBatchAction {
+        private final TableEntity entity;
+        private final boolean ifUnchanged;
 
-        public DeleteEntity(String partitionKey, String rowKey, String eTag) {
-            this.partitionKey = partitionKey;
-            this.rowKey = rowKey;
-            this.eTag = eTag;
+        public DeleteEntity(TableEntity entity, boolean ifUnchanged) {
+            this.entity = entity;
+            this.ifUnchanged = ifUnchanged;
         }
 
-        public String getPartitionKey() {
-            return partitionKey;
+        public TableEntity getEntity() {
+            return entity;
         }
 
-        public String getRowKey() {
-            return rowKey;
-        }
-
-        public String getETag() {
-            return eTag;
+        public boolean getIfUnchanged() {
+            return ifUnchanged;
         }
 
         @Override
         public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
-            return preparer.deleteEntityWithResponse(partitionKey, rowKey, eTag).map(Response::getRequest);
+            return preparer.deleteEntityWithResponse(entity, ifUnchanged).map(Response::getRequest);
         }
 
         @Override
         public String toString() {
             return "DeleteEntity{"
-                + "partitionKey='" + partitionKey + '\''
-                + ", rowKey='" + rowKey + '\''
-                + ", eTag='" + eTag + '\''
+                + "partitionKey='" + entity.getPartitionKey() + '\''
+                + ", rowKey='" + entity.getRowKey() + '\''
+                + ", eTag='" + entity.getETag() + '\''
+                + ", ifUnchanged=" + ifUnchanged
                 + '}';
         }
     }

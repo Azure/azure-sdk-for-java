@@ -16,7 +16,7 @@ public abstract class MultipartPart<T> {
     private final List<T> contents = new ArrayList<>();
 
     public MultipartPart(String boundaryPrefix) {
-        this.boundary = boundaryPrefix + "_" + UUID.randomUUID().toString();
+        this.boundary = boundaryPrefix + "_" + UUID.randomUUID();
     }
 
     public String getContentType() {
@@ -33,6 +33,7 @@ public abstract class MultipartPart<T> {
 
     protected MultipartPart<T> addContent(T content) {
         contents.add(content);
+
         return this;
     }
 }
