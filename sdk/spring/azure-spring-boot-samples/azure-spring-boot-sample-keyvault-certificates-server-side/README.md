@@ -102,7 +102,7 @@ Make sure the managed identity can access target Key Vault.
    source script/setup.sh
    ```
 
-1. Follow the above step of [Using TLS with service principal](#using-tls-with-service-principal) or [Using mTLS with service principal](#using-mTLS-with-service-principal).
+1. Follow the above step of [Using TLS with service principal](#using-tls-with-service-principal) or [Using mTLS with service principal](#using-mtls-with-service-principal).
 
 ## Examples
 ## Troubleshooting

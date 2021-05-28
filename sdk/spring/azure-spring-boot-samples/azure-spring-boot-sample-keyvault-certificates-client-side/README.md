@@ -123,7 +123,7 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
         return new RestTemplate(requestFactory);
     }
     ```
-1. Follow the above step of [Using mTLS with service principal](#using-mTLS-with-service-principal).
+1. Follow the above step of [Using mTLS with service principal](#using-mtls-with-service-principal).
 
 ## Examples
 ## Troubleshooting
