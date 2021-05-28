@@ -8,21 +8,22 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.KeyStore;
+import java.security.AccessController;
 import java.security.Key;
+import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivilegedAction;
-import java.security.AccessController;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.Optional;
-import java.util.stream.Stream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -132,18 +133,10 @@ public final class JreCertificates implements AzureCertificates {
         }
 
         private static void loadKeyStore(KeyStore ks) {
-            InputStream inStream = null;
-            try {
-                inStream = Files.newInputStream(getKeyStoreFile());
-                ks.load(inStream, KEY_STORE_PASSWORD.toCharArray());
+            try (InputStream inputStream = Files.newInputStream(getKeyStoreFile())) {
+                ks.load(inputStream, KEY_STORE_PASSWORD.toCharArray());
             } catch (IOException | NoSuchAlgorithmException | CertificateException e) {
                 LOGGER.log(WARNING, "unable to load the jre key store", e);
-            } finally {
-                try {
-                    inStream.close();
-                } catch (NullPointerException | IOException e) {
-                    LOGGER.log(WARNING, "", e);
-                }
             }
         }
 
