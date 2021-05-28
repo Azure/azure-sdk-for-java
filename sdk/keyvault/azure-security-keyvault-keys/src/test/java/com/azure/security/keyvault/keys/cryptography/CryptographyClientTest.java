@@ -257,7 +257,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         curveToSpec.put(KeyCurveName.P_256, "secp256r1");
         curveToSpec.put(KeyCurveName.P_384, "secp384r1");
         curveToSpec.put(KeyCurveName.P_521, "secp521r1");
-        curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
+        //curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
 
         List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
         Provider provider = Security.getProvider("SunEC");
