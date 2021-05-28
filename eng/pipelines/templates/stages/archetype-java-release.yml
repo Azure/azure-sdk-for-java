@@ -274,13 +274,7 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                        parameters:
-                          Paths:
-                            - '${{ parameters.ServiceDirectory }}'
-                            - '**/*.xml'
-                            - '!sdk/**/test-recordings'
-                            - '!sdk/**/session-records'
+                      - checkout: self
 
                       - task: UsePythonVersion@0
                         displayName: 'Use Python 3.6'

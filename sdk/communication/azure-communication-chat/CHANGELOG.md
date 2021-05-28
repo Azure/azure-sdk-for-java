@@ -1,10 +1,10 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 - Added method `ChatThreadAsyncClient.listParticipants(ListParticipantsOptions listParticipantsOptions)`
 - Added method `ChatThreadAsyncClient.listReadReceipts(ListReadReceiptOptions listReadReceiptOptions)`
 
-## 1.0.1 (2021-05-26)
+## 1.0.1 (2021-05-27)
 - Dependency versions updated.
 
 ## 1.0.0 (2021-03-29)

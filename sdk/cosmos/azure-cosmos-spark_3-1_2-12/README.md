@@ -46,7 +46,7 @@ You can also integrate against Cosmos DB Spark Connector in your SBT project:
 libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-1_2-12" % "4.1.0"
 ```
 
-Cosmos DB Spark Connector is available on [Maven Central Repo](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-1_2-12/4.0.0/jar).
+Cosmos DB Spark Connector is available on [Maven Central Repo](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-1_2-12/4.1.0/jar).
 
 ### General
 
