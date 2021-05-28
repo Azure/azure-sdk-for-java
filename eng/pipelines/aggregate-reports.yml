@@ -18,6 +18,12 @@ jobs:
       vmImage: 'ubuntu-18.04'
     steps:
     - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
+      parameters:
+        JobType: 'Reporting'
+        SDKType: 'client'
+        ServiceDirectory: 'aggregate-report'
+        TestFromSource: false
+
 
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
