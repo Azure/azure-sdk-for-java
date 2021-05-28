@@ -3,13 +3,27 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.CallsImpl;
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.ResultInfoConverter;
-import com.azure.communication.callingserver.implementation.models.*;
-import com.azure.communication.callingserver.models.*;
+import com.azure.communication.callingserver.implementation.models.CallModalityModel;
+import com.azure.communication.callingserver.implementation.models.CancelMediaProcessingRequestInternal;
+import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
+import com.azure.communication.callingserver.implementation.models.CreateCallResponse;
+import com.azure.communication.callingserver.implementation.models.EventSubscriptionTypeModel;
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
+import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.CancelMediaProcessingRequest;
+import com.azure.communication.callingserver.models.CancelMediaProcessingResult;
+import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.CreateCallResult;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.models.OperationStatus;
+import com.azure.communication.callingserver.models.PlayAudioRequest;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -47,18 +61,18 @@ public final class CallAsyncClient {
      * @return response for a successful CreateCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
+    public Mono<CreateCallResult> createCall(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets,
+            CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(targets, "'targets' cannot be null.");
             Objects.requireNonNull(createCallOptions, "'CreateCallOptions' cannot be null.");
 
             CreateCallRequestInternal request = createCreateCallRequest(source, targets, createCallOptions);
-            return this.callClient.createCallAsync(request)
-                .flatMap((CreateCallResponse response) -> {
-                    CreateCallResult createCallResult = convertCreateCallWithResponse(response);
-                    return Mono.just(createCallResult);
-                });
+            return this.callClient.createCallAsync(request).flatMap((CreateCallResponse response) -> {
+                CreateCallResult createCallResult = convertCreateCallWithResponse(response);
+                return Mono.just(createCallResult);
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -73,7 +87,8 @@ public final class CallAsyncClient {
      * @return response for a successful CreateCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResult>> createCallWithResponse(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
+    public Mono<Response<CreateCallResult>> createCallWithResponse(CommunicationIdentifier source,
+            Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(targets, "'targets' cannot be null.");
@@ -81,10 +96,10 @@ public final class CallAsyncClient {
 
             CreateCallRequestInternal request = createCreateCallRequest(source, targets, createCallOptions);
             return this.callClient.createCallWithResponseAsync(request)
-                .flatMap((Response<CreateCallResponse> response) -> {
-                    CreateCallResult createCallResult = convertCreateCallWithResponse(response.getValue());
-                    return Mono.just(new SimpleResponse<>(response, createCallResult));
-                });
+                    .flatMap((Response<CreateCallResponse> response) -> {
+                        CreateCallResult createCallResult = convertCreateCallWithResponse(response.getValue());
+                        return Mono.just(new SimpleResponse<>(response, createCallResult));
+                    });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -103,11 +118,11 @@ public final class CallAsyncClient {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
 
-            return this.callClient.playAudioAsync(callId, convertPlayAudioRequest(request))
-                .flatMap((com.azure.communication.callingserver.implementation.models.PlayAudioResponse response) -> {
-                    PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
-                    return Mono.just(playAudioResult);
-                });
+            return this.callClient.playAudioAsync(callId, convertPlayAudioRequest(request)).flatMap(
+                    (com.azure.communication.callingserver.implementation.models.PlayAudioResponse response) -> {
+                        PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
+                        return Mono.just(playAudioResult);
+                    });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -126,11 +141,11 @@ public final class CallAsyncClient {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
 
-            return this.callClient.playAudioWithResponseAsync(callId, convertPlayAudioRequest(request))
-                .flatMap((Response<com.azure.communication.callingserver.implementation.models.PlayAudioResponse> response) -> {
-                    PlayAudioResult playAudioResult = convertPlayAudioResponse(response.getValue());
-                    return Mono.just(new SimpleResponse<>(response, playAudioResult));
-                });
+            return this.callClient.playAudioWithResponseAsync(callId, convertPlayAudioRequest(request)).flatMap((
+                    Response<com.azure.communication.callingserver.implementation.models.PlayAudioResponse> response) -> {
+                PlayAudioResult playAudioResult = convertPlayAudioResponse(response.getValue());
+                return Mono.just(new SimpleResponse<>(response, playAudioResult));
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -212,16 +227,19 @@ public final class CallAsyncClient {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelMediaProcessingResult> cancelMediaProcessing(String callId, CancelMediaProcessingRequest request) {
+    public Mono<CancelMediaProcessingResult> cancelMediaProcessing(String callId,
+            CancelMediaProcessingRequest request) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
 
-            return this.callClient.cancelMediaProcessingAsync(callId, convertCancelMediaProcessingRequest(request)).
-                flatMap((com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse response) -> {
-                    CancelMediaProcessingResult cancelMediaProcessingResult = convertCancelMediaProcessingResponse(response);
-                    return Mono.just(cancelMediaProcessingResult);
-                });
+            return this.callClient.cancelMediaProcessingAsync(callId, convertCancelMediaProcessingRequest(request))
+                    .flatMap((
+                            com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse response) -> {
+                        CancelMediaProcessingResult cancelMediaProcessingResult = convertCancelMediaProcessingResponse(
+                                response);
+                        return Mono.just(cancelMediaProcessingResult);
+                    });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -235,16 +253,20 @@ public final class CallAsyncClient {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelMediaProcessingResult>> cancelMediaProcessingWithResponse(String callId, CancelMediaProcessingRequest request) {
+    public Mono<Response<CancelMediaProcessingResult>> cancelMediaProcessingWithResponse(String callId,
+            CancelMediaProcessingRequest request) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
 
-            return this.callClient.cancelMediaProcessingWithResponseAsync(callId, convertCancelMediaProcessingRequest(request))
-                .flatMap((Response<com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse> response) -> {
-                    CancelMediaProcessingResult cancelMediaProcessingResult = convertCancelMediaProcessingResponse(response.getValue());
-                    return Mono.just(new SimpleResponse<>(response, cancelMediaProcessingResult));
-                });
+            return this.callClient
+                    .cancelMediaProcessingWithResponseAsync(callId, convertCancelMediaProcessingRequest(request))
+                    .flatMap((
+                            Response<com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse> response) -> {
+                        CancelMediaProcessingResult cancelMediaProcessingResult = convertCancelMediaProcessingResponse(
+                                response.getValue());
+                        return Mono.just(new SimpleResponse<>(response, cancelMediaProcessingResult));
+                    });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -282,7 +304,8 @@ public final class CallAsyncClient {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
 
-            return this.callClient.inviteParticipantsWithResponseAsync(callId, InviteParticipantsRequestConverter.convert(request));
+            return this.callClient.inviteParticipantsWithResponseAsync(callId,
+                    InviteParticipantsRequestConverter.convert(request));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -306,6 +329,7 @@ public final class CallAsyncClient {
             return monoError(logger, ex);
         }
     }
+
     /**
      * Remove participant from the call.
      *
@@ -325,57 +349,56 @@ public final class CallAsyncClient {
         }
     }
 
-    private CreateCallRequestInternal createCreateCallRequest(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
+    private CreateCallRequestInternal createCreateCallRequest(CommunicationIdentifier source,
+            Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
         CreateCallRequestInternal request = new CreateCallRequestInternal();
         List<CommunicationIdentifier> targetsList = new ArrayList<>();
         targets.forEach(targetsList::add);
 
-        List<CallModalityModel> requestedModalities= new ArrayList<>();
-        for (CallModality modality: createCallOptions.getRequestedModalities()) {
+        List<CallModalityModel> requestedModalities = new ArrayList<>();
+        for (CallModality modality : createCallOptions.getRequestedModalities()) {
             requestedModalities.add(CallModalityModel.fromString(modality.toString()));
         }
-        List<EventSubscriptionTypeModel> requestedCallEvents= new ArrayList<>();
-        for (EventSubscriptionType requestedCallEvent: createCallOptions.getRequestedCallEvents()) {
+        List<EventSubscriptionTypeModel> requestedCallEvents = new ArrayList<>();
+        for (EventSubscriptionType requestedCallEvent : createCallOptions.getRequestedCallEvents()) {
             requestedCallEvents.add(EventSubscriptionTypeModel.fromString(requestedCallEvent.toString()));
         }
 
         request.setSource(CommunicationIdentifierConverter.convert(source))
-            .setTargets(targetsList.stream().map(target->CommunicationIdentifierConverter.convert(target)).collect(Collectors.toList()))
-            .setCallbackUri(createCallOptions.getCallbackUri())
-            .setRequestedModalities(requestedModalities)
-            .setRequestedCallEvents(requestedCallEvents);
+                .setTargets(targetsList.stream().map(target -> CommunicationIdentifierConverter.convert(target))
+                        .collect(Collectors.toList()))
+                .setCallbackUri(createCallOptions.getCallbackUri()).setRequestedModalities(requestedModalities)
+                .setRequestedCallEvents(requestedCallEvents);
 
         return request;
     }
 
-    private PlayAudioResult convertPlayAudioResponse(com.azure.communication.callingserver.implementation.models.PlayAudioResponse response) {
-        return new PlayAudioResult()
-            .setId(response.getId())
-            .setStatus(OperationStatus.fromString(response.getStatus().toString()))
-            .setOperationContext(response.getOperationContext())
-            .setResultInfo(ResultInfoConverter.convert(response.getResultInfo()));
+    private PlayAudioResult convertPlayAudioResponse(
+            com.azure.communication.callingserver.implementation.models.PlayAudioResponse response) {
+        return new PlayAudioResult().setId(response.getId())
+                .setStatus(OperationStatus.fromString(response.getStatus().toString()))
+                .setOperationContext(response.getOperationContext())
+                .setResultInfo(ResultInfoConverter.convert(response.getResultInfo()));
     }
 
-    private CancelMediaProcessingResult convertCancelMediaProcessingResponse(com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse response) {
-        return new CancelMediaProcessingResult()
-            .setId(response.getId())
-            .setStatus(OperationStatus.fromString(response.getStatus().toString()))
-            .setOperationContext(response.getOperationContext())
-            .setResultInfo(ResultInfoConverter.convert(response.getResultInfo()));
+    private CancelMediaProcessingResult convertCancelMediaProcessingResponse(
+            com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse response) {
+        return new CancelMediaProcessingResult().setId(response.getId())
+                .setStatus(OperationStatus.fromString(response.getStatus().toString()))
+                .setOperationContext(response.getOperationContext())
+                .setResultInfo(ResultInfoConverter.convert(response.getResultInfo()));
     }
 
-    private CancelMediaProcessingRequestInternal convertCancelMediaProcessingRequest(CancelMediaProcessingRequest request) {
-        return new CancelMediaProcessingRequestInternal()
-            .setOperationContext(request.getOperationContext());
+    private CancelMediaProcessingRequestInternal convertCancelMediaProcessingRequest(
+            CancelMediaProcessingRequest request) {
+        return new CancelMediaProcessingRequestInternal().setOperationContext(request.getOperationContext());
     }
 
     private PlayAudioRequestInternal convertPlayAudioRequest(PlayAudioRequest request) {
-        return new PlayAudioRequestInternal()
-            .setOperationContext(request.getOperationContext());
+        return new PlayAudioRequestInternal().setOperationContext(request.getOperationContext());
     }
 
     private CreateCallResult convertCreateCallWithResponse(CreateCallResponse response) {
-        return new CreateCallResult()
-            .setCallLegId(response.getCallLegId());
+        return new CreateCallResult().setCallLegId(response.getCallLegId());
     }
 }

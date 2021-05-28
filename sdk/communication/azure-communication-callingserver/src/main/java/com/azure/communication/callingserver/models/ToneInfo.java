@@ -6,13 +6,13 @@ package com.azure.communication.callingserver.models;
 /**
  * Gets or sets the tone info
  */
-public final class ToneInfo
-{
+public final class ToneInfo {
     /// <summary>
-    /// Gets or sets the sequence id. This id can be used to determine if the same tone
+    /// Gets or sets the sequence id. This id can be used to determine if the same
+    /// tone
     /// was played multiple times or if any tones were missed.
     /// </summary>
-    public int sequenceId;
+    private int sequenceId;
 
     /**
      * Get the sequenceId.
@@ -37,7 +37,7 @@ public final class ToneInfo
     /// <summary>
     /// Gets or sets the tone detected.
     /// </summary>
-    public ToneValue tone;
+    private ToneValue tone;
 
     /**
      * Get the tone.
@@ -61,14 +61,14 @@ public final class ToneInfo
 
     /**
      * Initializes a new instance of ToneInfo.
+     * 
      * @param sequenceId Communication Identifier.
      * @param tone Participant Id.
+     * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ToneInfo(int sequenceId, ToneValue tone)
-    {
-        if (tone == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", tone.getClass().getName()));
+    public ToneInfo(int sequenceId, ToneValue tone) {
+        if (tone == null) {
+            throw new IllegalArgumentException("object tone cannot be null");
         }
 
         this.sequenceId = sequenceId;

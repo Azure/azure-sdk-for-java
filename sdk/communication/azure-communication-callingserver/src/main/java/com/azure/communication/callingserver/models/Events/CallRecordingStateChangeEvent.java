@@ -10,20 +10,20 @@ import java.time.OffsetDateTime;
 /**
  * The call recording state change event.
  */
-public final class CallRecordingStateChangeEvent extends CallEventBase
-{
+public final class CallRecordingStateChangeEvent extends CallEventBase {
     /**
      * The event type.
      */
-    public static final String EventType = "Microsoft.Communication.CallRecordingStateChange";
+    public static final String EVENT_TYPE = "Microsoft.Communication.CallRecordingStateChange";
 
     /**
      * The call recording id
      */
-    public String recordingId;
+    private String recordingId;
 
     /**
      * Get the call recording id.
+     * 
      * @return the call recording id value.
      */
     public String getRecordingId() {
@@ -32,6 +32,7 @@ public final class CallRecordingStateChangeEvent extends CallEventBase
 
     /**
      * Set the call recording id.
+     * 
      * @param recordingId the call recording id.
      * @return the CallRecordingStateChangeEvent object itself.
      */
@@ -43,7 +44,7 @@ public final class CallRecordingStateChangeEvent extends CallEventBase
     /**
      * The call recording state.
      */
-    public CallRecordingState state;
+    private CallRecordingState state;
 
     /**
      * Get the call recording state.
@@ -68,7 +69,7 @@ public final class CallRecordingStateChangeEvent extends CallEventBase
     /**
      * The time of the recording started.
      */
-    public OffsetDateTime startDateTime;
+    private OffsetDateTime startDateTime;
 
     /**
      * Get the time of the recording started.
@@ -93,10 +94,11 @@ public final class CallRecordingStateChangeEvent extends CallEventBase
     /**
      * The conversation id from a out call start recording request.
      */
-    public String conversationId;
+    private String conversationId;
 
     /**
      * Get the conversation id from a out call start recording request.
+     * 
      * @return the time of the recording started.
      */
     public String getConversationId() {
@@ -116,28 +118,26 @@ public final class CallRecordingStateChangeEvent extends CallEventBase
 
     /**
      * Initializes a new instance of CallRecordingStateChangeEvent.
+     * 
      * @param recordingId The recording id.
      * @param state The state.
      * @param startDateTime The startDateTime.
      * @param conversationId The conversation id.
+     * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public CallRecordingStateChangeEvent(String recordingId, CallRecordingState state, OffsetDateTime startDateTime, String conversationId)
-    {
-        if (recordingId == null || recordingId.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", recordingId.getClass().getName()));
+    public CallRecordingStateChangeEvent(String recordingId, CallRecordingState state, OffsetDateTime startDateTime,
+            String conversationId) {
+        if (recordingId == null || recordingId.isEmpty()) {
+            throw new IllegalArgumentException("object recordingId cannot be null or empty");
         }
-        if (state == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", state.getClass().getName()));
+        if (state == null) {
+            throw new IllegalArgumentException("object state cannot be null");
         }
-        if (startDateTime == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", startDateTime.getClass().getName()));
+        if (startDateTime == null) {
+            throw new IllegalArgumentException("object startDateTime cannot be null");
         }
-        if (conversationId == null || conversationId.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", conversationId.getClass().getName()));
+        if (conversationId == null || conversationId.isEmpty()) {
+            throw new IllegalArgumentException("object conversationId cannot be null or empty");
         }
         this.recordingId = recordingId;
         this.state = state;

@@ -10,18 +10,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PlayAudioRequest {
     /*
-     * The media resource uri of the play audio request.
-     * Currently only Wave file (.wav) format audio prompts are supported.
-     * More specifically, the audio content in the wave file must be mono
-     * (single-channel),
-     * 16-bit samples with a 16,000 (16KHz) sampling rate.
+     * The media resource uri of the play audio request. Currently only Wave file
+     * (.wav) format audio prompts are supported. More specifically, the audio
+     * content in the wave file must be mono (single-channel), 16-bit samples with a
+     * 16,000 (16KHz) sampling rate.
      */
     @JsonProperty(value = "audioFileUri")
     private String audioFileUri;
 
     /*
-     * The flag indicating whether audio file needs to be played in loop or
-     * not.
+     * The flag indicating whether audio file needs to be played in loop or not.
      */
     @JsonProperty(value = "loop")
     private Boolean loop;
@@ -40,8 +38,9 @@ public final class PlayAudioRequest {
     private String audioFileId;
 
     /**
-     * Get the audioFileUri property: The media resource uri of the play audio request. Currently only Wave file (.wav)
-     * format audio prompts are supported. More specifically, the audio content in the wave file must be mono
+     * Get the audioFileUri property: The media resource uri of the play audio
+     * request. Currently only Wave file (.wav) format audio prompts are supported.
+     * More specifically, the audio content in the wave file must be mono
      * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      *
      * @return the audioFileUri value.
@@ -51,8 +50,9 @@ public final class PlayAudioRequest {
     }
 
     /**
-     * Set the audioFileUri property: The media resource uri of the play audio request. Currently only Wave file (.wav)
-     * format audio prompts are supported. More specifically, the audio content in the wave file must be mono
+     * Set the audioFileUri property: The media resource uri of the play audio
+     * request. Currently only Wave file (.wav) format audio prompts are supported.
+     * More specifically, the audio content in the wave file must be mono
      * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      *
      * @param audioFileUri the audioFileUri value to set.
@@ -64,7 +64,8 @@ public final class PlayAudioRequest {
     }
 
     /**
-     * Get the loop property: The flag indicating whether audio file needs to be played in loop or not.
+     * Get the loop property: The flag indicating whether audio file needs to be
+     * played in loop or not.
      *
      * @return the loop value.
      */
@@ -73,7 +74,8 @@ public final class PlayAudioRequest {
     }
 
     /**
-     * Set the loop property: The flag indicating whether audio file needs to be played in loop or not.
+     * Set the loop property: The flag indicating whether audio file needs to be
+     * played in loop or not.
      *
      * @param loop the loop value to set.
      * @return the PlayAudioRequest object itself.
@@ -84,7 +86,8 @@ public final class PlayAudioRequest {
     }
 
     /**
-     * Get the operationContext property: The value to identify context of the operation.
+     * Get the operationContext property: The value to identify context of the
+     * operation.
      *
      * @return the operationContext value.
      */
@@ -93,7 +96,8 @@ public final class PlayAudioRequest {
     }
 
     /**
-     * Set the operationContext property: The value to identify context of the operation.
+     * Set the operationContext property: The value to identify context of the
+     * operation.
      *
      * @param operationContext the operationContext value to set.
      * @return the PlayAudioRequest object itself.
@@ -104,7 +108,8 @@ public final class PlayAudioRequest {
     }
 
     /**
-     * Get the audioFileId property: An id for the media in the AudioFileUri, using which we cache the media resource.
+     * Get the audioFileId property: An id for the media in the AudioFileUri, using
+     * which we cache the media resource.
      *
      * @return the audioFileId value.
      */
@@ -113,7 +118,8 @@ public final class PlayAudioRequest {
     }
 
     /**
-     * Set the audioFileId property: An id for the media in the AudioFileUri, using which we cache the media resource.
+     * Set the audioFileId property: An id for the media in the AudioFileUri, using
+     * which we cache the media resource.
      *
      * @param audioFileId the audioFileId value to set.
      * @return the PlayAudioRequest object itself.

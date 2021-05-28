@@ -3,12 +3,21 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.implementation.models.*;
-import com.azure.communication.common.*;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+import com.azure.communication.callingserver.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callingserver.implementation.models.CommunicationUserIdentifierModel;
+import com.azure.communication.callingserver.implementation.models.MicrosoftTeamsUserIdentifierModel;
+import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.common.CommunicationCloudEnvironment;
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.UnknownIdentifier;
 
 public class CommunicationIdentifierConverter {
     /**

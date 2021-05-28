@@ -9,20 +9,20 @@ import com.azure.communication.callingserver.models.ResultInfo;
 /**
  * The invited participants result event.
  */
-public final class PlayAudioResultEvent extends CallEventBase
-{
+public final class PlayAudioResultEvent extends CallEventBase {
     /**
      * The event type.
      */
-    public static final String EventType = "Microsoft.Communication.PlayAudioResult";
+    public static final String EVENT_TYPE = "Microsoft.Communication.PlayAudioResult";
 
     /**
      * The result info.
      */
-    public ResultInfo resultInfo;
+    private ResultInfo resultInfo;
 
     /**
      * Get the result info.
+     * 
      * @return the result info value.
      */
     public ResultInfo getResultInfo() {
@@ -31,6 +31,7 @@ public final class PlayAudioResultEvent extends CallEventBase
 
     /**
      * Set the result info.
+     * 
      * @param resultInfo the result info.
      * @return the PlayAudioResultEvent object itself.
      */
@@ -42,7 +43,7 @@ public final class PlayAudioResultEvent extends CallEventBase
     /**
      * The operation context.
      */
-    public String operationContext;
+    private String operationContext;
 
     /**
      * Get the operation context.
@@ -67,7 +68,7 @@ public final class PlayAudioResultEvent extends CallEventBase
     /**
      * The status of the operation.
      */
-    public OperationStatus status;
+    private OperationStatus status;
 
     /**
      * Get the status of the operation.
@@ -92,7 +93,7 @@ public final class PlayAudioResultEvent extends CallEventBase
     /**
      * The call leg Id.
      */
-    public String callLegId;
+    private String callLegId;
 
     /**
      * Get the call leg Id.
@@ -116,28 +117,26 @@ public final class PlayAudioResultEvent extends CallEventBase
 
     /**
      * Initializes a new instance of PlayAudioResultEvent
+     * 
      * @param resultInfo The result info.
      * @param operationContext The operation context.
      * @param status The status.
      * @param callLegId The call leg id.
+     * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public PlayAudioResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status, String callLegId)
-    {
-        if (resultInfo == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", resultInfo.getClass().getName()));
+    public PlayAudioResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status,
+            String callLegId) {
+        if (resultInfo == null) {
+            throw new IllegalArgumentException("object resultInfo cannot be null");
         }
-        if (operationContext == null || operationContext.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", operationContext.getClass().getName()));
+        if (operationContext == null || operationContext.isEmpty()) {
+            throw new IllegalArgumentException("object operationContext cannot be null");
         }
-        if (status == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", status.getClass().getName()));
+        if (status == null) {
+            throw new IllegalArgumentException("object status cannot be null");
         }
-        if (callLegId == null || callLegId.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", callLegId.getClass().getName()));
+        if (callLegId == null || callLegId.isEmpty()) {
+            throw new IllegalArgumentException("object callLegId cannot be null or empty");
         }
         this.resultInfo = resultInfo;
         this.operationContext = operationContext;

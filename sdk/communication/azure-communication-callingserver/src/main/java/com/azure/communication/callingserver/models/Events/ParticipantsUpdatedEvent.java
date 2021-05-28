@@ -11,17 +11,16 @@ import java.util.List;
 /**
  * The invited participants result event.
  */
-public final class ParticipantsUpdatedEvent extends CallEventBase
-{
+public final class ParticipantsUpdatedEvent extends CallEventBase {
     /**
      * The event type.
      */
-    public static final String EventType = "Microsoft.Communication.ParticipantsUpdated";
+    public static final String EVENT_TYPE = "Microsoft.Communication.ParticipantsUpdated";
 
     /**
      * The call leg Id.
      */
-    public String callLegId;
+    private String callLegId;
 
     /**
      * Get the call leg Id.
@@ -46,10 +45,11 @@ public final class ParticipantsUpdatedEvent extends CallEventBase
     /**
      * The list of participants.
      */
-    public List<CommunicationParticipant> participants;
+    private List<CommunicationParticipant> participants;
 
     /**
      * Get the list of participants.
+     * 
      * @return the result info value.
      */
     public List<CommunicationParticipant> getParticipants() {
@@ -58,6 +58,7 @@ public final class ParticipantsUpdatedEvent extends CallEventBase
 
     /**
      * Set the list of participants.
+     * 
      * @param participants the list of participants.
      * @return the ParticipantsUpdatedEvent object itself.
      */
@@ -68,27 +69,26 @@ public final class ParticipantsUpdatedEvent extends CallEventBase
 
     /**
      * Initializes a new instance of ParticipantsUpdatedEvent.
+     * 
      * @param callLegId The call leg id.
      * @param participants The conversation id.
+     * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ParticipantsUpdatedEvent(String callLegId, Iterable<CommunicationParticipant> participants)
-    {
-        if (callLegId == null || callLegId.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", callLegId.getClass().getName()));
+    public ParticipantsUpdatedEvent(String callLegId, Iterable<CommunicationParticipant> participants) {
+        if (callLegId == null || callLegId.isEmpty()) {
+            throw new IllegalArgumentException("object callLegId cannot be null or empty");
         }
-        if (participants == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", participants.getClass().getName()));
+        if (participants == null) {
+            throw new IllegalArgumentException("object participants cannot be null");
         }
 
         this.callLegId = callLegId;
         this.participants = new ArrayList<>();
 
         participants.forEach(this.participants::add);
-        if (this.participants.size() == 0)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", participants.getClass().getName()));
+        if (this.participants.size() == 0) {
+            throw new IllegalArgumentException(
+                    String.format("object '%s' cannot be empty", participants.getClass().getName()));
         }
     }
 }
