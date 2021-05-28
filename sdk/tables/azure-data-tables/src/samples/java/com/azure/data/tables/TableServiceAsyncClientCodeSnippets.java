@@ -143,8 +143,9 @@ public class TableServiceAsyncClientCodeSnippets {
             System.out.println("Table Entity: " + tableEntity);
             tableEntity.getProperties().put("Price", "5");
 
-            //UpdateMode.REPLACE: so the entity will be replaced if it exists or the request fails if not found
-            //ifUnchanged being false means the eTags must not match
+            // Using TableEntityUpdateMode.REPLACE so the entity will be replaced if it exists or the request fails if
+            // not found.
+            // ifUnchanged being false means the ETags must not match.
             return tableAsyncClient.updateEntity(tableEntity, TableEntityUpdateMode.REPLACE, false);
         }).subscribe(
             Void -> { },

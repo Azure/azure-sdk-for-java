@@ -352,7 +352,7 @@ public final class DocumentCollection extends Resource {
      */
     public ClientEncryptionPolicy getClientEncryptionPolicy() {
         if (this.clientEncryptionPolicyInternal == null) {
-            if (super.has(Constants.Properties.INDEXING_POLICY)) {
+            if (super.has(Constants.Properties.CLIENT_ENCRYPTION_POLICY)) {
                 this.clientEncryptionPolicyInternal = super.getObject(Constants.Properties.CLIENT_ENCRYPTION_POLICY,
                     ClientEncryptionPolicy.class);
             }

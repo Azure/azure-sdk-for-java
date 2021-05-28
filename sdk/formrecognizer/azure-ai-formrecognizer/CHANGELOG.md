@@ -1,8 +1,8 @@
 # Release History
 
-## 3.1.0 (Unreleased)
+## 3.1.0 (2021-05-26)
 ### Features Added
-- This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.4`.
+- This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.3`.
 - Added `clientOptions()` and `getDefaultLogOptions()` methods to the `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`.
 - We are able to support multiple service API versions now: `V2_0` and `V2_1`.
 - Add more static values to `FormRecognizerLanguage` expandable string class.
@@ -21,8 +21,15 @@
   For example, renamed `beginRecognizeIdDocuments` to `beginRecognizeIdentityDocuments`.
 - Renamed the method `asCountry` to `asCountryRegion`.
 - Renamed value `COUNTRY` to `COUNTRY_REGION` in the model `FieldValuetype`.
+- Renamed the property `fieldBoundingBox` to `boundingBox` in the class `FormTable`.
 - Make `FormLine`, `FormPage`, `FormTable`, `FormSelectionMark`, `TextAppearance`, `CustomFormModel`, `CustomFormModelInfo`, `CustomFormModelProperties`
   `CustomFormSubmodel`, `TrainingDocumentInfo` model class immutable.
+
+## 3.0.8 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
 
 ## 3.0.7 (2021-04-07)
 ### Dependency updates

@@ -111,7 +111,8 @@ public class TableServiceClientCodeSnippets {
         try {
             TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
-            //supplying the eTag means the eTags must match to delete
+            // Setting ifUnchanged to true means the eTags from the entity must match that of the entity in the Table
+            // service to delete successfully.
             tableClient.deleteEntity(entity);
         } catch (TableServiceException e) {
             if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {

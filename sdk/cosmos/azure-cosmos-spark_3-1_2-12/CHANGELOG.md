@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.2.0-beta.1 (Unreleased)
+
+### 4.1.0 (2021-05-27)
+#### New Features
+* Added support for bulk deletes via `spark.cosmos.write.strategy` `ItemDelete` or `ItemDeleteIfNotModified`
+* Added support for enforcing custom queries via `spark.cosmos.read.customQuery`. Custom queries will be sent to the Cosmos backend instead of dynamically generating the query from predicate push-downs.
+
+#### Key Bug Fixes
+* Fixes an issue resulting in invalid query plans when using string filter operators (StartsWith, EndsWith, Contains)
+
 ### 4.0.0 (2021-05-14)
 #### Configuration Renames
 * Renamed data source name `cosmos.changeFeed` to `cosmos.oltp.changeFeed`, See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21184).

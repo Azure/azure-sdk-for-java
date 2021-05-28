@@ -128,7 +128,7 @@ public final class SeasonsBaseClient {
      * }
      * }</pre>
      *
-     * @param seasonId Id of the season.
+     * @param seasonId ID of the season.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -172,7 +172,7 @@ public final class SeasonsBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param seasonId Id of the season resource.
+     * @param seasonId ID of the season resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -190,7 +190,7 @@ public final class SeasonsBaseClient {
     /**
      * Deletes a specified season resource.
      *
-     * @param seasonId Id of the season.
+     * @param seasonId ID of the season.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

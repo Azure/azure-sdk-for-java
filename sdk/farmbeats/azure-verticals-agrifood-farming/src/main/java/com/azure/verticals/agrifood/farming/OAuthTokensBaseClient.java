@@ -92,26 +92,6 @@ public final class OAuthTokensBaseClient {
     }
 
     /**
-     * Deletes OAuth Token for given oauth provider Id and farmer Id.
-     *
-     * @param farmerId Id of the associated farmer.
-     * @param oauthProviderId Id of the associated oauth provider.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest delete(String farmerId, String oauthProviderId) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/oauth/tokens/:remove")
-                .setPathParam("Endpoint", endpoint)
-                .addQueryParam("farmerId", farmerId)
-                .addQueryParam("oauthProviderId", oauthProviderId)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
-    }
-
-    /**
      * Returns Connection link needed in the OAuth flow.
      *
      * <p><strong>Request Body Schema</strong>
@@ -142,6 +122,92 @@ public final class OAuthTokensBaseClient {
                 .addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json")
                 .setHttpMethod(HttpMethod.POST);
+    }
+
+    /**
+     * Get cascade delete job details for OAuth tokens for specified job ID.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     farmerId: String
+     *     resourceId: String
+     *     resourceType: String
+     *     id: String
+     *     status: String
+     *     durationInSeconds: Double
+     *     message: String
+     *     createdDateTime: OffsetDateTime
+     *     lastActionDateTime: OffsetDateTime
+     *     startTime: OffsetDateTime
+     *     endTime: OffsetDateTime
+     *     name: String
+     *     description: String
+     *     properties: {
+     *         String: Object
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId ID of the job.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DynamicRequest getCascadeDeleteJobDetails(String jobId) {
+        return new DynamicRequest(serializer, httpPipeline)
+                .setUrl("{Endpoint}/oauth/tokens/remove/{jobId}")
+                .setPathParam("Endpoint", endpoint)
+                .setPathParam("jobId", jobId)
+                .addQueryParam("api-version", apiVersion)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .setHttpMethod(HttpMethod.GET);
+    }
+
+    /**
+     * Create a cascade delete job for OAuth tokens.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     farmerId: String
+     *     resourceId: String
+     *     resourceType: String
+     *     id: String
+     *     status: String
+     *     durationInSeconds: Double
+     *     message: String
+     *     createdDateTime: OffsetDateTime
+     *     lastActionDateTime: OffsetDateTime
+     *     startTime: OffsetDateTime
+     *     endTime: OffsetDateTime
+     *     name: String
+     *     description: String
+     *     properties: {
+     *         String: Object
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId Job ID supplied by end user.
+     * @param farmerId ID of the farmer.
+     * @param oauthProviderId ID of the OAuthProvider.
+     * @return a DynamicRequest where customizations can be made before sent to the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DynamicRequest createCascadeDeleteJob(String jobId, String farmerId, String oauthProviderId) {
+        return new DynamicRequest(serializer, httpPipeline)
+                .setUrl("{Endpoint}/oauth/tokens/remove/{jobId}")
+                .setPathParam("Endpoint", endpoint)
+                .setPathParam("jobId", jobId)
+                .addQueryParam("farmerId", farmerId)
+                .addQueryParam("oauthProviderId", oauthProviderId)
+                .addQueryParam("api-version", apiVersion)
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+                .setHttpMethod(HttpMethod.PUT);
     }
 
     /**

@@ -195,7 +195,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         labels[0] = "\0";
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(item1)
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(item1)
         .thenReturn(featureItem);
         
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
@@ -222,13 +222,13 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
-    public void revisionsCheck() {
+    public void watchedKeyCheck() {
         String[] labels = new String[1];
         labels[0] = "\0";
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(item1)
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(item1)
             .thenReturn(featureItem);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,

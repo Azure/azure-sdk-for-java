@@ -10,23 +10,26 @@ import java.util.Collection;
 
 /** Defines values for ProvisioningState. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
+    /** Static value Accepted for ProvisioningState. */
+    public static final ProvisioningState ACCEPTED = fromString("Accepted");
+
     /** Static value Creating for ProvisioningState. */
     public static final ProvisioningState CREATING = fromString("Creating");
-
-    /** Static value ResolvingDNS for ProvisioningState. */
-    public static final ProvisioningState RESOLVING_DNS = fromString("ResolvingDNS");
-
-    /** Static value Moving for ProvisioningState. */
-    public static final ProvisioningState MOVING = fromString("Moving");
 
     /** Static value Deleting for ProvisioningState. */
     public static final ProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for ProvisioningState. */
-    public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
+    /** Static value Moving for ProvisioningState. */
+    public static final ProvisioningState MOVING = fromString("Moving");
 
     /** Static value Failed for ProvisioningState. */
     public static final ProvisioningState FAILED = fromString("Failed");
+
+    /** Static value Succeeded for ProvisioningState. */
+    public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /** Static value ResolvingDNS for ProvisioningState. */
+    public static final ProvisioningState RESOLVING_DNS = fromString("ResolvingDNS");
 
     /**
      * Creates or finds a ProvisioningState from its string representation.
