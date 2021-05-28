@@ -12,6 +12,7 @@ import com.azure.core.annotation.Fluent;
 public final class MetricsAdvisorKeyCredential {
     private volatile String subscriptionKey;
     private volatile String apiKey;
+    private final Object updateLock = new Object();
 
     /**
      * Creates a MetricsAdvisorKeyCredential credential that authorizes request with the given keys.
@@ -43,31 +44,20 @@ public final class MetricsAdvisorKeyCredential {
     }
 
     /**
-     * Rotates the subscription key associated to this credential.
+     * Update the subscription and api key associated to this credential.
      * <p>
-     * This is intended to be used when you've regenerated your subscription key and want to
-     * update long lived clients.
+     * This is intended to be used when you've regenerated your subscription key and
+     * api key want to update long lived clients.
      * </p>
      * @param subscriptionKey The new subscription key to associated with this credential.
-     * @return The updated {@code MetricsAdvisorKeyCredential} object.
-     */
-    public MetricsAdvisorKeyCredential updateSubscriptionKey(String subscriptionKey) {
-        this.subscriptionKey = subscriptionKey;
-        return this;
-    }
-
-    /**
-     * Rotates the api key associated to this credential.
-     * <p>
-     * This is intended to be used when you've regenerated your api key and want to
-     * update long lived clients.
-     * </p>
-     *
      * @param apiKey The new api key to associated with this credential.
      * @return The updated {@code MetricsAdvisorKeyCredential} object.
      */
-    public MetricsAdvisorKeyCredential updateApiKey(String apiKey) {
-        this.apiKey = apiKey;
+    public MetricsAdvisorKeyCredential update(String subscriptionKey, String apiKey) {
+        synchronized (this.updateLock) {
+            this.subscriptionKey = subscriptionKey;
+            this.apiKey = apiKey;
+        }
         return this;
     }
 }

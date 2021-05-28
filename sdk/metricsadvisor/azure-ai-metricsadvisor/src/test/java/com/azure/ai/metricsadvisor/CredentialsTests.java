@@ -16,16 +16,12 @@ public class CredentialsTests {
         Assertions.assertTrue(credential.getSubscriptionKey().equals("sub-id-1"));
         Assertions.assertTrue(credential.getApiKey().equals("key-1"));
 
-        credential.updateSubscriptionKey(null);
+        credential.update(null, null);
         Assertions.assertNull(credential.getSubscriptionKey());
-
-        credential.updateApiKey(null);
         Assertions.assertNull(credential.getApiKey());
 
-        credential.updateSubscriptionKey("sub-id-2");
+        credential.update("sub-id-2", "key-2");
         Assertions.assertTrue(credential.getSubscriptionKey().equals("sub-id-2"));
-
-        credential.updateApiKey("key-2");
         Assertions.assertTrue(credential.getApiKey().equals("key-2"));
     }
 }
