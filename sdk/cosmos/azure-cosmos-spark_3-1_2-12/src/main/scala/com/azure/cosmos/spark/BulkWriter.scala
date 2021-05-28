@@ -8,9 +8,7 @@ import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, 
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.BulkWriter.{DefaultMaxPendingOperationPerCore, emitFailureHandler}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
-import com.azure.cosmos.{BulkOperations, BulkProcessingOptions, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
-import com.azure.cosmos.spark.BulkWriter.DefaultMaxPendingOperationPerCore
-import com.azure.cosmos.{BulkItemRequestOptions, BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.{BulkItemRequestOptions, BulkOperations, BulkProcessingOptions, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import reactor.core.Disposable
@@ -24,13 +22,6 @@ import java.util.UUID
 import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
-import java.util.concurrent.Semaphore
-import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
-import java.util.concurrent.locks.ReentrantLock
-import com.azure.cosmos.spark.BulkWriter.emitFailureHandler
-import reactor.core.publisher.Sinks.EmitFailureHandler
-import reactor.core.publisher.Sinks.EmitResult
-
 import scala.collection.concurrent.TrieMap
 
 //scalastyle:off null
