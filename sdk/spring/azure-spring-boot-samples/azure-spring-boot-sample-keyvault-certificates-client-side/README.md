@@ -28,7 +28,7 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
     Response from "https://localhost:8443/": Hello World
     ```
 
-#### Using MTLS with service principal
+#### Using mTLS with service principal
 1. In the sample `ApplicationConfiguration.class`, change the `self-signed` to your certificate alias.
     <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/src/main/java/com/azure/spring/security/keyvault/certificates/sample/client/side/SampleApplicationConfiguration.java#L72-L77 -->
     ```java
@@ -43,14 +43,14 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
     ```yaml
     server:
       ssl:
-        client-auth:         # Used for MTLS
-        trust-store-type:    # Used for MTLS   
+        client-auth: need        # Used for mTLS
+        trust-store-type: AzureKeyVault   # Used for mTLS   
     ```
 1. Start azure-spring-boot-sample-keyvault-certificates-client-side's SampleApplication by running command:
    ```
    mvn spring-boot:run
    ```
-1. When the [MTLS] server starts, `tls endpoint`(http://localhost:8080/tls) will not be able to access the resource. Access http://localhost:8080/mtls
+1. When the mTLS server starts, `tls endpoint`(http://localhost:8080/tls) will not be able to access the resource. Access http://localhost:8080/mTLS
 
     Then you will get
     ```text
@@ -64,7 +64,7 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
     azure:
       keyvault:
         uri: ${KEY_VAULT_URI}
-    #    managed-identity: # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
+        managed-identity: # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
     ```
     Make sure the managed identity can access target Key Vault.
 1. Set environment variables created in `azure-spring-boot-sample-keyvault-certificates-server-side` application by running command:
@@ -74,6 +74,7 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
 
 #### Using TLS with managed identity
 1. Replace the `restTemplateWithTLS` bean in `SampleApplicationConfiguration.java` as
+    <!-- embedme ../../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L18-L36 -->
     ```java
     @Bean
     public RestTemplate restTemplateWithTLS() throws Exception {
@@ -86,7 +87,7 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
                                            .loadTrustMaterial(trustStore, null)
                                            .build();
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
-                                                                                  (hostname, session) -> true);
+            (hostname, session) -> true);
         CloseableHttpClient httpClient = HttpClients.custom()
                                                     .setSSLSocketFactory(socketFactory)
                                                     .build();
@@ -97,11 +98,12 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
     ```
 1. Follow the above step of [Using TLS with service principal](#using-tls-with-service-principal).
 
-#### Using MTLS with managed identity
-1. Replace the `restTemplateWithMTLS` bean in `SampleApplicationConfiguration.java` as
+#### Using mTLS with managed identity
+1. Replace the `restTemplateWithmTLS` bean in `SampleApplicationConfiguration.java` as
+    <!-- embedme ../../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L42-L61 -->
     ```java
     @Bean
-    public RestTemplate restTemplateWithMTLS() throws Exception {
+    public RestTemplate restTemplateWithmTLS() throws Exception {
         KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -121,7 +123,7 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
         return new RestTemplate(requestFactory);
     }
     ```
-1. Follow the above step of [Using MTLS with service principal](#using-mtls-with-service-principal).
+1. Follow the above step of [Using mTLS with service principal](#using-mTLS-with-service-principal).
 
 ## Examples
 ## Troubleshooting
@@ -133,4 +135,3 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
 [azure_spring_boot_starter_key_vault_certificates]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md
 [steps_to_store_certificate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/README.md#creating-an-azure-key-vault
 [azure-spring-boot-sample-keyvault-certificates-server-side]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
-[MTLS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-client-side/README.md#run-with-MTLS

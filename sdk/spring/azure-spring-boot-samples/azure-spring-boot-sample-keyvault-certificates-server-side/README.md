@@ -12,7 +12,7 @@ This sample can work together with [azure-spring-boot-sample-keyvault-certificat
 ### Prerequisites
 - [Environment checklist][environment_checklist]
 - This sample will create a resource group and Azure Key Vault in your specified subscription. 
-- This sample will create and store a certificate `self-signed` in your Azure Key Vault.
+- This sample will create and store a certificate in your Azure Key Vault.
 - This sample will create a service principal to read certificates/keys/secrets from your Azure Key Vault.
 
 ### Run Sample with service principal
@@ -30,6 +30,9 @@ This sample can work together with [azure-spring-boot-sample-keyvault-certificat
     
     # Set the name for your Azure Key Vault to be created.
     export KEY_VAULT_NAME=
+   
+   # Set the name for your certificate to be created.
+    export CERTIFICATE_NAME=
     
     # Set the name for your Service Principal to be created. It should be NULL if using managed identity. ====
     export SERVICE_PRINCIPAL_NAME=
@@ -47,17 +50,17 @@ Then you will get
 Hello World
 ``` 
 
-#### Using MTLS with service principal
+#### Using mTLS with service principal
 
 1. Add properties in application.yml on the base of current configuration:
 ```yaml
 server:
   ssl:
-    client-auth:         # Used for MTLS
-    trust-store-type:    # Used for MTLS   
+    client-auth: need        # Used for mTLS
+    trust-store-type: AzureKeyVault   # Used for mTLS   
 ```
 2. Run command `mvn spring-boot:run`
-1. MTLS for mutual authentication. So your client needs have a trusted CA certificate.([azure-spring-boot-sample-keyvault-certificates-client-side]is a trusted client sample.)
+1. mTLS for mutual authentication. So your client needs have a trusted CA certificate.([azure-spring-boot-sample-keyvault-certificates-client-side]is a trusted client sample.)
 1. Your client access https://localhost:8443/
 
 Then the client or server will get
@@ -99,7 +102,7 @@ Make sure the managed identity can access target Key Vault.
    source script/setup.sh
    ```
 
-1. Follow the above step of [Using TLS with service principal](#using-tls-with-service-principal) or [Using MTLS with service principal](#using-mtls-with-service-principal).
+1. Follow the above step of [Using TLS with service principal](#using-tls-with-service-principal) or [Using mTLS with service principal](#using-mTLS-with-service-principal).
 
 ## Examples
 ## Troubleshooting

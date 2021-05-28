@@ -8,7 +8,7 @@ az account set --subscription ${SUBSCRIPTION_ID}
 # ==== Create Resource Group ====
 az group create --name ${RESOURCE_GROUP_NAME} --location ${REGION_NAME}
 
-# ==== Create Key Vault, self-signed certificate ====
+# ==== Create Key Vault and certificate ====
 az keyvault create --name ${KEY_VAULT_NAME}           \
                    --resource-group ${RESOURCE_GROUP_NAME} \
                    --location ${REGION_NAME}
@@ -16,7 +16,7 @@ KEY_VAULT_URI=$(az keyvault show --name ${KEY_VAULT_NAME} --resource-group ${RES
 sed -i 's#export KEY_VAULT_URI=#&'"$KEY_VAULT_URI"'#' script/export_environment_variables_of_created_resource.sh
 
 az keyvault certificate create --vault-name ${KEY_VAULT_NAME} \
-    -n self-signed \
+    -n ${CERTIFICATE_NAME} \
     -p "$(az keyvault certificate get-default-policy)"
 
 # ==== Create Service Principal ====
