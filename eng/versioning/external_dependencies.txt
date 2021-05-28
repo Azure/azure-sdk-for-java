@@ -218,7 +218,6 @@ com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.8.1
-com.nimbusds:nimbus-jose-jwt;8.20.2
 com.puppycrawl.tools:checkstyle;8.42
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
