@@ -69,7 +69,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-eventhubs-eph:[3.2.3]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
+                <include>com.microsoft.azure:azure-eventhubs-eph:[3.2.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
               </includes>
             </bannedDependencies>
           </rules>
