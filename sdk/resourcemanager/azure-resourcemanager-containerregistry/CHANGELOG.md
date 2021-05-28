@@ -1,5 +1,8 @@
 # Release History
 
+## 2.6.0-beta.1 (Unreleased)
+
+
 ## 2.5.0 (2021-05-28)
 
 - Updated core dependency from resources
