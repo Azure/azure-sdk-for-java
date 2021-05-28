@@ -17,6 +17,7 @@ import java.util.UUID
 private case class ItemsScan(session: SparkSession,
                              schema: StructType,
                              config: Map[String, String],
+                             readConfig: CosmosReadConfig,
                              cosmosQuery: CosmosParameterizedQuery,
                              cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
                              diagnosticsConfig: DiagnosticsConfig)
@@ -28,7 +29,6 @@ private case class ItemsScan(session: SparkSession,
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
   val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
@@ -89,7 +89,7 @@ private case class ItemsScan(session: SparkSession,
     ItemsScanPartitionReaderFactory(config,
       schema,
       cosmosQuery,
-      DiagnosticsContext(UUID.randomUUID().toString, cosmosQuery.queryTest),
+      DiagnosticsContext(UUID.randomUUID().toString, cosmosQuery.queryText),
       cosmosClientStateHandle,
       DiagnosticsConfig.parseDiagnosticsConfig(config))
   }

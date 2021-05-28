@@ -28,6 +28,8 @@ private case class ItemsScanBuilder(session: SparkSession,
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
   log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
+  val configMap = config.asScala.toMap
+  val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
   var processedPredicates : Option[AnalyzedFilters] = Option.empty
 
   /**
@@ -36,7 +38,7 @@ private case class ItemsScanBuilder(session: SparkSession,
     * @return the filters that spark need to evaluate
     */
   override def pushFilters(filters: Array[Filter]): Array[Filter] = {
-    processedPredicates = Option.apply(FilterAnalyzer().analyze(filters))
+    this.processedPredicates = Option.apply(FilterAnalyzer().analyze(filters, this.readConfig))
 
     // return the filters that spark need to evaluate
     this.processedPredicates.get.filtersNotSupportedByCosmos
@@ -61,7 +63,8 @@ private case class ItemsScanBuilder(session: SparkSession,
     ItemsScan(
       session,
       inputSchema,
-      config.asScala.toMap,
+      this.configMap,
+      this.readConfig,
       this.processedPredicates.get.cosmosParametrizedQuery,
       cosmosClientStateHandle,
       diagnosticsConfig)

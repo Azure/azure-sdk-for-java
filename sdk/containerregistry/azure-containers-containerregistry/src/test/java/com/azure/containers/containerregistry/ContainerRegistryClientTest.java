@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.implementation.ImplUtils;
@@ -15,12 +14,20 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 
-import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_202;
+import static com.azure.containers.containerregistry.TestUtils.SLEEP_TIME_IN_MILLISECONDS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBase {
@@ -34,18 +41,22 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     private ContainerRepositoryAsync getContainerRepositoryAsync() {
         return getContainerRegistryBuilder(new LocalHttpClient(recordFileName))
             .buildAsyncClient()
-            .getRepository(ALPINE_REPOSITORY_NAME);
+            .getRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME);
     }
 
     private ContainerRepository getContainerRepository() {
         return getContainerRegistryBuilder(new LocalHttpClient(recordFileName))
             .buildClient()
-            .getRepository(ALPINE_REPOSITORY_NAME);
+            .getRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME);
     }
 
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient() {
         HttpClient client = new LocalHttpClient(recordFileName);
         return getContainerRegistryBuilder(client).buildAsyncClient();
+    }
+
+    private ContainerRegistryClient getContainerRegistryClient(HttpClient client) {
+        return getContainerRegistryBuilder(client).buildClient();
     }
 
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient client) {
@@ -59,7 +70,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @BeforeEach
     void beforeEach() {
-        TestUtils.importImage(ImplUtils.getTestMode(), ALPINE_REPOSITORY_NAME, Arrays.asList("latest"));
+        TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_SEATTLE_REPOSITORY_NAME, Arrays.asList("latest"));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -67,9 +78,47 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     public void deleteRepository(HttpClient httpClient) {
         registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
 
-        StepVerifier.create(registryAsyncClient.deleteRepository(ALPINE_REPOSITORY_NAME))
-            .assertNext(res -> validateDeletedRepositoryResponse(res))
+        Mono<Boolean> deleteRepositoryTest = registryAsyncClient.deleteRepositoryWithResponse(HELLO_WORLD_SEATTLE_REPOSITORY_NAME)
+            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
+            .then(registryAsyncClient.getRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME).getProperties())
+            .flatMap(res -> Mono.just(false))
+            .onErrorResume(res -> registryAsyncClient.getRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME)
+                    .delete()
+                    .then(Mono.just(true))
+                .onErrorResume(err -> Mono.just(false)));
+
+        StepVerifier.create(deleteRepositoryTest)
+            .assertNext(res -> assertTrue(res))
             .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getRepositoryTestThrows(HttpClient httpClient) {
+        registryClient = getContainerRegistryClient(httpClient);
+        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+
+        assertThrows(NullPointerException.class, () -> registryClient.getRepository(null));
+        assertThrows(IllegalArgumentException.class, () -> registryClient.getRepository(""));
+
+        assertThrows(NullPointerException.class, () -> registryAsyncClient.getRepository(null));
+        assertThrows(IllegalArgumentException.class, () -> registryAsyncClient.getRepository(""));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getArtifactTestThrows(HttpClient httpClient) {
+        registryClient = getContainerRegistryClient(httpClient);
+        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+
+        assertThrows(NullPointerException.class, () -> registryClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, null));
+        assertThrows(IllegalArgumentException.class, () -> registryClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, ""));
+        assertThrows(NullPointerException.class, () -> registryClient.getArtifact(null, "digest"));
+        assertThrows(IllegalArgumentException.class, () -> registryClient.getArtifact("", "digest"));
+        assertThrows(NullPointerException.class, () -> registryAsyncClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, null));
+        assertThrows(IllegalArgumentException.class, () -> registryAsyncClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, ""));
+        assertThrows(NullPointerException.class, () -> registryAsyncClient.getArtifact(null, "digest"));
+        assertThrows(IllegalArgumentException.class, () -> registryAsyncClient.getArtifact("", "digest"));
     }
 
     @Test
@@ -78,30 +127,25 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
         registryAsyncClient = getContainerRegistryAsyncClient();
         registryClient = getContainerRegistryClient();
 
-        StepVerifier.create(registryAsyncClient.deleteRepository(ALPINE_REPOSITORY_NAME))
-            .assertNext(res -> validateDeletedRepositoryResponse(res))
+        StepVerifier.create(registryAsyncClient.deleteRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME))
             .verifyComplete();
 
-        DeleteRepositoryResult result = registryClient.deleteRepository(ALPINE_REPOSITORY_NAME);
-        validateDeletedRepositoryResponse(result);
+        registryClient.deleteRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME);
 
-        Response<DeleteRepositoryResult> response = registryClient.deleteRepositoryWithResponse(ALPINE_REPOSITORY_NAME, Context.NONE);
-        validateDeletedRepositoryResponse(response);
+        Response<Void> response = registryClient.deleteRepositoryWithResponse(HELLO_WORLD_SEATTLE_REPOSITORY_NAME, Context.NONE);
+        assertEquals(HTTP_STATUS_CODE_202, response.getStatusCode());
 
         asyncClient = getContainerRepositoryAsync();
         client = getContainerRepository();
         StepVerifier.create(asyncClient.deleteWithResponse())
-            .assertNext(res -> validateDeletedRepositoryResponse(res))
+            .assertNext(res -> assertEquals(HTTP_STATUS_CODE_202, res.getStatusCode()))
             .verifyComplete();
 
         StepVerifier.create(asyncClient.delete())
-            .assertNext(res -> validateDeletedRepositoryResponse(res))
             .verifyComplete();
 
-        result = client.delete();
-        validateDeletedRepositoryResponse(result);
-
+        client.delete();
         response = client.deleteWithResponse(Context.NONE);
-        validateDeletedRepositoryResponse(response);
+        assertEquals(HTTP_STATUS_CODE_202, response.getStatusCode());
     }
 }
