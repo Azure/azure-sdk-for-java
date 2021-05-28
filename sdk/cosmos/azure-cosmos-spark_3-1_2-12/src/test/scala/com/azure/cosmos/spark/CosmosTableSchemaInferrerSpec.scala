@@ -243,6 +243,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
   }
 
   it should "map nested objects properties when objects have different properties" in {
+    val nodeValue = 10
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     val subNode = objectNode.putObject("id")
     subNode.put("prop1", "test")
@@ -250,7 +251,7 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val objectNode2: ObjectNode = objectMapper.createObjectNode()
     val subNode2 = objectNode2.putObject("id")
     subNode2.put("prop2", "test")
-    subNode2.put("prop3", 10)
+    subNode2.put("prop3", nodeValue)
     val docs = List[ObjectNode](objectNode, objectNode2)
 
     val schema = CosmosTableSchemaInferrer.inferSchema(
@@ -266,12 +267,13 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
   }
 
   it should "map array properties when objects have different arrays" in {
+    val nodeValue = 10
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     val subNode = objectNode.putArray("id")
     subNode.add(10.3)
     val objectNode2: ObjectNode = objectMapper.createObjectNode()
     val subNode2 = objectNode2.putArray("id")
-    subNode2.add(10)
+    subNode2.add(nodeValue)
     val docs = List[ObjectNode](objectNode, objectNode2)
 
     val schema = CosmosTableSchemaInferrer.inferSchema(
