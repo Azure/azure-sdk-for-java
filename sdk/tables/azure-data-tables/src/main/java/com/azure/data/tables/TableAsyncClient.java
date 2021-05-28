@@ -562,8 +562,6 @@ public final class TableAsyncClient {
      * Deletes an entity from the table.
      *
      * @param entity The table entity to delete.
-     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
-     * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return A reactive result containing an HTTP response.
      *
@@ -571,8 +569,8 @@ public final class TableAsyncClient {
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntity(TableEntity entity, boolean ifUnchanged) {
-        return deleteEntityWithResponse(entity, ifUnchanged).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteEntity(TableEntity entity) {
+        return deleteEntityWithResponse(entity, false).flatMap(FluxUtil::toMono);
     }
 
     /**

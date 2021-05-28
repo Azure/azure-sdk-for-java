@@ -329,15 +329,13 @@ public final class TableClient {
      * Deletes an entity from the table.
      *
      * @param tableEntity The table entity to delete.
-     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
-     * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(TableEntity tableEntity, boolean ifUnchanged) {
-        client.deleteEntity(tableEntity, ifUnchanged).block();
+    public void deleteEntity(TableEntity tableEntity) {
+        client.deleteEntity(tableEntity).block();
     }
 
     /**
