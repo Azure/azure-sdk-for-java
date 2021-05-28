@@ -74,13 +74,6 @@ public class KeyVaultSecretValueIT {
     @Test
     public void keyVaultAsPropertySource() {
         LOGGER.info("keyVaultAsPropertySource begin.");
-
-        // test
-        char[] springResourceGroup = KEY_VAULT_SPRING_RESOURCE_GROUP.toCharArray();
-        for (Character c : springResourceGroup) {
-            LOGGER.info(c.toString());
-        }
-
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
@@ -104,13 +97,6 @@ public class KeyVaultSecretValueIT {
     @Test
     public void keyVaultAsPropertySourceWithSpecificKeys() {
         LOGGER.info("keyVaultAsPropertySourceWithSpecificKeys begin.");
-
-        // test
-        char[] springResourceGroup = KEY_VAULT_SPRING_RESOURCE_GROUP.toCharArray();
-        for (Character c : springResourceGroup) {
-            LOGGER.info(c.toString());
-        }
-
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
@@ -128,13 +114,6 @@ public class KeyVaultSecretValueIT {
     @Test
     public void keyVaultWithAppServiceMSI() throws InterruptedException {
         LOGGER.info("keyVaultWithAppServiceMSI begin.");
-
-        // test
-        char[] springResourceGroup = KEY_VAULT_SPRING_RESOURCE_GROUP.toCharArray();
-        for (Character c : springResourceGroup) {
-            LOGGER.info(c.toString());
-        }
-
         final WebApp webApp = AZURE
             .webApps()
             .getByResourceGroup(KEY_VAULT_SPRING_RESOURCE_GROUP, APP_SERVICE_NAME);

@@ -14,9 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServiceBusTopicOperationSendSubscribeTest
     extends SendSubscribeWithGroupOperationTest<ServiceBusTopicOperation> {
@@ -68,20 +68,20 @@ public class ServiceBusTopicOperationSendSubscribeTest
     }
 
     protected void verifyCompleteCalledTimes(int times) {
-        waitMillis(500);
+        waitMillis(250);
         final int actualTimes = ((ServiceBusTopicTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
 
         if (actualTimes != times) {
-            assertEquals("Complete called times", times, actualTimes);
+            assertEquals(times, actualTimes, "Complete called times");
         }
     }
 
     protected void verifyAbandonCalledTimes(int times) {
-        waitMillis(500);
+        waitMillis(250);
         final int actualTimes = ((ServiceBusTopicTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
 
         if (actualTimes != times) {
-            assertEquals("Complete called times", times, actualTimes);
+            assertEquals(times, actualTimes, "Complete called times");
         }
     }
 }

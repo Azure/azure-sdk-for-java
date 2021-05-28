@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +57,7 @@ public class AzureStorageResourcePatternResolverTest {
     private AutoCloseable closeable;
 
     @BeforeAll
-    void setUp() {
+    public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
     }
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static com.azure.spring.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CaseSensitiveKeyVaultTest {
 

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,6 +37,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -67,7 +69,7 @@ public class UserPrincipalMicrosoftGraphTest {
             e.printStackTrace();
             userGroupsJson = null;
         }
-        Assert.assertNotNull(userGroupsJson);
+        assertNotNull(userGroupsJson);
     }
 
     @BeforeAll
@@ -128,12 +130,10 @@ public class UserPrincipalMicrosoftGraphTest {
 
             final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
 
-            Assert.assertNotNull("Serialized UserPrincipal not null", serializedPrincipal);
-            Assert.assertFalse("Serialized UserPrincipal kid not empty",
-                StringUtils.isEmpty(serializedPrincipal.getKid()));
-            Assert.assertNotNull("Serialized UserPrincipal claims not null.", serializedPrincipal.getClaims());
-            Assert.assertTrue("Serialized UserPrincipal claims not empty.",
-                serializedPrincipal.getClaims().size() > 0);
+            assertNotNull(serializedPrincipal, "Serialized UserPrincipal not null");
+            assertFalse(StringUtils.isEmpty(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
+            assertNotNull(serializedPrincipal.getClaims(), "Serialized UserPrincipal claims not null.");
+            assertTrue(serializedPrincipal.getClaims().size() > 0, "Serialized UserPrincipal claims not empty.");
         } finally {
             Files.deleteIfExists(tmpOutputFile.toPath());
         }

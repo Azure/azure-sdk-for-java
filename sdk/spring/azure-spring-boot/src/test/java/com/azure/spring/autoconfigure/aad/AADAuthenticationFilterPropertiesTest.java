@@ -22,6 +22,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADAuthenticationFilterPropertiesTest {
 
+    @AfterEach
+    public void clearAllProperties() {
+        System.clearProperty("azure.activedirectory.environment");
+        System.clearProperty("azure.activedirectory.tenant-id");
+        System.clearProperty("azure.activedirectory.client-id");
+        System.clearProperty("azure.activedirectory.client-secret");
+        System.clearProperty("azure.activedirectory.user-group.allowed-groups");
+    }
+
     @Test
     public void canSetProperties() {
         configureAllRequiredProperties();
@@ -89,15 +98,6 @@ public class AADAuthenticationFilterPropertiesTest {
                 assertThat(errorStrings.get(i)).contains(errorStringsExpected.get(i));
             }
         }
-    }
-
-    @AfterEach
-    public void clearAllProperties() {
-        System.clearProperty("azure.activedirectory.environment");
-        System.clearProperty("azure.activedirectory.tenant-id");
-        System.clearProperty("azure.activedirectory.client-id");
-        System.clearProperty("azure.activedirectory.client-secret");
-        System.clearProperty("azure.activedirectory.user-group.allowed-groups");
     }
 
     @Configuration

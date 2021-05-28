@@ -28,7 +28,7 @@ import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_ID;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_KEY;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.TENANT_ID;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyVaultEnvironmentPostProcessorTest {
     private KeyVaultEnvironmentPostProcessorHelper keyVaultEnvironmentPostProcessorHelper;
@@ -121,9 +121,9 @@ public class KeyVaultEnvironmentPostProcessorTest {
             assertThat("Configured order for KeyVaultEnvironmentPostProcessor is different with default order "
                     + "value.",
                 KeyVaultEnvironmentPostProcessor.DEFAULT_ORDER != OrderedProcessConfig.TEST_ORDER);
-            assertEquals("KeyVaultEnvironmentPostProcessor order should be changed.",
-                OrderedProcessConfig.TEST_ORDER,
-                context.getBean(KeyVaultEnvironmentPostProcessor.class).getOrder());
+            assertEquals(OrderedProcessConfig.TEST_ORDER,
+                context.getBean(KeyVaultEnvironmentPostProcessor.class).getOrder(), "KeyVaultEnvironmentPostProcessor"
+                    + " order should be changed.");
         });
     }
 

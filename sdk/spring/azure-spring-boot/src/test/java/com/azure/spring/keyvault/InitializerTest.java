@@ -14,7 +14,7 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "classpath:application.properties")
@@ -26,9 +26,9 @@ public class InitializerTest {
     @Test
     public void testAzureKvPropertySourceNotInitialized() {
         final MutablePropertySources sources =
-                ((ConfigurableEnvironment) context.getEnvironment()).getPropertySources();
+            ((ConfigurableEnvironment) context.getEnvironment()).getPropertySources();
 
-        assertFalse("PropertySources should not contains azurekv when enabled=false",
-                sources.contains(Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME));
+        assertFalse(sources.contains(Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME), "PropertySources should not "
+            + "contains azurekv when enabled=false");
     }
 }

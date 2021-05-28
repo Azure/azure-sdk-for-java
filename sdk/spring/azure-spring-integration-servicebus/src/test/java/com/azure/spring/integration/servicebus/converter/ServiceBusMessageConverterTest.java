@@ -33,10 +33,10 @@ import static com.azure.spring.integration.servicebus.converter.ServiceBusMessag
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
 import static java.time.ZoneId.systemDefault;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -51,8 +51,7 @@ public class ServiceBusMessageConverterTest {
     private static final String SERVICE_BUS_CORRELATION_ID = "correlation-id";
     private static final String SERVICE_BUS_TO = "to";
     private static final String SERVICE_BUS_REPLY_TO_SESSION_ID = "reply-to-session-id";
-    private static final String SERVICE_BUS_PARTITION_KEY = SERVICE_BUS_REPLY_TO_SESSION_ID; // partitionKey should
-    // same to sessionId
+    private static final String SERVICE_BUS_PARTITION_KEY = SERVICE_BUS_REPLY_TO_SESSION_ID; // partitionKey should same to sessionId
     private static final String SERVICE_BUS_VIA_PARTITION_KEY = "via-partition-key";
     private static final Duration SERVICE_BUS_TTL = Duration.ofSeconds(1234);
 
