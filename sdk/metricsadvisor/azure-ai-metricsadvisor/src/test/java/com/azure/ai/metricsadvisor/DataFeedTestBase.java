@@ -5,7 +5,7 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
-import com.azure.ai.metricsadvisor.models.AzureCosmosDataFeedSource;
+import com.azure.ai.metricsadvisor.models.AzureCosmosDbDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureLogAnalyticsDataFeedSource;
@@ -140,7 +140,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 SQL_SERVER_CONNECTION_STRING,
                 TEMPLATE_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_COSMOS_DB) {
-            dataFeed = new DataFeed().setSource(new AzureCosmosDataFeedSource(COSMOS_DB_CONNECTION_STRING,
+            dataFeed = new DataFeed().setSource(new AzureCosmosDbDataFeedSource(COSMOS_DB_CONNECTION_STRING,
                 TEMPLATE_QUERY, TEST_DB_NAME, TEST_DB_NAME));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2) {
             dataFeed = new DataFeed().setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
@@ -263,10 +263,10 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
             // assertNotNull(actualSqlServerDataFeedSource.getConnectionString());
             assertEquals(expSqlServerDataFeedSource.getQuery(), actualSqlServerDataFeedSource.getQuery());
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_COSMOS_DB) {
-            final AzureCosmosDataFeedSource expCosmosDataFeedSource =
-                (AzureCosmosDataFeedSource) expectedDataFeed.getSource();
-            final AzureCosmosDataFeedSource actualCosmosDataFeedSource =
-                (AzureCosmosDataFeedSource) actualDataFeed.getSource();
+            final AzureCosmosDbDataFeedSource expCosmosDataFeedSource =
+                (AzureCosmosDbDataFeedSource) expectedDataFeed.getSource();
+            final AzureCosmosDbDataFeedSource actualCosmosDataFeedSource =
+                (AzureCosmosDbDataFeedSource) actualDataFeed.getSource();
             assertEquals(expCosmosDataFeedSource.getCollectionId(), actualCosmosDataFeedSource.getCollectionId());
             // assertNotNull(actualCosmosDataFeedSource.getConnectionString());
             assertEquals(expCosmosDataFeedSource.getDatabase(), actualCosmosDataFeedSource.getDatabase());

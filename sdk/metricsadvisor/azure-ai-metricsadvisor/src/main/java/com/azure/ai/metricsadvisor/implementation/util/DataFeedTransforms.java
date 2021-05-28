@@ -53,7 +53,7 @@ import com.azure.ai.metricsadvisor.implementation.models.SQLSourceParameterPatch
 import com.azure.ai.metricsadvisor.implementation.models.SqlSourceParameter;
 import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
-import com.azure.ai.metricsadvisor.models.AzureCosmosDataFeedSource;
+import com.azure.ai.metricsadvisor.models.AzureCosmosDbDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureEventHubsDataFeedSource;
@@ -171,7 +171,7 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureCosmosDBDataFeed) {
             final AzureCosmosDBParameter dataSourceParameter =
                 ((AzureCosmosDBDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new AzureCosmosDataFeedSource(
+            dataFeed.setSource(new AzureCosmosDbDataFeedSource(
                 dataSourceParameter.getConnectionString(),
                 dataSourceParameter.getSqlQuery(),
                 dataSourceParameter.getDatabase(),
@@ -291,15 +291,15 @@ public final class DataFeedTransforms {
                     .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
                     .setContainer(azureBlobDataFeedSource.getContainer())
                     .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()));
-        } else if (dataFeedSource instanceof AzureCosmosDataFeedSource) {
-            final AzureCosmosDataFeedSource azureCosmosDataFeedSource = ((AzureCosmosDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof AzureCosmosDbDataFeedSource) {
+            final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource = ((AzureCosmosDbDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureCosmosDBDataFeed()
                 .setDataSourceParameter(new AzureCosmosDBParameter()
-                    .setConnectionString(AzureCosmosDataFeedSourceAccessor
-                        .getConnectionString(azureCosmosDataFeedSource))
-                    .setCollectionId(azureCosmosDataFeedSource.getCollectionId())
-                    .setDatabase(azureCosmosDataFeedSource.getDatabase())
-                    .setSqlQuery(azureCosmosDataFeedSource.getSqlQuery()));
+                    .setConnectionString(AzureCosmosDbDataFeedSourceAccessor
+                        .getConnectionString(azureCosmosDbDataFeedSource))
+                    .setCollectionId(azureCosmosDbDataFeedSource.getCollectionId())
+                    .setDatabase(azureCosmosDbDataFeedSource.getDatabase())
+                    .setSqlQuery(azureCosmosDbDataFeedSource.getSqlQuery()));
         } else if (dataFeedSource instanceof AzureDataExplorerDataFeedSource) {
             final AzureDataExplorerDataFeedSource azureDataExplorerDataFeedSource =
                 ((AzureDataExplorerDataFeedSource) dataFeedSource);
@@ -411,15 +411,15 @@ public final class DataFeedTransforms {
                     .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
                     .setContainer(azureBlobDataFeedSource.getContainer())
                     .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()));
-        } else if (dataFeedSource instanceof AzureCosmosDataFeedSource) {
-            final AzureCosmosDataFeedSource azureCosmosDataFeedSource = ((AzureCosmosDataFeedSource) dataFeedSource);
+        } else if (dataFeedSource instanceof AzureCosmosDbDataFeedSource) {
+            final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource = ((AzureCosmosDbDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureCosmosDBDataFeedPatch()
                 .setDataSourceParameter(new AzureCosmosDBParameterPatch()
-                    .setConnectionString(AzureCosmosDataFeedSourceAccessor
-                        .getConnectionString(azureCosmosDataFeedSource))
-                    .setCollectionId(azureCosmosDataFeedSource.getCollectionId())
-                    .setDatabase(azureCosmosDataFeedSource.getDatabase())
-                    .setSqlQuery(azureCosmosDataFeedSource.getSqlQuery()));
+                    .setConnectionString(AzureCosmosDbDataFeedSourceAccessor
+                        .getConnectionString(azureCosmosDbDataFeedSource))
+                    .setCollectionId(azureCosmosDbDataFeedSource.getCollectionId())
+                    .setDatabase(azureCosmosDbDataFeedSource.getDatabase())
+                    .setSqlQuery(azureCosmosDbDataFeedSource.getSqlQuery()));
         } else if (dataFeedSource instanceof AzureDataExplorerDataFeedSource) {
             final AzureDataExplorerDataFeedSource azureDataExplorerDataFeedSource =
                 ((AzureDataExplorerDataFeedSource) dataFeedSource);

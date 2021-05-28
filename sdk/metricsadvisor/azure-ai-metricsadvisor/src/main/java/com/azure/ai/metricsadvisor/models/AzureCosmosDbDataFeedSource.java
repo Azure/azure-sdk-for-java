@@ -3,14 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.ai.metricsadvisor.implementation.util.AzureCosmosDataFeedSourceAccessor;
+import com.azure.ai.metricsadvisor.implementation.util.AzureCosmosDbDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The AzureCosmosDataFeedSource model.
+ * The AzureCosmosDbDataFeedSource model.
  */
 @Immutable
-public final class AzureCosmosDataFeedSource extends DataFeedSource {
+public final class AzureCosmosDbDataFeedSource extends DataFeedSource {
     /*
      * Azure CosmosDB connection string
      */
@@ -32,10 +32,10 @@ public final class AzureCosmosDataFeedSource extends DataFeedSource {
     private final String collectionId;
 
     static {
-        AzureCosmosDataFeedSourceAccessor.setAccessor(
-            new AzureCosmosDataFeedSourceAccessor.Accessor() {
+        AzureCosmosDbDataFeedSourceAccessor.setAccessor(
+            new AzureCosmosDbDataFeedSourceAccessor.Accessor() {
                 @Override
-                public String getConnectionString(AzureCosmosDataFeedSource feedSource) {
+                public String getConnectionString(AzureCosmosDbDataFeedSource feedSource) {
                     return feedSource.getConnectionString();
                 }
             });
@@ -49,10 +49,10 @@ public final class AzureCosmosDataFeedSource extends DataFeedSource {
      * @param database the database name.
      * @param collectionId the collection Id value.
      */
-    public AzureCosmosDataFeedSource(final String connectionString,
-                                     final String sqlQuery,
-                                     final String database,
-                                     final String collectionId) {
+    public AzureCosmosDbDataFeedSource(final String connectionString,
+                                       final String sqlQuery,
+                                       final String database,
+                                       final String collectionId) {
         this.connectionString = connectionString;
         this.sqlQuery = sqlQuery;
         this.database = database;
