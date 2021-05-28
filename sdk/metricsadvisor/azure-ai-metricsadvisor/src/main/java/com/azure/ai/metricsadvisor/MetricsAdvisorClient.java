@@ -582,6 +582,30 @@ public class MetricsAdvisorClient {
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
+     *
+     * @return The incidents.
+     * @throws IllegalArgumentException thrown if {@code alertConfigurationId} or {@code alertId} does not
+     * conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AnomalyIncident> listIncidents(
+        String alertConfigurationId,
+        String alertId) {
+        return this.listIncidents(alertConfigurationId,
+            alertId,
+            null,
+            Context.NONE);
+    }
+
+    /**
+     * Fetch the incidents in an alert.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidents#String-String-ListIncidentsAlertedOptions-Context}
+     *
+     * @param alertConfigurationId The anomaly alert configuration id.
+     * @param alertId The alert id.
      * @param options The additional parameters.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

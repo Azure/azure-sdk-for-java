@@ -9,7 +9,6 @@ import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;

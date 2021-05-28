@@ -998,7 +998,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
         String metricId) {
-        return listMetricAnomalyDetectionConfigs(metricId);
+        return listMetricAnomalyDetectionConfigs(metricId, null);
     }
 
     /**

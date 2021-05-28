@@ -128,7 +128,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return A {@link PagedFlux} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
@@ -136,7 +136,7 @@ public class MetricsAdvisorAsyncClient {
     public PagedFlux<MetricSeriesDefinition> listMetricSeriesDefinitions(
         String metricId,
         OffsetDateTime activeSince) {
-        return listMetricSeriesDefinitions(metricId, activeSince);
+        return listMetricSeriesDefinitions(metricId, activeSince, null);
     }
 
     /**
@@ -409,7 +409,7 @@ public class MetricsAdvisorAsyncClient {
      *
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
@@ -983,7 +983,7 @@ public class MetricsAdvisorAsyncClient {
         String detectionConfigurationId,
         String dimensionName,
         OffsetDateTime startTime, OffsetDateTime endTime) {
-        return listAnomalyDimensionValues(detectionConfigurationId, dimensionName, startTime, endTime);
+        return listAnomalyDimensionValues(detectionConfigurationId, dimensionName, startTime, endTime, null);
     }
 
     /**
