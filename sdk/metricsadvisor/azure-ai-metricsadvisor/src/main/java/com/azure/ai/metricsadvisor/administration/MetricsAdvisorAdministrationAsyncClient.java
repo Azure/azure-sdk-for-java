@@ -988,6 +988,23 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String}
+     *
+     * @param metricId The metric id.
+     * @return The anomaly detection configurations.
+     * @throws NullPointerException thrown if the {@code metricId} is null.
+     * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId) {
+        return listMetricAnomalyDetectionConfigs(metricId);
+    }
+
+    /**
+     * Given a metric id, retrieve all anomaly detection configurations applied to it.
+     *
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions}
      *
      * @param metricId The metric id.

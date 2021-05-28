@@ -121,6 +121,28 @@ public class MetricsAdvisorAsyncClient {
      * List series definition for a metric.
      *
      * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-OffsetDateTime}
+     *
+     * @param metricId metric unique id.
+     * @param activeSince the start time for querying series ingested after this time.
+     *
+     * @return A {@link PagedFlux} of the {@link MetricSeriesDefinition metric series definitions}.
+     * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
+     * is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricSeriesDefinition> listMetricSeriesDefinitions(
+        String metricId,
+        OffsetDateTime activeSince) {
+        return listMetricSeriesDefinitions(metricId, activeSince);
+    }
+
+    /**
+     * List series definition for a metric.
+     *
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions}
      *
      * @param metricId metric unique id.
@@ -379,6 +401,29 @@ public class MetricsAdvisorAsyncClient {
      * List the enrichment status for a metric.
      *
      * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime}
+     *
+     * @param metricId metric unique id.
+     * @param startTime The start time for querying the time series data.
+     * @param endTime The end time for querying the time series data.
+     *
+     * @return the list of enrichment status's for the specified metric.
+     * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
+     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
+     * is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<EnrichmentStatus> listMetricEnrichmentStatus(
+        String metricId,
+        OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listMetricEnrichmentStatus(metricId, startTime, endTime, null);
+    }
+
+    /**
+     * List the enrichment status for a metric.
+     *
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions}
      *
      * @param metricId metric unique id.
@@ -566,6 +611,30 @@ public class MetricsAdvisorAsyncClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-OffsetDateTime-OffsetDateTime}
+     *
+     * @param detectionConfigurationId The anomaly detection configuration id.
+     * @param startTime The start time of the time range within which the anomalies were detected.
+     * @param endTime The end time of the time range within which the anomalies were detected.
+     *
+     * @return The anomalies.
+     * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
+     *     to the UUID format specification
+     *     or {@code options.filter} is used to set severity but either min or max severity is missing.
+     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
+     *     or {@code startTime} or {@code endTime} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DataPointAnomaly> listAnomalies(
+        String detectionConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listAnomalies(detectionConfigurationId, startTime, endTime, null);
+    }
+
+    /**
+     * Fetch the anomalies identified by an anomaly detection configuration.
+     *
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalies#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
@@ -679,6 +748,28 @@ public class MetricsAdvisorAsyncClient {
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
+    }
+
+    /**
+     * Fetch the incidents identified by an anomaly detection configuration.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-OffsetDateTime-OffsetDateTime}
+     *
+     * @param detectionConfigurationId The anomaly detection configuration id.
+     * @param startTime The start time of the time range within which the incidents were detected.
+     * @param endTime The end time of the time range within which the incidents were detected.
+     * @return The incidents.
+     * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
+     *     to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code options}
+     *     or {@code startTime} or {@code endTime} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AnomalyIncident> listIncidents(
+        String detectionConfigurationId,
+        OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listIncidents(detectionConfigurationId, startTime, endTime, null);
     }
 
     /**
@@ -875,6 +966,30 @@ public class MetricsAdvisorAsyncClient {
      * Fetch dimension values that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime}
+     *
+     * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
+     * @param dimensionName The dimension name to retrieve the values for.
+     * @param startTime The start time of the time range within which the anomalies were identified.
+     * @param endTime The end time of the time range within which the anomalies were identified.
+     * @return The dimension values with anomalies.
+     * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} does not conform
+     *     to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code dimensionName}
+     *     or {@code options} or {@code startTime} or {@code endTime} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listAnomalyDimensionValues(
+        String detectionConfigurationId,
+        String dimensionName,
+        OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listAnomalyDimensionValues(detectionConfigurationId, dimensionName, startTime, endTime);
+    }
+
+    /**
+     * Fetch dimension values that have anomalies.
+     *
+     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions}
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
@@ -995,6 +1110,27 @@ public class MetricsAdvisorAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error));
+    }
+
+    /**
+     * Fetch the alerts triggered by an anomaly alert configuration.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAlerts#String-OffsetDateTime-OffsetDateTime}
+     *
+     * @param alertConfigurationId The anomaly alert configuration id.
+     * @param startTime The start time of the time range within which the alerts were triggered.
+     * @param endTime The end time of the time range within which the alerts were triggered.
+     * @return The alerts.
+     * @throws IllegalArgumentException thrown if {@code alertConfigurationId} does not conform
+     *     to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code alertConfigurationId}
+     *     or {@code startTime} or {@code endTime} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AnomalyAlert> listAlerts(
+        String alertConfigurationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        return listAlerts(alertConfigurationId, startTime, endTime, null);
     }
 
     /**
@@ -1192,6 +1328,27 @@ public class MetricsAdvisorAsyncClient {
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
             .map(response -> AnomalyTransforms.fromInnerPagedResponse(response));
+    }
+
+
+    /**
+     * Fetch the incidents in an alert.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listIncidents#String-String-ListIncidentsAlertedOptions}
+     *
+     * @param alertConfigurationId The anomaly alert configuration id.
+     * @param alertId The alert id.
+     * @return The incidents.
+     * @throws IllegalArgumentException thrown if {@code alertConfigurationId} or {@code alertId} does not
+     *     conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code alertConfigurationId} or {@code alertId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AnomalyIncident> listIncidents(
+        String alertConfigurationId,
+        String alertId) {
+        return listIncidents(alertConfigurationId, alertId, null);
     }
 
     /**

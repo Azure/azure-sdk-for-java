@@ -1066,14 +1066,13 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationClient#listMetricAnomalyDetectionConfigs(String, ListMetricAnomalyDetectionConfigsOptions)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listMetricAnomalyDetectionConfigs(String)}.
      */
     public void listDetectionConfigurations() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         PagedIterable<AnomalyDetectionConfiguration> configsIterable
-            = metricsAdvisorAdminClient.listMetricAnomalyDetectionConfigs(metricId,
-                new ListMetricAnomalyDetectionConfigsOptions());
+            = metricsAdvisorAdminClient.listMetricAnomalyDetectionConfigs(metricId);
 
         for (AnomalyDetectionConfiguration detectionConfig : configsIterable) {
             System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
