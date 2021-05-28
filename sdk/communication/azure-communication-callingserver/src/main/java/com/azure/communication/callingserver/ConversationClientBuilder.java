@@ -13,7 +13,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -25,9 +31,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * ConversationClientBuilder that creates ConversationAsyncClient and ConversationClient.
+ * ConversationClientBuilder that creates ConversationAsyncClient and
+ * ConversationClient.
  */
-@ServiceClientBuilder(serviceClients = {ConversationClient.class, ConversationAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { ConversationClient.class, ConversationAsyncClient.class })
 public final class ConversationClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -60,8 +67,8 @@ public final class ConversationClientBuilder {
     /**
      * Set endpoint of the service
      *
-     * @param pipeline HttpPipeline to use, if a pipeline is not
-     * supplied, the credential and httpClient fields must be set
+     * @param pipeline HttpPipeline to use, if a pipeline is not supplied, the
+     * credential and httpClient fields must be set
      * @return ConversationClientBuilder
      */
     public ConversationClientBuilder pipeline(HttpPipeline pipeline) {
@@ -72,7 +79,8 @@ public final class ConversationClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP
+     * requests.
      * @return The updated {@link ConversationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
@@ -84,11 +92,12 @@ public final class ConversationClientBuilder {
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP
+     * requests.
      * @return The updated {@link ConversationClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public ConversationClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public ConversationClientBuilder credential(AzureKeyCredential keyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -96,7 +105,8 @@ public final class ConversationClientBuilder {
     /**
      * Set endpoint and credential to use
      *
-     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
+     * @param connectionString connection string for setting endpoint and
+     * initalizing AzureKeyCredential
      * @return CallClientBuilder
      */
     public ConversationClientBuilder connectionString(String connectionString) {
@@ -104,9 +114,7 @@ public final class ConversationClientBuilder {
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(accessKey));
+        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -122,9 +130,11 @@ public final class ConversationClientBuilder {
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values during building of the client.
+     * Sets the configuration object used to retrieve environment configuration
+     * values during building of the client.
      *
-     * @param configuration Configuration store used to retrieve environment configurations.
+     * @param configuration Configuration store used to retrieve environment
+     * configurations.
      * @return the updated ConversationClientBuilder object
      */
     public ConversationClientBuilder configuration(Configuration configuration) {
@@ -135,7 +145,8 @@ public final class ConversationClientBuilder {
     /**
      * Sets the {@link HttpLogOptions} for service requests.
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @param logOptions The logging configuration to use when sending and receiving
+     * HTTP requests/responses.
      * @return the updated ConversationClientBuilder object
      */
     public ConversationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
@@ -144,15 +155,20 @@ public final class ConversationClientBuilder {
     }
 
     /**
-     * Sets the {@link ConversationClientBuilder} that is used when making API requests.
+     * Sets the {@link ConversationClientBuilder} that is used when making API
+     * requests.
      * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * If a service version is not provided, the service version that will be used
+     * will be the latest known service version based on the version of the client
+     * library being used. If no service version is specified, updating to a newer
+     * version of the client library will have the result of potentially moving to a
+     * newer service version.
      * <p>
-     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
+     * Targeting a specific service version may also mean that the service will
+     * return an error for newer APIs.
      *
-     * @param version {@link ConversationClientBuilder} of the service to be used when making requests.
+     * @param version {@link ConversationClientBuilder} of the service to be used
+     * when making requests.
      * @return the updated ConversationClientBuilder object
      */
     public ConversationClientBuilder serviceVersion(ConversationClientBuilder version) {
@@ -162,8 +178,7 @@ public final class ConversationClientBuilder {
     /**
      * Set httpClient to use
      *
-     * @param httpClient httpClient to use, overridden by the pipeline
-     * field.
+     * @param httpClient httpClient to use, overridden by the pipeline field.
      * @return ConversationClientBuilder
      */
     public ConversationClientBuilder httpClient(HttpClient httpClient) {
@@ -175,7 +190,8 @@ public final class ConversationClientBuilder {
      * Apply additional HttpPipelinePolicy
      *
      * @param customPolicy HttpPipelinePolicy object to be applied after
-     *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
+     * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy,
+     * and CookiePolicy
      * @return ConversationClientBuilder
      */
     public ConversationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -184,9 +200,9 @@ public final class ConversationClientBuilder {
     }
 
     /**
-     * Create asynchronous client applying HMACAuthenticationPolicy, UserAgentPolicy,
-     * RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * Create asynchronous client applying HMACAuthenticationPolicy,
+     * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
+     * specified by additionalPolicies will be applied after them
      *
      * @return ConversationAsyncClient instance
      */
@@ -196,8 +212,8 @@ public final class ConversationClientBuilder {
 
     /**
      * Create synchronous client applying HmacAuthenticationPolicy, UserAgentPolicy,
-     * RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
+     * additionalPolicies will be applied after them
      *
      * @return CallClient instance
      */
@@ -215,15 +231,15 @@ public final class ConversationClientBuilder {
             builderPipeline = createHttpPipeline(httpClient);
         }
 
-       AzureCommunicationCallingServerServiceImplBuilder clientBuilder = new AzureCommunicationCallingServerServiceImplBuilder();
-        clientBuilder.endpoint(endpoint)
-            .pipeline(builderPipeline);
+        AzureCommunicationCallingServerServiceImplBuilder clientBuilder = new AzureCommunicationCallingServerServiceImplBuilder();
+        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
 
         return clientBuilder.buildClient();
     }
 
     /**
-     * Allows the user to set a variety of client-related options, such as user-agent string, headers, etc.
+     * Allows the user to set a variety of client-related options, such as
+     * user-agent string, headers, etc.
      *
      * @param clientOptions object to be applied
      * @return ConversationClientBuilder
@@ -235,17 +251,17 @@ public final class ConversationClientBuilder {
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (this.tokenCredential != null && this.azureKeyCredential != null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                    "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
+                    new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
 
@@ -282,10 +298,8 @@ public final class ConversationClientBuilder {
         // Add logging policy
         policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
-        return new HttpPipelineBuilder()
-            .policies(policyList.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
+        return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient)
+                .build();
     }
 
     private HttpLogOptions getHttpLogOptions() {

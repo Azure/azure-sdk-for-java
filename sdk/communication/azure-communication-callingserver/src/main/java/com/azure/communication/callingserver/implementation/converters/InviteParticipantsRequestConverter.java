@@ -5,7 +5,7 @@ package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequestInternal;
-import com.azure.communication.common.*;
+import com.azure.communication.common.CommunicationIdentifier;
 
 import java.util.ArrayList;
 import java.util.List;

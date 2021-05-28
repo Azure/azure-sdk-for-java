@@ -123,7 +123,8 @@ public final class JoinCallRequest {
     }
 
     /**
-     * Get the requestedCallEvents property: The requested call events to subscribe to.
+     * Get the requestedCallEvents property: The requested call events to subscribe
+     * to.
      *
      * @return the requestedCallEvents value.
      */
@@ -132,7 +133,8 @@ public final class JoinCallRequest {
     }
 
     /**
-     * Set the requestedCallEvents property: The requested call events to subscribe to.
+     * Set the requestedCallEvents property: The requested call events to subscribe
+     * to.
      *
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the JoinCallRequest object itself.

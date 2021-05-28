@@ -8,20 +8,20 @@ import com.azure.communication.callingserver.models.ToneInfo;
 /**
  * The subscribe to tone event.
  */
-public final class ToneReceivedEvent extends CallEventBase
-{
+public final class ToneReceivedEvent extends CallEventBase {
     /**
      * The event type.
      */
-    public static final String EventType = "Microsoft.Communication.DtmfReceived";
+    public static final String EVENT_TYPE = "Microsoft.Communication.DtmfReceived";
 
     /**
      * The tone info.
      */
-    public ToneInfo toneInfo;
+    private ToneInfo toneInfo;
 
     /**
      * Get the tone info.
+     * 
      * @return the tone info value.
      */
     public ToneInfo getToneInfo() {
@@ -30,6 +30,7 @@ public final class ToneReceivedEvent extends CallEventBase
 
     /**
      * Set the tone info.
+     * 
      * @param toneInfo the tone info.
      * @return the ToneReceivedEvent object itself.
      */
@@ -41,7 +42,7 @@ public final class ToneReceivedEvent extends CallEventBase
     /**
      * The call leg Id.
      */
-    public String callLegId;
+    private String callLegId;
 
     /**
      * Get the call leg Id.
@@ -65,18 +66,17 @@ public final class ToneReceivedEvent extends CallEventBase
 
     /**
      * Initializes a new instance of ToneReceivedEvent.
+     * 
      * @param toneInfo The tone info.
      * @param callLegId The call leg id.
+     * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ToneReceivedEvent(ToneInfo toneInfo, String callLegId)
-    {
-        if (toneInfo == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", toneInfo.getClass().getName()));
+    public ToneReceivedEvent(ToneInfo toneInfo, String callLegId) {
+        if (toneInfo == null) {
+            throw new IllegalArgumentException("object toneInfo cannot be null");
         }
-        if (callLegId == null || callLegId.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", callLegId.getClass().getName()));
+        if (callLegId == null || callLegId.isEmpty()) {
+            throw new IllegalArgumentException("object callLegId cannot be null or empty");
         }
         this.toneInfo = toneInfo;
         this.callLegId = callLegId;

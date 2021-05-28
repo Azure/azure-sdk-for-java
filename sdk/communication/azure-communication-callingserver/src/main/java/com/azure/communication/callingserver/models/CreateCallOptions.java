@@ -66,7 +66,7 @@ public final class CreateCallOptions {
     /**
      * The callback URI.
      */
-    private String callbackUri;
+    private final String callbackUri;
 
     /**
      * Get the subject.
@@ -80,7 +80,7 @@ public final class CreateCallOptions {
     /**
      * The requested modalities.
      */
-    private List<CallModality> requestedModalities;
+    private final List<CallModality> requestedModalities;
 
     /**
      * Get the requested modalities.
@@ -94,7 +94,7 @@ public final class CreateCallOptions {
     /**
      * The requested call events to subscribe to.
      */
-    private List<EventSubscriptionType> requestedCallEvents;
+    private final List<EventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the requested call events to subscribe to.
@@ -107,24 +107,23 @@ public final class CreateCallOptions {
 
     /**
      * Initializes a new instance of CreateCallResult.
+     * 
      * @param callbackUri the callback URI.
      * @param requestedModalities the requested modalities.
      * @param requestedCallEvents the requested call events to subscribe to.
+     * @throws IllegalArgumentException if any parameters are null.
      */
-    public CreateCallOptions(String callbackUri, Iterable<CallModality> requestedModalities, Iterable<EventSubscriptionType> requestedCallEvents)
-    {
-        if (callbackUri == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", callbackUri.getClass().getName()));
+    public CreateCallOptions(String callbackUri, Iterable<CallModality> requestedModalities,
+            Iterable<EventSubscriptionType> requestedCallEvents) {
+        if (callbackUri == null) {
+            throw new IllegalArgumentException("object callbackUri cannot be null");
         }
 
-        if (requestedModalities == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", requestedModalities.getClass().getName()));
+        if (requestedModalities == null) {
+            throw new IllegalArgumentException("object requestedModalities cannot be null");
         }
-        if (requestedCallEvents == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", requestedCallEvents.getClass().getName()));
+        if (requestedCallEvents == null) {
+            throw new IllegalArgumentException("object requestedCallEvents cannot be null");
         }
 
         this.callbackUri = callbackUri;
