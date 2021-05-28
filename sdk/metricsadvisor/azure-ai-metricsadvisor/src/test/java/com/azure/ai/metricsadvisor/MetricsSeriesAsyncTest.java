@@ -53,7 +53,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         List<String> actualDimensionValues = new ArrayList<String>();
         StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME,
-            new ListMetricDimensionValuesOptions().setTop(20).setSkip(20)))
+            new ListMetricDimensionValuesOptions().setMaxPageSize(20).setSkip(20)))
             .thenConsumeWhile(actualDimensionValues::add)
             .verifyComplete();
 
