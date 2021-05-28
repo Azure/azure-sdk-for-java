@@ -43,12 +43,6 @@ class KeyVaultSecretIdentifierTest {
     }
 
     @Test
-    void parseInvalidIdentifierForDeletedSecret() {
-        String sourceId = "https://test-key-vault.vault.azure.net/deletedsecrets/test-secret/version";
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultSecretIdentifier(sourceId));
-    }
-
-    @Test
     void parseNullIdentifier() {
         assertThrows(NullPointerException.class, () -> new KeyVaultSecretIdentifier(null));
     }

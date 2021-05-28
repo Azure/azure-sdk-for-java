@@ -27,7 +27,7 @@ public class TableTransactionAction {
      * @param entity The table entity to which the {@code actionType} will be applied.
      * @param ifUnchanged When {@code true}, the ETag of the provided entity must match the ETag of the entity in the
      * Table service. If the values do not match, the action will not be performed and an exception will be thrown.
-     * This value is only applied for update and delete operations.
+     * This value is only applied for update and delete actions.
      */
     public TableTransactionAction(TableTransactionActionType actionType, TableEntity entity, boolean ifUnchanged) {
         this.actionType = actionType;
@@ -47,16 +47,16 @@ public class TableTransactionAction {
     /**
      * Get the {@link TableEntity table entity} to which the {@code actionType} will be applied.
      *
-     * @return The {@link TableEntity table entity} to which the {@code actionType} will be applied
+     * @return The {@link TableEntity table entity} to which the {@code actionType} will be applied.
      */
     public TableEntity getEntity() {
         return entity;
     }
 
     /**
-     * Get the {@code ifUnchanged} value of this action, which indicates if the ETag of the provided entity must
-     * match the ETag of the entity in the Table service. If the values do not match, the update will not occur and
-     * an exception will be thrown. This value is only applied for update operations.
+     * Get the {@code ifUnchanged} value of this action. When {@code true}, the ETag of the provided entity must match
+     * the ETag of the entity in the Table service. If the values do not match, the action will not be performed
+     * and an exception will be thrown. This value is only applied for update and delete actions.
      *
      * @return The {@code ifUnchanged} value of this action.
      */
