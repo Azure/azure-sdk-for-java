@@ -32,14 +32,9 @@ public class KeyVaultKeyManagerTest {
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")
         );
-        Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        keyStore.load(parameter);
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
+        KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         manager = new KeyVaultKeyManager(keyStore, null);
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }

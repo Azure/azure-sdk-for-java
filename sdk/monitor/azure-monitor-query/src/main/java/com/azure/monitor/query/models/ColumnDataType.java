@@ -5,12 +5,9 @@ package com.azure.monitor.query.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
-/**
- * The column data type of the table returned as a result of a logs query.
- */
+/** Defines values for ColumnDataType. */
 public final class ColumnDataType extends ExpandableStringEnum<ColumnDataType> {
     /** Static value bool for ColumnDataType. */
     public static final ColumnDataType BOOL = fromString("bool");
@@ -28,13 +25,14 @@ public final class ColumnDataType extends ExpandableStringEnum<ColumnDataType> {
     public static final ColumnDataType LONG = fromString("long");
 
     /** Static value real for ColumnDataType. */
-    public static final ColumnDataType DOUBLE = fromString("real");
+    public static final ColumnDataType REAL = fromString("real");
 
     /** Static value string for ColumnDataType. */
     public static final ColumnDataType STRING = fromString("string");
 
     /**
      * Creates or finds a ColumnDataType from its string representation.
+     *
      * @param name a name to look for.
      * @return the corresponding ColumnDataType.
      */

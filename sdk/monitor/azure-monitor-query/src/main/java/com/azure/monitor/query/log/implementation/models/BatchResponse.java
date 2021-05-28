@@ -18,12 +18,6 @@ public final class BatchResponse {
     @JsonProperty(value = "responses")
     private List<LogQueryResponse> responses;
 
-    /*
-     * Error response for a batch request
-     */
-    @JsonProperty(value = "error")
-    private BatchResponseError error;
-
     /**
      * Get the responses property: An array of responses corresponding to each individual request in a batch.
      *
@@ -45,26 +39,6 @@ public final class BatchResponse {
     }
 
     /**
-     * Get the error property: Error response for a batch request.
-     *
-     * @return the error value.
-     */
-    public BatchResponseError getError() {
-        return this.error;
-    }
-
-    /**
-     * Set the error property: Error response for a batch request.
-     *
-     * @param error the error value to set.
-     * @return the BatchResponse object itself.
-     */
-    public BatchResponse setError(BatchResponseError error) {
-        this.error = error;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -72,9 +46,6 @@ public final class BatchResponse {
     public void validate() {
         if (getResponses() != null) {
             getResponses().forEach(e -> e.validate());
-        }
-        if (getError() != null) {
-            getError().validate();
         }
     }
 }

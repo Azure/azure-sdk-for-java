@@ -47,7 +47,6 @@ public class RecognizeReceiptsFromUrlAsync {
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"

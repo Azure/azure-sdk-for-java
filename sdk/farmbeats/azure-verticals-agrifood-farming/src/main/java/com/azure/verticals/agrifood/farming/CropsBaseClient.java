@@ -120,7 +120,7 @@ public final class CropsBaseClient {
      * }
      * }</pre>
      *
-     * @param cropId Id of the crop.
+     * @param cropId ID of the crop.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -162,7 +162,7 @@ public final class CropsBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param cropId Id of the crop resource.
+     * @param cropId ID of the crop resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -180,7 +180,7 @@ public final class CropsBaseClient {
     /**
      * Deletes Crop for given crop id.
      *
-     * @param cropId Id of crop to be deleted.
+     * @param cropId ID of crop to be deleted.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -158,6 +158,8 @@ public final class KeyClientBuilder {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
+        httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
+
         policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
             clientVersion, buildConfiguration));
 
@@ -173,7 +175,7 @@ public final class KeyClientBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         // Add retry policy.
-        policies.add(retryPolicy);
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         policies.add(new KeyVaultCredentialPolicy(credential));
 

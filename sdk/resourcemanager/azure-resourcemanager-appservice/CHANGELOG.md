@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.5.0 (2021-05-28)
 
 - Supported the configuration of network access for `WebApp`, `FunctionApp`.
 
