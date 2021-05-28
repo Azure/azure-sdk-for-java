@@ -330,24 +330,20 @@ public final class TableClient {
      *
      * @param tableEntity The table entity to delete.
      *
-     * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
-     * {@code null} or empty.
+     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
      * @throws TableServiceException If the request is rejected by the service.
-     * table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEntity(TableEntity tableEntity) {
-        client.deleteEntityWithResponse(tableEntity.getPartitionKey(), tableEntity.getRowKey(), tableEntity.getETag(),
-            null).block();
+        client.deleteEntity(tableEntity).block();
     }
 
     /**
      * Deletes an entity from the table.
      *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the ETag of the entity in the Tables service. If the values do not match,
-     * the delete will not occur and an exception will be thrown.
+     * @param tableEntity The table entity to delete.
+     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
+     * service. If the values do not match, the update will not occur and an exception will be thrown.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -357,9 +353,10 @@ public final class TableClient {
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
+    public Response<Void> deleteEntityWithResponse(TableEntity tableEntity, boolean ifUnchanged, Duration timeout,
                                                    Context context) {
-        return blockWithOptionalTimeout(client.deleteEntityWithResponse(partitionKey, rowKey, eTag, context), timeout);
+        return blockWithOptionalTimeout(client.deleteEntityWithResponse(tableEntity.getPartitionKey(),
+            tableEntity.getRowKey(), tableEntity.getETag(), ifUnchanged, context), timeout);
     }
 
     /**
