@@ -8,32 +8,32 @@ import com.azure.core.http.rest.Response;
 import com.azure.data.tables.implementation.ModelHelper;
 
 /**
- * The response of a REST sub-request contained within the response to a Batch request.
+ * The response of a REST sub-request contained within the response of a transaction request.
  */
-public final class BatchOperationResponse implements Response<Object> {
+public final class TableTransactionActionResponse implements Response<Object> {
     private HttpRequest request;
     private final int statusCode;
     private final HttpHeaders headers;
     private final Object value;
 
     static {
-        ModelHelper.setBatchOperationResponseCreator(BatchOperationResponse::new);
-        ModelHelper.setBatchOperationResponseUpdater(BatchOperationResponse::update);
+        ModelHelper.setTableTransactionActionResponseCreator(TableTransactionActionResponse::new);
+        ModelHelper.setTableTransactionActionResponseUpdater(TableTransactionActionResponse::update);
     }
 
     /**
-     * Creates a new empty {@link BatchOperationResponse}
+     * Creates a new empty {@link TableTransactionActionResponse}
      */
-    private BatchOperationResponse(int statusCode, Object value) {
+    private TableTransactionActionResponse(int statusCode, Object value) {
         this.headers = new HttpHeaders();
         this.statusCode = statusCode;
         this.value = value;
     }
 
     /**
-     * Gets the sub-request which resulted in this {@link BatchOperationResponse}.
+     * Gets the sub-request which resulted in this {@link TableTransactionActionResponse}.
      *
-     * @return The sub-request which resulted in this {@link BatchOperationResponse}.
+     * @return The sub-request which resulted in this {@link TableTransactionActionResponse}.
      */
     @Override
     public HttpRequest getRequest() {
@@ -70,7 +70,7 @@ public final class BatchOperationResponse implements Response<Object> {
         return value;
     }
 
-    private static void update(BatchOperationResponse subject, HttpRequest request) {
+    private static void update(TableTransactionActionResponse subject, HttpRequest request) {
         subject.request = request;
     }
 }
