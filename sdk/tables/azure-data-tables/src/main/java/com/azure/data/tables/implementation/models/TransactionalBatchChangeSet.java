@@ -5,8 +5,8 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 
 @Fluent
-public final class BatchChangeSet extends MultipartPart<BatchSubRequest> {
-    public BatchChangeSet() {
+public final class TransactionalBatchChangeSet extends MultipartPart<TransactionalBatchSubRequest> {
+    public TransactionalBatchChangeSet() {
         super("changeset");
     }
 }
