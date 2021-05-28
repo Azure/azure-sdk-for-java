@@ -2,7 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.*;
+import com.azure.communication.callingserver.models.CancelMediaProcessingRequest;
+import com.azure.communication.callingserver.models.CancelMediaProcessingResult;
+import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.CreateCallResult;
+import com.azure.communication.callingserver.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.models.PlayAudioRequest;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -16,19 +22,8 @@ import com.azure.core.http.rest.Response;
 public final class CallClient {
     private final CallAsyncClient callAsyncClient;
 
-    CallClient(CallAsyncClient callAsyncClient) { this.callAsyncClient = callAsyncClient; }
-
-    /**
-     * Create a Call Request from source identity to targets identity.
-     *
-     * @param source The source of the call.
-     * @param targets The targets of the call.
-     * @param CreateCallOptions The call Options.
-     * @return response for a successful CreateCall request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets, CreateCallOptions CreateCallOptions) {
-        return callAsyncClient.createCall(source, targets, CreateCallOptions).block();
+    CallClient(CallAsyncClient callAsyncClient) {
+        this.callAsyncClient = callAsyncClient; 
     }
 
     /**
@@ -36,12 +31,25 @@ public final class CallClient {
      *
      * @param source The source of the call.
      * @param targets The targets of the call.
-     * @param CreateCallOptions The call Options.
+     * @param createCallOptions The call Options.
      * @return response for a successful CreateCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResult> createCallWithResponse(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets, CreateCallOptions CreateCallOptions) {
-        return callAsyncClient.createCallWithResponse(source, targets, CreateCallOptions).block();
+    public CreateCallResult createCall(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
+        return callAsyncClient.createCall(source, targets, createCallOptions).block();
+    }
+
+    /**
+     * Create a Call Request from source identity to targets identity.
+     *
+     * @param source The source of the call.
+     * @param targets The targets of the call.
+     * @param createCallOptions The call Options.
+     * @return response for a successful CreateCall request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateCallResult> createCallWithResponse(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
+        return callAsyncClient.createCallWithResponse(source, targets, createCallOptions).block();
     }
 
     /**

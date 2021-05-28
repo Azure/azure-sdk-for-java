@@ -92,7 +92,8 @@ public final class CommunicationError {
     }
 
     /**
-     * Get the details property: Further details about specific errors that led to this error.
+     * Get the details property: Further details about specific errors that led to
+     * this error.
      *
      * @return the details value.
      */

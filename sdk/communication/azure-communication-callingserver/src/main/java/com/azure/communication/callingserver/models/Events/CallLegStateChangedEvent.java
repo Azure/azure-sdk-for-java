@@ -8,20 +8,20 @@ import com.azure.communication.callingserver.models.CallState;
 /**
  * The call leg state change event.
  */
-public final class CallLegStateChangedEvent extends CallEventBase
-{
+public final class CallLegStateChangedEvent extends CallEventBase {
     /**
      * The event type.
      */
-    public static final String EventType = "Microsoft.Communication.CallLegStateChanged";
+    public static final String EVENT_TYPE = "Microsoft.Communication.CallLegStateChanged";
 
     /**
      * The conversation id.
      */
-    public String conversationId;
+    private String conversationId;
 
     /**
      * Get the conversation id.
+     * 
      * @return the conversationId value.
      */
     public String getConversationId() {
@@ -42,7 +42,7 @@ public final class CallLegStateChangedEvent extends CallEventBase
     /**
      * The call leg.id.
      */
-    public String callLegId;
+    private String callLegId;
 
     /**
      * Get the call leg id.
@@ -67,7 +67,7 @@ public final class CallLegStateChangedEvent extends CallEventBase
     /**
      * The call state.
      */
-    public CallState callState;
+    private CallState callState;
 
     /**
      * Get the call state.
@@ -91,23 +91,21 @@ public final class CallLegStateChangedEvent extends CallEventBase
 
     /**
      * Initializes a new instance of CallLegStateChangedEvent.
+     * 
      * @param conversationId The conversation id.
      * @param callLegId The call leg id.
      * @param callState The call state.
+     * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public CallLegStateChangedEvent(String conversationId, String callLegId, CallState callState)
-    {
-        if (conversationId == null || conversationId.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", conversationId.getClass().getName()));
+    public CallLegStateChangedEvent(String conversationId, String callLegId, CallState callState) {
+        if (conversationId == null || conversationId.isEmpty()) {
+            throw new IllegalArgumentException("object conversationId cannot be null or empty");
         }
-        if (callLegId == null || callLegId.isEmpty())
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", callLegId.getClass().getName()));
+        if (callLegId == null || callLegId.isEmpty()) {
+            throw new IllegalArgumentException("object callLegId cannot be null or empty");
         }
-        if (callState == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", callState.getClass().getName()));
+        if (callState == null) {
+            throw new IllegalArgumentException("object callState cannot be null");
         }
         this.conversationId = conversationId;
         this.callLegId = callLegId;

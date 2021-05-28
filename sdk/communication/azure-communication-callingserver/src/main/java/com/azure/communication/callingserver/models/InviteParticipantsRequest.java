@@ -38,7 +38,8 @@ public final class InviteParticipantsRequest {
     private String callbackUri;
 
     /**
-     * Get the alternateCallerId property: The alternate identity of source participant.
+     * Get the alternateCallerId property: The alternate identity of source
+     * participant.
      *
      * @return the alternateCallerId value.
      */
@@ -47,7 +48,8 @@ public final class InviteParticipantsRequest {
     }
 
     /**
-     * Set the alternateCallerId property: The alternate identity of source participant.
+     * Set the alternateCallerId property: The alternate identity of source
+     * participant.
      *
      * @param alternateCallerId the alternateCallerId value to set.
      * @return the InviteParticipantsRequest object itself.
@@ -58,7 +60,8 @@ public final class InviteParticipantsRequest {
     }
 
     /**
-     * Get the participants property: The list of participants to be added to the call.
+     * Get the participants property: The list of participants to be added to the
+     * call.
      *
      * @return the participants value.
      */
@@ -67,7 +70,8 @@ public final class InviteParticipantsRequest {
     }
 
     /**
-     * Set the participants property: The list of participants to be added to the call.
+     * Set the participants property: The list of participants to be added to the
+     * call.
      *
      * @param participants the participants value to set.
      * @return the InviteParticipantsRequest object itself.

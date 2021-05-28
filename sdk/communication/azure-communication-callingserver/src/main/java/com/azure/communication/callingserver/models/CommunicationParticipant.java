@@ -87,19 +87,19 @@ public final class CommunicationParticipant {
 
     /**
      * Initializes a new instance of CommunicationParticipant.
+     * 
      * @param communicationIdentifier Communication Identifier.
      * @param participantId Participant Id.
      * @param isMuted Is participant muted.
+     * @throws IllegalArgumentException if either parameter is null.
      */
-    public CommunicationParticipant(CommunicationIdentifier communicationIdentifier, String participantId, boolean isMuted)
-    {
-        if (communicationIdentifier == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", communicationIdentifier.getClass().getName()));
+    public CommunicationParticipant(CommunicationIdentifier communicationIdentifier, String participantId,
+            boolean isMuted) {
+        if (communicationIdentifier == null) {
+            throw new IllegalArgumentException("object communicationIdentifier cannot be null");
         }
-        if (participantId == null)
-        {
-            throw new IllegalArgumentException(String.format("object '%s' cannot be null", participantId.getClass().getName()));
+        if (participantId == null) {
+            throw new IllegalArgumentException("object participantId cannot be null");
         }
 
         this.identifier = communicationIdentifier;
