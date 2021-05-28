@@ -135,6 +135,22 @@ public interface ComputerVision {
              */
             ComputerVisionReadInStreamDefinitionStages.WithExecute withPages(List<String> pages);
 
+            /**
+             * Optional parameter to specify the version of the OCR model used for text extraction. Accepted values are:
+             *   "latest", "latest-preview", "2021-04-12". Defaults to "latest".
+             *
+             * @return next definition stage
+             */
+            ComputerVisionReadInStreamDefinitionStages.WithExecute withModelVersion(String modelVersion);
+
+            /**
+             * Optional parameter to specify which reading order algorithm should be applied when ordering the extract text
+             *   elements. Can be either 'basic' or 'natural'. Will default to 'basic' if not specified.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionReadInStreamDefinitionStages.WithExecute withReadingOrder(String readingOrder);
+
         }
 
         /**
@@ -1260,6 +1276,14 @@ public interface ComputerVision {
              * @return next definition stage
              */
             ComputerVisionReadDefinitionStages.WithExecute withModelVersion(String modelVersion);
+
+            /**
+             * Optional parameter to specify which reading order algorithm should be applied when ordering the extract text
+             *   elements. Can be either 'basic' or 'natural'. Will default to 'basic' if not specified.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionReadDefinitionStages.WithExecute withReadingOrder(String readingOrder);
 
         }
 

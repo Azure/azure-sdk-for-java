@@ -106,7 +106,7 @@ public class FeedbackTest extends FeedbackTestBase {
 
     /**
      * Verifies the result of the list metric feedback method to return only 3 results using
-     * {@link ListMetricFeedbackOptions#setTop(int)}.
+     * {@link ListMetricFeedbackOptions#setMaxPageSize(int)}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -117,7 +117,7 @@ public class FeedbackTest extends FeedbackTestBase {
 
         // Act & Assert
         for (PagedResponse<MetricFeedback> metricFeedbackPagedResponse
-            : client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setTop(3), Context.NONE)
+            : client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setMaxPageSize(3), Context.NONE)
                 .iterableByPage()) {
             assertTrue(3 >= metricFeedbackPagedResponse.getValue().size());
         }
@@ -159,7 +159,7 @@ public class FeedbackTest extends FeedbackTestBase {
             // Act & Assert
             client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions()
                     .setFilter(new ListMetricFeedbackFilter()
-                        .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setTop(10),
+                        .setDimensionFilter(new DimensionKey(DIMENSION_FILTER))).setMaxPageSize(10),
                 Context.NONE)
                 .stream().iterator()
                 .forEachRemaining(metricFeedback ->

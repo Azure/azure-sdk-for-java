@@ -41,13 +41,13 @@ jobs:
       - template: ../steps/cache-maven-repository.yml
 
       # HACK: Ideally I wouldn't need to do this but I need to figure out the right
-      #       approach here around getting this dependency installed whilst targetting
-      #       the parent POMs via the root aggregeate (given they aren't listed)
-      #       anywhere in the depedency graph.
+      #       approach here around getting this dependency installed whilst targeting
+      #       the parent POMs via the root aggregate (given they aren't listed)
+      #       anywhere in the dependency graph.
       #
       #       The answer might be to finally strip out the <module /> references from
       #       the parent POMs (something we want to do anyway) and then add them to
-      #       the graph so that we can build off the root POM targetting the parent
+      #       the graph so that we can build off the root POM targeting the parent
       #       projects and then it would be able to find sdk-build-tools. But for now
       #       I am more interested getting the end-to-end scenario working with this
       #       hack rather than getting bogged down.

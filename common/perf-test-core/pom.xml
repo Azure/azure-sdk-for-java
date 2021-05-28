@@ -32,6 +32,10 @@
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
 
+  <properties>
+    <relative.path.to.eng.folder>../..</relative.path.to.eng.folder>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -62,57 +66,6 @@
           </rules>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-        <configuration>
-          <isOffline>true</isOffline>
-          <offlineLinks>
-            <!-- JDK APIs -->
-            <offlineLink>
-              <url>https://docs.oracle.com/javase/8/docs/api/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/java8/</location>
-            </offlineLink>
-
-            <!-- Reactor APIs -->
-            <offlineLink>
-              <url>https://projectreactor.io/docs/core/release/api/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/reactor-core/</location>
-            </offlineLink>
-            <offlineLink>
-              <url>https://projectreactor.io/docs/netty/release/api/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/reactor-netty/</location>
-            </offlineLink>
-
-            <!-- Jackson APIs -->
-            <offlineLink>
-              <url>https://fasterxml.github.io/jackson-annotations/javadoc/2.12/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/jackson-annotations/</location>
-            </offlineLink>
-            <offlineLink>
-              <url>https://fasterxml.github.io/jackson-core/javadoc/2.12/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/jackson-core/</location>
-            </offlineLink>
-            <offlineLink>
-              <url>https://fasterxml.github.io/jackson-databind/javadoc/2.12/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/jackson-databind/</location>
-            </offlineLink>
-
-            <!-- Netty APIs -->
-            <offlineLink>
-              <url>https://netty.io/4.1/api/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/netty/</location>
-            </offlineLink>
-
-            <!-- Avro APIs -->
-            <offlineLink>
-              <url>https://avro.apache.org/docs/current/api/java/</url>
-              <location>${project.basedir}/../../eng/javadoc-package-lists/apache-avro/</location>
-            </offlineLink>
-          </offlineLinks>
-        </configuration>
-     </plugin>
     </plugins>
   </build>
 

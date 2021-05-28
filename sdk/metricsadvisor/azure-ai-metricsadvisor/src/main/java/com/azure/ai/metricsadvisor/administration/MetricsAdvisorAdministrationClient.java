@@ -4,16 +4,16 @@
 package com.azure.ai.metricsadvisor.administration;
 
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;

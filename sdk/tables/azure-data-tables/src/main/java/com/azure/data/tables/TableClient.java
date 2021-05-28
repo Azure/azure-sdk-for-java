@@ -8,12 +8,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
+import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionFailedException;
+import com.azure.data.tables.models.TableTransactionResult;
 
 import java.time.Duration;
 import java.util.List;
@@ -74,24 +78,6 @@ public final class TableClient {
      */
     public TableServiceVersion getServiceVersion() {
         return this.client.getServiceVersion();
-    }
-
-    /**
-     * Creates a new {@link TableBatch} object. Batch objects allow you to enqueue multiple create, update, upsert,
-     * and/or delete operations on entities that share the same partition key. When the batch is executed, all of the
-     * operations will be performed as part of a single transaction. As a result, either all operations in the batch
-     * will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation in a batch
-     * must operate on a distinct row key. Attempting to add multiple operations to a batch that share the same row key
-     * will cause an exception to be thrown.
-     *
-     * @param partitionKey The partition key shared by all operations in the batch.
-     *
-     * @return An object representing the batch, to which operations can be added.
-     *
-     * @throws IllegalArgumentException If the provided partition key is {@code null} or empty.
-     */
-    public TableBatch createBatch(String partitionKey) {
-        return new TableBatch(this.client.createBatch(partitionKey));
     }
 
     /**
@@ -360,7 +346,7 @@ public final class TableClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
+     * @param eTag The value to compare with the ETag of the entity in the Tables service. If the values do not match,
      * the delete will not occur and an exception will be thrown.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -519,5 +505,51 @@ public final class TableClient {
     public Response<Void> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                       Duration timeout, Context context) {
         return blockWithOptionalTimeout(client.setAccessPolicyWithResponse(tableSignedIdentifiers, context), timeout);
+    }
+
+    /**
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
+     *
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * in a table.
+     *
+     * @return A list of {@link TableTransactionActionResponse sub-responses} that correspond to each operation in the
+     * transaction.
+     *
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableTransactionResult submitTransaction(List<TableTransactionAction> transactionActions) {
+        return client.submitTransaction(transactionActions).block();
+    }
+
+    /**
+     * Executes all operations within the list inside a transaction. When the call completes, either all operations in
+     * the transaction will succeed, or if a failure occurs, all operations in the transaction will be rolled back.
+     * Each operation must operate on a distinct row key. Attempting to pass multiple operations that share the same
+     * row key will cause an error.
+     *
+     * @param transactionActions A list of {@link TableTransactionAction transaction actions} to perform on entities
+     * in a table.
+     * @param timeout Duration to wait for the operation to complete.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return An HTTP response produced for the transaction itself. The response's value will contain a list of
+     * {@link TableTransactionActionResponse sub-responses} that correspond to each operation in the transaction.
+     *
+     * @throws IllegalStateException If no operations have been added to the list.
+     * @throws TableTransactionFailedException if any operation within the transaction fails. See the documentation
+     * for the client methods in {@link TableClient} to understand the conditions that may cause a given operation to
+     * fail.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.submitTransactionWithResponse(transactionActions, context), timeout);
     }
 }
