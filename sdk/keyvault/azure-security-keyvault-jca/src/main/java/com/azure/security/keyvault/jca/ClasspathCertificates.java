@@ -58,22 +58,6 @@ public class ClasspathCertificates implements AzureCertificates {
     }
 
     /**
-     * Remove alias if exist.
-     * @param alias certificate alias
-     */
-    public void removeAlias(String alias) {
-        aliases.remove(alias);
-    }
-
-    /**
-     * Remove certificate if exist.
-     * @param alias certificate alias
-     */
-    public void removeCertificate(String alias) {
-        certificates.remove(alias);
-    }
-
-    /**
      * Add certificate.
      * @param alias certificate alias
      * @param certificate certificate
