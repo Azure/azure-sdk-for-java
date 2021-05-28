@@ -22,7 +22,6 @@ jobs:
         JobType: 'Reporting'
         SDKType: 'client'
         ServiceDirectory: 'aggregate-report'
-        TestFromSource: false
 
 
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project

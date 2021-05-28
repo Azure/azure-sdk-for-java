@@ -23,9 +23,6 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
-  - name: TestFromSource
-    type: boolean
-    default: false
 
 steps:
 - template: ../steps/cache-maven-repository.yml
@@ -33,7 +30,6 @@ steps:
     JobType: ${{ parameters.JobType }}
     SDKType: ${{ parameters.SDKType }}
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
-    TestFromSource: ${{ parameters.TestFromSource }}
 
 - pwsh: |
     $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
