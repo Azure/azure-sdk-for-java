@@ -11,8 +11,8 @@ import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCode;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCode;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCodeException;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
@@ -726,9 +726,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
-            ErrorCodeException exception = assertThrows(ErrorCodeException.class, () ->
+            MetricsAdvisorErrorCodeException exception = assertThrows(MetricsAdvisorErrorCodeException.class, () ->
                 client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
-            final ErrorCode errorCode = exception.getValue();
+            final MetricsAdvisorErrorCode errorCode = exception.getValue();
             assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
@@ -781,8 +781,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
             creatDataFeedRunner(expectedDataFeed -> {
                 expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));
                 // Act & Assert
-                final ErrorCodeException errorCodeException
-                    = assertThrows(ErrorCodeException.class, () -> client.createDataFeed(expectedDataFeed));
+                final MetricsAdvisorErrorCodeException errorCodeException
+                    = assertThrows(MetricsAdvisorErrorCodeException.class, () -> client.createDataFeed(expectedDataFeed));
 
                 assertEquals("The metric name 'cost' is duplicate,please remove one.",
                     errorCodeException.getValue().getMessage());

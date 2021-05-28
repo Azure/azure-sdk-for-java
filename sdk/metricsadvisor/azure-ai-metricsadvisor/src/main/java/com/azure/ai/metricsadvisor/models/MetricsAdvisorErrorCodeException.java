@@ -8,14 +8,14 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /** Exception thrown for an invalid response with ErrorCode information. */
-public final class ErrorCodeException extends HttpResponseException {
+public final class MetricsAdvisorErrorCodeException extends HttpResponseException {
     /**
      * Initializes a new instance of the ErrorCodeException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
-    public ErrorCodeException(String message, HttpResponse response) {
+    public MetricsAdvisorErrorCodeException(String message, HttpResponse response) {
         super(message, response);
     }
 
@@ -26,12 +26,12 @@ public final class ErrorCodeException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public ErrorCodeException(String message, HttpResponse response, ErrorCode value) {
+    public MetricsAdvisorErrorCodeException(String message, HttpResponse response, MetricsAdvisorErrorCode value) {
         super(message, response, value);
     }
 
     @Override
-    public ErrorCode getValue() {
-        return (ErrorCode) super.getValue();
+    public MetricsAdvisorErrorCode getValue() {
+        return (MetricsAdvisorErrorCode) super.getValue();
     }
 }

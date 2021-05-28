@@ -9,7 +9,7 @@ import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCodeException;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
@@ -70,7 +70,7 @@ public class MetricsAdvisorClient {
      * @param activeSince the start time for querying series ingested after this time.
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
@@ -93,7 +93,7 @@ public class MetricsAdvisorClient {
      *
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
@@ -169,7 +169,7 @@ public class MetricsAdvisorClient {
      * @param endTime The end time for querying the time series data.
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
@@ -193,7 +193,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
@@ -377,7 +377,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of root causes for that incident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -399,7 +399,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of root causes for that incident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -419,7 +419,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of root causes for that anomalyIncident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -706,7 +706,7 @@ public class MetricsAdvisorClient {
      * @return A {@link PagedIterable} containing information of all the {@link MetricFeedback metric feedbacks}
      * in the account.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -729,7 +729,7 @@ public class MetricsAdvisorClient {
      * @return A {@link PagedIterable} containing information of all the {@link MetricFeedback metric feedbacks}
      * in the account.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -751,7 +751,7 @@ public class MetricsAdvisorClient {
      *
      * @return the {@link PagedIterable} of the dimension values for that metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -774,7 +774,7 @@ public class MetricsAdvisorClient {
      *
      * @return the {@link PagedIterable} of the dimension values for that metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorErrorCodeException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

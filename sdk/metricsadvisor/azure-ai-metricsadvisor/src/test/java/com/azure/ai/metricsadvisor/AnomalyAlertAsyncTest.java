@@ -5,7 +5,7 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCodeException;
 import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
@@ -221,8 +221,8 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
             // Act & Assert
             StepVerifier.create(client.getAnomalyAlertConfigWithResponse(createdAnomalyAlert.getId()))
                 .verifyErrorSatisfies(throwable -> {
-                    assertEquals(ErrorCodeException.class, throwable.getClass());
-                    final ErrorCodeException errorCodeException = (ErrorCodeException) throwable;
+                    assertEquals(MetricsAdvisorErrorCodeException.class, throwable.getClass());
+                    final MetricsAdvisorErrorCodeException errorCodeException = (MetricsAdvisorErrorCodeException) throwable;
                     assertEquals(HttpResponseStatus.NOT_FOUND.code(), errorCodeException.getResponse().getStatusCode());
                 });
         });
