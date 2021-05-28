@@ -73,6 +73,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
 import com.azure.resourcemanager.network.models.LoadBalancers;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
+import com.azure.resourcemanager.network.models.NetworkProfiles;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
@@ -130,7 +131,6 @@ public final class AzureResourceManager {
     private final ComputeManager computeManager;
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
-    //    private final BatchManager batchManager;
     private final TrafficManager trafficManager;
     private final RedisManager redisManager;
     private final CdnManager cdnManager;
@@ -143,7 +143,6 @@ public final class AzureResourceManager {
     private final ContainerServiceManager containerServiceManager;
     private final SearchServiceManager searchServiceManager;
     private final CosmosManager cosmosManager;
-    //    private final AuthorizationManager authorizationManager;
     private final MsiManager msiManager;
     private final MonitorManager monitorManager;
     private final EventHubsManager eventHubsManager;
@@ -850,5 +849,10 @@ public final class AzureResourceManager {
     /** @return entry point to tag management management */
     public TagOperations tagOperations() {
         return this.resourceManager.tagOperations();
+    }
+
+    /** @return entry point to network profiles management */
+    public NetworkProfiles networkProfiles() {
+        return this.networkManager.networkProfiles();
     }
 }
