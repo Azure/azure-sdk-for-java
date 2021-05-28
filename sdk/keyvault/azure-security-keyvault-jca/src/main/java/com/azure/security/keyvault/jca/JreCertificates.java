@@ -70,8 +70,8 @@ public final class JreCertificates implements AzureCertificates {
                 return Collections.unmodifiableList(Collections.list(a.aliases()));
             } catch (KeyStoreException e) {
                 LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
-                return Collections.<String>emptyList();
             }
+            return null; // It's ok to return null here. Null will be handled by Optional.
         }).orElse(Collections.emptyList());
         certs = aliases.stream()
             .collect(HashMap::new, (m, v) -> {
