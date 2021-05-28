@@ -44,7 +44,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
     /*
      * The authentication type to access the data source.
      */
-    private final DataSourceAuthenticationType authType;
+    private final DatasourceAuthenticationType authType;
 
     static {
         AzureDataLakeStorageGen2DataFeedSourceAccessor.setAccessor(
@@ -62,7 +62,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
                                                    final String directoryTemplate,
                                                    final String fileTemplate,
                                                    final String credentialId,
-                                                   final DataSourceAuthenticationType authType) {
+                                                   final DatasourceAuthenticationType authType) {
         this.accountName = accountName;
         this.accountKey = accountKey;
         this.fileSystemName = fileSystemName;
@@ -94,7 +94,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
             directoryTemplate,
             fileTemplate,
             null,
-            DataSourceAuthenticationType.BASIC);
+            DatasourceAuthenticationType.BASIC);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
             directoryTemplate,
             fileTemplate,
             credentialId,
-            DataSourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY);
+            DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY);
     }
 
     /**
@@ -151,7 +151,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
             directoryTemplate,
             fileTemplate,
             credentialId,
-            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
+            DatasourceAuthenticationType.SERVICE_PRINCIPAL);
     }
 
     /**
@@ -180,7 +180,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
             directoryTemplate,
             fileTemplate,
             credentialId,
-            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+            DatasourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
     /**
@@ -233,7 +233,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      *
      * @return The authentication type.
      */
-    public DataSourceAuthenticationType getAuthenticationType() {
+    public DatasourceAuthenticationType getAuthenticationType() {
         return this.authType;
     }
 

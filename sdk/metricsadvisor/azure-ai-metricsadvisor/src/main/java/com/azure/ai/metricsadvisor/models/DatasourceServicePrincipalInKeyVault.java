@@ -33,17 +33,6 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
                 public String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity) {
                     return entity.getKeyVaultClientSecret();
                 }
-
-                @Override
-                public String getSecretNameForDataSourceClientId(DatasourceServicePrincipalInKeyVault entity) {
-                    return entity.getSecretNameForDataSourceClientId();
-                }
-
-                @Override
-                public String getSecretNameForDataSourceClientSecret(
-                    DatasourceServicePrincipalInKeyVault entity) {
-                    return entity.getSecretNameForDataSourceClientSecret();
-                }
             });
     }
 
@@ -87,6 +76,24 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      */
     public String getTenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Gets the name of the KeyVault secret holding client secret.
+     *
+     * @return The name of the KeyVault secret holding client secret
+     */
+    public String getSecretNameForDataSourceClientId() {
+        return this.clientIdSecretName;
+    }
+
+    /**
+     * Gets the name of the KeyVault secret holding client secret.
+     *
+     * @return The name of the KeyVault secret holding client secret
+     */
+    public String getSecretNameForDataSourceClientSecret() {
+        return this.clientSecretName;
     }
 
     /**
@@ -167,13 +174,5 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
 
     private String getKeyVaultClientSecret() {
         return this.keyVaultClientSecret;
-    }
-
-    private String getSecretNameForDataSourceClientId() {
-        return this.clientIdSecretName;
-    }
-
-    private String getSecretNameForDataSourceClientSecret() {
-        return this.clientSecretName;
     }
 }

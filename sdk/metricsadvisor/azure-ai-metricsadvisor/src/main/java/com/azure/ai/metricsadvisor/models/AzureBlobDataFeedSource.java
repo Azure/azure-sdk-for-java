@@ -29,7 +29,7 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
     /*
      * The authentication type to access the data source.
      */
-    private final DataSourceAuthenticationType authType;
+    private final DatasourceAuthenticationType authType;
 
     static {
         AzureBlobDataFeedSourceAccessor.setAccessor(
@@ -51,7 +51,7 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
     private AzureBlobDataFeedSource(final String connectionString,
                                     final String container,
                                     final String blobTemplate,
-                                    final DataSourceAuthenticationType authType) {
+                                    final DatasourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.container = container;
         this.blobTemplate = blobTemplate;
@@ -70,7 +70,7 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
     public static AzureBlobDataFeedSource usingBasicCredential(final String connectionString,
                                                                final String container,
                                                                final String blobTemplate) {
-        return new AzureBlobDataFeedSource(connectionString, container, blobTemplate, DataSourceAuthenticationType.BASIC);
+        return new AzureBlobDataFeedSource(connectionString, container, blobTemplate, DatasourceAuthenticationType.BASIC);
     }
 
     /**
@@ -89,7 +89,7 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
         return new AzureBlobDataFeedSource(connectionString,
             container,
             blobTemplate,
-            DataSourceAuthenticationType.MANAGED_IDENTITY);
+            DatasourceAuthenticationType.MANAGED_IDENTITY);
     }
 
     /**
@@ -115,7 +115,7 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      *
      * @return The authentication type.
      */
-    public DataSourceAuthenticationType getAuthenticationType() {
+    public DatasourceAuthenticationType getAuthenticationType() {
         return this.authType;
     }
 

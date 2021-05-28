@@ -9,25 +9,25 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for DataSourceAuthenticationType. */
-public class DataSourceAuthenticationType extends ExpandableStringEnum<DataSourceAuthenticationType> {
+public class DatasourceAuthenticationType extends ExpandableStringEnum<DatasourceAuthenticationType> {
     /** Static value Basic for DataSourceAuthenticationType. */
-    public static final DataSourceAuthenticationType BASIC = fromString("Basic");
+    public static final DatasourceAuthenticationType BASIC = fromString("Basic");
 
     /** Static value ManagedIdentity for DataSourceAuthenticationType. */
-    public static final DataSourceAuthenticationType MANAGED_IDENTITY = fromString("ManagedIdentity");
+    public static final DatasourceAuthenticationType MANAGED_IDENTITY = fromString("ManagedIdentity");
 
     /** Static value AzureSQLConnectionString for DataSourceAuthenticationType. */
-    public static final DataSourceAuthenticationType AZURE_SQL_CONNECTION_STRING
+    public static final DatasourceAuthenticationType AZURE_SQL_CONNECTION_STRING
         = fromString("AzureSQLConnectionString");
 
     /** Static value DataLakeGen2SharedKey for DataSourceAuthenticationType. */
-    public static final DataSourceAuthenticationType DATA_LAKE_GEN2SHARED_KEY = fromString("DataLakeGen2SharedKey");
+    public static final DatasourceAuthenticationType DATA_LAKE_GEN2SHARED_KEY = fromString("DataLakeGen2SharedKey");
 
     /** Static value ServicePrincipal for DataSourceAuthenticationType. */
-    public static final DataSourceAuthenticationType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
+    public static final DatasourceAuthenticationType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /** Static value ServicePrincipalInKV for DataSourceAuthenticationType. */
-    public static final DataSourceAuthenticationType SERVICE_PRINCIPAL_IN_KV = fromString("ServicePrincipalInKV");
+    public static final DatasourceAuthenticationType SERVICE_PRINCIPAL_IN_KV = fromString("ServicePrincipalInKV");
 
     /**
      * Creates or finds a AuthenticationTypeEnum from its string representation.
@@ -36,12 +36,12 @@ public class DataSourceAuthenticationType extends ExpandableStringEnum<DataSourc
      * @return the corresponding AuthenticationTypeEnum.
      */
     @JsonCreator
-    public static DataSourceAuthenticationType fromString(String name) {
-        return fromString(name, DataSourceAuthenticationType.class);
+    public static DatasourceAuthenticationType fromString(String name) {
+        return fromString(name, DatasourceAuthenticationType.class);
     }
 
     /** @return known AuthenticationTypeEnum values. */
-    public static Collection<DataSourceAuthenticationType> values() {
-        return values(DataSourceAuthenticationType.class);
+    public static Collection<DatasourceAuthenticationType> values() {
+        return values(DatasourceAuthenticationType.class);
     }
 }

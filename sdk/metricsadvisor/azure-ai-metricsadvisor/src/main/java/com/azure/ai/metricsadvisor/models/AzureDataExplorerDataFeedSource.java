@@ -29,7 +29,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
     /*
      * The authentication type to access the data source.
      */
-    private final DataSourceAuthenticationType authType;
+    private final DatasourceAuthenticationType authType;
 
     static {
         AzureDataExplorerDataFeedSourceAccessor.setAccessor(
@@ -44,7 +44,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
     private AzureDataExplorerDataFeedSource(final String connectionString,
                                     final String query,
                                     final String credentialId,
-                                    final DataSourceAuthenticationType authType) {
+                                    final DatasourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.query = query;
         this.credentialId = credentialId;
@@ -61,7 +61,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      */
     public static AzureDataExplorerDataFeedSource usingBasicCredential(final String connectionString,
                                                                final String query) {
-        return new AzureDataExplorerDataFeedSource(connectionString, query, null, DataSourceAuthenticationType.BASIC);
+        return new AzureDataExplorerDataFeedSource(connectionString, query, null, DatasourceAuthenticationType.BASIC);
     }
 
     /**
@@ -78,7 +78,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             null,
-            DataSourceAuthenticationType.MANAGED_IDENTITY);
+            DatasourceAuthenticationType.MANAGED_IDENTITY);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return new AzureDataExplorerDataFeedSource(null,
             query,
             credentialEntityId,
-            DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
+            DatasourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
     }
 
     /**
@@ -118,7 +118,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             credentialId,
-            DataSourceAuthenticationType.SERVICE_PRINCIPAL);
+            DatasourceAuthenticationType.SERVICE_PRINCIPAL);
     }
 
     /**
@@ -140,7 +140,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             credentialId,
-            DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
+            DatasourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
     /**
@@ -166,7 +166,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      *
      * @return The authentication type.
      */
-    public DataSourceAuthenticationType getAuthenticationType() {
+    public DatasourceAuthenticationType getAuthenticationType() {
         return this.authType;
     }
 

@@ -18,8 +18,6 @@ public final class DataSourceServicePrincipalInKeyVaultAccessor {
     public interface Accessor {
         void setId(DatasourceServicePrincipalInKeyVault entity, String id);
         String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity);
-        String getSecretNameForDataSourceClientId(DatasourceServicePrincipalInKeyVault entity);
-        String getSecretNameForDataSourceClientSecret(DatasourceServicePrincipalInKeyVault entity);
     }
 
     /**
@@ -37,13 +35,5 @@ public final class DataSourceServicePrincipalInKeyVaultAccessor {
 
     public static String getKeyVaultClientSecret(DatasourceServicePrincipalInKeyVault entity) {
         return accessor.getKeyVaultClientSecret(entity);
-    }
-
-    public static String getSecretNameForDataSourceClientId(DatasourceServicePrincipalInKeyVault entity) {
-        return accessor.getSecretNameForDataSourceClientId(entity);
-    }
-
-    public static String getSecretNameForDataSourceClientSecret(DatasourceServicePrincipalInKeyVault entity) {
-        return accessor.getSecretNameForDataSourceClientSecret(entity);
     }
 }
