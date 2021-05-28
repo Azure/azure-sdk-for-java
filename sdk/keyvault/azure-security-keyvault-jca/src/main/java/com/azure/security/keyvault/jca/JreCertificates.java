@@ -16,10 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivilegedAction;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,14 +71,13 @@ public final class JreCertificates implements AzureCertificates {
             }
         }).orElse(Collections.emptyList());
         certs = aliases.stream()
-            .collect(Collectors.toMap(a -> a, a -> {
+            .collect(HashMap::new, (m,v) -> {
                 try {
-                    return jreKeyStore.getCertificate(a);
+                    m.put(v, jreKeyStore.getCertificate(v));
                 } catch (KeyStoreException e) {
                     LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
                 }
-                return null;
-            }));
+            }, HashMap::putAll);
         keys = Collections.emptyMap();
     }
 
