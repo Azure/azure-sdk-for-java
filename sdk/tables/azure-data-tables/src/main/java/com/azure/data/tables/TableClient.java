@@ -168,28 +168,6 @@ public final class TableClient {
      *
      * @param entity The entity to upsert.
      * @param updateMode The type of update to perform if the entity already exits.
-     *
-     * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
-        client.upsertEntity(entity, updateMode).block();
-    }
-
-    /**
-     * Inserts an entity into the table if it does not exist, or updates the existing entity using the specified update
-     * mode otherwise.
-     *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will be
-     * inserted. Otherwise, the existing entity will be updated according to the specified update mode.
-     *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
-     *
-     * @param entity The entity to upsert.
-     * @param updateMode The type of update to perform if the entity already exits.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -233,28 +211,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         client.updateEntity(entity, updateMode).block();
-    }
-
-    /**
-     * Updates an existing entity using the specified update mode.
-     *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
-     *
-     * @param entity The entity to update.
-     * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
-     * service. If the values do not match, the update will not occur and an exception will be thrown.
-     *
-     * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceException If no entity with the same partition key and row key exists within the table,
-     * or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does not match that of the provided
-     * entity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
-        client.updateEntity(entity, updateMode, ifUnchanged).block();
     }
 
     /**
@@ -407,25 +363,6 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableEntity getEntity(String partitionKey, String rowKey) {
         return client.getEntity(partitionKey, rowKey).block();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select A list of properties to select on the entity.
-     *
-     * @return The entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, or if the
-     * {@code select} OData query option is malformed.
-     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntity getEntity(String partitionKey, String rowKey, List<String> select) {
-        return client.getEntity(partitionKey, rowKey, select).block();
     }
 
     /**
