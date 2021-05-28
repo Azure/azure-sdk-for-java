@@ -286,7 +286,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                     new ListDataFeedFilter()
                         .setDataFeedStatus(DataFeedStatus.ACTIVE)
                         .setDataFeedGranularityType(DataFeedGranularityType.DAILY))
-                .setTop(3))
+                .setMaxPageSize(3))
             .subscribe(dataFeed -> {
                 System.out.printf("Data feed Id: %s%n", dataFeed.getId());
                 System.out.printf("Data feed description: %s%n", dataFeed.getOptions().getDescription());
@@ -514,7 +514,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks#ListHookOptions
         ListHookOptions options = new ListHookOptions()
             .setSkip(100)
-            .setTop(20);
+            .setMaxPageSize(20);
         int[] pageCount = new int[1];
         metricsAdvisorAdminAsyncClient.listHooks(options).byPage()
             .subscribe(hookPage -> {

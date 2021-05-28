@@ -102,7 +102,8 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-03 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-03 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue",
+    "note": "Remove 'final' from 'ManagedClusterAgentPoolProfile'"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",

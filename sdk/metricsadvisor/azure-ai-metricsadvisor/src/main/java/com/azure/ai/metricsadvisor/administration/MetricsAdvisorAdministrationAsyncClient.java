@@ -179,43 +179,43 @@ public class MetricsAdvisorAdministrationAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.createDataFeedWithResponseAsync(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
-            .setDataFeedName(dataFeed.getName())
-            .setDataFeedDescription(finalDataFeedOptions.getDescription())
-            .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
-                ? null : dataFeedGranularity.getGranularityType().toString()))
-            .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
-            .setDimension(dataFeedSchema.getDimensions())
-            .setMetrics(dataFeedSchema.getMetrics())
-            .setTimestampColumn(dataFeedSchema.getTimestampColumn())
-            .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
-            .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
-                ? null : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
-            .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
-            .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
-                ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
-            .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
-                ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
-            .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-            .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings
-                .getDataFeedAutoRollUpMethod() == null
-                ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
-            .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
-                ? null : dataFeedRollupSettings.getRollupType().toString()))
-            .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-            .setFillMissingPointType(FillMissingPointType.fromString(
-                dataFeedMissingDataPointFillSettings.getFillType() == null
-                    ? null : dataFeedMissingDataPointFillSettings.getFillType().toString()))
-            .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
-            .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
-                ? null : finalDataFeedOptions.getAccessMode().toString()))
-            .setViewers(finalDataFeedOptions.getViewerEmails())
-            .setAdmins(finalDataFeedOptions.getAdminEmails())
-            .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
-            .flatMap(createDataFeedResponse -> {
-                final String dataFeedId =
-                    parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
-                return getDataFeedWithResponse(dataFeedId);
-            });
+                .setDataFeedName(dataFeed.getName())
+                .setDataFeedDescription(finalDataFeedOptions.getDescription())
+                .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
+                    ? null : dataFeedGranularity.getGranularityType().toString()))
+                .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
+                .setDimension(dataFeedSchema.getDimensions())
+                .setMetrics(dataFeedSchema.getMetrics())
+                .setTimestampColumn(dataFeedSchema.getTimestampColumn())
+                .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
+                .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
+                    ? null : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
+                .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
+                .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
+                    ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
+                .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
+                    ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
+                .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
+                .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings
+                    .getDataFeedAutoRollUpMethod() == null
+                    ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
+                    ? null : dataFeedRollupSettings.getRollupType().toString()))
+                .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
+                .setFillMissingPointType(FillMissingPointType.fromString(
+                    dataFeedMissingDataPointFillSettings.getFillType() == null
+                        ? null : dataFeedMissingDataPointFillSettings.getFillType().toString()))
+                .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
+                .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
+                    ? null : finalDataFeedOptions.getAccessMode().toString()))
+                .setViewers(finalDataFeedOptions.getViewerEmails())
+                .setAdmins(finalDataFeedOptions.getAdminEmails())
+                .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
+                .flatMap(createDataFeedResponse -> {
+                    final String dataFeedId =
+                        parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
+                    return getDataFeedWithResponse(dataFeedId);
+                });
     }
 
     /**
@@ -460,7 +460,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             dataFeedFilter.getStatus() != null
                 ? EntityStatus.fromString(dataFeedFilter.getStatus().toString()) : null,
             dataFeedFilter.getCreator(),
-            options.getSkip(), options.getTop(), withTracing)
+            options.getSkip(), options.getMaxPageSize(), withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data feeds"))
             .doOnSuccess(response -> logger.info("Listed data feeds {}", response))
             .doOnError(error -> logger.warning("Failed to list all data feeds information - {}", error))
@@ -550,7 +550,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             UUID.fromString(dataFeedId),
             queryOptions,
             options.getSkip(),
-            options.getTop(),
+            options.getMaxPageSize(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
@@ -1311,7 +1311,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
         return service.listHooksSinglePageAsync(
             options != null ? options.getHookNameFilter() : null,
             options != null ? options.getSkip() : null,
-            options != null ? options.getTop() : null,
+            options != null ? options.getMaxPageSize() : null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing hooks"))
             .doOnSuccess(response -> logger.info("Listed hooks {}", response))

@@ -12,11 +12,14 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
-import com.azure.data.tables.models.BatchOperationResponse;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
-import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionActionType;
+import com.azure.data.tables.models.TableTransactionFailedException;
+import com.azure.data.tables.models.TableTransactionResult;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,7 +38,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -715,25 +717,30 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     @Tag("Batch")
-    void batchAsync() {
+    void submitTransactionAsync() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         int expectedBatchStatusCode = 202;
         int expectedOperationStatusCode = 204;
 
-        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
-        batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValue))
-            .createEntity(new TableEntity(partitionKeyValue, rowKeyValue2));
+        List<TableTransactionAction> transactionalBatch = new ArrayList<>();
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue2)));
 
         // Act & Assert
-        final Response<List<BatchOperationResponse>> result = batch.submitTransactionWithResponse().block(TIMEOUT);
+        final Response<TableTransactionResult> result =
+            tableClient.submitTransactionWithResponse(transactionalBatch).block(TIMEOUT);
 
         assertNotNull(result);
         assertEquals(expectedBatchStatusCode, result.getStatusCode());
-        assertEquals(batch.getOperations().size(), result.getValue().size());
-        assertEquals(expectedOperationStatusCode, result.getValue().get(0).getStatusCode());
-        assertEquals(expectedOperationStatusCode, result.getValue().get(1).getStatusCode());
+        assertEquals(transactionalBatch.size(), result.getValue().getTransactionActionResponses().size());
+        assertEquals(expectedOperationStatusCode,
+            result.getValue().getTransactionActionResponses().get(0).getStatusCode());
+        assertEquals(expectedOperationStatusCode,
+            result.getValue().getTransactionActionResponses().get(1).getStatusCode());
 
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
@@ -752,7 +759,7 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     @Tag("Batch")
-    void batchAsyncAllOperations() {
+    void submitTransactionAsyncAllActions() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValueCreate = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValueUpsertInsert = testResourceNamer.randomName("rowKey", 20);
@@ -771,7 +778,6 @@ public class TablesAsyncClientTest extends TestBase {
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValueUpdateReplace)).block(TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValueDelete)).block(TIMEOUT);
 
-
         TableEntity toUpsertMerge = new TableEntity(partitionKeyValue, rowKeyValueUpsertMerge);
         toUpsertMerge.addProperty("Test", "MergedValue");
 
@@ -784,23 +790,26 @@ public class TablesAsyncClientTest extends TestBase {
         TableEntity toUpdateReplace = new TableEntity(partitionKeyValue, rowKeyValueUpdateReplace);
         toUpdateReplace.addProperty("Test", "MergedValue");
 
-        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
-        batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValueCreate))
-            .upsertEntity(new TableEntity(partitionKeyValue, rowKeyValueUpsertInsert))
-            .upsertEntity(toUpsertMerge, TableEntityUpdateMode.MERGE)
-            .upsertEntity(toUpsertReplace, TableEntityUpdateMode.REPLACE)
-            .updateEntity(toUpdateMerge, TableEntityUpdateMode.MERGE)
-            .updateEntity(toUpdateReplace, TableEntityUpdateMode.REPLACE)
-            .deleteEntity(rowKeyValueDelete);
+        List<TableTransactionAction> transactionalBatch = new ArrayList<>();
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValueCreate)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE,
+            new TableEntity(partitionKeyValue, rowKeyValueUpsertInsert)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.UPSERT_MERGE, toUpsertMerge));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.UPSERT_REPLACE, toUpsertReplace));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.UPDATE_MERGE, toUpdateMerge));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.UPDATE_REPLACE, toUpdateReplace));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.DELETE,
+            new TableEntity(partitionKeyValue, rowKeyValueDelete)));
 
         // Act & Assert
-        StepVerifier.create(batch.submitTransactionWithResponse())
+        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
             .assertNext(response -> {
                 assertNotNull(response);
                 assertEquals(expectedBatchStatusCode, response.getStatusCode());
-                List<BatchOperationResponse> subResponses = response.getValue();
-                assertEquals(batch.getOperations().size(), subResponses.size());
-                for (BatchOperationResponse subResponse : subResponses) {
+                TableTransactionResult result = response.getValue();
+                assertEquals(transactionalBatch.size(), result.getTransactionActionResponses().size());
+                for (TableTransactionActionResponse subResponse : result.getTransactionActionResponses()) {
                     assertEquals(expectedOperationStatusCode, subResponse.getStatusCode());
                 }
             })
@@ -810,18 +819,20 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     @Tag("Batch")
-    void batchAsyncWithFailingOperation() {
+    void submitTransactionAsyncWithFailingAction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
 
-        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
-        batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValue))
-            .deleteEntity(rowKeyValue2);
+        List<TableTransactionAction> transactionalBatch = new ArrayList<>();
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.DELETE,
+            new TableEntity(partitionKeyValue, rowKeyValue2)));
 
         // Act & Assert
-        StepVerifier.create(batch.submitTransactionWithResponse())
-            .expectErrorMatches(e -> e instanceof TableServiceException
+        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
                 && e.getMessage().contains("An operation within the batch failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")
@@ -832,59 +843,49 @@ public class TablesAsyncClientTest extends TestBase {
 
     @Test
     @Tag("Batch")
-    void batchRequiresSamePartitionKey() {
-        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
-        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-
-        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class,
-            () -> batch.createEntity(new TableEntity(partitionKeyValue2, rowKeyValue)));
-    }
-
-    @Test
-    @Tag("Batch")
-    void batchRequiresUniqueRowKey() {
+    void submitTransactionAsyncWithSameRowKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
 
-        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
-        batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValue));
+        List<TableTransactionAction> transactionalBatch = new ArrayList<>();
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class,
-            () -> batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)));
-    }
-
-    @Test
-    @Tag("Batch")
-    void batchRequiresOperationsOnSubmit() {
-        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-
-        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
-
-        // Act & Assert
-        StepVerifier.create(batch.submitTransaction())
-            .expectError(IllegalStateException.class)
+        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
+                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("The failed operation was")
+                && e.getMessage().contains("CreateEntity")
+                && e.getMessage().contains("partitionKey='" + partitionKeyValue)
+                && e.getMessage().contains("rowKey='" + rowKeyValue))
             .verify();
     }
 
     @Test
     @Tag("Batch")
-    void batchImmutableAfterSubmit() {
+    void submitTransactionAsyncWithDifferentPartitionKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
 
-        TableAsyncBatch batch = tableClient.createBatch(partitionKeyValue);
-        batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValue));
-        batch.submitTransaction().block(TIMEOUT);
+        List<TableTransactionAction> transactionalBatch = new ArrayList<>();
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(
+            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue2, rowKeyValue2)));
 
         // Act & Assert
-        assertThrows(IllegalStateException.class,
-            () -> batch.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)));
+        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
+            .expectErrorMatches(e -> e instanceof TableTransactionFailedException
+                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("The failed operation was")
+                && e.getMessage().contains("CreateEntity")
+                && e.getMessage().contains("partitionKey='" + partitionKeyValue2)
+                && e.getMessage().contains("rowKey='" + rowKeyValue2))
+            .verify();
     }
-
 }
