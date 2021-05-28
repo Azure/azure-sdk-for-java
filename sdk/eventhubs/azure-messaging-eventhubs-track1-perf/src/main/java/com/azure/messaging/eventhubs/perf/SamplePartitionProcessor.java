@@ -24,10 +24,18 @@ public class SamplePartitionProcessor implements IEventProcessor {
     private final ArrayList<EventsCounter> allCounters = new ArrayList<>();
     private final AtomicBoolean isStopped = new AtomicBoolean();
 
+    /**
+     * Gets the event counters opened while processing this partition.
+     *
+     * @return the event counters opened while processing this partition.
+     */
     public List<EventsCounter> getCounters() {
         return allCounters;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onOpen(PartitionContext context) {
         if (isStopped.get()) {
@@ -42,6 +50,9 @@ public class SamplePartitionProcessor implements IEventProcessor {
         currentCounters.add(counter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onClose(PartitionContext context, CloseReason reason) {
         if (isStopped.get()) {
@@ -60,6 +71,9 @@ public class SamplePartitionProcessor implements IEventProcessor {
         allCounters.add(lastCounter);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEvents(PartitionContext context, Iterable<EventData> events) {
         if (isStopped.get()) {
@@ -77,11 +91,17 @@ public class SamplePartitionProcessor implements IEventProcessor {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onError(PartitionContext context, Throwable error) {
         logger.warn("PartitionId[{}] onError", context.getPartitionId(), error);
     }
 
+    /**
+     * Stops the partition processor entirely and closes any open EventCounters.
+     */
     public void onStop() {
         if (isStopped.getAndSet(true)) {
             return;
