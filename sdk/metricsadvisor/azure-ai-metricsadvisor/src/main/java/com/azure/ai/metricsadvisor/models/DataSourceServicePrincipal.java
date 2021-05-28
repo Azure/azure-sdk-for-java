@@ -3,14 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.ai.metricsadvisor.implementation.util.ServicePrincipalCredentialEntityAccessor;
+import com.azure.ai.metricsadvisor.implementation.util.DataSourceServicePrincipalAccessor;
 import com.azure.core.annotation.Fluent;
 
 /**
  * The service principal credential entity for data source..
  */
 @Fluent
-public final class ServicePrincipalCredentialEntity extends DataSourceCredentialEntity {
+public final class DataSourceServicePrincipal extends DataSourceCredentialEntity {
     private String id;
     private String name;
     private String description;
@@ -19,15 +19,15 @@ public final class ServicePrincipalCredentialEntity extends DataSourceCredential
     private String clientSecret;
 
     static {
-        ServicePrincipalCredentialEntityAccessor.setAccessor(
-            new ServicePrincipalCredentialEntityAccessor.Accessor() {
+        DataSourceServicePrincipalAccessor.setAccessor(
+            new DataSourceServicePrincipalAccessor.Accessor() {
                 @Override
-                public void setId(ServicePrincipalCredentialEntity entity, String id) {
+                public void setId(DataSourceServicePrincipal entity, String id) {
                     entity.setId(id);
                 }
 
                 @Override
-                public String getClientSecret(ServicePrincipalCredentialEntity entity) {
+                public String getClientSecret(DataSourceServicePrincipal entity) {
                     return entity.getClientSecret();
                 }
             });
@@ -67,14 +67,14 @@ public final class ServicePrincipalCredentialEntity extends DataSourceCredential
     }
 
     /**
-     * Creates ServicePrincipalCredentialEntity.
+     * Creates DataSourceServicePrincipal.
      *
      * @param name The name.
      * @param clientId The client id.
      * @param clientSecret The client secret.
      * @param tenantId The tenant id.
      */
-    public ServicePrincipalCredentialEntity(String name, String clientId, String tenantId, String clientSecret) {
+    public DataSourceServicePrincipal(String name, String clientId, String tenantId, String clientSecret) {
         this.name = name;
         this.clientId = clientId;
         this.tenantId = tenantId;
@@ -87,7 +87,7 @@ public final class ServicePrincipalCredentialEntity extends DataSourceCredential
      * @param name The name
      * @return an updated object with name set
      */
-    public ServicePrincipalCredentialEntity setName(String name) {
+    public DataSourceServicePrincipal setName(String name) {
         this.name = name;
         return this;
     }
@@ -98,7 +98,7 @@ public final class ServicePrincipalCredentialEntity extends DataSourceCredential
      * @param clientId The client id
      * @return an updated object with client id set
      */
-    public ServicePrincipalCredentialEntity setClientId(String clientId) {
+    public DataSourceServicePrincipal setClientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
@@ -109,7 +109,7 @@ public final class ServicePrincipalCredentialEntity extends DataSourceCredential
      * @param clientSecret The client secret
      * @return an updated object with client secret set
      */
-    public ServicePrincipalCredentialEntity setClientSecret(String clientSecret) {
+    public DataSourceServicePrincipal setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;
     }
@@ -120,7 +120,7 @@ public final class ServicePrincipalCredentialEntity extends DataSourceCredential
      * @param tenantId The tenant id
      * @return an updated object with client teant id set
      */
-    public ServicePrincipalCredentialEntity setTenantId(String tenantId) {
+    public DataSourceServicePrincipal setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -131,7 +131,7 @@ public final class ServicePrincipalCredentialEntity extends DataSourceCredential
      * @param description The description
      * @return an updated object with description set
      */
-    public ServicePrincipalCredentialEntity setDescription(String description) {
+    public DataSourceServicePrincipal setDescription(String description) {
         this.description = description;
         return this;
     }

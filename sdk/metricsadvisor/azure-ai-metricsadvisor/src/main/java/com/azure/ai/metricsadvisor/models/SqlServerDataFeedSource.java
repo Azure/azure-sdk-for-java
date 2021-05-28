@@ -82,11 +82,11 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
 
     /**
      * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link SqlServerConnectionStringCredentialEntity} that contains the SQL
+     * entity of type {@link DataSourceSqlServerConnectionString} that contains the SQL
      * connection string.
      *
      * @param credentialEntityId The unique id of a credential entity of type
-     * {@link SqlServerConnectionStringCredentialEntity}.
+     * {@link DataSourceSqlServerConnectionString}.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @return The SQLServerDataFeedSource.
      */
@@ -100,13 +100,13 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
 
     /**
      * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link ServicePrincipalCredentialEntity}, the entity contains
+     * entity of type {@link DataSourceServicePrincipal}, the entity contains
      * Service Principal to access the SQL Server.
      *
      * @param connectionString The SQL server connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link ServicePrincipalCredentialEntity}.
+     * {@link DataSourceServicePrincipal}.
      *
      * @return The SQLServerDataFeedSource.
      */
@@ -121,13 +121,13 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
 
     /**
      * Create a SQLServerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link ServicePrincipalInKeyVaultCredentialEntity}, the entity contains
+     * entity of type {@link DataSourceServicePrincipalInKeyVault}, the entity contains
      * details of the KeyVault holding the Service Principal to access the SQL Server.
      *
      * @param connectionString The SQL server connection string.
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialId The unique id of a credential entity of type
-     * {@link ServicePrincipalInKeyVaultCredentialEntity}.
+     * {@link DataSourceServicePrincipalInKeyVault}.
      *
      * @return The SQLServerDataFeedSource.
      */

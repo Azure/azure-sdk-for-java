@@ -3,14 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.ai.metricsadvisor.implementation.util.ServicePrincipalInKeyVaultCredentialEntityAccessor;
+import com.azure.ai.metricsadvisor.implementation.util.DataSourceServicePrincipalInKeyVaultAccessor;
 import com.azure.core.annotation.Fluent;
 
 /**
  * The service principal stored in a key vault representing the credential entity for a data source.
  */
 @Fluent
-public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSourceCredentialEntity {
+public final class DataSourceServicePrincipalInKeyVault extends DataSourceCredentialEntity {
     private String id;
     private String name;
     private String description;
@@ -22,26 +22,26 @@ public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSource
     private String tenantId;
 
     static {
-        ServicePrincipalInKeyVaultCredentialEntityAccessor.setAccessor(
-            new ServicePrincipalInKeyVaultCredentialEntityAccessor.Accessor() {
+        DataSourceServicePrincipalInKeyVaultAccessor.setAccessor(
+            new DataSourceServicePrincipalInKeyVaultAccessor.Accessor() {
                 @Override
-                public void setId(ServicePrincipalInKeyVaultCredentialEntity entity, String id) {
+                public void setId(DataSourceServicePrincipalInKeyVault entity, String id) {
                     entity.setId(id);
                 }
 
                 @Override
-                public String getKeyVaultClientSecret(ServicePrincipalInKeyVaultCredentialEntity entity) {
+                public String getKeyVaultClientSecret(DataSourceServicePrincipalInKeyVault entity) {
                     return entity.getKeyVaultClientSecret();
                 }
 
                 @Override
-                public String getSecretNameForDataSourceClientId(ServicePrincipalInKeyVaultCredentialEntity entity) {
+                public String getSecretNameForDataSourceClientId(DataSourceServicePrincipalInKeyVault entity) {
                     return entity.getSecretNameForDataSourceClientId();
                 }
 
                 @Override
                 public String getSecretNameForDataSourceClientSecret(
-                    ServicePrincipalInKeyVaultCredentialEntity entity) {
+                    DataSourceServicePrincipalInKeyVault entity) {
                     return entity.getSecretNameForDataSourceClientSecret();
                 }
             });
@@ -95,7 +95,7 @@ public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSource
      * @param name The name
      * @return an updated object with name set
      */
-    public ServicePrincipalInKeyVaultCredentialEntity setName(String name) {
+    public DataSourceServicePrincipalInKeyVault setName(String name) {
         this.name = name;
         return this;
     }
@@ -108,9 +108,9 @@ public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSource
      * @param keyVaultClientSecret The client secret to access the keyVault
      * @return an updated object
      */
-    public ServicePrincipalInKeyVaultCredentialEntity setKeyVaultForDataSourceSecrets(String keyVaultEndpoint,
-                                                                                      String keyVaultClientId,
-                                                                                      String keyVaultClientSecret) {
+    public DataSourceServicePrincipalInKeyVault setKeyVaultForDataSourceSecrets(String keyVaultEndpoint,
+                                                                                String keyVaultClientId,
+                                                                                String keyVaultClientSecret) {
         this.keyVaultEndpoint = keyVaultEndpoint;
         this.keyVaultClientId = keyVaultClientId;
         this.keyVaultClientSecret = keyVaultClientSecret;
@@ -123,7 +123,7 @@ public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSource
      * @param clientIdSecretName The secret name
      * @return an updated object with client id secret name set
      */
-    public ServicePrincipalInKeyVaultCredentialEntity setSecretNameForDataSourceClientId(String clientIdSecretName) {
+    public DataSourceServicePrincipalInKeyVault setSecretNameForDataSourceClientId(String clientIdSecretName) {
         this.clientIdSecretName = clientIdSecretName;
         return this;
     }
@@ -134,7 +134,7 @@ public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSource
      * @param clientSecretName The secret name
      * @return an updated object with client secret name set
      */
-    public ServicePrincipalInKeyVaultCredentialEntity setSecretNameForDataSourceClientSecret(String clientSecretName) {
+    public DataSourceServicePrincipalInKeyVault setSecretNameForDataSourceClientSecret(String clientSecretName) {
         this.clientSecretName = clientSecretName;
         return this;
     }
@@ -145,7 +145,7 @@ public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSource
      * @param tenantId The tenant id
      * @return an updated object with client tenant id set
      */
-    public ServicePrincipalInKeyVaultCredentialEntity setTenantId(String tenantId) {
+    public DataSourceServicePrincipalInKeyVault setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -156,7 +156,7 @@ public final class ServicePrincipalInKeyVaultCredentialEntity extends DataSource
      * @param description The description
      * @return an updated object with description set
      */
-    public ServicePrincipalInKeyVaultCredentialEntity setDescription(String description) {
+    public DataSourceServicePrincipalInKeyVault setDescription(String description) {
         this.description = description;
         return this;
     }

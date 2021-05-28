@@ -926,8 +926,8 @@ public final class MetricsAdvisorAdministrationClient {
      */
 
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity createCredentialEntity(DataSourceCredentialEntity credentialEntity) {
-        return createCredentialEntityWithResponse(credentialEntity, Context.NONE).getValue();
+    public DataSourceCredentialEntity createDataSourceCredential(DataSourceCredentialEntity credentialEntity) {
+        return createDataSourceCredentialWithResponse(credentialEntity, Context.NONE).getValue();
     }
 
     /**
@@ -940,29 +940,29 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> createCredentialEntityWithResponse(
+    public Response<DataSourceCredentialEntity> createDataSourceCredentialWithResponse(
         DataSourceCredentialEntity credentialEntity, Context context) {
-        return client.createCredentialEntityWithResponse(credentialEntity, context).block();
+        return client.createDataSourceCredentialWithResponse(credentialEntity, context).block();
     }
 
     /**
      * Get a data source credential entity by its id.
      *
-     * @param credentialEntityId The data source credential entity unique id.
+     * @param credentialId The data source credential entity unique id.
      *
      * @return The data source credential entity for the provided id.
      * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity getCredentialEntity(String credentialEntityId) {
-        return getCredentialEntityWithResponse(credentialEntityId, Context.NONE).getValue();
+    public DataSourceCredentialEntity getDataSourceCredential(String credentialId) {
+        return getDataSourceCredentialWithResponse(credentialId, Context.NONE).getValue();
     }
 
     /**
-     * Get a data feed by its id with REST response.
+     * Get a data source credential entity by its id with REST response.
      *
-     * @param credentialEntityId The data source credential entity unique id.
+     * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The data feed for the provided id.
@@ -970,9 +970,9 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code dataFeedId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> getCredentialEntityWithResponse(String credentialEntityId,
-                                                                                Context context) {
-        return client.getCredentialEntityWithResponse(credentialEntityId, context).block();
+    public Response<DataSourceCredentialEntity> getDataSourceCredentialWithResponse(String credentialId,
+                                                                                    Context context) {
+        return client.getDataSourceCredentialWithResponse(credentialId, context).block();
     }
 
     /**
@@ -984,8 +984,8 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceCredentialEntity updateCredentialEntity(DataSourceCredentialEntity credentialEntity) {
-        return updateCredentialEntityWithResponse(credentialEntity, Context.NONE).getValue();
+    public DataSourceCredentialEntity updateDataSourceCredential(DataSourceCredentialEntity credentialEntity) {
+        return updateDataSourceCredentialWithResponse(credentialEntity, Context.NONE).getValue();
     }
 
     /**
@@ -998,28 +998,28 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> updateCredentialEntityWithResponse(
+    public Response<DataSourceCredentialEntity> updateDataSourceCredentialWithResponse(
         DataSourceCredentialEntity credentialEntity, Context context) {
-        return client.updateCredentialEntityWithResponse(credentialEntity, context).block();
+        return client.updateDataSourceCredentialWithResponse(credentialEntity, context).block();
     }
 
     /**
      * Delete a data source credential entity.
      *
-     * @param credentialEntityId The data source credential entity unique id.
+     * @param credentialId The data source credential entity unique id.
      *
      * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteCredentialEntity(String credentialEntityId) {
-        deleteCredentialEntityWithResponse(credentialEntityId, Context.NONE);
+    public void deleteDataSourceCredential(String credentialId) {
+        deleteDataSourceCredentialWithResponse(credentialId, Context.NONE);
     }
 
     /**
      * Delete a data source credential entity with REST response.
      *
-     * @param credentialEntityId The data source credential entity unique id.
+     * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return a REST Response.
@@ -1027,8 +1027,8 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code dataFeedId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCredentialEntityWithResponse(String credentialEntityId, Context context) {
-        return client.deleteDataFeedWithResponse(credentialEntityId, context).block();
+    public Response<Void> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
+        return client.deleteDataFeedWithResponse(credentialId, context).block();
     }
 
     /**
@@ -1038,8 +1038,8 @@ public final class MetricsAdvisorAdministrationClient {
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataSourceCredentialEntity> listCredentialEntities() {
-        return listCredentialEntities(null, Context.NONE);
+    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials() {
+        return listDataSourceCredentials(null, Context.NONE);
     }
 
     /**
@@ -1053,8 +1053,8 @@ public final class MetricsAdvisorAdministrationClient {
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataSourceCredentialEntity> listCredentialEntities(
+    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials(
         ListCredentialEntityOptions options, Context context) {
-        return new PagedIterable<>(client.listCredentialEntities(options, context));
+        return new PagedIterable<>(client.listDataSourceCredentials(options, context));
     }
 }

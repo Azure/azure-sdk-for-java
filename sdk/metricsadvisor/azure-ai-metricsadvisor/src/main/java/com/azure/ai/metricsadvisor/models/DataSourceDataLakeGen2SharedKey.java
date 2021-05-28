@@ -3,29 +3,29 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import com.azure.ai.metricsadvisor.implementation.util.DataLakeGen2SharedKeyCredentialEntityAccessor;
+import com.azure.ai.metricsadvisor.implementation.util.DataSourceDataLakeGen2SharedKeyAccessor;
 import com.azure.core.annotation.Fluent;
 
 /**
  * The shared key credential entity for DataLakeGen2.
  */
 @Fluent
-public final class DataLakeGen2SharedKeyCredentialEntity extends DataSourceCredentialEntity {
+public final class DataSourceDataLakeGen2SharedKey extends DataSourceCredentialEntity {
     private String id;
     private String name;
     private String description;
     private String sharedKey;
 
     static {
-        DataLakeGen2SharedKeyCredentialEntityAccessor.setAccessor(
-            new DataLakeGen2SharedKeyCredentialEntityAccessor.Accessor() {
+        DataSourceDataLakeGen2SharedKeyAccessor.setAccessor(
+            new DataSourceDataLakeGen2SharedKeyAccessor.Accessor() {
                 @Override
-                public void setId(DataLakeGen2SharedKeyCredentialEntity entity, String id) {
+                public void setId(DataSourceDataLakeGen2SharedKey entity, String id) {
                     entity.setId(id);
                 }
 
                 @Override
-                public String getSharedKey(DataLakeGen2SharedKeyCredentialEntity entity) {
+                public String getSharedKey(DataSourceDataLakeGen2SharedKey entity) {
                     return entity.getSharedKey();
                 }
             });
@@ -47,12 +47,12 @@ public final class DataLakeGen2SharedKeyCredentialEntity extends DataSourceCrede
     }
 
     /**
-     * Creates DataLakeGen2SharedKeyCredentialEntity.
+     * Creates DataSourceDataLakeGen2SharedKey.
      *
      * @param name The name
      * @param sharedKey The shared key
      */
-    public DataLakeGen2SharedKeyCredentialEntity(String name, String sharedKey) {
+    public DataSourceDataLakeGen2SharedKey(String name, String sharedKey) {
         this.name = name;
         this.sharedKey = sharedKey;
     }
@@ -63,7 +63,7 @@ public final class DataLakeGen2SharedKeyCredentialEntity extends DataSourceCrede
      * @param name The name
      * @return an updated object with name set
      */
-    public DataLakeGen2SharedKeyCredentialEntity setName(String name) {
+    public DataSourceDataLakeGen2SharedKey setName(String name) {
         this.name = name;
         return this;
     }
@@ -74,7 +74,7 @@ public final class DataLakeGen2SharedKeyCredentialEntity extends DataSourceCrede
      * @param sharedKey The shared key
      * @return an updated object with shared key set
      */
-    public DataLakeGen2SharedKeyCredentialEntity setSharedKey(String sharedKey) {
+    public DataSourceDataLakeGen2SharedKey setSharedKey(String sharedKey) {
         this.sharedKey = sharedKey;
         return this;
     }
@@ -85,7 +85,7 @@ public final class DataLakeGen2SharedKeyCredentialEntity extends DataSourceCrede
      * @param description The description.
      * @return an updated object with description set
      */
-    public DataLakeGen2SharedKeyCredentialEntity setDescription(String description) {
+    public DataSourceDataLakeGen2SharedKey setDescription(String description) {
         this.description = description;
         return this;
     }

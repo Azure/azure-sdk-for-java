@@ -21,11 +21,11 @@ import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalInKVPar
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalInKVParamPatch;
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalParam;
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalParamPatch;
-import com.azure.ai.metricsadvisor.models.DataLakeGen2SharedKeyCredentialEntity;
+import com.azure.ai.metricsadvisor.models.DataSourceDataLakeGen2SharedKey;
 import com.azure.ai.metricsadvisor.models.DataSourceCredentialEntity;
-import com.azure.ai.metricsadvisor.models.SqlServerConnectionStringCredentialEntity;
-import com.azure.ai.metricsadvisor.models.ServicePrincipalCredentialEntity;
-import com.azure.ai.metricsadvisor.models.ServicePrincipalInKeyVaultCredentialEntity;
+import com.azure.ai.metricsadvisor.models.DataSourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.models.DataSourceServicePrincipal;
+import com.azure.ai.metricsadvisor.models.DataSourceServicePrincipalInKeyVault;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
@@ -48,8 +48,8 @@ public final class DataSourceCredentialEntityTransforms {
         if (innerCredential instanceof AzureSQLConnectionStringCredential) {
             final AzureSQLConnectionStringCredential sqlConnectionStringCredential
                 = (AzureSQLConnectionStringCredential) innerCredential;
-            final SqlServerConnectionStringCredentialEntity credentialEntity
-                = new SqlServerConnectionStringCredentialEntity(
+            final DataSourceSqlServerConnectionString credentialEntity
+                = new DataSourceSqlServerConnectionString(
                     sqlConnectionStringCredential.getDataSourceCredentialName(),
                 null);
             credentialEntity.setDescription(sqlConnectionStringCredential.getDataSourceCredentialDescription());
@@ -57,15 +57,15 @@ public final class DataSourceCredentialEntityTransforms {
         } else if (innerCredential instanceof DataLakeGen2SharedKeyCredential) {
             final DataLakeGen2SharedKeyCredential dataLakeGen2SharedKeyCredential
                 = (DataLakeGen2SharedKeyCredential) innerCredential;
-            final DataLakeGen2SharedKeyCredentialEntity credentialEntity = new DataLakeGen2SharedKeyCredentialEntity(
+            final DataSourceDataLakeGen2SharedKey credentialEntity = new DataSourceDataLakeGen2SharedKey(
                 dataLakeGen2SharedKeyCredential.getDataSourceCredentialName(),
                 null);
             credentialEntity.setDescription(dataLakeGen2SharedKeyCredential.getDataSourceCredentialDescription());
             return credentialEntity;
         } else if (innerCredential instanceof ServicePrincipalCredential) {
             final ServicePrincipalCredential servicePrincipalCredential = (ServicePrincipalCredential) innerCredential;
-            final ServicePrincipalCredentialEntity credentialEntity =
-                new ServicePrincipalCredentialEntity(servicePrincipalCredential.getDataSourceCredentialName(),
+            final DataSourceServicePrincipal credentialEntity =
+                new DataSourceServicePrincipal(servicePrincipalCredential.getDataSourceCredentialName(),
                     servicePrincipalCredential.getParameters().getClientId(),
                     servicePrincipalCredential.getParameters().getTenantId(),
                     null);
@@ -74,8 +74,8 @@ public final class DataSourceCredentialEntityTransforms {
         } else if (innerCredential instanceof ServicePrincipalInKVCredential) {
             final ServicePrincipalInKVCredential servicePrincipalInKVCredential
                 = (ServicePrincipalInKVCredential) innerCredential;
-            final ServicePrincipalInKeyVaultCredentialEntity credentialEntity =
-                new ServicePrincipalInKeyVaultCredentialEntity();
+            final DataSourceServicePrincipalInKeyVault credentialEntity =
+                new DataSourceServicePrincipalInKeyVault();
             credentialEntity
                 .setName(servicePrincipalInKVCredential.getDataSourceCredentialName())
                 .setDescription(servicePrincipalInKVCredential.getDataSourceCredentialDescription())
@@ -90,54 +90,54 @@ public final class DataSourceCredentialEntityTransforms {
     }
 
     public static DataSourceCredential toInnerForCreate(DataSourceCredentialEntity credentialEntity) {
-        if (credentialEntity instanceof SqlServerConnectionStringCredentialEntity) {
-            final SqlServerConnectionStringCredentialEntity credential
-                = (SqlServerConnectionStringCredentialEntity) credentialEntity;
+        if (credentialEntity instanceof DataSourceSqlServerConnectionString) {
+            final DataSourceSqlServerConnectionString credential
+                = (DataSourceSqlServerConnectionString) credentialEntity;
             final AzureSQLConnectionStringCredential innerCredential = new AzureSQLConnectionStringCredential();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential.setParameters(new AzureSQLConnectionStringParam()
-                .setConnectionString(SqlServerConnectionStringCredentialEntityAccessor
+                .setConnectionString(DataSourceSqlServerConnectionStringAccessor
                     .getConnectionString(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof DataLakeGen2SharedKeyCredentialEntity) {
-            final DataLakeGen2SharedKeyCredentialEntity credential
-                = (DataLakeGen2SharedKeyCredentialEntity) credentialEntity;
+        } else if (credentialEntity instanceof DataSourceDataLakeGen2SharedKey) {
+            final DataSourceDataLakeGen2SharedKey credential
+                = (DataSourceDataLakeGen2SharedKey) credentialEntity;
             final DataLakeGen2SharedKeyCredential innerCredential  = new DataLakeGen2SharedKeyCredential();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential
                 .setParameters(new DataLakeGen2SharedKeyParam()
-                    .setAccountKey(DataLakeGen2SharedKeyCredentialEntityAccessor.getSharedKey(credential)));
+                    .setAccountKey(DataSourceDataLakeGen2SharedKeyAccessor.getSharedKey(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof ServicePrincipalCredentialEntity) {
-            final ServicePrincipalCredentialEntity credential
-                = (ServicePrincipalCredentialEntity) credentialEntity;
+        } else if (credentialEntity instanceof DataSourceServicePrincipal) {
+            final DataSourceServicePrincipal credential
+                = (DataSourceServicePrincipal) credentialEntity;
             final ServicePrincipalCredential innerCredential  = new ServicePrincipalCredential();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential.setParameters(new ServicePrincipalParam()
                 .setClientId(credential.getClientId())
                 .setTenantId(credential.getTenantId())
-                .setClientSecret(ServicePrincipalCredentialEntityAccessor.getClientSecret(credential)));
+                .setClientSecret(DataSourceServicePrincipalAccessor.getClientSecret(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof ServicePrincipalInKeyVaultCredentialEntity) {
-            final ServicePrincipalInKeyVaultCredentialEntity credential
-                = (ServicePrincipalInKeyVaultCredentialEntity) credentialEntity;
+        } else if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+            final DataSourceServicePrincipalInKeyVault credential
+                = (DataSourceServicePrincipalInKeyVault) credentialEntity;
             final ServicePrincipalInKVCredential innerCredential  = new ServicePrincipalInKVCredential();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential.setParameters(new ServicePrincipalInKVParam()
                 .setKeyVaultEndpoint(credential.getKeyVaultEndpoint())
                 .setKeyVaultClientId(credential.getKeyVaultClientId())
-                .setKeyVaultClientSecret(ServicePrincipalInKeyVaultCredentialEntityAccessor
+                .setKeyVaultClientSecret(DataSourceServicePrincipalInKeyVaultAccessor
                     .getKeyVaultClientSecret(credential))
-                .setServicePrincipalIdNameInKV(ServicePrincipalInKeyVaultCredentialEntityAccessor
+                .setServicePrincipalIdNameInKV(DataSourceServicePrincipalInKeyVaultAccessor
                     .getSecretNameForDataSourceClientId(credential))
-                .setServicePrincipalSecretNameInKV(ServicePrincipalInKeyVaultCredentialEntityAccessor
+                .setServicePrincipalSecretNameInKV(DataSourceServicePrincipalInKeyVaultAccessor
                     .getSecretNameForDataSourceClientSecret(credential))
                 .setTenantId(credential.getTenantId()));
             return innerCredential;
@@ -147,54 +147,54 @@ public final class DataSourceCredentialEntityTransforms {
     }
 
     public static DataSourceCredentialPatch toInnerForUpdate(DataSourceCredentialEntity credentialEntity) {
-        if (credentialEntity instanceof SqlServerConnectionStringCredentialEntity) {
-            final SqlServerConnectionStringCredentialEntity credential
-                = (SqlServerConnectionStringCredentialEntity) credentialEntity;
+        if (credentialEntity instanceof DataSourceSqlServerConnectionString) {
+            final DataSourceSqlServerConnectionString credential
+                = (DataSourceSqlServerConnectionString) credentialEntity;
             final AzureSQLConnectionStringCredentialPatch innerCredential = new AzureSQLConnectionStringCredentialPatch();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential.setParameters(new AzureSQLConnectionStringParamPatch()
-                .setConnectionString(SqlServerConnectionStringCredentialEntityAccessor
+                .setConnectionString(DataSourceSqlServerConnectionStringAccessor
                     .getConnectionString(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof DataLakeGen2SharedKeyCredentialEntity) {
-            final DataLakeGen2SharedKeyCredentialEntity credential
-                = (DataLakeGen2SharedKeyCredentialEntity) credentialEntity;
+        } else if (credentialEntity instanceof DataSourceDataLakeGen2SharedKey) {
+            final DataSourceDataLakeGen2SharedKey credential
+                = (DataSourceDataLakeGen2SharedKey) credentialEntity;
             final DataLakeGen2SharedKeyCredentialPatch innerCredential  = new DataLakeGen2SharedKeyCredentialPatch();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential
                 .setParameters(new DataLakeGen2SharedKeyParamPatch()
-                    .setAccountKey(DataLakeGen2SharedKeyCredentialEntityAccessor.getSharedKey(credential)));
+                    .setAccountKey(DataSourceDataLakeGen2SharedKeyAccessor.getSharedKey(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof ServicePrincipalCredentialEntity) {
-            final ServicePrincipalCredentialEntity credential
-                = (ServicePrincipalCredentialEntity) credentialEntity;
+        } else if (credentialEntity instanceof DataSourceServicePrincipal) {
+            final DataSourceServicePrincipal credential
+                = (DataSourceServicePrincipal) credentialEntity;
             final ServicePrincipalCredentialPatch innerCredential  = new ServicePrincipalCredentialPatch();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential.setParameters(new ServicePrincipalParamPatch()
                 .setClientId(credential.getClientId())
                 .setTenantId(credential.getTenantId())
-                .setClientSecret(ServicePrincipalCredentialEntityAccessor.getClientSecret(credential)));
+                .setClientSecret(DataSourceServicePrincipalAccessor.getClientSecret(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof ServicePrincipalInKeyVaultCredentialEntity) {
-            final ServicePrincipalInKeyVaultCredentialEntity credential
-                = (ServicePrincipalInKeyVaultCredentialEntity) credentialEntity;
+        } else if (credentialEntity instanceof DataSourceServicePrincipalInKeyVault) {
+            final DataSourceServicePrincipalInKeyVault credential
+                = (DataSourceServicePrincipalInKeyVault) credentialEntity;
             final ServicePrincipalInKVCredentialPatch innerCredential  = new ServicePrincipalInKVCredentialPatch();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
             innerCredential.setParameters(new ServicePrincipalInKVParamPatch()
                 .setKeyVaultEndpoint(credential.getKeyVaultEndpoint())
                 .setKeyVaultClientId(credential.getKeyVaultClientId())
-                .setKeyVaultClientSecret(ServicePrincipalInKeyVaultCredentialEntityAccessor
+                .setKeyVaultClientSecret(DataSourceServicePrincipalInKeyVaultAccessor
                     .getKeyVaultClientSecret(credential))
-                .setServicePrincipalIdNameInKV(ServicePrincipalInKeyVaultCredentialEntityAccessor
+                .setServicePrincipalIdNameInKV(DataSourceServicePrincipalInKeyVaultAccessor
                     .getSecretNameForDataSourceClientId(credential))
-                .setServicePrincipalSecretNameInKV(ServicePrincipalInKeyVaultCredentialEntityAccessor
+                .setServicePrincipalSecretNameInKV(DataSourceServicePrincipalInKeyVaultAccessor
                     .getSecretNameForDataSourceClientSecret(credential))
                 .setTenantId(credential.getTenantId()));
             return innerCredential;
