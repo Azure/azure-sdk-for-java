@@ -28,39 +28,39 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 1. Input `Key Vault`.
 
 1. Click `Key Vault`
-    ![Find Azure Key Vault Resource 01](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/creating-an-azure-key-vault-01.png)
+    ![Find Azure Key Vault Resource 01](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/creating-an-azure-key-vault-01.png)
 
-    ![Find Azure Key Vault Resource 02](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/creating-an-azure-key-vault-02.png)
+    ![Find Azure Key Vault Resource 02](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/creating-an-azure-key-vault-02.png)
 
 1. Click **Create**.
 
-    ![Create new Key Vault](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/creating-an-azure-key-vault-03.png)
+    ![Create new Key Vault](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/creating-an-azure-key-vault-03.png)
 
 1. On the **Create key vault** page, input `Subscription`, `Resource group`, `Key vault name` and `Pricing tier`, then click `Review + Create`.
 
-    ![Specify the options](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/specify-the-options.png)
+    ![Specify the options](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/specify-the-options.png)
 
-    ![Create Key Vault resource](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/create-key-vault-resource.png)
+    ![Create Key Vault resource](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/create-key-vault-resource.png)
 
 1. When complete, click `Go to resource`.
 
-    ![Go to resource](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/go-to-resource.png)
+    ![Go to resource](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/go-to-resource.png)
 
 1. When the page for your app registration appears, copy your **Vault URI**;
 
-    ![Save vault uri](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/save-vault-uri.png)
+    ![Save vault uri](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/save-vault-uri.png)
 
 1. Click **Certificates** in the left navigation pane.  Then click **Generate/Import**.
 
-    ![Create Certificates](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/create-certificates.png)
+    ![Create Certificates](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/create-certificates.png)
 
 1. Enter a **Certificates name**, and enter a **Subject** like `CN=mydomain.com`. then click **create**.
 
-    ![Specify Certificates Info](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/specify-certificates-info.png)
+    ![Specify Certificates Info](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/specify-certificates-info.png)
 
 1. After the certificate is successfully created, it takes a while for the status to become `Enabled`. You can click **refresh** to check current status.
 
-    ![Check Certificates status](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/check-certificates-status.png)
+    ![Check Certificates status](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/check-certificates-status.png)
 
 ## Key concepts
 This starter allows you to securely manage and tightly control your certificates by using Azure Key Vault or side-load certificates by supplying them as part of the application.
@@ -74,31 +74,31 @@ This starter allows you to securely manage and tightly control your certificates
 
 2. Click **Azure Active Directory**.
 
-    ![Select Azure Active Directory](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/select-azure-active-directory.png)
+    ![Select Azure Active Directory](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/select-azure-active-directory.png)
 
 1. From the portal menu, Click **App registrations**,
 
 1. Click **New registration**.
 
-    ![New registration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/new-registration.png)
+    ![New registration](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/new-registration.png)
 
 1. Specify your application, and then Click **Register**.
 
-    ![Specify application](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/specify-application.png)
+    ![Specify application](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/specify-application.png)
 
 1. When the page for your app registration appears, copy your **Application ID** and the **Tenant ID**;
 
-    ![Get info for app](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/get-info-for-app.png)
+    ![Get info for app](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/get-info-for-app.png)
 
 1. Click **Certificates & secrets** in the left navigation pane.  Then click **New client secret**.
 
 1. Add a **Description** and click duration in the **Expires** list.  Click **Add**. The value for the key will be automatically filled in.
    
-    ![Create secrets](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/create-secrets.png)
+    ![Create secrets](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/create-secrets.png)
 
 1. Copy and save the value of the client secret. (You will not be able to retrieve this value later.)
 
-    ![Copy secrets](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/copy-secrets.png)
+    ![Copy secrets](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/copy-secrets.png)
 
 Add these items in your `application.yml`:
 ```yaml
@@ -119,23 +119,23 @@ Make sure the client-id can access target Key Vault. Here are steps to configure
 
 1. Type your key vault name in **Search resources, services, and docs** and click your key vault created before.
 
-    ![Back to key vault](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/back-to-key-vault.png)
+    ![Back to key vault](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/back-to-key-vault.png)
 
 1. Click **Access policies** in the left navigation pane. Then click **Add Access Policy**.
 
-    ![Add Access Policy](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/add-access-policy.png)
+    ![Add Access Policy](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/add-access-policy.png)
 
 1. Select **Key, Secret, &Certificate Management** as **Configure for template(optional)**. Permissions will be added automatically. 
 
-    ![Select configure](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/select-configure.png)
+    ![Select configure](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/select-configure.png)
 
 1. Click **None selected** and choose application created before, click **Select**, then click **Add**.
 
-    ![Choose application](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/choose-application.png)
+    ![Choose application](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/choose-application.png)
 
 1. Click **Save**.
 
-    ![Save Access Policy](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/save-access-policy.png)
+    ![Save Access Policy](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-keyvault-certificates/resource/save-access-policy.png)
 
 #### Using a managed identity
 
