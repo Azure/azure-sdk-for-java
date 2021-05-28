@@ -471,6 +471,13 @@ private List<T> findAllWithPageSize(int pageSize) {
     return pageContent;
 }
 ```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceQueriesUserRepository.java#L17-L20 -->
+```java
+public interface SliceQueriesUserRepository extends CosmosRepository<User, String> {
+    @Query("select * from c where c.lastName = @lastName")
+    Slice<User> getUsersByLastName(@Param("lastName") String lastName, Pageable pageable);
+}
+```
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceRepositoryCodeSnippet.java#L22-L33 -->
 ```java
 private List<User> getUsersByLastName(String lastName, int pageSize) {
