@@ -216,7 +216,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
 
         List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
-        Provider provider = Security.getProvider("SunEC");
+        Provider provider = Security.getProvider("SunEC version 11");
         for (KeyCurveName crv : curveList) {
             final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC", provider);
             ECGenParameterSpec gps = new ECGenParameterSpec(curveToSpec.get(crv));
