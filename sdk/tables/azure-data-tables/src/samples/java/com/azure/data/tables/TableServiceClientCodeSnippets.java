@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableErrorCode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
