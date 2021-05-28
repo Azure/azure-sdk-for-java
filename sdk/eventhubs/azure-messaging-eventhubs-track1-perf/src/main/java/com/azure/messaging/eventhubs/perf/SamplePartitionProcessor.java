@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -99,6 +100,7 @@ class SamplePartitionProcessor implements IEventProcessor {
         }
 
         for (EventData event : events) {
+            Objects.requireNonNull(event, "'event' can't be null.");
             eventsCounter.increment();
         }
     }

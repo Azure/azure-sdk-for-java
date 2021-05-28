@@ -586,6 +586,11 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.messaging.eventhubs.perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.messaging.eventhubs.perf[/\\].*\.java"/>
+
+  <!-- Event Hubs perf test for Track 1, which uses its own TransportType class. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
+            files="com.azure.messaging.eventhubs.perf.EventHubsOptions.java"/>
+
   <!-- Fields are set via reflection using JCommander. Setting them to final fields will break it. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.messaging.eventhubs.perf[/\\].*Options\.java"/>

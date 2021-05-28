@@ -89,6 +89,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
             try {
                 final Iterable<EventData> receivedEvents = receiver.receiveSync(options.getCount());
                 for (EventData eventData : receivedEvents) {
+                    Objects.requireNonNull(eventData, "'eventData' cannot be null");
                     number.incrementAndGet();
                 }
 
