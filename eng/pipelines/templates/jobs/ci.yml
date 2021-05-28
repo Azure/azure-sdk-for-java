@@ -60,7 +60,6 @@ jobs:
           JobType: 'Build'
           SDKType: ${{parameters.SDKType}}
           ServiceDirectory: ${{parameters.ServiceDirectory}}
-          TestFromSource: $[eq(variables['TestFromSource'], 'true')]
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -196,7 +195,6 @@ jobs:
           JobType: 'Analyze'
           SDKType: ${{parameters.SDKType}}
           ServiceDirectory: ${{parameters.ServiceDirectory}}
-          TestFromSource: $[eq(variables['TestFromSource'], 'true')]
 
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'

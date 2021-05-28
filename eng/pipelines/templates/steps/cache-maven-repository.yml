@@ -10,7 +10,7 @@ parameters:
     default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: TestFromSource
     type: boolean
-    default: false
+    default: $[eq(variables['TestFromSource'],'true')]
 
 steps:
 - task: Cache@2
