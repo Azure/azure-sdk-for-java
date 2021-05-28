@@ -7,8 +7,29 @@
 # on whether we are doing a recorded test play back or a full live
 # test.
 
+parameters:
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: TestFromSource
+    type: boolean
+    default: false
+
 steps:
 - template: ../steps/cache-maven-repository.yml
+  parameters:
+    SDKType: ${{ parameters.SDKType }}
+    ServiceDirectory: ${{ parameters.ServiceDirectory }}
+    TestFromSource: ${{ parameters.TestFromSource }}
 
 - pwsh: |
     $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json

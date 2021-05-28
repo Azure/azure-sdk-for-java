@@ -57,6 +57,9 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
+          SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          TestFromSource: ${{ coalesce(variables['TestFromSource'], false) }}
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -189,6 +192,9 @@ jobs:
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
+          SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          TestFromSource: ${{ coalesce(variables['TestFromSource'], false) }}
 
       - task: PythonScript@0
         displayName: 'Generate directories variable for sparse checkout'

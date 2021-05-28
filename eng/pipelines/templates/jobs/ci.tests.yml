@@ -61,6 +61,8 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
+          SDKType: ${{ parameters.SDKType }}
+          TestFromSource: ${{ coalesce(variables['TestFromSource'], false) }}
 
       - template: ../steps/install-reporting-tools.yml
 

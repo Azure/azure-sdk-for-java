@@ -39,6 +39,9 @@ jobs:
         displayName: 'Verify Readmes'
 
       - template: ../steps/cache-maven-repository.yml
+        parameters:
+          SDKType: ${{ parameters.SDKType }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
       # HACK: Ideally I wouldn't need to do this but I need to figure out the right
       #       approach here around getting this dependency installed whilst targeting

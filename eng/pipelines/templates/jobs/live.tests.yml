@@ -48,6 +48,8 @@ jobs:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          TestFromSource: ${{ coalesce(variables['TestFromSource'], false) }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml
