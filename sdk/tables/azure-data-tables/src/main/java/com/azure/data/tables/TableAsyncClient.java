@@ -430,7 +430,7 @@ public final class TableAsyncClient {
      *
      * @param entity The entity to update.
      * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
+     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
      * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return An empty reactive result.
@@ -455,7 +455,7 @@ public final class TableAsyncClient {
      *
      * @param entity The entity to update.
      * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
+     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
      * service. If the values do not match, the update will not occur and an exception will be thrown.
      *
      * @return A reactive result containing the HTTP response.
@@ -580,7 +580,7 @@ public final class TableAsyncClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
+     * @param eTag The value to compare with the ETag of the entity in the Tables service. If the values do not match,
      * the delete will not occur and an exception will be thrown.
      *
      * @return A reactive result containing the response.

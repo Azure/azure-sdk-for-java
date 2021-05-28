@@ -346,7 +346,7 @@ public final class TableClient {
      *
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
+     * @param eTag The value to compare with the ETag of the entity in the Tables service. If the values do not match,
      * the delete will not occur and an exception will be thrown.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
