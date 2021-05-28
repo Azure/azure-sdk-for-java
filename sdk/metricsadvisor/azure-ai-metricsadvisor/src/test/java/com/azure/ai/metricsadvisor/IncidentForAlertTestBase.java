@@ -18,7 +18,7 @@ public abstract class IncidentForAlertTestBase extends MetricsAdvisorClientTestB
     protected static class ListIncidentsForAlertInput {
         static final ListIncidentsForAlertInput INSTANCE = new ListIncidentsForAlertInput();
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
         final String alertId = "175434e3400";
     }

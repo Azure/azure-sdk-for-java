@@ -2,6 +2,8 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+## 1.0.2 (2021-05-27)
+- Dependency versions updated.
 
 ## 1.0.1 (2021-05-11)
 ### Bug Fixes

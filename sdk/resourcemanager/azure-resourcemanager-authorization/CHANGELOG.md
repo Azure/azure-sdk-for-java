@@ -1,7 +1,8 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
+## 2.5.0 (2021-05-28)
 - Supported key vault data related roles to `BuiltInRole`, for RBAC authorization of data access to data in `Vault`
 
 ## 2.4.0 (2021-04-28)

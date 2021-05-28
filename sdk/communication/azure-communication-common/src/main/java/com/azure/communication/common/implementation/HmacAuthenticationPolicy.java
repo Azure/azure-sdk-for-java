@@ -38,10 +38,12 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String DATE_HEADER = "date";
+    private static final String X_MS_DATE_HEADER = "x-ms-date";
+    private static final String X_MS_STRING_TO_SIGN_HEADER = "x-ms-hmac-string-to-sign-base64";
     private static final String HOST_HEADER = "host";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
     // Order of the headers are important here for generating correct signature
-    private static final String[] SIGNED_HEADERS = new String[]{DATE_HEADER, HOST_HEADER, CONTENT_HASH_HEADER};
+    private static final String[] SIGNED_HEADERS = new String[]{X_MS_DATE_HEADER, HOST_HEADER, CONTENT_HASH_HEADER};
 
     private static final String AUTHORIZATIONHEADERNAME = "Authorization";
     private static final String HMACSHA256FORMAT = "HMAC-SHA256 SignedHeaders=%s&Signature=%s";
@@ -70,7 +72,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    public synchronized Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String accessKey = credential.getKey();
         byte[] key = Base64.getDecoder().decode(accessKey);
         Mac sha256HMAC;
@@ -107,7 +109,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
+    private Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents.collect(() -> {
             try {
                 return MessageDigest.getInstance("SHA-256");
@@ -127,13 +129,14 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         headers.put(CONTENT_HASH_HEADER, contentHash);
         String utcNow = OffsetDateTime.now(ZoneOffset.UTC)
             .format(HMAC_DATETIMEFORMATTER_PATTERN);
+        headers.put(X_MS_DATE_HEADER, utcNow);
         headers.put(DATE_HEADER, utcNow);
         headers.put(HOST_HEADER, url.getHost());
         addSignatureHeader(url, httpMethod, headers);
         return headers;
     }
 
-    private void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
+    private synchronized void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
         final String signedHeaderNames = String.join(";", SIGNED_HEADERS);
         final String signedHeaderValues = Arrays.stream(SIGNED_HEADERS)
             .map(httpHeaders::get)
@@ -145,12 +148,12 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         }
 
         // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
-        // Signed headers: "host;x-ms-date;x-ms-content-sha256"
         // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
         String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signedHeaderValues;
         final String signature =
             Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
         httpHeaders.put(AUTHORIZATIONHEADERNAME, String.format(HMACSHA256FORMAT, signedHeaderNames, signature));
+        httpHeaders.put(X_MS_STRING_TO_SIGN_HEADER, Base64.getEncoder().encodeToString(stringToSign.getBytes(StandardCharsets.UTF_8)));
     }
 
 }

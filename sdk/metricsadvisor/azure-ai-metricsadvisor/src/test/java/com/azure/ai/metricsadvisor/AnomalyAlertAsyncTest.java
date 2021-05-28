@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
@@ -72,7 +73,8 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
                 // Act
                 final AtomicInteger i = new AtomicInteger(-1);
                 StepVerifier.create(client.listAnomalyAlertConfigs(inputAnomalyAlertList.get(i.incrementAndGet())
-                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId()))
+                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId(),
+                    new ListAnomalyAlertConfigsOptions()))
                     .thenConsumeWhile(actualAnomalyAlertList::add)
                     .verifyComplete();
 

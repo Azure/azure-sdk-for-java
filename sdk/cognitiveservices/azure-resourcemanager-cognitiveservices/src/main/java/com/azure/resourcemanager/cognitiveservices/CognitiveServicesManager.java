@@ -23,12 +23,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CognitiveServicesManagementClientBuilder;
+import com.azure.resourcemanager.cognitiveservices.implementation.DeletedAccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.OperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceSkusImpl;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
+import com.azure.resourcemanager.cognitiveservices.models.DeletedAccounts;
 import com.azure.resourcemanager.cognitiveservices.models.Operations;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResources;
@@ -43,6 +45,8 @@ import java.util.Objects;
 /** Entry point to CognitiveServicesManager. Cognitive Services Management Client. */
 public final class CognitiveServicesManager {
     private Accounts accounts;
+
+    private DeletedAccounts deletedAccounts;
 
     private ResourceSkus resourceSkus;
 
@@ -178,7 +182,7 @@ public final class CognitiveServicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.cognitiveservices")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -223,6 +227,14 @@ public final class CognitiveServicesManager {
             this.accounts = new AccountsImpl(clientObject.getAccounts(), this);
         }
         return accounts;
+    }
+
+    /** @return Resource collection API of DeletedAccounts. */
+    public DeletedAccounts deletedAccounts() {
+        if (this.deletedAccounts == null) {
+            this.deletedAccounts = new DeletedAccountsImpl(clientObject.getDeletedAccounts(), this);
+        }
+        return deletedAccounts;
     }
 
     /** @return Resource collection API of ResourceSkus. */

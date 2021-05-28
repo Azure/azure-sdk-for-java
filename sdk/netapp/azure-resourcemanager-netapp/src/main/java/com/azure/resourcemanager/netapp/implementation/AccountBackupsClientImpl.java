@@ -17,6 +17,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -28,7 +32,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.AccountBackupsClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
-import com.azure.resourcemanager.netapp.fluent.models.BackupsListInner;
+import com.azure.resourcemanager.netapp.models.BackupsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -67,7 +71,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
                 + "/netAppAccounts/{accountName}/accountBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupsListInner>> list(
+        Mono<Response<BackupsList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -119,7 +123,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @return list of Backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupsListInner>> listWithResponseAsync(String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<BackupInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -152,7 +156,11 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .<PagedResponse<BackupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -167,7 +175,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @return list of Backups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupsListInner>> listWithResponseAsync(
+    private Mono<PagedResponse<BackupInner>> listSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -198,7 +206,11 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
                 accountName,
                 this.client.getApiVersion(),
                 accept,
-                context);
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -211,32 +223,9 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Backups.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupsListInner> listAsync(String resourceGroupName, String accountName) {
-        return listWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<BackupsListInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * List all Backups for a Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupsListInner list(String resourceGroupName, String accountName) {
-        return listAsync(resourceGroupName, accountName).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BackupInner> listAsync(String resourceGroupName, String accountName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName));
     }
 
     /**
@@ -250,13 +239,44 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Backups.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupsListInner> listWithResponse(String resourceGroupName, String accountName, Context context) {
-        return listWithResponseAsync(resourceGroupName, accountName, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BackupInner> listAsync(String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
-     * Get Backup for a Netapp Account.
+     * List all Backups for a Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupInner> list(String resourceGroupName, String accountName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName));
+    }
+
+    /**
+     * List all Backups for a Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupInner> list(String resourceGroupName, String accountName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
+     * Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -264,7 +284,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupInner>> getWithResponseAsync(
@@ -305,11 +325,11 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get Backup for a Netapp Account.
+     * Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -318,7 +338,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupInner>> getWithResponseAsync(
@@ -360,7 +380,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Get Backup for a Netapp Account.
+     * Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -368,7 +388,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupInner> getAsync(String resourceGroupName, String accountName, String backupName) {
@@ -384,7 +404,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Get Backup for a Netapp Account.
+     * Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -392,7 +412,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInner get(String resourceGroupName, String accountName, String backupName) {
@@ -400,7 +420,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Get Backup for a Netapp Account.
+     * Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -409,7 +429,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupInner> getWithResponse(
@@ -418,7 +438,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -465,11 +485,11 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
                             backupName,
                             this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -518,7 +538,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -538,7 +558,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -561,7 +581,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -578,7 +598,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -596,7 +616,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -614,7 +634,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -633,7 +653,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -648,7 +668,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
-     * Delete Backup for a Netapp Account.
+     * Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

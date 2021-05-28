@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
-import com.azure.core.experimental.geojson.GeoPoint;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;

@@ -2,6 +2,7 @@
 
 ## 1.3.0-beta.1 (Unreleased)
 
+- Fixed bug in `ManagementErrorDeserializer`.
 
 ## 1.2.2 (2021-05-07)
 

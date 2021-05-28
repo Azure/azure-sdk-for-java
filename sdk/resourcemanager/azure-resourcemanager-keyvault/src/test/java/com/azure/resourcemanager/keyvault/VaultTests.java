@@ -30,7 +30,7 @@ public class VaultTests extends KeyVaultManagementTest {
             authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
-            authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
+            authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
 
         try {
             // CREATE
@@ -124,13 +124,13 @@ public class VaultTests extends KeyVaultManagementTest {
         Vault vault = keyVaultManager.vaults().define(vaultName)
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName)
-            .enableRoleBasedAccessControl()
+            .withRoleBasedAccessControl()
             .create();
 
         Assertions.assertTrue(vault.roleBasedAccessControlEnabled());
 
         vault.update()
-            .disableRoleBasedAccessControl()
+            .withoutRoleBasedAccessControl()
             .apply();
 
         Assertions.assertFalse(vault.roleBasedAccessControlEnabled());
@@ -145,7 +145,7 @@ public class VaultTests extends KeyVaultManagementTest {
             authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
-            authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
+            authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
 
         try {
             // CREATE
@@ -241,7 +241,7 @@ public class VaultTests extends KeyVaultManagementTest {
             authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
-            authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
+            authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
 
         try {
             Vault vault =
