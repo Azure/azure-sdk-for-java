@@ -55,6 +55,9 @@ jobs:
       - template: ../variables/globals.yml
 
     steps:
+      - script: |
+          ls $JAVA_HOME
+
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
