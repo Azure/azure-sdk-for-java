@@ -22,7 +22,7 @@ stages:
           safeName: ${{ parameters.SafeName }}
       ServiceDirectory: communication
       PreSteps:
-        - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]'-Djacoco.skip=true' $(DefaultTestOptions)"
+        - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
           condition: not(startsWith(variables['System.StageName'], 'Public'))
       PostSteps:
         - task: PublishCodeCoverageResults@1
