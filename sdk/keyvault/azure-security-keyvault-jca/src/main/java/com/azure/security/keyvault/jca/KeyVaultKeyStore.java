@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
@@ -28,10 +29,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.Arrays;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -62,14 +62,24 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final ClasspathCertificates classpathCertificates;
 
     /**
+     * Store certificates loaded from KeyVault.
+     */
+    private final KeyVaultCertificates keyVaultCertificates;
+
+    /**
      * Store certificates loaded from fileSystem.
      */
     private final FileSystemCertificates fileSystemCertificates;
 
     /**
-     * Store certificates loaded from KeyVault.
+     * Stores the Jre key store certificates.
      */
-    private final KeyVaultCertificates keyVaultCertificates;
+    private final JreCertificates jreCertificates;
+
+    /**
+     * Stores all the certificates.
+     */
+    private final List<AzureCertificates> allCertificates;
 
     /**
      * Stores the creation date.
@@ -122,15 +132,18 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .orElse(false);
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
+        jreCertificates = JreCertificates.getInstance();
         fileSystemCertificates = new FileSystemCertificates(Arrays.asList(customPath, wellKnowPath));
+        allCertificates = Arrays.asList(keyVaultCertificates, classpathCertificates, jreCertificates, fileSystemCertificates);
     }
 
     @Override
     public Enumeration<String> engineAliases() {
-        List<String> aliasList = Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
+        List<String> aliasList = allCertificates.stream()
             .map(AzureCertificates::getAliases)
             .flatMap(Collection::stream)
-            .distinct().collect(Collectors.toList());
+            .distinct()
+            .collect(Collectors.toList());
 
         return Collections.enumeration(aliasList);
     }
@@ -154,7 +167,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Certificate engineGetCertificate(String alias) {
-        Certificate certificate = Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
+        Certificate certificate = allCertificates.stream()
             .map(AzureCertificates::getCertificates)
             .filter(a -> a.containsKey(alias))
             .findFirst()
@@ -172,7 +185,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
         if (cert != null) {
-            List<String> aliasList = Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
+            List<String> aliasList = allCertificates.stream()
                 .map(AzureCertificates::getAliases)
                 .flatMap(Collection::stream)
                 .distinct()
@@ -215,17 +228,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Key engineGetKey(String alias, char[] password) {
-        return Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
-                     .map(AzureCertificates::getCertificateKeys)
-                     .filter(a -> a.containsKey(alias))
-                     .findFirst()
-                     .map(certificateKeys -> certificateKeys.get(alias))
-                     .orElse(null);
+        return allCertificates.stream()
+                        .map(AzureCertificates::getCertificateKeys)
+                        .filter(a -> a.containsKey(alias))
+                        .findFirst()
+                        .map(certificateKeys -> certificateKeys.get(alias))
+                        .orElse(null);
     }
 
     @Override
     public boolean engineIsCertificateEntry(String alias) {
-        return Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
+        return allCertificates.stream()
                      .map(AzureCertificates::getAliases)
                      .flatMap(Collection::stream)
                      .distinct()
@@ -258,22 +271,17 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
         loadCertificatesFromClasspath();
-        fileSystemCertificates.loadCertificatesFromFileSystem();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
         loadCertificatesFromClasspath();
-        fileSystemCertificates.loadCertificatesFromFileSystem();
     }
 
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (keyVaultCertificates.getAliases().contains(alias)) {
             return;
-        }
-        if (fileSystemCertificates.getAliases().contains(alias)) {
-            LOGGER.log(WARNING, "Cannot overwrite own certificate");
         }
         engineSetClasspathCertificateEntry(alias, certificate);
     }
@@ -302,7 +310,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public int engineSize() {
-        return Stream.of(keyVaultCertificates, classpathCertificates, fileSystemCertificates)
+        return allCertificates.stream()
                      .map(AzureCertificates::getAliases)
                      .flatMap(Collection::stream)
                      .distinct()
