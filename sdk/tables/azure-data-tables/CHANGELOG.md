@@ -2,6 +2,17 @@
 
 ## 12.0.0-beta.8 (Unreleased)
 
+### New Features
+
+- Introduced the `TableTransactionAction` class and the `TableTransactionActionType` enum.
+
+### Breaking Changes
+
+- Removed the `TableBatch` and `TableAsyncBatch` types, as well as the methods `TableAsyncClient.createBatch()` and `TableClient.createBatch()`. In their place, batch operations can now be submitted via the following methods:
+    - `TableAsyncClient.submitTransaction(List<TableTransactionAction> transactionalBatch)`
+    - `TableAsyncClient.submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch)`
+    - `TableClient.submitTransaction(List<TableTransactionAction> transactionalBatch)`
+    - `TableClient.submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch, Duration timeout, Context context)`
 
 ## 12.0.0-beta.7 (2021-05-15)
 
