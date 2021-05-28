@@ -501,25 +501,6 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the ingestion status of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String}
-     *
-     * @param dataFeedId The data feed id.
-     *
-     * @return The ingestion statuses.
-     * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
-     * @throws NullPointerException If {@code dataFeedId}, {@code options}, {@code options.startTime},
-     * {@code options.endTime}  is null.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId) {
-        return listDataFeedIngestionStatus(dataFeedId);
-    }
-
-    /**
-     * Fetch the ingestion status of a data feed.
-     *
-     * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions}
      *
      * @param dataFeedId The data feed id.

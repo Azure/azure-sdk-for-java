@@ -46,7 +46,7 @@ public class DataFeedIngestionOperationTest extends DataFeedIngestionOperationTe
 
         PagedIterable<DataFeedIngestionStatus> ingestionStatusIterable
             = client.listDataFeedIngestionStatus(ListIngestionStatusInput.INSTANCE.dataFeedId,
-            ListIngestionStatusInput.INSTANCE.options, Context.NONE);
+            ListIngestionStatusInput.INSTANCE.options);
 
         for (DataFeedIngestionStatus ingestionStatus : ingestionStatusIterable) {
             assertListIngestionStatusOutput(ingestionStatus);
