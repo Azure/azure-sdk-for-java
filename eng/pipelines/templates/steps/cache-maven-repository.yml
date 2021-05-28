@@ -1,6 +1,6 @@
 steps:
 - task: Cache@2
   inputs:
-    key: 'maven | $(CacheSalt) | $(Agent.OS) | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt'
+    key: 'maven | $(CacheSalt) | $(Agent.OS) | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | ${{ parameters.ServiceDirectory }} | ${{ coalesce(variables.TestFromSource, false) }}'
     path: $(MAVEN_CACHE_FOLDER)
   displayName: Cache Maven local repo
