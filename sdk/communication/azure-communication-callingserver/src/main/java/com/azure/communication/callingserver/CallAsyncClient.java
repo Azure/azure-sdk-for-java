@@ -13,6 +13,7 @@ import com.azure.communication.callingserver.implementation.models.CreateCallReq
 import com.azure.communication.callingserver.implementation.models.CreateCallResponse;
 import com.azure.communication.callingserver.implementation.models.EventSubscriptionTypeModel;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
+import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CancelMediaOperationsResult;
 import com.azure.communication.callingserver.models.CreateCallOptions;
@@ -431,12 +432,13 @@ public final class CallAsyncClient {
         for (EventSubscriptionType requestedCallEvent : createCallOptions.getRequestedCallEvents()) {
             requestedCallEvents.add(EventSubscriptionTypeModel.fromString(requestedCallEvent.toString()));
         }
+        PhoneNumberIdentifierModel sourceAlternateIdentity = new PhoneNumberIdentifierModel().setValue(createCallOptions.getAlternateCallerId().getPhoneNumber());
 
         request.setSource(CommunicationIdentifierConverter.convert(source))
                 .setTargets(targetsList.stream().map(target -> CommunicationIdentifierConverter.convert(target))
                         .collect(Collectors.toList()))
                 .setCallbackUri(createCallOptions.getCallbackUri()).setRequestedModalities(requestedModalities)
-                .setRequestedCallEvents(requestedCallEvents);
+                .setRequestedCallEvents(requestedCallEvents).setSourceAlternateIdentity(sourceAlternateIdentity);
 
         return request;
     }
