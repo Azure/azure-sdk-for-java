@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.sas;
 
-import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.data.tables.implementation.StorageConstants;
-
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
