@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response payload of the cancel media processing operation. */
 @Fluent
-public final class CancelMediaProcessingResponse {
+public final class CancelMediaOperationsResponse {
     /*
      * Gets or sets the identifier.
      */
@@ -47,9 +47,9 @@ public final class CancelMediaProcessingResponse {
      * Set the id property: Gets or sets the identifier.
      *
      * @param id the id value to set.
-     * @return the CancelMediaProcessingResponse object itself.
+     * @return the CancelMediaOperationsResponse object itself.
      */
-    public CancelMediaProcessingResponse setId(String id) {
+    public CancelMediaOperationsResponse setId(String id) {
         this.id = id;
         return this;
     }
@@ -67,9 +67,9 @@ public final class CancelMediaProcessingResponse {
      * Set the status property: Gets or sets the status of the operation.
      *
      * @param status the status value to set.
-     * @return the CancelMediaProcessingResponse object itself.
+     * @return the CancelMediaOperationsResponse object itself.
      */
-    public CancelMediaProcessingResponse setStatus(OperationStatusModel status) {
+    public CancelMediaOperationsResponse setStatus(OperationStatusModel status) {
         this.status = status;
         return this;
     }
@@ -87,9 +87,9 @@ public final class CancelMediaProcessingResponse {
      * Set the operationContext property: Gets or sets the operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the CancelMediaProcessingResponse object itself.
+     * @return the CancelMediaOperationsResponse object itself.
      */
-    public CancelMediaProcessingResponse setOperationContext(String operationContext) {
+    public CancelMediaOperationsResponse setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -107,9 +107,9 @@ public final class CancelMediaProcessingResponse {
      * Set the resultInfo property: Gets or sets the result info.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the CancelMediaProcessingResponse object itself.
+     * @return the CancelMediaOperationsResponse object itself.
      */
-    public CancelMediaProcessingResponse setResultInfo(ResultInfoInternal resultInfo) {
+    public CancelMediaOperationsResponse setResultInfo(ResultInfoInternal resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }

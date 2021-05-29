@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CancelMediaProcessingRequest;
-import com.azure.communication.callingserver.models.CancelMediaProcessingResult;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
 import com.azure.communication.callingserver.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.CancelMediaOperationsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -24,7 +23,7 @@ public final class CallClient {
     private final CallAsyncClient callAsyncClient;
 
     CallClient(CallAsyncClient callAsyncClient) {
-        this.callAsyncClient = callAsyncClient; 
+        this.callAsyncClient = callAsyncClient;
     }
 
     /**
@@ -91,7 +90,7 @@ public final class CallClient {
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param operationContext The value to identify context of the operation.
-     * @param context A {@link Context} representing the request context. 
+     * @param context A {@link Context} representing the request context.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -116,7 +115,7 @@ public final class CallClient {
      * Disconnect the current caller in a Group-call or end a p2p-call.
      *
      * @param callId Call id to to hang up.
-     * @param context A {@link Context} representing the request context. 
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful HangupCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -139,7 +138,7 @@ public final class CallClient {
      * Deletes a call.
      *
      * @param callId Call id to delete.
-     * @param context A {@link Context} representing the request context. 
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful DeleteCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -148,32 +147,30 @@ public final class CallClient {
     }
 
     /**
-     * Cancel Media Processing.
+     * Cancel Media Operations.
      *
-     * @param callId Call id to to cancel media processing.
-     * @param request Cancel Media Processing request.
-     * @return response for a successful CancelMediaProcessing request.
+     * @param callId Call id to to cancel media Operations.
+     * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelMediaProcessingResult cancelMediaProcessing(String callId, CancelMediaProcessingRequest request) {
-        return callAsyncClient.cancelMediaProcessing(callId, request).block();
+    public CancelMediaOperationsResult cancelMediaOperations(String callId) {
+        return callAsyncClient.cancelMediaOperations(callId).block();
     }
 
     /**
-     * Cancel Media Processing.
+     * Cancel Media Operations.
      *
-     * @param callId Call id to to cancel media processing.
-     * @param request Cancel Media Processing request.
-     * @param context A {@link Context} representing the request context. 
-     * @return response for a successful CancelMediaProcessing request.
+     * @param callId Call id to to cancel media Operations.
+     * @param context A {@link Context} representing the request context.
+     * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelMediaProcessingResult> cancelMediaProcessingWithResponse(String callId, CancelMediaProcessingRequest request, Context context) {
-        return callAsyncClient.cancelMediaProcessingWithResponse(callId, request, context).block();
+    public Response<CancelMediaOperationsResult> cancelMediaOperationsWithResponse(String callId, Context context) {
+        return callAsyncClient.cancelMediaOperationsWithResponse(callId, context).block();
     }
 
     /**
-     * Cancel Media Processing.
+     * Invite participants to a call.
      *
      * @param callId Call id.
      * @param request Invite participant request.
@@ -185,11 +182,11 @@ public final class CallClient {
     }
 
     /**
-     * Cancel Media Processing.
+     * Invite participants to a call.
      *
      * @param callId Call id.
      * @param request Invite participant request.
-     * @param context A {@link Context} representing the request context. 
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful inviteParticipants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -214,7 +211,7 @@ public final class CallClient {
      *
      * @param callId Call id.
      * @param participantId Participant id.
-     * @param context A {@link Context} representing the request context. 
+     * @param context A {@link Context} representing the request context.
      * @return response for a successful removeParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

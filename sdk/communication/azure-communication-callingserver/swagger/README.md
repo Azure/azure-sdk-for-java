@@ -32,7 +32,7 @@ To update generated files for calling service, run the following command
 ### Code generation settings
 ``` yaml
 tag: package-callingserver-2021-05-18
-input-file: Sample-Swagger.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/4f3481d102a19c47a3f2af3f0ba637cfb80ed935/specification/communication/data-plane/CallingServer/preview/2021-03-28-preview0/communicationservicescallingserver.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
