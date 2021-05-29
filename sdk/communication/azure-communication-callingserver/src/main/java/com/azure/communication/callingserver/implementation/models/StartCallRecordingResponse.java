@@ -29,7 +29,7 @@ public final class StartCallRecordingResponse {
      * Set the recordingId property: The recording id of the started recording.
      *
      * @param recordingId the recordingId value to set.
-     * @return the StartCallRecordingResult object itself.
+     * @return the StartCallRecordingResponse object itself.
      */
     public StartCallRecordingResponse setRecordingId(String recordingId) {
         this.recordingId = recordingId;
