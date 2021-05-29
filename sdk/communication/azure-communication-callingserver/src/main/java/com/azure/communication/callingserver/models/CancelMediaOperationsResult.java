@@ -6,9 +6,9 @@ package com.azure.communication.callingserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response payload of the cancel media processing operation. */
+/** The response payload of the cancel media Operations operation. */
 @Fluent
-public final class CancelMediaProcessingResult {
+public final class CancelMediaOperationsResult {
     /*
      * Gets or sets the identifier.
      */
@@ -46,9 +46,9 @@ public final class CancelMediaProcessingResult {
      * Set the id property: Gets or sets the identifier.
      *
      * @param id the id value to set.
-     * @return the CancelMediaProcessingResult object itself.
+     * @return the CancelMediaOperationsResult object itself.
      */
-    public CancelMediaProcessingResult setId(String id) {
+    public CancelMediaOperationsResult setId(String id) {
         this.id = id;
         return this;
     }
@@ -66,9 +66,9 @@ public final class CancelMediaProcessingResult {
      * Set the status property: Gets or sets the status of the operation.
      *
      * @param status the status value to set.
-     * @return the CancelMediaProcessingResult object itself.
+     * @return the CancelMediaOperationsResult object itself.
      */
-    public CancelMediaProcessingResult setStatus(OperationStatus status) {
+    public CancelMediaOperationsResult setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }
@@ -86,9 +86,9 @@ public final class CancelMediaProcessingResult {
      * Set the operationContext property: Gets or sets the operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the CancelMediaProcessingResult object itself.
+     * @return the CancelMediaOperationsResult object itself.
      */
-    public CancelMediaProcessingResult setOperationContext(String operationContext) {
+    public CancelMediaOperationsResult setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -106,9 +106,9 @@ public final class CancelMediaProcessingResult {
      * Set the resultInfo property: Gets or sets the result info.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the CancelMediaProcessingResult object itself.
+     * @return the CancelMediaOperationsResult object itself.
      */
-    public CancelMediaProcessingResult setResultInfo(ResultInfo resultInfo) {
+    public CancelMediaOperationsResult setResultInfo(ResultInfo resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }

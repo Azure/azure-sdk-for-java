@@ -4,8 +4,7 @@
 
 package com.azure.communication.callingserver.implementation;
 
-import com.azure.communication.callingserver.implementation.models.CancelMediaProcessingRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CancelMediaProcessingResponse;
+import com.azure.communication.callingserver.implementation.models.CancelMediaOperationsResponse;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CreateCallResponse;
@@ -109,17 +108,16 @@ public final class CallsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/calls/{callId}/CancelMediaProcessing")
+        @Post("/calling/calls/{callId}/CancelMediaOperations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = CommunicationErrorException.class,
                 code = {400, 401, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<CancelMediaProcessingResponse>> cancelMediaProcessing(
+        Mono<Response<CancelMediaOperationsResponse>> cancelMediaOperations(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callId") String callId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CancelMediaProcessingRequestInternal request,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -594,7 +592,6 @@ public final class CallsImpl {
      * Cancel Media Processing.
      *
      * @param callId The call id.
-     * @param request The cancel media processing request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
      * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
@@ -602,25 +599,18 @@ public final class CallsImpl {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelMediaProcessingResponse>> cancelMediaProcessingWithResponseAsync(
-            String callId, CancelMediaProcessingRequestInternal request) {
+    public Mono<Response<CancelMediaOperationsResponse>> cancelMediaOperationsWithResponseAsync(String callId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.cancelMediaProcessing(
-                                this.client.getEndpoint(),
-                                callId,
-                                this.client.getApiVersion(),
-                                request,
-                                accept,
-                                context));
+                        service.cancelMediaOperations(
+                                this.client.getEndpoint(), callId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Cancel Media Processing.
      *
      * @param callId The call id.
-     * @param request The cancel media processing request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
@@ -629,18 +619,17 @@ public final class CallsImpl {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelMediaProcessingResponse>> cancelMediaProcessingWithResponseAsync(
-            String callId, CancelMediaProcessingRequestInternal request, Context context) {
+    public Mono<Response<CancelMediaOperationsResponse>> cancelMediaOperationsWithResponseAsync(
+            String callId, Context context) {
         final String accept = "application/json";
-        return service.cancelMediaProcessing(
-                this.client.getEndpoint(), callId, this.client.getApiVersion(), request, accept, context);
+        return service.cancelMediaOperations(
+                this.client.getEndpoint(), callId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Cancel Media Processing.
      *
      * @param callId The call id.
-     * @param request The cancel media processing request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
      * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
@@ -648,11 +637,10 @@ public final class CallsImpl {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelMediaProcessingResponse> cancelMediaProcessingAsync(
-            String callId, CancelMediaProcessingRequestInternal request) {
-        return cancelMediaProcessingWithResponseAsync(callId, request)
+    public Mono<CancelMediaOperationsResponse> cancelMediaOperationsAsync(String callId) {
+        return cancelMediaOperationsWithResponseAsync(callId)
                 .flatMap(
-                        (Response<CancelMediaProcessingResponse> res) -> {
+                        (Response<CancelMediaOperationsResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -665,7 +653,6 @@ public final class CallsImpl {
      * Cancel Media Processing.
      *
      * @param callId The call id.
-     * @param request The cancel media processing request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
@@ -674,11 +661,10 @@ public final class CallsImpl {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelMediaProcessingResponse> cancelMediaProcessingAsync(
-            String callId, CancelMediaProcessingRequestInternal request, Context context) {
-        return cancelMediaProcessingWithResponseAsync(callId, request, context)
+    public Mono<CancelMediaOperationsResponse> cancelMediaOperationsAsync(String callId, Context context) {
+        return cancelMediaOperationsWithResponseAsync(callId, context)
                 .flatMap(
-                        (Response<CancelMediaProcessingResponse> res) -> {
+                        (Response<CancelMediaOperationsResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -691,7 +677,6 @@ public final class CallsImpl {
      * Cancel Media Processing.
      *
      * @param callId The call id.
-     * @param request The cancel media processing request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
      * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
@@ -699,16 +684,14 @@ public final class CallsImpl {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelMediaProcessingResponse cancelMediaProcessing(
-            String callId, CancelMediaProcessingRequestInternal request) {
-        return cancelMediaProcessingAsync(callId, request).block();
+    public CancelMediaOperationsResponse cancelMediaOperations(String callId) {
+        return cancelMediaOperationsAsync(callId).block();
     }
 
     /**
      * Cancel Media Processing.
      *
      * @param callId The call id.
-     * @param request The cancel media processing request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
@@ -717,9 +700,8 @@ public final class CallsImpl {
      * @return the response payload of the cancel media processing operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelMediaProcessingResponse> cancelMediaProcessingWithResponse(
-            String callId, CancelMediaProcessingRequestInternal request, Context context) {
-        return cancelMediaProcessingWithResponseAsync(callId, request, context).block();
+    public Response<CancelMediaOperationsResponse> cancelMediaOperationsWithResponse(String callId, Context context) {
+        return cancelMediaOperationsWithResponseAsync(callId, context).block();
     }
 
     /**

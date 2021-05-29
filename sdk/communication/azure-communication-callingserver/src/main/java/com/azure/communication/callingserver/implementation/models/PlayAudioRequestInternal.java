@@ -57,7 +57,7 @@ public final class PlayAudioRequestInternal {
      * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      *
      * @param audioFileUri the audioFileUri value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioRequestInternal object itself.
      */
     public PlayAudioRequestInternal setAudioFileUri(String audioFileUri) {
         this.audioFileUri = audioFileUri;
@@ -77,7 +77,7 @@ public final class PlayAudioRequestInternal {
      * Set the loop property: The flag indicating whether audio file needs to be played in loop or not.
      *
      * @param loop the loop value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioRequestInternal object itself.
      */
     public PlayAudioRequestInternal setLoop(Boolean loop) {
         this.loop = loop;
@@ -97,7 +97,7 @@ public final class PlayAudioRequestInternal {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioRequestInternal object itself.
      */
     public PlayAudioRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
@@ -117,7 +117,7 @@ public final class PlayAudioRequestInternal {
      * Set the audioFileId property: An id for the media in the AudioFileUri, using which we cache the media resource.
      *
      * @param audioFileId the audioFileId value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioRequestInternal object itself.
      */
     public PlayAudioRequestInternal setAudioFileId(String audioFileId) {
         this.audioFileId = audioFileId;
