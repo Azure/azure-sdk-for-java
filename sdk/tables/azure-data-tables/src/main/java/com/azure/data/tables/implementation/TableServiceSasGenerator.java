@@ -100,6 +100,10 @@ public class TableServiceSasGenerator {
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNATURE, signature);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_START_PARTITION_KEY, startPartitionKey);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_START_ROW_KEY, startRowKey);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_END_PARTITION_KEY, endPartitionKey);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_END_ROW_KEY, endRowKey);
 
         return sb.toString();
     }

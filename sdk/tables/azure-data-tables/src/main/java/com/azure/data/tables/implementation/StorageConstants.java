@@ -383,5 +383,25 @@ public final class StorageConstants {
          * The SAS queue constant.
          */
         public static final String SAS_QUEUE_CONSTANT = "q";
+
+        /**
+         * The SAS table start partition key.
+         */
+        public static final String SAS_TABLE_START_PARTITION_KEY = "spk";
+
+        /**
+         * The SAS table start row key.
+         */
+        public static final String SAS_TABLE_START_ROW_KEY = "srk";
+
+        /**
+         * The SAS table end partition key.
+         */
+        public static final String SAS_TABLE_END_PARTITION_KEY = "epk";
+
+        /**
+         * The SAS table end row key.
+         */
+        public static final String SAS_TABLE_END_ROW_KEY = "erk";
     }
 }
