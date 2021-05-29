@@ -18,14 +18,14 @@ import java.util.Objects;
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class TableAccountSasSignatureValues {
+    private final OffsetDateTime expiryTime;
+    private final String permissions;
+    private final String services;
+    private final String resourceTypes;
     private String version;
     private TableSasProtocol protocol;
     private OffsetDateTime startTime;
-    private OffsetDateTime expiryTime;
-    private String permissions;
     private TableSasIpRange sasIpRange;
-    private String services;
-    private String resourceTypes;
 
     /**
      * Initializes a new {@link TableAccountSasSignatureValues} object.
@@ -47,6 +47,45 @@ public final class TableAccountSasSignatureValues {
         this.services = services.toString();
         this.resourceTypes = resourceTypes.toString();
         this.permissions = permissions.toString();
+    }
+
+    /**
+     * Get The time after which the SAS will no longer work.
+     *
+     * @return The time after which the SAS will no longer work.
+     */
+    public OffsetDateTime getExpiryTime() {
+        return expiryTime;
+    }
+
+    /**
+     * Gets the operations the SAS user may perform. Please refer to {@link TableAccountSasPermission} to help determine
+     * which permissions are allowed.
+     *
+     * @return The operations the SAS user may perform.
+     */
+    public String getPermissions() {
+        return permissions;
+    }
+
+    /**
+     * Get the services accessible with this SAS. Please refer to {@link TableAccountSasService} to help determine which
+     * services are accessible.
+     *
+     * @return The services accessible with this SAS.
+     */
+    public String getServices() {
+        return services;
+    }
+
+    /**
+     * Get the resource types accessible with this SAS. Please refer to {@link TableAccountSasResourceType} to help determine
+     * the resource types that are accessible.
+     *
+     * @return The resource types accessible with this SAS.
+     */
+    public String getResourceTypes() {
+        return resourceTypes;
     }
 
     /**
@@ -118,25 +157,6 @@ public final class TableAccountSasSignatureValues {
     }
 
     /**
-     * Get The time after which the SAS will no longer work.
-     *
-     * @return The time after which the SAS will no longer work.
-     */
-    public OffsetDateTime getExpiryTime() {
-        return expiryTime;
-    }
-
-    /**
-     * Gets the operations the SAS user may perform. Please refer to {@link TableAccountSasPermission} to help determine
-     * which permissions are allowed.
-     *
-     * @return The operations the SAS user may perform.
-     */
-    public String getPermissions() {
-        return permissions;
-    }
-
-    /**
      * Get the {@link TableSasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
      * @return The {@link TableSasIpRange}.
@@ -159,26 +179,6 @@ public final class TableAccountSasSignatureValues {
         this.sasIpRange = sasIpRange;
 
         return this;
-    }
-
-    /**
-     * Get the services accessible with this SAS. Please refer to {@link TableAccountSasService} to help determine which
-     * services are accessible.
-     *
-     * @return The services accessible with this SAS.
-     */
-    public String getServices() {
-        return services;
-    }
-
-    /**
-     * Get the resource types accessible with this SAS. Please refer to {@link TableAccountSasResourceType} to help determine
-     * the resource types that are accessible.
-     *
-     * @return The resource types accessible with this SAS.
-     */
-    public String getResourceTypes() {
-        return resourceTypes;
     }
 
     private String stringToSign(final AzureNamedKeyCredential azureNamedKeyCredential) {
