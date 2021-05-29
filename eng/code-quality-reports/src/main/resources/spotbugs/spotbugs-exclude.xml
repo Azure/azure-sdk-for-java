@@ -2474,10 +2474,17 @@
     <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
-  
+
   <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
   <Match>
     <Class name="~com\.azure\.data\.confidentialledger\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- This is a false positive. The type of TOptions is known because it is set
+       in the constructor of the concrete class. -->
+  <Match>
+    <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 </FindBugsFilter>
