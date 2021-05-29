@@ -180,19 +180,4 @@ public final class TableAccountSasSignatureValues {
 
         return this;
     }
-
-    private String stringToSign(final AzureNamedKeyCredential azureNamedKeyCredential) {
-        return String.join("\n",
-            azureNamedKeyCredential.getAzureNamedKey().getName(),
-            TableAccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-            this.services,
-            resourceTypes,
-            this.startTime == null ? "" : StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            this.version,
-            "" // Account SAS requires an additional newline character
-        );
-    }
 }
