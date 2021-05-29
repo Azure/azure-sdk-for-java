@@ -263,22 +263,10 @@ public final class CallAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CancelMediaOperationsResult> cancelMediaOperations(String callId) {
-        return cancelMediaOperations(callId, null);
-    }
-
-    /**
-     * Cancel Media Operations.
-     *
-     * @param callId The call leg id.
-     * @param context The context to associate with this operation.
-     * @return the response payload of the cancel media operations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelMediaOperationsResult> cancelMediaOperations(String callId, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
 
-            return this.callClient.cancelMediaOperationsAsync(callId, context)
+            return this.callClient.cancelMediaOperationsAsync(callId)
                     .flatMap((
                             com.azure.communication.callingserver.implementation.models.CancelMediaOperationsResponse response) -> {
                         CancelMediaOperationsResult cancelMediaOperationsResult = convertCancelMediaOperationsResponse(
