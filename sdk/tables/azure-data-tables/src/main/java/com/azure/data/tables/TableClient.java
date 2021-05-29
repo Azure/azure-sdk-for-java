@@ -5,10 +5,10 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
@@ -16,8 +16,10 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import com.azure.data.tables.models.TableTransactionResult;
+import com.azure.data.tables.sas.TableServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.util.List;
@@ -78,6 +80,35 @@ public final class TableClient {
      */
     public TableServiceVersion getServiceVersion() {
         return this.client.getServiceVersion();
+    }
+
+    /**
+     * Generates a service SAS for the table using the specified {@link TableServiceSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
+     * <p>See {@link TableServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param tableServiceSasSignatureValues {@link TableServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(TableServiceSasSignatureValues tableServiceSasSignatureValues) {
+        return client.generateSas(tableServiceSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates a service SAS for the table using the specified {@link TableServiceSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
+     * <p>See {@link TableServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param tableServiceSasSignatureValues {@link TableServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(TableServiceSasSignatureValues tableServiceSasSignatureValues, Context context) {
+        return client.generateSas(tableServiceSasSignatureValues, context);
     }
 
     /**

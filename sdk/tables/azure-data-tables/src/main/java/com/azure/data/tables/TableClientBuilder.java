@@ -184,7 +184,8 @@ public final class TableClientBuilder {
     }
 
     /**
-     * Sets the SAS token used to authorize requests sent to the service.
+     * Sets the SAS token used to authorize requests sent to the service. Setting this value will undo other
+     * configuration made with {@code credential(AzureSasCredential)} or {@code credential(AzureNamedKeyCredential)}.
      *
      * @param sasToken The SAS token to use for authenticating requests.
      *
@@ -204,12 +205,14 @@ public final class TableClientBuilder {
 
         this.sasToken = sasToken;
         this.azureNamedKeyCredential = null;
+        this.azureSasCredential = null;
 
         return this;
     }
 
     /**
-     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service. Setting this value will undo
+     * other configuration made with {@code credential(AzureNamedKeyCredential)} or {@code sasToken(String)}.
      *
      * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
      *
@@ -223,12 +226,15 @@ public final class TableClientBuilder {
         }
 
         this.azureSasCredential = credential;
+        this.azureNamedKeyCredential = null;
+        this.sasToken = null;
 
         return this;
     }
 
     /**
-     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service. Setting this will
+     * override any other configuration made with {@code credential(AzureSasCredential)} or {@code sasToken(String)}.
      *
      * @param credential {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
@@ -242,6 +248,7 @@ public final class TableClientBuilder {
         }
 
         this.azureNamedKeyCredential = credential;
+        this.azureSasCredential = null;
         this.sasToken = null;
 
         return this;

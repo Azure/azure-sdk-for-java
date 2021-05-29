@@ -5,6 +5,7 @@
 ### New Features
 
 - Introduced the `TableTransactionAction` class and the `TableTransactionActionType` enum.
+- Added support for generating SAS tokens at the Account and Table Service in all clients. 
 
 ### Breaking Changes
 
@@ -22,6 +23,7 @@
     - `updateEntity(TableEntity entity, TableEntityUpdateMode updateMode,
       boolean ifUnchanged)`
     - `getEntity(String partitionKey, String rowKey, List<String> select)`
+- Using any of `credential(AzureNamedKeyCredential)`, `credential(AzureSasCredential)` and `sasToken(String)` in client builders now overrides configuration set by the remaining two methods.
 
 ## 12.0.0-beta.7 (2021-05-15)
 

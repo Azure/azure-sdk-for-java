@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.tables.implementation;
+
+package com.azure.data.tables.sas;
+
+import com.azure.data.tables.implementation.StorageConstants;
 
 import java.util.Locale;
 
 /**
  * Specifies the set of possible permissions for Shared Access Signature protocol.
  */
-public enum SasProtocol {
+public enum TableSasProtocol {
     /**
      * Permission to use SAS only through https granted.
      */
@@ -20,23 +23,23 @@ public enum SasProtocol {
 
     private final String protocols;
 
-    SasProtocol(String p) {
+    TableSasProtocol(String p) {
         this.protocols = p;
     }
 
     /**
-     * Parses a {@code String} into a {@link SasProtocol} value if possible.
+     * Parses a {@code String} into a {@link TableSasProtocol} value if possible.
      *
      * @param str The value to try to parse.
      *
      * @return A {@code SasProtocol} value that represents the string if possible.
      * @throws IllegalArgumentException If {@code str} doesn't equal "https" or "https,http".
      */
-    public static SasProtocol parse(String str) {
+    public static TableSasProtocol parse(String str) {
         if (str.equals(StorageConstants.HTTPS)) {
-            return SasProtocol.HTTPS_ONLY;
+            return TableSasProtocol.HTTPS_ONLY;
         } else if (str.equals(StorageConstants.HTTPS_HTTP)) {
-            return SasProtocol.HTTPS_HTTP;
+            return TableSasProtocol.HTTPS_HTTP;
         }
 
         throw new IllegalArgumentException(String.format(Locale.ROOT,

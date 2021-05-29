@@ -5,6 +5,7 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -21,6 +22,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableAccountSasGenerator;
+import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.models.CorsRule;
 import com.azure.data.tables.implementation.models.GeoReplication;
@@ -45,6 +48,7 @@ import com.azure.data.tables.models.TableServiceMetrics;
 import com.azure.data.tables.models.TableServiceProperties;
 import com.azure.data.tables.models.TableServiceRetentionPolicy;
 import com.azure.data.tables.models.TableServiceStatistics;
+import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -145,6 +149,38 @@ public final class TableServiceAsyncClient {
      */
     public TableServiceVersion getServiceVersion() {
         return TableServiceVersion.fromString(implementation.getVersion());
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified
+     * {@link TableAccountSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}.
+     * <p>See {@link TableAccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
+     *
+     * @return A {@link String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues) {
+        return generateAccountSas(tableAccountSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified
+     * {@link TableAccountSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}.
+     * <p>See {@link TableAccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@link String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues, Context context) {
+        return new TableAccountSasGenerator(tableAccountSasSignatureValues)
+            .generateSas(TableSasUtils.extractNamedKeyCredential(getHttpPipeline()), context);
     }
 
     /**

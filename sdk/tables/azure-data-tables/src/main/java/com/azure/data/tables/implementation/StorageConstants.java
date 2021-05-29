@@ -3,6 +3,8 @@
 
 package com.azure.data.tables.implementation;
 
+import com.azure.data.tables.sas.TableSasProtocol;
+
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -36,12 +38,12 @@ public final class StorageConstants {
     public static final long TB = 1024L * GB;
 
     /**
-     * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
+     * Represents the value for {@link TableSasProtocol#HTTPS_ONLY}.
      */
     public static final String HTTPS = "https";
 
     /**
-     * Represents the value for {@link SasProtocol#HTTPS_HTTP}.
+     * Represents the value for {@link TableSasProtocol#HTTPS_HTTP}.
      */
     public static final String HTTPS_HTTP = "https,http";
 

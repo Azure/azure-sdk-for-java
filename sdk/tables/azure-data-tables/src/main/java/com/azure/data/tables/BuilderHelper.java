@@ -30,9 +30,6 @@ import com.azure.data.tables.implementation.NullHttpClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
@@ -50,8 +47,6 @@ final class BuilderHelper {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         retryPolicy = (retryPolicy == null) ? new RetryPolicy() : retryPolicy;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
-
-        validateSingleCredentialIsPresent(azureNamedKeyCredential, azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -119,19 +114,5 @@ final class BuilderHelper {
             .policies(policies)
             .httpClient(new NullHttpClient())
             .build();
-    }
-
-    private static void validateSingleCredentialIsPresent(AzureNamedKeyCredential azureNamedKeyCredential,
-                                                          AzureSasCredential azureSasCredential, String sasToken,
-                                                          ClientLogger logger) {
-        List<Object> usedCredentials = Stream.of(azureNamedKeyCredential, azureSasCredential, sasToken)
-            .filter(Objects::nonNull).collect(Collectors.toList());
-        if (usedCredentials.size() > 1) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Only one credential should be used. Credentials present: "
-                    + usedCredentials.stream().map(c -> c instanceof String ? "sasToken" : c.getClass().getName())
-                    .collect(Collectors.joining(","))
-            ));
-        }
     }
 }
