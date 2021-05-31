@@ -420,7 +420,9 @@ public final class CallAsyncClient {
         for (EventSubscriptionType requestedCallEvent : createCallOptions.getRequestedCallEvents()) {
             requestedCallEvents.add(EventSubscriptionTypeModel.fromString(requestedCallEvent.toString()));
         }
-        PhoneNumberIdentifierModel sourceAlternateIdentity = new PhoneNumberIdentifierModel().setValue(createCallOptions.getAlternateCallerId().getPhoneNumber());
+
+        PhoneNumberIdentifierModel sourceAlternateIdentity = createCallOptions.getAlternateCallerId() == null 
+            ? null : new PhoneNumberIdentifierModel().setValue(createCallOptions.getAlternateCallerId().getPhoneNumber());
 
         request.setSource(CommunicationIdentifierConverter.convert(source))
                 .setTargets(targetsList.stream().map(target -> CommunicationIdentifierConverter.convert(target))
@@ -448,7 +450,12 @@ public final class CallAsyncClient {
     }
 
     private PlayAudioRequestInternal convertPlayAudioRequest(PlayAudioRequest request) {
-        return new PlayAudioRequestInternal().setOperationContext(request.getOperationContext());
+        PlayAudioRequestInternal playAudioRequestInternal = new PlayAudioRequestInternal();
+        playAudioRequestInternal.setAudioFileUri(request.getAudioFileUri());
+        playAudioRequestInternal.setAudioFileId(request.getAudioFileId());
+        playAudioRequestInternal.setLoop(request.isLoop());
+        playAudioRequestInternal.setOperationContext(request.getOperationContext());
+        return playAudioRequestInternal;
     }
 
     private CreateCallResult convertCreateCallWithResponse(CreateCallResponse response) {
