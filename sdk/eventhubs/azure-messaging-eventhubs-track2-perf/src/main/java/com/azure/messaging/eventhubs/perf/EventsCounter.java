@@ -10,25 +10,43 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @see EventProcessorTest
  */
-public class EventsCounter {
+class EventsCounter {
     private final String partitionId;
     private final AtomicInteger eventsReceived = new AtomicInteger();
     private volatile Long startTime;
     private volatile Long stopTime;
 
-    public EventsCounter(String partitionId) {
+    /**
+     * Creates a new instance.
+     *
+     * @param partitionId The partition id for this counter.
+     */
+    EventsCounter(String partitionId) {
         this.partitionId = partitionId;
     }
 
-    public String getPartitionId() {
+    /**
+     * Gets the partition id.
+     *
+     * @return The partition id.
+     */
+    String getPartitionId() {
         return partitionId;
     }
 
-    public void increment() {
+    /**
+     * Increment number of events.
+     */
+    void increment() {
         eventsReceived.incrementAndGet();
     }
 
-    public int totalEvents() {
+    /**
+     * Gets the number of events.
+     *
+     * @return The number of events.
+     */
+    int totalEvents() {
         return eventsReceived.get();
     }
 
@@ -37,14 +55,17 @@ public class EventsCounter {
      *
      * @return Elapsed time in nanoseconds.
      */
-    public long elapsedTime() {
+    long elapsedTime() {
         if (stopTime == null || startTime == null) {
             return -1L;
         }
         return stopTime - startTime;
     }
 
-    public synchronized void start() {
+    /**
+     * Starts the counter time.
+     */
+    synchronized void start() {
         if (startTime != null) {
             return;
         }
@@ -52,7 +73,10 @@ public class EventsCounter {
         startTime = System.nanoTime();
     }
 
-    public synchronized void stop() {
+    /**
+     * Ends the counter time.
+     */
+    synchronized void stop() {
         if (stopTime != null) {
             return;
         }

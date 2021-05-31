@@ -453,7 +453,7 @@ public class MyItem {
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
 - Example, find operation, e.g., `findByAFieldAndBField`
-- Supports [Spring Data pageable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
+- Supports [Spring Data Pageable, Slice and Sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
   - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/PageableRepositoryCodeSnippet.java#L24-L35 -->
@@ -469,6 +469,28 @@ private List<T> findAllWithPageSize(int pageSize) {
         pageContent = page.getContent();
     }
     return pageContent;
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceQueriesUserRepository.java#L17-L20 -->
+```java
+public interface SliceQueriesUserRepository extends CosmosRepository<User, String> {
+    @Query("select * from c where c.lastName = @lastName")
+    Slice<User> getUsersByLastName(@Param("lastName") String lastName, Pageable pageable);
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceRepositoryCodeSnippet.java#L22-L33 -->
+```java
+private List<User> getUsersByLastName(String lastName, int pageSize) {
+
+    final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
+    Slice<User> slice = repository.getUsersByLastName(lastName, pageRequest);
+    List<User> content = slice.getContent();
+    while (slice.hasNext()) {
+        Pageable nextPageable = slice.nextPageable();
+        slice = repository.getUsersByLastName(lastName, nextPageable);
+        content.addAll(slice.getContent());
+    }
+    return content;
 }
 ```
 
