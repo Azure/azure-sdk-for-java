@@ -18,6 +18,11 @@ jobs:
       vmImage: 'ubuntu-18.04'
     steps:
     - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
+      parameters:
+        JobType: 'Reporting'
+        SDKType: 'client'
+        ServiceDirectory: 'aggregate-report'
+
 
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -27,7 +32,7 @@ jobs:
       displayName: 'Build All Libraries'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
+        options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)

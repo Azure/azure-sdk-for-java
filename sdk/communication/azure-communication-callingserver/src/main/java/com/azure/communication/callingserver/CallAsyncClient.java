@@ -8,12 +8,14 @@ import com.azure.communication.callingserver.implementation.CallsImpl;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.ResultInfoConverter;
+import com.azure.communication.callingserver.implementation.models.CancelMediaOperationsResponse;
 import com.azure.communication.callingserver.implementation.models.CallModalityModel;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CreateCallResponse;
 import com.azure.communication.callingserver.implementation.models.EventSubscriptionTypeModel;
-import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
+import com.azure.communication.callingserver.implementation.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CancelMediaOperationsResult;
 import com.azure.communication.callingserver.models.CreateCallOptions;
@@ -131,7 +133,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(request, "'request' cannot be null.");
 
             return this.callClient.playAudioAsync(callId, convertPlayAudioRequest(request)).flatMap(
-                    (com.azure.communication.callingserver.implementation.models.PlayAudioResponse response) -> {
+                (PlayAudioResponse response) -> {
                         PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
                         return Mono.just(playAudioResult);
                     });
@@ -161,7 +163,7 @@ public final class CallAsyncClient {
                     contextValue = context;
                 }
                 return this.callClient.playAudioWithResponseAsync(callId, convertPlayAudioRequest(request)).flatMap((
-                        Response<com.azure.communication.callingserver.implementation.models.PlayAudioResponse> response) -> {
+                        Response<PlayAudioResponse> response) -> {
                     PlayAudioResult playAudioResult = convertPlayAudioResponse(response.getValue());
                     return Mono.just(new SimpleResponse<>(response, playAudioResult));
                 });
@@ -267,8 +269,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
 
             return this.callClient.cancelMediaOperationsAsync(callId)
-                    .flatMap((
-                            com.azure.communication.callingserver.implementation.models.CancelMediaOperationsResponse response) -> {
+                    .flatMap((CancelMediaOperationsResponse response) -> {
                         CancelMediaOperationsResult cancelMediaOperationsResult = convertCancelMediaOperationsResponse(
                                 response);
                         return Mono.just(cancelMediaOperationsResult);
@@ -299,7 +300,7 @@ public final class CallAsyncClient {
                 return this.callClient
                         .cancelMediaOperationsWithResponseAsync(callId, context)
                         .flatMap((
-                                Response<com.azure.communication.callingserver.implementation.models.CancelMediaOperationsResponse> response) -> {
+                                Response<CancelMediaOperationsResponse> response) -> {
                             CancelMediaOperationsResult cancelMediaOperationsResult = convertCancelMediaOperationsResponse(
                                     response.getValue());
                             return Mono.just(new SimpleResponse<>(response, cancelMediaOperationsResult));
@@ -341,7 +342,10 @@ public final class CallAsyncClient {
         return inviteParticipantsWithResponse(callId, request, null);
     }
 
-    Mono<Response<Void>> inviteParticipantsWithResponse(String callId, InviteParticipantsRequest request, Context context) {
+    Mono<Response<Void>> inviteParticipantsWithResponse(
+        String callId,
+        InviteParticipantsRequest request,
+        Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
@@ -421,8 +425,9 @@ public final class CallAsyncClient {
             requestedCallEvents.add(EventSubscriptionTypeModel.fromString(requestedCallEvent.toString()));
         }
 
-        PhoneNumberIdentifierModel sourceAlternateIdentity = createCallOptions.getAlternateCallerId() == null 
-            ? null : new PhoneNumberIdentifierModel().setValue(createCallOptions.getAlternateCallerId().getPhoneNumber());
+        PhoneNumberIdentifierModel sourceAlternateIdentity = createCallOptions.getAlternateCallerId() == null
+            ? null : new PhoneNumberIdentifierModel()
+            .setValue(createCallOptions.getAlternateCallerId().getPhoneNumber());
 
         request.setSource(CommunicationIdentifierConverter.convert(source))
                 .setTargets(targetsList.stream().map(target -> CommunicationIdentifierConverter.convert(target))
@@ -433,16 +438,14 @@ public final class CallAsyncClient {
         return request;
     }
 
-    private PlayAudioResult convertPlayAudioResponse(
-            com.azure.communication.callingserver.implementation.models.PlayAudioResponse response) {
+    private PlayAudioResult convertPlayAudioResponse(PlayAudioResponse response) {
         return new PlayAudioResult().setId(response.getId())
                 .setStatus(OperationStatus.fromString(response.getStatus().toString()))
                 .setOperationContext(response.getOperationContext())
                 .setResultInfo(ResultInfoConverter.convert(response.getResultInfo()));
     }
 
-    private CancelMediaOperationsResult convertCancelMediaOperationsResponse(
-            com.azure.communication.callingserver.implementation.models.CancelMediaOperationsResponse response) {
+    private CancelMediaOperationsResult convertCancelMediaOperationsResponse(CancelMediaOperationsResponse response) {
         return new CancelMediaOperationsResult().setId(response.getId())
                 .setStatus(OperationStatus.fromString(response.getStatus().toString()))
                 .setOperationContext(response.getOperationContext())
@@ -450,12 +453,11 @@ public final class CallAsyncClient {
     }
 
     private PlayAudioRequestInternal convertPlayAudioRequest(PlayAudioRequest request) {
-        PlayAudioRequestInternal playAudioRequestInternal = new PlayAudioRequestInternal();
-        playAudioRequestInternal.setAudioFileUri(request.getAudioFileUri());
-        playAudioRequestInternal.setAudioFileId(request.getAudioFileId());
-        playAudioRequestInternal.setLoop(request.isLoop());
-        playAudioRequestInternal.setOperationContext(request.getOperationContext());
-        return playAudioRequestInternal;
+        return new PlayAudioRequestInternal()
+            .setOperationContext(request.getOperationContext())
+            .setAudioFileUri(request.getAudioFileUri())
+            .setAudioFileId(request.getAudioFileId())
+            .setLoop(request.isLoop());
     }
 
     private CreateCallResult convertCreateCallWithResponse(CreateCallResponse response) {
