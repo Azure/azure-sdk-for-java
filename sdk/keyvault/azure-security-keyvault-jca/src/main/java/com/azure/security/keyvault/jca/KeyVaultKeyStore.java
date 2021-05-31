@@ -154,9 +154,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineDeleteEntry(String alias) {
-        keyVaultCertificates.deleteEntry(alias);
-        classpathCertificates.deleteEntry(alias);
-        fileSystemCertificates.deleteEntry(alias);
+        allCertificates.stream().forEach(a -> a.deleteEntry(alias));
     }
 
     @Override
