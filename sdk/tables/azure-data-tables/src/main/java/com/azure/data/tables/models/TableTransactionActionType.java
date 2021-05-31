@@ -2,43 +2,43 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
-import com.azure.data.tables.TableClient;
-
 /**
  * The type of action to be executed on a {@link TableEntity} in a transactional batch operation.
  */
 public enum TableTransactionActionType {
     /**
-     * Add the entity to the table. This is equivalent to {@link TableClient#createEntity(TableEntity)}.
+     * Add the entity to the table. This is equivalent to {@code TableClient.createEntity()} or
+     * {@code TableAsyncClient.createEntity()}.
      */
     CREATE,
 
     /**
      * Upsert the entity in {@link TableEntityUpdateMode#MERGE} mode. This is equivalent to
-     * {@link TableClient#upsertEntity(TableEntity)}.
+     * {@code TableClient.upsertEntity()} or {@code TableAsyncClient.upsertEntity()}.
      */
     UPSERT_MERGE,
 
     /**
      * Upsert the entity in {@link TableEntityUpdateMode#REPLACE} mode. This is equivalent to
-     * {@link TableClient#upsertEntity(TableEntity)}.
+     * {@code TableClient.upsertEntity()} or {@code TableAsyncClient.upsertEntity()}.
      */
     UPSERT_REPLACE,
 
     /**
      * Update the entity in {@link TableEntityUpdateMode#MERGE} mode. This is equivalent to
-     * {@link TableClient#updateEntity(TableEntity)}.
+     * {@code TableClient.updateEntity()} or {@code TableAsyncClient.updateEntity()}.
      */
     UPDATE_MERGE,
 
     /**
      * Update the entity in {@link TableEntityUpdateMode#REPLACE} mode. This is equivalent to
-     * {@link TableClient#updateEntity(TableEntity)}.
+     * {@code TableClient.updateEntity()} or {@code TableAsyncClient.updateEntity()}.
      */
     UPDATE_REPLACE,
 
     /**
-     * Delete the entity. This is equivalent to {@link TableClient#deleteEntity(TableEntity)}.
+     * Delete the entity. This is equivalent to {@code TableClient.deleteEntity()} or
+     * {@code TableAsyncClient.deleteEntity()}.
      */
     DELETE
 }

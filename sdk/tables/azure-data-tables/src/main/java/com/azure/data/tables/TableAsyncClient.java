@@ -319,30 +319,6 @@ public final class TableAsyncClient {
      * @param entity The entity to upsert.
      * @param updateMode The type of update to perform if the entity already exits.
      *
-     * @return An empty reactive result.
-     *
-     * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
-        return upsertEntityWithResponse(entity, updateMode).flatMap(response -> Mono.justOrEmpty(response.getValue()));
-    }
-
-    /**
-     * Inserts an entity into the table if it does not exist, or updates the existing entity using the specified update
-     * mode otherwise.
-     *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will be
-     * inserted. Otherwise, the existing entity will be updated according to the specified update mode.
-     *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
-     *
-     * @param entity The entity to upsert.
-     * @param updateMode The type of update to perform if the entity already exits.
-     *
      * @return A reactive result containing the HTTP response.
      *
      * @throws IllegalArgumentException If the provided entity is invalid.
@@ -418,32 +394,8 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
-        return updateEntity(entity, updateMode, false);
-    }
-
-    /**
-     * Updates an existing entity using the specified update mode.
-     *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
-     *
-     * @param entity The entity to update.
-     * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
-     * service. If the values do not match, the update will not occur and an exception will be thrown.
-     *
-     * @return An empty reactive result.
-     *
-     * @throws IllegalArgumentException If the provided entity is invalid.
-     * @throws TableServiceException If no entity with the same partition key and row key exists within the table,
-     * or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does not match that of the provided
-     * entity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateEntity(TableEntity entity, TableEntityUpdateMode updateMode, boolean ifUnchanged) {
-        return updateEntityWithResponse(entity, updateMode, ifUnchanged).flatMap(response ->
-            Mono.justOrEmpty(response.getValue()));
+        return updateEntityWithResponse(entity, updateMode, false)
+            .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
 
     /**
@@ -555,55 +507,54 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEntity(String partitionKey, String rowKey) {
-        return deleteEntityWithResponse(partitionKey, rowKey, null).flatMap(FluxUtil::toMono);
+        return deleteEntityWithResponse(partitionKey, rowKey, null, false, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes an entity from the table.
      *
-     * @param tableEntity The table entity to delete.
+     * @param entity The table entity to delete.
      *
-     * @return An empty reactive result.
-     *
-     * @throws IllegalArgumentException If the {@link TableEntity provided entity}'s partition key or row key are
-     * {@code null} or empty.
-     * @throws TableServiceException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntity(TableEntity tableEntity) {
-        return deleteEntityWithResponse(tableEntity.getPartitionKey(), tableEntity.getRowKey(), tableEntity.getETag(),
-            null).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes an entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the ETag of the entity in the Tables service. If the values do not match,
-     * the delete will not occur and an exception will be thrown.
-     *
-     * @return A reactive result containing the response.
+     * @return A reactive result containing an HTTP response.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag) {
-        return withContext(context -> deleteEntityWithResponse(partitionKey, rowKey, eTag, context));
+    public Mono<Void> deleteEntity(TableEntity entity) {
+        return deleteEntityWithResponse(entity, false).flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Context context) {
+    /**
+     * Deletes an entity from the table.
+     *
+     * @param entity The table entity to delete.
+     * @param ifUnchanged When true, the ETag of the provided entity must match the ETag of the entity in the Table
+     * service. If the values do not match, the update will not occur and an exception will be thrown.
+     *
+     * @return A reactive result containing an HTTP response.
+     *
+     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty.
+     * @throws TableServiceException If the request is rejected by the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged) {
+        return withContext(context -> deleteEntityWithResponse(entity.getPartitionKey(), entity.getRowKey(),
+            entity.getETag(), ifUnchanged, context));
+    }
+
+    Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
+                                                  Context context) {
         context = context == null ? Context.NONE : context;
-        String matchParam = eTag == null ? "*" : eTag;
+        eTag = ifUnchanged ? eTag : "*";
 
         if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
         try {
-            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey,
-                matchParam, null, null, null, context)
+            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, eTag,
+                null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -643,46 +594,6 @@ public final class TableAsyncClient {
         return new PagedFlux<>(
             () -> withContext(context -> listEntitiesFirstPage(context, options, TableEntity.class)),
             token -> withContext(context -> listEntitiesNextPage(token, context, options, TableEntity.class)));
-    }
-
-    /**
-     * Lists all entities within the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A paged reactive result containing all entities within the table.
-     *
-     * @throws IllegalArgumentException If an instance of the provided {@code resultType} can't be created.
-     * @throws TableServiceException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T extends TableEntity> PagedFlux<T> listEntities(Class<T> resultType) {
-        return listEntities(new ListEntitiesOptions(), resultType);
-    }
-
-    /**
-     * Lists entities using the parameters in the provided options.
-     *
-     * If the `filter` parameter in the options is set, only entities matching the filter will be returned. If the
-     * `select` parameter is set, only the properties included in the select parameter will be returned for each entity.
-     * If the `top` parameter is set, the number of returned entities will be limited to that value.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param options The `filter`, `select`, and `top` OData query options to apply to this operation.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A paged reactive result containing matching entities within the table.
-     *
-     * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed, or if
-     * an instance of the provided {@code resultType} can't be created.
-     * @throws TableServiceException If the request is rejected by the service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T extends TableEntity> PagedFlux<T> listEntities(ListEntitiesOptions options, Class<T> resultType) {
-        return new PagedFlux<>(
-            () -> withContext(context -> listEntitiesFirstPage(context, options, resultType)),
-            token -> withContext(context -> listEntitiesNextPage(token, context, options, resultType)));
     }
 
     /**
@@ -850,68 +761,6 @@ public final class TableAsyncClient {
      * @param rowKey The partition key of the entity.
      * @param select A list of properties to select on the entity.
      *
-     * @return A reactive result containing the entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, or if the
-     * {@code select} OData query option is malformed.
-     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableEntity> getEntity(String partitionKey, String rowKey, List<String> select) {
-        return getEntityWithResponse(partitionKey, rowKey, select).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A reactive result containing the entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, or if an
-     * instance of the provided {@code resultType} can't be created.
-     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> Mono<T> getEntity(String partitionKey, String rowKey, Class<T> resultType) {
-        return getEntityWithResponse(partitionKey, rowKey, null, resultType).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A reactive result containing the entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, if the
-     * {@code select} OData query option is malformed, or if an instance of the provided {@code resultType} can't be
-     * created.
-     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> Mono<T> getEntity(String partitionKey, String rowKey, List<String> select,
-                                                     Class<T> resultType) {
-        return getEntityWithResponse(partitionKey, rowKey, select, resultType).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select A list of properties to select on the entity.
-     *
      * @return A reactive result containing the response and entity.
      *
      * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, or if the
@@ -922,29 +771,6 @@ public final class TableAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableEntity>> getEntityWithResponse(String partitionKey, String rowKey, List<String> select) {
         return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, context));
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A reactive result containing the response and entity.
-     *
-     * @throws IllegalArgumentException If the provided partition key or row key are {@code null} or empty, if the
-     * {@code select} OData query option is malformed, or if an instance of the provided {@code resultType} can't be
-     * created.
-     * @throws TableServiceException If no entity with the provided partition key and row key exists within the
-     * table.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey,
-                                                                           List<String> select, Class<T> resultType) {
-        return withContext(context -> getEntityWithResponse(partitionKey, rowKey, select, resultType, context));
     }
 
     <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey,
@@ -1106,7 +932,7 @@ public final class TableAsyncClient {
      * fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public synchronized Mono<TableTransactionResult> submitTransaction(List<TableTransactionAction> transactionActions) {
+    public Mono<TableTransactionResult> submitTransaction(List<TableTransactionAction> transactionActions) {
         return submitTransactionWithResponse(transactionActions)
             .flatMap(response -> Mono.justOrEmpty(response.getValue()));
     }
@@ -1130,7 +956,7 @@ public final class TableAsyncClient {
      * fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public synchronized Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions) {
+    public Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions) {
         return withContext(context -> submitTransactionWithResponse(transactionActions, context));
     }
 
@@ -1172,8 +998,8 @@ public final class TableAsyncClient {
                     break;
                 case DELETE:
                     operations.add(
-                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity().getPartitionKey(),
-                            transactionAction.getEntity().getRowKey(), transactionAction.getEntity().getETag()));
+                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity(),
+                            transactionAction.getIfUnchanged()));
 
                     break;
                 default:

@@ -8,13 +8,28 @@ import com.microsoft.azure.eventprocessorhost.PartitionContext;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartitionProcessor> {
+/**
+ * Factory that returns the corresponding {@link SamplePartitionProcessor}.
+ */
+class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartitionProcessor> {
     private final ConcurrentHashMap<String, SamplePartitionProcessor> processorMap;
 
-    public SampleEventProcessorFactory(ConcurrentHashMap<String, SamplePartitionProcessor> processorMap) {
+    /**
+     * Creates an instance with the available partition processors.
+     *
+     * @param processorMap The available partition processors to use.
+     */
+    SampleEventProcessorFactory(ConcurrentHashMap<String, SamplePartitionProcessor> processorMap) {
         this.processorMap = processorMap;
     }
 
+    /**
+     * Returns a processor that matches the partition id.
+     *
+     * @param context Context for the partition.
+     * @return The processor.
+     * @throws RuntimeException if there is no partition processor for the partition id.
+     */
     @Override
     public SamplePartitionProcessor createEventProcessor(PartitionContext context) {
         final String partitionId = context.getPartitionId();

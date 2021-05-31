@@ -15,6 +15,7 @@ variables:
   DefaultTestOptions: '$(DefaultOptions) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
+  TestFromSource: false
 
   skipComponentGovernanceDetection: true
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
