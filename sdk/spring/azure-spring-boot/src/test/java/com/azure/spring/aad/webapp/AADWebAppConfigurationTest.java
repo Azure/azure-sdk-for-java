@@ -263,9 +263,6 @@ public class AADWebAppConfigurationTest {
             ).run(context -> {
             AADWebAppClientRegistrationRepository clientRepo =
                 context.getBean(AADWebAppClientRegistrationRepository.class);
-            for (String s : clientRepo.getAzureClient().getAccessTokenScopes()) {
-                System.out.println("defaultClientWithAuthzScope=" + s);
-            }
             assertDefaultScopes(
                 clientRepo.getAzureClient(),
                 "openid", "profile", "offline_access", "Calendars.Read"
