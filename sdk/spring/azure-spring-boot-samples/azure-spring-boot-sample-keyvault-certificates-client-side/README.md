@@ -99,19 +99,19 @@ This sample should work together with [azure-spring-boot-sample-keyvault-certifi
 1. Follow the above step of [Using TLS with service principal](#using-tls-with-service-principal).
 
 #### Using mTLS with managed identity
-1. Replace the `restTemplateWithmTLS` bean in `SampleApplicationConfiguration.java` as
+1. Replace the `restTemplateWithMTLS` bean in `SampleApplicationConfiguration.java` as
     <!-- embedme ../../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultJcaManagedIdentitySample.java#L42-L61 -->
     ```java
     @Bean
-    public RestTemplate restTemplateWithmTLS() throws Exception {
-        KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+    public RestTemplate restTemplateWithMTLS() throws Exception {
+        KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.managed-identity"));
-        azuerKeyVaultKeyStore.load(parameter);
+        azureKeyVaultKeyStore.load(parameter);
         SSLContext sslContext = SSLContexts.custom()
-                                           .loadTrustMaterial(azuerKeyVaultKeyStore, null)
-                                           .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                           .loadTrustMaterial(azureKeyVaultKeyStore, null)
+                                           .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
                                            .build();
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
             (hostname, session) -> true);

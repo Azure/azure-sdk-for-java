@@ -40,15 +40,15 @@ public class KeyVaultJcaManagedIdentitySample {
     }
 
     @Bean
-    public RestTemplate restTemplateWithmTLS() throws Exception {
-        KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+    public RestTemplate restTemplateWithMTLS() throws Exception {
+        KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.managed-identity"));
-        azuerKeyVaultKeyStore.load(parameter);
+        azureKeyVaultKeyStore.load(parameter);
         SSLContext sslContext = SSLContexts.custom()
-                                           .loadTrustMaterial(azuerKeyVaultKeyStore, null)
-                                           .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                           .loadTrustMaterial(azureKeyVaultKeyStore, null)
+                                           .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
                                            .build();
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
             (hostname, session) -> true);
