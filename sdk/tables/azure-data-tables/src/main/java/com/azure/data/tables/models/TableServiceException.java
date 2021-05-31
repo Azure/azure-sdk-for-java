@@ -8,7 +8,7 @@ import com.azure.core.http.HttpResponse;
 /**
  * Exception thrown for an invalid response with {@link TableServiceError} information.
  */
-public final class TableServiceException extends HttpResponseException {
+public class TableServiceException extends HttpResponseException {
     /**
      * Initializes a new instance of the {@link TableServiceException} class.
      *

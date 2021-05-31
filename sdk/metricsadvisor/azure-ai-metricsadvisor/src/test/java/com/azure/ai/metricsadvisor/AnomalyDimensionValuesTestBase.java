@@ -29,7 +29,7 @@ public abstract class AnomalyDimensionValuesTestBase extends MetricsAdvisorClien
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
         final ListAnomalyDimensionValuesOptions options
             = new ListAnomalyDimensionValuesOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
         final String dimensionName = DIMENSION_NAME;
     }

@@ -172,7 +172,7 @@ public class MetricsAdvisorAsyncClient {
             .setActiveSince(activeSince).setDimensionFilter(options.getDimensionCombinationsToFilter());
 
         return service.getMetricSeriesSinglePageAsync(UUID.fromString(metricId), metricSeriesQueryOptions,
-            options.getSkip(), options.getTop(), context)
+            options.getSkip(), options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing information metric series definitions"))
             .doOnSuccess(response -> logger.info("Listed metric series definitions - {}", response))
             .doOnError(error -> logger.warning("Failed to list metric series definitions information - {}", error))
@@ -337,7 +337,7 @@ public class MetricsAdvisorAsyncClient {
             .setDimensionName(dimensionName).setDimensionValueFilter(options.getDimensionValueToFilter());
 
         return service.getMetricDimensionSinglePageAsync(UUID.fromString(metricId), metricDimensionQueryOptions,
-            options.getSkip(), options.getTop(), context)
+            options.getSkip(), options.getMaxPageSize(), context)
             .doOnRequest(ignoredValue -> logger.info("Listing all dimension values for a metric"))
             .doOnSuccess(response -> logger.info("Listed all dimension values for a metric"))
             .doOnError(error -> logger.warning("Failed to list all dimension values for a metric information", error))
@@ -433,7 +433,7 @@ public class MetricsAdvisorAsyncClient {
             UUID.fromString(metricId),
             enrichmentStatusQueryOption,
             options.getSkip(),
-            options.getTop(),
+            options.getMaxPageSize(),
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing all metric enrichment status values for a metric"))
             .doOnSuccess(response -> logger.info("Listed all metric enrichment status values for a metric - {}",
@@ -634,7 +634,7 @@ public class MetricsAdvisorAsyncClient {
             UUID.fromString(detectionConfigurationId),
             query,
             options.getSkip(),
-            options.getTop(),
+            options.getMaxPageSize(),
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies detected"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
@@ -753,7 +753,7 @@ public class MetricsAdvisorAsyncClient {
         return service.getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(
             UUID.fromString(detectionConfigurationId),
             query,
-            options.getTop(),
+            options.getMaxPageSize(),
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing incidents detected"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
@@ -960,7 +960,7 @@ public class MetricsAdvisorAsyncClient {
             UUID.fromString(detectionConfigurationId),
             query,
             options.getSkip(),
-            options.getTop(),
+            options.getMaxPageSize(),
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing dimension values with anomalies"))
             .doOnSuccess(response -> logger.info("Listed dimension values with anomalies {}", response))
@@ -1059,7 +1059,7 @@ public class MetricsAdvisorAsyncClient {
             UUID.fromString(alertConfigurationId),
             query,
             options.getSkip(),
-            options.getTop(),
+            options.getMaxPageSize(),
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing alerts"))
             .doOnSuccess(response -> logger.info("Listed alerts {}", response))
@@ -1166,7 +1166,7 @@ public class MetricsAdvisorAsyncClient {
             UUID.fromString(alertConfigurationId),
             alertId,
             options == null ? null : options.getSkip(),
-            options == null ? null : options.getTop(),
+            options == null ? null : options.getMaxPageSize(),
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing anomalies for alert"))
             .doOnSuccess(response -> logger.info("Listed anomalies {}", response))
@@ -1245,7 +1245,7 @@ public class MetricsAdvisorAsyncClient {
             UUID.fromString(alertConfigurationId),
             alertId,
             options == null ? null : options.getSkip(),
-            options == null ? null : options.getTop(),
+            options == null ? null : options.getMaxPageSize(),
             withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing incidents for alert"))
             .doOnSuccess(response -> logger.info("Listed incidents {}", response))
@@ -1482,7 +1482,7 @@ public class MetricsAdvisorAsyncClient {
             final ListMetricFeedbackOptions finalOptions = options;
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listMetricFeedbacksSinglePage(metricFeedbackFilter, finalOptions.getTop(),
+                    listMetricFeedbacksSinglePage(metricFeedbackFilter, finalOptions.getMaxPageSize(),
                         finalOptions.getSkip(), context)),
                 continuationToken ->
                     withContext(context -> listMetricFeedbacksNextPage(continuationToken, metricFeedbackFilter,
@@ -1498,7 +1498,7 @@ public class MetricsAdvisorAsyncClient {
         final ListMetricFeedbackOptions finalOptions = options;
 
         return new PagedFlux<>(() ->
-            listMetricFeedbacksSinglePage(metricFeedbackFilter, finalOptions.getTop(),
+            listMetricFeedbacksSinglePage(metricFeedbackFilter, finalOptions.getMaxPageSize(),
                 finalOptions.getSkip(), context),
             continuationToken ->
                 listMetricFeedbacksNextPage(continuationToken, metricFeedbackFilter,
@@ -1506,10 +1506,10 @@ public class MetricsAdvisorAsyncClient {
     }
 
     private Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksSinglePage(MetricFeedbackFilter metricFeedbackFilter,
-        Integer top, Integer skip, Context context) {
+        Integer maxPageSize, Integer skip, Context context) {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
-        return service.listMetricFeedbacksSinglePageAsync(metricFeedbackFilter, skip, top, withTracing)
+        return service.listMetricFeedbacksSinglePageAsync(metricFeedbackFilter, skip, maxPageSize, withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all metric feedbacks"))
             .doOnSuccess(response -> logger.info("Listed metric feedbacks - {}", response))
             .doOnError(error -> logger.warning("Failed to list all metric feedbacks information", error))

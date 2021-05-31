@@ -2,6 +2,7 @@
 
 ## 3.6.0-beta.1 (Unreleased)
 
+
 ## 3.5.0 (2021-05-24)
 ### New Features
 - Add `AADB2CTrustedIssuerRepository` to manage the trusted issuer in AAD B2C.

@@ -45,7 +45,8 @@ stages:
       Location: canadacentral
       Clouds: 'Preview'
       TestStepMavenInputs:
-        options: '$(DefaultOptions) -T 1C -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+        options: '$(DefaultTestOptions) -T 1C'
+        mavenOptions: '$(DefaultTestMavenOptions)'
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=(.*)-general/$1-storage

@@ -24,6 +24,11 @@ public enum DataFeedSourceType {
     AZURE_DATA_EXPLORER("AzureDataExplorer"),
 
     /**
+     * Enum value AzureEventHubs.
+     */
+    AZURE_EVENT_HUBS("AzureEventHubs"),
+
+    /**
      * Enum value AzureTable.
      */
     AZURE_TABLE("AzureTable"),
@@ -69,9 +74,14 @@ public enum DataFeedSourceType {
     ELASTIC_SEARCH("Elasticsearch"),
 
     /**
-     * Enum value AzureCosmosDB.
+     * Enum value AzureDataLakeStorageGen2.
      */
-    AZURE_DATA_LAKE_STORAGE_GEN2("AzureDataLakeStorageGen2");
+    AZURE_DATA_LAKE_STORAGE_GEN2("AzureDataLakeStorageGen2"),
+
+    /**
+     * Enum value AzureLogAnalytics.
+     */
+    AZURE_LOG_ANALYTICS("AzureLogAnalytics");
 
     /**
      /**

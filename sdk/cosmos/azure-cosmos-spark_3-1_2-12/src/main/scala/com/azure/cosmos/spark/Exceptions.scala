@@ -11,6 +11,10 @@ private object Exceptions {
     cosmosException.getStatusCode == CosmosConstants.StatusCodes.Conflict
   }
 
+  def isPreconditionFailedException(cosmosException: CosmosException): Boolean = {
+    cosmosException.getStatusCode == CosmosConstants.StatusCodes.PreconditionFailed
+  }
+
   def canBeTransientFailure(cosmosException: CosmosException): Boolean = {
     // TODO: moderakh SDK should only throw 503 and not 410,
     // however due a bug in core SDK we currently may throw 410 on write
@@ -24,13 +28,13 @@ private object Exceptions {
   def isNotFoundException(throwable: Throwable): Boolean = {
     throwable match {
       case cosmosException: CosmosException =>
-        if (cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
-          cosmosException.getSubStatusCode == 0) {
-          true
-        } else {
-          false
-        }
+        isNotFoundExceptionCore(cosmosException)
       case _ => false
     }
+  }
+
+  def isNotFoundExceptionCore(cosmosException: CosmosException): Boolean = {
+      cosmosException.getStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
+        cosmosException.getSubStatusCode == 0
   }
 }
