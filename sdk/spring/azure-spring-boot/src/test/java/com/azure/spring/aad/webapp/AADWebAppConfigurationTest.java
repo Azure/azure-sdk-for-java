@@ -6,11 +6,14 @@ package com.azure.spring.aad.webapp;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -149,8 +152,10 @@ public class AADWebAppConfigurationTest {
                 ClientRegistration azure = repo.findByRegistrationId("azure");
                 ClientRegistration graph = repo.findByRegistrationId("graph");
 
-                assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(), AuthorizationGrantType.AUTHORIZATION_CODE);
-                assertEquals(repo.findByRegistrationId("graph").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
+                assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(),
+                    AuthorizationGrantType.AUTHORIZATION_CODE);
+                assertEquals(repo.findByRegistrationId("graph").getAuthorizationGrantType(),
+                    AuthorizationGrantType.CLIENT_CREDENTIALS);
             });
     }
 
@@ -246,21 +251,26 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void defaultClientWithAuthzScope() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties().withPropertyValues(
-            "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
-        )
-            .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo =
-                    context.getBean(AADWebAppClientRegistrationRepository.class);
-                for(String s : clientRepo.getAzureClient().getAccessTokenScopes()){
-                    System.out.println("defaultClientWithAuthzScope="+s);
-                }
-                assertDefaultScopes(
-                    clientRepo.getAzureClient(),
-                    "openid", "profile", "offline_access", "Calendars.Read"
-                );
-            });
+        WebApplicationContextRunner webApplicationContextRunner = new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withUserConfiguration(AADWebAppConfiguration.class);
+        webApplicationContextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
+            ).run(context -> {
+            AADWebAppClientRegistrationRepository clientRepo =
+                context.getBean(AADWebAppClientRegistrationRepository.class);
+            for (String s : clientRepo.getAzureClient().getAccessTokenScopes()) {
+                System.out.println("defaultClientWithAuthzScope=" + s);
+            }
+            assertDefaultScopes(
+                clientRepo.getAzureClient(),
+                "openid", "profile", "offline_access", "Calendars.Read"
+            );
+        });
     }
 
     @Test
