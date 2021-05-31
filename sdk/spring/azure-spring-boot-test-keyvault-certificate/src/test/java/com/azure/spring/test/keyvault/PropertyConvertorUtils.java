@@ -11,8 +11,10 @@ public class PropertyConvertorUtils {
         key.forEach(
             environmentPropertyKey -> {
                 String value = System.getenv(environmentPropertyKey);
-                String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
-                    "azure.keyvault.").replaceAll("_", "-");
+                String systemPropertyKey = environmentPropertyKey
+                    .toLowerCase()
+                    .replaceFirst("azure_keyvault_", "azure.keyvault.")
+                    .replaceAll("_", "-");
                 System.getProperties().put(systemPropertyKey, value);
             }
         );

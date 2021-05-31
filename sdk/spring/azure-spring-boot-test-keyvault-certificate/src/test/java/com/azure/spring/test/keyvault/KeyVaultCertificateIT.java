@@ -11,7 +11,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.PrivateKeyDetails;
 import org.apache.http.ssl.PrivateKeyStrategy;
 import org.apache.http.ssl.SSLContexts;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,19 +21,29 @@ import javax.net.ssl.SSLContext;
 import java.net.Socket;
 import java.security.KeyStore;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT_URI;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
-import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
+import static com.azure.spring.test.EnvironmentVariable.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyVaultCertificateIT {
 
     private RestTemplate restTemplate;
 
-    public void setRestTemplate() throws Exception{
+    private static AppRunner app;
+
+    @BeforeAll
+    public static void setEnvironmentProperty() {
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
+            Arrays.asList("AZURE_KEYVAULT_URI",
+                "AZURE_KEYVAULT_TENANT_ID",
+                "AZURE_KEYVAULT_CLIENT_ID",
+                "AZURE_KEYVAULT_CLIENT_SECRET")
+        );
+    }
+
+    public static KeyStore getAzureKeyVaultKeyStore() throws Exception {
         KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
@@ -39,9 +51,10 @@ public class KeyVaultCertificateIT {
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
         trustStore.load(parameter);
-        SSLContext sslContext = SSLContexts.custom()
-            .loadTrustMaterial(trustStore, null)
-            .build();
+        return trustStore;
+    }
+
+    private void setRestTemplate(SSLContext sslContext) {
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
             (hostname, session) -> true);
         CloseableHttpClient httpClient = HttpClients.custom()
@@ -52,85 +65,77 @@ public class KeyVaultCertificateIT {
         restTemplate = new RestTemplate(requestFactory);
     }
 
-    public void setMtlsRestTemplate() throws Exception{
-        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        trustStore.load(parameter);
+    public void setRestTemplate() throws Exception {
+        KeyStore keyStore = getAzureKeyVaultKeyStore();
         SSLContext sslContext = SSLContexts.custom()
-            .loadTrustMaterial(trustStore, null)
-            .loadKeyMaterial(trustStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+            .loadTrustMaterial(keyStore, null)
             .build();
-        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
-            (hostname, session) -> true);
-        CloseableHttpClient httpClient = HttpClients.custom()
-            .setSSLSocketFactory(socketFactory)
-            .build();
-        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-
-        restTemplate = new RestTemplate(requestFactory);
+        setRestTemplate(sslContext);
     }
 
+    public void setMTLSRestTemplate() throws Exception {
+        KeyStore keyStore = getAzureKeyVaultKeyStore();
+        SSLContext sslContext = SSLContexts.custom()
+            .loadTrustMaterial(keyStore, null)
+            .loadKeyMaterial(keyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+            .build();
+        setRestTemplate(sslContext);
+    }
+
+    public void startAppRunner(Map<String, String> properties) {
+        app = new AppRunner(DummyApp.class);
+        properties.forEach(app::property);
+        app.start();
+    }
+
+    public Map<String, String> getDefaultMap(){
+        Map<String, String> properties = new HashMap<>();
+        properties.put("azure.keyvault.uri", AZURE_KEYVAULT_URI);
+        properties.put("azure.keyvault.client-id", SPRING_CLIENT_ID);
+        properties.put("azure.keyvault.client-secret", SPRING_CLIENT_SECRET);
+        properties.put("azure.keyvault.tenant-id", SPRING_TENANT_ID);
+        properties.put("server.ssl.key-alias", "myalias");
+        properties.put("server.ssl.key-store-type", "AzureKeyVault");
+        return properties;
+    }
 
     /**
      * Test the Spring Boot Health indicator integration.
      */
     @Test
     public void testSpringBootWebApplication() throws Exception {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
+        Map<String, String> properties = getDefaultMap();
+        startAppRunner(properties);
 
-        try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault.client-id", SPRING_CLIENT_ID);
-            app.property("azure.keyvault.client-secret", SPRING_CLIENT_SECRET);
-            app.property("azure.keyvault.tenant-id", SPRING_TENANT_ID);
-            app.property("server.ssl.key-alias", "myalias");
-            app.property("server.ssl.key-store-type", "AzureKeyVault");
-            app.start();
-            setRestTemplate();
+        setRestTemplate();
+        sendRequest();
+    }
 
-            final String response = restTemplate.getForObject(
-                "https://localhost:" + app.port() + "", String.class);
-            assertEquals(response, "Hello World");
-        }
+    @AfterAll
+    public static void destroy() {
+        app.close();
     }
 
     /**
      * Test the Spring Boot Health indicator integration.
      */
     @Test
-    public void testSpringBootMtlsWebApplication() throws Exception {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
+    public void testSpringBootMTLSWebApplication() throws Exception {
 
-        try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault.client-id", SPRING_CLIENT_ID);
-            app.property("azure.keyvault.client-secret", SPRING_CLIENT_SECRET);
-            app.property("azure.keyvault.tenant-id", SPRING_TENANT_ID);
-            app.property("server.port", "8443");
-            app.property("server.ssl.key-alias", "myalias");
-            app.property("server.ssl.key-store-type", "AzureKeyVault");
-            app.property("server.ssl.client-auth", "need");
-            app.property("server.ssl.trust-store-type", "AzureKeyVault");
-            app.start();
-            setMtlsRestTemplate();
-            final String response = restTemplate.getForObject(
-                "https://localhost:" + app.port() + "", String.class);
-            assertEquals(response, "Hello World");
-        }
+        Map<String, String> properties = getDefaultMap();
+        properties.put("server.ssl.client-auth", "need");
+        properties.put("server.ssl.trust-store-type", "AzureKeyVault");
+
+        startAppRunner(properties);
+
+        setMTLSRestTemplate();
+        sendRequest();
+    }
+
+    public void sendRequest() {
+        final String response = restTemplate.getForObject(
+            "https://localhost:" + app.port() + "", String.class);
+        assertEquals(response, "Hello World");
     }
 
     private static class ClientPrivateKeyStrategy implements PrivateKeyStrategy {
