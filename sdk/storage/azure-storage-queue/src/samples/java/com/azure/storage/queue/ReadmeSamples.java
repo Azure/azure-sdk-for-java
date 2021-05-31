@@ -131,7 +131,7 @@ public class ReadmeSamples {
         // @param options: Filter for queue selection
         // @param timeout: An optional timeout applied to the operation.
         // @param context: Additional context that is passed through the Http pipeline during the service call.
-        queueServiceClient.listQueues(markers, options, timeout, context).stream().forEach(queueItem -> {
+        queueServiceClient.listQueues(options, timeout, context).stream().forEach(queueItem -> {
             System.out.printf("Queue %s exists in the account.", queueItem.getName());
         });
     }
