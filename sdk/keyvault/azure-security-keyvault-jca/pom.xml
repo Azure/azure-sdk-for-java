@@ -192,44 +192,6 @@
           <scope>test</scope>
         </dependency>
     </dependencies>
-    <profiles>
-        <profile>
-            <id>it</id>
-            <!--
-
-              To run the integration tests pass in the following system properties
-
-              - azure.keyvault.uri    - the Azure Key Vault URI
-              - azure.keyvault.tenant-id       - your tenant ID
-              - azure.keyvault.client-id       - the (application) client ID
-              - azure.keyvault.client-secret   - the (application) client secret
-
-            -->
-            <activation>
-                <property>
-                    <name>azure.keyvault.uri</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-                        <configuration>
-                            <skip>false</skip>
-                            <systemPropertyVariables>
-                                <azure.keyvault.uri>${azure.keyvault.uri}</azure.keyvault.uri>
-                                <azure.keyvault.tenant-id>${azure.keyvault.tenant-id}</azure.keyvault.tenant-id>
-                                <azure.keyvault.client-id>${azure.keyvault.client-id}</azure.keyvault.client-id>
-                                <azure.keyvault.client-secret>${azure.keyvault.client-secret}</azure.keyvault.client-secret>
-                            </systemPropertyVariables>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
