@@ -65,7 +65,7 @@ public final class JreCertificates implements AzureCertificates {
      */
     private JreCertificates() {
         jreKeyStore = JREKeyStore.getDefault();
-        aliases = Optional.of(jreKeyStore).map(a -> {
+        aliases = Optional.ofNullable(jreKeyStore).map(a -> {
             try {
                 return Collections.unmodifiableList(Collections.list(a.aliases()));
             } catch (KeyStoreException e) {
