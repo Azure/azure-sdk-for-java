@@ -20,17 +20,10 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Arrays;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -134,6 +127,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         jreCertificates = JreCertificates.getInstance();
         fileSystemCertificates = FileSystemCertificates.getInstance(Arrays.asList(customPath, wellKnowPath));
         allCertificates = Arrays.asList(keyVaultCertificates, classpathCertificates, jreCertificates, fileSystemCertificates);
+
     }
 
     @Override
@@ -182,7 +176,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
         if (cert != null) {
-            List<String> aliasList = allCertificates.stream()
+            List<String> aliasList = Stream.of(keyVaultCertificates, classpathCertificates)
                 .map(AzureCertificates::getAliases)
                 .flatMap(Collection::stream)
                 .distinct()
