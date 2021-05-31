@@ -212,7 +212,7 @@ public interface DatadogMonitorResource {
     DatadogMonitorResource.Update update();
 
     /** The template for DatadogMonitorResource update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithSku {
         /**
          * Executes the update request.
          *
@@ -250,6 +250,16 @@ public interface DatadogMonitorResource {
              * @return the next definition stage.
              */
             Update withProperties(MonitorUpdateProperties properties);
+        }
+        /** The stage of the DatadogMonitorResource update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The sku property..
+             *
+             * @param sku The sku property.
+             * @return the next definition stage.
+             */
+            Update withSku(ResourceSku sku);
         }
     }
     /**
