@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -45,6 +46,12 @@ public class BackendAddressPoolInner extends SubResource {
      */
     @JsonProperty(value = "properties.location")
     private String location;
+
+    /*
+     * An array of gateway load balancer tunnel interfaces.
+     */
+    @JsonProperty(value = "properties.tunnelInterfaces")
+    private List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces;
 
     /*
      * An array of backend addresses.
@@ -145,6 +152,26 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
+     * Get the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
+     *
+     * @return the tunnelInterfaces value.
+     */
+    public List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces() {
+        return this.tunnelInterfaces;
+    }
+
+    /**
+     * Set the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
+     *
+     * @param tunnelInterfaces the tunnelInterfaces value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withTunnelInterfaces(List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces) {
+        this.tunnelInterfaces = tunnelInterfaces;
+        return this;
+    }
+
+    /**
      * Get the loadBalancerBackendAddresses property: An array of backend addresses.
      *
      * @return the loadBalancerBackendAddresses value.
@@ -224,6 +251,9 @@ public class BackendAddressPoolInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (tunnelInterfaces() != null) {
+            tunnelInterfaces().forEach(e -> e.validate());
+        }
         if (loadBalancerBackendAddresses() != null) {
             loadBalancerBackendAddresses().forEach(e -> e.validate());
         }

@@ -61,6 +61,7 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
+          SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
 

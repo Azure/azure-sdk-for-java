@@ -35,6 +35,11 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
     }
 
+    /**
+     * Creates a client and sends messages to the given {@link EventHubsOptions#getPartitionId()}.
+     *
+     * @return A Mono that completes when messages are sent.
+     */
     @Override
     public Mono<Void> globalSetupAsync() {
         return Mono.usingWhen(
@@ -43,6 +48,11 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
             client -> Mono.fromCompletionStage(client.close()));
     }
 
+    /**
+     * Creates either a sync or async receiver instance.
+     *
+     * @return Mono that completes when the receiver futures methods are hooked up.
+     */
     @Override
     public Mono<Void> setupAsync() {
         if (options.isSync() && receiver == null) {
@@ -69,6 +79,9 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         return Mono.empty();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
         final AtomicInteger number = new AtomicInteger();
@@ -76,6 +89,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
             try {
                 final Iterable<EventData> receivedEvents = receiver.receiveSync(options.getCount());
                 for (EventData eventData : receivedEvents) {
+                    Objects.requireNonNull(eventData, "'eventData' cannot be null");
                     number.incrementAndGet();
                 }
 
@@ -88,6 +102,9 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<Void> runAsync() {
         final CompletableFuture<Void> receiveEvents = receiverAsync.thenApplyAsync(receiver -> {
@@ -113,9 +130,14 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         return Mono.fromCompletionStage(receiveEvents);
     }
 
+    /**
+     * Cleans up the receivers.
+     *
+     * @return A Mono that completes when the receivers are cleaned up and the scheduler shutdown..
+     */
     @Override
     public Mono<Void> cleanupAsync() {
-        if (options.isSync() && receiver != null) {
+        if (receiver != null) {
             return Mono.whenDelayError(
                 Mono.fromCompletionStage(receiver.close()), super.cleanupAsync());
         } else if (receiverAsync != null) {

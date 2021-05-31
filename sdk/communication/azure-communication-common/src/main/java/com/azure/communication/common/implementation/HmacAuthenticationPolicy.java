@@ -58,8 +58,6 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
 
     private final AzureKeyCredential credential;
-
-    private Mac sha256HMAC;
     private final ClientLogger logger = new ClientLogger(HmacAuthenticationPolicy.class);
 
     /**
@@ -72,18 +70,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public synchronized Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String accessKey = credential.getKey();
-        byte[] key = Base64.getDecoder().decode(accessKey);
-        Mac sha256HMAC;
-        try {
-            sha256HMAC = Mac.getInstance("HmacSHA256");
-            sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
-        }
-        this.sha256HMAC = sha256HMAC;
-
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final Flux<ByteBuffer> contents = context.getHttpRequest().getBody() == null
             ? Flux.just(ByteBuffer.allocate(0))
             : context.getHttpRequest().getBody();
@@ -136,7 +123,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         return headers;
     }
 
-    private synchronized void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
+    private void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
         final String signedHeaderNames = String.join(";", SIGNED_HEADERS);
         final String signedHeaderValues = Arrays.stream(SIGNED_HEADERS)
             .map(httpHeaders::get)
@@ -150,6 +137,17 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
         // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
         String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signedHeaderValues;
+
+        String accessKey = credential.getKey();
+        byte[] key = Base64.getDecoder().decode(accessKey);
+        Mac sha256HMAC;
+        try {
+            sha256HMAC = Mac.getInstance("HmacSHA256");
+            sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+
         final String signature =
             Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
         httpHeaders.put(AUTHORIZATIONHEADERNAME, String.format(HMACSHA256FORMAT, signedHeaderNames, signature));

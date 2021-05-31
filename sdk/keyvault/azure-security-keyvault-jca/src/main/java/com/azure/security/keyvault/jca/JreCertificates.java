@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.HashMap;
 import java.util.logging.Logger;
+import java.util.Objects;
 
 import static java.util.logging.Level.WARNING;
 
@@ -34,11 +35,6 @@ public final class JreCertificates implements AzureCertificates {
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(JreCertificates.class.getName());
-
-    /**
-     * Stores the jre key store.
-     */
-    private final KeyStore jreKeyStore;
 
     /**
      * Stores the jre key store aliases.
@@ -64,23 +60,28 @@ public final class JreCertificates implements AzureCertificates {
      * Private constructor
      */
     private JreCertificates() {
-        jreKeyStore = JREKeyStore.getDefault();
-        aliases = Optional.of(jreKeyStore).map(a -> {
-            try {
-                return Collections.unmodifiableList(Collections.list(a.aliases()));
-            } catch (KeyStoreException e) {
-                LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
-            }
-            return null; // It's ok to return null here. Null will be handled by Optional.
-        }).orElse(Collections.emptyList());
-        certs = aliases.stream()
-            .collect(HashMap::new, (m, v) -> {
+        KeyStore jreKeyStore = JREKeyStore.getDefault();
+        aliases = Optional.ofNullable(jreKeyStore)
+            .map(a -> {
                 try {
-                    m.put(v, jreKeyStore.getCertificate(v));
+                    return Collections.unmodifiableList(Collections.list(a.aliases()));
                 } catch (KeyStoreException e) {
-                    LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
+                    LOGGER.log(WARNING, "Unable to load the jre key store aliases.", e);
                 }
-            }, HashMap::putAll);
+                return null;
+            })
+            .orElseGet(Collections::emptyList);
+        certs = aliases.stream()
+            .collect(
+                HashMap::new,
+                (m, v) -> {
+                    try {
+                        m.put(v, jreKeyStore.getCertificate(v));
+                    } catch (KeyStoreException e) {
+                        LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
+                    }
+                },
+                HashMap::putAll);
         keys = Collections.emptyMap();
     }
 
@@ -140,20 +141,20 @@ public final class JreCertificates implements AzureCertificates {
         }
 
         private static Path getKeyStoreFile() {
-            String storePropName = privilegedGetProperty("javax.net.ssl.keyStore", "");
-            return getStoreFile(storePropName);
+            return Stream.of(getConfiguredKeyStorePath(), JSSE_DEFAULT_STORE, DEFAULT_STORE)
+                .filter(Objects::nonNull)
+                .filter(Files::exists)
+                .filter(Files::isReadable)
+                .findFirst()
+                .orElse(null);
         }
 
-        private static Path getStoreFile(String storePropName) {
-            Path storeProp;
-            if (storePropName.isEmpty()) {
-                storeProp = JSSE_DEFAULT_STORE;
-            } else {
-                storeProp = Paths.get(storePropName);
-            }
-            return Stream.of(storeProp, DEFAULT_STORE)
-                .filter(a -> Files.exists(a) && Files.isReadable(a))
-                .findFirst().orElse(null);
+        private static Path getConfiguredKeyStorePath() {
+            String configuredKeyStorePath = privilegedGetProperty("javax.net.ssl.keyStore", "");
+            return Optional.of(configuredKeyStorePath)
+                .filter(path -> !path.isEmpty())
+                .map(Paths::get)
+                .orElse(null);
         }
 
         private static String  privilegedGetProperty(String theProp, String defaultVal) {
