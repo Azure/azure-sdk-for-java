@@ -184,7 +184,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
         if (cert != null) {
-            List<String> aliasList =  allCertificates.stream()
+            List<String> aliasList = allCertificates.stream()
                 .map(AzureCertificates::getAliases)
                 .flatMap(Collection::stream)
                 .distinct()
