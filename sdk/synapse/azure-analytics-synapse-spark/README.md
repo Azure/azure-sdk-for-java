@@ -219,8 +219,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
-[azure_synapse]: https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace
-[azure_cli]: https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace-cli
+[azure_synapse]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
+[azure_cli]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace-cli
 [rest_api]: https://docs.microsoft.com/rest/api/synapse/
 [azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
@@ -229,4 +229,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_sub]: https://azure.microsoft.com/free/
-[azure_portal]: https://docs.microsoft.com/en-us/azure/synapse-analytics/quickstart-create-workspace
+[azure_portal]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
