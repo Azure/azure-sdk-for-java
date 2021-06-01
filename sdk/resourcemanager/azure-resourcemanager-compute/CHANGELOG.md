@@ -1,7 +1,9 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
+## 2.5.0 (2021-05-28)
+- Refreshed `api-version` `2021-03-01`
 
 ## 2.4.0 (2021-04-28)
 

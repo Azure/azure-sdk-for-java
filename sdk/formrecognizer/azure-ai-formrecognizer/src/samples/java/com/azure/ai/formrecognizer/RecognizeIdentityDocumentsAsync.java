@@ -41,7 +41,7 @@ public class RecognizeIdentityDocumentsAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/"
+        File licenseDocumentFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
             + "sample-forms/identityDocuments/license.jpg");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
 
@@ -54,7 +54,6 @@ public class RecognizeIdentityDocumentsAsync {
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
@@ -76,12 +75,12 @@ public class RecognizeIdentityDocumentsAsync {
                     }
                 }
 
-                FormField countryFormField = recognizedFields.get("Country");
-                if (countryFormField != null) {
-                    if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
-                        System.out.printf("Country: %s, confidence: %.2f%n",
-                            country, countryFormField.getConfidence());
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
                     }
                 }
 

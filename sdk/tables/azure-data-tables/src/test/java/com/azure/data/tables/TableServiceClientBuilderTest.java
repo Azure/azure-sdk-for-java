@@ -3,15 +3,15 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
-import com.azure.storage.common.policy.RequestRetryPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -29,13 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TableServiceClientBuilderTest {
     private String tableName;
     private String connectionString;
-    private TablesServiceVersion serviceVersion;
+    private TableServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
         tableName = "someTable";
         connectionString = TestUtils.getConnectionString(true);
-        serviceVersion = TablesServiceVersion.V2019_02_02;
+        serviceVersion = TableServiceVersion.V2019_02_02;
     }
 
     @Test
@@ -88,8 +88,7 @@ public class TableServiceClientBuilderTest {
     @Test
     public void nullCredentialThrowsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((AzureSasCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((TablesSharedKeyCredential) null));
-        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((TokenCredential) null));
+        assertThrows(NullPointerException.class, () -> new TableServiceClientBuilder().credential((AzureNamedKeyCredential) null));
     }
 
     @Test
@@ -103,7 +102,7 @@ public class TableServiceClientBuilderTest {
             .buildAsyncClient();
 
         StepVerifier.create(tableServiceAsyncClient.getHttpPipeline().send(
-            TestUtils.request(tableServiceAsyncClient.getServiceUrl())))
+            TestUtils.request(tableServiceAsyncClient.getServiceEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -167,7 +166,7 @@ public class TableServiceClientBuilderTest {
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;
 
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            if (pipeline.getPolicy(i).getClass() == RequestRetryPolicy.class) {
+            if (pipeline.getPolicy(i).getClass() == RetryPolicy.class) {
                 retryPolicyPosition = i;
             }
 

@@ -69,6 +69,11 @@ public class AbstractCosmosQueryUnitTest {
         }
 
         @Override
+        protected boolean isCountQuery() {
+            return false;
+        }
+
+        @Override
         protected boolean isPageQuery() {
             return false;
         }

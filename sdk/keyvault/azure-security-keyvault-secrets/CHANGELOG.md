@@ -1,7 +1,22 @@
 # Release History
 
-## 4.3.0-beta.6 (Unreleased)
+## 4.3.0-beta.7 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### Non-Breaking Changes
+- Renamed `secretId` to `sourceId` in `KeyVaultSecretIdentifier`.
+- `KeyVaultSecretIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `SecretClient` and `SecretAsyncClient`.
+
+## 4.3.0-beta.6 (2021-05-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
 
 ## 4.3.0-beta.5 (2021-04-09)
 

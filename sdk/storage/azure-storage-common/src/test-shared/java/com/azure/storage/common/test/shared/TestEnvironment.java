@@ -15,6 +15,7 @@ public final class TestEnvironment {
     private static final TestEnvironment INSTANCE = new TestEnvironment();
 
     private final TestMode testMode;
+    private final String serviceVersion;
 
     private final TestAccount primaryAccount;
     private final TestAccount secondaryAccount;
@@ -28,6 +29,7 @@ public final class TestEnvironment {
 
     private TestEnvironment() {
         this.testMode = readTestModeFromEnvironment();
+        this.serviceVersion = readServiceVersionFromEnvironment();
         this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
         this.secondaryAccount = readTestAccountFromEnvironment("SECONDARY_STORAGE_", this.testMode);
         this.managedDiskAccount = readTestAccountFromEnvironment("MANAGED_DISK_STORAGE_", this.testMode);
@@ -61,6 +63,17 @@ public final class TestEnvironment {
 
         System.out.println(String.format("--------%s---------", testMode));
         return testMode;
+    }
+
+    private String readServiceVersionFromEnvironment() {
+        String serviceVersion = Configuration.getGlobalConfiguration().get("AZURE_LIVE_TEST_SERVICE_VERSION");
+        if (serviceVersion == null || serviceVersion.trim().isEmpty()) {
+            System.out.println("Tests will run with default service version");
+            return null;
+        } else {
+            System.out.println(String.format("Tests will run with %s service version", serviceVersion));
+            return serviceVersion;
+        }
     }
 
     private static TestAccount readTestAccountFromEnvironment(String prefix, TestMode testMode) {
@@ -125,5 +138,9 @@ public final class TestEnvironment {
 
     public TestAccount getDataLakeSoftDeleteAccount() {
         return dataLakeSoftDeleteAccount;
+    }
+
+    public String getServiceVersion() {
+        return serviceVersion;
     }
 }

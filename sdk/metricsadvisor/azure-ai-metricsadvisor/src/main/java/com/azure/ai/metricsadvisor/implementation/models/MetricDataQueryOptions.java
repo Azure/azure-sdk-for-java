@@ -15,26 +15,29 @@ import java.util.Map;
 public final class MetricDataQueryOptions {
     /*
      * start time of query a time series data, and format should be
-     * yyyy-MM-ddThh:mm:ssZ
+     * yyyy-MM-ddThh:mm:ssZ. The maximum number of data points (series number *
+     * time range) is 10000.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * start time of query a time series data, and format should be
-     * yyyy-MM-ddThh:mm:ssZ
+     * yyyy-MM-ddThh:mm:ssZ. The maximum number of data points (series number *
+     * time range) is 10000.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
-     * query specific series
+     * query specific series. The maximum number of series is 100.
      */
     @JsonProperty(value = "series", required = true)
     private List<Map<String, String>> series;
 
     /**
      * Get the startTime property: start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ.
+     * The maximum number of data points (series number * time range) is 10000.
      *
      * @return the startTime value.
      */
@@ -44,6 +47,7 @@ public final class MetricDataQueryOptions {
 
     /**
      * Set the startTime property: start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ.
+     * The maximum number of data points (series number * time range) is 10000.
      *
      * @param startTime the startTime value to set.
      * @return the MetricDataQueryOptions object itself.
@@ -54,7 +58,8 @@ public final class MetricDataQueryOptions {
     }
 
     /**
-     * Get the endTime property: start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ.
+     * Get the endTime property: start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ. The
+     * maximum number of data points (series number * time range) is 10000.
      *
      * @return the endTime value.
      */
@@ -63,7 +68,8 @@ public final class MetricDataQueryOptions {
     }
 
     /**
-     * Set the endTime property: start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ.
+     * Set the endTime property: start time of query a time series data, and format should be yyyy-MM-ddThh:mm:ssZ. The
+     * maximum number of data points (series number * time range) is 10000.
      *
      * @param endTime the endTime value to set.
      * @return the MetricDataQueryOptions object itself.
@@ -74,7 +80,7 @@ public final class MetricDataQueryOptions {
     }
 
     /**
-     * Get the series property: query specific series.
+     * Get the series property: query specific series. The maximum number of series is 100.
      *
      * @return the series value.
      */
@@ -83,7 +89,7 @@ public final class MetricDataQueryOptions {
     }
 
     /**
-     * Set the series property: query specific series.
+     * Set the series property: query specific series. The maximum number of series is 100.
      *
      * @param series the series value to set.
      * @return the MetricDataQueryOptions object itself.

@@ -175,7 +175,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                             updateDomain,
                             this.client.getSubscriptionId(),
                             apiVersion,
-                            new UpdateDomainInner(),
+                            null,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -228,7 +228,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                 updateDomain,
                 this.client.getSubscriptionId(),
                 apiVersion,
-                new UpdateDomainInner(),
+                null,
                 accept,
                 context);
     }

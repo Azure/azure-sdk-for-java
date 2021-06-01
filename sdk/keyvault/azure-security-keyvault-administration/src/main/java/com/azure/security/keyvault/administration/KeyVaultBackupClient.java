@@ -10,6 +10,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 
 import java.time.Duration;
 
@@ -131,9 +132,10 @@ public final class KeyVaultBackupClient {
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
-                                                                            String sasToken) {
-        return asyncClient.beginSelectiveRestore(keyName, folderUrl, sasToken).getSyncPoller();
+    public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, Void> beginSelectiveKeyRestore(String keyName,
+                                                                                           String folderUrl,
+                                                                                           String sasToken) {
+        return asyncClient.beginSelectiveKeyRestore(keyName, folderUrl, sasToken).getSyncPoller();
     }
 
     /**
@@ -155,8 +157,10 @@ public final class KeyVaultBackupClient {
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
-                                                                            String sasToken, Duration pollingInterval) {
-        return asyncClient.beginSelectiveRestore(keyName, folderUrl, sasToken, pollingInterval).getSyncPoller();
+    public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, Void> beginSelectiveKeyRestore(String keyName,
+                                                                                           String folderUrl,
+                                                                                           String sasToken,
+                                                                                           Duration pollingInterval) {
+        return asyncClient.beginSelectiveKeyRestore(keyName, folderUrl, sasToken, pollingInterval).getSyncPoller();
     }
 }

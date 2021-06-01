@@ -71,4 +71,11 @@ public interface AppConfigurationManagementClient {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the KeyValuesClient object to access its operations.
+     *
+     * @return the KeyValuesClient object.
+     */
+    KeyValuesClient getKeyValues();
 }

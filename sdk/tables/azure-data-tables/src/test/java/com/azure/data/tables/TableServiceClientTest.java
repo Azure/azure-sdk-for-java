@@ -9,14 +9,16 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.tables.models.TableServiceErrorException;
-import org.junit.jupiter.api.Assertions;
+import com.azure.data.tables.models.TableServiceException;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class TableServiceClientTest extends TestBase {
-    private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private TableServiceClient serviceClient;
 
     @Override
@@ -45,34 +47,16 @@ public class TableServiceClientTest extends TestBase {
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act & Assert
-        serviceClient.createTable(tableName);
+        assertNotNull(serviceClient.createTable(tableName));
     }
 
     @Test
-    void serviceCreateTableWithTimeout() {
+    void serviceCreateTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act & Assert
-        serviceClient.createTable(tableName, TIMEOUT);
-    }
-
-    @Test
-    void serviceCreateTableWithNullTimeout() {
-        // Arrange
-        String tableName = testResourceNamer.randomName("test", 20);
-
-        // Act & Assert
-        serviceClient.createTable(tableName, null);
-    }
-
-    @Test
-    void serviceCreateTableWithResponseWithNullTimeoutAndContext() {
-        // Arrange
-        String tableName = testResourceNamer.randomName("test", 20);
-
-        // Act & Assert
-        serviceClient.createTableWithResponse(tableName, null, null);
+        assertNotNull(serviceClient.createTableWithResponse(tableName, null, null).getValue());
     }
 
     @Test
@@ -82,8 +66,7 @@ public class TableServiceClientTest extends TestBase {
         serviceClient.createTable(tableName);
 
         // Act & Assert
-        Assertions.assertThrows(TableServiceErrorException.class,
-            () -> serviceClient.createTable(tableName));
+        assertThrows(TableServiceException.class, () -> serviceClient.createTable(tableName));
     }
 
     @Test
@@ -92,7 +75,7 @@ public class TableServiceClientTest extends TestBase {
         String tableName = testResourceNamer.randomName("test", 20);
 
         // Act & Assert
-        serviceClient.createTableIfNotExists(tableName);
+        assertNotNull(serviceClient.createTableIfNotExists(tableName));
     }
 
     @Test
@@ -102,6 +85,6 @@ public class TableServiceClientTest extends TestBase {
         serviceClient.createTable(tableName);
 
         //Act & Assert
-        serviceClient.createTableIfNotExists(tableName);
+        assertNull(serviceClient.createTableIfNotExists(tableName));
     }
 }

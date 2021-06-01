@@ -3,10 +3,11 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ConnectionStringResolverTest {
+
     @Test
     public void testConnectionStringResolver() {
         final String connectionString = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;SharedAccessKey=sasKey";
@@ -16,8 +17,8 @@ public class ConnectionStringResolverTest {
         final String sasKeyName = serviceBusKey.getSharedAccessKeyName();
         final String sasKey = serviceBusKey.getSharedAccessKey();
 
-        Assert.assertEquals("host", host);
-        Assert.assertEquals("sasKeyName", sasKeyName);
-        Assert.assertEquals("sasKey", sasKey);
+        Assertions.assertEquals("host", host);
+        Assertions.assertEquals("sasKeyName", sasKeyName);
+        Assertions.assertEquals("sasKey", sasKey);
     }
 }

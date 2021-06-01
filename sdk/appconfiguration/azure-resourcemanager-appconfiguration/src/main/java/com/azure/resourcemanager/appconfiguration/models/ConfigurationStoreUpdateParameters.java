@@ -42,11 +42,10 @@ public class ConfigurationStoreUpdateParameters {
     private EncryptionProperties encryption;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Disables all authentication methods other than AAD authentication.
      */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
 
     /**
      * Get the identity property: The managed identity information for the configuration store.
@@ -129,24 +128,22 @@ public class ConfigurationStoreUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
+     * Get the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
      *
-     * @return the publicNetworkAccess value.
+     * @return the disableLocalAuth value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
+     * Set the disableLocalAuth property: Disables all authentication methods other than AAD authentication.
      *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the ConfigurationStoreUpdateParameters object itself.
      */
-    public ConfigurationStoreUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+    public ConfigurationStoreUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
         return this;
     }
 
