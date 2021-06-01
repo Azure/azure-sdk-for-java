@@ -732,6 +732,7 @@
         <module>sdk/datamigration</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
