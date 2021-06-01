@@ -64,7 +64,7 @@ public class CallingServerTestBase extends TestBase {
 
     protected ConversationClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
         ConversationClientBuilder builder = new ConversationClientBuilder()
-            .connectionString(CONNECTION_STRING)
+            .connectionString("endpoint=https://recording-e2e-sample-xiaoxli.communication.azure.com/;accesskey=JNHe2Dx6NVxiDxLygkRbGcGGRWVsfaeZiZqLAbl+x1BClaSdKxE7SGAxHAyI3Ieldu3XFRdiZll7jpSoMkwTzQ==")//CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
