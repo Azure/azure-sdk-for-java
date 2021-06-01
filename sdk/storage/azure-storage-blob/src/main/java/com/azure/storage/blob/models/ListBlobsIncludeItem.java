@@ -34,7 +34,10 @@ public enum ListBlobsIncludeItem {
     IMMUTABILITYPOLICY("immutabilitypolicy"),
 
     /** Enum value legalhold. */
-    LEGALHOLD("legalhold");
+    LEGALHOLD("legalhold"),
+
+    /** Enum value deletedwithversions. */
+    DELETEDWITHVERSIONS("deletedwithversions");
 
     /** The actual serialized value for a ListBlobsIncludeItem instance. */
     private final String value;

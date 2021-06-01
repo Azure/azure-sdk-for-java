@@ -921,6 +921,29 @@ class ContainerAPITest extends APISpec {
             .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs flat options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWitVersions(true))
+
+        when:
+        def blobs = cc.listBlobs(options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
+    }
+
     def "List blobs prefix with comma"() {
         setup:
         def prefix = generateBlobName() + ", " + generateBlobName()
@@ -1301,6 +1324,29 @@ class ContainerAPITest extends APISpec {
         for (def page : iterableByPage) {
             assert page.value.size() == 1
         }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "list blobs hier options deleted with versions"() {
+        setup:
+        def blobName = generateBlobName()
+        def blob = cc.getBlobClient(blobName).getAppendBlobClient()
+        blob.create()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        blob.setMetadata(metadata)
+        blob.delete()
+        def options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWitVersions(true))
+
+        when:
+        def blobs = cc.listBlobsByHierarchy("", options, null).iterator()
+
+        then:
+        def b = blobs.next()
+        !blobs.hasNext()
+        b.getName() == blobName
+        b.hasVersionsOnly()
     }
 
     @Unroll

@@ -70,6 +70,12 @@ public final class BlobItem {
     @JsonProperty(value = "IsPrefix")
     private Boolean isPrefix;
 
+    /*
+     * The HasVersionsOnly property.
+     */
+    @JsonProperty(value = "HasVersionsOnly")
+    private Boolean hasVersionsOnly;
+
     /**
      * Get the name property: The name property.
      *
@@ -250,6 +256,26 @@ public final class BlobItem {
      */
     public BlobItem setObjectReplicationSourcePolicies(List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
         this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
+        return this;
+    }
+
+    /**
+     * Get the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @return the hasVersionsOnly value.
+     */
+    public Boolean hasVersionsOnly() {
+        return this.hasVersionsOnly;
+    }
+
+    /**
+     * Set the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @param hasVersionsOnly the hasVersionsOnly value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItem setHasVersionsOnly(Boolean hasVersionsOnly) {
+        this.hasVersionsOnly = hasVersionsOnly;
         return this;
     }
 

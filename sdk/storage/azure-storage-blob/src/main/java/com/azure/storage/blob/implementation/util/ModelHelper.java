@@ -265,6 +265,8 @@ public class ModelHelper {
         blobItem.setObjectReplicationSourcePolicies(
             transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
 
+        blobItem.setHasVersionsOnly(blobItemInternal.isHasVersionsOnly());
+
         return blobItem;
     }
 

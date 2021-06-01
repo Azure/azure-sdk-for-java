@@ -33,12 +33,6 @@ public final class ContainersGetPropertiesHeaders {
     private String xMsVersion;
 
     /*
-     * The x-ms-immutable-storage-with-versioning-enabled property.
-     */
-    @JsonProperty(value = "x-ms-immutable-storage-with-versioning-enabled")
-    private Boolean xMsImmutableStorageWithVersioningEnabled;
-
-    /*
      * The x-ms-lease-state property.
      */
     @JsonProperty(value = "x-ms-lease-state")
@@ -91,6 +85,12 @@ public final class ContainersGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-has-immutability-policy")
     private Boolean xMsHasImmutabilityPolicy;
+
+    /*
+     * The x-ms-version-level-worm-enabled property.
+     */
+    @JsonProperty(value = "x-ms-version-level-worm-enabled")
+    private Boolean xMsVersionLevelWormEnabled;
 
     /*
      * The x-ms-lease-duration property.
@@ -153,29 +153,6 @@ public final class ContainersGetPropertiesHeaders {
      */
     public ContainersGetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
-     * property.
-     *
-     * @return the xMsImmutableStorageWithVersioningEnabled value.
-     */
-    public Boolean isXMsImmutableStorageWithVersioningEnabled() {
-        return this.xMsImmutableStorageWithVersioningEnabled;
-    }
-
-    /**
-     * Set the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
-     * property.
-     *
-     * @param xMsImmutableStorageWithVersioningEnabled the xMsImmutableStorageWithVersioningEnabled value to set.
-     * @return the ContainersGetPropertiesHeaders object itself.
-     */
-    public ContainersGetPropertiesHeaders setXMsImmutableStorageWithVersioningEnabled(
-            Boolean xMsImmutableStorageWithVersioningEnabled) {
-        this.xMsImmutableStorageWithVersioningEnabled = xMsImmutableStorageWithVersioningEnabled;
         return this;
     }
 
@@ -370,6 +347,26 @@ public final class ContainersGetPropertiesHeaders {
      */
     public ContainersGetPropertiesHeaders setXMsHasImmutabilityPolicy(Boolean xMsHasImmutabilityPolicy) {
         this.xMsHasImmutabilityPolicy = xMsHasImmutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersionLevelWormEnabled property: The x-ms-version-level-worm-enabled property.
+     *
+     * @return the xMsVersionLevelWormEnabled value.
+     */
+    public Boolean isXMsVersionLevelWormEnabled() {
+        return this.xMsVersionLevelWormEnabled;
+    }
+
+    /**
+     * Set the xMsVersionLevelWormEnabled property: The x-ms-version-level-worm-enabled property.
+     *
+     * @param xMsVersionLevelWormEnabled the xMsVersionLevelWormEnabled value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    public ContainersGetPropertiesHeaders setXMsVersionLevelWormEnabled(Boolean xMsVersionLevelWormEnabled) {
+        this.xMsVersionLevelWormEnabled = xMsVersionLevelWormEnabled;
         return this;
     }
 

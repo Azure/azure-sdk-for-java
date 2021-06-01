@@ -23,6 +23,7 @@ public final class BlobListDetails {
     private boolean retrieveUncommittedBlobs;
     private boolean retrieveDeletedBlobs;
     private boolean retrieveVersions;
+    private boolean retrieveDeletedWithVersions;
 
     /**
      * Constructs an unpopulated {@link BlobListDetails}.
@@ -173,6 +174,26 @@ public final class BlobListDetails {
     }
 
     /**
+     * Whether blobs which have been deleted with versioning.
+     *
+     * @return a flag indicating if deleted blobs with versioning will be returned in the listing
+     */
+    public boolean getRetrieveDeletedBlobsWitVersions() {
+        return retrieveDeletedWithVersions;
+    }
+
+    /**
+     * Whether blobs which have been deleted with versioning should be returned.
+     *
+     * @param retrieveDeletedWithVersions Flag indicating whether deleted blobs with versioning should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveDeletedBlobsWitVersions(boolean retrieveDeletedWithVersions) {
+        this.retrieveDeletedWithVersions = retrieveDeletedWithVersions;
+        return this;
+    }
+
+    /**
      * @return a list of the flag set to true
      */
     public ArrayList<ListBlobsIncludeItem> toList() {
@@ -197,6 +218,9 @@ public final class BlobListDetails {
         }
         if (this.retrieveVersions) {
             details.add(ListBlobsIncludeItem.VERSIONS);
+        }
+        if (this.retrieveDeletedWithVersions) {
+            details.add(ListBlobsIncludeItem.DELETEDWITHVERSIONS);
         }
         return details;
     }
