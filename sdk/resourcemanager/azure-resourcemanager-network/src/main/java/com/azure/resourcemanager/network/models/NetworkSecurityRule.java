@@ -9,7 +9,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
