@@ -1685,6 +1685,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Create a data source credential entity.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredential#DatasourceCredentialEntity}
+     *
      * @param datasourceCredential The credential entity.
      * @return A {@link Mono} containing the created {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
@@ -1698,6 +1701,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     /**
      * Create a data source credential entity with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity}
      *
      * @param datasourceCredential The credential entity.
      * @return A {@link Mono} containing the created {@link DatasourceCredentialEntity}.
@@ -1742,6 +1748,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Update a data source credential entity.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredential#DatasourceCredentialEntity}
+     *
      * @param datasourceCredential The credential entity.
      * @return A {@link Mono} containing the updated {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
@@ -1755,6 +1764,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     /**
      * Update a data source credential entity with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity}
      *
      * @param datasourceCredential The credential entity.
      * @return A {@link Mono} containing the updated {@link DatasourceCredentialEntity}.
@@ -1798,6 +1810,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Get a data source credential entity by its id.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredential#String}
+     *
      * @param credentialId The data source credential entity unique id.
      *
      * @return The data source credential entity for the provided id.
@@ -1805,12 +1820,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasourceCredentialEntity> getDataSourceCredential(String credentialId) {
+    public Mono<DatasourceCredentialEntity> getDatasourceCredential(String credentialId) {
         return getDatasourceCredentialWithResponse(credentialId).flatMap(FluxUtil::toMono);
     }
 
     /**
      *  Get a data source credential entity by its id with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredentialWithResponse#String}
      *
      * @param credentialEntityId The data source credential entity unique id.
      *
@@ -1840,6 +1858,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * Deletes the data source credential entity identified by {@code credentialEntityId}.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredential#String}
+     *
      * @param credentialId The data source credential entity id.
      *
      * @return An empty Mono.
@@ -1854,6 +1875,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
 
     /**
      * Deletes the data source credential entity identified by {@code credentialEntityId}.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredentialWithResponse#String}
      *
      * @param credentialId The data source credential entity id.
      *
@@ -1887,6 +1911,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials}
+     *
      * @return A {@link PagedFlux} containing information of all the {@link DatasourceCredentialEntity data feeds}
      * in the account.
      */
@@ -1898,8 +1925,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDatasourceCredentials#ListCredentialEntityOptions}
+     *
      * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering
-     *               the output result.
+     * the output result.
      *
      * @return A {@link PagedFlux} containing information of all the {@link DatasourceCredentialEntity data feeds}
      * in the account.

@@ -85,13 +85,13 @@ public final class DataSourceCredentialEntityTransforms {
             credentialEntity
                 .setName(servicePrincipalInKVCredential.getDataSourceCredentialName())
                 .setDescription(servicePrincipalInKVCredential.getDataSourceCredentialDescription())
-                .setKeyVaultForDataSourceSecrets(servicePrincipalInKVCredential.getParameters().getKeyVaultEndpoint(),
+                .setKeyVaultForDatasourceSecrets(servicePrincipalInKVCredential.getParameters().getKeyVaultEndpoint(),
                     servicePrincipalInKVCredential.getParameters().getKeyVaultClientId(),
                     null)
                 .setTenantId(servicePrincipalInKVCredential.getParameters().getTenantId())
-                .setSecretNameForDataSourceClientId(
+                .setSecretNameForDatasourceClientId(
                     servicePrincipalInKVCredential.getParameters().getServicePrincipalIdNameInKV())
-                .setSecretNameForDataSourceClientSecret(
+                .setSecretNameForDatasourceClientSecret(
                     servicePrincipalInKVCredential.getParameters().getServicePrincipalSecretNameInKV());
 
             DataSourceServicePrincipalInKeyVaultAccessor.setId(credentialEntity,
@@ -149,8 +149,8 @@ public final class DataSourceCredentialEntityTransforms {
                 .setKeyVaultClientId(credential.getKeyVaultClientId())
                 .setKeyVaultClientSecret(DataSourceServicePrincipalInKeyVaultAccessor
                     .getKeyVaultClientSecret(credential))
-                .setServicePrincipalIdNameInKV(credential.getSecretNameForDataSourceClientId())
-                .setServicePrincipalSecretNameInKV(credential.getSecretNameForDataSourceClientSecret())
+                .setServicePrincipalIdNameInKV(credential.getSecretNameForDatasourceClientId())
+                .setServicePrincipalSecretNameInKV(credential.getSecretNameForDatasourceClientSecret())
                 .setTenantId(credential.getTenantId()));
             return innerCredential;
         } else {
@@ -204,8 +204,8 @@ public final class DataSourceCredentialEntityTransforms {
                 .setKeyVaultClientId(credential.getKeyVaultClientId())
                 .setKeyVaultClientSecret(DataSourceServicePrincipalInKeyVaultAccessor
                     .getKeyVaultClientSecret(credential))
-                .setServicePrincipalIdNameInKV(credential.getSecretNameForDataSourceClientId())
-                .setServicePrincipalSecretNameInKV(credential.getSecretNameForDataSourceClientSecret())
+                .setServicePrincipalIdNameInKV(credential.getSecretNameForDatasourceClientId())
+                .setServicePrincipalSecretNameInKV(credential.getSecretNameForDatasourceClientSecret())
                 .setTenantId(credential.getTenantId()));
             return innerCredential;
         } else {

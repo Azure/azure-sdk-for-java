@@ -3,11 +3,11 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
+import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.AnomalyDetectorDirection;
 import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
@@ -15,32 +15,35 @@ import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupType;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
+import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
+import com.azure.ai.metricsadvisor.models.ListCredentialEntityOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
-import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
-import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
+import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.SeverityCondition;
 import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.models.SuppressCondition;
@@ -56,6 +59,7 @@ import com.azure.core.util.IterableStream;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
@@ -296,7 +300,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createHook(NotificationHook)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#createHook(NotificationHook)}.
      */
     public void createHook() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHook#NotificationHook
@@ -317,7 +321,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createHookWithResponse(NotificationHook)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#createHookWithResponse(NotificationHook, Context)}.
      */
     public void createHookWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHookWithResponse#NotificationHook-Context
@@ -340,7 +344,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getHook(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#getHook(String)}.
      */
     public void getHook() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHook#String
@@ -366,7 +370,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getHookWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#getHookWithResponse(String, Context)}.
      */
     public void getHookWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHookWithResponse#String-Context
@@ -394,7 +398,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateHook(NotificationHook)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#updateHook(NotificationHook)}.
      */
     public void updateHook() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHook#NotificationHook
@@ -417,7 +421,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateHookWithResponse(NotificationHook)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#updateHookWithResponse(NotificationHook, Context)}.
      */
     public void updateHookWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHookWithResponse#NotificationHook-Context
@@ -442,7 +446,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteHook(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#deleteHook(String)}.
      */
     public void deleteHook() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHook#String
@@ -452,7 +456,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteHookWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#deleteHookWithResponse(String, Context)}.
      */
     public void deleteHookWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHookWithResponse#String-Context
@@ -464,7 +468,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listHooks()}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listHooks()}.
      */
     public void listHooks() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks
@@ -491,7 +495,7 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listHooks(ListHookOptions)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listHooks(ListHookOptions, Context)}.
      */
     public void listHooksWithOptions() {
         // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks#ListHookOptions-Context
@@ -1425,4 +1429,262 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             });
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions-Context
     }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#createDatasourceCredential(DatasourceCredentialEntity)}.
+     */
+    public void createDatasourceCredential() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredential#DatasourceCredentialEntity
+        DatasourceCredentialEntity datasourceCredential;
+        final String name = "sample_name" + UUID.randomUUID();
+        final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
+        final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+
+        datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+            .setName(name)
+            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setTenantId(tId)
+            .setSecretNameForDatasourceClientId("DSClientID_1")
+            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+
+        DatasourceCredentialEntity credentialEntity =
+            metricsAdvisorAdminClient.createDatasourceCredential(datasourceCredential);
+        if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
+            DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
+                = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+            System.out
+                .printf("Actual credential entity key vault endpoint: %s%n",
+                    actualCredentialSPInKV.getKeyVaultEndpoint());
+            System.out.printf("Actual credential entity key vault client Id: %s%n",
+                actualCredentialSPInKV.getKeyVaultClientId());
+            System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+            System.out.printf("Actual credential entity key vault secret for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+        }
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredential#DatasourceCredentialEntity
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#createDatasourceCredentialWithResponse(DatasourceCredentialEntity, Context)}.
+     */
+    public void createDatasourceCredentialWithResponse() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context
+        DatasourceCredentialEntity datasourceCredential;
+        final String name = "sample_name" + UUID.randomUUID();
+        final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
+        final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+
+        datasourceCredential = new DatasourceServicePrincipalInKeyVault()
+            .setName(name)
+            .setKeyVaultForDatasourceSecrets("kv", cId, mockSecr)
+            .setTenantId(tId)
+            .setSecretNameForDatasourceClientId("DSClientID_1")
+            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
+
+        Response<DatasourceCredentialEntity> credentialEntityWithResponse =
+            metricsAdvisorAdminClient.createDatasourceCredentialWithResponse(datasourceCredential, Context.NONE);
+
+        System.out.printf("Credential Entity creation operation status: %s%n",
+            credentialEntityWithResponse.getStatusCode());
+        if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
+            DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
+                = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+            System.out
+                .printf("Actual credential entity key vault endpoint: %s%n",
+                    actualCredentialSPInKV.getKeyVaultEndpoint());
+            System.out.printf("Actual credential entity key vault client Id: %s%n",
+                actualCredentialSPInKV.getKeyVaultClientId());
+            System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+            System.out.printf("Actual credential entity key vault secret for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+        }
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#updateDatasourceCredential(DatasourceCredentialEntity)}.
+     */
+    public void updateDatasourceCredential() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredential#DatasourceCredentialEntity
+        final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
+        DatasourceCredentialEntity existingDatasourceCredential =
+            metricsAdvisorAdminClient.getDatasourceCredential(datasourceCredentialId);
+        DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+        if (existingDatasourceCredential instanceof DatasourceServicePrincipalInKeyVault) {
+            actualCredentialSPInKV  = (DatasourceServicePrincipalInKeyVault) existingDatasourceCredential;
+        }
+
+        DatasourceCredentialEntity credentialEntity =
+            metricsAdvisorAdminClient.updateDatasourceCredential(
+                actualCredentialSPInKV.setDescription("set updated description"));
+
+        if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
+            DatasourceServicePrincipalInKeyVault updatedCredentialSPInKV
+                = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+            System.out.printf("Actual credential entity key vault endpoint: %s%n",
+                updatedCredentialSPInKV.getKeyVaultEndpoint());
+            System.out.printf("Actual credential entity key vault updated description: %s%n",
+                updatedCredentialSPInKV.getDescription());
+        }
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredential#DatasourceCredentialEntity
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#updateDatasourceCredentialWithResponse(DatasourceCredentialEntity, Context)}.
+     */
+    public void updateDatasourceCredentialWithResponse() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context
+        final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
+        DatasourceCredentialEntity existingDatasourceCredential =
+            metricsAdvisorAdminClient.getDatasourceCredential(datasourceCredentialId);
+        DatasourceServicePrincipalInKeyVault actualCredentialSPInKV = null;
+        if (existingDatasourceCredential instanceof DatasourceServicePrincipalInKeyVault) {
+            actualCredentialSPInKV  = (DatasourceServicePrincipalInKeyVault) existingDatasourceCredential;
+        }
+        Response<DatasourceCredentialEntity> credentialEntityWithResponse =
+            metricsAdvisorAdminClient.updateDatasourceCredentialWithResponse(
+                actualCredentialSPInKV.setDescription("set updated description"), Context.NONE);
+
+        System.out.printf("Credential Entity creation operation status: %s%n",
+            credentialEntityWithResponse.getStatusCode());
+        if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
+            DatasourceServicePrincipalInKeyVault updatedCredentialSPInKV
+                = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+            System.out.printf("Actual credential entity key vault endpoint: %s%n",
+                updatedCredentialSPInKV.getKeyVaultEndpoint());
+            System.out.printf("Actual credential entity key vault updated description: %s%n",
+                updatedCredentialSPInKV.getDescription());
+        }
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#getDatasourceCredential(String)}.
+     */
+    public void getDatasourceCredential() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredential#String
+        final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
+
+        DatasourceCredentialEntity credentialEntity =
+            metricsAdvisorAdminClient.getDatasourceCredential(datasourceCredentialId);
+        if (credentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
+            DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
+                = (DatasourceServicePrincipalInKeyVault) credentialEntity;
+            System.out
+                .printf("Actual credential entity key vault endpoint: %s%n",
+                    actualCredentialSPInKV.getKeyVaultEndpoint());
+            System.out.printf("Actual credential entity key vault client Id: %s%n",
+                actualCredentialSPInKV.getKeyVaultClientId());
+            System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+            System.out.printf("Actual credential entity key vault secret for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+        }
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredential#String
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#getDatasourceCredentialWithResponse(String, Context)}.
+     */
+    public void getDatasourceCredentialWithResponse() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredentialWithResponse#String-Context
+        final String datasourceCredentialId = "f45668b2-bffa-11eb-8529-0246ac130003";
+
+        Response<DatasourceCredentialEntity> credentialEntityWithResponse =
+            metricsAdvisorAdminClient.getDatasourceCredentialWithResponse(datasourceCredentialId, Context.NONE);
+        System.out.printf("Credential Entity creation operation status: %s%n",
+            credentialEntityWithResponse.getStatusCode());
+        if (credentialEntityWithResponse.getValue() instanceof DatasourceServicePrincipalInKeyVault) {
+            DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
+                = (DatasourceServicePrincipalInKeyVault) credentialEntityWithResponse.getValue();
+            System.out
+                .printf("Actual credential entity key vault endpoint: %s%n",
+                    actualCredentialSPInKV.getKeyVaultEndpoint());
+            System.out.printf("Actual credential entity key vault client Id: %s%n",
+                actualCredentialSPInKV.getKeyVaultClientId());
+            System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+            System.out.printf("Actual credential entity key vault secret for data source: %s%n",
+                actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+        }
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredentialWithResponse#String-Context
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#deleteDatasourceCredential(String)}.
+     */
+    public void deleteDatasourceCredential() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredential#String
+        final String datasourceCredentialId = "t00853f1-9080-447f-bacf-8dccf2e86f";
+        metricsAdvisorAdminClient.deleteDataFeed(datasourceCredentialId);
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredential#String
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#deleteDataFeedWithResponse(String, Context)}
+     */
+    public void deleteDatasourceCredentialWithResponse() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredentialWithResponse#String-Context
+        final String datasourceCredentialId = "eh0854f1-8927-447f-bacf-8dccf2e86fwe";
+        Response<Void> response =
+            metricsAdvisorAdminClient.deleteDatasourceCredentialWithResponse(datasourceCredentialId, Context.NONE);
+        System.out.printf("Datasource credential delete operation status : %s%n", response.getStatusCode());
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredentialWithResponse#String-Context
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listDatasourceCredentials()}
+     */
+    public void listDatasourceCredentials() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials
+        metricsAdvisorAdminClient.listDatasourceCredentials()
+            .forEach(datasourceCredentialEntity -> {
+                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
+                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                    System.out
+                        .printf("Actual credential entity key vault endpoint: %s%n",
+                            actualCredentialSPInKV.getKeyVaultEndpoint());
+                    System.out.printf("Actual credential entity key vault client Id: %s%n",
+                        actualCredentialSPInKV.getKeyVaultClientId());
+                    System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
+                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                    System.out.printf("Actual credential entity key vault secret for data source: %s%n",
+                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                }
+            });
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials
+    }
+
+    /**
+     * Code snippet for {@link MetricsAdvisorAdministrationClient#listDatasourceCredentials(ListCredentialEntityOptions, Context)} with options.
+     */
+    public void listDatasourceCredentialsWithOptions() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials#ListCredentialEntityOptions-Context
+        metricsAdvisorAdminClient.listDatasourceCredentials(
+                new ListCredentialEntityOptions()
+                    .setMaxPageSize(3),
+                Context.NONE)
+            .forEach(datasourceCredentialEntity -> {
+                if (datasourceCredentialEntity instanceof DatasourceServicePrincipalInKeyVault) {
+                    DatasourceServicePrincipalInKeyVault actualCredentialSPInKV
+                        = (DatasourceServicePrincipalInKeyVault) datasourceCredentialEntity;
+                    System.out
+                        .printf("Actual credential entity key vault endpoint: %s%n",
+                            actualCredentialSPInKV.getKeyVaultEndpoint());
+                    System.out.printf("Actual credential entity key vault client Id: %s%n",
+                        actualCredentialSPInKV.getKeyVaultClientId());
+                    System.out.printf("Actual credential entity key vault secret name for data source: %s%n",
+                        actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+                    System.out.printf("Actual credential entity key vault secret for data source: %s%n",
+                        actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
+                }
+            });
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials#ListCredentialEntityOptions-Context
+    }
+
 }

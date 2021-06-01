@@ -84,10 +84,10 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
 
             datasourceCredential = new DatasourceServicePrincipalInKeyVault()
                 .setName(name)
-                .setKeyVaultForDataSourceSecrets(kvEndpoint.toString(), cId, mockSecr)
+                .setKeyVaultForDatasourceSecrets(kvEndpoint.toString(), cId, mockSecr)
                 .setTenantId(tId)
-                .setSecretNameForDataSourceClientId("DSClientID_1")
-                .setSecretNameForDataSourceClientSecret("DSClientSer_1");
+                .setSecretNameForDatasourceClientId("DSClientID_1")
+                .setSecretNameForDatasourceClientSecret("DSClientSer_1");
         } else {
             throw new IllegalStateException("Unexpected value for DataSourceCredentialType: " + credentialType);
         }
@@ -124,18 +124,18 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             assertNotNull(actualCredentialSPInKV.getKeyVaultEndpoint());
             assertNotNull(actualCredentialSPInKV.getKeyVaultClientId());
             assertNotNull(actualCredentialSPInKV.getTenantId());
-            assertNotNull(actualCredentialSPInKV.getSecretNameForDataSourceClientId());
-            assertNotNull(actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
+            assertNotNull(actualCredentialSPInKV.getSecretNameForDatasourceClientId());
+            assertNotNull(actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
             assertEquals(((DatasourceServicePrincipalInKeyVault) expectedCredential).getKeyVaultClientId(),
                 actualCredentialSPInKV.getKeyVaultClientId());
             assertEquals(((DatasourceServicePrincipalInKeyVault) expectedCredential).getTenantId(),
                 actualCredentialSPInKV.getTenantId());
             assertEquals(((DatasourceServicePrincipalInKeyVault) expectedCredential)
-                    .getSecretNameForDataSourceClientId(),
-                actualCredentialSPInKV.getSecretNameForDataSourceClientId());
+                    .getSecretNameForDatasourceClientId(),
+                actualCredentialSPInKV.getSecretNameForDatasourceClientId());
             assertEquals(((DatasourceServicePrincipalInKeyVault) expectedCredential)
-                    .getSecretNameForDataSourceClientSecret(),
-                actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
+                    .getSecretNameForDatasourceClientSecret(),
+                actualCredentialSPInKV.getSecretNameForDatasourceClientSecret());
         } else {
             throw new IllegalStateException("Unexpected value for DataSourceCredentialType: " + credentialType);
         }
