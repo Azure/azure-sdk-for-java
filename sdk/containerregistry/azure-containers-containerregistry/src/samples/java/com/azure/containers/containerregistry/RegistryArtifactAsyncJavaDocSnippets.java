@@ -16,12 +16,12 @@ public class RegistryArtifactAsyncJavaDocSnippets {
         String repository = getRepository();
         String digest = getDigest();
         TokenCredential credential = getTokenCredentials();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.instantiation
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation
         RegistryArtifactAsync registryArtifactAsync = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildAsyncClient().getArtifact(repository, digest);
-        // END: com.azure.containers.containerregistry.async.registryartifact.instantiation
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation
         return registryArtifactAsync;
     }
 
@@ -30,7 +30,7 @@ public class RegistryArtifactAsyncJavaDocSnippets {
         String repository = getRepository();
         String digest = getDigest();
         TokenCredential credential = getTokenCredentials();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.pipeline.instantiation
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(/* add policies */)
             .build();
@@ -40,96 +40,96 @@ public class RegistryArtifactAsyncJavaDocSnippets {
             .endpoint(endpoint)
             .credential(credential)
             .buildAsyncClient().getArtifact(repository, digest);
-        // END: com.azure.containers.containerregistry.async.registryartifact.pipeline.instantiation
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.pipeline.instantiation
         return registryArtifactAsync;
     }
 
     public void deleteCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.delete
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.delete
         client.delete().subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.delete
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.delete
     }
 
     public void deleteWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.deleteWithResponse
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.deleteWithResponse
         client.deleteWithResponse().subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.deleteWithResponse
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.deleteWithResponse
     }
 
     public void deleteTagCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.deleteTag
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTag
         String tag = getTag();
         client.deleteTag(tag).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.deleteTag
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTag
     }
 
     public void deleteTagWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.deleteTagWithResponse
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTagWithResponse
         String tag = getTag();
         client.deleteTagWithResponse(tag).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.deleteTagWithResponse
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTagWithResponse
     }
 
     public void getManifestPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.getManifestProperties
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestProperties
         client.getManifestProperties()
             .subscribe(properties -> {
                 System.out.printf("Digest:%s,", properties.getDigest());
             });
-        // END: com.azure.containers.containerregistry.async.registryartifact.getManifestProperties
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestProperties
     }
 
     public void getManifestPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.getManifestPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestPropertiesWithResponse
         client.getManifestPropertiesWithResponse()
             .subscribe(response -> {
                 final ArtifactManifestProperties properties = response.getValue();
                 System.out.printf("Digest:%s,", properties.getDigest());
             });
-        // END: com.azure.containers.containerregistry.async.registryartifact.getManifestPropertiesWithResponse
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestPropertiesWithResponse
     }
 
     public void getTagPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.getTagProperties
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.getTagProperties
         String tag = getTag();
         client.getTagProperties(tag).subscribe(properties -> {
             System.out.printf("Digest:%s,", properties.getDigest());
         });
-        // END: com.azure.containers.containerregistry.async.registryartifact.getTagProperties
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.getTagProperties
     }
 
     public void getTagPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.getTagPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.getTagPropertiesWithResponse
         String tag = getTag();
         client.getTagPropertiesWithResponse(tag).subscribe(response -> {
             final ArtifactTagProperties properties = response.getValue();
             System.out.printf("Digest:%s,", properties.getDigest());
         });
-        // END: com.azure.containers.containerregistry.async.registryartifact.getTagPropertiesWithResponse
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.getTagPropertiesWithResponse
     }
 
     public void listTagPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.listTagProperties
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.listTagProperties
         client.listTagProperties().byPage(10)
             .subscribe(tagPropertiesPagedResponse -> {
                 tagPropertiesPagedResponse.getValue().stream().forEach(
                     tagProperties -> System.out.println(tagProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.async.registryartifact.listTagProperties
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.listTagProperties
     }
 
     public void listTagPropertiesWithOptionsCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.listTagPropertiesWithOptions
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions
         client.listTagProperties(ArtifactTagOrderBy.LAST_UPDATED_ON_DESCENDING)
             .byPage(10)
             .subscribe(tagPropertiesPagedResponse -> {
@@ -137,41 +137,41 @@ public class RegistryArtifactAsyncJavaDocSnippets {
                     .stream()
                     .forEach(tagProperties -> System.out.println(tagProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.async.registryartifact.listTagPropertiesWithOptions
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions
     }
 
     public void updateTagPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateTagProperties
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagProperties
         ArtifactTagProperties properties = getTagProperties();
         String tag = getTag();
         client.updateTagProperties(tag, properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.updateTagProperties
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagProperties
     }
 
     public void updateTagPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse
         ArtifactTagProperties properties = getTagProperties();
         String tag = getTag();
         client.updateTagPropertiesWithResponse(tag, properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse
     }
 
     public void updateManifestPropertiesCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateManifestProperties
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestProperties
         ArtifactManifestProperties properties = getArtifactManifestProperties();
         client.updateManifestProperties(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.updateManifestProperties
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestProperties
     }
 
     public void updateManifestPropertiesWithResponseCodeSnippet() {
         RegistryArtifactAsync client = getAsyncClient();
-        // BEGIN: com.azure.containers.containerregistry.async.registryartifact.updateManifestPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestPropertiesWithResponse
         ArtifactManifestProperties properties = getArtifactManifestProperties();
         client.updateManifestPropertiesWithResponse(properties).subscribe();
-        // END: com.azure.containers.containerregistry.async.registryartifact.updateManifestPropertiesWithResponse
+        // END: com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestPropertiesWithResponse
     }
 
     /**

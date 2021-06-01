@@ -21,12 +21,12 @@ public class ContainerRepositoryJavaDocSnippets {
         String endpoint = getEndpoint();
         String repository = getRepository();
         TokenCredential credential = getTokenCredentials();
-        // BEGIN: com.azure.containers.containerregistry.repository.instantiation
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.instantiation
         ContainerRepository repositoryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildClient().getRepository(repository);
-        // END: com.azure.containers.containerregistry.repository.instantiation
+        // END: com.azure.containers.containerregistry.ContainerRepository.instantiation
         return repositoryClient;
     }
 
@@ -34,7 +34,7 @@ public class ContainerRepositoryJavaDocSnippets {
         String endpoint = getEndpoint();
         String repository = getRepository();
         TokenCredential credential = getTokenCredentials();
-        // BEGIN: com.azure.containers.containerregistry.repository.pipeline.instantiation
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(/* add policies */)
             .build();
@@ -44,90 +44,90 @@ public class ContainerRepositoryJavaDocSnippets {
             .endpoint(endpoint)
             .credential(credential)
             .buildClient().getRepository(repository);
-        // END: com.azure.containers.containerregistry.repository.pipeline.instantiation
+        // END: com.azure.containers.containerregistry.ContainerRepository.pipeline.instantiation
         return repositoryClient;
     }
 
     public void deleteRepositoryCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.deleteRepository
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.deleteRepository
         client.delete();
         System.out.printf("Successfully initiated delete.");
-        // END: com.azure.containers.containerregistry.repository.deleteRepository
+        // END: com.azure.containers.containerregistry.ContainerRepository.deleteRepository
     }
 
     public void deleteRepositoryWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.deleteRepositoryWithResponse
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.deleteRepositoryWithResponse
         Response<Void> response = client.deleteWithResponse(Context.NONE);
         System.out.printf("Successfully initiated delete.");
-        // END: com.azure.containers.containerregistry.repository.deleteRepositoryWithResponse
+        // END: com.azure.containers.containerregistry.ContainerRepository.deleteRepositoryWithResponse
     }
 
     public void getPropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.getProperties
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.getProperties
         ContainerRepositoryProperties properties = client.getProperties();
         System.out.printf("Name:%s,", properties.getName());
-        // END: com.azure.containers.containerregistry.repository.getProperties
+        // END: com.azure.containers.containerregistry.ContainerRepository.getProperties
     }
 
     public void getPropertiesWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.getPropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.getPropertiesWithResponse
         Response<ContainerRepositoryProperties> response = client.getPropertiesWithResponse(Context.NONE);
         final ContainerRepositoryProperties properties = response.getValue();
         System.out.printf("Name:%s,", properties.getName());
-        // END: com.azure.containers.containerregistry.repository.getPropertiesWithResponse
+        // END: com.azure.containers.containerregistry.ContainerRepository.getPropertiesWithResponse
     }
 
     public void updatePropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.updateProperties
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.updateProperties
         ContainerRepositoryProperties properties = getRepositoryProperties();
         client.updateProperties(properties);
-        // END: com.azure.containers.containerregistry.repository.updateProperties
+        // END: com.azure.containers.containerregistry.ContainerRepository.updateProperties
     }
 
     public void updatePropertiesWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.updatePropertiesWithResponse
         ContainerRepositoryProperties properties = getRepositoryProperties();
         client.updatePropertiesWithResponse(properties, Context.NONE);
-        // END: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
+        // END: com.azure.containers.containerregistry.ContainerRepository.updatePropertiesWithResponse
     }
 
     public void listManifestPropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifestProperties
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestProperties
         client.listManifestProperties().iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifestProperties
+        // END: com.azure.containers.containerregistry.ContainerRepository.listManifestProperties
     }
 
     public void listManifestPropertiesWithOptionsNoContextCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptionsNoContext
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext
         client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptionsNoContext
+        // END: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext
     }
 
     public void listManifestPropertiesWithOptionsCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptions
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions
         client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifestPropertiesWithOptions
+        // END: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions
     }
 
     /**

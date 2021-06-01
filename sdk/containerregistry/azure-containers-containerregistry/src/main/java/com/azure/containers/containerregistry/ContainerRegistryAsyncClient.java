@@ -126,8 +126,8 @@ public final class ContainerRegistryAsyncClient {
      * @param repositoryName Name of the repository (including the namespace).
      * @return the completion.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the 'repositoryName' is null.
-     * @throws IllegalArgumentException thrown if the 'repositoryName' is null.
+     * @throws NullPointerException thrown if the {@code repositoryName} is null.
+     * @throws IllegalArgumentException thrown if the {@code repositoryName} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRepositoryWithResponse(String repositoryName) {
@@ -153,7 +153,7 @@ public final class ContainerRegistryAsyncClient {
     }
 
     /**
-     * Delete the repository identified by 'repositoryName'.
+     * Delete the repository identified by {@code repositoryName}.
      *
      * <p><strong>Delete a repository in the registry.</strong></p>
      * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepository#String}
@@ -161,8 +161,8 @@ public final class ContainerRegistryAsyncClient {
      * @param repositoryName Name of the image (including the namespace).
      * @return the completion stream.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the 'repositoryName' is null.
-     * @throws IllegalArgumentException thrown if 'repositoryName' is empty.
+     * @throws NullPointerException thrown if the {@code repositoryName} is null.
+     * @throws IllegalArgumentException thrown if {@code repositoryName} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRepository(String repositoryName) {
@@ -181,8 +181,8 @@ public final class ContainerRegistryAsyncClient {
      *
      * @param repositoryName Name of the repository to reference.
      * @return A new {@link ContainerRepositoryAsync} for the desired repository.
-     * @throws NullPointerException if 'repositoryName' is null.
-     * @throws IllegalArgumentException if 'repositoryName' is empty.
+     * @throws NullPointerException if {@code repositoryName} is null.
+     * @throws IllegalArgumentException if {@code repositoryName} is empty.
      */
     public ContainerRepositoryAsync getRepository(String repositoryName) {
         return new ContainerRepositoryAsync(repositoryName, httpPipeline, endpoint, apiVersion);
@@ -197,8 +197,8 @@ public final class ContainerRegistryAsyncClient {
      * @param repositoryName Name of the repository to reference.
      * @param digest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifactAsync RegistryArtifactAsync} for the desired repository.
-     * @throws NullPointerException if 'repositoryName' or 'digest' is null.
-     * @throws IllegalArgumentException if 'repositoryName' or 'digest 'is empty.
+     * @throws NullPointerException if {@code repositoryName} or {@code digest} is null.
+     * @throws IllegalArgumentException if {@code repositoryName} or {@code digest} is empty.
      */
     public RegistryArtifactAsync getArtifact(String repositoryName, String digest) {
         return new RegistryArtifactAsync(repositoryName, digest, httpPipeline, endpoint, apiVersion);

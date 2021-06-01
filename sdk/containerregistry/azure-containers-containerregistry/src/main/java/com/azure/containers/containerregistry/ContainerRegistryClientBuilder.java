@@ -107,11 +107,15 @@ public final class ContainerRegistryClientBuilder {
     /**
      * Sets the authentication scope to be used for getting AAD credentials.
      *
-     * NOTE - This is a temporary property that is added into the system until the service
+     * <p>NOTE - This is a temporary property that is added into the system until the service
      * exposes this directly via the challenge based auth scheme.
      * If this property is not provided then by default Azure public scope is used for authentication.
+     *</p>
      *
+     * <p>
      * Example:- For Azure public cloud this value is same as AzureEnvironment.Azure.managementEndpoint().
+     * For more information - http://azure.github.io/ref-docs/java/com/microsoft/azure/AzureEnvironment.html
+     * </p>
      *
      * @param authenticationScope ARM management scope associated with the given registry.
      * @return The updated {@link ContainerRegistryClientBuilder} object.

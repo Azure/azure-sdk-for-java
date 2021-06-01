@@ -40,7 +40,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous Container Repository Helper class</strong></p>
  *
- * {@codesnippet com.azure.containers.containerregistry.async.repository.instantiation}
+ * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation}
  *
  */
 public final class ContainerRepositoryAsync {
@@ -112,7 +112,7 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Delete the repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.deleteRepositoryWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse}
      *
      * @return A REST response containing the result of the repository delete operation. It returns the count of the tags and
      * artifacts that are deleted as part of the repository delete.
@@ -141,7 +141,7 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Delete the repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.deleteRepository}
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository}
      *
      * @return It returns the count of the tags and artifacts that are deleted as part of the repository delete.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -157,8 +157,8 @@ public final class ContainerRepositoryAsync {
      *
      * @param digest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifactAsync} object for the desired repository.
-     * @throws NullPointerException if 'Digest' is null.
-     * @throws IllegalArgumentException if 'Digest' is empty.
+     * @throws NullPointerException if {@code digest} is null.
+     * @throws IllegalArgumentException if {@code digest} is empty.
      */
     public RegistryArtifactAsync getArtifact(String digest) {
         return new RegistryArtifactAsync(repositoryName, digest, httpPipeline, endpoint, apiVersion);
@@ -176,7 +176,7 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Retrieve all artifacts associated with the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.listManifestProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties}.
      *
      * @return {@link PagedFlux} of ManifestProperties for all the artifacts in the given repository.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -198,7 +198,7 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Retrieve all artifacts associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.listManifestPropertiesWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions}.
      *
      * @param orderBy The order in which the artifacts are returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
@@ -276,7 +276,7 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.getPropertiesWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse}
      *
      * @return A REST response with the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client have access to the repository.
@@ -304,7 +304,7 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.getProperties}
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties}
      *
      * @return The {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -324,32 +324,32 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.updatePropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse}.
      *
-     * @param value {@link ContainerRepositoryProperties repository properties} that need to be updated for the repository.
+     * @param repositoryProperties {@link ContainerRepositoryProperties repository properties} that need to be updated for the repository.
      * @return The updated {@link ContainerRepositoryProperties repository properties }.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @throws NullPointerException thrown if 'value' is null.
+     * @throws NullPointerException thrown if {@code repositoryProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties value) {
-        return withContext(context -> this.updatePropertiesWithResponse(value, context));
+    public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties) {
+        return withContext(context -> this.updatePropertiesWithResponse(repositoryProperties, context));
     }
 
-    Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties value, Context context) {
+    Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
         try {
-            if (value == null) {
+            if (repositoryProperties == null) {
                 return monoError(logger, new NullPointerException("'value' cannot be null."));
             }
 
             RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
-                .setDeleteEnabled(value.isDeleteEnabled())
-                .setListEnabled(value.isListEnabled())
-                .setWriteEnabled(value.isWriteEnabled())
-                .setReadEnabled(value.isReadEnabled())
-                .setTeleportEnabled(value.isTeleportEnabled());
+                .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
+                .setListEnabled(repositoryProperties.isListEnabled())
+                .setWriteEnabled(repositoryProperties.isWriteEnabled())
+                .setReadEnabled(repositoryProperties.isReadEnabled())
+                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
             return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
                 .onErrorMap(Utils::mapException);
@@ -366,17 +366,17 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.repository.updateProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties}.
      *
-     * @param value {@link ContainerRepositoryProperties writeable properties} that need to be updated for the repository.
+     * @param repositoryProperties {@link ContainerRepositoryProperties writeable properties} that need to be updated for the repository.
      * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the repository with the given name was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
-     * @throws NullPointerException thrown if the 'value' is null.
+     * @throws NullPointerException thrown if the {@code repositoryProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerRepositoryProperties> updateProperties(ContainerRepositoryProperties value) {
-        return this.updatePropertiesWithResponse(value).flatMap(FluxUtil::toMono);
+    public Mono<ContainerRepositoryProperties> updateProperties(ContainerRepositoryProperties repositoryProperties) {
+        return this.updatePropertiesWithResponse(repositoryProperties).flatMap(FluxUtil::toMono);
     }
 }

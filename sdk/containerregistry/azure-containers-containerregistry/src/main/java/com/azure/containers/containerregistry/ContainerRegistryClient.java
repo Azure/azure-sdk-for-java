@@ -62,7 +62,7 @@ public final class ContainerRegistryClient {
      * List all the repository names in this registry.
      *
      * <p><strong>List the repository names in the registry.</strong></p>
-     * {@codesnippet com.azure.containers.containerregistry.listRepositoryNames#Context}
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames#Context}
      *
      * @param context The context to associate with this operation.
      * @return list of repositories.
@@ -74,15 +74,15 @@ public final class ContainerRegistryClient {
     }
 
     /**
-     * Delete the repository identified by 'repositoryName'.
+     * Delete the repository identified by {@code repositoryName}.
      *
      * <p><strong>Delete a repository in the registry.</strong></p>
      * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepository#String}
      *
      * @param repositoryName Name of the repository (including the namespace).
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the 'repositoryName' is null.
-     * @throws IllegalArgumentException thrown if the 'repositoryName' is empty.
+     * @throws NullPointerException thrown if the {@code repositoryName} is null.
+     * @throws IllegalArgumentException thrown if the {@code repositoryName} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteRepository(String repositoryName) {
@@ -90,7 +90,7 @@ public final class ContainerRegistryClient {
     }
 
     /**
-     * Delete the repository identified by 'repositoryName'.
+     * Delete the repository identified by {@code repositoryName}.
      *
      *  <p><strong>Delete a repository in the registry.</strong></p>
      * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.deleteRepositoryWithResponse#String-Context}
@@ -99,8 +99,8 @@ public final class ContainerRegistryClient {
      * @param context The context to associate with this operation.
      * @return Completion response.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the 'repositoryName' is null.
-     * @throws IllegalArgumentException thrown if the 'repositoryName' is empty.
+     * @throws NullPointerException thrown if the {@code repositoryName} is null.
+     * @throws IllegalArgumentException thrown if the {@code repositoryName} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRepositoryWithResponse(String repositoryName, Context context) {
@@ -111,12 +111,12 @@ public final class ContainerRegistryClient {
      * Creates a new instance of {@link ContainerRepository} object for the specified repository.
      *
      *  <p><strong>Create a ContainerRegistry helper instance.</strong></p>
-     * {@codesnippet com.azure.containers.containerregistry.getRepository}
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.getRepository}
      *
      * @param repositoryName Name of the repository to reference.
      * @return A new {@link ContainerRepository} for the desired repository.
-     * @throws NullPointerException if 'repositoryName' is null.
-     * @throws IllegalArgumentException if 'repositoryName' is empty.
+     * @throws NullPointerException if {@code repositoryName} is null.
+     * @throws IllegalArgumentException if {@code repositoryName} is empty.
      */
     public ContainerRepository getRepository(String repositoryName) {
         return new ContainerRepository(this.asyncClient.getRepository(repositoryName));
@@ -126,16 +126,14 @@ public final class ContainerRegistryClient {
      * Creates a new instance of {@link RegistryArtifact} object for the specified artifact.
      *
      *  <p><strong>Create a RegistryArtifact helper instance.</strong></p>
-     * {@codesnippet com.azure.containers.containerregistry.getArtifact}
+     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.getArtifact}
      *
      *
      * @param repositoryName Name of the repository to reference.
      * @param digest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifact} object for the desired repository.
-     * @throws NullPointerException if 'repositoryName' is null.
-     * @throws IllegalArgumentException if 'repositoryName' is empty.
-     * @throws NullPointerException if 'digest' is null.
-     * @throws IllegalArgumentException if 'digest' is empty.
+     * @throws NullPointerException if {@code repositoryName} or {@code digest} is null.
+     * @throws IllegalArgumentException if {@code repositoryName} or {@code digest} is empty.
      */
     public RegistryArtifact getArtifact(String repositoryName, String digest) {
         return new RegistryArtifact(this.asyncClient.getArtifact(repositoryName, digest));

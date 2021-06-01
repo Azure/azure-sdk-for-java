@@ -79,22 +79,22 @@ public class ContainerRegistryClientJavaDocSnippets {
     public void listRepositoryNamesWithContextCodeSnippet() {
         ContainerRegistryClient client = getAsyncClient();
 
-        // BEGIN: com.azure.containers.containerregistry.listRepositoryNames#Context
+        // BEGIN: com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames#Context
         client.listRepositoryNames(Context.NONE).stream().forEach(name -> {
             System.out.printf("Repository Name:%s,", name);
         });
-        // END: com.azure.containers.containerregistry.listRepositoryNames#Context
+        // END: com.azure.containers.containerregistry.ContainerRegistryClient.listRepositoryNames#Context
     }
 
     public void getRepositoryCodeSnippet() {
         ContainerRegistryClient client = getAsyncClient();
         final String repositoryName = getRepositoryName();
 
-        // BEGIN: com.azure.containers.containerregistry.getRepository
+        // BEGIN: com.azure.containers.containerregistry.ContainerRegistryClient.getRepository
         ContainerRepository repository = client.getRepository(repositoryName);
         ContainerRepositoryProperties properties = repository.getProperties();
         System.out.println(properties.getName());
-        // END: com.azure.containers.containerregistry.getRepository
+        // END: com.azure.containers.containerregistry.ContainerRegistryClient.getRepository
     }
 
     public void getArtifactCodeSnippet() {
@@ -102,11 +102,11 @@ public class ContainerRegistryClientJavaDocSnippets {
         final String repositoryName = getRepositoryName();
         final String tagOrDigest = getTagOrDigest();
 
-        // BEGIN: com.azure.containers.containerregistry.getArtifact
+        // BEGIN: com.azure.containers.containerregistry.ContainerRegistryClient.getArtifact
         RegistryArtifact registryArtifact = client.getArtifact(repositoryName, tagOrDigest);
         ArtifactManifestProperties properties = registryArtifact.getManifestProperties();
         System.out.println(properties.getDigest());
-        // END: com.azure.containers.containerregistry.getArtifact
+        // END: com.azure.containers.containerregistry.ContainerRegistryClient.getArtifact
     }
 
     /**
