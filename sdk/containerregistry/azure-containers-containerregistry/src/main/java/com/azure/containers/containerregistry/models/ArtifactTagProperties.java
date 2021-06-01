@@ -110,11 +110,6 @@ public final class ArtifactTagProperties {
     }
 
     /**
-     * Initializes an instance of {@link ArtifactTagProperties}
-     */
-    public ArtifactTagProperties() { }
-
-    /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
      *

@@ -6,6 +6,9 @@ package com.azure.containers.containerregistry;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+/**
+ * This is a sample for listing repository names asynchronously.
+ */
 public class ListRepositoryNamesAsync {
     static final String ENDPOINT = "https://registryName.azure.io";
 

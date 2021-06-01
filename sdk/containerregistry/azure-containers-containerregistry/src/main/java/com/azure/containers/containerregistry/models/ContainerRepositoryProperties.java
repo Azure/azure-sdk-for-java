@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 /** Repository attributes. */
 @JsonFlatten
 @Fluent
-public final class RepositoryProperties {
+public final class ContainerRepositoryProperties {
     /*
      * Registry login server name.  This is likely to be similar to
      * {registry-name}.azurecr.io
@@ -151,7 +151,7 @@ public final class RepositoryProperties {
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the RepositoryProperties object itself.
      */
-    public RepositoryProperties setDeleteEnabled(Boolean deleteEnabled) {
+    public ContainerRepositoryProperties setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
     }
@@ -171,7 +171,7 @@ public final class RepositoryProperties {
      * @param writeEnabled the writeEnabled value to set.
      * @return the RepositoryProperties object itself.
      */
-    public RepositoryProperties setWriteEnabled(Boolean writeEnabled) {
+    public ContainerRepositoryProperties setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
     }
@@ -191,7 +191,7 @@ public final class RepositoryProperties {
      * @param listEnabled the listEnabled value to set.
      * @return the RepositoryProperties object itself.
      */
-    public RepositoryProperties setListEnabled(Boolean listEnabled) {
+    public ContainerRepositoryProperties setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
     }
@@ -211,7 +211,7 @@ public final class RepositoryProperties {
      * @param readEnabled the readEnabled value to set.
      * @return the RepositoryProperties object itself.
      */
-    public RepositoryProperties setReadEnabled(Boolean readEnabled) {
+    public ContainerRepositoryProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
     }
@@ -233,7 +233,7 @@ public final class RepositoryProperties {
      * @param teleportEnabled the teleportEnabled value to set.
      * @return the RepositoryProperties object itself.
      */
-    public RepositoryProperties setTeleportEnabled(Boolean teleportEnabled) {
+    public ContainerRepositoryProperties setTeleportEnabled(Boolean teleportEnabled) {
         this.teleportEnabled = teleportEnabled;
         return this;
     }
