@@ -29,7 +29,7 @@ public final class InviteParticipantsRequestConverter {
 
         InviteParticipantsRequestInternal inviteParticipantsRequest = new InviteParticipantsRequestInternal()
             .setParticipants(participants)
-            .setAlternateCallerId(CommunicationIdentifierConverter.convert(obj.getAlternateCallerId()).getPhoneNumber())
+            .setAlternateCallerId(obj.getAlternateCallerId() == null ? null : CommunicationIdentifierConverter.convert(obj.getAlternateCallerId()).getPhoneNumber())
             .setOperationContext(obj.getOperationContext())
             .setCallbackUri(obj.getCallbackUri());
         return inviteParticipantsRequest;
