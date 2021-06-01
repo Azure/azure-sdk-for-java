@@ -251,23 +251,17 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void defaultClientWithAuthzScope() {
-        WebApplicationContextRunner webApplicationContextRunner = new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(AADWebAppConfiguration.class);
-        webApplicationContextRunner
-            .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
-            ).run(context -> {
-            AADWebAppClientRegistrationRepository clientRepo =
-                context.getBean(AADWebAppClientRegistrationRepository.class);
-            assertDefaultScopes(
-                clientRepo.getAzureClient(),
-                "openid", "profile", "offline_access", "Calendars.Read"
-            );
-        });
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties().withPropertyValues(
+            "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read")
+            .run(context -> {
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "offline_access", "Calendars.Read"
+                );
+            });
     }
 
     @Test
