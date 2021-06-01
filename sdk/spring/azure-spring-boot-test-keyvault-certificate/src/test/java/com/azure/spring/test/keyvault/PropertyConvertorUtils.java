@@ -7,12 +7,12 @@ import java.util.List;
 
 public class PropertyConvertorUtils {
 
-    public static final String CERTIFICATE_PREFIX = "certificate/";
+    public static final String CERTIFICATE_PREFIX = "certificate_";
 
-    public static final String AZURE_KEYVAULT_URI = System.getenv("CERTIFICATE/AZURE_KEYVAULT_URI");
-    public static final String SPRING_CLIENT_ID = System.getenv("CERTIFICATE/AZURE_KEYVAULT_CLIENT_ID");
-    public static final String SPRING_CLIENT_SECRET = System.getenv("CERTIFICATE/AZURE_KEYVAULT_CLIENT_SECRET");
-    public static final String SPRING_TENANT_ID = System.getenv("CERTIFICATE/AZURE_KEYVAULT_TENANT_ID");
+    public static final String AZURE_KEYVAULT_URI = System.getenv("CERTIFICATE_AZURE_KEYVAULT_URI");
+    public static final String SPRING_CLIENT_ID = System.getenv("CERTIFICATE_AZURE_KEYVAULT_CLIENT_ID");
+    public static final String SPRING_CLIENT_SECRET = System.getenv("CERTIFICATE_AZURE_KEYVAULT_CLIENT_SECRET");
+    public static final String SPRING_TENANT_ID = System.getenv("CERTIFICATE_AZURE_KEYVAULT_TENANT_ID");
     public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
         key.forEach(
             environmentPropertyKey -> {

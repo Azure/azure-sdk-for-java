@@ -36,10 +36,10 @@ public class KeyVaultCertificateIT {
     @BeforeAll
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("CERTIFICATE/AZURE_KEYVAULT_URI",
-                "CERTIFICATE/AZURE_KEYVAULT_TENANT_ID",
-                "CERTIFICATE/AZURE_KEYVAULT_CLIENT_ID",
-                "CERTIFICATE/AZURE_KEYVAULT_CLIENT_SECRET")
+            Arrays.asList("CERTIFICATE_AZURE_KEYVAULT_URI",
+                "CERTIFICATE_AZURE_KEYVAULT_TENANT_ID",
+                "CERTIFICATE_AZURE_KEYVAULT_CLIENT_ID",
+                "CERTIFICATE_AZURE_KEYVAULT_CLIENT_SECRET")
         );
     }
 

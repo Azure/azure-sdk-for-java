@@ -288,27 +288,27 @@
   }
   ],
   "outputs": {
-    "CERTIFICATE/AZURE_KEYVAULT_ENDPOINT": {
+    "CERTIFICATE_AZURE_KEYVAULT_ENDPOINT": {
       "type": "string",
       "value": "[variables('azureKeyVaultUrl')]"
     },
-    "CERTIFICATE/AZURE_KEYVAULT_URI": {
+    "CERTIFICATE_AZURE_KEYVAULT_URI": {
       "type": "string",
       "value": "[variables('azureKeyVaultUrl')]"
     },
-    "CERTIFICATE/AZURE_KEYVAULT_TENANT_ID": {
+    "CERTIFICATE_AZURE_KEYVAULT_TENANT_ID": {
       "type": "string",
       "value": "[parameters('tenantId')]"
     },
-    "CERTIFICATE/AZURE_KEYVAULT_CLIENT_ID": {
+    "CERTIFICATE_AZURE_KEYVAULT_CLIENT_ID": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
-    "CERTIFICATE/AZURE_KEYVAULT_CLIENT_SECRET": {
+    "CERTIFICATE_AZURE_KEYVAULT_CLIENT_SECRET": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "CERTIFICATE/AZURE_KEYVAULT_CERTIFICATE_NAME": {
+    "CERTIFICATE_AZURE_KEYVAULT_CERTIFICATE_NAME": {
       "type": "string",
       "value": "[parameters('certificateName')]"
     }
