@@ -72,9 +72,10 @@ public class EventHubBinderBatchModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderBatchModeIT begin.");
+        EventHubBinderBatchModeIT.latch.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderBatchModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubBinderBatchModeIT.latch.await(60, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderBatchModeIT end.");
     }
 }

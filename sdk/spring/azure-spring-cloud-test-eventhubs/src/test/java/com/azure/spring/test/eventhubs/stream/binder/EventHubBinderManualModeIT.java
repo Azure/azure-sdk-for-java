@@ -77,6 +77,7 @@ public class EventHubBinderManualModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderManualModeIT begin.");
+        EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
         assertThat(EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
