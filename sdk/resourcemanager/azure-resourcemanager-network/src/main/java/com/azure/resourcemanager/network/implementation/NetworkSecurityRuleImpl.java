@@ -14,11 +14,14 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /** Implementation for {@link NetworkSecurityRule} and its create and update interfaces. */
 class NetworkSecurityRuleImpl
@@ -287,8 +290,38 @@ class NetworkSecurityRuleImpl
     }
 
     @Override
+    public NetworkSecurityRuleImpl withoutSourceApplicationSecurityGroup(String id) {
+        sourceAsgs.remove(id);
+        return this;
+    }
+
+    @Override
+    public NetworkSecurityRuleImpl withSourceApplicationSecurityGroup(String... ids) {
+        sourceAsgs = Arrays.stream(ids)
+            .collect(Collectors.toMap(Function.identity(), id -> new ApplicationSecurityGroupInner().withId(id)));
+        innerModel().withSourceAddressPrefix(null);
+        innerModel().withSourceAddressPrefixes(null);
+        return this;
+    }
+
+    @Override
     public NetworkSecurityRuleImpl withDestinationApplicationSecurityGroup(String id) {
         destinationAsgs.put(id, new ApplicationSecurityGroupInner().withId(id));
+        innerModel().withDestinationAddressPrefix(null);
+        innerModel().withDestinationAddressPrefixes(null);
+        return this;
+    }
+
+    @Override
+    public NetworkSecurityRuleImpl withoutDestinationApplicationSecurityGroup(String id) {
+        destinationAsgs.remove(id);
+        return this;
+    }
+
+    @Override
+    public NetworkSecurityRuleImpl withDestinationApplicationSecurityGroup(String... ids) {
+        destinationAsgs = Arrays.stream(ids)
+            .collect(Collectors.toMap(Function.identity(), id -> new ApplicationSecurityGroupInner().withId(id)));
         innerModel().withDestinationAddressPrefix(null);
         innerModel().withDestinationAddressPrefixes(null);
         return this;
@@ -310,9 +343,14 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityGroupImpl attach() {
+        return this.parent().withRule(this);
+    }
+
+    @Override
+    public NetworkSecurityGroupImpl parent() {
         innerModel().withSourceApplicationSecurityGroups(new ArrayList<>(sourceAsgs.values()));
         innerModel().withDestinationApplicationSecurityGroups(new ArrayList<>(destinationAsgs.values()));
-        return this.parent().withRule(this);
+        return super.parent();
     }
 
     @Override
