@@ -26,7 +26,6 @@ import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -63,9 +62,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //      but block on the thread backing flux. This ignore any subscribeOn applied to send(r)
             //
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
-                Call call = httpClient.newCall(okHttpRequest);
-                call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
-                sink.onCancel(call::cancel);
+                try {
+                    Call call = httpClient.newCall(okHttpRequest);
+                    call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
+                    sink.onCancel(call::cancel);
+                } catch (Exception ex) {
+                    sink.error(ex);
+                }
             }, sink::error);
         }));
     }
@@ -77,48 +80,44 @@ class OkHttpAsyncHttpClient implements HttpClient {
      * @return the Mono emitting okhttp request
      */
     private static Mono<okhttp3.Request> toOkHttpRequest(HttpRequest request) {
-        return Mono.just(new okhttp3.Request.Builder())
-            .map(rb -> {
-                rb.url(request.getUrl());
-                if (request.getHeaders() != null) {
-                    for (HttpHeader hdr : request.getHeaders()) {
-                        // OkHttp allows for headers with multiple values, but it treats them as separate headers,
-                        // therefore, we must call rb.addHeader for each value, using the same key for all of them
-                        hdr.getValuesList().forEach(value -> rb.addHeader(hdr.getName(), value));
-                    }
+        Request.Builder requestBuilder = new Request.Builder()
+            .url(request.getUrl());
+
+        if (request.getHeaders() != null) {
+            for (HttpHeader hdr : request.getHeaders()) {
+                // OkHttp allows for headers with multiple values, but it treats them as separate headers,
+                // therefore, we must call rb.addHeader for each value, using the same key for all of them
+                hdr.getValuesList().forEach(value -> requestBuilder.addHeader(hdr.getName(), value));
+            }
+        }
+
+        if (request.getHttpMethod() == HttpMethod.GET) {
+            return Mono.just(requestBuilder.get().build());
+        } else if (request.getHttpMethod() == HttpMethod.HEAD) {
+            return Mono.just(requestBuilder.head().build());
+        }
+
+        return Mono.just(requestBuilder.method(request.getHttpMethod().toString(), new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                String contentType = request.getHeaders().getValue("Content-Type");
+                if (CoreUtils.isNullOrEmpty(contentType)) {
+                    return null;
                 }
-                return rb;
-            })
-            .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
-                if (request.getHttpMethod() == HttpMethod.GET) {
-                    return Mono.just(rb.get());
-                } else if (request.getHttpMethod() == HttpMethod.HEAD) {
-                    return Mono.just(rb.head());
-                } else {
-                    return Mono.just(rb.method(request.getHttpMethod().toString(), new RequestBody() {
-                        @Override
-                        public MediaType contentType() {
-                            String contentType = request.getHeaders().getValue("Content-Type");
-                            if (CoreUtils.isNullOrEmpty(contentType)) {
-                                return null;
-                            }
 
-                            return MediaType.parse(contentType);
-                        }
+                return MediaType.parse(contentType);
+            }
 
-                        @Override
-                        public void writeTo(BufferedSink bufferedSink) {
-                            RequestContent requestContent = request.getRequestContent();
-                            if (requestContent == null) {
-                                return;
-                            }
-
-                            request.getRequestContent().writeTo(new OkHttpRequestOutbound(bufferedSink));
-                        }
-                    }));
+            @Override
+            public void writeTo(BufferedSink bufferedSink) {
+                RequestContent requestContent = request.getRequestContent();
+                if (requestContent == null) {
+                    return;
                 }
-            })
-            .map(Request.Builder::build);
+
+                request.getRequestContent().writeTo(new OkHttpRequestOutbound(bufferedSink));
+            }
+        }).build());
     }
 
 //    /**
