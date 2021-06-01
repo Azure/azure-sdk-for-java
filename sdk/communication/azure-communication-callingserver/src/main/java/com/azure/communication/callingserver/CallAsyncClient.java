@@ -134,9 +134,9 @@ public final class CallAsyncClient {
 
             return this.callClient.playAudioAsync(callId, convertPlayAudioRequest(request)).flatMap(
                 (PlayAudioResponse response) -> {
-                        PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
-                        return Mono.just(playAudioResult);
-                    });
+                    PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
+                    return Mono.just(playAudioResult);
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
