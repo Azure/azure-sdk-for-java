@@ -100,4 +100,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
-[service_docs]: https://docs.microsoft.com/en-us/azure/iot-dps
+[service_docs]: https://docs.microsoft.com/azure/iot-dps
