@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.EnvironmentVariable.*;
+import static com.azure.spring.test.keyvault.PropertyConvertorUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyVaultCertificateIT {
@@ -36,10 +36,10 @@ public class KeyVaultCertificateIT {
     @BeforeAll
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
+            Arrays.asList("CERTIFICATE/AZURE_KEYVAULT_URI",
+                "CERTIFICATE/AZURE_KEYVAULT_TENANT_ID",
+                "CERTIFICATE/AZURE_KEYVAULT_CLIENT_ID",
+                "CERTIFICATE/AZURE_KEYVAULT_CLIENT_SECRET")
         );
     }
 
@@ -88,7 +88,7 @@ public class KeyVaultCertificateIT {
         app.start();
     }
 
-    public Map<String, String> getDefaultMap(){
+    public Map<String, String> getDefaultMap() {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.keyvault.uri", AZURE_KEYVAULT_URI);
         properties.put("azure.keyvault.client-id", SPRING_CLIENT_ID);
