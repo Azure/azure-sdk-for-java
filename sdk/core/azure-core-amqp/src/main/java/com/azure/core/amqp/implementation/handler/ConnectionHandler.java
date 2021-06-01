@@ -113,6 +113,11 @@ public class ConnectionHandler extends Handler {
      * @param transport Transport to add layers to.
      */
     protected void addTransportLayers(Event event, TransportInternal transport) {
+        // default connection idle timeout is 0.
+        // Giving it a idle timeout will enable the client side to know broken connection faster.
+        // Refer to http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#doc-doc-idle-time-out
+        transport.setIdleTimeout(60_000);
+
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
 
