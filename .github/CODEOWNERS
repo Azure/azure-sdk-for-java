@@ -75,6 +75,9 @@
 
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar
 
+# PRLabel: %Mixed Reality Authentication
+/sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
+
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                               @MalcolmTyrrell
 
