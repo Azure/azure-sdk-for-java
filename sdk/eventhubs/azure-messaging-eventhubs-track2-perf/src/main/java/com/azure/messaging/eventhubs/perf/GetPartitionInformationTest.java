@@ -8,6 +8,11 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
+/**
+ * Gets partition information.
+ */
 public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     private EventHubProducerClient client;
     private EventHubProducerAsyncClient asyncClient;
@@ -16,6 +21,7 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
      * Creates an instance of performance test.
      *
      * @param options the options configured for the test.
+     * @throws RuntimeException If {@link EventHubsOptions#getPartitionId()} is not set.
      */
     public GetPartitionInformationTest(EventHubsOptions options) {
         super(options);
@@ -61,10 +67,6 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     }
 
     private static void printRuntimeInformation(PartitionProperties information) {
-        System.out.printf("Id: %s. Last Seq: %s. Last Offset: %s. Last Enqueued: %s%n",
-            information.getId(),
-            information.getLastEnqueuedSequenceNumber(),
-            information.getLastEnqueuedOffset(),
-            information.getLastEnqueuedTime());
+        Objects.requireNonNull(information, "'PartitionProperties' cannot be null.");
     }
 }

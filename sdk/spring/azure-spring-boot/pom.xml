@@ -275,18 +275,6 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
       <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->

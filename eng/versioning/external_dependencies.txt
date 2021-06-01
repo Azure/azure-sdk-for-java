@@ -216,6 +216,7 @@ uk.org.lidalia:slf4j-test;1.2.0
 com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
+com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
 com.nimbusds:nimbus-jose-jwt;9.8.1
 com.puppycrawl.tools:checkstyle;8.42
 commons-io:commons-io;2.5

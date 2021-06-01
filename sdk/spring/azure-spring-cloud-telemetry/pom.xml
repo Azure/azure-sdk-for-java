@@ -60,12 +60,6 @@
       <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

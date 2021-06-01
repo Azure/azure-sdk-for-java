@@ -14,9 +14,14 @@
     - `TableClient.submitTransaction(List<TableTransactionAction> transactionalBatch)`
     - `TableClient.submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch, Duration timeout, Context context)`
 - `deleteEntity()` variants in `TableClient` and `TableAsyncClient` now accept an `ifUnchanged` flag instead of an `eTag` parameter for conditional operations. When said flag is set to `true`, the ETag of a given `TableEntity` will be matched with the ETag of the entity in the Table service.
-- Removed `deleteEntity(TableEntity tableEntity)` from both `TableClient` and `TableAsyncClient`.
-- Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag)` with `deleteEntity(TableEntity entity, boolean ifUnchanged)` in `TableAsyncClient`.
-- Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout, Context context)` with `deleteEntity(TableEntity entity, boolean ifUnchanged, Duration timeout, Context context)` in `TableClient`.
+- Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag)` with `deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged)` in `TableAsyncClient`.
+- Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout, Context context)` with `deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout, Context context)` in `TableClient`.
+- Removed remaining public APIs supporting the use of `TableEntity` subclasses from `TableAsyncClient`.
+- Removed the following method overloads from `TableClient` and `TableAsyncClient`:
+    - `upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode)`
+    - `updateEntity(TableEntity entity, TableEntityUpdateMode updateMode,
+      boolean ifUnchanged)`
+    - `getEntity(String partitionKey, String rowKey, List<String> select)`
 
 ## 12.0.0-beta.7 (2021-05-15)
 

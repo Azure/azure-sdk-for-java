@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableErrorCode;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
@@ -137,8 +136,8 @@ public class TableServiceClientCodeSnippets {
         try {
             TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
-            //default is for UpdateMode is UpdateMode.MERGE, which means it merges if exists; fails if not
-            //ifUnchanged being false means the eTags must not match
+            // The default TableEntityUpdateMode for this operation is MERGE, which means it merges the entities if one
+            // already exists or inserts it if it does not.
             tableClient.updateEntity(entity);
         } catch (TableServiceException e) {
             if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
@@ -163,9 +162,9 @@ public class TableServiceClientCodeSnippets {
         try {
             TableEntity entity = tableClient.getEntity(partitionKey, rowKey);
 
-            //default is for UpdateMode is UpdateMode.REPLACE, which means it replaces if exists; inserts if not
-            //always upsert because if no ifUnchanged boolean present the "*" in request.
-            tableClient.upsertEntity(entity, TableEntityUpdateMode.REPLACE);
+            // The default TableEntityUpdateMode is REPLACE, which means the entity will be replaced if it exists or
+            // the request fails if not found.
+            tableClient.upsertEntity(entity);
         } catch (TableServiceException e) {
             if (e.getValue().getErrorCode() == TableErrorCode.ENTITY_NOT_FOUND) {
                 System.err.println("Cannot find entity. Upsert unsuccessful");

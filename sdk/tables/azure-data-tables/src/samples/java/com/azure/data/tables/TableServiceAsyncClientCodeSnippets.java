@@ -118,8 +118,8 @@ public class TableServiceAsyncClientCodeSnippets {
             System.out.println("Table Entity: " + tableEntity);
             tableEntity.getProperties().put("Price", "5");
 
-            //default is for UpdateMode is UpdateMode.MERGE, which means it merges if exists; inserts if not
-            //ifUnchanged being true means the eTags must match to upsert
+            // The default TableEntityUpdateMode for this operation is MERGE, which means it merges the entities if one
+            // already exists or inserts it if it does not.
             return tableAsyncClient.upsertEntity(tableEntity);
         }).subscribe(
             Void -> { },
@@ -143,10 +143,9 @@ public class TableServiceAsyncClientCodeSnippets {
             System.out.println("Table Entity: " + tableEntity);
             tableEntity.getProperties().put("Price", "5");
 
-            // Using TableEntityUpdateMode.REPLACE so the entity will be replaced if it exists or the request fails if
-            // not found.
-            // ifUnchanged being false means the ETags must not match.
-            return tableAsyncClient.updateEntity(tableEntity, TableEntityUpdateMode.REPLACE, false);
+            // The default TableEntityUpdateMode for this operation is REPLACE, which means the entity will be
+            // replaced if it exists or the request will fail if not found.
+            return tableAsyncClient.updateEntity(tableEntity, TableEntityUpdateMode.REPLACE);
         }).subscribe(
             Void -> { },
             error -> System.err.println("There was an error updating the Entity. Error: " + error),
