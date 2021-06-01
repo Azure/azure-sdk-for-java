@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,7 @@ import java.util.Map;
 /**
  * Represents a TCP connection between the client and a service that uses the AMQP protocol.
  */
-public interface AmqpConnection extends Disposable {
+public interface AmqpConnection extends Disposable, AsyncCloseable {
     /**
      * Gets the connection identifier.
      *
@@ -27,14 +28,6 @@ public interface AmqpConnection extends Disposable {
      * @return The hostname for the AMQP connection.
      */
     String getFullyQualifiedNamespace();
-
-    /**
-     * Gets the management node.
-     *
-     * @param entityPath Entity for which to get the management node of.
-     * @return Management node.
-     */
-    default Mono<AmqpManagementNode> getManagementNode(String entityPath) { return Mono.empty(); }
 
     /**
      * Gets the maximum frame size for the connection.
@@ -87,4 +80,21 @@ public interface AmqpConnection extends Disposable {
      * @return A stream of shutdown signals that occur in the AMQP endpoint.
      */
     Flux<AmqpShutdownSignal> getShutdownSignals();
+
+    /**
+     * Gets or creates the management node.
+     *
+     * @param entityPath Entity for which to get the management node of.
+     * @return A Mono that completes with the management node.
+     */
+    default Mono<AmqpManagementNode> getManagementNode(String entityPath) { return Mono.error(new UnsupportedOperationException("This has not been implemented.")); }
+
+    /**
+     * Disposes of the AMQP connection.
+     *
+     * @return Mono that completes when the close operation is complete.
+     */
+    default Mono<Void> closeAsync() {
+        return Mono.fromRunnable(this::dispose);
+    }
 }
