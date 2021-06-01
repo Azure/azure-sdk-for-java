@@ -3,29 +3,12 @@
 
 package com.azure.security.keyvault.jca;
 
-
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-
-import java.security.Security;
 import java.security.cert.Certificate;
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JreKeyStoreTest {
-    @BeforeAll
-    public static void init() {
-        /*
-         * Add JCA provider.
-         */
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.addProvider(provider);
-
-
-
-    }
 
     @Test
     public void testJreKsEntries() {
@@ -33,8 +16,7 @@ public class JreKeyStoreTest {
         assertNotNull(jreCertificates);
         assertNotNull(jreCertificates.getAliases());
         Map<String, Certificate> certs = jreCertificates.getCertificates();
-        assertTrue(certs.containsKey("globalsignr2ca [jdk]"));
-        assertNotNull(certs.get("globalsignr2ca [jdk]"));
+        assertTrue(certs.size() > 0);
         assertNotNull(jreCertificates.getCertificateKeys());
     }
 
