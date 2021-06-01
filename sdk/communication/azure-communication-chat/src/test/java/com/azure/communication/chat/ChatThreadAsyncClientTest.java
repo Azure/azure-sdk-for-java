@@ -6,7 +6,6 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import com.azure.communication.chat.implementation.models.CommunicationErrorResponseException;
 import com.azure.core.exception.HttpResponseException;
@@ -57,12 +56,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     private CommunicationUserIdentifier secondParticipant;
     private CommunicationUserIdentifier firstAddedParticipant;
     private CommunicationUserIdentifier secondAddedParticipant;
-
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-        assumeTrue(shouldEnableChatTests());
-    }
 
     @Override
     protected void afterTest() {
