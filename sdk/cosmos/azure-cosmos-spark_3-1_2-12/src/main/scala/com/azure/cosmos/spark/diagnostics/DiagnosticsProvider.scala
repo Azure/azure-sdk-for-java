@@ -3,18 +3,18 @@
 
 package com.azure.cosmos.spark.diagnostics
 
-import com.azure.cosmos.implementation.spark.OperationListener
-
 private[spark] trait DiagnosticsProvider {
   def getLogger(classType: Class[_]) : ILogger
-  def getOperationListener() : Option[OperationListener] = Option.empty
 }
 
+// minimal slf4j logger
 private[spark] class DefaultDiagnostics extends DiagnosticsProvider {
-  override def getLogger(classType: Class[_]): ILogger = new DefaultSlf4jLogger(classType)
+  override def getLogger(classType: Class[_]): ILogger = new DefaultMinimalSlf4jLogger(classType)
 }
 
+// only when diagnostics enabled,
+// - logs each individual writes success and/or failures with id,pk
+// - logs each documentServiceRequest and documentServiceResponse
 private[spark] class SimpleDiagnosticsProvider extends DiagnosticsProvider {
-  override def getLogger(classType: Class[_]): ILogger = new DefaultSlf4jLogger(classType)
-  override def getOperationListener() : Option[OperationListener] = Option.apply(new SimpleOperationListener)
+  override def getLogger(classType: Class[_]): ILogger = new SimpleDiagnosticsSlf4jLogger(classType)
 }

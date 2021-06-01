@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.diagnostics
 
-private[spark] trait ILogger {
+import com.azure.cosmos.implementation.spark.OperationListener
+
+private[spark] trait ILogger extends OperationListener {
 
   def logItemWriteCompletion(writeOperation: WriteOperation)
   def logItemWriteSkipped(writeOperation: WriteOperation, detail: => String)

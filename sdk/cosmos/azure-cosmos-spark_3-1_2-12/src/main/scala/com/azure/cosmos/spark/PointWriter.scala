@@ -292,7 +292,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         "")
 
       val listener: OperationListener =
-        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getOperationListener().get
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       CosmosItemRequestOptionsHelper

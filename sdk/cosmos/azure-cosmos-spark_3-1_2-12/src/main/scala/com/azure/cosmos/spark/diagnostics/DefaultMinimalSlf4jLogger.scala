@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark.diagnostics
 
+import com.azure.cosmos.implementation.spark.OperationContext
+import com.azure.cosmos.implementation.{RxDocumentServiceRequest, RxDocumentServiceResponse}
 import org.slf4j.{Logger, LoggerFactory}
 
-private[spark] final class DefaultSlf4jLogger(classType: Class[_]) extends ILogger {
+private[spark] class DefaultMinimalSlf4jLogger(classType: Class[_])
+  extends ILogger {
   // Make the log field transient so that objects with Logging can
   // be serialized and used on another machine
   @transient private lazy val log: Logger = LoggerFactory.getLogger(logName)
@@ -62,22 +65,26 @@ private[spark] final class DefaultSlf4jLogger(classType: Class[_]) extends ILogg
   }
 
   override def logItemWriteCompletion(writeOperation: WriteOperation): Unit = {
-    logInfo(s"$writeOperation completed")
   }
 
   override def logItemWriteSkipped(writeOperation: WriteOperation, detail: => String): Unit = {
-    logInfo(s"$writeOperation skipped, $detail")
   }
 
   override def logItemWriteFailure(writeOperation: WriteOperation): Unit = {
-    logInfo(s"$writeOperation failed")
   }
 
   override def logItemWriteFailure(writeOperation: WriteOperation, throwable: Throwable): Unit = {
-    logInfo(s"$writeOperation failed", throwable)
   }
 
   override def logItemWriteDetails(writeOperation: WriteOperation, detail: => String): Unit = {
-    logInfo(s"$writeOperation $detail")
+  }
+
+  override def requestListener(context: OperationContext, request: RxDocumentServiceRequest): Unit = {
+  }
+
+  override def responseListener(context: OperationContext, response: RxDocumentServiceResponse): Unit = {
+  }
+
+  override def exceptionListener(context: OperationContext, exception: Throwable): Unit = {
   }
 }

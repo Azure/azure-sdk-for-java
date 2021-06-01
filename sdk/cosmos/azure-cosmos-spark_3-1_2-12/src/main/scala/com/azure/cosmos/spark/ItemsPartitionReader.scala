@@ -59,7 +59,7 @@ private case class ItemsPartitionReader
         feedRange.toString + " " + cosmosQuery.toSqlQuerySpec.getQueryText)
 
       val listener: OperationListener =
-        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getOperationListener().get
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper

@@ -79,10 +79,10 @@ class BulkWriter(container: CosmosAsyncContainer,
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
         taskContext.stageId(),
         taskContext.partitionId(),
-        "Bulk Write")
+        "")
 
       val listener: OperationListener =
-        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getOperationListener().get
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
