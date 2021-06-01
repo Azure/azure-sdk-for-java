@@ -89,6 +89,8 @@ public class BlobSasImplUtil {
 
     private String correlationId;
 
+    private String encryptionScope;
+
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
      *
@@ -133,6 +135,7 @@ public class BlobSasImplUtil {
         this.contentType = sasValues.getContentType();
         this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
+        this.encryptionScope = sasValues.getEncryptionScope();
     }
 
     /**
@@ -224,6 +227,7 @@ public class BlobSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
 

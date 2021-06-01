@@ -296,6 +296,64 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "blob sas encryption scope"() {
+        setup:
+        def scope = "testscope1"
+        def permissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def sasValues = generateValues(permissions)
+        sasValues.setEncryptionScope(scope)
+        def sas = sasClient.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        client.upload(data.defaultInputStream, data.defaultDataSize)
+
+        then:
+        notThrown(BlobStorageException)
+
+        when:
+        def os = new ByteArrayOutputStream()
+        client.download(os)
+
+        then:
+        os.toByteArray() == data.defaultBytes
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "blob sas encryption scope user delegation"() {
+        setup:
+        def scope = "testscope1"
+        def permissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+
+        def sasValues = generateValues(permissions)
+        sasValues.setEncryptionScope(scope)
+        def sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo())
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        client.upload(data.defaultInputStream, data.defaultDataSize)
+
+        then:
+        notThrown(BlobStorageException)
+
+        when:
+        def os = new ByteArrayOutputStream()
+        client.download(os)
+
+        then:
+        os.toByteArray() == data.defaultBytes
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "container sas tags"() {
         setup:

@@ -390,6 +390,11 @@ public final class Constants {
         public static final String SAS_DIRECTORY_DEPTH = "sdd";
 
         /**
+         * The SAS encryption scope parameter.
+         */
+        public static final String SAS_ENCRYPTION_SCOPE = "ses";
+
+        /**
          * The SAS queue constant.
          */
         public static final String SAS_QUEUE_CONSTANT = "q";
