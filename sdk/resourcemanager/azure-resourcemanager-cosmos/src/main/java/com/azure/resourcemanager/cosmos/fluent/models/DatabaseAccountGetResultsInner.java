@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
@@ -210,6 +211,12 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
      */
     @JsonProperty(value = "properties.enableAnalyticalStorage")
     private Boolean enableAnalyticalStorage;
+
+    /*
+     * Analytical storage specific properties.
+     */
+    @JsonProperty(value = "properties.analyticalStorageConfiguration")
+    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
 
     /*
      * The object representing the policy for taking backups on an account.
@@ -689,6 +696,27 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @return the analyticalStorageConfiguration value.
+     */
+    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
+        return this.analyticalStorageConfiguration;
+    }
+
+    /**
+     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
+        return this;
+    }
+
+    /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
      *
      * @return the backupPolicy value.
@@ -824,6 +852,9 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
         }
         if (apiProperties() != null) {
             apiProperties().validate();
+        }
+        if (analyticalStorageConfiguration() != null) {
+            analyticalStorageConfiguration().validate();
         }
         if (backupPolicy() != null) {
             backupPolicy().validate();

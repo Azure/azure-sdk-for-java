@@ -141,6 +141,15 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.jca.JreCertificates$JREKeyStore"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+
   <Match>
     <Or>
       <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
