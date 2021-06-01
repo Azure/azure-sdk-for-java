@@ -52,8 +52,8 @@ public class AzureRedisAutoConfigurationTest {
     @Test
     public void testAzureRedisPropertiesConfigured() {
         this.contextRunner
-            .withUserConfiguration(TestConfiguration.class).
-            withPropertyValues("spring.cloud.azure.redis.name=redis")
+            .withUserConfiguration(TestConfiguration.class)
+            .withPropertyValues("spring.cloud.azure.redis.name=redis")
             .run(
                 context -> {
                     assertThat(context).hasSingleBean(AzureRedisProperties.class);
