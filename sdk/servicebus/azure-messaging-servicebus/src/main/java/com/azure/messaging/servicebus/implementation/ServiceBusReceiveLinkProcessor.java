@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.AsyncAutoCloseable;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
@@ -585,8 +585,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         try {
-            if (link instanceof AsyncAutoCloseable) {
-                ((AsyncAutoCloseable) link).closeAsync().subscribe();
+            if (link instanceof AsyncCloseable) {
+                ((AsyncCloseable) link).closeAsync().subscribe();
             } else {
                 link.dispose();
             }
