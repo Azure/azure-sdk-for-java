@@ -22,7 +22,8 @@ public final class KeyVaultRestoreOperation extends KeyVaultLongRunningOperation
      * @param endTime The end time of the {@link KeyVaultRestoreOperation}.
      * @param jobId Identifier for the full {@link KeyVaultRestoreOperation}.
      */
-    public KeyVaultRestoreOperation(String status, String statusDetails, KeyVaultError error, String jobId, OffsetDateTime startTime, OffsetDateTime endTime) {
+    public KeyVaultRestoreOperation(String status, String statusDetails, KeyVaultError error, String jobId,
+                                    OffsetDateTime startTime, OffsetDateTime endTime) {
         super(status, statusDetails, error, jobId, startTime, endTime);
     }
 }

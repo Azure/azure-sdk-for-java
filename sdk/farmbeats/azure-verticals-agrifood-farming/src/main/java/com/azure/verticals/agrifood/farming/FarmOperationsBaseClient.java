@@ -55,7 +55,7 @@ public final class FarmOperationsBaseClient {
      *     startYear: int
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -75,7 +75,7 @@ public final class FarmOperationsBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param jobId Job Id supplied by user.
+     * @param jobId Job ID supplied by user.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -105,7 +105,7 @@ public final class FarmOperationsBaseClient {
      *     startYear: int
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -119,7 +119,7 @@ public final class FarmOperationsBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

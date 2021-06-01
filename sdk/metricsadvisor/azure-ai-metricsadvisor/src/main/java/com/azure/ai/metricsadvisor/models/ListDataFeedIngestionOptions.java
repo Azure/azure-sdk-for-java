@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 public final class ListDataFeedIngestionOptions {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
 
     /**
@@ -47,10 +47,10 @@ public final class ListDataFeedIngestionOptions {
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maxPageSize value.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -66,11 +66,11 @@ public final class ListDataFeedIngestionOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The skip value.
+     * @param maxPageSize The skip value.
      * @return The ListDataFeedIngestionOptions object itself.
      */
-    public ListDataFeedIngestionOptions setTop(int top) {
-        this.top = top;
+    public ListDataFeedIngestionOptions setMaxPageSize(int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 

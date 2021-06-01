@@ -65,7 +65,7 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
             clientBuilder
                 .buildClient()
                 .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setTop(PAGE_SIZE),
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
                     Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)
@@ -83,7 +83,7 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
             clientBuilder
                 .buildClient()
                 .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setTop(PAGE_SIZE),
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
                     Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)
@@ -117,7 +117,7 @@ public class MetricsAdvisorClientBuilderTest extends TestBase {
             clientBuilder
                 .buildClient()
                 .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setTop(PAGE_SIZE),
+                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
                     Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)

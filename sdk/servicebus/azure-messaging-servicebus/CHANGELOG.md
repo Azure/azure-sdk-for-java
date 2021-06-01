@@ -1,5 +1,7 @@
 # Release History
 
+## 7.3.0-beta.3 (Unreleased)
+
 ## 7.2.1 (2021-05-12)
 ### Fixed
 - Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 
