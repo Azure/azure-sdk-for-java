@@ -17,6 +17,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
         Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
     private static final String CLAIMS_PARAMETER = "claims";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+    private static final String ARM_SCOPES_KEY = "ARMScopes";
 
     private final String[] scopes;
 
@@ -47,10 +49,16 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
 
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
-        if (this.scopes == null) {
-            return Mono.empty();
-        }
-        return setAuthorizationHeader(context, new TokenRequestContext().addScopes(this.scopes));
+        return Mono.defer(() -> {
+            String[] scopes = this.scopes;
+            scopes = getScopes(context, scopes);
+            if (scopes == null) {
+                return Mono.empty();
+            } else {
+                context.setData(ARM_SCOPES_KEY, scopes);
+                return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes));
+            }
+        });
     }
 
     @Override
@@ -68,14 +76,30 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         String claims = new String(Base64.getUrlDecoder()
                             .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
 
+                        String[] scopes;
+                        // We should've retrieved and configured the scopes in on Before logic,
+                        // re-use it here as an optimization.
+                        try {
+                            scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
+                        } catch (NoSuchElementException e) {
+                            scopes = this.scopes;
+                        }
+
+                        // If scopes wasn't configured in On Before logic or at constructor level,
+                        // then this method will retrieve it again.
+                        scopes = getScopes(context, scopes);
                         return setAuthorizationHeader(context, new TokenRequestContext()
-                            .addScopes(this.scopes).setClaims(claims))
+                            .addScopes(scopes).setClaims(claims))
                             .flatMap(b -> Mono.just(true));
                     }
                 }
                 return Mono.just(false);
             }
         });
+    }
+
+    protected String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
+        return scopes;
     }
 
     List<AuthenticationChallenge> parseChallenges(String header) {
