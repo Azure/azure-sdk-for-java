@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -89,11 +89,14 @@
       <plugin>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-webapp-maven-plugin</artifactId>
-        <version>1.12.0</version>
+        <version>1.14.0</version> <!-- {x-version-update;com.microsoft.azure:azure-webapp-maven-plugin;external_dependency} -->
         <configuration>
           <schemaVersion>V2</schemaVersion>
+          <subscriptionId>[your-subscription-id]</subscriptionId>
           <resourceGroup>[your-resource-group]</resourceGroup>
           <appName>[your-app-name]</appName>
+          <region>[your-region]</region>
+          <pricingTier>P1v2</pricingTier>
           <runtime>
             <os>Linux</os>
             <javaVersion>Java 8</javaVersion>

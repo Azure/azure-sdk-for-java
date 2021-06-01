@@ -16,8 +16,9 @@
 - Removed `EXPORT` from the `KeyOperation` enum.
 - Re-ordered parameters in the `EncryptResult` constructor to show `authenticationTag` before `additionalAuthenticatedData` to align with classes like `DecryptParameters`.
 
-#### Other Changes
-- Renamed `keyId` to `id` in `KeyVaultKeyIdentifier`.
+### Non-Breaking Changes
+- Renamed `keyId` to `sourceId` in `KeyVaultKeyIdentifier`.
+- `KeyVaultKeyIdentifier` can now be used to parse any Key Vault identifier.
 - Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `KeyClient`, `KeyAsyncClient`, `CryptographyClient` and `CryptographyAsyncClient`.
 
 ## 4.3.0-beta.8 (2021-05-15)

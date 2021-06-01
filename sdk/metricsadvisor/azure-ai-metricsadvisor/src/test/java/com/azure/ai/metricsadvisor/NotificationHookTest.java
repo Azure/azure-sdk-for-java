@@ -87,7 +87,7 @@ public final class NotificationHookTest extends NotificationHookTestBase {
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList
-            = client.listHooks(new ListHookOptions().setTop(ListHookInput.INSTANCE.pageSize), Context.NONE)
+            = client.listHooks(new ListHookOptions().setMaxPageSize(ListHookInput.INSTANCE.pageSize), Context.NONE)
             .streamByPage()
             .collect(Collectors.toList());
 
