@@ -3,23 +3,22 @@
 
 package com.azure.spring.autoconfigure.cosmos;
 
-import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.autoconfigure.cosmos.domain.Person;
 import com.azure.spring.autoconfigure.cosmos.domain.PersonRepository;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
-@RunWith(MockitoJUnitRunner.class)
-@Ignore
+@Disabled
 public class CosmosRepositoriesAutoConfigurationUnitTest {
 
     private AnnotationConfigApplicationContext context;
@@ -27,7 +26,12 @@ public class CosmosRepositoriesAutoConfigurationUnitTest {
     @InjectMocks
     private CosmosTemplate cosmosTemplate;
 
-    @After
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
     public void close() {
         if (this.context != null) {
             this.context.close();
@@ -41,10 +45,12 @@ public class CosmosRepositoriesAutoConfigurationUnitTest {
         Assertions.assertThat(this.context.getBean(PersonRepository.class)).isNotNull();
     }
 
-    @Test(expected = NoSuchBeanDefinitionException.class)
+    @Test
     public void autConfigNotKickInIfManualConfigDidNotCreateRepositories() throws Exception {
         prepareApplicationContext(InvalidCustomConfiguration.class);
-        this.context.getBean(PersonRepository.class);
+
+        org.junit.jupiter.api.Assertions.assertThrows(NoSuchBeanDefinitionException.class,
+            () -> this.context.getBean(PersonRepository.class));
     }
 
     private void prepareApplicationContext(Class<?>... configurationClasses) {

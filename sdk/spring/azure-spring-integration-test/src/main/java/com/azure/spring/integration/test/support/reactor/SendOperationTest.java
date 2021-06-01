@@ -5,28 +5,29 @@ package com.azure.spring.integration.test.support.reactor;
 
 import com.azure.spring.integration.core.api.reactor.SendOperation;
 import com.google.common.collect.ImmutableMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
+import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SendOperationTest<O extends SendOperation> {
 
     protected String consumerGroup = "consumer-group";
     protected String destination = "event-hub";
     protected Message<?> message = new GenericMessage<>("testPayload",
-                                                        ImmutableMap.of("key1", "value1", "key2", "value2"));
+        ImmutableMap.of("key1", "value1", "key2", "value2"));
     protected Mono<Void> mono = Mono.empty();
     protected String payload = "payload";
     protected O sendOperation;
 
     protected abstract void setupError(String errorMessage);
+
 
     @Test
     public void testSend() {
@@ -36,11 +37,12 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifySendCalled(1);
     }
 
-    @Test(expected = NestedRuntimeException.class)
+    @Test
     public void testSendCreateSenderFailure() {
         whenSendWithException();
 
-        this.sendOperation.sendAsync(destination, this.message, null).block();
+        assertThrows(NestedRuntimeException.class, () -> this.sendOperation.sendAsync(destination, this.message,
+            null).block());
     }
 
     @Test

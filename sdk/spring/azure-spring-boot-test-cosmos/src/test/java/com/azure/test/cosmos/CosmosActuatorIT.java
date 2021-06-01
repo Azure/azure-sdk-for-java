@@ -4,8 +4,8 @@
 package com.azure.test.cosmos;
 
 import com.azure.spring.test.AppRunner;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
 public class CosmosActuatorIT {
@@ -31,7 +31,7 @@ public class CosmosActuatorIT {
 
             final String response = REST_TEMPLATE.getForObject(
                 "http://localhost:" + app.port() + "/actuator/health/cosmos", String.class);
-            Assert.assertTrue(response != null && response.contains("\"status\":\"UP\""));
+            Assertions.assertTrue(response != null && response.contains("\"status\":\"UP\""));
         }
     }
 }
