@@ -13,8 +13,11 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import reactor.core.publisher.Mono;
@@ -60,7 +63,16 @@ public class CallingServerTestBase extends TestBase {
     }
 
     protected ConversationClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
-        return null;
+        ConversationClientBuilder builder = new ConversationClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;        
     }
 
     private static TestMode initializeTestMode() {
@@ -80,7 +92,7 @@ public class CallingServerTestBase extends TestBase {
         }
     }
 
-    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+    protected Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
             .flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
