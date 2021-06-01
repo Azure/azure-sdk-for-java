@@ -3,8 +3,14 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import java.util.ArrayList;
@@ -13,32 +19,43 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class AADAccessTokenGroupRolesExtractionTest {
 
-    private AADAuthenticationProperties properties = mock(AADAuthenticationProperties.class);
-    private OAuth2AccessToken accessToken = mock(OAuth2AccessToken.class);
-    private GraphClient graphClient = mock(GraphClient.class);
+    @Mock
+    private AADAuthenticationProperties properties;
+    @Mock
+    private OAuth2AccessToken accessToken;
+    @Mock
+    private GraphClient graphClient;
 
     private AADAuthenticationProperties.UserGroupProperties userGroup =
         new AADAuthenticationProperties.UserGroupProperties();
-    private AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+    private AADOAuth2UserService userService;
+    private AutoCloseable autoCloseable;
 
     @BeforeEach
-    private void setup() {
+    public void setup() {
+        this.autoCloseable = MockitoAnnotations.openMocks(this);
         Set<String> groups = new HashSet<>();
         groups.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
         groups.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
         groups.add("group1");
         groups.add("group2");
-        when(properties.allowedGroupNamesConfigured()).thenReturn(true);
-        when(properties.allowedGroupIdsConfigured()).thenReturn(true);
-        when(properties.getUserGroup()).thenReturn(userGroup);
-        when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1.0/me/memberOf");
-        when(accessToken.getTokenValue()).thenReturn("fake-access-token");
-        when(graphClient.getGroupsFromGraph(accessToken.getTokenValue())).thenReturn(groups);
+        Mockito.lenient().when(properties.allowedGroupNamesConfigured()).thenReturn(true);
+        Mockito.lenient().when(properties.allowedGroupIdsConfigured()).thenReturn(true);
+        Mockito.lenient().when(properties.getUserGroup()).thenReturn(userGroup);
+        Mockito.lenient().when(properties.getGraphMembershipUri()).thenReturn("https://graph.microsoft.com/v1"
+            + ".0/me/memberOf");
+        Mockito.lenient().when(accessToken.getTokenValue()).thenReturn("fake-access-token");
+        Mockito.lenient().when(graphClient.getGroupsFromGraph(accessToken.getTokenValue())).thenReturn(groups);
+        userService = new AADOAuth2UserService(properties, graphClient);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        this.autoCloseable.close();
     }
 
     @Test
@@ -70,8 +87,8 @@ public class AADAccessTokenGroupRolesExtractionTest {
         Set<String> allowedGroupIds = new HashSet<>();
         allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
         userGroup.setAllowedGroupIds(allowedGroupIds);
-        List<String> allowedGroupNames = new ArrayList<>();
 
+        List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
         userGroup.setAllowedGroupNames(allowedGroupNames);
 
