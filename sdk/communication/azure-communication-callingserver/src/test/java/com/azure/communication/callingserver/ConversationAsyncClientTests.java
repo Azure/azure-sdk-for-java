@@ -22,14 +22,14 @@ import org.junit.jupiter.params.provider.MethodSource;
  * live. By default, tests are run in playback mode. The runAllClientFunctions and runAllClientFunctionsWithResponse
  * test will not run in LIVE or RECORD as they cannot get their own conversationId.
  */
-public class CommunicationAsyncClientTests extends CallingServerTestBase {
+public class ConversationAsyncClientTests extends CallingServerTestBase {
+    private String conversationId = "aHR0cHM6Ly9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9LQTd3NzZVZk4wcUVKc1dOSFBwOHB3P2k9MTg5JmU9NjM3NTc4Mjc3MjE0Mzg0Njkz";
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctions(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runAllClientFunctionsAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctions");
-        String conversationId = "aHR0cHM6Ly9jb252LXVzZWEyLTA1LmNvbnYuc2t5cGUuY29tL2NvbnYvRmxXcVEtS0NHMGludXRuZmFQWldJUT9pPTE0OCZlPTYzNzU3NDkzODU3NTAwNjQ2OQ==";
         String recordingId = "";        
         URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
 
@@ -53,10 +53,9 @@ public class CommunicationAsyncClientTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctionsWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runAllClientFunctionsWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctions");
-        String conversationId = "aHR0cHM6Ly9jb252LXVzZWEyLTA1LmNvbnYuc2t5cGUuY29tL2NvbnYvRmxXcVEtS0NHMGludXRuZmFQWldJUT9pPTE0OCZlPTYzNzU3NDkzODU3NTAwNjQ2OQ==";
         String recordingId = "";        
         URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
         System.out.println("conversationId: " + conversationId);
@@ -83,7 +82,7 @@ public class CommunicationAsyncClientTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void startRecordingFails(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void startRecordingFailsAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctions");
         var invalidConversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";       
