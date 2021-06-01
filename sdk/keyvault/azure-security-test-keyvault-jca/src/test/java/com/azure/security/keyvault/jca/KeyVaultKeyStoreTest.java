@@ -173,6 +173,7 @@ public class KeyVaultKeyStoreTest {
 
     @Test
     public void testNotRefreshEngineGetCertificate() throws Exception {
+        System.setProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate", "false");
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
         KeyStore ks = PropertyConvertorUtils.getKeyVaultKeyStore();
