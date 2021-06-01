@@ -49,6 +49,14 @@
                         <configuration>
                             <createSourcesJar>true</createSourcesJar>
                             <shadeSourcesContent>true</shadeSourcesContent>
+                            <filters>
+                              <filter>
+                                <artifact>com.azure:azure-security-keyvault-jca</artifact>
+                                <excludes>
+                                  <exclude>module-info.java</exclude>
+                                </excludes>
+                              </filter>
+                            </filters>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
