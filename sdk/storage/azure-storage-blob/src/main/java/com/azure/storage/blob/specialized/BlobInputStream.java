@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
@@ -56,10 +57,22 @@ public final class BlobInputStream extends StorageInputStream {
     }
 
     @Override
-    protected Mono<ByteBuffer> executeRead(int readLength, long offset) {
-        return this.blobClient.downloadWithResponse(
-            new BlobRange(offset, (long) readLength), null, this.accessCondition, false)
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap));
+    protected ByteBuffer dispatchRead(int readLength, long offset) throws IOException {
+        try {
+            ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(
+                new BlobRange(offset, (long) readLength), null, this.accessCondition, false)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
+                .block();
+
+            this.bufferSize = readLength;
+            this.bufferStartOffset = offset;
+            return currentBuffer;
+        } catch (final HttpResponseException e) {
+            this.streamFaulted = true;
+            this.lastError = new IOException(e);
+
+            throw this.lastError;
+        }
     }
 
     /**

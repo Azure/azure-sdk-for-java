@@ -156,34 +156,7 @@ public abstract class StorageInputStream extends InputStream {
      * @return The bytebuffer which store one chunk size of data.
      * @throws IOException If an I/O error occurs.
      */
-    protected ByteBuffer dispatchRead(int readLength, long offset) throws IOException {
-        try {
-            ByteBuffer currentBuffer = executeRead(readLength, offset).block();
-
-            this.bufferSize = readLength;
-            this.bufferStartOffset = offset;
-            return currentBuffer;
-        } catch (final HttpResponseException e) {
-            this.streamFaulted = true;
-            this.lastError = new IOException(e);
-
-            throw this.lastError;
-        }
-    }
-
-    /**
-     * Executes a read call and returns content in a byte buffer.
-     *
-     * This method is responsible for asynchronously making a low-level client read and returning the downloaded
-     * content. If more control is needed over how read operations are organized,
-     * {@link StorageInputStream#dispatchRead(int, long)} should be overridden.
-     *
-     * @param readLength An <code>int</code> which represents the number of bytes to read.
-     * @param offset The start point of data to be acquired.
-     * @return The bytebuffer which store one chunk size of data.
-     * @throws HttpResponseException If an I/O error occurs.
-     */
-    protected abstract Mono<ByteBuffer> executeRead(int readLength, long offset);
+    protected abstract ByteBuffer dispatchRead(int readLength, long offset) throws IOException;
 
     /**
      * Marks the current position in this input stream. A subsequent call to the reset method repositions this stream at

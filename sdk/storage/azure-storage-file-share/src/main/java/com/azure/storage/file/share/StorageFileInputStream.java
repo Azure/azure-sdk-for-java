@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
@@ -52,9 +53,21 @@ public class StorageFileInputStream extends StorageInputStream {
     }
 
     @Override
-    protected Mono<ByteBuffer> executeRead(int readLength, long offset) {
-        return this.shareFileAsyncClient.downloadWithResponse(
-            new ShareFileRange(offset, offset + readLength - 1), false)
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap));
+    protected ByteBuffer dispatchRead(int readLength, long offset) throws IOException {
+        try {
+            ByteBuffer currentBuffer = this.shareFileAsyncClient.downloadWithResponse(
+                new ShareFileRange(offset, offset + readLength - 1), false)
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
+                .block();
+
+            this.bufferSize = readLength;
+            this.bufferStartOffset = offset;
+            return currentBuffer;
+        } catch (final HttpResponseException e) {
+            this.streamFaulted = true;
+            this.lastError = new IOException(e);
+
+            throw this.lastError;
+        }
     }
 }
