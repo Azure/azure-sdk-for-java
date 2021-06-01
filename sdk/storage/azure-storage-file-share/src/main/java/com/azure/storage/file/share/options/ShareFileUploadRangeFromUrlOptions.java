@@ -10,7 +10,7 @@ public class ShareFileUploadRangeFromUrlOptions {
     private long destinationOffset;
     private long sourceOffset;
     private String sourceUrl;
-    private String sourceAuthorization;
+    private String sourceBearerToken;
     private ShareRequestConditions destinationRequestConditions;
 
     /**
@@ -80,16 +80,16 @@ public class ShareFileUploadRangeFromUrlOptions {
     /**
      * @return optional bearer token for access to source URL for this operation.
      */
-    public String getSourceAuthorization() {
-        return sourceAuthorization;
+    public String getSourceBearerToken() {
+        return sourceBearerToken;
     }
 
     /**
      * @param sourceAuthorization optional bearer token for access to source URL.
      * @return modified options.
      */
-    public ShareFileUploadRangeFromUrlOptions setSourceAuthorization(String sourceAuthorization) {
-        this.sourceAuthorization = sourceAuthorization;
+    public ShareFileUploadRangeFromUrlOptions setSourceBearerToken(String sourceAuthorization) {
+        this.sourceBearerToken = sourceAuthorization;
         return this;
     }
 

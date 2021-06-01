@@ -1679,12 +1679,14 @@ public class ShareFileAsyncClient {
             options.getSourceOffset() + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
 
+        String sourceAuth = options.getSourceBearerToken() == null
+            ? null : "Bearer " + options.getSourceBearerToken();
+
         final String copySource = Utility.encodeUrlPath(options.getSourceUrl());
 
         return azureFileStorageClient.getFiles()
             .uploadRangeFromURLWithResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
-                null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(),
-                options.getSourceAuthorization(), null,
+                null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::uploadRangeFromUrlResponse);
     }

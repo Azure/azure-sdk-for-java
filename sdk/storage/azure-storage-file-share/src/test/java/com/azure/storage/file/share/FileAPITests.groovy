@@ -4,14 +4,11 @@
 package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
-import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
 import com.azure.identity.EnvironmentCredentialBuilder
-import com.azure.storage.blob.BlobClient
-import com.azure.storage.blob.BlobClientBuilder
-import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -33,7 +30,6 @@ import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions
 import com.azure.storage.file.share.sas.ShareFileSasPermission
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -760,23 +756,28 @@ class FileAPITests extends APISpec {
 
     def "Copy from URL with oauth source"() {
         given:
-        def blob = new BlobServiceClientBuilder()
+        def container = new BlobServiceClientBuilder()
             .endpoint("https://" + env.primaryAccount.name + ".blob.core.windows.net")
-            .credential(env.primaryAccount.credential) // don't need oauth here but primaryAccount needs it configured
+            .credential(new EnvironmentCredentialBuilder().build()) // don't need oauth here but primaryAccount needs it configured
             .buildClient()
             .createBlobContainer(getShareName())
-            .getBlobClient(generatePathName())
-        blob.upload(data.defaultBinaryData)
+        def blob = container.getBlobClient(generatePathName())
+        def oauthHeader = blob.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData), null, null)
+            .getRequest().getHeaders().get("Authorization").getValue().substring("Bearer ".size())
         primaryFileClient.create(data.defaultDataSize)
 
         when:
         primaryFileClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions()
-            .setSourceUrl(blob.getBlobUrl()).setSourceAuthorization(getAuthToken().block()), null, Context.NONE)
+            .setSourceUrl(blob.getBlobUrl()).setSourceBearerToken(oauthHeader)
+            .setLength(data.defaultDataSize), null, Context.NONE)
 
         then:
         def os = new ByteArrayOutputStream(data.defaultDataSize)
         primaryFileClient.download(os)
         os.toByteArray() == data.defaultBytes
+
+        cleanup:
+        container.delete()
     }
 
     @Unroll

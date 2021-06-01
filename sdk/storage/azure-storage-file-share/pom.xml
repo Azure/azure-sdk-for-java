@@ -97,6 +97,12 @@
       <version>1.4.0-beta.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.12.0-beta.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -243,6 +249,7 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+                --add-exports com.azure.storage.common/com.azure.storage.common.implementation.credentials=ALL-UNNAMED
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share.implementation=ALL-UNNAMED
