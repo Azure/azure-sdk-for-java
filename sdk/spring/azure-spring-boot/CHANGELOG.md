@@ -23,7 +23,7 @@
   | enable-full-list    | default is `false`.<br> if the value is `true`, create `GrantedAuthority` only with user's  all groupIds, ignore group names|
 
 ### Key Bug Fixes
-- Fix the issue [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036) where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer.
+- Fix issue that where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer. [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036)
 - Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
 
 ## 3.4.0 (2021-04-19)
