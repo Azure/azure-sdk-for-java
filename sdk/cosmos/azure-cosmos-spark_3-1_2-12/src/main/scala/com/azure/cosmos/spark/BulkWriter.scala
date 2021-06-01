@@ -74,7 +74,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       val taskContext = TaskContext.get
       assert(taskContext != null)
 
-      val diagnosticsContext: DiagnosticsContext = new DiagnosticsContext(UUID.randomUUID().toString, "test")
+      val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID().toString, "BulkWriter")
 
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
         taskContext.stageId(),

@@ -3,6 +3,15 @@
 package com.azure.cosmos.spark.diagnostics
 
 private[spark] trait ILogger {
+
+  def logItemWriteCompletion(writeOperation: WriteOperation)
+  def logItemWriteSkipped(writeOperation: WriteOperation, detail: => String)
+
+  def logItemWriteFailure(writeOperation: WriteOperation)
+  def logItemWriteFailure(writeOperation: WriteOperation, throwable: Throwable)
+
+  def logItemWriteDetails(writeOperation: WriteOperation, detail: => String)
+
   // Log methods that take only a String
   def logInfo(msg: => String)
 

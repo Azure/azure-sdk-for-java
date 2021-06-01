@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.spark.OperationListener
 
 private[spark] trait DiagnosticsProvider {
   def getLogger(classType: Class[_]) : ILogger
-
   def getOperationListener() : Option[OperationListener] = Option.empty
 }
 

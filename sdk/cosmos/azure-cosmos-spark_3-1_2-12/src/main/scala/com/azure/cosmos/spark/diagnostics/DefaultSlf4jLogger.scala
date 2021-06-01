@@ -4,7 +4,7 @@ package com.azure.cosmos.spark.diagnostics
 
 import org.slf4j.{Logger, LoggerFactory}
 
-private[spark] class DefaultSlf4jLogger(classType: Class[_]) extends ILogger {
+private[spark] final class DefaultSlf4jLogger(classType: Class[_]) extends ILogger {
   // Make the log field transient so that objects with Logging can
   // be serialized and used on another machine
   @transient private lazy val log: Logger = LoggerFactory.getLogger(logName)
@@ -59,5 +59,25 @@ private[spark] class DefaultSlf4jLogger(classType: Class[_]) extends ILogger {
 
   def logError(msg: => String, throwable: Throwable) {
     if (log.isErrorEnabled) log.error(msg, throwable)
+  }
+
+  override def logItemWriteCompletion(writeOperation: WriteOperation): Unit = {
+    logInfo(s"$writeOperation completed")
+  }
+
+  override def logItemWriteSkipped(writeOperation: WriteOperation, detail: => String): Unit = {
+    logInfo(s"$writeOperation skipped, $detail")
+  }
+
+  override def logItemWriteFailure(writeOperation: WriteOperation): Unit = {
+    logInfo(s"$writeOperation failed")
+  }
+
+  override def logItemWriteFailure(writeOperation: WriteOperation, throwable: Throwable): Unit = {
+    logInfo(s"$writeOperation failed", throwable)
+  }
+
+  override def logItemWriteDetails(writeOperation: WriteOperation, detail: => String): Unit = {
+    logInfo(s"$writeOperation $detail")
   }
 }
