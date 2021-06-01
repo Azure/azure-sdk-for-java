@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -371,7 +370,6 @@ public class ClientSideRequestStatistics {
         int subStatusCode;
         String requestCharge;
         RequestTimeline requestTimeline;
-        @JsonIgnore
         String partitionKeyRangeId;
 
         public String getSessionToken() {

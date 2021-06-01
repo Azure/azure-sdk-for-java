@@ -30,6 +30,8 @@ import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.opentelemetry.api.trace.Span;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
@@ -62,6 +64,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
  */
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPagedFlux.class);
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 
     private final Consumer<FeedResponse<T>> feedResponseConsumer;
@@ -164,8 +167,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     try {
                         addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
                             cosmosException.getDiagnostics());
-                    } catch (JsonProcessingException e) {
-                        // do nothing
+                    } catch (JsonProcessingException ex) {
+                        LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                     }
                 }
                 fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
@@ -186,8 +189,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 try {
                     addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
                         feedResponse.getCosmosDiagnostics());
-                } catch (JsonProcessingException e) {
-                    System.out.println("CosmosPagedFlux.byPage "+e.getMessage());
+                } catch (JsonProcessingException ex) {
+                    LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                 }
             }
             //  If the user has passed feedResponseConsumer, then call it with each feedResponse

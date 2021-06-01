@@ -67,6 +67,13 @@ Licensed under the MIT License.
       <artifactId>azure-core</artifactId>
       <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.azure/azure-core-tracing-opentelemetry -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <version>1.0.0-beta.11</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
@@ -213,6 +220,12 @@ Licensed under the MIT License.
       <version>3.6.28</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-logging</artifactId>
+      <version>1.0.0</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
 
@@ -277,6 +290,7 @@ Licensed under the MIT License.
                 <include>io.micrometer:micrometer-core:[1.6.6]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.hdrhistogram:HdrHistogram:[2.1.12]</include> <!-- {x-include-update;cosmos_org.hdrhistogram:HdrHistogram;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.0.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

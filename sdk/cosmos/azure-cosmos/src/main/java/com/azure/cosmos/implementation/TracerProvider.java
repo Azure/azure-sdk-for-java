@@ -13,14 +13,14 @@ import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
-import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.opentelemetry.api.trace.Span;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
@@ -39,6 +39,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 public class TracerProvider {
     private Tracer tracer;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TracerProvider.class);
     private final static String JSON_STRING = "JSON";
     public final static String DB_TYPE_VALUE = "Cosmos";
     public final static String DB_TYPE = "db.type";
@@ -207,8 +208,8 @@ public class TracerProvider {
                     CosmosDiagnostics cosmosDiagnostics = diagnosticFunc.apply(response);
                     try {
                         addDiagnosticsOnTracerEvent(cosmosDiagnostics);
-                    } catch (JsonProcessingException e) {
-                        // do nothing
+                    } catch (JsonProcessingException ex) {
+                        LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                     }
                     this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
                 }
@@ -220,8 +221,8 @@ public class TracerProvider {
                         CosmosException dce = (CosmosException) unwrappedException;
                         try {
                             addDiagnosticsOnTracerEvent(dce.getDiagnostics());
-                        } catch (JsonProcessingException e) {
-                            // do nothing
+                        } catch (JsonProcessingException ex) {
+                            LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                         }
                     }
 
@@ -278,7 +279,6 @@ public class TracerProvider {
         }
         tracer.end(statusCode, throwable, context);
     }
-
 
     private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
                                     CosmosDiagnostics cosmosDiagnostics,
@@ -362,7 +362,7 @@ public class TracerProvider {
             BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
 
         Map<String, Object> attributes = null;
-        //adding Supplemental StoreResponse
+        //adding storeResponse
         int diagnosticsCounter = 1;
         for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics :
             clientSideRequestStatistics.getResponseStatisticsList()) {
@@ -370,24 +370,30 @@ public class TracerProvider {
             attributes.put(JSON_STRING, Utils.getSimpleObjectMapper().writeValueAsString(storeResponseStatistics));
             Iterator<RequestTimeline.Event> eventIterator = null;
             try {
-                eventIterator = DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.storeResult.toResponse()).iterator();
+                if (storeResponseStatistics.storeResult != null) {
+                    eventIterator =
+                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.storeResult.toResponse()).iterator();
+                }
             } catch (CosmosException ex) {
                 eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
             }
 
-            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(storeResponseStatistics.requestResponseTimeUTC, ZoneOffset.UTC);
-            while (eventIterator.hasNext()) {
-                RequestTimeline.Event event = eventIterator.next();
-                if(event.getName().equals("created")) {
-                    requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
-                    break;
+            OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(storeResponseStatistics.requestResponseTimeUTC
+                , ZoneOffset.UTC);
+            if (eventIterator != null) {
+                while (eventIterator.hasNext()) {
+                    RequestTimeline.Event event = eventIterator.next();
+                    if (event.getName().equals("created")) {
+                        requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
+                        break;
+                    }
                 }
             }
 
             this.addEvent("StoreResponse" + diagnosticsCounter++, attributes, requestStartTime);
         }
 
-        //adding Supplemental StoreResponse
+        //adding supplemental storeResponse
         diagnosticsCounter = 1;
         for (ClientSideRequestStatistics.StoreResponseStatistics statistics :
             ClientSideRequestStatistics.getCappedSupplementalResponseStatisticsList(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
@@ -407,7 +413,7 @@ public class TracerProvider {
             this.addEvent("Supplemental StoreResponse" + diagnosticsCounter++, attributes, requestStartTime);
         }
 
-        //adding Supplemental StoreResponse
+        //adding gateway statistics
         if (clientSideRequestStatistics.getGatewayStatistics() != null) {
             attributes = new HashMap<>();
             attributes.put(JSON_STRING,
