@@ -85,6 +85,18 @@
       <version>2.0-M4-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob</artifactId>
+          <version>12.12.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+          <scope>test</scope>
+      </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.4.0-beta.1</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>
