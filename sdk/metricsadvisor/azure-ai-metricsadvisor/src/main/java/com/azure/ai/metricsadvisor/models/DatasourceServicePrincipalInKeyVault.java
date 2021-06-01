@@ -83,7 +83,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      *
      * @return The name of the KeyVault secret holding client secret
      */
-    public String getSecretNameForDataSourceClientId() {
+    public String getSecretNameForDatasourceClientId() {
         return this.clientIdSecretName;
     }
 
@@ -92,7 +92,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      *
      * @return The name of the KeyVault secret holding client secret
      */
-    public String getSecretNameForDataSourceClientSecret() {
+    public String getSecretNameForDatasourceClientSecret() {
         return this.clientSecretName;
     }
 
@@ -115,7 +115,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param keyVaultClientSecret The client secret to access the keyVault
      * @return an updated object
      */
-    public DatasourceServicePrincipalInKeyVault setKeyVaultForDataSourceSecrets(String keyVaultEndpoint,
+    public DatasourceServicePrincipalInKeyVault setKeyVaultForDatasourceSecrets(String keyVaultEndpoint,
                                                                                 String keyVaultClientId,
                                                                                 String keyVaultClientSecret) {
         this.keyVaultEndpoint = keyVaultEndpoint;
@@ -130,7 +130,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param clientIdSecretName The secret name
      * @return an updated object with client id secret name set
      */
-    public DatasourceServicePrincipalInKeyVault setSecretNameForDataSourceClientId(String clientIdSecretName) {
+    public DatasourceServicePrincipalInKeyVault setSecretNameForDatasourceClientId(String clientIdSecretName) {
         this.clientIdSecretName = clientIdSecretName;
         return this;
     }
@@ -141,7 +141,7 @@ public final class DatasourceServicePrincipalInKeyVault extends DatasourceCreden
      * @param clientSecretName The secret name
      * @return an updated object with client secret name set
      */
-    public DatasourceServicePrincipalInKeyVault setSecretNameForDataSourceClientSecret(String clientSecretName) {
+    public DatasourceServicePrincipalInKeyVault setSecretNameForDatasourceClientSecret(String clientSecretName) {
         this.clientSecretName = clientSecretName;
         return this;
     }

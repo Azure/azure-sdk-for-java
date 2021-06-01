@@ -917,11 +917,13 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * Create a data source credential entity.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredential#DatasourceCredentialEntity}
+     *
      * @param datasourceCredential The credential entity.
      * @return The created {@link DatasourceCredentialEntity}.
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasourceCredentialEntity createDatasourceCredential(DatasourceCredentialEntity datasourceCredential) {
         return createDatasourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
@@ -929,6 +931,9 @@ public final class MetricsAdvisorAdministrationClient {
 
     /**
      * Create a data source credential entity with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context}
      *
      * @param datasourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -945,6 +950,9 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * Get a data source credential entity by its id.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredential#String}
+     *
      * @param credentialId The data source credential entity unique id.
      *
      * @return The data source credential entity for the provided id.
@@ -958,6 +966,9 @@ public final class MetricsAdvisorAdministrationClient {
 
     /**
      * Get a data source credential entity by its id with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredentialWithResponse#String-Context}
      *
      * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -975,6 +986,9 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * Update a data source credential entity.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredential#DatasourceCredentialEntity}
+     *
      * @param datasourceCredential The credential entity.
      *
      * @return The updated {@link DatasourceCredentialEntity}.
@@ -987,6 +1001,9 @@ public final class MetricsAdvisorAdministrationClient {
 
     /**
      * Update a data source credential entity.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context}
      *
      * @param datasourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -1003,6 +1020,9 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * Delete a data source credential entity.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredential#String}
+     *
      * @param credentialId The data source credential entity unique id.
      *
      * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
@@ -1015,6 +1035,9 @@ public final class MetricsAdvisorAdministrationClient {
 
     /**
      * Delete a data source credential entity with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredentialWithResponse#String-Context}
      *
      * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -1031,6 +1054,9 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials}
+     *
      * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
      * in the account.
      */
@@ -1042,8 +1068,11 @@ public final class MetricsAdvisorAdministrationClient {
     /**
      * List information of all data source credential entities on the metrics advisor account.
      *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials#ListCredentialEntityOptions-Context}
+     *
      * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering the output
-     *               result.
+     * result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
