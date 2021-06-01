@@ -365,10 +365,8 @@ public class TablesAsyncClientTest extends TestBase {
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
         // Act & Assert
-        StepVerifier.create(tableClient.deleteEntityWithResponse(partitionKeyValue, rowKeyValue, null))
-            .assertNext(response -> {
-                assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+        StepVerifier.create(tableClient.deleteEntityWithResponse(createdEntity, false))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -378,10 +376,11 @@ public class TablesAsyncClientTest extends TestBase {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 404;
 
         // Act & Assert
-        StepVerifier.create(tableClient.deleteEntityWithResponse(partitionKeyValue, rowKeyValue, null))
+        StepVerifier.create(tableClient.deleteEntityWithResponse(entity, false))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
@@ -401,11 +400,8 @@ public class TablesAsyncClientTest extends TestBase {
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
         // Act & Assert
-        StepVerifier.create(tableClient.deleteEntityWithResponse(partitionKeyValue, rowKeyValue,
-            createdEntity.getETag()))
-            .assertNext(response -> {
-                assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+        StepVerifier.create(tableClient.deleteEntityWithResponse(createdEntity, true))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }

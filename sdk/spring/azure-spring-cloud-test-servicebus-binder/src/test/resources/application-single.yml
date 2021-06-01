@@ -24,7 +24,7 @@ spring:
               cloud:
                 azure:
                   servicebus:
-                    connection-string: ${SERVICEBUS_BINDER_TEST_CONNECTION_STRING}
+                    connection-string: ${SERVICEBUS1_BINDER_TEST_CONNECTION_STRING}
         servicebus-2:
           type: servicebus-queue
           default-candidate: false
@@ -33,4 +33,4 @@ spring:
               cloud:
                 azure:
                   servicebus:
-                    connection-string: ${SERVICEBUS_BINDER_TEST_CONNECTION_STRING}
+                    connection-string: ${SERVICEBUS1_BINDER_TEST_CONNECTION_STRING}

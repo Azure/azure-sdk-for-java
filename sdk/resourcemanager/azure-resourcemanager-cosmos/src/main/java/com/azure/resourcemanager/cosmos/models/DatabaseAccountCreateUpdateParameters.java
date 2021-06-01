@@ -149,6 +149,12 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     private Boolean enableAnalyticalStorage;
 
     /*
+     * Analytical storage specific properties.
+     */
+    @JsonProperty(value = "properties.analyticalStorageConfiguration")
+    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
+
+    /*
      * The object representing the policy for taking backups on an account.
      */
     @JsonProperty(value = "properties.backupPolicy")
@@ -596,6 +602,27 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     }
 
     /**
+     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @return the analyticalStorageConfiguration value.
+     */
+    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
+        return this.analyticalStorageConfiguration;
+    }
+
+    /**
+     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
+        return this;
+    }
+
+    /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
      *
      * @return the backupPolicy value.
@@ -725,6 +752,9 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
         }
         if (apiProperties() != null) {
             apiProperties().validate();
+        }
+        if (analyticalStorageConfiguration() != null) {
+            analyticalStorageConfiguration().validate();
         }
         if (backupPolicy() != null) {
             backupPolicy().validate();
