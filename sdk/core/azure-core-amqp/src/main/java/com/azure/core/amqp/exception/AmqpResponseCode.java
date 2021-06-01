@@ -59,7 +59,7 @@ public enum AmqpResponseCode {
     GATEWAY_TIMEOUT(504),
     HTTP_VERSION_NOT_SUPPORTED(505);
 
-    private static Map<Integer, AmqpResponseCode> valueMap = new HashMap<>();
+    private static final Map<Integer, AmqpResponseCode> valueMap = new HashMap<>();
 
     static {
         for (AmqpResponseCode code : AmqpResponseCode.values()) {
