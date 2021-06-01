@@ -1,5 +1,11 @@
 # Release History
 
+## 1.7.1 (2021-06-01)
+
+### Dependency Updates
+
+- Update `azure-storage-blob` to `12.11.1`.
+
 ## 1.7.0 (2021-05-10)
 
 ### Dependency Updates
