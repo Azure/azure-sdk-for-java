@@ -63,8 +63,10 @@ else
   }
 }
 # Checkout to $PRBranch, create new one if not exists.
-git show-ref --verify --quiet refs/heads/$PRBranchName
+git ls-remote --exit-code --heads $RemoteName $PRBranchName
 if ($LASTEXITCODE -eq 0) {
+  Write-Host "git fetch $RemoteName $PRBranchName"
+  git fetch $RemoteName $PRBranchName
   Write-Host "git checkout $PRBranchName."
   git checkout $PRBranchName 
 } 
@@ -116,8 +118,8 @@ do
         $needsRetry = $true
         Write-Host "Git push failed with LASTEXITCODE=$($LASTEXITCODE) Need to fetch and rebase: attempt number=$($tryNumber)"
  
-        Write-Host "git fetch $RemoteName"
-        git fetch $RemoteName
+        Write-Host "git fetch $RemoteName $PRBranchName"
+        git fetch $RemoteName $PRBranchName
         if ($LASTEXITCODE -ne 0)
         {
             Write-Error "Unable to fetch remote LASTEXITCODE=$($LASTEXITCODE), see command output above."
