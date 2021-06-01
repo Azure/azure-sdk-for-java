@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.sample.servicebus.binder;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -24,12 +23,12 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = { ServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
-    ServiceBusQueueAndTopicBinderIT.TestTopicConfig.class })
-@TestPropertySource(locations = "classpath:application.yml")
-public class ServiceBusQueueAndTopicBinderIT {
+@SpringBootTest(classes = { SingleServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
+    SingleServiceBusQueueAndTopicBinderIT.TestTopicConfig.class })
+@ActiveProfiles("single")
+public class SingleServiceBusQueueAndTopicBinderIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusQueueAndTopicBinderIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SingleServiceBusQueueAndTopicBinderIT.class);
 
     private static String message = UUID.randomUUID().toString();
 
@@ -59,9 +58,10 @@ public class ServiceBusQueueAndTopicBinderIT {
         @Bean
         public Consumer<Message<String>> queueConsume() {
             return message -> {
-                LOGGER.info("Test queue new message received: '{}'", message);
-                Assertions.assertEquals(message.getPayload(), ServiceBusQueueAndTopicBinderIT.message);
-                latch.countDown();
+                LOGGER.info("---Test queue new message received: '{}'", message);
+                if (message.getPayload().equals(SingleServiceBusQueueAndTopicBinderIT.message)) {
+                    latch.countDown();
+                }
             };
         }
     }
@@ -84,24 +84,26 @@ public class ServiceBusQueueAndTopicBinderIT {
         @Bean
         public Consumer<Message<String>> topicConsume() {
             return message -> {
-                LOGGER.info("Test topic new message received: '{}'", message);
-                Assertions.assertEquals(message.getPayload(), ServiceBusQueueAndTopicBinderIT.message);
-                latch.countDown();
+                LOGGER.info("---Test topic new message received: '{}'", message);
+                if (message.getPayload().equals(SingleServiceBusQueueAndTopicBinderIT.message)) {
+                    latch.countDown();
+                }
             };
         }
     }
 
     @Test
-    public void testSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("testSendAndReceiveMessage begin.");
+    public void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
+        LOGGER.info("SingleServiceBusQueueAndTopicBinderIT begin.");
         GenericMessage<String> genericMessage = new GenericMessage<>(message);
-        LOGGER.info("Send a message to the queue.");
+
+        LOGGER.info("Send a message:" + message + " to the queue.");
         manyQueue.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
-        LOGGER.info("Send a message to the topic.");
+        LOGGER.info("Send a message:" + message + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(ServiceBusQueueAndTopicBinderIT.latch.await(10, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("testSendAndReceiveMessage end.");
+        assertThat(SingleServiceBusQueueAndTopicBinderIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("SingleServiceBusQueueAndTopicBinderIT end.");
     }
 
 }
