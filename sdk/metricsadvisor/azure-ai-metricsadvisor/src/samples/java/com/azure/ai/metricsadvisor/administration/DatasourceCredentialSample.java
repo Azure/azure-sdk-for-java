@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 
 import java.util.UUID;

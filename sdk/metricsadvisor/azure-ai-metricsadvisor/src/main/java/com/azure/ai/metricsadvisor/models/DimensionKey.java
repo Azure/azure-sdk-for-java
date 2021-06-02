@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

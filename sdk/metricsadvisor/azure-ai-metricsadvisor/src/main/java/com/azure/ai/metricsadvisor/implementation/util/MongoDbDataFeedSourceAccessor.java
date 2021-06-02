@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.MongoDbDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.MongoDbDataFeedSource;
 
 public final class MongoDbDataFeedSourceAccessor {
     private static Accessor accessor;

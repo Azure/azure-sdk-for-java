@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.implementation.util.MetricAnomalyFeedbackHelper;
 import com.azure.core.annotation.Fluent;
 

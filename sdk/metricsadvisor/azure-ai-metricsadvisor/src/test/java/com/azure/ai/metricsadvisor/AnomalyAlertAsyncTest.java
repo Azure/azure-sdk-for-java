@@ -4,12 +4,12 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCodeException;
-import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;

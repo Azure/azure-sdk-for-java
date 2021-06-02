@@ -3,12 +3,12 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
-import com.azure.ai.metricsadvisor.models.DatasourceAuthenticationType;
-import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipalInKeyVault;
-import com.azure.ai.metricsadvisor.models.DatasourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceAuthenticationType;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;

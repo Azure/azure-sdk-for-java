@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 
 public final class SqlServerDataFeedSourceAccessor {
     private static Accessor accessor;

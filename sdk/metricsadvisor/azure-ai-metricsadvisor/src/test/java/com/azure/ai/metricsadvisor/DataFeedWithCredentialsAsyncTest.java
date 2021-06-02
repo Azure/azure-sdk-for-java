@@ -4,17 +4,17 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
-import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
-import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
-import com.azure.ai.metricsadvisor.models.DatasourceAuthenticationType;
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipalInKeyVault;
-import com.azure.ai.metricsadvisor.models.DatasourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.administration.models.AzureBlobDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.AzureDataExplorerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.AzureDataLakeStorageGen2DataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceAuthenticationType;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.AzureLogAnalyticsDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.AzureLogAnalyticsDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 
 public final class AzureLogAnalyticsDataFeedSourceAccessor {
     private static Accessor accessor;

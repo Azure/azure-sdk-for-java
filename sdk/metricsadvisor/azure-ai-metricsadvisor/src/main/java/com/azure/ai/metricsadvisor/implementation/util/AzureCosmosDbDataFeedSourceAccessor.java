@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.AzureCosmosDbDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.AzureCosmosDbDataFeedSource;
 
 public final class AzureCosmosDbDataFeedSourceAccessor {
     private static Accessor accessor;

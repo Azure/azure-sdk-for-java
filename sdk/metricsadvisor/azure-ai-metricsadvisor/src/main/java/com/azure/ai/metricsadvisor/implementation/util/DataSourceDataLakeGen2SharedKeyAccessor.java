@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceDataLakeGen2SharedKey;
 
 public final class DataSourceDataLakeGen2SharedKeyAccessor {
     private static Accessor accessor;

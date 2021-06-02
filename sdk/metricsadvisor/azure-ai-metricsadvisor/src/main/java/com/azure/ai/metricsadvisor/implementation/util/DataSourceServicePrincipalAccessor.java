@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
 
 public final class DataSourceServicePrincipalAccessor {
     private static Accessor accessor;

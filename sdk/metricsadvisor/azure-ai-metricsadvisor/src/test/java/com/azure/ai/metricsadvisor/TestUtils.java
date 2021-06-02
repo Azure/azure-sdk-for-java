@@ -3,16 +3,16 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.AzureBlobDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
