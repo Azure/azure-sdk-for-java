@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +14,6 @@ import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,13 +37,13 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         try {
             StartCallRecordingResult startCallRecordingResponse = conversationAsyncClient.startRecording(conversationId, recordingStateCallbackUri).block();
             recordingId = startCallRecordingResponse.getRecordingId();
-            ValidateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
 
             conversationAsyncClient.pauseRecording(conversationId, recordingId).block();
-            ValidateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
+            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
 
             conversationAsyncClient.resumeRecording(conversationId, recordingId).block();
-            ValidateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -65,13 +66,13 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
             assertEquals(response.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResponse = response.getValue();
             recordingId = startCallRecordingResponse.getRecordingId();
-            ValidateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
 
             conversationAsyncClient.pauseRecording(conversationId, recordingId).block();
-            ValidateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
+            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
 
             conversationAsyncClient.resumeRecording(conversationId, recordingId).block();
-            ValidateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -105,8 +106,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
     
-    private void ValidateCallRecordingState(ConversationAsyncClient conversationAsyncClient, String conversationId, String recordingId, CallRecordingState expectedCallRecordingState) throws InterruptedException
-    {
+    private void validateCallRecordingState(ConversationAsyncClient conversationAsyncClient, String conversationId, String recordingId, CallRecordingState expectedCallRecordingState) throws InterruptedException {
         assertNotNull(recordingId);
         assertNotNull(conversationId);
 
@@ -115,9 +115,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
          * Waiting to make sure we get the updated state, when we are running
          * against a live service. 
          */
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            Thread.sleep(6000);
-        }
+        sleepIfRunningAgainstService(6000);
 
         GetCallRecordingStateResult callRecordingStateResult = conversationAsyncClient.getRecordingState(conversationId, recordingId).block();
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
