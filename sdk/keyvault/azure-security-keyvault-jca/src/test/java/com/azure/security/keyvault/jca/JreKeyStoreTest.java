@@ -18,7 +18,6 @@ public class JreKeyStoreTest {
         Map<String, Certificate> certs = jreCertificates.getCertificates();
         assertTrue(certs.size() > 0);
         assertNotNull(jreCertificates.getCertificateKeys());
-
     }
 
 
