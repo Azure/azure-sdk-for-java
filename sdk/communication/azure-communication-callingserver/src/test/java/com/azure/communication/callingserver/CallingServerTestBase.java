@@ -59,7 +59,16 @@ public class CallingServerTestBase extends TestBase {
     }
 
     protected CallClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
-        return null;
+        CallClientBuilder builder = new CallClientBuilder()
+        .connectionString(CONNECTION_STRING)
+        .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
     }
 
     protected ConversationClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
