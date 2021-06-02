@@ -756,9 +756,37 @@ class FileAPITests extends APISpec {
 
     def "Copy from URL with oauth source"() {
         given:
-        def container = new BlobServiceClientBuilder()
+        def container = instrument(new BlobServiceClientBuilder())
             .endpoint("https://" + env.primaryAccount.name + ".blob.core.windows.net")
-            .credential(new EnvironmentCredentialBuilder().build()) // don't need oauth here but primaryAccount needs it configured
+            //.credential(new EnvironmentCredentialBuilder().build())
+            .credential(new StorageSharedKeyCredential(env.primaryAccount.name, env.primaryAccount.key))
+            .buildClient()
+            .createBlobContainer(getShareName())
+        def blob = container.getBlobClient(generatePathName())
+        blob.upload(data.defaultBinaryData)
+        def oauthHeader = getAuthToken().block() //blob.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData), null, null)
+            //.getRequest().getHeaders().get("Authorization").getValue().substring("Bearer ".size())
+        primaryFileClient.create(data.defaultDataSize)
+
+        when:
+        primaryFileClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions()
+            .setSourceUrl(blob.getBlobUrl()).setSourceBearerToken(oauthHeader)
+            .setLength(data.defaultDataSize), null, Context.NONE)
+
+        then:
+        def os = new ByteArrayOutputStream(data.defaultDataSize)
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+
+        cleanup:
+        container.delete()
+    }
+
+    def "Copy from URL with oauth source invalid credential"() {
+        given:
+        def container = instrument(new BlobServiceClientBuilder())
+            .endpoint("https://" + env.primaryAccount.name + ".blob.core.windows.net")
+            .credential(new StorageSharedKeyCredential(env.primaryAccount.name, env.primaryAccount.key))
             .buildClient()
             .createBlobContainer(getShareName())
         def blob = container.getBlobClient(generatePathName())
