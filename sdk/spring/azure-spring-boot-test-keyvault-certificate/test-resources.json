@@ -64,7 +64,7 @@
     },
     "subjectName": {
       "type": "string",
-      "defaultValue": "CN=mydomain.com"
+      "defaultValue": "CN=contoso.com"
     },
     "utcValue": {
       "type": "string",
@@ -271,13 +271,13 @@
       $tries++
 
       if ($operation.Status -eq 'failed') {
-        throw 'Creating certificate $certificateName in vault $vaultName failed with error $($operation.ErrorMessage)'
-      }
+      throw 'Creating certificate $certificateName in vault $vaultName failed with error $($operation.ErrorMessage)'
+    }
 
-      if ($tries -gt 120) {
-        throw 'Timed out waiting for creation of certificate $certificateName in vault $vaultName'
-      }
-    } while ($operation.Status -ne 'completed')
+    if ($tries -gt 120) {
+      throw 'Timed out waiting for creation of certificate $certificateName in vault $vaultName'
+    }
+  } while ($operation.Status -ne 'completed')
 
     $DeploymentScriptOutputs['certThumbprint'] = $newCert.Thumbprint
     $newCert | Out-String
@@ -288,27 +288,27 @@
   }
   ],
   "outputs": {
-    "AZURE_KEYVAULT_ENDPOINT": {
+    "CERTIFICATE_AZURE_KEYVAULT_ENDPOINT": {
       "type": "string",
       "value": "[variables('azureKeyVaultUrl')]"
     },
-    "AZURE_KEYVAULT_URI": {
+    "CERTIFICATE_AZURE_KEYVAULT_URI": {
       "type": "string",
       "value": "[variables('azureKeyVaultUrl')]"
     },
-    "AZURE_KEYVAULT_TENANT_ID": {
+    "CERTIFICATE_AZURE_KEYVAULT_TENANT_ID": {
       "type": "string",
       "value": "[parameters('tenantId')]"
     },
-    "AZURE_KEYVAULT_CLIENT_ID": {
+    "CERTIFICATE_AZURE_KEYVAULT_CLIENT_ID": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
-    "AZURE_KEYVAULT_CLIENT_SECRET": {
+    "CERTIFICATE_AZURE_KEYVAULT_CLIENT_SECRET": {
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "AZURE_KEYVAULT_CERTIFICATE_NAME": {
+    "CERTIFICATE_AZURE_KEYVAULT_CERTIFICATE_NAME": {
       "type": "string",
       "value": "[parameters('certificateName')]"
     }

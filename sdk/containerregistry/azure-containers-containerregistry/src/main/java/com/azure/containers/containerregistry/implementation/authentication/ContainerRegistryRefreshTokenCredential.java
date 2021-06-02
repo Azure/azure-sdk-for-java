@@ -17,7 +17,7 @@ public class ContainerRegistryRefreshTokenCredential {
     private final TokenCredential aadTokenCredential;
     private final TokenServiceImpl tokenService;
     private final String authenticationScope;
-    public static final String AAD_DEFAULT_SCOPE = "https://management.core.windows.net/.default";
+    public static final String AAD_DEFAULT_SCOPE = "https://management.azure.com/.default";
 
     /**
      * Creates an instance of RefreshTokenCredential with default scheme "Bearer".
