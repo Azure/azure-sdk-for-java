@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine/_tags/v4",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f895e0c6-a768-4125-a5c3-e7914557cfe2"
+      "x-ms-client-request-id" : "3b6fc888-44f5-455c-ae5b-37a6b60dd6c1"
     },
     "Response" : {
       "retry-after" : "0",
@@ -18,7 +18,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Falpine/_manifests/sha256:69e70a79f2d41ab5d637de98c1e0b055206ba40a8145e7bddb55ccc04e13cf8f",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "227d459e-3d69-4819-b77f-e0aa1f85bf51"
+      "x-ms-client-request-id" : "fc8cf132-423e-4d48-baec-3fef9a9ec2ab"
     },
     "Response" : {
       "retry-after" : "0",
@@ -32,7 +32,7 @@
     "Uri" : "https://REDACTED.azurecr.io/v2/library%2Falpine/manifests/sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b59ff816-9595-46b8-a4c5-9cd5c92614f1"
+      "x-ms-client-request-id" : "6936c50c-ee1f-4ae0-a0d7-207d21eda5c6"
     },
     "Response" : {
       "retry-after" : "0",
@@ -44,7 +44,7 @@
     "Uri" : "https://REDACTED.azurecr.io/v2/library%2Falpine/manifests/sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "948b63fb-e8af-4064-8c62-348eb2f4a694"
+      "x-ms-client-request-id" : "1bf8d48c-aef6-4194-895d-3bbacb31c462"
     },
     "Response" : {
       "retry-after" : "0",
@@ -56,7 +56,7 @@
     "Uri" : "https://REDACTED.azurecr.io/v2/library%2Falpine/manifests/sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c3f51cd2-cf2e-45ca-bbb8-9a0d872a8513"
+      "x-ms-client-request-id" : "6e5364c8-59c6-4c46-bdab-6d04f3b1b502"
     },
     "Response" : {
       "retry-after" : "0",
@@ -68,7 +68,7 @@
     "Uri" : "https://REDACTED.azurecr.io/v2/library%2Falpine/manifests/sha256:def822f9851ca422481ec6fee59a9966f12b351c62ccb9aca841526ffaa9f748",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c397597a-d20e-45d2-961c-3731793c271d"
+      "x-ms-client-request-id" : "e0d5ffb5-4a0f-45ea-b883-9adf0759f316"
     },
     "Response" : {
       "retry-after" : "0",
