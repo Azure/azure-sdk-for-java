@@ -42,11 +42,6 @@ public final class DataFeedGranularityType extends ExpandableStringEnum<DataFeed
     public static final DataFeedGranularityType PER_MINUTE = fromString("Minutely");
 
     /**
-     * Static value Secondly for DataFeedGranularityType.
-     */
-    public static final DataFeedGranularityType PER_SECOND = fromString("Secondly");
-
-    /**
      * Static value Custom for DataFeedGranularityType.
      */
     public static final DataFeedGranularityType CUSTOM = fromString("Custom");
