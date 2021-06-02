@@ -123,6 +123,30 @@ public final class CallAsyncClient {
      * Play audio in a call.
      *
      * @param callId The call id.
+     * @param audioFileUri The media resource uri of the play audio request.
+     * @param loop The flag indicating whether audio file needs to be played in loop or not.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param operationContext The value to identify context of the operation.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PlayAudioResult> playAudio(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext) {
+        try {
+            Objects.requireNonNull(callId, "'callId' cannot be null.");
+            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
+
+            PlayAudioRequest playAudioRequest = new PlayAudioRequest().
+                setAudioFileUri(audioFileUri).setLoop(loop).setAudioFileId(audioFileId).setOperationContext(operationContext);
+            return playAudio(callId, playAudioRequest);           
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param callId The call id.
      * @param request Play audio request.
      * @return the response payload for play audio operation.
      */
@@ -134,12 +158,30 @@ public final class CallAsyncClient {
 
             return this.callClient.playAudioAsync(callId, convertPlayAudioRequest(request)).flatMap(
                 (PlayAudioResponse response) -> {
-                        PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
-                        return Mono.just(playAudioResult);
-                    });
+                    PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
+                    return Mono.just(playAudioResult);
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+     /**
+     * Play audio in a call.
+     *
+     * @param callId The call id.
+     * @param audioFileUri The media resource uri of the play audio request.
+     * @param loop The flag indicating whether audio file needs to be played in loop or not.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param operationContext The value to identify context of the operation.
+     * @param context A {@link Context} representing the request context.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PlayAudioResult>> playAudioWithResponse(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext, Context context) {
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest().
+            setAudioFileUri(audioFileUri).setLoop(loop).setAudioFileId(audioFileId).setOperationContext(operationContext);
+        return playAudioWithResponse(callId, playAudioRequest, context);
     }
 
     /**

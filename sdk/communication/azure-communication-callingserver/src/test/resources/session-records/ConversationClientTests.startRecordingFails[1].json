@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/conversations/aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=/recordings?api-version=2021-04-15-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "83",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0Fbi2YAAAAACYJV7+wRWkTJXHu6WFL6iKV1NURURHRTA4MTcAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "StatusCode" : "400",
+      "X-Microsoft-Skype-Chain-ID" : "e80d6dd7-66ba-40c1-a9c2-7032542cc132",
+      "Body" : "{\"code\":\"8501\",\"message\":\"Action is invalid when call is not in Established state\"}",
+      "Date" : "Tue, 01 Jun 2021 22:43:33 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Client-Request-Id" : "8b28337c-2616-4e49-a901-368d0e4c2195"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
