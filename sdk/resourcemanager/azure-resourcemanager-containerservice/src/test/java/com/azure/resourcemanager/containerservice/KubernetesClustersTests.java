@@ -13,6 +13,8 @@ import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
+import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
+import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Assertions;
@@ -238,6 +240,63 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         KubernetesClusterAgentPool agentPoolProfile3 = kubernetesCluster.agentPools().get(agentPoolName3);
         Assertions.assertEquals(0, agentPoolProfile3.nodeSize());
+    }
+
+    @Test
+    public void canCreateClusterWithSpotVM() throws Exception {
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
+        String agentPoolName1 = generateRandomResourceName("ap1", 10);
+        String agentPoolName2 = generateRandomResourceName("ap2", 10);
+
+        // create cluster
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+            .withRegion(Region.US_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .attach()
+            // spot vm
+            .defineAgentPool(agentPoolName1)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withSpotPriorityVirtualMachine()
+                .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .create();
+
+        // print config
+        System.out.println(new String(kubernetesCluster.adminKubeConfigContent(), StandardCharsets.UTF_8));
+
+        KubernetesClusterAgentPool agentPoolProfile = kubernetesCluster.agentPools().get(agentPoolName);
+        Assertions.assertTrue(agentPoolProfile.virtualMachinePriority() == null || agentPoolProfile.virtualMachinePriority() == ScaleSetPriority.REGULAR);
+
+        KubernetesClusterAgentPool agentPoolProfile1 = kubernetesCluster.agentPools().get(agentPoolName1);
+        Assertions.assertEquals(ScaleSetPriority.SPOT, agentPoolProfile1.virtualMachinePriority());
+        Assertions.assertEquals(ScaleSetEvictionPolicy.DELETE, agentPoolProfile1.virtualMachineEvictionPolicy());
+        Assertions.assertEquals(-1.0, agentPoolProfile1.virtualMachineMaximumPrice());
+
+        kubernetesCluster.update()
+            .defineAgentPool(agentPoolName2)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                .withAgentPoolVirtualMachineCount(1)
+                .withSpotPriorityVirtualMachine(ScaleSetEvictionPolicy.DEALLOCATE)
+                .withMaxPrice(100.0)
+                .attach()
+            .apply();
+
+        KubernetesClusterAgentPool agentPoolProfile2 = kubernetesCluster.agentPools().get(agentPoolName2);
+        Assertions.assertEquals(ScaleSetPriority.SPOT, agentPoolProfile2.virtualMachinePriority());
+        Assertions.assertEquals(ScaleSetEvictionPolicy.DEALLOCATE, agentPoolProfile2.virtualMachineEvictionPolicy());
+        Assertions.assertEquals(100.0, agentPoolProfile2.virtualMachineMaximumPrice());
     }
 
     /**
