@@ -343,11 +343,28 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureLogAnalyticsDataFeed) {
             final AzureLogAnalyticsParameter azureLogAnalyticsDataFeed =
                 ((AzureLogAnalyticsDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(new AzureLogAnalyticsDataFeedSource(azureLogAnalyticsDataFeed.getTenantId(),
-                azureLogAnalyticsDataFeed.getClientId(),
-                azureLogAnalyticsDataFeed.getClientSecret(),
-                azureLogAnalyticsDataFeed.getWorkspaceId(),
-                azureLogAnalyticsDataFeed.getQuery()));
+            if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
+                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.usingBasicCredential(
+                    azureLogAnalyticsDataFeed.getTenantId(),
+                    azureLogAnalyticsDataFeed.getClientId(),
+                    azureLogAnalyticsDataFeed.getClientSecret(),
+                    azureLogAnalyticsDataFeed.getWorkspaceId(),
+                    azureLogAnalyticsDataFeed.getQuery()));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
+                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.usingServicePrincipalCredential(
+                    azureLogAnalyticsDataFeed.getWorkspaceId(),
+                    azureLogAnalyticsDataFeed.getQuery(),
+                    dataFeedDetail.getCredentialId()));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
+                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                    azureLogAnalyticsDataFeed.getWorkspaceId(),
+                    azureLogAnalyticsDataFeed.getQuery(),
+                    dataFeedDetail.getCredentialId()));
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    String.format("AuthType %s not supported for AzureLogAnalytics",
+                        dataFeedDetail.getAuthenticationType())));
+            }
             dataFeedSourceType = DataFeedSourceType.AZURE_LOG_ANALYTICS;
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
@@ -481,7 +498,10 @@ public final class DataFeedTransforms {
                     .setClientSecret(AzureLogAnalyticsDataFeedSourceAccessor
                         .getClientSecret(azureLogAnalyticsDataFeedSource))
                     .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
-                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()));
+                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureLogAnalyticsDataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(azureLogAnalyticsDataFeedSource.getCredentialId());
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported", dataFeedSource.getClass().getCanonicalName())));
@@ -612,7 +632,10 @@ public final class DataFeedTransforms {
                     .setClientSecret(AzureLogAnalyticsDataFeedSourceAccessor
                         .getClientSecret(azureLogAnalyticsDataFeedSource))
                     .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
-                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()));
+                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureLogAnalyticsDataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(azureLogAnalyticsDataFeedSource.getCredentialId());
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported.",

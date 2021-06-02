@@ -148,7 +148,7 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
                 AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                 TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_LOG_ANALYTICS) {
-            dataFeed = new DataFeed().setSource(new AzureLogAnalyticsDataFeedSource(
+            dataFeed = new DataFeed().setSource(AzureLogAnalyticsDataFeedSource.usingBasicCredential(
                 "tenant_id",
                 "client_id",
                 "client_secret",

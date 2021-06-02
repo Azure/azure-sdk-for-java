@@ -39,6 +39,16 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      */
     private final String query;
 
+    /*
+     * The id of the credential resource to authenticate the data source.
+     */
+    private final String credentialId;
+
+    /*
+     * The authentication type to access the data source.
+     */
+    private final DatasourceAuthenticationType authType;
+
     static {
         AzureLogAnalyticsDataFeedSourceAccessor.setAccessor(
             new AzureLogAnalyticsDataFeedSourceAccessor.Accessor() {
@@ -49,8 +59,25 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
             });
     }
 
+    private AzureLogAnalyticsDataFeedSource(final String tenantId,
+                                           final String clientId,
+                                           final String clientSecret,
+                                           final String workspaceId,
+                                           final String query,
+                                           final String credentialId,
+                                           final DatasourceAuthenticationType authType) {
+        this.tenantId = tenantId;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
+        this.workspaceId = workspaceId;
+        this.query = query;
+        this.credentialId = credentialId;
+        this.authType = authType;
+    }
+
     /**
-     * Create a AzureLogAnalyticsDataFeedSource instance.
+     * Create a AzureLogAnalyticsDataFeedSource with the given {@code tenantId}, {@code clientId} and
+     * {@code clientSecret} for authentication.
      *
      * @param tenantId The tenant id of service principal that have access to this Log Analytics.
      * @param clientId The client id of service principal that have access to this Log Analytics.
@@ -58,14 +85,68 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      * @param workspaceId the query script.
      * @param query the KQL (Kusto Query Language) query to fetch data from this Log
      * Analytics.
+     *
+     * @return The AzureLogAnalyticsDataFeedSource.
      */
-    public AzureLogAnalyticsDataFeedSource(String tenantId, String clientId, String clientSecret,
-                                           String workspaceId, String query) {
-        this.tenantId = tenantId;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.workspaceId = workspaceId;
-        this.query = query;
+    public static  AzureLogAnalyticsDataFeedSource usingBasicCredential(final String tenantId,
+                                                                        final String clientId,
+                                                                        final String clientSecret,
+                                                                        final String workspaceId,
+                                                                        final String query) {
+        return new AzureLogAnalyticsDataFeedSource(tenantId,
+            clientId,
+            clientSecret,
+            workspaceId,
+            query,
+            null,
+            DatasourceAuthenticationType.BASIC);
+    }
+
+    /**
+     * Create a AzureLogAnalyticsDataFeedSource with the {@code credentialId} identifying
+     * a credential entity of type {@link DatasourceServicePrincipal}, the entity
+     * contains details of the KeyVault holding the Service Principal to access the Data Lake storage.
+     *
+     * @param workspaceId the query script.
+     * @param query the KQL (Kusto Query Language) query to fetch data from this Log Analytics.
+     * @param credentialId The unique id of a credential entity of type
+     *
+     * @return The AzureLogAnalyticsDataFeedSource.
+     */
+    public static AzureLogAnalyticsDataFeedSource usingServicePrincipalCredential(final String workspaceId,
+                                                                                  final String query,
+                                                                                  final String credentialId) {
+        return new AzureLogAnalyticsDataFeedSource(null,
+            null,
+            null,
+            workspaceId,
+            query,
+            credentialId,
+            DatasourceAuthenticationType.SERVICE_PRINCIPAL);
+    }
+
+    /**
+     * Create a AzureLogAnalyticsDataFeedSource with the {@code credentialId} identifying
+     * a credential entity of type {@link DatasourceServicePrincipalInKeyVault}, the entity
+     * contains details of the KeyVault holding the Service Principal to access the Data Lake storage.
+     *
+     * @param workspaceId the query script.
+     * @param query the KQL (Kusto Query Language) query to fetch data from this Log Analytics.
+     * @param credentialId The unique id of a credential entity of type
+     *
+     * @return The AzureLogAnalyticsDataFeedSource.
+     */
+    public static AzureLogAnalyticsDataFeedSource usingServicePrincipalInKeyVaultCredential(
+        final String workspaceId,
+        final String query,
+        final String credentialId) {
+        return new AzureLogAnalyticsDataFeedSource(null,
+            null,
+            null,
+            workspaceId,
+            query,
+            credentialId,
+            DatasourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
     /**
@@ -102,6 +183,24 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      */
     public String getQuery() {
         return this.query;
+    }
+
+    /**
+     * Gets the id of the {@link DatasourceCredentialEntity credential resource} to authenticate the data source.
+     *
+     * @return The credential resource id.
+     */
+    public String getCredentialId() {
+        return this.credentialId;
+    }
+
+    /**
+     * Gets the authentication type to access the data source.
+     *
+     * @return The authentication type.
+     */
+    public DatasourceAuthenticationType getAuthenticationType() {
+        return this.authType;
     }
 
     private String getClientSecret() {
