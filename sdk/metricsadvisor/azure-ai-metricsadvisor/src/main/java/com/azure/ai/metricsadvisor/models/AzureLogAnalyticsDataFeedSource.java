@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.AzureLogAnalyticsDataFeedSourceAccessor;
 import com.azure.core.annotation.Immutable;
 
 /** The AzureLogAnalyticsDataFeedSource model. */
@@ -37,6 +38,16 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      * Analytics
      */
     private final String query;
+
+    static {
+        AzureLogAnalyticsDataFeedSourceAccessor.setAccessor(
+            new AzureLogAnalyticsDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getClientSecret(AzureLogAnalyticsDataFeedSource feedSource) {
+                    return feedSource.getClientSecret();
+                }
+            });
+    }
 
     /**
      * Create a AzureLogAnalyticsDataFeedSource instance.
@@ -76,15 +87,6 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
     }
 
     /**
-     * Get the clientSecret property: The client secret of service principal that have access to this Log Analytics.
-     *
-     * @return the clientSecret value.
-     */
-    public String getClientSecret() {
-        return this.clientSecret;
-    }
-
-    /**
      * Get the workspaceId property: The workspace id of this Log Analytics.
      *
      * @return the workspaceId value.
@@ -100,5 +102,9 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      */
     public String getQuery() {
         return this.query;
+    }
+
+    private String getClientSecret() {
+        return this.clientSecret;
     }
 }
