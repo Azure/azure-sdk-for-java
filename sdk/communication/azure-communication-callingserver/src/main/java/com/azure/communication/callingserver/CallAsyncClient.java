@@ -174,14 +174,13 @@ public final class CallAsyncClient {
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param operationContext The value to identify context of the operation.
-     * @param context A {@link Context} representing the request context.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResult>> playAudioWithResponse(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext, Context context) {
+    public Mono<Response<PlayAudioResult>> playAudioWithResponse(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext) {
         PlayAudioRequest playAudioRequest = new PlayAudioRequest().
             setAudioFileUri(audioFileUri).setLoop(loop).setAudioFileId(audioFileId).setOperationContext(operationContext);
-        return playAudioWithResponse(callId, playAudioRequest, context);
+        return playAudioWithResponse(callId, playAudioRequest, null);
     }
 
     /**
