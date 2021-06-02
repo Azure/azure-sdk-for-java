@@ -3,11 +3,18 @@
 ## 1.0.0-beta.4 (Unreleased)
 
 ### Features added
-- Added support for Azure Log Analytics DataFeed source.
+- Added support for Azure Log Analytics DataFeed source
+- Added data source credential API support to client
+- Added authentication type support for data feed
+- Added property `splitAlertByDimensions` to AnomalyAlertConfiguration model
 
 ### Breaking changes
+- Replaced updateSubscriptionKey and updateApiKey into one method updateKey
+- Deprecated support for HttpRequestDataFeed and ElasticsearchDataFeed source type
+- Renamed `value` and `expectedValue` to `valueOfRootNode` and `expectedValueOfRootNode`
 - Renamed `top` parameter to `maxPageSize`
-
+- Removed granularity type DataFeedGranularityType.PerSecond as it's not supported by the service anymore.
+  
 ## 1.0.0-beta.3 (2021-02-09)
 - Support Azure Active Directory (AAD) authentication for Metrics Advisor clients. 
 - Renamed method `listDimensionValuesWithAnomalies` and `ListDimensionValuesWithAnomaliesOptions`.
