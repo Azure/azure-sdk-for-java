@@ -3554,7 +3554,7 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02"
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
     @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:
