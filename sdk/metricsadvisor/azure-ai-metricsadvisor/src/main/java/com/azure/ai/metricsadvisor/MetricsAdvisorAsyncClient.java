@@ -99,7 +99,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * @see MetricsAdvisorClientBuilder
  */
 @ServiceClient(builder = MetricsAdvisorClientBuilder.class, isAsync = true)
-public class MetricsAdvisorAsyncClient {
+public final class MetricsAdvisorAsyncClient {
 
     private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     final ClientLogger logger = new ClientLogger(MetricsAdvisorAsyncClient.class);

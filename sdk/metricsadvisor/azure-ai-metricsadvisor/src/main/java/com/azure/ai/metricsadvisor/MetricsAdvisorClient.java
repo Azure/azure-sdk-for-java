@@ -44,7 +44,7 @@ import java.util.List;
  * @see MetricsAdvisorClientBuilder
  */
 @ServiceClient(builder = MetricsAdvisorClientBuilder.class)
-public class MetricsAdvisorClient {
+public final class MetricsAdvisorClient {
 
     private final MetricsAdvisorAsyncClient client;
 

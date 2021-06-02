@@ -21,7 +21,7 @@ import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalInKVPar
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalInKVParamPatch;
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalParam;
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalParamPatch;
-import com.azure.ai.metricsadvisor.models.DataSourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
 import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
 import com.azure.ai.metricsadvisor.models.DatasourceSqlServerConnectionString;
 import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
@@ -59,7 +59,7 @@ public final class DataSourceCredentialEntityTransforms {
         } else if (innerCredential instanceof DataLakeGen2SharedKeyCredential) {
             final DataLakeGen2SharedKeyCredential dataLakeGen2SharedKeyCredential
                 = (DataLakeGen2SharedKeyCredential) innerCredential;
-            final DataSourceDataLakeGen2SharedKey credentialEntity = new DataSourceDataLakeGen2SharedKey(
+            final DatasourceDataLakeGen2SharedKey credentialEntity = new DatasourceDataLakeGen2SharedKey(
                 dataLakeGen2SharedKeyCredential.getDataSourceCredentialName(),
                 null);
             DataSourceDataLakeGen2SharedKeyAccessor.setId(credentialEntity,
@@ -115,9 +115,9 @@ public final class DataSourceCredentialEntityTransforms {
                     .getConnectionString(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof DataSourceDataLakeGen2SharedKey) {
-            final DataSourceDataLakeGen2SharedKey credential
-                = (DataSourceDataLakeGen2SharedKey) credentialEntity;
+        } else if (credentialEntity instanceof DatasourceDataLakeGen2SharedKey) {
+            final DatasourceDataLakeGen2SharedKey credential
+                = (DatasourceDataLakeGen2SharedKey) credentialEntity;
             final DataLakeGen2SharedKeyCredential innerCredential  = new DataLakeGen2SharedKeyCredential();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());
@@ -170,9 +170,9 @@ public final class DataSourceCredentialEntityTransforms {
                     .getConnectionString(credential)));
 
             return innerCredential;
-        } else if (credentialEntity instanceof DataSourceDataLakeGen2SharedKey) {
-            final DataSourceDataLakeGen2SharedKey credential
-                = (DataSourceDataLakeGen2SharedKey) credentialEntity;
+        } else if (credentialEntity instanceof DatasourceDataLakeGen2SharedKey) {
+            final DatasourceDataLakeGen2SharedKey credential
+                = (DatasourceDataLakeGen2SharedKey) credentialEntity;
             final DataLakeGen2SharedKeyCredentialPatch innerCredential  = new DataLakeGen2SharedKeyCredentialPatch();
             innerCredential.setDataSourceCredentialName(credentialEntity.getName());
             innerCredential.setDataSourceCredentialDescription(credentialEntity.getDescription());

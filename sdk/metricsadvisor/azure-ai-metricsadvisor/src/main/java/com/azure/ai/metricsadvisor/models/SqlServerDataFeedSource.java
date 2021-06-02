@@ -85,13 +85,13 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      * entity of type {@link DatasourceSqlServerConnectionString} that contains the SQL
      * connection string.
      *
+     * @param query The query that retrieves the values to be analyzed for anomalies.
      * @param credentialEntityId The unique id of a credential entity of type
      * {@link DatasourceSqlServerConnectionString}.
-     * @param query The query that retrieves the values to be analyzed for anomalies.
      * @return The SQLServerDataFeedSource.
      */
-    public static SqlServerDataFeedSource usingConnectionStringCredential(final String credentialEntityId,
-                                                                          final String query) {
+    public static SqlServerDataFeedSource usingConnectionStringCredential(final String query,
+                                                                          final String credentialEntityId) {
         return new SqlServerDataFeedSource(null,
             query,
             credentialEntityId,

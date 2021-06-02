@@ -107,7 +107,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      * @param directoryTemplate the directory template of the storage account.
      * @param fileTemplate the file template.
      * @param credentialId The unique id of a credential entity of type
-     * {@link DataSourceDataLakeGen2SharedKey}.
+     * {@link DatasourceDataLakeGen2SharedKey}.
      *
      * @return The AzureDataLakeStorageGen2DataFeedSource.
      */

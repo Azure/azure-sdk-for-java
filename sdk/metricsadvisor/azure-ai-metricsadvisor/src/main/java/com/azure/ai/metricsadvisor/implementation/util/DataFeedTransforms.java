@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
+import com.azure.ai.metricsadvisor.implementation.models.AuthenticationTypeEnum;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeed;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsDataFeedPatch;
 import com.azure.ai.metricsadvisor.implementation.models.AzureApplicationInsightsParameter;
@@ -165,8 +166,20 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureBlobDataFeed) {
             final AzureBlobParameter dataSourceParameter = ((AzureBlobDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
-            dataFeed.setSource(AzureBlobDataFeedSource.usingBasicCredential(dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getContainer(), dataSourceParameter.getBlobTemplate()));
+            if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
+                dataFeed.setSource(AzureBlobDataFeedSource.usingBasicCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getContainer(),
+                    dataSourceParameter.getBlobTemplate()));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
+                dataFeed.setSource(AzureBlobDataFeedSource.usingManagedIdentityCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getContainer(),
+                    dataSourceParameter.getBlobTemplate()));
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    String.format("AuthType %s not supported for Blob", dataFeedDetail.getAuthenticationType())));
+            }
             dataFeedSourceType = DataFeedSourceType.AZURE_BLOB;
         } else if (dataFeedDetail instanceof AzureCosmosDBDataFeed) {
             final AzureCosmosDBParameter dataSourceParameter =
@@ -181,10 +194,33 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureDataExplorerDataFeed) {
             final SqlSourceParameter dataSourceParameter =
                 ((AzureDataExplorerDataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
-                dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getQuery()
-            ));
+            if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery()
+                ));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingManagedIdentityCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery()
+                ));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery(),
+                    dataFeedDetail.getCredentialId()
+                ));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery(),
+                    dataFeedDetail.getCredentialId()
+                ));
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    String.format("AuthType %s not supported for AzureDataExplorer",
+                        dataFeedDetail.getAuthenticationType())));
+            }
             dataFeedSourceType = DataFeedSourceType.AZURE_DATA_EXPLORER;
         } else if (dataFeedDetail instanceof AzureEventHubsDataFeed) {
             final AzureEventHubsParameter azureEventHubsParameter =
@@ -227,8 +263,33 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof SQLServerDataFeed) {
             final SqlSourceParameter dataSourceParameter = ((SQLServerDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
-            dataFeed.setSource(SqlServerDataFeedSource.usingBasicCredential(dataSourceParameter.getConnectionString(),
-                dataSourceParameter.getQuery()));
+            if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
+                dataFeed.setSource(SqlServerDataFeedSource.usingBasicCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery()));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
+                dataFeed.setSource(SqlServerDataFeedSource.usingManagedIdentityCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery()));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.AZURE_SQLCONNECTION_STRING) {
+                dataFeed.setSource(SqlServerDataFeedSource.usingConnectionStringCredential(
+                    dataSourceParameter.getQuery(),
+                    dataFeedDetail.getCredentialId()));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
+                dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery(),
+                    dataFeedDetail.getCredentialId()));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
+                dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                    dataSourceParameter.getConnectionString(),
+                    dataSourceParameter.getQuery(),
+                    dataFeedDetail.getCredentialId()));
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    String.format("AuthType %s not supported for AzureSqlServer",
+                        dataFeedDetail.getAuthenticationType())));
+            }
             dataFeedSourceType = DataFeedSourceType.SQL_SERVER_DB;
         } else if (dataFeedDetail instanceof MongoDBDataFeed) {
             final MongoDBParameter dataSourceParameter = ((MongoDBDataFeed) dataFeedDetail).getDataSourceParameter();
@@ -241,13 +302,43 @@ public final class DataFeedTransforms {
         } else if (dataFeedDetail instanceof AzureDataLakeStorageGen2DataFeed) {
             final AzureDataLakeStorageGen2Parameter azureDataLakeStorageGen2Parameter =
                 ((AzureDataLakeStorageGen2DataFeed) dataFeedDetail).getDataSourceParameter();
-            dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
-                azureDataLakeStorageGen2Parameter.getAccountName(),
-                azureDataLakeStorageGen2Parameter.getAccountKey(),
-                azureDataLakeStorageGen2Parameter.getFileSystemName(),
-                azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
-                azureDataLakeStorageGen2Parameter.getFileTemplate()
-            ));
+            if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
+                    azureDataLakeStorageGen2Parameter.getAccountName(),
+                    azureDataLakeStorageGen2Parameter.getAccountKey(),
+                    azureDataLakeStorageGen2Parameter.getFileSystemName(),
+                    azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
+                    azureDataLakeStorageGen2Parameter.getFileTemplate()
+                ));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.DATA_LAKE_GEN2SHARED_KEY) {
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingSharedKeyCredential(
+                    azureDataLakeStorageGen2Parameter.getAccountName(),
+                    azureDataLakeStorageGen2Parameter.getFileSystemName(),
+                    azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
+                    azureDataLakeStorageGen2Parameter.getFileTemplate(),
+                    dataFeedDetail.getCredentialId()
+                ));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalCredential(
+                    azureDataLakeStorageGen2Parameter.getAccountName(),
+                    azureDataLakeStorageGen2Parameter.getFileSystemName(),
+                    azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
+                    azureDataLakeStorageGen2Parameter.getFileTemplate(),
+                    dataFeedDetail.getCredentialId()
+                ));
+            } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                    azureDataLakeStorageGen2Parameter.getAccountName(),
+                    azureDataLakeStorageGen2Parameter.getFileSystemName(),
+                    azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
+                    azureDataLakeStorageGen2Parameter.getFileTemplate(),
+                    dataFeedDetail.getCredentialId()
+                ));
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    String.format("AuthType %s not supported for AzureDataLakeStorageGen2",
+                        dataFeedDetail.getAuthenticationType())));
+            }
             dataFeedSourceType = DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
         } else if (dataFeedDetail instanceof AzureLogAnalyticsDataFeed) {
             final AzureLogAnalyticsParameter azureLogAnalyticsDataFeed =
@@ -290,7 +381,9 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new AzureBlobParameter()
                     .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
                     .setContainer(azureBlobDataFeedSource.getContainer())
-                    .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()));
+                    .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureBlobDataFeedSource.getAuthenticationType().toString()));
         } else if (dataFeedSource instanceof AzureCosmosDbDataFeedSource) {
             final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource = ((AzureCosmosDbDataFeedSource) dataFeedSource);
             dataFeedDetail = new AzureCosmosDBDataFeed()
@@ -307,7 +400,10 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new SqlSourceParameter()
                     .setConnectionString(
                         AzureDataExplorerDataFeedSourceAccessor.getConnectionString(azureDataExplorerDataFeedSource))
-                    .setQuery(azureDataExplorerDataFeedSource.getQuery()));
+                    .setQuery(azureDataExplorerDataFeedSource.getQuery()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureDataExplorerDataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(azureDataExplorerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
             final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
                 ((AzureEventHubsDataFeedSource) dataFeedSource);
@@ -350,14 +446,17 @@ public final class DataFeedTransforms {
             dataFeedDetail = new SQLServerDataFeed()
                 .setDataSourceParameter(new SqlSourceParameter()
                     .setConnectionString(SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
-                    .setQuery(sqlServerDataFeedSource.getQuery()));
+                    .setQuery(sqlServerDataFeedSource.getQuery()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(sqlServerDataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(sqlServerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
-            final MongoDbDataFeedSource azureCosmosDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
+            final MongoDbDataFeedSource mongoDbDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
             dataFeedDetail = new MongoDBDataFeed()
                 .setDataSourceParameter(new MongoDBParameter()
-                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(azureCosmosDataFeedSource))
-                    .setCommand(azureCosmosDataFeedSource.getCommand())
-                    .setDatabase(azureCosmosDataFeedSource.getDatabase()));
+                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(mongoDbDataFeedSource))
+                    .setCommand(mongoDbDataFeedSource.getCommand())
+                    .setDatabase(mongoDbDataFeedSource.getDatabase()));
         } else if (dataFeedSource instanceof AzureDataLakeStorageGen2DataFeedSource) {
             final AzureDataLakeStorageGen2DataFeedSource azureDataLakeStorageGen2DataFeedSource =
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
@@ -368,7 +467,10 @@ public final class DataFeedTransforms {
                     .setAccountName(azureDataLakeStorageGen2DataFeedSource.getAccountName())
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())
-                    .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()));
+                    .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureDataLakeStorageGen2DataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(azureDataLakeStorageGen2DataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureLogAnalyticsDataFeedSource) {
             final AzureLogAnalyticsDataFeedSource azureLogAnalyticsDataFeedSource =
                 ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
@@ -376,7 +478,8 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new AzureLogAnalyticsParameter()
                     .setTenantId(azureLogAnalyticsDataFeedSource.getTenantId())
                     .setClientId(azureLogAnalyticsDataFeedSource.getClientId())
-                    .setClientSecret(azureLogAnalyticsDataFeedSource.getClientSecret())
+                    .setClientSecret(AzureLogAnalyticsDataFeedSourceAccessor
+                        .getClientSecret(azureLogAnalyticsDataFeedSource))
                     .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
                     .setQuery(azureLogAnalyticsDataFeedSource.getQuery()));
         } else {
@@ -410,7 +513,9 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new AzureBlobParameterPatch()
                     .setConnectionString(AzureBlobDataFeedSourceAccessor.getConnectionString(azureBlobDataFeedSource))
                     .setContainer(azureBlobDataFeedSource.getContainer())
-                    .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()));
+                    .setBlobTemplate(azureBlobDataFeedSource.getBlobTemplate()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureBlobDataFeedSource.getAuthenticationType().toString()));
         } else if (dataFeedSource instanceof AzureCosmosDbDataFeedSource) {
             final AzureCosmosDbDataFeedSource azureCosmosDbDataFeedSource = ((AzureCosmosDbDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureCosmosDBDataFeedPatch()
@@ -427,7 +532,10 @@ public final class DataFeedTransforms {
                 .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(
                         AzureDataExplorerDataFeedSourceAccessor.getConnectionString(azureDataExplorerDataFeedSource))
-                    .setQuery(azureDataExplorerDataFeedSource.getQuery()));
+                    .setQuery(azureDataExplorerDataFeedSource.getQuery()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureDataExplorerDataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(azureDataExplorerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureEventHubsDataFeedSource) {
             final AzureEventHubsDataFeedSource azureEventHubsDataFeedSource =
                 ((AzureEventHubsDataFeedSource) dataFeedSource);
@@ -469,14 +577,17 @@ public final class DataFeedTransforms {
             dataFeedDetailPatch = new SQLServerDataFeedPatch()
                 .setDataSourceParameter(new SQLSourceParameterPatch()
                     .setConnectionString(SqlServerDataFeedSourceAccessor.getConnectionString(sqlServerDataFeedSource))
-                    .setQuery(sqlServerDataFeedSource.getQuery()));
+                    .setQuery(sqlServerDataFeedSource.getQuery()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(sqlServerDataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(sqlServerDataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof MongoDbDataFeedSource) {
-            final MongoDbDataFeedSource azureCosmosDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
+            final MongoDbDataFeedSource mongoDbDataFeedSource = ((MongoDbDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new MongoDBDataFeedPatch()
                 .setDataSourceParameter(new MongoDBParameterPatch()
-                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(azureCosmosDataFeedSource))
-                    .setCommand(azureCosmosDataFeedSource.getCommand())
-                    .setDatabase(azureCosmosDataFeedSource.getDatabase()));
+                    .setConnectionString(MongoDbDataFeedSourceAccessor.getConnectionString(mongoDbDataFeedSource))
+                    .setCommand(mongoDbDataFeedSource.getCommand())
+                    .setDatabase(mongoDbDataFeedSource.getDatabase()));
         } else if (dataFeedSource instanceof AzureDataLakeStorageGen2DataFeedSource) {
             final AzureDataLakeStorageGen2DataFeedSource azureDataLakeStorageGen2DataFeedSource =
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeedSource);
@@ -487,22 +598,27 @@ public final class DataFeedTransforms {
                     .setAccountName(azureDataLakeStorageGen2DataFeedSource.getAccountName())
                     .setDirectoryTemplate(azureDataLakeStorageGen2DataFeedSource.getDirectoryTemplate())
                     .setFileSystemName(azureDataLakeStorageGen2DataFeedSource.getFileSystemName())
-                    .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()));
+                    .setFileTemplate(azureDataLakeStorageGen2DataFeedSource.getFileTemplate()))
+                .setAuthenticationType(AuthenticationTypeEnum
+                    .fromString(azureDataLakeStorageGen2DataFeedSource.getAuthenticationType().toString()))
+                .setCredentialId(azureDataLakeStorageGen2DataFeedSource.getCredentialId());
         } else if (dataFeedSource instanceof AzureLogAnalyticsDataFeedSource) {
-            final AzureLogAnalyticsDataFeedSource azureDataLakeStorageGen2DataFeedSource =
+            final AzureLogAnalyticsDataFeedSource azureLogAnalyticsDataFeedSource =
                 ((AzureLogAnalyticsDataFeedSource) dataFeedSource);
             dataFeedDetailPatch = new AzureLogAnalyticsDataFeedPatch()
                 .setDataSourceParameter(new AzureLogAnalyticsParameterPatch()
-                    .setTenantId(azureDataLakeStorageGen2DataFeedSource.getTenantId())
-                    .setClientId(azureDataLakeStorageGen2DataFeedSource.getClientId())
-                    .setClientSecret(azureDataLakeStorageGen2DataFeedSource.getClientSecret())
-                    .setWorkspaceId(azureDataLakeStorageGen2DataFeedSource.getWorkspaceId())
-                    .setQuery(azureDataLakeStorageGen2DataFeedSource.getQuery()));
+                    .setTenantId(azureLogAnalyticsDataFeedSource.getTenantId())
+                    .setClientId(azureLogAnalyticsDataFeedSource.getClientId())
+                    .setClientSecret(AzureLogAnalyticsDataFeedSourceAccessor
+                        .getClientSecret(azureLogAnalyticsDataFeedSource))
+                    .setWorkspaceId(azureLogAnalyticsDataFeedSource.getWorkspaceId())
+                    .setQuery(azureLogAnalyticsDataFeedSource.getQuery()));
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported.",
                     dataFeedSource.getClass().getCanonicalName())));
         }
+
         return dataFeedDetailPatch;
     }
 }

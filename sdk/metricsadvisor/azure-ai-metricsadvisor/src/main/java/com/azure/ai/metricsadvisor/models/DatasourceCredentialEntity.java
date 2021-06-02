@@ -7,7 +7,7 @@ package com.azure.ai.metricsadvisor.models;
  * The base credential type for different types of authentication
  * that service uses to access the data sources {@link DataFeedSource}.
  *
- * @see DataSourceDataLakeGen2SharedKey
+ * @see DatasourceDataLakeGen2SharedKey
  * @see DatasourceServicePrincipal
  * @see DatasourceServicePrincipalInKeyVault
  * @see DatasourceSqlServerConnectionString

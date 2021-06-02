@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * The shared key credential entity for DataLakeGen2.
  */
 @Fluent
-public final class DataSourceDataLakeGen2SharedKey extends DatasourceCredentialEntity {
+public final class DatasourceDataLakeGen2SharedKey extends DatasourceCredentialEntity {
     private String id;
     private String name;
     private String description;
@@ -20,12 +20,12 @@ public final class DataSourceDataLakeGen2SharedKey extends DatasourceCredentialE
         DataSourceDataLakeGen2SharedKeyAccessor.setAccessor(
             new DataSourceDataLakeGen2SharedKeyAccessor.Accessor() {
                 @Override
-                public void setId(DataSourceDataLakeGen2SharedKey entity, String id) {
+                public void setId(DatasourceDataLakeGen2SharedKey entity, String id) {
                     entity.setId(id);
                 }
 
                 @Override
-                public String getSharedKey(DataSourceDataLakeGen2SharedKey entity) {
+                public String getSharedKey(DatasourceDataLakeGen2SharedKey entity) {
                     return entity.getSharedKey();
                 }
             });
@@ -52,7 +52,7 @@ public final class DataSourceDataLakeGen2SharedKey extends DatasourceCredentialE
      * @param name The name
      * @param sharedKey The shared key
      */
-    public DataSourceDataLakeGen2SharedKey(String name, String sharedKey) {
+    public DatasourceDataLakeGen2SharedKey(String name, String sharedKey) {
         this.name = name;
         this.sharedKey = sharedKey;
     }
@@ -63,7 +63,7 @@ public final class DataSourceDataLakeGen2SharedKey extends DatasourceCredentialE
      * @param name The name
      * @return an updated object with name set
      */
-    public DataSourceDataLakeGen2SharedKey setName(String name) {
+    public DatasourceDataLakeGen2SharedKey setName(String name) {
         this.name = name;
         return this;
     }
@@ -74,7 +74,7 @@ public final class DataSourceDataLakeGen2SharedKey extends DatasourceCredentialE
      * @param sharedKey The shared key
      * @return an updated object with shared key set
      */
-    public DataSourceDataLakeGen2SharedKey setSharedKey(String sharedKey) {
+    public DatasourceDataLakeGen2SharedKey setSharedKey(String sharedKey) {
         this.sharedKey = sharedKey;
         return this;
     }
@@ -85,7 +85,7 @@ public final class DataSourceDataLakeGen2SharedKey extends DatasourceCredentialE
      * @param description The description.
      * @return an updated object with description set
      */
-    public DataSourceDataLakeGen2SharedKey setDescription(String description) {
+    public DatasourceDataLakeGen2SharedKey setDescription(String description) {
         this.description = description;
         return this;
     }
