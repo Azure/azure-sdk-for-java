@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
 import java.net.URISyntaxException;
@@ -53,7 +55,7 @@ public class CallClientTests extends CallingServerTestBase {
                 new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
                 options);
             
-            CallingServerTestUtils.ValidateCreateCallResult(createCallResult);
+            CallingServerTestUtils.validateCreateCallResult(createCallResult);
             var callId = createCallResult.getCallLegId();            
 
             // Play Audio
@@ -64,7 +66,7 @@ public class CallClientTests extends CallingServerTestBase {
                 false, 
                 UUID.randomUUID().toString(), 
                 operationContext);
-            CallingServerTestUtils.ValidatePlayAudioResult(playAudioResult, operationContext);
+            CallingServerTestUtils.validatePlayAudioResult(playAudioResult, operationContext);
 
             // Hang up
             callClient.hangupCall(callId);
@@ -95,7 +97,7 @@ public class CallClientTests extends CallingServerTestBase {
                 options, 
                 Context.NONE);
             
-            CallingServerTestUtils.ValidateCreateCallResponse(createCallResponse);
+            CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
             var callId = createCallResponse.getValue().getCallLegId();            
 
             // Play Audio
@@ -107,11 +109,11 @@ public class CallClientTests extends CallingServerTestBase {
                 UUID.randomUUID().toString(), 
                 operationContext, 
                 Context.NONE);
-                CallingServerTestUtils.ValidatePlayAudioResponse(playAudioResponse, operationContext);
+            CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
 
             // Hang up
             Response<Void> hangupResponse = callClient.hangupCallWithResponse(callId, Context.NONE);
-            CallingServerTestUtils.ValidateHangupResponse(hangupResponse);
+            CallingServerTestUtils.validateHangupResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -138,7 +140,7 @@ public class CallClientTests extends CallingServerTestBase {
                 new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
                 options);
             
-            CallingServerTestUtils.ValidateCreateCallResult(createCallResult);
+            CallingServerTestUtils.validateCreateCallResult(createCallResult);
             var callId = createCallResult.getCallLegId();            
 
             // Invite User
@@ -181,7 +183,7 @@ public class CallClientTests extends CallingServerTestBase {
                 options, 
                 Context.NONE);
             
-            CallingServerTestUtils.ValidateCreateCallResponse(createCallResponse);
+            CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
             var callId = createCallResponse.getValue().getCallLegId();            
 
             // Invite User
@@ -190,16 +192,16 @@ public class CallClientTests extends CallingServerTestBase {
             inviteParticipantsRequest.setParticipants(new LinkedList<CommunicationIdentifier>(Arrays.asList(new CommunicationUserIdentifier(invitedUser))));
             inviteParticipantsRequest.setOperationContext(operationContext);
             Response<Void> inviteParticipantResponse = callClient.inviteParticipantsWithResponse(callId, inviteParticipantsRequest, Context.NONE);
-            CallingServerTestUtils.ValidateInviteParticipantResponse(inviteParticipantResponse);
+            CallingServerTestUtils.validateInviteParticipantResponse(inviteParticipantResponse);
             
             // Remove Participant
             var participantId = "d702fa95-a3ee-4e2d-8101-8e100e7aaf8a";
             Response<Void> removeParticipantResponse = callClient.removeParticipantWithResponse(callId, participantId, Context.NONE);
-            CallingServerTestUtils.ValidateRemoveParticipantResponse(removeParticipantResponse);
+            CallingServerTestUtils.validateRemoveParticipantResponse(removeParticipantResponse);
 
             // Hang up
             Response<Void> hangupResponse = callClient.hangupCallWithResponse(callId, Context.NONE);
-            CallingServerTestUtils.ValidateHangupResponse(hangupResponse);
+            CallingServerTestUtils.validateHangupResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
