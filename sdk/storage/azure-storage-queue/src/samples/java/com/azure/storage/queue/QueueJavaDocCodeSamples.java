@@ -213,7 +213,7 @@ public class QueueJavaDocCodeSamples {
     public void sendMessageBinaryData() {
 
         // BEGIN: com.azure.storage.queue.queueClient.sendMessage#BinaryData
-        SendMessageResult response = client.sendMessage(BinaryData.fromString("Hello, Azure").toString());
+        SendMessageResult response = client.sendMessage(BinaryData.fromString("Hello msg"));
         System.out.println("Complete enqueuing the message with message Id" + response.getMessageId());
         // END: com.azure.storage.queue.queueClient.sendMessage#BinaryData
     }
@@ -239,7 +239,7 @@ public class QueueJavaDocCodeSamples {
     public void enqueueMessageBinaryDataWithTimeoutOverload() {
 
         // BEGIN: com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context1
-        SendMessageResult sentMessageItem = client.sendMessageWithResponse(BinaryData.fromString("Hello, Azure").toString(),
+        SendMessageResult sentMessageItem = client.sendMessageWithResponse(BinaryData.fromString("Hello, Azure"),
             Duration.ofSeconds(5), null, Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Message %s expires at %s", sentMessageItem.getMessageId(),
             sentMessageItem.getExpirationTime());
@@ -265,7 +265,7 @@ public class QueueJavaDocCodeSamples {
      */
     public void sendMessageBinaryDataWithLiveTimeOverload() {
         // BEGIN: com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context2
-        SendMessageResult enqueuedMessage = client.sendMessageWithResponse(BinaryData.fromString("Hello, Azure").toString(),
+        SendMessageResult enqueuedMessage = client.sendMessageWithResponse(BinaryData.fromString("Goodbye, Azure"),
             null, Duration.ofSeconds(5), Duration.ofSeconds(1), new Context(key1, value1)).getValue();
         System.out.printf("Message %s expires at %s", enqueuedMessage.getMessageId(),
             enqueuedMessage.getExpirationTime());
