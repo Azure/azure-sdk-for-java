@@ -21,11 +21,11 @@ import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalInKVPar
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalInKVParamPatch;
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalParam;
 import com.azure.ai.metricsadvisor.implementation.models.ServicePrincipalParamPatch;
-import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
-import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.models.DatasourceSqlServerConnectionString;
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
-import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipalInKeyVault;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
 import com.azure.core.util.logging.ClientLogger;
 
 /**

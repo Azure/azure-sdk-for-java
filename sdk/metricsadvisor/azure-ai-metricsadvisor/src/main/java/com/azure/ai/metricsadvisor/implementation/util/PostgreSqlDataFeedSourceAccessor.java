@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.PostgreSqlDataFeedSource;
 
 public final class PostgreSqlDataFeedSourceAccessor {
     private static Accessor accessor;

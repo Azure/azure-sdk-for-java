@@ -3,19 +3,19 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
-import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
-import com.azure.ai.metricsadvisor.models.ListCredentialEntityOptions;
-import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
-import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;

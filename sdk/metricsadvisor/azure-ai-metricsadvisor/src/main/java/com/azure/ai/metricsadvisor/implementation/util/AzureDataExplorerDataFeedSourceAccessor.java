@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.AzureDataExplorerDataFeedSource;
 
 public final class AzureDataExplorerDataFeedSourceAccessor {
     private static Accessor accessor;

@@ -4,7 +4,7 @@
 package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.models.InfluxDbDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 
 public final class InfluxDbDataFeedSourceAccessor {
     private static Accessor accessor;

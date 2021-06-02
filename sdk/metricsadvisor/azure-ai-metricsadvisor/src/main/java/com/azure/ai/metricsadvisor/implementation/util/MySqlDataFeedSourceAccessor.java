@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.MySqlDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 
 public final class MySqlDataFeedSourceAccessor {
     private static Accessor accessor;

@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.WebNotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
 import com.azure.core.http.rest.PagedFlux;
 import reactor.core.publisher.Mono;
 

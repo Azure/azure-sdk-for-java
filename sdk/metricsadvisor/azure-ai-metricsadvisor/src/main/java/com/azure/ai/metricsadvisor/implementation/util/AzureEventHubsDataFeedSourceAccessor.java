@@ -3,8 +3,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.AzureEventHubsDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.AzureEventHubsDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 
 public final class AzureEventHubsDataFeedSourceAccessor {
     private static Accessor accessor;

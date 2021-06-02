@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.DatasourceSqlServerConnectionString;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
 
 public final class DataSourceSqlServerConnectionStringAccessor {
     private static Accessor accessor;
