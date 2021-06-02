@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataSourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
 import com.azure.ai.metricsadvisor.models.DatasourceAuthenticationType;
 import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
 import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipalInKeyVault;
@@ -115,8 +115,8 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             .verifyComplete();
 
         dataFeed.setSource(SqlServerDataFeedSource.usingConnectionStringCredential(
-            sqlConStrCred.get().getId(),
-            TEMPLATE_QUERY));
+            TEMPLATE_QUERY,
+            sqlConStrCred.get().getId()));
 
 
         final AtomicReference<DataFeed> resultDataFeed = new AtomicReference<>();
@@ -211,9 +211,10 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
                 .assertNext(createdDataFeed -> {
                     dataFeed.set(createdDataFeed);
                     Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureDataLakeStorageGen2DataFeedSource);
-                    Assertions.assertNull(((SqlServerDataFeedSource) createdDataFeed.getSource()).getCredentialId());
+                    Assertions.assertNull(
+                        ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getCredentialId());
                     Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
-                        ((SqlServerDataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
+                        ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
                 })
                 .verifyComplete();
 
@@ -241,14 +242,14 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
     private DataFeed dataLakeWithSharedKeyCred(MetricsAdvisorAdministrationAsyncClient client,
                                                DataFeed dataFeed,
                                                List<String> credIds) {
-        final AtomicReference<DataSourceDataLakeGen2SharedKey> sharedKeyCred
+        final AtomicReference<DatasourceDataLakeGen2SharedKey> sharedKeyCred
             = new AtomicReference<>(initDataSourceDataLakeGen2SharedKey());
 
         StepVerifier.create(client.createDatasourceCredential(sharedKeyCred.get()))
             .assertNext(createdCredential -> {
-                Assertions.assertTrue(createdCredential instanceof DataSourceDataLakeGen2SharedKey);
+                Assertions.assertTrue(createdCredential instanceof DatasourceDataLakeGen2SharedKey);
                 credIds.add(createdCredential.getId());
-                sharedKeyCred.set((DataSourceDataLakeGen2SharedKey) createdCredential);
+                sharedKeyCred.set((DatasourceDataLakeGen2SharedKey) createdCredential);
             })
             .verifyComplete();
 
@@ -416,7 +417,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
         StepVerifier.create(client.updateDataFeed(dataFeed))
             .assertNext(updatedDataFeed -> {
                 resultDataFeed.set(updatedDataFeed);
-                super.validateSqlServerFeedWithCredential(updatedDataFeed, servicePrincipalCred.get());
+                super.validateDataExplorerFeedWithCredential(updatedDataFeed, servicePrincipalCred.get());
             })
             .verifyComplete();
         return resultDataFeed.get();
@@ -445,7 +446,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
         StepVerifier.create(client.updateDataFeed(dataFeed))
             .assertNext(updatedDataFeed -> {
                 resultDataFeed.set(updatedDataFeed);
-                super.validateSqlServerFeedWithCredential(updatedDataFeed, servicePrincipalInKVCred.get());
+                super.validateDataExplorerFeedWithCredential(updatedDataFeed, servicePrincipalInKVCred.get());
             })
             .verifyComplete();
         return resultDataFeed.get();

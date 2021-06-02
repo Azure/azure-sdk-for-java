@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataSourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
 import com.azure.ai.metricsadvisor.models.DatasourceAuthenticationType;
 import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
 import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
@@ -98,8 +98,8 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         sqlConStrCred = (DatasourceSqlServerConnectionString) createdCredential;
 
         dataFeed.setSource(SqlServerDataFeedSource.usingConnectionStringCredential(
-            sqlConStrCred.getId(),
-            TEMPLATE_QUERY));
+            TEMPLATE_QUERY,
+            sqlConStrCred.getId()));
 
         final DataFeed updatedDataFeed = client.updateDataFeed(dataFeed);
         super.validateSqlServerFeedWithCredential(updatedDataFeed, sqlConStrCred);
@@ -165,10 +165,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
 
             DataFeed createdDataFeed = client.createDataFeed(dataFeed);
             Assertions.assertTrue(createdDataFeed.getSource() instanceof AzureDataLakeStorageGen2DataFeedSource);
-            Assertions.assertNull(((SqlServerDataFeedSource) createdDataFeed.getSource()).getCredentialId());
+            Assertions.assertNull(
+                ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getCredentialId());
             Assertions.assertEquals(DatasourceAuthenticationType.BASIC,
-                ((SqlServerDataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
-
+                ((AzureDataLakeStorageGen2DataFeedSource) createdDataFeed.getSource()).getAuthenticationType());
+            dataFeed = createdDataFeed;
 
             // Create SharedKey credential and Update DataLakeFeed to use it.
             dataFeed = dataLakeWithSharedKeyCred(client, dataFeed, credIds);
@@ -191,11 +192,11 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     private DataFeed dataLakeWithSharedKeyCred(MetricsAdvisorAdministrationClient client,
                                                DataFeed dataFeed,
                                                List<String> credIds) {
-        DataSourceDataLakeGen2SharedKey sharedKeyCred = initDataSourceDataLakeGen2SharedKey();
+        DatasourceDataLakeGen2SharedKey sharedKeyCred = initDataSourceDataLakeGen2SharedKey();
         DatasourceCredentialEntity createdCredential = client.createDatasourceCredential(sharedKeyCred);
-        Assertions.assertTrue(createdCredential instanceof DataSourceDataLakeGen2SharedKey);
+        Assertions.assertTrue(createdCredential instanceof DatasourceDataLakeGen2SharedKey);
         credIds.add(createdCredential.getId());
-        sharedKeyCred = (DataSourceDataLakeGen2SharedKey) createdCredential;
+        sharedKeyCred = (DatasourceDataLakeGen2SharedKey) createdCredential;
 
         dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingSharedKeyCredential("adsampledatalakegen2",
             TEST_DB_NAME,
@@ -322,7 +323,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             servicePrincipalCred.getId()));
 
         DataFeed updatedDataFeed = client.updateDataFeed(dataFeed);
-        super.validateSqlServerFeedWithCredential(updatedDataFeed, servicePrincipalCred);
+        super.validateDataExplorerFeedWithCredential(updatedDataFeed, servicePrincipalCred);
         return updatedDataFeed;
     }
 
@@ -342,7 +343,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
             servicePrincipalInKVCred.getId()));
 
         DataFeed updatedDataFeed = client.updateDataFeed(dataFeed);
-        super.validateSqlServerFeedWithCredential(updatedDataFeed, servicePrincipalInKVCred);
+        super.validateDataExplorerFeedWithCredential(updatedDataFeed, servicePrincipalInKVCred);
         return updatedDataFeed;
     }
 

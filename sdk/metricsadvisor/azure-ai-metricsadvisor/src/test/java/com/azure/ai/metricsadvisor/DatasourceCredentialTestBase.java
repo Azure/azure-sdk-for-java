@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.DataSourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
 import com.azure.ai.metricsadvisor.models.DatasourceAuthenticationType;
 import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
 import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
@@ -64,7 +64,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             datasourceCredential = new DatasourceSqlServerConnectionString(name, SQL_SERVER_CONNECTION_STRING);
         } else if (credentialType == DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY) {
             final String name = DATA_LAKE_GEN2_SHARED_KEY_DATASOURCE_CRED_NAME_PREFIX + UUID.randomUUID();
-            datasourceCredential = new DataSourceDataLakeGen2SharedKey(name, AZURE_DATALAKEGEN2_ACCOUNT_KEY);
+            datasourceCredential = new DatasourceDataLakeGen2SharedKey(name, AZURE_DATALAKEGEN2_ACCOUNT_KEY);
         } else if (credentialType == DatasourceAuthenticationType.SERVICE_PRINCIPAL) {
             final String name = SP_DATASOURCE_CRED_NAME_PREFIX + UUID.randomUUID();
             final String cId = "e70248b2-bffa-11eb-8529-0242ac130003";
@@ -104,7 +104,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             Assertions.assertTrue(actualCredential instanceof DatasourceSqlServerConnectionString);
             assertTrue(actualCredential.getName().startsWith(SQL_CONNECTION_DATASOURCE_CRED_NAME_PREFIX));
         } else if (credentialType == DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY) {
-            Assertions.assertTrue(actualCredential instanceof DataSourceDataLakeGen2SharedKey);
+            Assertions.assertTrue(actualCredential instanceof DatasourceDataLakeGen2SharedKey);
             assertTrue(actualCredential.getName().startsWith(DATA_LAKE_GEN2_SHARED_KEY_DATASOURCE_CRED_NAME_PREFIX));
         } else if (credentialType == DatasourceAuthenticationType.SERVICE_PRINCIPAL) {
             Assertions.assertTrue(actualCredential instanceof DatasourceServicePrincipal);

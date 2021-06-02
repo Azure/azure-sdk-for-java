@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
+import com.azure.ai.metricsadvisor.models.AzureDataExplorerDataFeedSource;
 import com.azure.ai.metricsadvisor.models.AzureDataLakeStorageGen2DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedDimension;
@@ -11,7 +12,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataSourceDataLakeGen2SharedKey;
+import com.azure.ai.metricsadvisor.models.DatasourceDataLakeGen2SharedKey;
 import com.azure.ai.metricsadvisor.models.DatasourceAuthenticationType;
 import com.azure.ai.metricsadvisor.models.DatasourceCredentialEntity;
 import com.azure.ai.metricsadvisor.models.DatasourceServicePrincipal;
@@ -73,7 +74,7 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
     protected void validateDataLakeFeedWithCredential(DataFeed dataFeed,
                                                        DatasourceCredentialEntity credential) {
         Assertions.assertTrue(dataFeed.getSource() instanceof AzureDataLakeStorageGen2DataFeedSource);
-        if (credential instanceof DataSourceDataLakeGen2SharedKey) {
+        if (credential instanceof DatasourceDataLakeGen2SharedKey) {
             Assertions.assertEquals(credential.getId(),
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeed.getSource()).getCredentialId());
             Assertions.assertEquals(DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY,
@@ -90,6 +91,24 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeed.getSource()).getAuthenticationType());
         } else {
             throw new IllegalStateException("Unexpected cred type for DataLake credential: " + credential);
+        }
+    }
+
+    protected void validateDataExplorerFeedWithCredential(DataFeed dataFeed,
+                                                          DatasourceCredentialEntity credential) {
+        Assertions.assertTrue(dataFeed.getSource() instanceof AzureDataExplorerDataFeedSource);
+        if (credential instanceof DatasourceServicePrincipal) {
+            Assertions.assertEquals(credential.getId(),
+                ((AzureDataExplorerDataFeedSource) dataFeed.getSource()).getCredentialId());
+            Assertions.assertEquals(DatasourceAuthenticationType.SERVICE_PRINCIPAL,
+                ((AzureDataExplorerDataFeedSource) dataFeed.getSource()).getAuthenticationType());
+        } else if (credential instanceof DatasourceServicePrincipalInKeyVault) {
+            Assertions.assertEquals(credential.getId(),
+                ((AzureDataExplorerDataFeedSource) dataFeed.getSource()).getCredentialId());
+            Assertions.assertEquals(DatasourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV,
+                ((AzureDataExplorerDataFeedSource) dataFeed.getSource()).getAuthenticationType());
+        } else {
+            throw new IllegalStateException("Unexpected cred type for DataExplorer credential: " + credential);
         }
     }
 
@@ -110,9 +129,9 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
         return new DatasourceSqlServerConnectionString(name, SQL_SERVER_CONNECTION_STRING);
     }
 
-    protected DataSourceDataLakeGen2SharedKey initDataSourceDataLakeGen2SharedKey() {
+    protected DatasourceDataLakeGen2SharedKey initDataSourceDataLakeGen2SharedKey() {
         final String name = DATA_LAKE_GEN2_SHARED_KEY_DATASOURCE_CRED_NAME_PREFIX + UUID.randomUUID();
-        return new DataSourceDataLakeGen2SharedKey(name, AZURE_DATALAKEGEN2_ACCOUNT_KEY);
+        return new DatasourceDataLakeGen2SharedKey(name, AZURE_DATALAKEGEN2_ACCOUNT_KEY);
     }
 
     protected DatasourceServicePrincipal initDatasourceServicePrincipal() {
@@ -136,9 +155,9 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
 
         return new DatasourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDataSourceSecrets(kvEndpoint.toString(), cId, mockSecr)
+            .setKeyVaultForDatasourceSecrets(kvEndpoint.toString(), cId, mockSecr)
             .setTenantId(tId)
-            .setSecretNameForDataSourceClientId("DSClientID_1")
-            .setSecretNameForDataSourceClientSecret("DSClientSer_1");
+            .setSecretNameForDatasourceClientId("DSClientID_1")
+            .setSecretNameForDatasourceClientSecret("DSClientSer_1");
     }
 }
