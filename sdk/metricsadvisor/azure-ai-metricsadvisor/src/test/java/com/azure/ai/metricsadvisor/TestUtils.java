@@ -53,6 +53,8 @@ public final class TestUtils {
         + "let endtime=starttime + gran; requests | where timestamp >= starttime and timestamp < endtime "
         + "| summarize request_count = count(), duration_avg_ms = avg(duration), duration_95th_ms = percentile"
         + "(duration, 95), duration_max_ms = max(duration) by resultCode";
+    static final String LOG_ANALYTICS_QUERY = "where StartTime >=datetime(@StartTime) and EndTime <datetime(@EndTime)"
+        + "| summarize count_per_type=count() by DataType";
     static final String MONGO_COMMAND = "{\"find\": \"adsample\",\"filter\": { Timestamp: { $eq: @StartTime }}"
         + "\"batchSize\": 2000,}";
     static final String TEST_DB_NAME = "adsample";
@@ -109,21 +111,25 @@ public final class TestUtils {
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_INFLUX_DB_PASSWORD", "testPassword");
 
-    static final String HTTP_URL = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_HTTP_GET_URL", "httpUrl");
-
-    static final String ELASTIC_SEARCH_HOST = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_ELASTIC_SEARCH_HOST", "elasticsearchHost");
-
-    static final String ELASTIC_SEARCH_AUTH_HEADER = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_ELASTICSEARCH_AUTH_HEADER", "authHeader");
-
     static final String AZURE_DATALAKEGEN2_ACCOUNT_KEY = Configuration
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_AZURE_DATALAKE_ACCOUNT_KEY", "azDataLakeAccountKey");
+
+    static final String AZURE_METRICS_ADVISOR_TENANT_ID = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_CLIENT_ID", "azTenantId");
+
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID", "azClientId");
+
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET", "azClientSecret");
+
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID", "azWorkspaceId");
 
     static final long DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS = 60;
 
