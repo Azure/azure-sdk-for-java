@@ -758,14 +758,12 @@ class FileAPITests extends APISpec {
         given:
         def container = instrument(new BlobServiceClientBuilder())
             .endpoint("https://" + env.primaryAccount.name + ".blob.core.windows.net")
-            //.credential(new EnvironmentCredentialBuilder().build())
             .credential(new StorageSharedKeyCredential(env.primaryAccount.name, env.primaryAccount.key))
             .buildClient()
             .createBlobContainer(getShareName())
         def blob = container.getBlobClient(generatePathName())
         blob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken().block() //blob.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData), null, null)
-            //.getRequest().getHeaders().get("Authorization").getValue().substring("Bearer ".size())
+        def oauthHeader = getAuthToken().block()
         primaryFileClient.create(data.defaultDataSize)
 
         when:
@@ -790,8 +788,8 @@ class FileAPITests extends APISpec {
             .buildClient()
             .createBlobContainer(getShareName())
         def blob = container.getBlobClient(generatePathName())
-        def oauthHeader = blob.uploadWithResponse(new BlobParallelUploadOptions(data.defaultBinaryData), null, null)
-            .getRequest().getHeaders().get("Authorization").getValue().substring("Bearer ".size())
+        blob.upload(data.defaultBinaryData)
+        def oauthHeader = "garbage"
         primaryFileClient.create(data.defaultDataSize)
 
         when:
@@ -800,9 +798,7 @@ class FileAPITests extends APISpec {
             .setLength(data.defaultDataSize), null, Context.NONE)
 
         then:
-        def os = new ByteArrayOutputStream(data.defaultDataSize)
-        primaryFileClient.download(os)
-        os.toByteArray() == data.defaultBytes
+        thrown(ShareStorageException)
 
         cleanup:
         container.delete()
