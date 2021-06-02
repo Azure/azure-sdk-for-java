@@ -49,4 +49,16 @@ public class CallingServerTestUtils {
         assertNotNull(hangupResponse);
         assertTrue(hangupResponse.getStatusCode() == 202);
     }
+
+    protected static void ValidateInviteParticipantResponse(Response<Void> inviteParticipantResponse)
+    {
+        assertNotNull(inviteParticipantResponse);
+        assertTrue(inviteParticipantResponse.getStatusCode() == 202);
+    }
+
+    protected static void ValidateRemoveParticipantResponse(Response<Void> removeParticipantResponse)
+    {
+        assertNotNull(removeParticipantResponse);
+        assertTrue(removeParticipantResponse.getStatusCode() == 202);
+    }
 }
