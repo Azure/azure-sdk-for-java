@@ -23,8 +23,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
 import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableSasGenerator;
 import com.azure.data.tables.implementation.TableSasUtils;
-import com.azure.data.tables.implementation.TableServiceSasGenerator;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.AccessPolicy;
@@ -52,7 +52,7 @@ import com.azure.data.tables.models.TableTransactionAction;
 import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import com.azure.data.tables.models.TableTransactionResult;
-import com.azure.data.tables.sas.TableServiceSasSignatureValues;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -200,33 +200,46 @@ public final class TableAsyncClient {
     }
 
     /**
-     * Generates a service SAS for the table using the specified {@link TableServiceSasSignatureValues}.
+     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
      *
      * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
-     * <p>See {@link TableServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
-     * @param tableServiceSasSignatureValues {@link TableServiceSasSignatureValues}
+     * @param tableSasSignatureValues {@link TableSasSignatureValues}
      *
      * @return A {@code String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableAsyncClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
      */
-    public String generateSas(TableServiceSasSignatureValues tableServiceSasSignatureValues) {
-        return generateSas(tableServiceSasSignatureValues, Context.NONE);
+    public String generateSas(TableSasSignatureValues tableSasSignatureValues) {
+        return generateSas(tableSasSignatureValues, Context.NONE);
     }
 
     /**
-     * Generates a service SAS for the table using the specified {@link TableServiceSasSignatureValues}.
+     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
      *
      * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
-     * <p>See {@link TableServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
-     * @param tableServiceSasSignatureValues {@link TableServiceSasSignatureValues}
+     * @param tableSasSignatureValues {@link TableSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return A {@code String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableAsyncClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
      */
-    public String generateSas(TableServiceSasSignatureValues tableServiceSasSignatureValues, Context context) {
-        return new TableServiceSasGenerator(tableServiceSasSignatureValues, getTableName())
-            .generateSas(TableSasUtils.extractNamedKeyCredential(getHttpPipeline()), context);
+    public String generateSas(TableSasSignatureValues tableSasSignatureValues, Context context) {
+        AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
+
+        if (azureNamedKeyCredential == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Cannot generate a SAS token with a client that"
+                + " is not authenticated with an AzureNamedKeyCredential."));
+        }
+
+        return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential, context)
+            .getSas();
     }
 
     /**

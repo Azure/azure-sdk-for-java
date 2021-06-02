@@ -161,6 +161,9 @@ public final class TableServiceAsyncClient {
      * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
      *
      * @return A {@link String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
      */
     public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues) {
         return generateAccountSas(tableAccountSasSignatureValues, Context.NONE);
@@ -177,10 +180,19 @@ public final class TableServiceAsyncClient {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return A {@link String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
      */
     public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues, Context context) {
-        return new TableAccountSasGenerator(tableAccountSasSignatureValues)
-            .generateSas(TableSasUtils.extractNamedKeyCredential(getHttpPipeline()), context);
+        AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
+
+        if (azureNamedKeyCredential == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Cannot generate a SAS token with a client that"
+                + " is not authenticated with an AzureNamedKeyCredential."));
+        }
+
+        return new TableAccountSasGenerator(tableAccountSasSignatureValues, azureNamedKeyCredential, context).getSas();
     }
 
     /**

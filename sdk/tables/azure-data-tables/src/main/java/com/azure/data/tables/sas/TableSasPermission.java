@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.sas;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.data.tables.implementation.StorageConstants;
 
 import java.util.Locale;
@@ -10,7 +11,7 @@ import java.util.Locale;
  * Constructs a string representing the permissions granted by an Azure Service SAS to a table. Setting a value to true
  * means that any SAS which uses these permissions will grant permissions for that operation. Once all the values are
  * set, this should be serialized with {@link #toString() toString} and set as the permissions field on
- * {@link TableServiceSasSignatureValues#setPermissions(TableServiceSasPermission)} TableSasSignatureValues}.
+ * {@link TableSasSignatureValues#setPermissions(TableSasPermission)} TableSasSignatureValues}.
  *
  * <p>
  * It is possible to construct the permissions string without this class, but the order of the permissions is
@@ -19,32 +20,33 @@ import java.util.Locale;
  *
  * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-table">
  * Permissions for a table</a>
- * @see TableServiceSasSignatureValues
+ * @see TableSasSignatureValues
  */
-public class TableServiceSasPermission {
+@Fluent
+public final class TableSasPermission {
     private boolean readPermission;
     private boolean addPermission;
     private boolean updatePermission;
     private boolean processPermission;
 
     /**
-     * Initializes a {@link TableServiceSasPermission} object with all fields set to {@code false}.
+     * Initializes a {@link TableSasPermission} object with all fields set to {@code false}.
      */
-    public TableServiceSasPermission() {
+    public TableSasPermission() {
     }
 
     /**
-     * Creates a {@link TableServiceSasPermission} from the specified permissions string. This method will throw an
+     * Creates a {@link TableSasPermission} from the specified permissions string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@link String} which represents the {@link TableServiceSasPermission}.
+     * @param permString A {@link String} which represents the {@link TableSasPermission}.
      *
-     * @return A {@link TableServiceSasPermission} generated from the given {@link String}.
+     * @return A {@link TableSasPermission} generated from the given {@link String}.
      *
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, u, or p.
      */
-    public static TableServiceSasPermission parse(String permString) {
-        TableServiceSasPermission permissions = new TableServiceSasPermission();
+    public static TableSasPermission parse(String permString) {
+        TableSasPermission permissions = new TableSasPermission();
 
         for (int i = 0; i < permString.length(); i++) {
             char c = permString.charAt(i);
@@ -92,7 +94,7 @@ public class TableServiceSasPermission {
      *
      * @return The updated TableSasPermission object.
      */
-    public TableServiceSasPermission setReadPermission(boolean hasReadPermission) {
+    public TableSasPermission setReadPermission(boolean hasReadPermission) {
         this.readPermission = hasReadPermission;
 
         return this;
@@ -117,9 +119,9 @@ public class TableServiceSasPermission {
      * <b>Note:</b> The {@code add} and {@code update} permissions are required for upsert operations.
      * </p>
      *
-     * @return The updated {@link TableServiceSasPermission} object.
+     * @return The updated {@link TableSasPermission} object.
      */
-    public TableServiceSasPermission setAddPermission(boolean hasAddPermission) {
+    public TableSasPermission setAddPermission(boolean hasAddPermission) {
         this.addPermission = hasAddPermission;
 
         return this;
@@ -144,9 +146,9 @@ public class TableServiceSasPermission {
      * @param hasUpdatePermission {@code true} if the SAS has permission to update entities in the table. {@code false},
      * otherwise.
      *
-     * @return The updated {@link TableServiceSasPermission} object.
+     * @return The updated {@link TableSasPermission} object.
      */
-    public TableServiceSasPermission setUpdatePermission(boolean hasUpdatePermission) {
+    public TableSasPermission setUpdatePermission(boolean hasUpdatePermission) {
         this.updatePermission = hasUpdatePermission;
 
         return this;
@@ -167,9 +169,9 @@ public class TableServiceSasPermission {
      * @param hasProcessPermission {@code true} if the SAS has permission to delete entities from the table.
      * {@code false}, otherwise.
      *
-     * @return The updated {@link TableServiceSasPermission} object.
+     * @return The updated {@link TableSasPermission} object.
      */
-    public TableServiceSasPermission setProcessPermission(boolean hasProcessPermission) {
+    public TableSasPermission setProcessPermission(boolean hasProcessPermission) {
         this.processPermission = hasProcessPermission;
 
         return this;
@@ -179,7 +181,7 @@ public class TableServiceSasPermission {
      * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
-     * @return A {@link String} which represents the {@link TableServiceSasPermission}.
+     * @return A {@link String} which represents the {@link TableSasPermission}.
      */
     @Override
     public String toString() {

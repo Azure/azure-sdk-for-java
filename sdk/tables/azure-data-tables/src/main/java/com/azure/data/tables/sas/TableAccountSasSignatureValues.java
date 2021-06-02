@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.sas;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -14,6 +16,7 @@ import java.util.Objects;
  * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
+@Fluent
 public final class TableAccountSasSignatureValues {
     private final OffsetDateTime expiryTime;
     private final String permissions;

@@ -7,9 +7,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.TableServiceVersion;
 import com.azure.data.tables.sas.TableSasIpRange;
+import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
-import com.azure.data.tables.sas.TableServiceSasPermission;
-import com.azure.data.tables.sas.TableServiceSasSignatureValues;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -22,30 +22,36 @@ import static com.azure.data.tables.implementation.TableSasUtils.tryAppendQueryP
 /**
  * A class containing utility methods for generating SAS tokens for the Azure Data Tables service.
  */
-public class TableServiceSasGenerator {
-    private final ClientLogger logger = new ClientLogger(TableServiceSasGenerator.class);
-
-    private String version;
-    private TableSasProtocol protocol;
-    private OffsetDateTime startTime;
-    private OffsetDateTime expiryTime;
+public class TableSasGenerator {
+    private final ClientLogger logger = new ClientLogger(TableSasGenerator.class);
+    private final OffsetDateTime expiryTime;
+    private final OffsetDateTime startTime;
+    private final String endPartitionKey;
+    private final String endRowKey;
+    private final String identifier;
+    private final String sas;
+    private final String startPartitionKey;
+    private final String startRowKey;
+    private final String tableName;
+    private final TableSasProtocol protocol;
+    private final TableSasIpRange sasIpRange;
     private String permissions;
-    private TableSasIpRange sasIpRange;
-    private String tableName;
-    private String identifier;
-    private String startPartitionKey;
-    private String startRowKey;
-    private String endPartitionKey;
-    private String endRowKey;
+    private String version;
 
     /**
-     * Creates a new {@link TableServiceSasGenerator} with the specified parameters
+     * Creates a new {@link TableSasGenerator} which will generate an table-level SAS signed with an
+     * {@link AzureNamedKeyCredential}.
      *
-     * @param sasValues The {@link TableServiceSasSignatureValues} to generate the SAS token with.
+     * @param sasValues The {@link TableSasSignatureValues} to generate the SAS token with.
      * @param tableName The table name.
+     * @param azureNamedKeyCredential An {@link AzureNamedKeyCredential} whose key will be used to sign the SAS.
+     * @param context Additional context that is passed through the code when generating a SAS.
      */
-    public TableServiceSasGenerator(TableServiceSasSignatureValues sasValues, String tableName) {
+    public TableSasGenerator(TableSasSignatureValues sasValues, String tableName,
+                             AzureNamedKeyCredential azureNamedKeyCredential,
+                             Context context) {
         Objects.requireNonNull(sasValues, "'sasValues' cannot be null.");
+        Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
 
         this.version = sasValues.getVersion();
         this.protocol = sasValues.getProtocol();
@@ -59,28 +65,27 @@ public class TableServiceSasGenerator {
         this.startRowKey = sasValues.getStartRowKey();
         this.endPartitionKey = sasValues.getEndPartitionKey();
         this.endRowKey = sasValues.getEndRowKey();
-    }
 
-    /**
-     * Generates a SAS signed with an {@link AzureNamedKeyCredential}.
-     *
-     * @param azureNamedKeyCredential {@link AzureNamedKeyCredential}.
-     * @param context Additional context that is passed through the code when generating a SAS.
-     *
-     * @return A {@link String} representing the SAS.
-     */
-    public String generateSas(AzureNamedKeyCredential azureNamedKeyCredential, Context context) {
-        Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
-
-        ensureState();
+        validateState();
 
         // Signature is generated on the un-url-encoded values.
         String canonicalName = getCanonicalName(azureNamedKeyCredential.getAzureNamedKey().getName());
         String stringToSign = stringToSign(canonicalName);
+
         logStringToSign(logger, stringToSign, context);
+
         String signature = computeHMac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
 
-        return encode(signature);
+        this.sas = encode(signature);
+    }
+
+    /**
+     * Get the SAS produced by this {@link TableSasGenerator}.
+     *
+     * @return The SAS produced by this {@link TableSasGenerator}.
+     */
+    public String getSas() {
+        return sas;
     }
 
     private String encode(String signature) {
@@ -115,7 +120,7 @@ public class TableServiceSasGenerator {
      * 2. If there is no identifier set, ensure expiryTime and permissions are set.
      * 4. Re-parse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      */
-    private void ensureState() {
+    private void validateState() {
         if (version == null) {
             version = TableServiceVersion.getLatest().getVersion();
         }
@@ -129,7 +134,7 @@ public class TableServiceSasGenerator {
 
         if (permissions != null) {
             if (tableName != null) {
-                permissions = TableServiceSasPermission.parse(permissions).toString();
+                permissions = TableSasPermission.parse(permissions).toString();
             } else {
                 // We won't re-parse the permissions if we don't know the type.
                 logger.info("Not re-parsing permissions. Resource type is not table.");

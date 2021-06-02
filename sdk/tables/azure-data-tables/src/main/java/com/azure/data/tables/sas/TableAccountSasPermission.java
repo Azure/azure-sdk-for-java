@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.sas;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.data.tables.implementation.StorageConstants;
 
 import java.util.Locale;
@@ -20,6 +21,7 @@ import java.util.Locale;
  * @see TableAccountSasSignatureValues
  * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-account-sas">Create account SAS</a>
  */
+@Fluent
 public final class TableAccountSasPermission {
     private boolean readPermission;
     private boolean addPermission;
@@ -32,12 +34,6 @@ public final class TableAccountSasPermission {
     private boolean processMessagesPermission;
     private boolean tagsPermission;
     private boolean filterTagsPermission;
-
-    /**
-     * Initializes an {@link TableAccountSasPermission} object with all fields set to {@code false}.
-     */
-    public TableAccountSasPermission() {
-    }
 
     /**
      * Creates an {@link TableAccountSasPermission} from the specified permissions string. This method will throw an

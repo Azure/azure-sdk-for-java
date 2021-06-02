@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.sas;
 
+import com.azure.core.annotation.Fluent;
+
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -14,7 +16,8 @@ import java.util.Objects;
  * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service SAS</a>
  */
-public class TableServiceSasSignatureValues {
+@Fluent
+public final class TableSasSignatureValues {
     private String version;
     private TableSasProtocol protocol;
     private OffsetDateTime startTime;
@@ -31,9 +34,9 @@ public class TableServiceSasSignatureValues {
      * Creates an object with the specified expiry time and permissions.
      *
      * @param expiryTime The time after which the SAS will no longer work.
-     * @param permissions {@link TableServiceSasPermission table permissions} allowed by the SAS.
+     * @param permissions {@link TableSasPermission table permissions} allowed by the SAS.
      */
-    public TableServiceSasSignatureValues(OffsetDateTime expiryTime, TableServiceSasPermission permissions) {
+    public TableSasSignatureValues(OffsetDateTime expiryTime, TableSasPermission permissions) {
         Objects.requireNonNull(expiryTime, "'expiryTime' cannot be null");
         Objects.requireNonNull(permissions, "'permissions' cannot be null");
 
@@ -46,7 +49,7 @@ public class TableServiceSasSignatureValues {
      *
      * @param identifier Name of the access policy.
      */
-    public TableServiceSasSignatureValues(String identifier) {
+    public TableSasSignatureValues(String identifier) {
         Objects.requireNonNull(identifier, "'identifier' cannot be null");
 
         this.identifier = identifier;
@@ -66,9 +69,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param version Version to target
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setVersion(String version) {
+    public TableSasSignatureValues setVersion(String version) {
         this.version = version;
 
         return this;
@@ -86,9 +89,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param protocol Protocol for the SAS
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setProtocol(TableSasProtocol protocol) {
+    public TableSasSignatureValues setProtocol(TableSasProtocol protocol) {
         this.protocol = protocol;
 
         return this;
@@ -106,9 +109,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param startTime When the SAS takes effect
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setStartTime(OffsetDateTime startTime) {
+    public TableSasSignatureValues setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
 
         return this;
@@ -126,16 +129,16 @@ public class TableServiceSasSignatureValues {
      *
      * @param expiryTime When the SAS will no longer work
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
+    public TableSasSignatureValues setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
 
         return this;
     }
 
     /**
-     * @return The permissions string allowed by the SAS. Please refer to {@link TableServiceSasPermission} for help
+     * @return The permissions string allowed by the SAS. Please refer to {@link TableSasPermission} for help
      * determining the permissions allowed.
      */
     public String getPermissions() {
@@ -143,16 +146,16 @@ public class TableServiceSasSignatureValues {
     }
 
     /**
-     * Sets the permissions string allowed by the SAS. Please refer to {@link TableServiceSasPermission} for help constructing
+     * Sets the permissions string allowed by the SAS. Please refer to {@link TableSasPermission} for help constructing
      * the permissions string.
      *
      * @param permissions Permissions for the SAS
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      *
      * @throws NullPointerException if {@code permissions} is null.
      */
-    public TableServiceSasSignatureValues setPermissions(TableServiceSasPermission permissions) {
+    public TableSasSignatureValues setPermissions(TableSasPermission permissions) {
         Objects.requireNonNull(permissions, "'permissions' cannot be null");
 
         this.permissions = permissions.toString();
@@ -172,12 +175,12 @@ public class TableServiceSasSignatureValues {
      *
      * @param sasIpRange Allowed IP range to set
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      *
      * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying
      * IP Address or IP range</a>
      */
-    public TableServiceSasSignatureValues setSasIpRange(TableSasIpRange sasIpRange) {
+    public TableSasSignatureValues setSasIpRange(TableSasIpRange sasIpRange) {
         this.sasIpRange = sasIpRange;
 
         return this;
@@ -199,9 +202,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param identifier Name of the access policy
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setIdentifier(String identifier) {
+    public TableSasSignatureValues setIdentifier(String identifier) {
         this.identifier = identifier;
 
         return this;
@@ -225,9 +228,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param startPartitionKey The start partition key to set.
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setStartPartitionKey(String startPartitionKey) {
+    public TableSasSignatureValues setStartPartitionKey(String startPartitionKey) {
         this.startPartitionKey = startPartitionKey;
         return this;
     }
@@ -250,9 +253,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param startRowKey The start row key to set.
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setStartRowKey(String startRowKey) {
+    public TableSasSignatureValues setStartRowKey(String startRowKey) {
         this.startRowKey = startRowKey;
 
         return this;
@@ -276,9 +279,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param endPartitionKey The end partition key to set.
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setEndPartitionKey(String endPartitionKey) {
+    public TableSasSignatureValues setEndPartitionKey(String endPartitionKey) {
         this.endPartitionKey = endPartitionKey;
 
         return this;
@@ -302,9 +305,9 @@ public class TableServiceSasSignatureValues {
      *
      * @param endRowKey The end row key to set.
      *
-     * @return The updated {@link TableServiceSasSignatureValues} object.
+     * @return The updated {@link TableSasSignatureValues} object.
      */
-    public TableServiceSasSignatureValues setEndRowKey(String endRowKey) {
+    public TableSasSignatureValues setEndRowKey(String endRowKey) {
         this.endRowKey = endRowKey;
 
         return this;

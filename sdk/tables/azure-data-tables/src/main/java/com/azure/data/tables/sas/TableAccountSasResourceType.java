@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.sas;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.data.tables.implementation.StorageConstants;
 
 import java.util.Locale;
@@ -13,16 +14,11 @@ import java.util.Locale;
  * {@link TableAccountSasSignatureValues} object. It is possible to construct the resources string without this class,
  * but the order of the resources is particular and this class guarantees correctness.
  */
+@Fluent
 public final class TableAccountSasResourceType {
     private boolean service;
     private boolean container;
     private boolean object;
-
-    /**
-     * Initializes an {@link TableAccountSasResourceType} object with all fields set to {@code false}.
-     */
-    public TableAccountSasResourceType() {
-    }
 
     /**
      * Creates an {@link TableAccountSasResourceType} from the specified resource types string. This method will throw an

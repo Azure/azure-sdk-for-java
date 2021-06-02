@@ -24,21 +24,34 @@ import static com.azure.data.tables.implementation.TableSasUtils.tryAppendQueryP
  */
 public class TableAccountSasGenerator {
     private final ClientLogger logger = new ClientLogger(TableAccountSasGenerator.class);
+    private final OffsetDateTime expiryTime;
+    private final OffsetDateTime startTime;
+    private final String permissions;
+    private final String resourceTypes;
+    private final String services;
+    private final String sas;
+    private final TableSasProtocol protocol;
+    private final TableSasIpRange sasIpRange;
     private String version;
-    private TableSasProtocol protocol;
-    private OffsetDateTime startTime;
-    private OffsetDateTime expiryTime;
-    private String permissions;
-    private TableSasIpRange sasIpRange;
-    private String services;
-    private String resourceTypes;
 
     /**
-     * Creates a new {@link TableAccountSasGenerator} with the specified parameters.
+     * Creates a new {@link TableAccountSasGenerator} which will generate an account-level SAS signed with an
+     * {@link AzureNamedKeyCredential}.
      *
      * @param sasValues The {@link TableAccountSasSignatureValues account signature values}.
+     * @param azureNamedKeyCredential An {@link AzureNamedKeyCredential} whose key will be used to sign the SAS.
+     * @param context Additional context that is passed through the code when generating a SAS.
      */
-    public TableAccountSasGenerator(TableAccountSasSignatureValues sasValues) {
+    public TableAccountSasGenerator(TableAccountSasSignatureValues sasValues,
+                                    AzureNamedKeyCredential azureNamedKeyCredential,
+                                    Context context) {
+        Objects.requireNonNull(sasValues, "'sasValues' cannot be null.");
+        Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
+        Objects.requireNonNull(sasValues.getServices(), "'services' in 'sasValues' cannot be null.");
+        Objects.requireNonNull(sasValues.getResourceTypes(), "'resourceTypes' in 'sasValues' cannot be null.");
+        Objects.requireNonNull(sasValues.getExpiryTime(), "'expiryTime' in 'sasValues' cannot be null.");
+        Objects.requireNonNull(sasValues.getPermissions(), "'permissions' in 'sasValues' cannot be null.");
+
         this.version = sasValues.getVersion();
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
@@ -47,32 +60,28 @@ public class TableAccountSasGenerator {
         this.sasIpRange = sasValues.getSasIpRange();
         this.services = sasValues.getServices();
         this.resourceTypes = sasValues.getResourceTypes();
-    }
-
-    /**
-     * Generates a Sas signed with a {@link AzureNamedKeyCredential}.
-     *
-     * @param azureNamedKeyCredential {@link AzureNamedKeyCredential}
-     * @param context Additional context that is passed through the code when generating a SAS.
-     * @return A String representing the Sas
-     */
-    public String generateSas(AzureNamedKeyCredential azureNamedKeyCredential, Context context) {
-        Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
-        Objects.requireNonNull(services, "'services' cannot be null.");
-        Objects.requireNonNull(resourceTypes, "'resourceTypes' cannot be null.");
-        Objects.requireNonNull(expiryTime, "'expiryTime' cannot be null.");
-        Objects.requireNonNull(permissions, "'permissions' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(version)) {
             version = StorageConstants.HeaderConstants.TARGET_STORAGE_VERSION;
         }
+
         String stringToSign = stringToSign(azureNamedKeyCredential);
+
         logStringToSign(logger, stringToSign, context);
 
         // Signature is generated on the un-url-encoded values.
         String signature = computeHMac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
 
-        return encode(signature);
+        this.sas = encode(signature);
+    }
+
+    /**
+     * Get the SAS produced by this {@link TableAccountSasGenerator}.
+     *
+     * @return The SAS produced by this {@link TableAccountSasGenerator}.
+     */
+    public String getSas() {
+        return sas;
     }
 
     private String stringToSign(final AzureNamedKeyCredential azureNamedKeyCredential) {

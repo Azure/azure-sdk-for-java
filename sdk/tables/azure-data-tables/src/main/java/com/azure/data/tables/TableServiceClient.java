@@ -83,6 +83,9 @@ public final class TableServiceClient {
      * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
      *
      * @return A {@link String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
      */
     public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues) {
         return client.generateAccountSas(tableAccountSasSignatureValues);
@@ -99,6 +102,9 @@ public final class TableServiceClient {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return A {@link String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
      */
     public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues, Context context) {
         return client.generateAccountSas(tableAccountSasSignatureValues, context);
