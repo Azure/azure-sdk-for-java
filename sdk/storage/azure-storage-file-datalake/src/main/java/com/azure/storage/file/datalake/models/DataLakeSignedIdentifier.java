@@ -3,10 +3,13 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * signed identifier.
  */
-public class DataLakeSignedIdentifier {
+@Fluent
+public final class DataLakeSignedIdentifier {
     /*
      * a unique id
      */
