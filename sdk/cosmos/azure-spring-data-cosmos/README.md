@@ -247,7 +247,7 @@ public class User {
 
 #### Creating Containers with autoscale throughput
 - Annotation `autoScale` field specifies container to be created with autoscale throughput if set to true. Default is false, which means containers are created with manual throughput.
-- Read more about autoscale throughput [here](autoscale-throughput)
+- Read more about autoscale throughput [here][autoscale-throughput]
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserSample.java#L14-L19 -->
 ```java
 @Container(containerName = "myContainer", autoScale = true, ru = "4000")
