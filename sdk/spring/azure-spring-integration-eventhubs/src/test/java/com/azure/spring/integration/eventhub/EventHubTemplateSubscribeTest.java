@@ -9,18 +9,22 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest<EventHubOperation> {
 
     @Mock
@@ -29,8 +33,11 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     @Mock
     private EventProcessorClient eventProcessorClient;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.subscribeByGroupOperation = new EventHubTemplate(mockClientFactory);
         when(this.mockClientFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class)))
             .thenReturn(this.eventProcessorClient);
@@ -38,6 +45,11 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
             .thenReturn(Optional.of(this.eventProcessorClient));
         doNothing().when(this.eventProcessorClient).stop();
         doNothing().when(this.eventProcessorClient).start();
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override

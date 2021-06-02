@@ -8,6 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
+
 import java.util.List;
 import java.util.Set;
 
@@ -200,6 +201,14 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the definition
              */
             WithDestinationPort<ParentT> withDestinationApplicationSecurityGroup(String id);
+
+            /**
+             * Sets the application security group specified as destination.
+             *
+             * @param ids the collection of application security group ID
+             * @return the next stage of the definition
+             */
+            WithDestinationPort<ParentT> withDestinationApplicationSecurityGroup(String... ids);
         }
 
         /**
@@ -279,6 +288,14 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the definition
              */
             WithSourcePort<ParentT> withSourceApplicationSecurityGroup(String id);
+
+            /**
+             * Sets the application security group specified as source.
+             *
+             * @param ids the collection of application security group ID
+             * @return the next stage of the definition
+             */
+            WithSourcePort<ParentT> withSourceApplicationSecurityGroup(String... ids);
         }
 
         /**
@@ -460,6 +477,14 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the update
              */
             WithSourcePort<ParentT> withSourceApplicationSecurityGroup(String id);
+
+            /**
+             * Sets the application security group specified as source.
+             *
+             * @param ids the collection of application security group ID
+             * @return the next stage of the definition
+             */
+            WithSourcePort<ParentT> withSourceApplicationSecurityGroup(String... ids);
         }
 
         /**
@@ -539,6 +564,14 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the definition
              */
             WithDestinationPort<ParentT> withDestinationApplicationSecurityGroup(String id);
+
+            /**
+             * Sets the application security group specified as destination.
+             *
+             * @param ids the collection of application security group ID
+             * @return the next stage of the definition
+             */
+            WithDestinationPort<ParentT> withDestinationApplicationSecurityGroup(String... ids);
         }
 
         /**
@@ -730,6 +763,14 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the update
              */
             Update withSourceApplicationSecurityGroup(String id);
+
+            /**
+             * Removes the application security group specified as source.
+             *
+             * @param id application security group id
+             * @return the next stage of the update
+             */
+            Update withoutSourceApplicationSecurityGroup(String id);
         }
 
         /** The stage of the network rule description allowing the source port(s) to be specified. */
@@ -803,6 +844,14 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
              * @return the next stage of the update
              */
             Update withDestinationApplicationSecurityGroup(String id);
+
+            /**
+             * Removes the application security group specified as destination.
+             *
+             * @param id application security group id
+             * @return the next stage of the definition
+             */
+            Update withoutDestinationApplicationSecurityGroup(String id);
         }
 
         /** The stage of the network rule description allowing the destination port(s) to be specified. */

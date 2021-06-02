@@ -90,7 +90,127 @@ LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
                         + "; value = " + logsTableCell.getValueAsString()));
         }
     }
-}
+
+```
+### Get logs for a query and read the response as a model type
+
+```java
+
+    LogsQueryResult queryResults = logsClient
+        .queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests", null);
+    
+    // Sample to use a model type to read the results
+    for (LogsTable table : queryResults.getLogsTables()) {
+      for (LogsTableRow row : table.getTableRows()) {
+        CustomModel model = row.getRowAsObject(CustomModel.class);
+        System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess() +
+        "; operation name = " + model.getOperationName());
+      }
+    }
+        
+        
+    public class CustomModel {
+        private OffsetDateTime timeGenerated;
+        private String tenantId;
+        private String id;
+        private String source;
+        private Boolean success;
+        private Double durationMs;
+        private Object properties;
+        private Object measurements;
+        private String operationName;
+        private String operationId;
+        private Object operationLinks;
+
+
+        public OffsetDateTime getTimeGenerated() {
+            return timeGenerated;
+        }
+
+        public void setTimeGenerated(OffsetDateTime timeGenerated) {
+            this.timeGenerated = timeGenerated;
+        }
+
+        public String getTenantId() {
+            return tenantId;
+        }
+
+        public void setTenantId(String tenantId) {
+            this.tenantId = tenantId;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
+
+        public Boolean getSuccess() {
+            return success;
+        }
+
+        public void setSuccess(Boolean success) {
+            this.success = success;
+        }
+
+        public Double getDurationMs() {
+            return durationMs;
+        }
+
+        public void setDurationMs(Double durationMs) {
+            this.durationMs = durationMs;
+        }
+
+        public Object getProperties() {
+            return properties;
+        }
+
+        public void setProperties(Object properties) {
+            this.properties = properties;
+        }
+
+        public Object getMeasurements() {
+            return measurements;
+        }
+
+        public void setMeasurements(Object measurements) {
+            this.measurements = measurements;
+        }
+
+        public String getOperationName() {
+            return operationName;
+        }
+
+        public void setOperationName(String operationName) {
+            this.operationName = operationName;
+        }
+
+        public String getOperationId() {
+            return operationId;
+        }
+
+        public void setOperationId(String operationId) {
+            this.operationId = operationId;
+        }
+
+        public Object getOperationLinks() {
+            return operationLinks;
+        }
+
+        public void setOperationLinks(Object operationLinks) {
+            this.operationLinks = operationLinks;
+        }
+    }
 ```
 
 ### Get logs for a batch of queries
@@ -272,7 +392,7 @@ client library to use the Netty HTTP client. Configuring or changing the HTTP cl
 
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
-better performance compared to the default SSL implementation within the JDK. For more information, including how to
+better performance compared to the default SSL com.azure.monitor.collect.metrics.implementation within the JDK. For more information, including how to
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
