@@ -84,7 +84,7 @@ public final class TableServiceAsyncClient {
             this.accountName = uri.getHost().split("\\.", 2)[0];
 
             logger.verbose("Table Service URI: {}", uri);
-        } catch (IllegalArgumentException ex) {
+        } catch (NullPointerException | IllegalArgumentException ex) {
             throw logger.logExceptionAsError(ex);
         }
 

@@ -51,7 +51,11 @@ final class BuilderHelper {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
+        if (endpoint == null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("An 'endpoint' is required to create a client. Use a builder's 'endpoint()'"
+                    + " or 'connectionString()' methods to set this value."));
+        }else if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
             policies.add(new CosmosPatchTransformPolicy());
         }
 
@@ -78,6 +82,7 @@ final class BuilderHelper {
 
         policies.add(new AddDatePolicy());
         HttpPipelinePolicy credentialPolicy;
+
         if (azureNamedKeyCredential != null) {
             credentialPolicy = new TableAzureNamedKeyCredentialPolicy(azureNamedKeyCredential);
         } else if (azureSasCredential != null) {
@@ -90,6 +95,10 @@ final class BuilderHelper {
 
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
+                    + "'credential()', 'sasToken()' or 'connectionString()' methods to set a form of authentication."));
         }
 
         // Add per retry additional policies.

@@ -61,7 +61,9 @@ public final class TableServiceClientBuilder {
      *
      * @return A {@link TableServiceClient} created from the configurations in this builder.
      *
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
+     * @throws IllegalArgumentException If {@code endpoint} is malformed or empty.
+     * @throws IllegalStateException If no form of authentication or {@code endpoint} have been specified.
      */
     public TableServiceClient buildClient() {
         return new TableServiceClient(buildAsyncClient());
@@ -72,7 +74,9 @@ public final class TableServiceClientBuilder {
      *
      * @return A {@link TableServiceAsyncClient} created from the configurations in this builder.
      *
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
+     * @throws IllegalArgumentException If {@code endpoint} is malformed or empty.
+     * @throws IllegalStateException If no form of authentication or {@code endpoint} have been specified.
      */
     public TableServiceAsyncClient buildAsyncClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
