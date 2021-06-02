@@ -5,10 +5,15 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.ConversationsImpl;
+import com.azure.communication.callingserver.implementation.converters.ResultInfoConverter;
 import com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse;
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
+import com.azure.communication.callingserver.implementation.models.PlayAudioResponse;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
+import com.azure.communication.callingserver.models.OperationStatus;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -298,6 +303,66 @@ public final class ConversationAsyncClient {
         }
     }
 
+    /**
+     * Play audio in a call.
+     * 
+     * @param conversationId The conversation id.
+     * @param playAudioUri The uri of the audio file .
+     * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The operation context.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PlayAudioResult> playAudio(String conversationId, URI playAudioUri, String audioFileId, URI callbackUri, String operationContext) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(playAudioUri, "'playAudioUri' cannot be null.");
+
+            return this.conversationsClient.playAudioAsync(conversationId, convertPlayAudioRequest(playAudioUri, audioFileId, callbackUri, operationContext)).flatMap(
+                (PlayAudioResponse response) -> {
+                        PlayAudioResult playAudioResult = convertPlayAudioResponse(response);
+                        return Mono.just(playAudioResult);
+                    });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id.
+     * @param playAudioUri The uri of the audio file .
+     * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The operation context.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PlayAudioResult>> playAudioWithResponse(String conversationId, URI playAudioUri, String audioFileId, URI callbackUri, String operationContext) {
+        return playAudioWithResponse(conversationId, playAudioUri, audioFileId, callbackUri, operationContext, null);
+    }
+
+    Mono<Response<PlayAudioResult>> playAudioWithResponse(String conversationId, URI playAudioUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(playAudioUri, "'playAudioUri' cannot be null.");
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.conversationsClient.playAudioWithResponseAsync(conversationId, convertPlayAudioRequest(playAudioUri, audioFileId, callbackUri, operationContext)).flatMap((
+                        Response<PlayAudioResponse> response) -> {
+                    PlayAudioResult playAudioResult = convertPlayAudioResponse(response.getValue());
+                    return Mono.just(new SimpleResponse<>(response, playAudioResult));
+                });
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     private StartCallRecordingRequestInternal createStartCallRecordingRequest(URI recordingStateCallbackUri) {
         StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal();
         request.setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
@@ -313,5 +378,22 @@ public final class ConversationAsyncClient {
 
     private StartCallRecordingResult convertGetCallRecordingStateResponse(StartCallRecordingResponse response) {
         return new StartCallRecordingResult().setRecordingId(response.getRecordingId());
+    }
+
+    private PlayAudioRequestInternal convertPlayAudioRequest(URI playAudioUri, String audioFileId, URI callbackUri, String operationContext) {
+        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
+        return new PlayAudioRequestInternal()
+            .setOperationContext(operationContext)
+            .setAudioFileUri(playAudioUri.toString())
+            .setAudioFileId(audioFileId)
+            .setCallbackUri(callbackUri.toString())
+            .setLoop(false);
+    }
+
+    private PlayAudioResult convertPlayAudioResponse(PlayAudioResponse response) {
+        return new PlayAudioResult().setId(response.getId())
+                .setStatus(OperationStatus.fromString(response.getStatus().toString()))
+                .setOperationContext(response.getOperationContext())
+                .setResultInfo(ResultInfoConverter.convert(response.getResultInfo()));
     }
 }

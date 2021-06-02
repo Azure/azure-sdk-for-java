@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -149,5 +150,36 @@ public final class ConversationClient {
     public Response<GetCallRecordingStateResult> getRecordingStateWithResponse(String conversationId,
             String recordingId, Context context) {
         return conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId, context).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id.
+     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The value to identify context of the operation.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayAudioResult playAudio(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
+        return conversationAsyncClient.playAudio(conversationId, audioFileUri, audioFileId, callbackUri, operationContext).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id.
+     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The value to identify context of the operation.
+     * @param context A {@link Context} representing the request context.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayAudioResult> playAudioWithResponse(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
+        return conversationAsyncClient.playAudioWithResponse(conversationId, audioFileUri, audioFileId, callbackUri, operationContext, context).block();
     }
 }
