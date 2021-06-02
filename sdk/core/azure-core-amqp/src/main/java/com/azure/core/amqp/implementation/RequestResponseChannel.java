@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
@@ -50,7 +51,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
  * broker and receive the associated response.
  */
-public class RequestResponseChannel implements Disposable {
+public class RequestResponseChannel implements AsyncCloseable {
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final AtomicBoolean hasError = new AtomicBoolean();
@@ -155,7 +156,7 @@ public class RequestResponseChannel implements Disposable {
                 handleError(error, "Error in ReceiveLinkHandler.");
                 onTerminalState("ReceiveLinkHandler");
             }, () -> {
-                disposeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
                 onTerminalState("ReceiveLinkHandler");
             }),
 
@@ -165,13 +166,13 @@ public class RequestResponseChannel implements Disposable {
                 handleError(error, "Error in SendLinkHandler.");
                 onTerminalState("SendLinkHandler");
             }, () -> {
-                disposeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
                 onTerminalState("SendLinkHandler");
             }),
 
             amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
-                return disposeAsync(" Shutdown signal received.");
+                return closeAsync(" Shutdown signal received.");
             }).subscribe()
         );
         //@formatter:on
@@ -199,12 +200,11 @@ public class RequestResponseChannel implements Disposable {
     }
 
     @Override
-    public void dispose() {
-        disposeAsync("Dispose called.")
-            .block(retryOptions.getTryTimeout());
+    public Mono<Void> closeAsync() {
+        return this.closeAsync("");
     }
 
-    Mono<Void> disposeAsync(String message) {
+    public Mono<Void> closeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
             return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());
         }
@@ -226,7 +226,6 @@ public class RequestResponseChannel implements Disposable {
         }).publishOn(Schedulers.boundedElastic()).then(closeMono.asMono());
     }
 
-    @Override
     public boolean isDisposed() {
         return isDisposed.get();
     }
@@ -366,7 +365,7 @@ public class RequestResponseChannel implements Disposable {
         unconfirmedSends.forEach((key, value) -> value.error(error));
         unconfirmedSends.clear();
 
-        disposeAsync("Disposing channel due to error.").subscribe();
+        closeAsync("Disposing channel due to error.").subscribe();
     }
 
     private void onTerminalState(String handlerName) {

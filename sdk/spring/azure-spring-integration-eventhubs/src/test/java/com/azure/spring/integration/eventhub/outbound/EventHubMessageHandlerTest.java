@@ -9,11 +9,11 @@ import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.test.support.reactor.MessageHandlerTest;
 import com.google.common.collect.ImmutableMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -31,7 +31,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOperation> {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
@@ -42,11 +41,13 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
     private Expression partitionKeyExpression;
     private String payload = "payload";
     private byte[] payloadBytes;
+    private AutoCloseable closeable;
 
-    @Before
+    @BeforeEach
     @Override
     @SuppressWarnings("unchecked")
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.sendOperation = mock(EventHubOperation.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
                                           isA(PartitionSupplier.class))).thenReturn(mono);
@@ -54,6 +55,11 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
             this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class), isA(PartitionSupplier.class)))
             .thenReturn(mono);
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Test

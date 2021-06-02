@@ -4,15 +4,16 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
+import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactTagOrderBy;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContainerRegistryServiceVersion;
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.TagOrderBy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -27,6 +28,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,13 +38,11 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides a client that contains all the operations for repositories in Azure Container Registry.
- * Operations allowed by the client are listing, retrieving, deleting, setting writeable properties.
- * These operations are supported on the repository and the respective tags and manifests in it.
+ * This class provides a helper type that contains all the operations for artifacts in a given repository.
  *
- * <p><strong>Instantiating an asynchronous Container Repository Client</strong></p>
+ * <p><strong>Instantiating an asynchronous RegistryArtifact helper.</strong></p>
  *
- * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.instantiation}
+ * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.instantiation}
  *
  * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -50,15 +51,16 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class RegistryArtifactAsync {
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
-    private final String tagOrDigest;
+    private final String fullyQualifiedReference;
     private final String endpoint;
     private final String apiVersion;
+    private final String tagOrDigest;
     private String digest;
 
     private final ClientLogger logger = new ClientLogger(RegistryArtifactAsync.class);
 
     /**
-     * Creates a ContainerRepositoryAsyncClient that sends requests to the given repository in the container registry service at {@code endpoint}.
+     * Creates a RegistryArtifactAsync type that sends requests to the given repository in the container registry service at {@code endpoint}.
      * Each service call goes through the {@code pipeline}.
      * @param repositoryName The name of the repository on which the service operations are performed.
      * @param tagOrDigest The tag or digest associated with the given artifact.
@@ -71,8 +73,16 @@ public final class RegistryArtifactAsync {
             throw logger.logExceptionAsError(new NullPointerException("'repositoryName' can't be null"));
         }
 
+        if (repositoryName.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty"));
+        }
+
         if (tagOrDigest == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'tagOrDigest' can't be null"));
+            throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null"));
+        }
+
+        if (tagOrDigest.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
         }
 
         ContainerRegistryImpl registryImpl = new ContainerRegistryImplBuilder()
@@ -82,6 +92,15 @@ public final class RegistryArtifactAsync {
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
         this.tagOrDigest = tagOrDigest;
+
+        try {
+            URL endpointUrl = new URL(endpoint);
+            this.fullyQualifiedReference = endpointUrl.getHost() + "/" + this.repositoryName + (isDigest(tagOrDigest) ? "@" : ":") + tagOrDigest;
+        } catch (MalformedURLException ex) {
+            // This will not happen.
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+        }
+
         this.serviceClient = registryImpl.getContainerRegistries();
         this.apiVersion = version;
     }
@@ -95,6 +114,18 @@ public final class RegistryArtifactAsync {
     }
 
     /**
+     * Gets the fully qualified reference for the current instance.
+     * The fully qualifiedName is of the form 'registryName/repositoryName@digest'
+     * or 'registryName/repositoryName:tag' based on the docker naming convention and whether
+     * tag or digest was supplied to the constructor.
+     * @return Fully qualified reference of the current instance.
+     * */
+    public String getFullyQualifiedReference() {
+
+        return this.fullyQualifiedReference;
+    }
+
+    /**
      * Gets the repository name for the current instance.
      * Gets the repository name for the current instance.
      * @return Name of the repository for the current instance.
@@ -103,21 +134,16 @@ public final class RegistryArtifactAsync {
         return this.repositoryName;
     }
 
-    /**
-     * Gets the tag or digest for the current instance.
-     * @return Tag or digest information for the current instance.
-     * */
-    public String getTagOrDigest() {
-        return this.tagOrDigest;
+    private boolean isDigest(String tagOrDigest) {
+        return tagOrDigest.contains(":");
     }
 
-
-    private Mono<String> getDigest() {
-        if (digest != null) {
+    private Mono<String> getDigestMono() {
+        if (this.digest != null) {
             return Mono.just(digest);
         }
 
-        Mono<String> getTagMono = tagOrDigest.contains(":")
+        Mono<String> getTagMono = isDigest(tagOrDigest)
             ? Mono.just(tagOrDigest)
             : this.getTagProperties(tagOrDigest).map(a -> a.getDigest());
 
@@ -134,12 +160,10 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the registry artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.deleteWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.deleteWithResponse}
      *
      * @return A REST response with completion signal.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
-     * @throws NullPointerException thrown if digest is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -149,8 +173,9 @@ public final class RegistryArtifactAsync {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
-            return this.getDigest()
+            return this.getDigestMono()
                 .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(repositoryName, res, context))
+                .flatMap(Utils::deleteResponseToSuccess)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -164,12 +189,10 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the registry artifact.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.delete}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.delete}
      *
      * @return the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the given digest was not found.
-     * @throws NullPointerException thrown if digest is null.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -184,13 +207,13 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the tag for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.deleteTagWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTagWithResponse}
      *
-     * @param tag The name of the tag that uniquely identifies the tag that needs to be deleted.
+     * @param tag The name of the 'tag' that uniquely identifies the 'tag' that needs to be deleted.
      * @return A REST response with completion signal.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the given tag was not found.
-     * @throws NullPointerException thrown if tag is null.
+     * @throws NullPointerException thrown if {@code tag} is null.
+     * @throws IllegalArgumentException thrown if {@code tag} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -203,7 +226,11 @@ public final class RegistryArtifactAsync {
             if (tag == null) {
                 return monoError(logger, new NullPointerException("'tag' cannot be null"));
             }
+            if (tag.isEmpty()) {
+                return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
+            }
             return this.serviceClient.deleteTagWithResponseAsync(repositoryName, tag, context)
+                .flatMap(Utils::deleteResponseToSuccess)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -217,13 +244,13 @@ public final class RegistryArtifactAsync {
      *
      * <p>Delete the tag for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.deleteTag}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.deleteTag}
      *
      * @param tag The name of the tag that uniquely identifies the tag that needs to be deleted.
      * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
-     * @throws ResourceNotFoundException thrown if the given tag was not found.
-     * @throws NullPointerException thrown if tag is null.
+     * @throws NullPointerException thrown if {@code tag} is null.
+     * @throws IllegalArgumentException thrown if the {@code tag} is empty.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -241,9 +268,9 @@ public final class RegistryArtifactAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.getManifestPropertiesWithResponse}
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestPropertiesWithResponse}
      *
-     * @return A REST response containing {@link ArtifactManifestProperties properties} associated with the given {@code tagOrDigest}.
+     * @return A REST response containing {@link ArtifactManifestProperties properties} associated with the given {@code Digest}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -255,25 +282,12 @@ public final class RegistryArtifactAsync {
 
     Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
         try {
-            return this.getDigest()
+            return this.getDigestMono()
                 .flatMap(res -> this.serviceClient.getManifestPropertiesWithResponseAsync(repositoryName, res))
-                .map(res -> Utils.mapResponse(res, this::mapProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * We want both the list artifacts call and the get artifact call share the same model.
-     * which the swagger does not.
-     * As a result we need to ensure that the we can map one implementation to the other.
-     * Also, we want to customize the type of one of the fields to ensure minimum models are exposed.
-     * @param propsImpl implementation model for this type.
-     * @return public model for propsImpl
-     */
-    ArtifactManifestProperties mapProperties(com.azure.containers.containerregistry.implementation.models.ArtifactManifestProperties propsImpl) {
-        return Utils.mapProperties(propsImpl, repositoryName);
     }
 
     /**
@@ -286,9 +300,9 @@ public final class RegistryArtifactAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.getManifestProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getManifestProperties}.
      *
-     * @return The {@link ArtifactManifestProperties properties} associated with the given {@code tagOrDigest}.
+     * @return The {@link ArtifactManifestProperties properties} associated with the given {@code Digest}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
@@ -305,13 +319,15 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve the properties associated with the given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.getTagPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getTagPropertiesWithResponse}.
      *
      * @param tag name of the tag that uniquely identifies a given tag.
      * @return A REST response with the {@link ArtifactTagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the {@code tag} is null.
+     * @throws IllegalArgumentException thrown if the {@code tag} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactTagProperties>> getTagPropertiesWithResponse(String tag) {
@@ -322,6 +338,9 @@ public final class RegistryArtifactAsync {
         try {
             if (tag == null) {
                 return monoError(logger, new NullPointerException("'tag' cannot be null."));
+            }
+            if (tag.isEmpty()) {
+                return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
             }
 
             return this.serviceClient.getTagPropertiesWithResponseAsync(repositoryName, tag, context)
@@ -338,13 +357,15 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve the properties associated with the given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.getTagProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.getTagProperties}.
      *
      * @param tag name of the tag that uniquely identifies a given tag.
      * @return The {@link ArtifactTagProperties properties} associated with the given tag.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the {@code tag} is null.
+     * @throws IllegalArgumentException thrown if the {@code tag} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ArtifactTagProperties> getTagProperties(String tag) {
@@ -355,7 +376,7 @@ public final class RegistryArtifactAsync {
      * Fetches all the tags associated with the given {@link #getRepositoryName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listTags(TagOrderBy)}  listTags}
+     * use the overload that takes in the options parameter {@link #listTagProperties(ArtifactTagOrderBy)}  listTagProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -363,15 +384,15 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions}.
      *
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactTagProperties> listTags() {
-        return listTags(TagOrderBy.NONE);
+    public PagedFlux<ArtifactTagProperties> listTagProperties() {
+        return listTagProperties(ArtifactTagOrderBy.NONE);
     }
 
     /**
@@ -386,7 +407,7 @@ public final class RegistryArtifactAsync {
      *
      * <p>Retrieve all the tags associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.listTagsWithOptions}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.listTagPropertiesWithOptions}.
      *
      * @param orderBy The order in which the tags should be returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
@@ -394,27 +415,27 @@ public final class RegistryArtifactAsync {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactTagProperties> listTags(TagOrderBy orderBy) {
+    public PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy) {
         return new PagedFlux<>(
-            (pageSize) -> withContext(context -> listTagsSinglePageAsync(pageSize, orderBy, context)),
-            (token, pageSize) -> withContext(context -> listTagsNextSinglePageAsync(token, context)));
+            (pageSize) -> withContext(context -> listTagPropertiesSinglePageAsync(pageSize, orderBy, context)),
+            (token, pageSize) -> withContext(context -> listTagPropertiesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<ArtifactTagProperties> listTags(TagOrderBy orderBy, Context context) {
+    PagedFlux<ArtifactTagProperties> listTagProperties(ArtifactTagOrderBy orderBy, Context context) {
         return new PagedFlux<>(
-            (pageSize) -> listTagsSinglePageAsync(pageSize, orderBy, context),
-            (token, pageSize) -> listTagsNextSinglePageAsync(token, context));
+            (pageSize) -> listTagPropertiesSinglePageAsync(pageSize, orderBy, context),
+            (token, pageSize) -> listTagPropertiesNextSinglePageAsync(token, context));
     }
 
-    Mono<PagedResponse<ArtifactTagProperties>> listTagsSinglePageAsync(Integer pageSize, TagOrderBy orderBy, Context context) {
+    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrderBy orderBy, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            final String orderByString = orderBy.equals(TagOrderBy.NONE) ? null : orderBy.toString();
+            final String orderByString = orderBy.equals(ArtifactTagOrderBy.NONE) ? null : orderBy.toString();
 
-            return this.getDigest()
+            return this.getDigestMono()
                 .flatMap(res -> this.serviceClient.getTagsSinglePageAsync(repositoryName, null, pageSize, orderByString, res, context))
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getTagProperties))
                 .onErrorMap(Utils::mapException);
@@ -426,17 +447,23 @@ public final class RegistryArtifactAsync {
     private List<ArtifactTagProperties> getTagProperties(List<TagAttributesBase> baseValues) {
         Objects.requireNonNull(baseValues);
 
-        return baseValues.stream().map(value -> new ArtifactTagProperties(
-            value.getName(),
-            repositoryName,
-            value.getDigest(),
-            value.getWriteableProperties(),
-            value.getCreatedOn(),
-            value.getLastUpdatedOn()
-        )).collect(Collectors.toList());
+        return baseValues.stream().map(value -> {
+            ArtifactTagProperties tagProperties = new ArtifactTagProperties()
+                .setDeleteEnabled(value.isDeleteEnabled())
+                .setReadEnabled(value.isReadEnabled())
+                .setListEnabled(value.isListEnabled())
+                .setWriteEnabled(value.isWriteEnabled());
+
+            ArtifactTagPropertiesHelper.setCreatedOn(tagProperties, value.getCreatedOn());
+            ArtifactTagPropertiesHelper.setlastUpdatedOn(tagProperties, value.getLastUpdatedOn());
+            ArtifactTagPropertiesHelper.setRepositoryName(tagProperties, repositoryName);
+            ArtifactTagPropertiesHelper.setName(tagProperties, value.getName());
+            ArtifactTagPropertiesHelper.setDigest(tagProperties, value.getDigest());
+            return tagProperties;
+        }).collect(Collectors.toList());
     }
 
-    Mono<PagedResponse<ArtifactTagProperties>> listTagsNextSinglePageAsync(String nextLink, Context context) {
+    Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
             return this.serviceClient.getTagsNextSinglePageAsync(nextLink, context)
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::getTagProperties));
@@ -446,40 +473,53 @@ public final class RegistryArtifactAsync {
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the tag with the given name {@code tag}..
+     * Update the properties {@link ArtifactTagProperties} of the tag with the given name {@code tag}..
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse}.
      *
      * @param tag Name of the tag that uniquely identifies it.
-     * @param value {@link ContentProperties value} to be set.
+     * @param tagProperties {@link ArtifactTagProperties value} to be set.
      * @return A REST response for completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the {@code tag} is null.
+     * @throws IllegalArgumentException thrown if the {@code tag} is empty.
+     * @throws NullPointerException thrown if {@code tagProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
-            String tag, ContentProperties value) {
-        return withContext(context -> this.updateTagPropertiesWithResponse(tag, value, context));
+            String tag, ArtifactTagProperties tagProperties) {
+        return withContext(context -> this.updateTagPropertiesWithResponse(tag, tagProperties, context));
     }
 
     Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
-        String tag, ContentProperties value, Context context) {
+        String tag, ArtifactTagProperties tagProperties, Context context) {
         try {
             if (tag == null) {
                 return monoError(logger, new NullPointerException("'tag' cannot be null."));
             }
 
-            if (value == null) {
-                return monoError(logger, new NullPointerException("'value' cannot be null."));
+            if (tag.isEmpty()) {
+                return monoError(logger, new IllegalArgumentException("'tag' cannot be empty."));
             }
 
-            return this.serviceClient.updateTagAttributesWithResponseAsync(repositoryName, tag, value, context)
+            if (tagProperties == null) {
+                return monoError(logger, new NullPointerException("'tagProperties' cannot be null."));
+            }
+
+            TagWriteableProperties writeableProperties = new TagWriteableProperties()
+                .setDeleteEnabled(tagProperties.isDeleteEnabled())
+                .setListEnabled(tagProperties.isListEnabled())
+                .setReadEnabled(tagProperties.isReadEnabled())
+                .setWriteEnabled(tagProperties.isWriteEnabled());
+
+            return this.serviceClient.updateTagAttributesWithResponseAsync(repositoryName, tag, writeableProperties, context)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -487,57 +527,66 @@ public final class RegistryArtifactAsync {
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the tag with the given name {@code tag}.
+     * Update the properties {@link ArtifactTagProperties} of the tag with the given name {@code tag}.
      * These properties set whether the given tag can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given tag.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.updateTagPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateTagPropertiesWithResponse}.
      *
      * @param tag Name of the tag that uniquely identifies it.
-     * @param value {@link ContentProperties value} to be set.
+     * @param tagProperties {@link ArtifactTagProperties tagProperties} to be set.
      * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given tag was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the {@code tag} is null.
+     * @throws IllegalArgumentException thrown if the {@code tag} is empty.
+     * @throws NullPointerException thrown if {@code tagProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactTagProperties> updateTagProperties(String tag, ContentProperties value) {
-        return this.updateTagPropertiesWithResponse(tag, value).flatMap(FluxUtil::toMono);
+    public Mono<ArtifactTagProperties> updateTagProperties(String tag, ArtifactTagProperties tagProperties) {
+        return this.updateTagPropertiesWithResponse(tag, tagProperties).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the artifact with the given {@code digest}.
+     * Update the properties {@link ArtifactManifestProperties} of the artifact with the given {@code digest}.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given manifest.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.updateManifestPropertiesWithResponse}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestPropertiesWithResponse}.
      *
-     * @param value {@link ContentProperties value} to be set.
+     * @param manifestProperties {@link ArtifactManifestProperties manifestProperties} to be set.
      * @return A REST response for the completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the {@code manifestProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ContentProperties value) {
-        return withContext(context -> this.updateManifestPropertiesWithResponse(value, context));
+    public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties) {
+        return withContext(context -> this.updateManifestPropertiesWithResponse(manifestProperties, context));
     }
 
-    Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ContentProperties value, Context context) {
+    Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
         try {
-            if (value == null) {
+            if (manifestProperties == null) {
                 return monoError(logger, new NullPointerException("'value' cannot be null."));
             }
 
-            return getDigest()
-                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(repositoryName, res, value, context))
-                .map(res -> Utils.mapResponse(res, this::mapProperties))
+            ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
+                .setDeleteEnabled(manifestProperties.isDeleteEnabled())
+                .setListEnabled(manifestProperties.isListEnabled())
+                .setWriteEnabled(manifestProperties.isWriteEnabled())
+                .setReadEnabled(manifestProperties.isReadEnabled());
+
+            return getDigestMono()
+                .flatMap(res -> this.serviceClient.updateManifestPropertiesWithResponseAsync(repositoryName, res, writeableProperties, context))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -545,23 +594,24 @@ public final class RegistryArtifactAsync {
     }
 
     /**
-     * Update the writeable properties {@link ContentProperties} of the artifact with the given {@code digest}.
+     * Update the properties {@link ArtifactManifestProperties} of the artifact with the given {@code digest}.
      * These properties set whether the given manifest can be updated, deleted and retrieved.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Update the writeable properties of a given manifest.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.async.registryartifact.updateManifestProperties}.
+     * {@codesnippet com.azure.containers.containerregistry.RegistryArtifactAsync.updateManifestProperties}.
      *
-     * @param value {@link ContentProperties value} to be set.
+     * @param manifestProperties {@link ArtifactManifestProperties manifestProperties} to be set.
      * @return The completion.
      * @throws ClientAuthenticationException thrown if the client does not have access to repository.
      * @throws ResourceNotFoundException thrown if the given digest was not found.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
+     * @throws NullPointerException thrown if the {@code manifestProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ArtifactManifestProperties> updateManifestProperties(ContentProperties value) {
-        return this.updateManifestPropertiesWithResponse(value).flatMap(FluxUtil::toMono);
+    public Mono<ArtifactManifestProperties> updateManifestProperties(ArtifactManifestProperties manifestProperties) {
+        return this.updateManifestPropertiesWithResponse(manifestProperties).flatMap(FluxUtil::toMono);
     }
 }

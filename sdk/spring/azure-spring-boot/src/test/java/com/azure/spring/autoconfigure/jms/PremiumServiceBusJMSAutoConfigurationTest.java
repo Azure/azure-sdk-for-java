@@ -4,7 +4,8 @@
 package com.azure.spring.autoconfigure.jms;
 
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -34,10 +35,12 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
                      .run(context -> assertThat(context).hasSingleBean(AzureServiceBusJMSProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureServiceBusJMSPropertiesConnectionStringValidation() {
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
-        contextRunner.run(context -> context.getBean(AzureServiceBusJMSProperties.class));
+        contextRunner.run(
+            context -> Assertions.assertThrows(IllegalStateException.class,
+                () -> context.getBean(AzureServiceBusJMSProperties.class)));
     }
 
     @Test

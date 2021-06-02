@@ -8,22 +8,24 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.servicebus.ServiceBusTemplateSendTest;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TopicTemplateSendTest
     extends ServiceBusTemplateSendTest<ServiceBusTopicClientFactory, ServiceBusSenderAsyncClient> {
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     @Override
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.mockClientFactory = mock(ServiceBusTopicClientFactory.class);
         this.mockClient = mock(ServiceBusSenderAsyncClient.class);
 
@@ -31,6 +33,11 @@ public class TopicTemplateSendTest
         when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
         this.sendOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
 }

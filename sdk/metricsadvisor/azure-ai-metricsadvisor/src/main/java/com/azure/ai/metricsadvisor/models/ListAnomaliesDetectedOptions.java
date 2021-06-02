@@ -7,17 +7,17 @@ package com.azure.ai.metricsadvisor.models;
  * Describes the additional parameters for the API to list anomalies detected.
  */
 public final class ListAnomaliesDetectedOptions {
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
     private ListAnomaliesDetectedFilter filter;
 
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maxPageSize value.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -42,11 +42,11 @@ public final class ListAnomaliesDetectedOptions {
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The top value.
+     * @param maxPageSize The maxPageSize value.
      * @return The ListAnomaliesDetectedOptions object itself.
      */
-    public ListAnomaliesDetectedOptions setTop(int top) {
-        this.top = top;
+    public ListAnomaliesDetectedOptions setMaxPageSize(int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 

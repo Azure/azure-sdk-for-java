@@ -19,7 +19,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-verticals-agrifood-farming</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-verticals-agrifood-farming;current} -->
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-verticals-agrifood-farming;current} -->
         </dependency>
       </dependencies>
 

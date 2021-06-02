@@ -1,22 +1,40 @@
 # Release History
 
-## 5.1.0-beta.7 (Unreleased)
-### Breaking changes
+## 5.1.0-beta.8 (Unreleased)
+
+
+## 5.1.0-beta.7 (2021-05-19)
+### Features Added
+- Added property `disableServiceLogs` to all endpoints' options bag
+- Added support for `Sentiment Analysis` as an action type for the `beginAnalyzeActions` API.
+  
+### Breaking Changes
+- We are now targeting the service's v3.1-preview.5 API as the default instead of v3.1-preview.4.
 - Removed `batch` keyword from the model names, `AnalyzeBatchActionsResult`, `AnalyzeBatchActionsOperationDetail`, 
   `AnalyzeBatchActionOptions` and the related method names, such as renamed `beginAnalyzeBatchActions` to `beginAnalyzeActions`.
+- Renamed the static final String type `TEXT_ELEMENTS_V8` to `TEXT_ELEMENT_V8` in the `StringIndexType` class.
+
+### Key Bug Fixed
+- Fixed `NullPointerException` for passing value `null` to options tasks in the `TextAnalyticsActions`.
+
+## 5.0.6 (2021-05-13)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
 
 ## 5.1.0-beta.6 (2021-04-06)
-### Breaking changes
+### Breaking Changes
 - Removed the input parameter `Context` from non-max-overload healthcare synchronous API, `beginAnalyzeHealthcareEntities()`.
 
 ## 5.0.5 (2021-04-06)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to 1.15.0 and `azure-core-http-netty` to 1.9.1.
 
 ## 5.1.0-beta.5 (2021-03-10)
 - We are now targeting the service's v3.1-preview.4 API as the default instead of v3.1-preview.3.
 
-### New features
+### Features Added
 - Added a new property `categoriesFilter` to `RecognizePiiEntitiesOptions`. The PII entity recognition endpoint will return 
   the result with categories only match the given `categoriesFilter` list. 
 - Added `normalizedText` property to `HealthcareEntity`.
@@ -27,7 +45,7 @@
 - `recognizePiiEntities` takes a new option, `categoriesFilter`, that specifies a list of PII categories to return.
 - Added new classes, `RecognizeLinkedEntitiesActionResult`, `PiiEntityCategory`.
 
-### Breaking changes
+### Breaking Changes
 - Removed `PiiEntity` constructor and `PiiEntity`'s `category` property is no longer a type of `EntityCategory` but use a new introduced type `PiiEntityCategory`.
 - Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainity` and `EntityConditionality`.
 - Renamed classes,
@@ -46,11 +64,11 @@
   For more information, see [the Text Analytics for Health documentation](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview).
 
 ## 5.0.4 (2021-03-09)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to 1.14.0 and `azure-core-http-netty` to 1.9.0.
   
 ## 5.1.0-beta.4 (2021-02-10)
-### New features
+### Features Added
 - Added new classes, `StringIndexType`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`.
 - A new options to control how the offset and length are calculated by the service. Added `StringIndexType` to all
   `AnalyzeSentimentOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions`, `RecognizePiiEntitiesOptions`
@@ -68,7 +86,7 @@
   `Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
   Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context)`
   
-### Breaking changes
+### Breaking Changes
 #### Analysis healthcare entities 
 - The healthcare entities returned by `beginAnalyzeHealthcareEntities` are now organized as a directed graph where the 
   edges represent a certain type of healthcare relationship between the source and target entities. Edges are stored
@@ -116,15 +134,15 @@
   `TextAnalyticsOperationResult` to `AnalyzeBatchActionsOperationDetail`
 
 ## 5.0.3 (2021-02-10)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to 1.13.0 and `azure-core-http-netty` to 1.8.0.
 
 ## 5.0.2 (2021-01-14)
-### Dependency updates
+### Dependency Updates
 - Update dependency version, `azure-core` to 1.12.0 and `azure-core-http-netty` to 1.7.1.
 
 ## 5.1.0-beta.3 (2020-11-19)
-### New features
+### Features Added
 - Added support for healthcare recognition feature. It is represented as a long-running operation. Cancellation supported. 
 - Added support for analyze tasks feature, It analyzes multiple tasks (such as, entity recognition, PII entity recognition 
 and key phrases extraction) simultaneously in a list of document.
@@ -134,24 +152,23 @@ and key phrases extraction) simultaneously in a list of document.
 regions and in Standard tier.
 
 ## 5.0.1 (2020-11-12)
-### Dependency updates 
+### Dependency Updates 
 - Update dependency version, `azure-core` to 1.10.0 and `azure-core-http-netty` to 1.6.3. 
 
 ## 5.1.0-beta.2 (2020-10-06)
-### Breaking changes 
+### Breaking Changes 
 - Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`,  
 `OpinionSentiment`, and `PiiEntity` because the length information can be accessed from the text property itself 
 using the string's length property. 
  
-### Dependency updates 
+### Dependency Updates 
 - Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2. 
  
 ## 5.1.0-beta.1 (2020-09-17)
+### Features Added
 - Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment` 
-  - `length` is the number of characters in the text of these models 
-  - `offset` is the offset of the text from the start of the document 
-   
-**New features** 
+- `length` is the number of characters in the text of these models 
+- `offset` is the offset of the text from the start of the document
 - Updated Text Analytics SDK's default service API version to `v3.1-preview.2` from `v3.0`. 
 - Added support for Personally Identifiable Information(PII) entity recognition feature. 
   To use this feature, you need to make sure you are using the service's v3.1-preview.1 API. 
@@ -172,14 +189,14 @@ about the returned entity.
 - First stable release of `azure-ai-textanalytics`.
 
 ## 1.0.0-beta.5 (2020-05-27)
-### New features
+### Features Added
 - Added Text property and `getText()` to `SentenceSentiment`.
 - `Warnings` property added to each document-level response object returned from the endpoints. It is a list of `TextAnalyticsWarnings`.
 - Added `CategorizedEntityCollection`, `KeyPhrasesCollection`, `LinkedEntityCollection` for having `getWarnings()` to retrieve warnings. 
 - Added a new enum value `ADDRESS` to `EntityCategory`.
 - Text analytics SDK update the service to version `v3.0` from `v3.0-preview.1`.
 
-### Breaking changes
+### Breaking Changes
 - Removed pagination feature, which removed `TextAnalyticsPagedIterable`, `TextAnalyticsPagedFlux` and `TextAnalyticsPagedResponse`
 - Removed overload methods for API that takes a list of String, only keep max-overload API that has a list of String, language or country hint, and `TextAnalyticsRequestOption`.
 - Renamed `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
@@ -207,18 +224,18 @@ about the returned entity.
 ## 1.0.0-beta.4 (2020-04-07)
 - Throws an illegal argument exception when the given list of documents is an empty list.
 
-### Breaking changes
+### Breaking Changes
 - Renamed all input parameters `text` to `document`, and `inputTexts` to `documents`.
 - Removed all PII endpoints and update with related changes, such as remove related models, samples, codesnippets, docstrings, etc from this library. 
 - Replaced `TextAnalyticsApiKeyCredential` with `AzureKeyCredential`.
 
 ## 1.0.0-beta.3 (2020-03-10)
-### New features
+### Features Added
 - Introduced `TextAnalyticsPagedFlux`, `TextAnalyticsPagedIterable`, and `TextAnalyticsPagedResponse` type. Moved `modelVersion` amd `TextDocumentBatchStatistics` into `TextAnalyticsPagedResponse`. All collection APIs are return `TextAnalyticsPagedFlux` and `TextAnalyticsPagedIterable` in the asynchronous and synchronous client, respectively. So `DocumentResultCollection` is no longer required. Most of existing API surface are changes. Please check up `TextAnalyticsAsyncClient` and `TextAnalyticsClient` for more detail.
 - Introduced `EntityCategory` class to support major entity categories that the service supported.
 - Added `getDefaultCountryHint()`, `getDefaultLanguage()` and `getServiceVersion()` to `TextAnalyticsClient`
 
-### Breaking changes
+### Breaking Changes
 - Supported `Iterable<T>` instead of `List<T>` text inputs.
 - Default language and country hint can only be assigned value when building a Text Analytics client.
 - Renamed `showStatistics()` to `isIncludeStatistics()` in the `TextAnalyticsRequestOptions`.
@@ -231,11 +248,11 @@ about the returned entity.
 
 ## 1.0.0-beta.2 (2020-02-12)
 
-### Breaking changes
+### Breaking Changes
 
 - The single text, module-level operations return an atomic type of the operation result. For example, `detectLanguage(String text)` returns a `DetectedLanguage` rather than a `DetectLanguageResult`.
 
-  For other module-level operations, :
+  For other module-level operations,
     
   `recognizeEntities(String text)`, it no longer returns type of `Mono<RecognizeEntitiesResult>` but `PagedFlux<CategorizedEntity>` in asynchronous API and `PagedIterable<CategorizedEntity>` in synchronous API.
   
@@ -270,13 +287,11 @@ about the returned entity.
 - Renamed `SentimentClass` to `SentimentLabel`.
 - `getLinkedEntities()` to `getEntities()` and variable `linkedEntities` to `entities`.
 - Added suffix of `batch` to all operations' method name that takes a collection of input.
- 
-### New features
 
+### Features Added
 - Credential class `TextAnalyticsApiKeyCredential` provides an `updateCredential()` method which allows you to update the API key for long-lived clients.
 
-### Breaking changes
-
+### Breaking Changes
 - If you try to access a result attribute on a `DocumentError` object, a `TextAnalyticsException` is raised with a custom error message that provides the document ID and error of the invalid document.
 
 ## 1.0.0-beta.1 (2020-01-09)

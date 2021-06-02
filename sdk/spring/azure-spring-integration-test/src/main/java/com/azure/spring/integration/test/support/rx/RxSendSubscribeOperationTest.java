@@ -7,8 +7,8 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.RxSendOperation;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import rx.Observable;
@@ -40,7 +40,7 @@ public abstract class RxSendSubscribeOperationTest<T extends RxSendOperation> {
 
     protected abstract void setCheckpointConfig(CheckpointConfig checkpointConfig);
 
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     protected abstract Observable<Message<?>> subscribe(String destination, Class<?> payloadType);

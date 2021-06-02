@@ -7,9 +7,9 @@ import com.azure.spring.integration.core.DefaultMessageHandler;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.test.support.MessageHandlerTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -17,13 +17,17 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusMessageHandlerTest extends MessageHandlerTest<ServiceBusQueueOperation> {
 
-    @Before
+
+    private AutoCloseable closeable;
+
+
+    @BeforeEach
     @Override
     @SuppressWarnings("unchecked")
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.future.complete(null);
         this.sendOperation = mock(ServiceBusQueueOperation.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
@@ -33,4 +37,10 @@ public class ServiceBusMessageHandlerTest extends MessageHandlerTest<ServiceBusQ
             .thenReturn(future);
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
     }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
+
 }
