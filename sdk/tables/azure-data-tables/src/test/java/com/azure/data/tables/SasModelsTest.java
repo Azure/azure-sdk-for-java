@@ -141,7 +141,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasResourceType_toString() {
+    public void tableAccountSasResourceTypeToString() {
         assertEquals("sco", new TableAccountSasResourceType()
             .setService(true)
             .setContainer(true)
