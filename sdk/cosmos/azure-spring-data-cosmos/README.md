@@ -244,9 +244,13 @@ public class User {
 
 - Annotation `@Container(containerName="myContainer")` specifies container name in Azure Cosmos DB.
 - Annotation `@PartitionKey` on `lastName` field specifies this field as partition key in Azure Cosmos DB.
+
+#### Creating Containers with autoscale throughput
+- Annotation `autoScale` field specifies container to be created with autoscale throughput if set to true. Default is false, which means containers are created with manual throughput.
+- Read more about autoscale throughput [here](autoscale-throughput)
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserSample.java#L14-L19 -->
 ```java
-@Container(containerName = "myContainer")
+@Container(containerName = "myContainer", autoScale = true, ru = "4000")
 public class UserSample {
     @Id
     private String emailAddress;
@@ -913,5 +917,6 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [spring_data_custom_query]: https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.query-methods.details
 [sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
 [sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
+[autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)
