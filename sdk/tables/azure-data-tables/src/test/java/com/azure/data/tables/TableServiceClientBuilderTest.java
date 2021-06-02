@@ -183,4 +183,20 @@ public class TableServiceClientBuilderTest {
         assertTrue(perCallPolicyPosition < retryPolicyPosition);
         assertTrue(retryPolicyPosition < perRetryPolicyPosition);
     }
+
+    @Test
+    public void multipleFormsOfAuthenticationPresent() {
+        TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder().sasToken("sasToken");
+
+        assertThrows(IllegalStateException.class, () -> tableServiceClientBuilder.connectionString(connectionString));
+        assertThrows(IllegalStateException.class,
+            () -> tableServiceClientBuilder.credential(new AzureNamedKeyCredential("name", "key")));
+        assertThrows(IllegalStateException.class,
+            () -> tableServiceClientBuilder.credential(new AzureSasCredential("sasToken")));
+
+        TableServiceClientBuilder tableServiceClientBuilder2 =
+            new TableServiceClientBuilder().connectionString(connectionString);
+
+        assertThrows(IllegalStateException.class, () -> tableServiceClientBuilder2.sasToken("sasToken"));
+    }
 }

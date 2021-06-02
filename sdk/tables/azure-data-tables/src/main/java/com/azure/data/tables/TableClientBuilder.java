@@ -98,7 +98,9 @@ public final class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
+     * @throws IllegalStateException If another form of authentication has already been set for this builder.
      */
     public TableClientBuilder connectionString(String connectionString) {
         if (connectionString == null) {
@@ -115,6 +117,18 @@ public final class TableClientBuilder {
         }
 
         this.endpoint(endpoint.getPrimaryUri());
+
+        if (this.azureNamedKeyCredential != null || this.azureSasCredential != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Cannot set this 'connectionString'. A credential has already been set for"
+                    + " this builder to be used for authentication."));
+        }
+
+        if (this.sasToken != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Cannot set this 'connectionString'. A SAS token has already been set for"
+                    + " this builder to be used for authentication."));
+        }
 
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
