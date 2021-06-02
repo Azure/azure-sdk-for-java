@@ -53,7 +53,7 @@ public final class MetricsAdvisorKeyCredential {
      * @param apiKey The new api key to associated with this credential.
      * @return The updated {@code MetricsAdvisorKeyCredential} object.
      */
-    public MetricsAdvisorKeyCredential update(String subscriptionKey, String apiKey) {
+    public MetricsAdvisorKeyCredential updateKey(String subscriptionKey, String apiKey) {
         synchronized (this.updateLock) {
             this.subscriptionKey = subscriptionKey;
             this.apiKey = apiKey;
