@@ -1,37 +1,33 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.messaging.servicebus.perf;
-
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.TestDataCreationHelper;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * Performance test.
- */
-public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
+public class ProcessorReceiveAndLockMessageTest  extends ServiceTest<ServiceBusStressOptions> {
+    private final ClientLogger logger = new ClientLogger(ProcessorReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
-    prprivate ivate final String messageContent;
-    final ServiceBusReceiverAsyncClient receiverAsync;
-
+    private final String messageContent;
 
     /**
      * Creates test object
      * @param options to set performance test options.
      */
-    public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
+    public ProcessorReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ServiceBusReceiveMode.PEEK_LOCK);
         this.options = options;
         this.messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
@@ -55,28 +51,31 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     @Override
     public void run() {
-        IterableStream<ServiceBusReceivedMessage> messages = receiver
-            .receiveMessages(options.getMessagesToReceive());
+        AtomicReference<CountDownLatch> countdownLatch = new AtomicReference<>();
+        countdownLatch.set(new CountDownLatch(1));
+        processorClient.start();
 
-        int count = 0;
-        for (ServiceBusReceivedMessage message : messages) {
-            receiver.complete(message);
-            ++count;
-        }
 
-        if (count <= 0) {
-            throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
-        }
     }
 
     @Override
     public Mono<Void> runAsync() {
         return receiverAsync
             .receiveMessages()
-            .take(Duration.ofMinutes(2))
-            //.take(options.getMessagesToReceive())
+            .take(options.getMessagesToReceive())
             .flatMap(message -> {
                 return receiverAsync.complete(message).thenReturn(true);
             }, 1).then();
+    }
+
+    private static void processMessage(ServiceBusReceivedMessageContext context) {
+        ServiceBusReceivedMessage message = context.getMessage();
+        System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+            message.getSequenceNumber(), message.getBody());
+
+        // When this message function completes, the message is automatically completed. If an exception is
+        // thrown in here, the message is abandoned.
+        // To disable this behaviour, toggle ServiceBusSessionProcessorClientBuilder.disableAutoComplete()
+        // when building the session receiver.
     }
 }

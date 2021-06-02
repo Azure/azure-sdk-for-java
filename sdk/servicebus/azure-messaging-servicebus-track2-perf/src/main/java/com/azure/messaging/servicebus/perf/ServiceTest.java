@@ -9,6 +9,9 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
@@ -33,9 +36,10 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
     final ServiceBusReceiverClient receiver;
-    final ServiceBusReceiverAsyncClient receiverAsync;
     final ServiceBusSenderClient sender;
     final ServiceBusSenderAsyncClient senderAsync;
+    final ServiceBusProcessorClient processorClient;
+
 
     /**
      *
@@ -78,5 +82,25 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
 
         sender = senderBuilder.buildClient();
         senderAsync = senderBuilder.buildAsyncClient();
+
+        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorBuilder = baseBuilder
+            .processor()
+            .receiveMode(receiveMode)
+            .processMessage(ServiceTest::processMessage)
+            .queueName(queueName);
+
+        processorClient = processorBuilder.buildProcessorClient();
+    }
+}
+
+    private static void processMessage(ServiceBusReceivedMessageContext context) {
+        ServiceBusReceivedMessage message = context.getMessage();
+        System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+            message.getSequenceNumber(), message.getBody());
+
+        // When this message function completes, the message is automatically completed. If an exception is
+        // thrown in here, the message is abandoned.
+        // To disable this behaviour, toggle ServiceBusSessionProcessorClientBuilder.disableAutoComplete()
+        // when building the session receiver.
     }
 }
