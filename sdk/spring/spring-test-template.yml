@@ -5,6 +5,7 @@ parameters:
   TestResourceDirectories:
     - spring/azure-spring-boot-test-cosmos
     - spring/azure-spring-boot-test-keyvault
+    - spring/azure-spring-boot-test-keyvault-certificate
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
     - spring/azure-spring-cloud-test-eventhubs
@@ -39,6 +40,9 @@ parameters:
     - name: azure-spring-boot-test-keyvault
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvault
+    - name: azure-spring-boot-test-keyvault-certificate
+      groupId: com.azure.spring
+      safeName: azurespringboottestkeyvaultcertificate
     - name: azure-spring-boot-test-keyvault-reactive
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvaultreactive
