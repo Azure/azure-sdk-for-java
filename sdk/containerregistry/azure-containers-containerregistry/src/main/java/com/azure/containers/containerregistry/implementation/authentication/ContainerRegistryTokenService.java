@@ -17,7 +17,10 @@ import reactor.core.publisher.Mono;
 public class ContainerRegistryTokenService implements TokenCredential {
     private AccessTokenCacheImpl refreshTokenCache;
     private TokenServiceImpl tokenService;
+    private boolean isAnonymousAccess;
     private final ClientLogger logger = new ClientLogger(ContainerRegistryTokenService.class);
+    private static final String REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
+    private static final String PASSWORD_GRANT_TYPE = "password";
 
     /**
      * Creates an instance of AccessTokenCache with default scheme "Bearer".
@@ -27,9 +30,14 @@ public class ContainerRegistryTokenService implements TokenCredential {
      * @param pipeline           the pipeline to be used for the rest calls to the service.
      * @param serializerAdapter  the serializer adapter to be used for the rest calls to the service.
      */
-    public ContainerRegistryTokenService(TokenCredential aadTokenCredential, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
+    public ContainerRegistryTokenService(TokenCredential aadTokenCredential, String authenticationScope, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
         this.tokenService = new TokenServiceImpl(url, pipeline, serializerAdapter);
-        this.refreshTokenCache = new AccessTokenCacheImpl(new ContainerRegistryRefreshTokenCredential(tokenService, aadTokenCredential));
+
+        if (aadTokenCredential != null) {
+            this.refreshTokenCache = new AccessTokenCacheImpl(new ContainerRegistryRefreshTokenCredential(tokenService, aadTokenCredential, authenticationScope));
+        } else {
+            isAnonymousAccess = true;
+        }
     }
 
     ContainerRegistryTokenService setTokenService(TokenServiceImpl tokenServiceImpl) {
@@ -39,6 +47,11 @@ public class ContainerRegistryTokenService implements TokenCredential {
 
     ContainerRegistryTokenService setRefreshTokenCache(AccessTokenCacheImpl tokenCache) {
         this.refreshTokenCache = tokenCache;
+        return this;
+    }
+
+    ContainerRegistryTokenService setAnonymousAccess(boolean isAnonymousAccess) {
+        this.isAnonymousAccess = isAnonymousAccess;
         return this;
     }
 
@@ -59,8 +72,13 @@ public class ContainerRegistryTokenService implements TokenCredential {
         String scope = requestContext.getScope();
         String serviceName = requestContext.getServiceName();
 
-        return Mono.defer(() -> this.refreshTokenCache.getToken(requestContext)
-            .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope, serviceName))
-            .doOnError(err -> logger.error("Could not fetch the ACR error token.", err)));
+        return Mono.defer(() -> {
+            if (this.isAnonymousAccess) {
+                return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, PASSWORD_GRANT_TYPE);
+            }
+
+            return this.refreshTokenCache.getToken(requestContext)
+                .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope, serviceName, REFRESH_TOKEN_GRANT_TYPE));
+        }).doOnError(err -> logger.error("Could not fetch the ACR error token.", err));
     }
 }

@@ -1,0 +1,147 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg71520?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.4.0 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ee9db9c-e009-48a3-b37a-00051e14a579",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "a088ab69-a4f6-4ecf-b9a0-773f72d1c993",
+      "Date" : "Fri, 30 Apr 2021 04:14:27 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210430T041428Z:a088ab69-a4f6-4ecf-b9a0-773f72d1c993",
+      "Expires" : "-1",
+      "x-ms-request-id" : "a088ab69-a4f6-4ecf-b9a0-773f72d1c993",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71520\",\"name\":\"javacsmrg71520\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71520/providers/Microsoft.KeyVault/vaults/java-keyvault-26964?api-version=2019-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.4.0 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d46342ed-aa86-4c56-b330-e73373fa751e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "542",
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "09df7b97-6daa-4f23-b3cc-c38492deff4f",
+      "Date" : "Fri, 30 Apr 2021 04:14:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210430T041436Z:09df7b97-6daa-4f23-b3cc-c38492deff4f",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "x-ms-keyvault-service-version" : "1.1.292.0",
+      "x-ms-request-id" : "8a46e582-188e-4bad-8757-63f580ad0ae9",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71520/providers/Microsoft.KeyVault/vaults/java-keyvault-26964\",\"name\":\"java-keyvault-26964\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"enableSoftDelete\":true,\"enableRbacAuthorization\":true,\"vaultUri\":\"https://java-keyvault-26964.vault.azure.net\",\"provisioningState\":\"RegisteringDns\"}}",
+      "x-ms-client-request-id" : "d46342ed-aa86-4c56-b330-e73373fa751e",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71520/providers/Microsoft.KeyVault/vaults/java-keyvault-26964?api-version=2019-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9c867a47-119f-4568-abcd-1a92d2db689c"
+    },
+    "Response" : {
+      "content-length" : "538",
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "23ec8f9e-bc1f-4784-89cd-fb8330107565",
+      "Date" : "Fri, 30 Apr 2021 04:15:07 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210430T041507Z:23ec8f9e-bc1f-4784-89cd-fb8330107565",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "x-ms-keyvault-service-version" : "1.1.292.0",
+      "x-ms-request-id" : "2dd1b91e-a274-4b6f-af53-3e745afadcd7",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71520/providers/Microsoft.KeyVault/vaults/java-keyvault-26964\",\"name\":\"java-keyvault-26964\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"enableSoftDelete\":true,\"enableRbacAuthorization\":true,\"vaultUri\":\"https://java-keyvault-26964.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-client-request-id" : "9c867a47-119f-4568-abcd-1a92d2db689c",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71520/providers/Microsoft.KeyVault/vaults/java-keyvault-26964?api-version=2019-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.4.0 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "02800732-74dd-4110-bab9-7b09ecea891d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "539",
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d267d04f-2669-46eb-88f9-e56cb37e4305",
+      "Date" : "Fri, 30 Apr 2021 04:15:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210430T041509Z:d267d04f-2669-46eb-88f9-e56cb37e4305",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "x-ms-keyvault-service-version" : "1.1.292.0",
+      "x-ms-request-id" : "331d59fc-582e-435d-ac79-f3f6b1346236",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg71520/providers/Microsoft.KeyVault/vaults/java-keyvault-26964\",\"name\":\"java-keyvault-26964\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"enableSoftDelete\":true,\"enableRbacAuthorization\":false,\"vaultUri\":\"https://java-keyvault-26964.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-client-request-id" : "02800732-74dd-4110-bab9-7b09ecea891d",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg71520?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.4.0 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "38eb28c9-fe6f-4b99-b992-db3c40f52146",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "63904196-155a-4f6e-88ab-c8c987bb1916",
+      "Date" : "Fri, 30 Apr 2021 04:15:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210430T041512Z:63904196-155a-4f6e-88ab-c8c987bb1916",
+      "Expires" : "-1",
+      "x-ms-request-id" : "63904196-155a-4f6e-88ab-c8c987bb1916",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkc3MTUyMC1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2020-06-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javacsmrg71520", "java-keyvault-26964" ]
+}

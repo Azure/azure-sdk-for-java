@@ -11,31 +11,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureApplicationInsightsParameter {
     /*
-     * Azure cloud environment
+     * The Azure cloud that this Azure Application Insights in
      */
-    @JsonProperty(value = "azureCloud", required = true)
+    @JsonProperty(value = "azureCloud")
     private String azureCloud;
 
     /*
-     * Azure Application Insights ID
+     * The application id of this Azure Application Insights
      */
-    @JsonProperty(value = "applicationId", required = true)
+    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
-     * API Key
+     * The API Key that can access this Azure Application Insights
      */
-    @JsonProperty(value = "apiKey", required = true)
+    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
-     * Query
+     * The statement to query this Azure Application Insights
      */
     @JsonProperty(value = "query", required = true)
     private String query;
 
     /**
-     * Get the azureCloud property: Azure cloud environment.
+     * Get the azureCloud property: The Azure cloud that this Azure Application Insights in.
      *
      * @return the azureCloud value.
      */
@@ -44,7 +44,7 @@ public final class AzureApplicationInsightsParameter {
     }
 
     /**
-     * Set the azureCloud property: Azure cloud environment.
+     * Set the azureCloud property: The Azure cloud that this Azure Application Insights in.
      *
      * @param azureCloud the azureCloud value to set.
      * @return the AzureApplicationInsightsParameter object itself.
@@ -55,7 +55,7 @@ public final class AzureApplicationInsightsParameter {
     }
 
     /**
-     * Get the applicationId property: Azure Application Insights ID.
+     * Get the applicationId property: The application id of this Azure Application Insights.
      *
      * @return the applicationId value.
      */
@@ -64,7 +64,7 @@ public final class AzureApplicationInsightsParameter {
     }
 
     /**
-     * Set the applicationId property: Azure Application Insights ID.
+     * Set the applicationId property: The application id of this Azure Application Insights.
      *
      * @param applicationId the applicationId value to set.
      * @return the AzureApplicationInsightsParameter object itself.
@@ -75,7 +75,7 @@ public final class AzureApplicationInsightsParameter {
     }
 
     /**
-     * Get the apiKey property: API Key.
+     * Get the apiKey property: The API Key that can access this Azure Application Insights.
      *
      * @return the apiKey value.
      */
@@ -84,7 +84,7 @@ public final class AzureApplicationInsightsParameter {
     }
 
     /**
-     * Set the apiKey property: API Key.
+     * Set the apiKey property: The API Key that can access this Azure Application Insights.
      *
      * @param apiKey the apiKey value to set.
      * @return the AzureApplicationInsightsParameter object itself.
@@ -95,7 +95,7 @@ public final class AzureApplicationInsightsParameter {
     }
 
     /**
-     * Get the query property: Query.
+     * Get the query property: The statement to query this Azure Application Insights.
      *
      * @return the query value.
      */
@@ -104,7 +104,7 @@ public final class AzureApplicationInsightsParameter {
     }
 
     /**
-     * Set the query property: Query.
+     * Set the query property: The statement to query this Azure Application Insights.
      *
      * @param query the query value to set.
      * @return the AzureApplicationInsightsParameter object itself.

@@ -3,20 +3,26 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import io.netty.handler.codec.http.HttpHeaders;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.DisposableServer;
-import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.server.HttpServer;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
 
 import java.io.Closeable;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.SocketAddress;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +33,7 @@ import static com.azure.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICA
  * This class represents a mock proxy server for testing.
  */
 public final class MockProxyServer implements Closeable {
-    private static final HttpClient FORWARDING_CLIENT = HttpClient.create();
+    private static final HttpClient FORWARDING_CLIENT = new NettyAsyncHttpClientBuilder().build();
 
     private final boolean requiresAuthentication;
     private final String expectedAuthenticationValue;
@@ -107,18 +113,22 @@ public final class MockProxyServer implements Closeable {
         return expectedAuthenticationValue.equals(proxyAuthenticationHeader);
     }
 
-    private Flux<Void> forwardProxiedRequest(HttpServerRequest serverRequest,
-        HttpServerResponse serverResponse) {
-        String uri = serverRequest.requestHeaders().get("host") + serverRequest.uri();
-        return FORWARDING_CLIENT.request(serverRequest.method())
-            .uri(uri)
-            .send((request, outbound) -> {
-                request.headers(serverRequest.requestHeaders());
-                return outbound.send(serverRequest.receive());
-            })
-            .response((response, body) -> serverResponse.status(response.status())
-                .headers(response.responseHeaders())
-                .sendHeaders()
-                .send(body));
+    private Mono<Void> forwardProxiedRequest(HttpServerRequest request, HttpServerResponse response) {
+        HttpMethod httpMethod = HttpMethod.valueOf(request.method().name());
+        URL url;
+        try {
+            url = new UrlBuilder().setScheme("http")
+                .setHost(request.requestHeaders().get("host"))
+                .setPath(request.fullPath())
+                .toUrl();
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException(ex);
+        }
+        com.azure.core.http.HttpHeaders headers = new NettyToAzureCoreHttpHeadersWrapper(request.requestHeaders());
+
+        return FORWARDING_CLIENT.send(new HttpRequest(httpMethod, url, headers, request.receive().asByteBuffer()))
+            .flatMap(res -> response.status(res.getStatusCode())
+                .sendByteArray(res.getBodyAsByteArray())
+                .then());
     }
 }

@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -28,6 +29,8 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlTests;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
@@ -298,5 +301,11 @@ public class ReflectionUtils {
 
     public static AtomicBoolean isInitialized(CosmosAsyncContainer cosmosAsyncContainer) {
         return get(AtomicBoolean.class, cosmosAsyncContainer, "isInitialized");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ConcurrentHashMap<OperationType, ThroughputControlTrackingUnit> getThroughputControlTrackingDictionary(
+        ThroughputRequestThrottler requestThrottler) {
+        return get(ConcurrentHashMap.class, requestThrottler, "trackingDictionary");
     }
 }

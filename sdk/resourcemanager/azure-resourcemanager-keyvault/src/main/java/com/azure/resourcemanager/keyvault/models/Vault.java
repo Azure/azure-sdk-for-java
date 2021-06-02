@@ -58,6 +58,11 @@ public interface Vault
     List<AccessPolicy> accessPolicies();
 
     /**
+     * @return whether role based access control (RBAC) for authorization of data access is enabled.
+     */
+    boolean roleBasedAccessControlEnabled();
+
+    /**
      * @return whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key
      *     vault.
      */
@@ -148,6 +153,15 @@ public interface Vault
              * @return the first stage of the access policy definition
              */
             AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy();
+
+            /**
+             * Enables role based access control (RBAC) for authorization of data access.
+             *
+             * It overrides access policies configure.
+             *
+             * @return the next stage of key vault definition
+             */
+            WithCreate withRoleBasedAccessControl();
         }
 
         /** A key vault definition allowing the networkAcl to be set. */
@@ -243,8 +257,12 @@ public interface Vault
             /**
              * Enable soft delete for the key vault.
              *
+             * @deprecated soft-delete protection is enabled by default.
+             * Users will no longer be able to opt out of or turn off soft-delete.
+             *
              * @return the next stage of key vault definition
              */
+            @Deprecated
             WithCreate withSoftDeleteEnabled();
 
             /**
@@ -324,6 +342,22 @@ public interface Vault
              * @return the update stage of the access policy definition
              */
             AccessPolicy.Update updateAccessPolicy(String objectId);
+
+            /**
+             * Enables role based access control (RBAC) for authorization of data access.
+             *
+             * It overrides access policies configure.
+             *
+             * @return the update stage of the access policy definition
+             */
+            Update withRoleBasedAccessControl();
+
+            /**
+             * Disables role based access control (RBAC) for authorization of data access.
+             *
+             * @return the update stage of the access policy definition
+             */
+            Update withoutRoleBasedAccessControl();
         }
 
         /** A key vault update allowing the NetworkRuleSet to be set. */
@@ -419,8 +453,12 @@ public interface Vault
             /**
              * Enable soft delete for the key vault.
              *
+             * @deprecated soft-delete protection is enabled by default.
+             * Users will no longer be able to opt out of or turn off soft-delete.
+             *
              * @return the next stage of key vault definition
              */
+            @Deprecated
             Update withSoftDeleteEnabled();
 
             /**

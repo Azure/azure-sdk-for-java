@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.6.0</version>
+    <version>3.7.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -277,12 +277,13 @@ public class NestedEntitySample {
 
 ### Create repositories
 Extends CosmosRepository interface, which provides Spring Data repository support.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L19 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/UserRepository.java#L15-L20 -->
 
 ```java
 @Repository
 public interface UserRepository extends CosmosRepository<User, String> {
     Iterable<User> findByFirstName(String firstName);
+    long countByFirstName(String firstName);
     User findOne(String id, String lastName);
 }
 ```
@@ -292,31 +293,37 @@ public interface UserRepository extends CosmosRepository<User, String> {
 #### QueryAnnotation : Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.
 - Examples for annotated queries in synchronous CosmosRepository:
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L17 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserRepositoryCodeSnippet.java#L11-L20 -->
 
 ```java
 public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     List<User> getUsersByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     List<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
+
+    @Query("select value count(1) from c where c.firstName = @firstName")
+    long getNumberOfUsersWithFirstName(@Param("firstName") String firstName);
 }
 ```
 
 - Examples for annotated queries in ReactiveCosmosRepository.
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserReactiveRepositoryCodeSnippet.java#L11-L20 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/AnnotatedQueriesUserReactiveRepositoryCodeSnippet.java#L12-L24 -->
 
 ```java
 public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends ReactiveCosmosRepository<User, String> {
-    @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
+    @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     Flux<User> getUsersByTitleAndValue(@Param("firstName") int firstName, @Param("lastName") String lastName);
 
-    @Query(value = "select * from c offset @offset limit @limit")
+    @Query("select * from c offset @offset limit @limit")
     Flux<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
 
-    @Query(value = "select count(c.id) as num_ids, c.lastName from c group by c.lastName")
+    @Query("select count(c.id) as num_ids, c.lastName from c group by c.lastName")
     Flux<ObjectNode> getCoursesGroupByDepartment();
+
+    @Query("select value count(1) from c where c.lastName = @lastName")
+    Mono<Long> getNumberOfUsersWithLastName(@Param("lastName") String lastName);
 }
 ```
 
@@ -446,7 +453,7 @@ public class MyItem {
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
 - Example, find operation, e.g., `findByAFieldAndBField`
-- Supports [Spring Data pageable and sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
+- Supports [Spring Data Pageable, Slice and Sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
   - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
   - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.
 <!-- embedme src/samples/java/com/azure/spring/data/cosmos/PageableRepositoryCodeSnippet.java#L24-L35 -->
@@ -462,6 +469,28 @@ private List<T> findAllWithPageSize(int pageSize) {
         pageContent = page.getContent();
     }
     return pageContent;
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceQueriesUserRepository.java#L17-L20 -->
+```java
+public interface SliceQueriesUserRepository extends CosmosRepository<User, String> {
+    @Query("select * from c where c.lastName = @lastName")
+    Slice<User> getUsersByLastName(@Param("lastName") String lastName, Pageable pageable);
+}
+```
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/SliceRepositoryCodeSnippet.java#L22-L33 -->
+```java
+private List<User> getUsersByLastName(String lastName, int pageSize) {
+
+    final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
+    Slice<User> slice = repository.getUsersByLastName(lastName, pageRequest);
+    List<User> content = slice.getContent();
+    while (slice.hasNext()) {
+        Pageable nextPageable = slice.nextPageable();
+        slice = repository.getUsersByLastName(lastName, nextPageable);
+        content.addAll(slice.getContent());
+    }
+    return content;
 }
 ```
 
@@ -851,6 +880,8 @@ For example, if you want to use spring logback as logging framework, add the fol
   <logger name="com.azure.cosmos" level="error"/>
   <logger name="org.springframework" level="error"/>
   <logger name="io.netty" level="error"/>
+  <!-- This will enable query logging, to include query parameter logging, set this logger to TRACE -->  
+  <logger name="com.azure.cosmos.implementation.SqlQuerySpecLogger" level="DEBUG"/>  
 </configuration>
 ```
 

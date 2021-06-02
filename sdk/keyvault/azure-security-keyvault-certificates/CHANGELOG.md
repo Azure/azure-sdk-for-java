@@ -1,7 +1,22 @@
 # Release History
 
-## 4.2.0-beta.6 (Unreleased)
+## 4.2.0-beta.7 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### Changes
+- Renamed `certificateId` to `sourceId` in `KeyVaultCertificateIdentifier`.
+- `KeyVaultCertificateIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `CertificateClient` and `CertificateAsyncClient`.
+
+## 4.2.0-beta.6 (2021-05-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
 
 ## 4.2.0-beta.5 (2021-04-09)
 
@@ -115,11 +130,11 @@
 ## 4.0.3 (2020-05-06)
 - Update azure-core dependency to version 1.5.0.
 
-## 4.0.2 (2020-04-07)
-- Update azure-core dependency to version 1.4.0.
-
 ## 4.1.0-beta.2 (2020-04-09)
 - Added `retryPolicy` setter in `CertificateClientBuilder`
+- Update azure-core dependency to version 1.4.0.
+
+## 4.0.2 (2020-04-07)
 - Update azure-core dependency to version 1.4.0.
 
 ## 4.0.1 (2020-03-25)

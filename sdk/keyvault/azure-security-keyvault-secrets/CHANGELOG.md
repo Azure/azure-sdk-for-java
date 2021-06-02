@@ -1,7 +1,22 @@
 # Release History
 
-## 4.3.0-beta.6 (Unreleased)
+## 4.3.0-beta.7 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### Non-Breaking Changes
+- Renamed `secretId` to `sourceId` in `KeyVaultSecretIdentifier`.
+- `KeyVaultSecretIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `SecretClient` and `SecretAsyncClient`.
+
+## 4.3.0-beta.6 (2021-05-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
 
 ## 4.3.0-beta.5 (2021-04-09)
 
@@ -149,6 +164,9 @@
 ### Major changes
 - SecretClient.vaultUrl has been added with the original value pass to SecretClient.
 
+## 4.0.0-preview.3 (2019-09-10)
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
+
 ## 4.0.0-preview.4 (2019-09-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
@@ -160,9 +178,6 @@ For details on the Azure SDK for Java (September 2019 Preview) release refer to 
 - `updateSecret` method has been renamed to `updateSecretProperties` in `SecretClient` and `SecretAsyncClient`.
 - Getters and setters were updated to use Java Bean notation.
 - Changed VoidResponse to Response<Void> on sync API, and Mono<VoidResponse> to Mono<Response<Void>> on async API.
-
-## 4.0.0-preview.3 (2019-09-10)
-For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
 ## 4.0.0-preview.2 (2019-08-06)
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).

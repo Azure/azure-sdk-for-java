@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.util.UUID
 
 class CosmosConfigSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
@@ -171,6 +172,23 @@ class CosmosConfigSpec extends UnitSpec {
 
     config.forceEventualConsistency shouldBe false
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+  }
+
+  it should "parse custom query option of read configuration" in {
+    val queryText = s"SELECT * FROM c where c.id ='${UUID.randomUUID().toString}'"
+    val userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.customQuery" -> queryText
+    )
+
+    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery.isDefined shouldBe true
+    config.customQuery.get.queryText shouldBe queryText
   }
 
   it should "throw on invalid read configuration" in {
@@ -270,7 +288,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "parse partitioning config with custom Strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom",
+      "spark.cosmos.read.partitioning.strategy" -> "Custom",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 
@@ -282,7 +300,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "parse partitioning config with custom Strategy even with incorrect casing" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.STRATEGY" -> "CuSTom",
+      "spark.cosmos.read.partitioning.strategy" -> "CuSTom",
       "spark.cosmos.partitioning.tarGETedCount" -> "8"
     )
 
@@ -305,7 +323,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing custom partitioning strategy without  mandatory targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Custom"
+      "spark.cosmos.read.partitioning.strategy" -> "Custom"
     )
 
     try {
@@ -322,7 +340,7 @@ class CosmosConfigSpec extends UnitSpec {
 
   it should "complain when parsing invalid partitioning strategy" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "Whatever"
+      "spark.cosmos.read.partitioning.strategy" -> "Whatever"
     )
 
     try {
@@ -330,14 +348,14 @@ class CosmosConfigSpec extends UnitSpec {
       fail("missing targetedCount")
     } catch {
       case e: Exception => e.getMessage shouldEqual
-        "invalid configuration for spark.cosmos.partitioning.strategy:Whatever. " +
+        "invalid configuration for spark.cosmos.read.partitioning.strategy:Whatever. " +
           "Config description: The partitioning strategy used (Default, Custom, Restrictive or Aggressive)"
     }
   }
 
   it should "parse partitioning config with restrictive Strategy ignores targetedCount" in {
     val partitioningConfig = Map(
-      "spark.cosmos.partitioning.strategy" -> "restrictive",
+      "spark.cosmos.read.partitioning.strategy" -> "restrictive",
       "spark.cosmos.partitioning.targetedCount" -> "8"
     )
 

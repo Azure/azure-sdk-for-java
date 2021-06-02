@@ -47,6 +47,21 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service
+     * does not log your input text. Setting this property to 'false', enables the service to log your text input for
+     * 48 hours, solely to allow for troubleshooting issues.
+     *
+     * @return the {@link RecognizePiiEntitiesOptions} object itself.
+     */
+    @Override
+    public RecognizePiiEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
      * See https://aka.ms/tanerpii for more information.

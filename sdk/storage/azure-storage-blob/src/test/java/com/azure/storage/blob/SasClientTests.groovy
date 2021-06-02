@@ -4,7 +4,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.credential.AzureSasCredential
-import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
@@ -30,8 +29,9 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import spock.lang.Retry
 import spock.lang.Unroll
-import spock.lang.Ignore
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -44,8 +44,8 @@ class SasClientTests extends APISpec {
 
     def setup() {
         blobName = generateBlobName()
-        sasClient = getBlobClient(primaryCredential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
-        sasClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
+        sasClient = getBlobClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+        sasClient.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
     def "blob sas read permissions"() {
@@ -72,7 +72,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -82,7 +82,7 @@ class SasClientTests extends APISpec {
         def identifier = new BlobSignedIdentifier()
             .setId("0000")
             .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(getUTCNow().plusDays(1)))
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))
         cc.setAccessPolicy(null, Arrays.asList(identifier))
 
         // Check containerSASPermissions
@@ -96,7 +96,7 @@ class SasClientTests extends APISpec {
             .setListPermission(true)
             .setMovePermission(true)
             .setExecutePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new BlobServiceSasSignatureValues(identifier.getId())
@@ -114,6 +114,8 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob sas user delegation"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -138,7 +140,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -176,12 +178,14 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         then:
         validateSasProperties(properties)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob sas snapshot user delegation"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
@@ -215,10 +219,12 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "container sas user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -228,7 +234,7 @@ class SasClientTests extends APISpec {
             .setDeletePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
@@ -241,6 +247,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "blob sas tags"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -289,6 +296,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "container sas tags"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -301,7 +309,7 @@ class SasClientTests extends APISpec {
             .setDeleteVersionPermission(true)
             .setTagsPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
         def sas = cc.generateSas(sasValues)
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
@@ -327,7 +335,7 @@ class SasClientTests extends APISpec {
             .setAddPermission(true)
             /* No tags permission. */
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
         def sas = sasClient.generateSas(sasValues)
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
@@ -341,22 +349,24 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob user delegation saoid"() {
         setup:
         def permissions = new BlobSasPermission()
             .setReadPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
-        def saoid = getRandomUUID()
+        def saoid = namer.getRandomUuid()
 
         when:
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
@@ -371,22 +381,24 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "container user delegation correlation id"() {
         setup:
         def permissions = new BlobContainerSasPermission()
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
-        def cid = getRandomUUID()
+        def cid = namer.getRandomUuid()
 
         when:
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
@@ -406,14 +418,14 @@ class SasClientTests extends APISpec {
         def permissions = new BlobContainerSasPermission()
             .setListPermission(true)
 
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         def key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime)
 
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
 
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
 
         def cid = "invalidcid"
@@ -431,6 +443,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "account sas tags and filter tags"() {
         setup:
         def service = new AccountSasService()
@@ -451,7 +464,7 @@ class SasClientTests extends APISpec {
             .setFilterTagsPermission(true)
             .setAddPermission(true)
             .setTagsPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
@@ -495,7 +508,7 @@ class SasClientTests extends APISpec {
             .setProcessMessages(true)
             .setFilterTagsPermission(true)
             .setAddPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
@@ -527,7 +540,7 @@ class SasClientTests extends APISpec {
             .setUpdatePermission(true)
             .setProcessMessages(true)
             .setAddPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
         def client = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
@@ -549,7 +562,7 @@ class SasClientTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -559,7 +572,7 @@ class SasClientTests extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
     }
 
     def "account sas blob delete fails"() {
@@ -572,7 +585,7 @@ class SasClientTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -595,7 +608,7 @@ class SasClientTests extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(false)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -618,7 +631,7 @@ class SasClientTests extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
@@ -641,7 +654,7 @@ class SasClientTests extends APISpec {
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
             .setCreatePermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
@@ -661,7 +674,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
 
         when:
-        def bc = getBlobClient(primaryCredential, primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
+        def bc = getBlobClient(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas)
         def file = getRandomFile(256)
         bc.uploadFromFile(file.toPath().toString(), true)
 
@@ -679,21 +692,15 @@ class SasClientTests extends APISpec {
             .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-        def expiryTime = getUTCNow().plusDays(1)
+        def expiryTime = namer.getUtcNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
-        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
-        if (testMode == TestMode.RECORD) {
-            recordPolicy = interceptorManager.getRecordPolicy()
-        }
 
         when:
-        new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -701,12 +708,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -714,11 +719,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .blobName(blobName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .blobName(blobName))
             .buildClient()
             .getProperties()
 
@@ -726,12 +729,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -739,12 +740,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -752,11 +751,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .blobName(blobName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .blobName(blobName))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -764,11 +761,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobContainerClientBuilder()
+        instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -776,11 +771,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobContainerClientBuilder()
+        instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -788,10 +781,8 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -799,11 +790,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobServiceClientBuilder()
+        instrument(new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -811,11 +800,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobServiceClientBuilder()
+        instrument(new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -823,10 +810,8 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobServiceClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -835,12 +820,9 @@ class SasClientTests extends APISpec {
     }
 
     BlobServiceSasSignatureValues generateValues(BlobSasPermission permission) {
-        return new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
-        .setStartTime(getUTCNow().minusDays(1))
+        return new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+        .setStartTime(namer.getUtcNow().minusDays(1))
         .setProtocol(SasProtocol.HTTPS_HTTP)
-        .setSasIpRange(new SasIpRange()
-            .setIpMin("0.0.0.0")
-            .setIpMax("255.255.255.255"))
         .setCacheControl("cache")
         .setContentDisposition("disposition")
         .setContentEncoding("encoding")
@@ -858,10 +840,10 @@ class SasClientTests extends APISpec {
     }
 
     UserDelegationKey getUserDelegationInfo() {
-        def key = getOAuthServiceClient().getUserDelegationKey(getUTCNow().minusDays(1), getUTCNow().plusDays(1))
-        def keyOid = getConfigValue(key.getSignedObjectId())
+        def key = getOAuthServiceClient().getUserDelegationKey(namer.getUtcNow().minusDays(1), namer.getUtcNow().plusDays(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
         key.setSignedObjectId(keyOid)
-        def keyTid = getConfigValue(key.getSignedTenantId())
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
         key.setSignedTenantId(keyTid)
         return key
     }
@@ -880,7 +862,7 @@ class SasClientTests extends APISpec {
         p.setReadPermission(true)
         def v = new BlobServiceSasSignatureValues(e, p)
 
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.primaryAccount.name)
 
         v.setStartTime(startTime)
 
@@ -899,12 +881,12 @@ class SasClientTests extends APISpec {
 
         def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
 
-        def sasToken = implUtil.generateSas(primaryCredential, Context.NONE)
+        def sasToken = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
         then:
-        token.getSignature() == primaryCredential.computeHmac256(expected)
+        token.getSignature() == env.primaryAccount.credential.computeHmac256(expected)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -934,7 +916,7 @@ class SasClientTests extends APISpec {
         def p = new BlobSasPermission().setReadPermission(true)
         def v = new BlobServiceSasSignatureValues(e, p)
 
-        def expected = String.format(expectedStringToSign, primaryCredential.getAccountName())
+        def expected = String.format(expectedStringToSign, env.primaryAccount.name)
 
         v.setStartTime(startTime)
 
@@ -962,7 +944,7 @@ class SasClientTests extends APISpec {
 
         def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
 
-        def sasToken = implUtil.generateUserDelegationSas(key, primaryCredential.getAccountName(), Context.NONE)
+        def sasToken = implUtil.generateUserDelegationSas(key, env.primaryAccount.name, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
@@ -1003,15 +985,15 @@ class SasClientTests extends APISpec {
 
         expectedStringToSign = String.format(expectedStringToSign,
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
-            primaryCredential.getAccountName())
+            env.primaryAccount.name)
 
         when:
-        String token = implUtil.generateSas(primaryCredential, Context.NONE)
+        String token = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         def queryParams = new CommonSasQueryParameters(SasImplUtils.parseQueryString(token), true)
 
         then:
-        queryParams.getSignature() == primaryCredential.computeHmac256(expectedStringToSign)
+        queryParams.getSignature() == env.primaryAccount.credential.computeHmac256(expectedStringToSign)
         queryParams.getResource() == expectedResource
 
         where:
@@ -1041,12 +1023,12 @@ class SasClientTests extends APISpec {
 
         def implUtil = new AccountSasImplUtil(v)
 
-        def sasToken = implUtil.generateSas(primaryCredential, Context.NONE)
+        def sasToken = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
         then:
-        token.getSignature() == primaryCredential.computeHmac256(String.format(expectedStringToSign, primaryCredential.getAccountName()))
+        token.getSignature() == env.primaryAccount.credential.computeHmac256(String.format(expectedStringToSign, env.primaryAccount.name))
 
         where:
         startTime                                                 | ipRange          | protocol               || expectedStringToSign

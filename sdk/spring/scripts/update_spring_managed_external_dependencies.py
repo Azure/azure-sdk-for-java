@@ -24,8 +24,8 @@ from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 ROOT_POMS = [
-    'org.springframework.boot:spring-boot-starter-parent;2.4.5',
-    'org.springframework.boot:spring-boot-dependencies;2.4.5',
+    'org.springframework.boot:spring-boot-starter-parent;2.5.0',
+    'org.springframework.boot:spring-boot-dependencies;2.5.0',
     'org.springframework.cloud:spring-cloud-dependencies;2020.0.2'
 ]
 SKIP_IDS = [

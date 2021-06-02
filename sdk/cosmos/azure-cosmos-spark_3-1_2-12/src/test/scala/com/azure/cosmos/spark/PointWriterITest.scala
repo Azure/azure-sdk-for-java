@@ -48,6 +48,113 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
   }
 
+  "Point Writer" can "delete items" in  {
+    val container = getContainer
+
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
+
+    val pointWriter = new PointWriter(container, writeConfig)
+
+    val items = mutable.Map[String, ObjectNode]()
+    for(_ <- 0 until 5000) {
+      val item = getItem(UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items += (id -> item)
+      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    pointWriter.flushAndClose()
+    val allItems = readAllItems()
+
+    allItems should have size items.size
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false, Some(100))
+
+    val pointDeleter = new PointWriter(container, deleteConfig)
+
+    for(i <- 0 until 5000) {
+      val item = allItems(i)
+      pointDeleter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    pointDeleter.flushAndClose()
+    val allItemsAfterDelete = readAllItems()
+
+    allItemsAfterDelete should have size 0
+  }
+
+  "Point Writer" can "delete only unmodified items" in  {
+    val container = getContainer
+
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
+
+    val pointWriter = new PointWriter(container, writeConfig)
+
+    val items = mutable.Map[String, ObjectNode]()
+    for(_ <- 0 until 5000) {
+      val item = getItem(UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items += (id -> item)
+      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    pointWriter.flushAndClose()
+    val allItems = readAllItems()
+
+    allItems should have size items.size
+
+    val pointUpdater = new PointWriter(container, writeConfig)
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    for(i <- 0 until 10) {
+      val item = allItems(i)
+      item.put("propString", UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items.put(id, item)
+      pointUpdater.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    pointUpdater.flushAndClose()
+    val allItemsAfterUpdate = readAllItems()
+
+    allItemsAfterUpdate should have size items.size
+
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    val deleteConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      maxRetryCount = 3,
+      bulkEnabled = false,
+      Some(100))
+
+    val pointDeleter = new PointWriter(container, deleteConfig)
+
+    for(i <- 0 until 5000) {
+      val item = allItems(i)
+      pointDeleter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    pointDeleter.flushAndClose()
+    val allItemsAfterDelete = readAllItems()
+
+    allItemsAfterDelete should have size 10
+  }
+
   "Point Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, Some(100))

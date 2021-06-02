@@ -49,14 +49,16 @@ mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dc
 Take these files:
 ```
 mkdir ~/Deskop/spark-release
-cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.0.0-alpha.1-javadoc.jar ~/Deskop/spark-release/
-cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.0.0-alpha.1-sources.jar ~/Deskop/spark-release/
-cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.0.0-alpha.1.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.2.0-beta.1-javadoc.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.2.0-beta.1-sources.jar ~/Deskop/spark-release/
+cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/target/azure-cosmos-spark_3-1_2-12-4.2.0-beta.1.jar ~/Deskop/spark-release/
 cp azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12/dependency-reduced-pom.xml ~/Deskop/spark-release/
 ```
 
 NOTE: to make sure the maven dependency resolver works correctly you need to take the `dependency-reduced-pom.xml` as the pom file instead of the original pom file.
 Use the partner release pipeline to release.
+
+Tag the release on github.
 
 ### OSS compliance
 

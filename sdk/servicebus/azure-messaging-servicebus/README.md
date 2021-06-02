@@ -37,7 +37,7 @@ To quickly create the needed Service Bus resources in Azure and to receive a con
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.2.0</version>
+    <version>7.2.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -292,6 +292,16 @@ between clients which can be achieved by sharing the top level builder as shown 
         .buildClient();
 }
 ```
+### When to use 'ServiceBusProcessorClient'.
+ When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 
+ is built using 'ServiceBusReceiverAsyncClient', it provides a convenient way of receiving messages with default 
+ auto complete and auto renew of message locks in 'PEEK_LOCK' mode. The processor is appropriate where the 
+ applications have not made complete move to async receiver client and want to process message in synchronous mode. 
+ The processor receives messages forever because it recovers from the network errors internally. 
+ 'ServiceBusProcessorClient:processMessage()' function call is made for each message. Alternatively, You can also use 
+ 'ServiceBusReceiverClient', it is a lower level client and provides a wider range of APIs. If async processing is  
+ suitable for your application, you can use 'ServiceBusReceiverAsyncClient'. 
+
 ## Troubleshooting
 
 ### Enable client logging
@@ -340,7 +350,7 @@ exception occurred and if possible, how to mitigate this exception. A list of al
 [OASIS AMQP Version 1.0 Transport Errors][oasis_amqp_v1_error].
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
-[Service Bus Messaging Exceptions][] guidance.
+[Service Bus Messaging Exceptions][servicebus_messaging_exceptions] guidance.
 
 ## Next steps
 

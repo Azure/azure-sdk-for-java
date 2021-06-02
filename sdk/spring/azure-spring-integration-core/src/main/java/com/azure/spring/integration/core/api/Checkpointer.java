@@ -23,4 +23,7 @@ public interface Checkpointer {
      * @return completable future instance
      */
     CompletableFuture<Void> failure();
+
+
+
 }

@@ -7,7 +7,7 @@ Azure Key Vault. It is built on four principles:
 3. Must not introduce any class loader hierarchy conflicts with Java app code dependencies.
 4. Must be ready for "never trust, always verify and credential-free" Zero Trust environments.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][jca_samples]
+[Source code] | [API reference documentation] | [Product documentation] | [Samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -18,7 +18,7 @@ Maven dependency for the Azure Key Vault JCA client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -136,7 +136,7 @@ For Spring Boot applications see our [Spring Boot starter][spring_boot_starter].
 1. [Java Cryptography Architecture (JCA) Reference Guide][jca_reference_guide]
 
 ### Additional documentation
-For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
+For more extensive documentation on Azure Key Vault, see the [API reference documentation].
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -146,10 +146,10 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/src
-[api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[jca_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/src/samples/java/com/azure/security/keyvault/jca
+[Source code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/src
+[API reference documentation]: https://azure.github.io/azure-sdk-for-java/keyvault.html#azure-security-keyvault-jca
+[Product documentation]: https://docs.microsoft.com/azure/key-vault/
+[Samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-jca/src/samples/java/com/azure/security/keyvault/jca
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/keys/quick-create-portal
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
