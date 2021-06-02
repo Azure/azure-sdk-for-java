@@ -289,7 +289,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
                 .withAgentPoolVirtualMachineCount(1)
                 .withSpotPriorityVirtualMachine(ScaleSetEvictionPolicy.DEALLOCATE)
-                .withMaxPrice(100.0)
+                .withVirtualMachineMaximumPrice(100.0)
                 .attach()
             .apply();
 

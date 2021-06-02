@@ -336,7 +336,7 @@ public interface KubernetesClusterAgentPool
              * @param maxPriceInUsDollars the maximum price in US Dollars
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withMaxPrice(Double maxPriceInUsDollars);
+            WithAttach<ParentT> withVirtualMachineMaximumPrice(Double maxPriceInUsDollars);
         }
 
         /**

@@ -298,7 +298,7 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
-    public KubernetesClusterAgentPoolImpl withMaxPrice(Double maxPriceInUsDollars) {
+    public KubernetesClusterAgentPoolImpl withVirtualMachineMaximumPrice(Double maxPriceInUsDollars) {
         innerModel().withSpotMaxPrice(maxPriceInUsDollars.floatValue());
         return this;
     }
