@@ -7,7 +7,7 @@ module com.azure.data.tables {
     // public API surface area
     exports com.azure.data.tables;
     exports com.azure.data.tables.models;
-    exports com.azure.data.tables.sas to com.azure.core;
+    exports com.azure.data.tables.sas;
 
     exports com.azure.data.tables.implementation to com.azure.core;
     exports com.azure.data.tables.implementation.models to com.azure.core;
