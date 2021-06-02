@@ -1,7 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.tables.sas;
+package com.azure.data.tables;
 
+import com.azure.data.tables.sas.TableAccountSasPermission;
+import com.azure.data.tables.sas.TableAccountSasResourceType;
+import com.azure.data.tables.sas.TableAccountSasService;
+import com.azure.data.tables.sas.TableAccountSasSignatureValues;
+import com.azure.data.tables.sas.TableSasIpRange;
+import com.azure.data.tables.sas.TableSasPermission;
+import com.azure.data.tables.sas.TableSasProtocol;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -14,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SasModelsTest {
     @Test
-    public void create_tableAccountSasSignatureValues_WithMinimumValues() {
+    public void createTableAccountSasSignatureValuesWithMinimumValues() {
         OffsetDateTime expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         TableAccountSasPermission permissions = TableAccountSasPermission.parse("l");
         TableAccountSasService services = TableAccountSasService.parse("t");
@@ -40,7 +48,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void create_tableAccountSasSignatureValues_WithNullRequiredValue() {
+    public void createTableAccountSasSignatureValuesWithNullRequiredValue() {
         OffsetDateTime expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         TableAccountSasPermission permissions = TableAccountSasPermission.parse("l"); // List permission
         TableAccountSasService services = TableAccountSasService.parse("t"); // Tables service
@@ -57,7 +65,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasPermission_toString() {
+    public void tableAccountSasPermissionToString() {
         assertEquals("rwdxlacuptf", new TableAccountSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -85,7 +93,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasPermission_parse() {
+    public void tableAccountSasPermissionParse() {
         TableAccountSasPermission tableAccountSasPermission = TableAccountSasPermission.parse("rwdxlacuptf");
 
         assertTrue(tableAccountSasPermission.hasReadPermission());
@@ -128,7 +136,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasPermission_parse_illegalString() {
+    public void tableAccountSasPermissionParseIllegalString() {
         assertThrows(IllegalArgumentException.class, () -> TableAccountSasPermission.parse("rwaq"));
     }
 
@@ -146,7 +154,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasResourceType_parse() {
+    public void tableAccountSasResourceTypeParse() {
         TableAccountSasResourceType tableAccountSasResourceType = TableAccountSasResourceType.parse("sco");
 
         assertTrue(tableAccountSasResourceType.isService());
@@ -159,12 +167,12 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasResourceType_parse_illegalString() {
+    public void tableAccountSasResourceTypeParseIllegalString() {
         assertThrows(IllegalArgumentException.class, () -> TableAccountSasResourceType.parse("scq"));
     }
 
     @Test
-    public void tableAccountSasService_toString() {
+    public void tableAccountSasServiceToString() {
         assertEquals("bqtf", new TableAccountSasService()
             .setBlobAccess(true)
             .setQueueAccess(true)
@@ -179,7 +187,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasService_parse() {
+    public void tableAccountSasServiceParse() {
         TableAccountSasService tableAccountSasService = TableAccountSasService.parse("bqtf");
 
         assertTrue(tableAccountSasService.hasBlobAccess());
@@ -194,12 +202,12 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableAccountSasService_parse_illegalString() {
+    public void tableAccountSasServiceParseIllegalString() {
         assertThrows(IllegalArgumentException.class, () -> TableAccountSasService.parse("bqta"));
     }
 
     @Test
-    public void tableSasIpRange_toString() {
+    public void tableSasIpRangeToString() {
         assertEquals("a-b", new TableSasIpRange()
             .setIpMin("a")
             .setIpMax("b")
@@ -210,7 +218,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableSasIpRange_parse() {
+    public void tableSasIpRangeParse() {
         TableSasIpRange tableSasIpRange = TableSasIpRange.parse("a-b");
 
         assertEquals("a", tableSasIpRange.getIpMin());
@@ -228,13 +236,13 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableSasProtocol_parse() {
+    public void tableSasProtocolParse() {
         assertEquals(TableSasProtocol.HTTPS_ONLY, TableSasProtocol.parse("https"));
         assertEquals(TableSasProtocol.HTTPS_HTTP, TableSasProtocol.parse("https,http"));
     }
 
     @Test
-    public void create_tableSasSignatureValues_WithMinimumValues() {
+    public void createTableSasSignatureValuesWithMinimumValues() {
         OffsetDateTime expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         TableSasPermission permissions = TableSasPermission.parse("r");
 
@@ -268,7 +276,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void create_tableSasSignatureValues_WithNullRequiredValue() {
+    public void createTableSasSignatureValuesWithNullRequiredValue() {
         OffsetDateTime expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         TableSasPermission permissions = TableSasPermission.parse("r");
 
@@ -279,7 +287,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableSasPermission_toString() {
+    public void tableSasPermissionToString() {
         assertEquals("raup", new TableSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
@@ -293,7 +301,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableSasPermission_parse() {
+    public void tableSasPermissionParse() {
         TableSasPermission tableSasPermission = TableSasPermission.parse("raup");
 
         assertTrue(tableSasPermission.hasReadPermission());
@@ -315,7 +323,7 @@ public class SasModelsTest {
     }
 
     @Test
-    public void tableSasPermission_parse_illegalString() {
+    public void tableSasPermissionParseIllegalString() {
         assertThrows(IllegalArgumentException.class, () -> TableSasPermission.parse("rauq"));
     }
 }
