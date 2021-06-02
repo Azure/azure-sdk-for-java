@@ -4,12 +4,13 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.util.AsyncCloseable;
 import reactor.core.publisher.Mono;
 
 /**
  * Management node.
  */
-public interface AmqpManagementNode {
+public interface AmqpManagementNode extends AsyncCloseable {
     /**
      * Sends a message to the management node.
      *
