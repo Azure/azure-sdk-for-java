@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.HttpConstants
 // cosmos db related constants
 private object CosmosConstants {
   private[this] val currentVersion =
-    CoreUtils.getProperties(HttpConstants.Versions.AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version")
+    CoreUtils.getProperties(HttpConstants.Versions.AZURE_COSMOS_SPARK_31_PROPERTIES_FILE_NAME).get("version")
   val userAgentSuffix = s" SparkConnector/$currentVersion"
 
   object Names {

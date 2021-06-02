@@ -8,7 +8,7 @@ package com.azure.cosmos.implementation;
  */
 public class UserAgentContainer {
 
-    private static final int MAX_SUFFIX_LENGTH = 64;
+    private static final int MAX_SUFFIX_LENGTH = 192;
     private final String baseUserAgent;
     private String suffix;
     private String userAgent;
