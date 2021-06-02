@@ -21,6 +21,7 @@ public final class AnomalyAlertConfiguration {
     private MetricAnomalyAlertConfigurationsOperator crossMetricsOperator;
     private List<MetricAnomalyAlertConfiguration> metricAnomalyAlertConfigurations;
     private List<String> hookIds;
+    private List<String> splitAlertByDimensions;
 
     static {
         AnomalyAlertConfigurationHelper.setAccessor((configuration, id) -> {
@@ -104,6 +105,15 @@ public final class AnomalyAlertConfiguration {
      */
     public List<String> getIdOfHooksToAlert() {
         return Collections.unmodifiableList(this.hookIds);
+    }
+
+    /**
+     * Gets dimensions that receives alerts triggered by this configuration.
+     *
+     * @return The hook ids.
+     */
+    public List<String> getDimensionsToAlert() {
+        return Collections.unmodifiableList(this.splitAlertByDimensions);
     }
 
     /**
@@ -196,6 +206,22 @@ public final class AnomalyAlertConfiguration {
             this.hookIds = new ArrayList<>();
         } else {
             this.hookIds = hookIds;
+        }
+        return this;
+    }
+
+    /**
+     * Sets the dimensionsToAlert to receives alerts triggered by this configuration.
+     *
+     * @param dimensionsToAlert The hook ids.
+     *
+     * @return The AnomalyAlertConfiguration object itself.
+     */
+    public AnomalyAlertConfiguration setDimensionsToAlert(List<String> dimensionsToAlert) {
+        if (splitAlertByDimensions == null) {
+            this.splitAlertByDimensions = new ArrayList<>();
+        } else {
+            this.splitAlertByDimensions = dimensionsToAlert;
         }
         return this;
     }
