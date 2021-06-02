@@ -11,21 +11,22 @@ public final class TableSasIpRange {
     private String ipMax;
 
     /**
-     * Constructs an SasIpRange object.
+     * Constructs an {@link TableSasIpRange} object.
      */
     public TableSasIpRange() {
     }
 
     /**
-     * Creates a {@code SasIpRange} from the specified string.
+     * Creates a {@link TableSasIpRange} from the specified string.
      *
-     * @param rangeStr The {@code String} representation of the {@code SasIpRange}.
-     * @return The {@code SasIpRange} generated from the {@code String}.
+     * @param rangeStr The {@link String} representation of the {@link TableSasIpRange}.
+     * @return The {@link TableSasIpRange} generated from the {@link String}.
      */
     public static TableSasIpRange parse(String rangeStr) {
         String[] addrs = rangeStr.split("-");
 
         TableSasIpRange range = new TableSasIpRange().setIpMin(addrs[0]);
+
         if (addrs.length > 1) {
             range.setIpMax(addrs[1]);
         }
@@ -34,7 +35,7 @@ public final class TableSasIpRange {
     }
 
     /**
-     * @return the minimum IP address of the range
+     * @return The minimum IP address of the range.
      */
     public String getIpMin() {
         return ipMin;
@@ -43,16 +44,17 @@ public final class TableSasIpRange {
     /**
      * Sets the minimum IP address of the range.
      *
-     * @param ipMin IP address to set as the minimum
-     * @return the updated SasIpRange object
+     * @param ipMin IP address to set as the minimum.
+     * @return The updated {@link TableSasIpRange} object.
      */
     public TableSasIpRange setIpMin(String ipMin) {
         this.ipMin = ipMin;
+
         return this;
     }
 
     /**
-     * @return the maximum IP address of the range
+     * @return The maximum IP address of the range.
      */
     public String getIpMax() {
         return ipMax;
@@ -61,18 +63,19 @@ public final class TableSasIpRange {
     /**
      * Sets the maximum IP address of the range.
      *
-     * @param ipMax IP address to set as the maximum
-     * @return the updated SasIpRange object
+     * @param ipMax IP address to set as the maximum.
+     * @return The updated {@link TableSasIpRange} object.
      */
     public TableSasIpRange setIpMax(String ipMax) {
         this.ipMax = ipMax;
+
         return this;
     }
 
     /**
-     * Output the single IP address or range of IP addresses for.
+     * Output the single IP address or range of IP addresses formatted as a {@link String}.
      *
-     * @return The single IP address or range of IP addresses formatted as a {@code String}.
+     * @return The single IP address or range of IP addresses formatted as a {@link String}.
      */
     @Override
     public String toString() {
