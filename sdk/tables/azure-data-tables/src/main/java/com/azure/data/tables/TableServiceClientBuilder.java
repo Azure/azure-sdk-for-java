@@ -177,14 +177,16 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the SAS token used to authorize requests sent to the service. Setting this value will undo other
-     * configuration made with {@code credential(AzureSasCredential)} or {@code credential(AzureNamedKeyCredential)}.
+     * Sets the SAS token used to authorize requests sent to the service. Setting this is mutually exclusive with
+     * {@code credential(AzureSasCredential)} or {@code credential(AzureNamedKeyCredential)}.
      *
      * @param sasToken The SAS token to use for authenticating requests.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      *
-     * @throws NullPointerException if {@code sasToken} is {@code null}.
+     * @throws NullPointerException If {@code sasToken} is {@code null}.
+     * @throws IllegalArgumentException If {@code sasToken} is empty.
+     * @throws IllegalStateException If another form of authentication has already been set for this builder.
      */
     public TableServiceClientBuilder sasToken(String sasToken) {
         if (sasToken == null) {
@@ -192,56 +194,80 @@ public final class TableServiceClientBuilder {
         }
 
         if (sasToken.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sasToken' cannot be null or empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sasToken' cannot be empty."));
+        }
+
+        if (this.azureNamedKeyCredential != null || this.azureSasCredential != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Cannot set this 'sasToken'. A credential has already been set for this"
+                    + " builder to be used for authentication."));
         }
 
         this.sasToken = sasToken;
-        this.azureNamedKeyCredential = null;
-        this.azureSasCredential = null;
 
         return this;
     }
 
     /**
-     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service. Setting this value will undo
-     * other configuration made with {@code credential(AzureNamedKeyCredential)} or {@code sasToken(String)}.
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service. Setting this is mutually
+     * exclusive with {@code credential(AzureNamedKeyCredential)} or {@code sasToken(String)}.
      *
      * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      *
-     * @throws NullPointerException if {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws IllegalStateException If another form of authentication has already been set for this builder.
      */
     public TableServiceClientBuilder credential(AzureSasCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
+        if (this.azureNamedKeyCredential != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("A credential of a different type has already been set for this builder."));
+        }
+
+        if (this.sasToken != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Cannot set this credential. A SAS token has already been set for this"
+                    + " builder to be used for authentication."));
+        }
+
         this.azureSasCredential = credential;
-        this.azureNamedKeyCredential = null;
-        this.sasToken = null;
 
         return this;
     }
 
     /**
-     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service. Setting this will
-     * override any other configuration made with {@code credential(AzureSasCredential)} or {@code sasToken(String)}.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service. Setting this is mutually
+     * exclusive with using {@code credential(AzureSasCredential)} or {@code sasToken(String)}.
      *
      * @param credential {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      *
-     * @throws NullPointerException if {@code credential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws IllegalStateException If another form of authentication has already been set for this builder.
      */
     public TableServiceClientBuilder credential(AzureNamedKeyCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
+        if (this.azureSasCredential != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("A credential of a different type has already been set for this builder."));
+        }
+
+        if (this.sasToken != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Cannot set this credential. A SAS token has already been set for this"
+                    + " builder to be used for authentication."));
+        }
+
         this.azureNamedKeyCredential = credential;
-        this.azureSasCredential = null;
-        this.sasToken = null;
 
         return this;
     }
@@ -286,7 +312,7 @@ public final class TableServiceClientBuilder {
      *
      * @return The updated {@link TableServiceClientBuilder}.
      *
-     * @throws NullPointerException if {@code pipelinePolicy} is {@code null}.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public TableServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
