@@ -45,11 +45,11 @@ import static com.azure.ai.metricsadvisor.TestUtils.APP_INSIGHTS_API_KEY;
 import static com.azure.ai.metricsadvisor.TestUtils.APP_INSIGHTS_APPLICATION_ID;
 import static com.azure.ai.metricsadvisor.TestUtils.APP_INSIGHTS_QUERY;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_DATALAKEGEN2_ACCOUNT_KEY;
-import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_CLIENT_ID;
-import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_CLIENT_SECRET;
+import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID;
+import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_TENANT_ID;
-import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_WORKSPACE_ID;
+import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID;
 import static com.azure.ai.metricsadvisor.TestUtils.BLOB_CONNECTION_STRING;
 import static com.azure.ai.metricsadvisor.TestUtils.BLOB_TEMPLATE;
 import static com.azure.ai.metricsadvisor.TestUtils.COSMOS_DB_CONNECTION_STRING;
@@ -155,9 +155,9 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_LOG_ANALYTICS) {
             dataFeed = new DataFeed().setSource(AzureLogAnalyticsDataFeedSource.usingBasicCredential(
                 AZURE_METRICS_ADVISOR_TENANT_ID,
-                AZURE_METRICS_ADVISOR_CLIENT_ID,
-                AZURE_METRICS_ADVISOR_CLIENT_SECRET,
-                AZURE_METRICS_ADVISOR_WORKSPACE_ID,
+                AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID,
+                AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET,
+                AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID,
                 LOG_ANALYTICS_QUERY));
         } else {
             throw new IllegalStateException("Unexpected value: " + dataFeedSourceType);

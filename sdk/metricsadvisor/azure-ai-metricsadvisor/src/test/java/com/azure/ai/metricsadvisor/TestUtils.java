@@ -119,15 +119,15 @@ public final class TestUtils {
         .getGlobalConfiguration()
         .get("AZURE_CLIENT_ID", "azTenantId");
 
-    static final String AZURE_METRICS_ADVISOR_CLIENT_ID = Configuration
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID = Configuration
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID", "azClientId");
 
-    static final String AZURE_METRICS_ADVISOR_CLIENT_SECRET = Configuration
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET = Configuration
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET", "azClientSecret");
 
-    static final String AZURE_METRICS_ADVISOR_WORKSPACE_ID = Configuration
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID = Configuration
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID", "azWorkspaceId");
 
