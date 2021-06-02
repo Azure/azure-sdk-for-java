@@ -3,10 +3,6 @@
 
 package com.azure.storage.file.share.options;
 
-import com.azure.storage.file.share.models.ListFilesIncludeType;
-
-import java.util.EnumSet;
-
 /**
  * Extended options for a directory listing operation.
  */
@@ -14,8 +10,11 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
 
     private String prefix;
     private Integer maxResultsPerPage;
-    private EnumSet<ListFilesIncludeType> shareFileTraits;
-    private Boolean includeExtendedInfo;
+    private boolean includeTimestamps;
+    private boolean includeETag;
+    private boolean includeAttributes;
+    private boolean includePermissionKey;
+    private boolean includeExtendedInfo;
 
     /**
      * @return prefix for this listing operation.
@@ -54,58 +53,108 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
     }
 
     /**
-     * Note that requesting file traits on a listing operation will also request extended info, regardless of whether
-     * the value for including extended info is true.
+     * Note that setting timestamps, etag, attributes, or permission key will also set this option as true. Attempting
+     * to set it back to false while any of these options are true will be unsuccessful.
      *
-     * Including extended info in a listing operation can result in a longer wait for a response, but will present
-     * more accurate information on the listing item.
-     *
-     * @return file traits to include on this listing operation.
-     */
-    public EnumSet<ListFilesIncludeType> getShareFileTraits() {
-        return shareFileTraits;
-    }
-
-    /**
-     * Sets the file traits to include for a listing operation. Note that requesting file traits on a listing operation
-     * will also request extended info, regardless of whether the value for including extended info is true.
-     *
-     * Including extended info in a listing operation can result in a longer wait for a response, but will present
-     * more accurate information on the listing item.
-     *
-     * @param shareFileTraits the file traits to include on listing.
-     * @return updated options.
-     */
-    public ShareDirectoryListFilesAndDirectoriesOptions setShareFileTraits(EnumSet<ListFilesIncludeType> shareFileTraits) {
-        this.shareFileTraits = shareFileTraits;
-        return this;
-    }
-
-    /**
-     * Note that any operation that requests share file traits will also include extended info, regardless of whether
-     * this option is true.
-     *
-     * Including extended info in a listing operation can result in a longer wait for a response, but will present
+     * Including extended info in a listing operation can result in a more expensive operation, but will present
      * more accurate information on the listing item.
      *
      * @return whether to include extended info on this listing operation.
      */
-    public Boolean includeExtendedInfo() {
+    public boolean includeExtendedInfo() {
         return includeExtendedInfo;
     }
 
     /**
-     * Sets the prefix for a listing operation. Note that setting any share file traits to include on a listing will
-     * also include extended info, regardless of whether this parameter is true.
+     * Note that setting timestamps, etag, attributes, or permission key will also set this option as true. Attempting
+     * to set it back to false will be unsuccessful.
      *
-     * Including extended info in a listing operation can result in a longer wait for a response, but will present
+     * Sets the prefix for a listing operation.
+     *
+     * Including extended info in a listing operation can result in a more expensive operation, but will present
      * more accurate information on the listing item.
      *
-     * @param includeExtendedInfo whether to include extended info..
+     * @param includeExtendedInfo whether to include extended info.
      * @return updated options.
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeExtendedInfo(Boolean includeExtendedInfo) {
+    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeExtendedInfo(boolean includeExtendedInfo) {
         this.includeExtendedInfo = includeExtendedInfo;
+        return this;
+    }
+
+    /**
+     * @return whether to include timestamps on this listing operation.
+     */
+    public boolean includeTimestamps() {
+        return includeTimestamps;
+    }
+
+    /**
+     * @param includeTimestamps whether to include timestamps on this listing operation.
+     * @return updated options
+     */
+    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeTimestamps(boolean includeTimestamps) {
+        this.includeTimestamps = includeTimestamps;
+        if (includeTimestamps) {
+            this.includeExtendedInfo = true;
+        }
+        return this;
+    }
+
+    /**
+     * @return whether to include the etag on this listing operation.
+     */
+    public boolean includeETag() {
+        return includeETag;
+    }
+
+    /**
+     * @param includeETag whether to include the etag on this listing operation.
+     * @return updated options
+     */
+    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeETag(boolean includeETag) {
+        this.includeETag = includeETag;
+        if (includeETag) {
+            this.includeExtendedInfo = true;
+        }
+        return this;
+    }
+
+    /**
+     * @return whether to include file attributes on this listing operation.
+     */
+    public boolean includeAttributes() {
+        return includeAttributes;
+    }
+
+    /**
+     * @param includeAttributes whether to include file attributes on this listing operation.
+     * @return updated options
+     */
+    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeAttributes(boolean includeAttributes) {
+        this.includeAttributes = includeAttributes;
+        if (includeAttributes) {
+            this.includeExtendedInfo = true;
+        }
+        return this;
+    }
+
+    /**
+     * @return whether to include the permission key on this listing operation.
+     */
+    public boolean includePermissionKey() {
+        return includePermissionKey;
+    }
+
+    /**
+     * @param includePermissionKey whether to include the permission key on this listing operation.
+     * @return updated options
+     */
+    public ShareDirectoryListFilesAndDirectoriesOptions setIncludePermissionKey(boolean includePermissionKey) {
+        this.includePermissionKey = includePermissionKey;
+        if (includePermissionKey) {
+            this.includeExtendedInfo = true;
+        }
         return this;
     }
 }

@@ -400,14 +400,18 @@ class DirectoryAPITests extends APISpec {
         }
 
         when:
-        def returnedFileList = primaryDirectoryClient.listFilesAndDirectories(
-            new ShareDirectoryListFilesAndDirectoriesOptions()
-                .setPrefix(namer.getResourcePrefix() + extraPrefix)
-                .setMaxResultsPerPage(maxResults).setShareFileTraits(traits)
-                .setIncludeExtendedInfo(includeExtendedInfo),
-            null, null).collect()
+        def options = new ShareDirectoryListFilesAndDirectoriesOptions()
+            .setPrefix(namer.getResourcePrefix() + extraPrefix)
+            .setMaxResultsPerPage(maxResults)
+            .setIncludeExtendedInfo(includeExtendedInfo) // set FIRST since subsequent can autoset this one
+            .setIncludeTimestamps(timestamps)
+            .setIncludeETag(etag)
+            .setIncludeAttributes(attributes)
+            .setIncludePermissionKey(permissionKey)
+        def returnedFileList = primaryDirectoryClient.listFilesAndDirectories(options, null, null).collect()
 
         then:
+        options.includeExtendedInfo() == includeExtendedInfoIsTrue
         if (expectingResults) {
             assert nameList == returnedFileList*.getName()
         }
@@ -417,16 +421,16 @@ class DirectoryAPITests extends APISpec {
         true
 
         where:
-        extraPrefix | maxResults | traits                                          | includeExtendedInfo || expectingResults
-        ""          | null       | null                                            | null                || true
-        ""          | 1          | null                                            | null                || true
-        "noOp"      | 3          | null                                            | null                || false
-        ""          | null       | EnumSet.of(ListFilesIncludeType.ETAG)           | null                || true
-        ""          | null       | EnumSet.of(ListFilesIncludeType.ATTRIBUTES)     | null                || true
-        ""          | null       | EnumSet.of(ListFilesIncludeType.PERMISSION_KEY) | null                || true
-        ""          | null       | EnumSet.of(ListFilesIncludeType.TIMESTAMPS)     | null                || true
-        ""          | null       | EnumSet.allOf(ListFilesIncludeType.class)       | null                || true
-        ""          | null       | null                                            | true                || true
+        extraPrefix | maxResults | timestamps | etag  | attributes | permissionKey | includeExtendedInfo || includeExtendedInfoIsTrue | expectingResults
+        ""          | null       | false      | false | false      | false         | false               || false                     | true
+        ""          | 1          | false      | false | false      | false         | false               || false                     | true
+        "noOp"      | 3          | false      | false | false      | false         | false               || false                     | false
+        ""          | null       | true       | false | false      | false         | false               || true                      | true
+        ""          | null       | false      | true  | false      | false         | false               || true                      | true
+        ""          | null       | false      | false | true       | false         | false               || true                      | true
+        ""          | null       | false      | false | false      | true          | false               || true                      | true
+        ""          | null       | true       | true  | true       | true          | false               || true                      | true
+        ""          | null       | false      | false | false      | false         | true                || true                      | true
     }
 
     def "List files and directories extended info results"() {
