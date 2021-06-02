@@ -40,8 +40,8 @@ public class CallingServerTestBase extends TestBase {
 
     protected CallClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
         CallClientBuilder builder = new CallClientBuilder()
-        .connectionString(CONNECTION_STRING)
-        .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
