@@ -30,9 +30,6 @@ public class CallingServerTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
-        .get("TEST_PACKAGES_ENABLED", "all");
-
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("to");
@@ -40,23 +37,6 @@ public class CallingServerTestBase extends TestBase {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
-
-    protected CallClientBuilder getCallClientBuilder(HttpClient httpClient) {
-        return null;
-    }
-
-    protected ConversationClientBuilder getConversationClientBuilder(HttpClient httpClient) {
-        return null;
-    }
-
-    protected CallClientBuilder getCallClientWithToken(HttpClient httpClient, TokenCredential tokenCredential) {
-        return null;
-    }
-
-
-    protected ConversationClientBuilder getConversationClientWithToken(HttpClient httpClient, TokenCredential tokenCredential) {
-        return null;
-    }
 
     protected CallClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
         CallClientBuilder builder = new CallClientBuilder()
@@ -73,7 +53,7 @@ public class CallingServerTestBase extends TestBase {
 
     protected ConversationClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
         ConversationClientBuilder builder = new ConversationClientBuilder()
-            .connectionString("endpoint=https://recording-e2e-sample-xiaoxli.communication.azure.com/;accesskey=JNHe2Dx6NVxiDxLygkRbGcGGRWVsfaeZiZqLAbl+x1BClaSdKxE7SGAxHAyI3Ieldu3XFRdiZll7jpSoMkwTzQ==")//CONNECTION_STRING)
+            .connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
