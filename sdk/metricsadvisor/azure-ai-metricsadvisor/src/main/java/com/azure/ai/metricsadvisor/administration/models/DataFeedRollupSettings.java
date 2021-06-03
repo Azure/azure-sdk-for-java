@@ -102,12 +102,12 @@ public final class DataFeedRollupSettings {
     /**
      * Set the identification value when rollup settings set to Auto or AlreadyRollUp.
      *
-     * @param identificationValue the identification value to set.
+     * @param rollupIdentificationValue the identification value to set.
      *
      * @return the DataFeedRollupSettings object itself.
      */
-    public DataFeedRollupSettings setAlreadyRollup(String identificationValue) {
-        this.rollupIdentificationValue = identificationValue;
+    public DataFeedRollupSettings setAlreadyRollup(String rollupIdentificationValue) {
+        this.rollupIdentificationValue = rollupIdentificationValue;
         this.dataFeedRollupType = DataFeedRollupType.ALREADY_ROLLUP;
         return this;
     }

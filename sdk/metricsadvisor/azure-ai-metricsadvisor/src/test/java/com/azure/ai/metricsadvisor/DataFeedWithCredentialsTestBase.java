@@ -76,7 +76,7 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
         if (credential instanceof DatasourceDataLakeGen2SharedKey) {
             Assertions.assertEquals(credential.getId(),
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeed.getSource()).getCredentialId());
-            Assertions.assertEquals(DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY,
+            Assertions.assertEquals(DatasourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY,
                 ((AzureDataLakeStorageGen2DataFeedSource) dataFeed.getSource()).getAuthenticationType());
         } else if (credential instanceof DatasourceServicePrincipal) {
             Assertions.assertEquals(credential.getId(),

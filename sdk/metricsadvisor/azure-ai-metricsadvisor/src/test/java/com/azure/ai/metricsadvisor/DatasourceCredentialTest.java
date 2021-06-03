@@ -63,8 +63,8 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
                 credentialId.set(createdCredential.getId());
                 super.validateCredentialResult(expectedCredential,
                     createdCredential,
-                    DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY);
-            }, DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY);
+                    DatasourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
+            }, DatasourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(credentialId.get())) {

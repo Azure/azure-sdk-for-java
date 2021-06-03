@@ -21,7 +21,7 @@ public class DatasourceAuthenticationType extends ExpandableStringEnum<Datasourc
         = fromString("AzureSQLConnectionString");
 
     /** Static value DataLakeGen2SharedKey for DataSourceAuthenticationType. */
-    public static final DatasourceAuthenticationType DATA_LAKE_GEN2SHARED_KEY = fromString("DataLakeGen2SharedKey");
+    public static final DatasourceAuthenticationType DATA_LAKE_GEN2_SHARED_KEY = fromString("DataLakeGen2SharedKey");
 
     /** Static value ServicePrincipal for DataSourceAuthenticationType. */
     public static final DatasourceAuthenticationType SERVICE_PRINCIPAL = fromString("ServicePrincipal");

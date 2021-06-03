@@ -51,7 +51,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
         creatDatasourceCredentialRunner(datasource -> list.add(datasource),
             DatasourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
         creatDatasourceCredentialRunner(datasource -> list.add(datasource),
-            DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY);
+            DatasourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY);
         testRunner.accept(list);
     }
 
@@ -61,7 +61,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
         if (credentialType == DatasourceAuthenticationType.AZURE_SQL_CONNECTION_STRING) {
             final String name = SQL_CONNECTION_DATASOURCE_CRED_NAME_PREFIX + UUID.randomUUID();
             datasourceCredential = new DatasourceSqlServerConnectionString(name, SQL_SERVER_CONNECTION_STRING);
-        } else if (credentialType == DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY) {
+        } else if (credentialType == DatasourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY) {
             final String name = DATA_LAKE_GEN2_SHARED_KEY_DATASOURCE_CRED_NAME_PREFIX + UUID.randomUUID();
             datasourceCredential = new DatasourceDataLakeGen2SharedKey(name, AZURE_DATALAKEGEN2_ACCOUNT_KEY);
         } else if (credentialType == DatasourceAuthenticationType.SERVICE_PRINCIPAL) {
@@ -102,7 +102,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
         if (credentialType == DatasourceAuthenticationType.AZURE_SQL_CONNECTION_STRING) {
             Assertions.assertTrue(actualCredential instanceof DatasourceSqlServerConnectionString);
             assertTrue(actualCredential.getName().startsWith(SQL_CONNECTION_DATASOURCE_CRED_NAME_PREFIX));
-        } else if (credentialType == DatasourceAuthenticationType.DATA_LAKE_GEN2SHARED_KEY) {
+        } else if (credentialType == DatasourceAuthenticationType.DATA_LAKE_GEN2_SHARED_KEY) {
             Assertions.assertTrue(actualCredential instanceof DatasourceDataLakeGen2SharedKey);
             assertTrue(actualCredential.getName().startsWith(DATA_LAKE_GEN2_SHARED_KEY_DATASOURCE_CRED_NAME_PREFIX));
         } else if (credentialType == DatasourceAuthenticationType.SERVICE_PRINCIPAL) {
