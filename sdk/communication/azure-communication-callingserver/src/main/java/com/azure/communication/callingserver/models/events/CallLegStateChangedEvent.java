@@ -4,11 +4,12 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.models.CallState;
+import com.azure.core.util.BinaryData;
 
 /**
  * The call leg state change event.
  */
-public final class CallLegStateChangedEvent extends CallEventBase {
+public final class CallLegStateChangedEvent extends CallingServerEventBase {
     /**
      * The event type.
      */
@@ -110,5 +111,18 @@ public final class CallLegStateChangedEvent extends CallEventBase {
         this.conversationId = conversationId;
         this.callLegId = callLegId;
         this.callState = callState;
+    }
+
+    /**
+     * Deserialize {@see CallLegStateChangedEvent} event.
+     * 
+     * @param eventData binary data for event
+     * @return {@see CallLegStateChangedEvent} event.
+     */
+    public static CallLegStateChangedEvent deserialize(BinaryData eventData) {
+        if (eventData == null) {
+            return null;
+        }
+        return eventData.toObject(CallLegStateChangedEvent.class);
     }
 }

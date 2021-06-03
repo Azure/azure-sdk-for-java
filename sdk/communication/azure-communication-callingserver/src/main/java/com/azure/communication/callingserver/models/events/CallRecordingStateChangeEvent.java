@@ -3,14 +3,15 @@
 
 package com.azure.communication.callingserver.models.events;
 
-import com.azure.communication.callingserver.models.CallRecordingState;
-
 import java.time.OffsetDateTime;
+
+import com.azure.communication.callingserver.models.CallRecordingState;
+import com.azure.core.util.BinaryData;
 
 /**
  * The call recording state change event.
  */
-public final class CallRecordingStateChangeEvent extends CallEventBase {
+public final class CallRecordingStateChangeEvent extends CallingServerEventBase {
     /**
      * The event type.
      */
@@ -143,5 +144,18 @@ public final class CallRecordingStateChangeEvent extends CallEventBase {
         this.state = state;
         this.startDateTime = startDateTime;
         this.conversationId = conversationId;
+    }
+
+    /**
+     * Deserialize {@see CallRecordingStateChangeEvent} event.
+     * 
+     * @param eventData binary data for event
+     * @return {@see CallRecordingStateChangeEvent} event.
+     */
+    public static CallRecordingStateChangeEvent deserialize(BinaryData eventData) {
+        if (eventData == null) {
+            return null;
+        }
+        return eventData.toObject(CallRecordingStateChangeEvent.class);
     }
 }

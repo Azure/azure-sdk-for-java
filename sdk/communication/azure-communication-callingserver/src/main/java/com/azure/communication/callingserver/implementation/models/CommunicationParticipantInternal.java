@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class to represent entry in roster. */
 @Fluent
-public final class CommunicationParticipant {
+public final class CommunicationParticipantInternal {
     /*
      * ACS communication identifier
      */
@@ -41,9 +41,9 @@ public final class CommunicationParticipant {
      * Set the identifier property: ACS communication identifier.
      *
      * @param identifier the identifier value to set.
-     * @return the CommunicationParticipant object itself.
+     * @return the CommunicationParticipantInternal object itself.
      */
-    public CommunicationParticipant setIdentifier(CommunicationIdentifierModel identifier) {
+    public CommunicationParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -61,9 +61,9 @@ public final class CommunicationParticipant {
      * Set the participantId property: Participant Id.
      *
      * @param participantId the participantId value to set.
-     * @return the CommunicationParticipant object itself.
+     * @return the CommunicationParticipantInternal object itself.
      */
-    public CommunicationParticipant setParticipantId(String participantId) {
+    public CommunicationParticipantInternal setParticipantId(String participantId) {
         this.participantId = participantId;
         return this;
     }
@@ -81,9 +81,9 @@ public final class CommunicationParticipant {
      * Set the isMuted property: Is participant muted.
      *
      * @param isMuted the isMuted value to set.
-     * @return the CommunicationParticipant object itself.
+     * @return the CommunicationParticipantInternal object itself.
      */
-    public CommunicationParticipant setIsMuted(Boolean isMuted) {
+    public CommunicationParticipantInternal setIsMuted(Boolean isMuted) {
         this.isMuted = isMuted;
         return this;
     }
