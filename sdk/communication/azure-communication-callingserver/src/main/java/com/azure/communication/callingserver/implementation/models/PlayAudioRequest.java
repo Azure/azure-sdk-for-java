@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload for playing audio. */
 @Fluent
-public final class PlayAudioRequestInternal {
+public final class PlayAudioRequest {
     /*
      * The media resource uri of the play audio request.
      * Currently only Wave file (.wav) format audio prompts are supported.
@@ -63,9 +63,9 @@ public final class PlayAudioRequestInternal {
      * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      *
      * @param audioFileUri the audioFileUri value to set.
-     * @return the PlayAudioRequestInternal object itself.
+     * @return the PlayAudioRequest object itself.
      */
-    public PlayAudioRequestInternal setAudioFileUri(String audioFileUri) {
+    public PlayAudioRequest setAudioFileUri(String audioFileUri) {
         this.audioFileUri = audioFileUri;
         return this;
     }
@@ -83,9 +83,9 @@ public final class PlayAudioRequestInternal {
      * Set the loop property: The flag indicating whether audio file needs to be played in loop or not.
      *
      * @param loop the loop value to set.
-     * @return the PlayAudioRequestInternal object itself.
+     * @return the PlayAudioRequest object itself.
      */
-    public PlayAudioRequestInternal setLoop(Boolean loop) {
+    public PlayAudioRequest setLoop(Boolean loop) {
         this.loop = loop;
         return this;
     }
@@ -103,9 +103,9 @@ public final class PlayAudioRequestInternal {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the PlayAudioRequestInternal object itself.
+     * @return the PlayAudioRequest object itself.
      */
-    public PlayAudioRequestInternal setOperationContext(String operationContext) {
+    public PlayAudioRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -123,9 +123,9 @@ public final class PlayAudioRequestInternal {
      * Set the audioFileId property: An id for the media in the AudioFileUri, using which we cache the media resource.
      *
      * @param audioFileId the audioFileId value to set.
-     * @return the PlayAudioRequestInternal object itself.
+     * @return the PlayAudioRequest object itself.
      */
-    public PlayAudioRequestInternal setAudioFileId(String audioFileId) {
+    public PlayAudioRequest setAudioFileId(String audioFileId) {
         this.audioFileId = audioFileId;
         return this;
     }
@@ -143,9 +143,9 @@ public final class PlayAudioRequestInternal {
      * Set the callbackUri property: The callback Uri to receive PlayAudio status notifications.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the PlayAudioRequestInternal object itself.
+     * @return the PlayAudioRequest object itself.
      */
-    public PlayAudioRequestInternal setCallbackUri(String callbackUri) {
+    public PlayAudioRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

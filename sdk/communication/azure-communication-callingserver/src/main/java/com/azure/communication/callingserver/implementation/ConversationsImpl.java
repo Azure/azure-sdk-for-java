@@ -6,13 +6,13 @@ package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse;
-import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequestInternal;
-import com.azure.communication.callingserver.implementation.models.JoinCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.JoinCallResponse;
-import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
-import com.azure.communication.callingserver.implementation.models.PlayAudioResponse;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal;
+import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
+import com.azure.communication.callingserver.models.JoinCallResponse;
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -69,7 +69,7 @@ public final class ConversationsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("conversationId") String conversationId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") JoinCallRequestInternal callRequest,
+                @BodyParam("application/json") JoinCallRequest callRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -83,7 +83,7 @@ public final class ConversationsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("conversationId") String conversationId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") PlayAudioRequestInternal request,
+                @BodyParam("application/json") PlayAudioRequest request,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -97,7 +97,7 @@ public final class ConversationsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("conversationId") String conversationId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") InviteParticipantsRequestInternal inviteParticipantsRequest,
+                @BodyParam("application/json") InviteParticipantsRequest inviteParticipantsRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -125,7 +125,7 @@ public final class ConversationsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("conversationId") String conversationId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartCallRecordingRequestInternal request,
+                @BodyParam("application/json") StartCallRecordingRequest request,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -199,7 +199,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JoinCallResponse>> joinCallWithResponseAsync(
-            String conversationId, JoinCallRequestInternal callRequest) {
+            String conversationId, JoinCallRequest callRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -226,7 +226,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JoinCallResponse>> joinCallWithResponseAsync(
-            String conversationId, JoinCallRequestInternal callRequest, Context context) {
+            String conversationId, JoinCallRequest callRequest, Context context) {
         final String accept = "application/json";
         return service.joinCall(
                 this.client.getEndpoint(), conversationId, this.client.getApiVersion(), callRequest, accept, context);
@@ -244,7 +244,7 @@ public final class ConversationsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JoinCallResponse> joinCallAsync(String conversationId, JoinCallRequestInternal callRequest) {
+    public Mono<JoinCallResponse> joinCallAsync(String conversationId, JoinCallRequest callRequest) {
         return joinCallWithResponseAsync(conversationId, callRequest)
                 .flatMap(
                         (Response<JoinCallResponse> res) -> {
@@ -269,8 +269,7 @@ public final class ConversationsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JoinCallResponse> joinCallAsync(
-            String conversationId, JoinCallRequestInternal callRequest, Context context) {
+    public Mono<JoinCallResponse> joinCallAsync(String conversationId, JoinCallRequest callRequest, Context context) {
         return joinCallWithResponseAsync(conversationId, callRequest, context)
                 .flatMap(
                         (Response<JoinCallResponse> res) -> {
@@ -294,7 +293,7 @@ public final class ConversationsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JoinCallResponse joinCall(String conversationId, JoinCallRequestInternal callRequest) {
+    public JoinCallResponse joinCall(String conversationId, JoinCallRequest callRequest) {
         return joinCallAsync(conversationId, callRequest).block();
     }
 
@@ -312,7 +311,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JoinCallResponse> joinCallWithResponse(
-            String conversationId, JoinCallRequestInternal callRequest, Context context) {
+            String conversationId, JoinCallRequest callRequest, Context context) {
         return joinCallWithResponseAsync(conversationId, callRequest, context).block();
     }
 
@@ -329,7 +328,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResponse>> playAudioWithResponseAsync(
-            String conversationId, PlayAudioRequestInternal request) {
+            String conversationId, PlayAudioRequest request) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -356,7 +355,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResponse>> playAudioWithResponseAsync(
-            String conversationId, PlayAudioRequestInternal request, Context context) {
+            String conversationId, PlayAudioRequest request, Context context) {
         final String accept = "application/json";
         return service.playAudio(
                 this.client.getEndpoint(), conversationId, this.client.getApiVersion(), request, accept, context);
@@ -374,7 +373,7 @@ public final class ConversationsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResponse> playAudioAsync(String conversationId, PlayAudioRequestInternal request) {
+    public Mono<PlayAudioResponse> playAudioAsync(String conversationId, PlayAudioRequest request) {
         return playAudioWithResponseAsync(conversationId, request)
                 .flatMap(
                         (Response<PlayAudioResponse> res) -> {
@@ -399,8 +398,7 @@ public final class ConversationsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResponse> playAudioAsync(
-            String conversationId, PlayAudioRequestInternal request, Context context) {
+    public Mono<PlayAudioResponse> playAudioAsync(String conversationId, PlayAudioRequest request, Context context) {
         return playAudioWithResponseAsync(conversationId, request, context)
                 .flatMap(
                         (Response<PlayAudioResponse> res) -> {
@@ -424,7 +422,7 @@ public final class ConversationsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String conversationId, PlayAudioRequestInternal request) {
+    public PlayAudioResponse playAudio(String conversationId, PlayAudioRequest request) {
         return playAudioAsync(conversationId, request).block();
     }
 
@@ -442,7 +440,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResponse> playAudioWithResponse(
-            String conversationId, PlayAudioRequestInternal request, Context context) {
+            String conversationId, PlayAudioRequest request, Context context) {
         return playAudioWithResponseAsync(conversationId, request, context).block();
     }
 
@@ -459,7 +457,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> inviteParticipantsWithResponseAsync(
-            String conversationId, InviteParticipantsRequestInternal inviteParticipantsRequest) {
+            String conversationId, InviteParticipantsRequest inviteParticipantsRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -486,7 +484,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> inviteParticipantsWithResponseAsync(
-            String conversationId, InviteParticipantsRequestInternal inviteParticipantsRequest, Context context) {
+            String conversationId, InviteParticipantsRequest inviteParticipantsRequest, Context context) {
         final String accept = "application/json";
         return service.inviteParticipants(
                 this.client.getEndpoint(),
@@ -510,7 +508,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> inviteParticipantsAsync(
-            String conversationId, InviteParticipantsRequestInternal inviteParticipantsRequest) {
+            String conversationId, InviteParticipantsRequest inviteParticipantsRequest) {
         return inviteParticipantsWithResponseAsync(conversationId, inviteParticipantsRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -529,7 +527,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> inviteParticipantsAsync(
-            String conversationId, InviteParticipantsRequestInternal inviteParticipantsRequest, Context context) {
+            String conversationId, InviteParticipantsRequest inviteParticipantsRequest, Context context) {
         return inviteParticipantsWithResponseAsync(conversationId, inviteParticipantsRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -545,7 +543,7 @@ public final class ConversationsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void inviteParticipants(String conversationId, InviteParticipantsRequestInternal inviteParticipantsRequest) {
+    public void inviteParticipants(String conversationId, InviteParticipantsRequest inviteParticipantsRequest) {
         inviteParticipantsAsync(conversationId, inviteParticipantsRequest).block();
     }
 
@@ -563,7 +561,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> inviteParticipantsWithResponse(
-            String conversationId, InviteParticipantsRequestInternal inviteParticipantsRequest, Context context) {
+            String conversationId, InviteParticipantsRequest inviteParticipantsRequest, Context context) {
         return inviteParticipantsWithResponseAsync(conversationId, inviteParticipantsRequest, context).block();
     }
 
@@ -692,7 +690,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StartCallRecordingResponse>> startRecordingWithResponseAsync(
-            String conversationId, StartCallRecordingRequestInternal request) {
+            String conversationId, StartCallRecordingRequest request) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -719,7 +717,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StartCallRecordingResponse>> startRecordingWithResponseAsync(
-            String conversationId, StartCallRecordingRequestInternal request, Context context) {
+            String conversationId, StartCallRecordingRequest request, Context context) {
         final String accept = "application/json";
         return service.startRecording(
                 this.client.getEndpoint(), conversationId, this.client.getApiVersion(), request, accept, context);
@@ -738,7 +736,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResponse> startRecordingAsync(
-            String conversationId, StartCallRecordingRequestInternal request) {
+            String conversationId, StartCallRecordingRequest request) {
         return startRecordingWithResponseAsync(conversationId, request)
                 .flatMap(
                         (Response<StartCallRecordingResponse> res) -> {
@@ -764,7 +762,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResponse> startRecordingAsync(
-            String conversationId, StartCallRecordingRequestInternal request, Context context) {
+            String conversationId, StartCallRecordingRequest request, Context context) {
         return startRecordingWithResponseAsync(conversationId, request, context)
                 .flatMap(
                         (Response<StartCallRecordingResponse> res) -> {
@@ -788,7 +786,7 @@ public final class ConversationsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResponse startRecording(String conversationId, StartCallRecordingRequestInternal request) {
+    public StartCallRecordingResponse startRecording(String conversationId, StartCallRecordingRequest request) {
         return startRecordingAsync(conversationId, request).block();
     }
 
@@ -806,7 +804,7 @@ public final class ConversationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResponse> startRecordingWithResponse(
-            String conversationId, StartCallRecordingRequestInternal request, Context context) {
+            String conversationId, StartCallRecordingRequest request, Context context) {
         return startRecordingWithResponseAsync(conversationId, request, context).block();
     }
 

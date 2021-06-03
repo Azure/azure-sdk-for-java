@@ -37,6 +37,8 @@ java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
+custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse
+custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
 sync-methods: all
@@ -47,19 +49,4 @@ directive:
     - rename-model:
         from: CreateCallRequest
         to: CreateCallRequestInternal
-    - rename-model:
-        from: PlayAudioRequest
-        to: PlayAudioRequestInternal
-    - rename-model:
-        from: InviteParticipantsRequest
-        to: InviteParticipantsRequestInternal
-    - rename-model:
-        from: StartCallRecordingRequest
-        to: StartCallRecordingRequestInternal
-    - rename-model:
-        from: ResultInfo
-        to: ResultInfoInternal
-    - rename-model:
-        from: JoinCallRequest
-        to: JoinCallRequestInternal
 ```

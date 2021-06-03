@@ -8,13 +8,14 @@ import com.azure.communication.callingserver.implementation.ConversationsImpl;
 import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.JoinCallRequestConverter;
 import com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse;
-import com.azure.communication.callingserver.implementation.models.JoinCallResponse;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal;
+import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
-import com.azure.communication.callingserver.models.InviteParticipantsRequest;
-import com.azure.communication.callingserver.models.JoinCallRequest;
+import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.JoinCallResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -47,16 +48,18 @@ public final class ConversationAsyncClient {
      * Join a Call
      *
      * @param conversationId The conversation id.
-     * @param request Join Call request.
-     * @return response for a successful inviteParticipants request.
+     * @param source to Join Call.
+     * @param joinCallOptions join call options.
+     * @return response for a successful joinCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JoinCallResponse> joinCall(String conversationId, JoinCallRequest request) {
+    public Mono<JoinCallResponse> joinCall(String conversationId, CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
-            Objects.requireNonNull(request, "'request' cannot be null.");
+            Objects.requireNonNull(source, "'source' cannot be null.");
+            Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
 
-            return this.conversationsClient.joinCallAsync(conversationId, JoinCallRequestConverter.convert(request));
+            return this.conversationsClient.joinCallAsync(conversationId, JoinCallRequestConverter.convert(source, joinCallOptions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -66,27 +69,30 @@ public final class ConversationAsyncClient {
      * Join a Call
      *
      * @param conversationId The conversation id.
-     * @param request Join Call request.
-     * @return response for a successful inviteParticipants request.
+     * @param source to Join Call.
+     * @param joinCallOptions join call options.
+     * @return response for a successful joincall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JoinCallResponse>>joinCallWithResponse(String conversationId, JoinCallRequest request) {
-        return joinCallWithResponse(conversationId, request, null);
+    public Mono<Response<JoinCallResponse>>joinCallWithResponse(String conversationId, CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
+        return joinCallWithResponse(conversationId, source, joinCallOptions, null);
     }
 
     Mono<Response<JoinCallResponse>> joinCallWithResponse(
         String conversationId,
-        JoinCallRequest request,
+        CommunicationIdentifier source,
+        JoinCallOptions joinCallOptions,
         Context context) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
-            Objects.requireNonNull(request, "'request' cannot be null.");
+            Objects.requireNonNull(source, "'request' cannot be null.");
+            Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return withContext(contextValue -> {
                 if (context != null) {
                     contextValue = context;
                 }
                 return this.conversationsClient.joinCallWithResponseAsync(conversationId,
-                    JoinCallRequestConverter.convert(request));
+                    JoinCallRequestConverter.convert(source, joinCallOptions));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -97,16 +103,21 @@ public final class ConversationAsyncClient {
      * Invite Participats to a Conversation.
      *
      * @param conversationId The conversation id.
-     * @param request Invite participant request.
+     * @param participant Invited participant.
+     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param operationContext operationContext.
+     * @param callBackUri callBackUri to get notifications.
      * @return response for a successful inviteParticipants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> inviteParticipants(String conversationId, InviteParticipantsRequest request) {
+    public Mono<Void> addParticipant(String conversationId, CommunicationIdentifier participant, String alternateCallerId, String operationContext, String callBackUri) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
-            Objects.requireNonNull(request, "'request' cannot be null.");
+            Objects.requireNonNull(participant, "'participant' cannot be null.");
 
-            return this.conversationsClient.inviteParticipantsAsync(conversationId, InviteParticipantsRequestConverter.convert(request));
+            InviteParticipantsRequest request = InviteParticipantsRequestConverter.convert(participant, alternateCallerId, operationContext, callBackUri);
+
+            return this.conversationsClient.inviteParticipantsAsync(conversationId, request);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -116,27 +127,33 @@ public final class ConversationAsyncClient {
      * Invite Participats to a Conversation.
      *
      * @param conversationId The conversation id.
-     * @param request Invite participant request.
+     * @param participant Invited participant.
+     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param operationContext operationContext.
+     * @param callBackUri callBackUri to get notifications.
      * @return response for a successful inviteParticipants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> inviteParticipantsWithResponse(String conversationId, InviteParticipantsRequest request) {
-        return inviteParticipantsWithResponse(conversationId, request, null);
+    public Mono<Response<Void>> addParticipantWithResponse(String conversationId, CommunicationIdentifier participant, String alternateCallerId, String operationContext, String callBackUri) {
+        return addParticipantWithResponse(conversationId, participant, alternateCallerId, operationContext, callBackUri, null);
     }
 
-    Mono<Response<Void>> inviteParticipantsWithResponse(
+    Mono<Response<Void>> addParticipantWithResponse(
         String conversationId,
-        InviteParticipantsRequest request,
+        CommunicationIdentifier participant,
+        String alternateCallerId,
+        String operationContext,
+        String callBackUri,
         Context context) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
-            Objects.requireNonNull(request, "'request' cannot be null.");
+            Objects.requireNonNull(participant, "'participant' cannot be null.");
+            InviteParticipantsRequest request = InviteParticipantsRequestConverter.convert(participant, alternateCallerId, operationContext, callBackUri);
             return withContext(contextValue -> {
                 if (context != null) {
                     contextValue = context;
                 }
-                return this.conversationsClient.inviteParticipantsWithResponseAsync(conversationId,
-                        InviteParticipantsRequestConverter.convert(request));
+                return this.conversationsClient.inviteParticipantsWithResponseAsync(conversationId, request);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -209,7 +226,7 @@ public final class ConversationAsyncClient {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' cannot be non absolute Uri"));
             }
 
-            StartCallRecordingRequestInternal request = createStartCallRecordingRequest(recordingStateCallbackUri);
+            StartCallRecordingRequest request = createStartCallRecordingRequest(recordingStateCallbackUri);
             return this.conversationsClient.startRecordingAsync(conversationId, request)
                     .flatMap((StartCallRecordingResponse response) -> {
                         StartCallRecordingResult startCallRecordingResult = convertGetCallRecordingStateResponse(
@@ -247,7 +264,7 @@ public final class ConversationAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                StartCallRecordingRequestInternal request = createStartCallRecordingRequest(recordingStateCallbackUri);
+                StartCallRecordingRequest request = createStartCallRecordingRequest(recordingStateCallbackUri);
                 return this.conversationsClient.startRecordingWithResponseAsync(conversationId, request)
                         .flatMap((Response<StartCallRecordingResponse> response) -> {
                             StartCallRecordingResult startCallRecordingResult = convertGetCallRecordingStateResponse(
@@ -452,8 +469,8 @@ public final class ConversationAsyncClient {
         }
     }
 
-    private StartCallRecordingRequestInternal createStartCallRecordingRequest(URI recordingStateCallbackUri) {
-        StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal();
+    private StartCallRecordingRequest createStartCallRecordingRequest(URI recordingStateCallbackUri) {
+        StartCallRecordingRequest request = new StartCallRecordingRequest();
         request.setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
         return request;
     }

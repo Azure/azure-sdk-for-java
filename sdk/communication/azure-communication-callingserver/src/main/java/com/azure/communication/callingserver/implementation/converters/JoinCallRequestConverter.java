@@ -8,41 +8,53 @@ import java.util.List;
 
 import com.azure.communication.callingserver.implementation.models.CallModality;
 import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
-import com.azure.communication.callingserver.implementation.models.JoinCallRequestInternal;
+import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
+import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.common.CommunicationIdentifier;
 
 /**
- * A converter between {@link com.azure.communication.callingserver.models.JoinCallRequest} and
+ * A converter between {@link com.azure.communication.callingserver.models.JoinCallOptions} and
  * {@link JoinCallRequestInternal}.
  */
 public final class JoinCallRequestConverter {
     /**
      * Maps from {com.azure.communication.callingserver.models.JoinCallRequest} to {@link JoinCallRequestInternal}.
      */
-    public static JoinCallRequestInternal convert(com.azure.communication.callingserver.models.JoinCallRequest obj) {
-        if (obj == null) {
+    public static JoinCallRequest convert(CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
+        if (source == null) {
             return null;
         }
 
-        List<CallModality> requestedModalities = new ArrayList<>();
-        for (CallModality callModality : obj.getRequestedModalities()) {
-            requestedModalities.add(callModality);
+        JoinCallRequest joinCallRequest = new JoinCallRequest()
+            .setSource(CommunicationIdentifierConverter.convert(source));
+
+        if (joinCallOptions == null) {
+            return joinCallRequest;
         }
 
-        List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
-        for (EventSubscriptionType eventSubscription : obj.getRequestedCallEvents()){
-            requestedCallEvents.add(eventSubscription);
+        joinCallRequest.setSubject(joinCallOptions.getSubject());
+        joinCallRequest.setCallbackUri(joinCallOptions.getCallbackUri());
+
+        if (joinCallOptions.getRequestedModalities() != null) {
+            List<CallModality> requestedModalities = new ArrayList<>();
+            for (CallModality callModality : joinCallOptions.getRequestedModalities()) {
+                requestedModalities.add(callModality);
+            }
+            joinCallRequest.setRequestedModalities(requestedModalities);
         }
 
-        JoinCallRequestInternal joinCallRequestInternal = new JoinCallRequestInternal()
-            .setSource(CommunicationIdentifierConverter.convert(obj.getSource()))
-            .setSubject(obj.getSubject())
-            .setCallbackUri(obj.getCallbackUri())
-            .setRequestedModalities(requestedModalities)
-            .setRequestedCallEvents(requestedCallEvents);
-            
-        return joinCallRequestInternal;
+        if (joinCallOptions.getRequestedCallEvents() != null) {
+            List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
+            for (EventSubscriptionType eventSubscription : joinCallOptions.getRequestedCallEvents()) {
+                requestedCallEvents.add(eventSubscription);
+            }
+            joinCallRequest.setRequestedCallEvents(requestedCallEvents);
+        }
+ 
+        return joinCallRequest;
     }
 
     private JoinCallRequestConverter() {
     }
 }
+
