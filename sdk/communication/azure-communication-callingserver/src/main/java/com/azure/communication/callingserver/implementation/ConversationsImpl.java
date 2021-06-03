@@ -9,6 +9,8 @@ import com.azure.communication.callingserver.implementation.models.GetCallRecord
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequestInternal;
 import com.azure.communication.callingserver.implementation.models.JoinCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.JoinCallResponse;
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
+import com.azure.communication.callingserver.implementation.models.PlayAudioResponse;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
 import com.azure.core.annotation.BodyParam;
@@ -68,6 +70,20 @@ public final class ConversationsImpl {
                 @PathParam("conversationId") String conversationId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") JoinCallRequestInternal callRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/conversations/{conversationId}/PlayAudio")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = CommunicationErrorException.class,
+                code = {400, 401, 500})
+        @UnexpectedResponseExceptionType(CommunicationErrorException.class)
+        Mono<Response<PlayAudioResponse>> playAudio(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("conversationId") String conversationId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") PlayAudioRequestInternal request,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -298,6 +314,136 @@ public final class ConversationsImpl {
     public Response<JoinCallResponse> joinCallWithResponse(
             String conversationId, JoinCallRequestInternal callRequest, Context context) {
         return joinCallWithResponseAsync(conversationId, callRequest, context).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id which can be guid or encoded cs url.
+     * @param request Play audio request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorException thrown if the request is rejected by server.
+     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PlayAudioResponse>> playAudioWithResponseAsync(
+            String conversationId, PlayAudioRequestInternal request) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.playAudio(
+                                this.client.getEndpoint(),
+                                conversationId,
+                                this.client.getApiVersion(),
+                                request,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id which can be guid or encoded cs url.
+     * @param request Play audio request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorException thrown if the request is rejected by server.
+     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PlayAudioResponse>> playAudioWithResponseAsync(
+            String conversationId, PlayAudioRequestInternal request, Context context) {
+        final String accept = "application/json";
+        return service.playAudio(
+                this.client.getEndpoint(), conversationId, this.client.getApiVersion(), request, accept, context);
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id which can be guid or encoded cs url.
+     * @param request Play audio request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorException thrown if the request is rejected by server.
+     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PlayAudioResponse> playAudioAsync(String conversationId, PlayAudioRequestInternal request) {
+        return playAudioWithResponseAsync(conversationId, request)
+                .flatMap(
+                        (Response<PlayAudioResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id which can be guid or encoded cs url.
+     * @param request Play audio request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorException thrown if the request is rejected by server.
+     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PlayAudioResponse> playAudioAsync(
+            String conversationId, PlayAudioRequestInternal request, Context context) {
+        return playAudioWithResponseAsync(conversationId, request, context)
+                .flatMap(
+                        (Response<PlayAudioResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id which can be guid or encoded cs url.
+     * @param request Play audio request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorException thrown if the request is rejected by server.
+     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayAudioResponse playAudio(String conversationId, PlayAudioRequestInternal request) {
+        return playAudioAsync(conversationId, request).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id which can be guid or encoded cs url.
+     * @param request Play audio request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorException thrown if the request is rejected by server.
+     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayAudioResponse> playAudioWithResponse(
+            String conversationId, PlayAudioRequestInternal request, Context context) {
+        return playAudioWithResponseAsync(conversationId, request, context).block();
     }
 
     /**
