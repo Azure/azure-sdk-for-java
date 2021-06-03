@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
@@ -51,8 +50,13 @@ public class StorageFileInputStream extends StorageInputStream {
         this.shareFileAsyncClient = shareFileAsyncClient;
     }
 
+    /**
+     * Dispatches a read operation of N bytes.
+     *
+     * @param readLength An <code>int</code> which represents the number of bytes to read.
+     */
     @Override
-    protected ByteBuffer dispatchRead(int readLength, long offset) throws IOException {
+    protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) {
         try {
             ByteBuffer currentBuffer = this.shareFileAsyncClient.downloadWithResponse(
                 new ShareFileRange(offset, offset + readLength - 1), false)
@@ -62,11 +66,11 @@ public class StorageFileInputStream extends StorageInputStream {
             this.bufferSize = readLength;
             this.bufferStartOffset = offset;
             return currentBuffer;
-        } catch (final HttpResponseException e) {
+        } catch (final ShareStorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
 
-            throw this.lastError;
+            throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
         }
     }
 }

@@ -5,13 +5,11 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.common.StorageInputStream;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathProperties;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -58,8 +56,13 @@ public final class DataLakeFileInputStream extends StorageInputStream {
         this.properties = pathProperties;
     }
 
+    /**
+     * Dispatches a read operation of N bytes.
+     *
+     * @param readLength An <code>int</code> which represents the number of bytes to read.
+     */
     @Override
-    protected ByteBuffer dispatchRead(int readLength, long offset) throws IOException {
+    protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
             ByteBuffer currentBuffer = this.fileClient.readWithResponse(
                 new FileRange(offset, (long) readLength), null, this.accessCondition, false)
