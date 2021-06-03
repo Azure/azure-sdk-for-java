@@ -78,7 +78,6 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.2.0-beta.1;4.2.0-beta.1
 com.azure:azure-cosmos-encryption;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-data-appconfiguration;1.1.12;1.2.0-beta.2
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-confidentialledger;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-data-schemaregistry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-tables;12.0.0-beta.7;12.0.0-beta.8
@@ -105,6 +104,7 @@ com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-search-documents;11.3.2;11.4.0-beta.3
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-security-confidentialledger;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-security-keyvault-administration;4.0.0-beta.7;4.0.0-beta.8
 com.azure:azure-security-keyvault-certificates;4.1.8;4.2.0-beta.7
 com.azure:azure-security-keyvault-jca;1.0.0-beta.7;1.0.0-beta.8
