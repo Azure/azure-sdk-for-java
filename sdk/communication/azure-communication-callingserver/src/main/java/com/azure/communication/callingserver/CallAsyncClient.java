@@ -352,7 +352,7 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Cancel Media Operations.
+     * Invite Participats to a Call.
      *
      * @param callId Call id.
      * @param request Invite participant request.
@@ -371,7 +371,7 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Cancel Media Operations.
+     * Invite Participats to a Call.
      *
      * @param callId Call id.
      * @param request Invite participant request.
@@ -430,7 +430,7 @@ public final class CallAsyncClient {
     }
 
     /**
-     * cancelMediaOperationsWithResponse method for use by sync client
+     * Remove participant from the call.
      */
     Mono<Response<Void>> removeParticipantWithResponse(String callId, String participantId, Context context) {
         try {
