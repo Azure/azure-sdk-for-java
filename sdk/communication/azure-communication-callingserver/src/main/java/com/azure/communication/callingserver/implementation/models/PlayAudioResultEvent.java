@@ -4,6 +4,7 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
+import com.azure.communication.callingserver.models.ResultInfo;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,7 +15,7 @@ public final class PlayAudioResultEvent {
      * The result details.
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInfoInternal resultInfo;
+    private ResultInfo resultInfo;
 
     /*
      * The operation context.
@@ -33,7 +34,7 @@ public final class PlayAudioResultEvent {
      *
      * @return the resultInfo value.
      */
-    public ResultInfoInternal getResultInfo() {
+    public ResultInfo getResultInfo() {
         return this.resultInfo;
     }
 
@@ -43,7 +44,7 @@ public final class PlayAudioResultEvent {
      * @param resultInfo the resultInfo value to set.
      * @return the PlayAudioResultEvent object itself.
      */
-    public PlayAudioResultEvent setResultInfo(ResultInfoInternal resultInfo) {
+    public PlayAudioResultEvent setResultInfo(ResultInfo resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }

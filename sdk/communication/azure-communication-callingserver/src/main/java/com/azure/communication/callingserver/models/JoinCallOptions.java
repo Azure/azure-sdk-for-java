@@ -5,21 +5,14 @@ package com.azure.communication.callingserver.models;
 
 import com.azure.communication.callingserver.implementation.models.CallModality;
 import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** The request payload for join call. */
+/** The options for join call. */
 @Fluent
-public final class JoinCallRequest {
-    /*
-     * The source of the call.
-     */
-    @JsonProperty(value = "source", required = true)
-    private CommunicationIdentifier source;
-
+public final class JoinCallOptions {
     /*
      * The subject.
      */
@@ -45,26 +38,6 @@ public final class JoinCallRequest {
     private List<EventSubscriptionType> requestedCallEvents;
 
     /**
-     * Get the source property: The source of the call.
-     *
-     * @return the source value.
-     */
-    public CommunicationIdentifier getSource() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: The source of the call.
-     *
-     * @param source the source value to set.
-     * @return the JoinCallRequest object itself.
-     */
-    public JoinCallRequest setSource(CommunicationIdentifier source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
      * Get the subject property: The subject.
      *
      * @return the subject value.
@@ -79,7 +52,7 @@ public final class JoinCallRequest {
      * @param subject the subject value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setSubject(String subject) {
+    public JoinCallOptions setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -99,7 +72,7 @@ public final class JoinCallRequest {
      * @param callbackUri the callbackUri value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setCallbackUri(String callbackUri) {
+    public JoinCallOptions setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }
@@ -119,7 +92,7 @@ public final class JoinCallRequest {
      * @param requestedModalities the requestedModalities value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setRequestedModalities(List<CallModality> requestedModalities) {
+    public JoinCallOptions setRequestedModalities(List<CallModality> requestedModalities) {
         this.requestedModalities = requestedModalities;
         return this;
     }
@@ -141,7 +114,7 @@ public final class JoinCallRequest {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public JoinCallOptions setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }

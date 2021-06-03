@@ -5,10 +5,9 @@ package com.azure.communication.callingserver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.azure.communication.callingserver.implementation.models.OperationStatus;
 import com.azure.communication.callingserver.models.CreateCallResult;
-import com.azure.communication.callingserver.models.OperationStatus;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.core.http.rest.Response;
 
 public class CallingServerTestUtils {
@@ -25,21 +24,21 @@ public class CallingServerTestUtils {
         assertTrue(!createCallResult.getCallLegId().isEmpty());
     }
 
-    protected static void validatePlayAudioResponse(Response<PlayAudioResult> playAudioResponse, String operationContext) {   
+    protected static void validatePlayAudioResponse(Response<PlayAudioResponse> playAudioResponse, String operationContext) {   
         assertNotNull(playAudioResponse);
         assertTrue(playAudioResponse.getStatusCode() == 202);
         assertNotNull(playAudioResponse.getValue());
         validatePlayAudioResult(playAudioResponse.getValue(), operationContext);
     }
 
-    protected static void validatePlayAudioResult(PlayAudioResult playAudioResult, String operationContext) {
-        assertNotNull(playAudioResult);
-        assertNotNull(playAudioResult.getId());
-        assertTrue(!playAudioResult.getId().isEmpty());
-        assertNotNull(playAudioResult.getOperationContext());
-        assertTrue(playAudioResult.getOperationContext().equalsIgnoreCase(operationContext));
-        assertNotNull(playAudioResult.getStatus());
-        assertTrue(playAudioResult.getStatus() == OperationStatus.RUNNING);
+    protected static void validatePlayAudioResult(PlayAudioResponse playAudioResponse, String operationContext) {
+        assertNotNull(playAudioResponse);
+        assertNotNull(playAudioResponse.getId());
+        assertTrue(!playAudioResponse.getId().isEmpty());
+        assertNotNull(playAudioResponse.getOperationContext());
+        assertTrue(playAudioResponse.getOperationContext().equalsIgnoreCase(operationContext));
+        assertNotNull(playAudioResponse.getStatus());
+        assertTrue(playAudioResponse.getStatus() == OperationStatus.RUNNING);
     }
 
     protected static void validateHangupResponse(Response<Void> hangupResponse) {
