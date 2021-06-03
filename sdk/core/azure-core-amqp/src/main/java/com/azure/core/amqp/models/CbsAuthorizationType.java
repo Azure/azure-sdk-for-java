@@ -9,12 +9,13 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * An enumeration of supported authorization methods with the {@link ClaimsBasedSecurityNode}.
  */
-public class CbsAuthorizationType extends ExpandableStringEnum<CbsAuthorizationType> {
+public final class CbsAuthorizationType extends ExpandableStringEnum<CbsAuthorizationType> {
     /**
      * Authorize with CBS through a shared access signature.
      */
     public static final CbsAuthorizationType SHARED_ACCESS_SIGNATURE =
         fromString("servicebus.windows.net:sastoken", CbsAuthorizationType.class);
+
     /**
      * Authorize with CBS using a JSON web token.
      *
