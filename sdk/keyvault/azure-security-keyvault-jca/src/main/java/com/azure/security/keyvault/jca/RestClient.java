@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * The REST client API.
  */
-interface RestClient {
+public interface RestClient {
 
     /**
      * Issue a GET request.
