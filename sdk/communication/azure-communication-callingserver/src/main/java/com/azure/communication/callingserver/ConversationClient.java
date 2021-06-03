@@ -3,8 +3,11 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.models.JoinCallResponse;
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.models.JoinCallRequest;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -23,6 +26,81 @@ public final class ConversationClient {
 
     ConversationClient(ConversationAsyncClient conversationAsyncClient) {
         this.conversationAsyncClient = conversationAsyncClient;
+    }
+
+    /**
+     * Join a call
+     *
+     * @param conversationId The conversation id.
+     * @param request Join Call request.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JoinCallResponse joinCall(String conversationId, JoinCallRequest request) {
+        return conversationAsyncClient.joinCall(conversationId, request).block();
+    }
+
+    /**
+     * Join a call
+     *
+     * @param conversationId The conversation id.
+     * @param request Join Call request.
+     * @param context A {@link Context} representing the request context.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<JoinCallResponse> inviteParticipantsWithResponse(String conversationId, JoinCallRequest request, Context context) {
+        return conversationAsyncClient.joinCallWithResponse(conversationId, request, context).block();
+    }
+
+    /**
+     * Invite participants to a Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param request Invite participant request.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void inviteParticipants(String conversationId, InviteParticipantsRequest request) {
+        return conversationAsyncClient.inviteParticipants(conversationId, request).block();
+    }
+
+    /**
+     * Invite participants to a Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param request Invite participant request.
+     * @param context A {@link Context} representing the request context.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> inviteParticipantsWithResponse(String conversationId, InviteParticipantsRequest request, Context context) {
+        return conversationAsyncClient.inviteParticipantsWithResponse(conversationId, request, context).block();
+    }
+
+    /**
+     * Remove participant from the Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param participantId Participant id.
+     * @return response for a successful removeParticipant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void removeParticipant(String conversationId, String participantId) {
+        return conversationAsyncClient.removeParticipant(conversationId, participantId).block();
+    }
+
+    /**
+     * Remove participant from the Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param participantId Participant id.
+     * @param context A {@link Context} representing the request context.
+     * @return response for a successful removeParticipant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> removeParticipantWithResponse(String conversationId, String participantId, Context context) {
+        return conversationAsyncClient.removeParticipantWithResponse(conversationId, participantId, context).block();
     }
 
     /**

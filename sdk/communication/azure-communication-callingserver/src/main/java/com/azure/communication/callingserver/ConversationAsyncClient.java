@@ -14,6 +14,11 @@ import com.azure.communication.callingserver.implementation.models.StartCallReco
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.JoinCallRequestConverter;
+import com.azure.communication.callingserver.implementation.models.JoinCallResponse;
+import com.azure.communication.callingserver.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.models.JoinCallRequest;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -41,6 +46,155 @@ public final class ConversationAsyncClient {
 
     ConversationAsyncClient(AzureCommunicationCallingServerServiceImpl conversationServiceClient) {
         conversationsClient = conversationServiceClient.getConversations();
+    }
+
+    /**
+     * Join a Call
+     *
+     * @param conversationId The conversation id.
+     * @param request Join Call request.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<JoinCallResponse> joinCall(String conversationId, JoinCallRequest request) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(request, "'request' cannot be null.");
+
+            return this.conversationsClient.joinCallAsync(conversationId, JoinCallRequestConverter.convert(request));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Join a Call
+     *
+     * @param conversationId The conversation id.
+     * @param request Join Call request.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<JoinCallResponse>>joinCallWithResponse(String conversationId, JoinCallRequest request) {
+        return joinCallWithResponse(conversationId, request, null);
+    }
+
+    Mono<Response<JoinCallResponse>> joinCallWithResponse(
+        String conversationId,
+        JoinCallRequest request,
+        Context context) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(request, "'request' cannot be null.");
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.conversationsClient.joinCallWithResponseAsync(conversationId,
+                    JoinCallRequestConverter.convert(request));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Invite Participats to a Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param request Invite participant request.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> inviteParticipants(String conversationId, InviteParticipantsRequest request) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(request, "'request' cannot be null.");
+
+            return this.conversationsClient.inviteParticipantsAsync(conversationId, InviteParticipantsRequestConverter.convert(request));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Invite Participats to a Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param request Invite participant request.
+     * @return response for a successful inviteParticipants request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> inviteParticipantsWithResponse(String conversationId, InviteParticipantsRequest request) {
+        return inviteParticipantsWithResponse(conversationId, request, null);
+    }
+
+    Mono<Response<Void>> inviteParticipantsWithResponse(
+        String conversationId,
+        InviteParticipantsRequest request,
+        Context context) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(request, "'request' cannot be null.");
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.conversationsClient.inviteParticipantsWithResponseAsync(conversationId,
+                        InviteParticipantsRequestConverter.convert(request));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+       /**
+     * Remove participant from the Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param participantId Participant id.
+     * @return response for a successful removeParticipant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeParticipant(String conversationId, String participantId) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+
+            return this.conversationsClient.removeParticipantAsync(conversationId, participantId);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove participant from the Conversation.
+     *
+     * @param conversationId The conversation id.
+     * @param participantId Participant id.
+     * @return response for a successful removeParticipant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeParticipantWithResponse(String conversationId, String participantId) {
+        return removeParticipantWithResponse(conversationId, participantId, null);
+    }
+
+    /**
+     * Remove participant from the Conversation.
+     */
+    Mono<Response<Void>> removeParticipantWithResponse(String conversationId, String participantId, Context context) {
+        try {
+            Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
+            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return this.conversationsClient.removeParticipantWithResponseAsync(conversationId, participantId);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
