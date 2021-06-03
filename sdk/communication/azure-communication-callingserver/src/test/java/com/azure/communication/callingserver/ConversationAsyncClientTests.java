@@ -90,8 +90,8 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionAsync");
         
         var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-        URI audioFileUri =  new URI("https://host.app/audio/bot-callcenter-intro.wav");      
-        URI callbackUri = new URI("https://dev.skype.net:6448");
+        String audioFileUri =  "https://host.app/audio/bot-callcenter-intro.wav";      
+        String callbackUri = "https://dev.skype.net:6448";
         
         System.out.println("conversationId: " + conversationId);
         try {
@@ -111,8 +111,8 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
         
         var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-        URI audioFileUri =  new URI("https://host.app/audio/bot-callcenter-intro.wav");      
-        URI callbackUri = new URI("https://dev.skype.net:6448");
+        String audioFileUri =  "https://host.app/audio/bot-callcenter-intro.wav";      
+        String callbackUri = "https://dev.skype.net:6448";
         
         System.out.println("conversationId: " + conversationId);
         try {

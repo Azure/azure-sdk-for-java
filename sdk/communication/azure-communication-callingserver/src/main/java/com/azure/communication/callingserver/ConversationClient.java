@@ -250,11 +250,11 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
+    public PlayAudioResponse playAudio(String conversationId, String audioFileUri, String audioFileId, String callbackUri, String operationContext) {
         
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
         PlayAudioRequest playAudioRequest = new PlayAudioRequest().
-            setAudioFileUri(audioFileUri.toString()).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri.toString()).setOperationContext(operationContext);
+            setAudioFileUri(audioFileUri).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri).setOperationContext(operationContext);
         return conversationAsyncClient.playAudio(conversationId, playAudioRequest).block();
     }
 
@@ -270,11 +270,11 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
-        
+    public Response<PlayAudioResponse> playAudioWithResponse(String conversationId, String audioFileUri, String audioFileId, String callbackUri, String operationContext, Context context) {
+
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
         PlayAudioRequest playAudioRequest = new PlayAudioRequest().
-            setAudioFileUri(audioFileUri.toString()).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri.toString()).setOperationContext(operationContext);
+            setAudioFileUri(audioFileUri).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri).setOperationContext(operationContext);
         return conversationAsyncClient.playAudioWithResponse(conversationId, playAudioRequest, context).block();
     }
 }
