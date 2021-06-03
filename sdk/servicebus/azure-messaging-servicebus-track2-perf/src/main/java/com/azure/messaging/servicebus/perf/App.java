@@ -26,6 +26,7 @@ public class App {
         Class<?>[] testClasses = null;
 
         testClasses = new Class<?>[]{
+            ProcessorReceiveAndLockMessageTest.class,
             ReceiveAndDeleteMessageTest.class,
             ReceiveAndLockMessageTest.class,
             SendMessageTest.class,

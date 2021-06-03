@@ -9,9 +9,6 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
@@ -20,14 +17,22 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Date;
+import java.util.Properties;
+import java.util.function.Consumer;
 
 /**
  * Base class for performance test.
  * @param <TOptions> for performance configuration.
  */
 abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private final ClientLogger logger = new ClientLogger(ServiceTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTest.class);
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     protected static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
@@ -35,12 +40,18 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     protected static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     protected static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
+    protected final String connectionString;
+    protected final String queueName;
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy-HHMMSSS");
+
+    protected ServiceBusReceiverAsyncClient receiverAsync;
+
     final ServiceBusReceiverClient receiver;
     final ServiceBusSenderClient sender;
     final ServiceBusSenderAsyncClient senderAsync;
-    final ServiceBusProcessorClient processorClient;
-    ServiceBusReceiverAsyncClient receiverAsync;
+    final ServiceBusClientBuilder baseBuilder;
 
+    private final String resultFilePath;
 
     /**
      *
@@ -50,20 +61,23 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      */
     ServiceTest(TOptions options, ServiceBusReceiveMode receiveMode) {
         super(options);
-        String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
+
+        resultFilePath = System.getProperty("user.dir") + "\\sb-performance-test-result-t2-"+dateFormatter.format(new Date())+".csv";
+        updateResult("Date, Use case, Number of messages, Total time(Seconds), messages/seconds, SDK Version");
+        connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
         }
 
-        String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+        queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
 
         // Setup the service client
-        final ServiceBusClientBuilder baseBuilder = new ServiceBusClientBuilder()
+        baseBuilder = new ServiceBusClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(60)))
             .transportType(AmqpTransportType.AMQP)
@@ -79,29 +93,64 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
             .queueName(queueName);
 
         receiver = receiverBuilder.buildClient();
-        //receiverAsync = receiverBuilder.buildAsyncClient();
 
         sender = senderBuilder.buildClient();
         senderAsync = senderBuilder.buildAsyncClient();
-
-        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorBuilder = baseBuilder
-            .processor()
-            .receiveMode(receiveMode)
-            .processMessage(ServiceTest::processMessage)
-            .queueName(queueName);
-
-        processorClient = processorBuilder.buildProcessorClient();
     }
 
-    private static void processMessage(ServiceBusReceivedMessageContext context) {
-        ServiceBusReceivedMessage message = context.getMessage();
-        System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
-            message.getSequenceNumber(), message.getBody());
+    protected void updateResult(String data) {
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(resultFilePath, true);
+            fileWriter.write(data);
+            fileWriter.write("\n");
+            fileWriter.close();
+        } catch (IOException ex) {
+            LOGGER.verbose("Could not write to the result file %s." , resultFilePath);
+        } finally {
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {}
+            }
+        }
 
-        // When this message function completes, the message is automatically completed. If an exception is
-        // thrown in here, the message is abandoned.
-        // To disable this behaviour, toggle ServiceBusSessionProcessorClientBuilder.disableAutoComplete()
-        // when building the session receiver.
+        LOGGER.verbose("Written to result file %s." , resultFilePath);
+    }
+
+    protected String getSDKVersion() {
+        String version = null;
+        String propFileName = "azure-messaging-servicebus.properties";
+        try {
+            Properties prop = new Properties();
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+            if (inputStream != null) {
+                prop.load(inputStream);
+                version = (String) prop.get("version");
+            } else {
+                throw new FileNotFoundException("Property file '" + propFileName + "' not found in the classpath.");
+            }
+        } catch (IOException ee) {
+            LOGGER.error("Error in loading property file %s.", propFileName);
+        }
+        return version;
+    }
+
+    protected void updateResults(String testName, int messagesReceived, Duration testDuration) {
+        StringBuffer result = new StringBuffer();
+        result.append(new Date().toString());
+        result.append(",");
+        result.append(testName);
+        result.append(",");
+        result.append(messagesReceived);
+        result.append(",");
+        result.append(testDuration.getSeconds());
+        result.append(",");
+        double mps = messagesReceived / (testDuration.getSeconds() * 1.000000);
+        result.append(mps);
+        result.append(",");
+        result.append(getSDKVersion());
+        updateResult(result.toString());
     }
 }
 

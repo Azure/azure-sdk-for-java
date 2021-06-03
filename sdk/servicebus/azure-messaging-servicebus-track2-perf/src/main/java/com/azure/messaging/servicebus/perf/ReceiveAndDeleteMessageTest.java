@@ -7,21 +7,26 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Performance test.
  */
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiveAndDeleteMessageTest.class);
     private final ServiceBusStressOptions options;
     private final String messageContent;
+    private final Duration testDuration;
 
     /**
      * Creates test object
@@ -31,6 +36,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         super(options, ServiceBusReceiveMode.RECEIVE_AND_DELETE);
         this.options = options;
         this.messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
+        this.testDuration = Duration.ofSeconds(options.getDuration() - 1);
     }
 
     @Override
@@ -62,17 +68,37 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         }
 
         if (count <= 0) {
-            throw logger.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
+            throw LOGGER.logExceptionAsWarning(new RuntimeException("Error. Should have received some messages."));
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return receiverAsync
-            .receiveMessages()
-            .take(options.getMessagesToReceive())
-            .map(serviceBusReceivedMessageContext -> {
-                return serviceBusReceivedMessageContext;
-            }).then();
+        final Mono<ServiceBusReceiverAsyncClient> receiverAsyncMono = Mono.defer(() -> Mono.just(baseBuilder
+            .receiver()
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+            .queueName(queueName)
+            .buildAsyncClient()));
+
+        final AtomicInteger messagesReceived = new AtomicInteger();
+        final AtomicReference<ServiceBusReceiverAsyncClient> receiverClient = new AtomicReference<>();
+
+        return receiverAsyncMono
+            .flatMap(serviceBusReceiverAsyncClient -> {
+                receiverClient.set(serviceBusReceiverAsyncClient);
+                return serviceBusReceiverAsyncClient
+                    .receiveMessages()
+                    .take(testDuration)
+                    .flatMap(m -> {
+                        messagesReceived.incrementAndGet();
+                        return Mono.just(m);
+                    }, 1)
+                    .doFinally(signal -> {
+                        receiverClient.get().close();
+                        updateResults(this.getClass().getName(), messagesReceived.get(), testDuration);
+                        LOGGER.verbose("Exit from receive.");
+                    })
+                    .then();
+            });
     }
 }

@@ -1,18 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -20,14 +17,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
-public class ProcessorReceiveAndLockMessageTest  extends ServiceTest<ServiceBusStressOptions> {
+/**
+ * Test for ProcessorReceiveAndLockMessageTest.
+ */
+public class ProcessorReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
-    private final ClientLogger logger = new ClientLogger(ProcessorReceiveAndLockMessageTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProcessorReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
     private final String messageContent;
+    private final Duration testDuration;
+    final AtomicInteger messagesReceived = new AtomicInteger();
+
+    private final Consumer<ServiceBusErrorContext> processError = errorContext -> {
+        LOGGER.verbose("Error occurred while receiving message: " + errorContext.getException());
+    };
+    private final Consumer<ServiceBusReceivedMessageContext> processMessage = message -> {
+        messagesReceived.incrementAndGet();
+    };
+
+    private ServiceBusProcessorClient processorClient;
+
 
     /**
      * Creates test object
@@ -37,6 +50,7 @@ public class ProcessorReceiveAndLockMessageTest  extends ServiceTest<ServiceBusS
         super(options, ServiceBusReceiveMode.PEEK_LOCK);
         this.options = options;
         this.messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
+        this.testDuration = Duration.ofSeconds(options.getDuration() - 1);
     }
 
     @Override
@@ -47,7 +61,7 @@ public class ProcessorReceiveAndLockMessageTest  extends ServiceTest<ServiceBusS
 
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
-                ServiceBusMessage message =  new ServiceBusMessage(messageContent);
+                ServiceBusMessage message = new ServiceBusMessage(messageContent);
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
@@ -60,28 +74,30 @@ public class ProcessorReceiveAndLockMessageTest  extends ServiceTest<ServiceBusS
         AtomicReference<CountDownLatch> countdownLatch = new AtomicReference<>();
         countdownLatch.set(new CountDownLatch(1));
         processorClient.start();
-
-
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return receiverAsync
-            .receiveMessages()
-            .take(options.getMessagesToReceive())
-            .flatMap(message -> {
-                return receiverAsync.complete(message).thenReturn(true);
-            }, 1).then();
-    }
+        final Mono<ServiceBusProcessorClient> processorClientMono = Mono.defer(() -> Mono.just(
+            processorClient = baseBuilder
+                .processor()
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                .processMessage(processMessage)
+                .processError(processError)
+                .queueName(queueName)
+                .buildProcessorClient()));
 
-    private static void processMessage(ServiceBusReceivedMessageContext context) {
-        ServiceBusReceivedMessage message = context.getMessage();
-        System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
-            message.getSequenceNumber(), message.getBody());
-
-        // When this message function completes, the message is automatically completed. If an exception is
-        // thrown in here, the message is abandoned.
-        // To disable this behaviour, toggle ServiceBusSessionProcessorClientBuilder.disableAutoComplete()
-        // when building the session receiver.
+        return processorClientMono
+            .flatMap(serviceBusProcessorClient -> {
+                serviceBusProcessorClient.start();
+                return Mono.delay(testDuration)
+                    .map(aLong -> {
+                        LOGGER.verbose("Processor Client stop and close.");
+                        serviceBusProcessorClient.stop();
+                        serviceBusProcessorClient.close();
+                        updateResults(this.getClass().getName(), messagesReceived.get(), testDuration);
+                        return aLong;
+                    }).then();
+            });
     }
 }
