@@ -194,7 +194,7 @@ spring:
 
 1.  Verify in your app’s logs that a similar message was posted:
 
-        New message received: 'hello'
+        New message received: 'hello', partition key: 2002572479, sequence number: 4, offset: 768, enqueued time: 2021-06-03T01:47:36.859Z
         Message 'hello' successfully checkpointed
 
 1.  Delete the resources on [Azure Portal][azure-portal] to avoid unexpected charges.

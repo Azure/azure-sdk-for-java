@@ -9,6 +9,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.context.core.impl.ResourceGroupManager;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -18,6 +19,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.util.Assert;
 
 /**
  * Auto-config to provide default {@link CredentialsProvider} for all Azure services
@@ -72,4 +74,17 @@ public class AzureContextAutoConfiguration {
         return azureResourceManager::subscriptionId;
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(AzureResourceManager.class)
+    public ResourceGroupManager resourceGroupManager(AzureResourceManager azureResourceManager,
+                                                         AzureProperties azureProperties) {
+        ResourceGroupManager resourceGroupManager = new ResourceGroupManager(azureResourceManager, azureProperties);
+        if (azureProperties.isAutoCreateResources()
+            && !resourceGroupManager.exists(azureProperties.getResourceGroup())) {
+            Assert.notNull(resourceGroupManager.getOrCreate(azureProperties.getResourceGroup()),
+                "Unable to obtain the resource group.");
+        }
+        return resourceGroupManager;
+    }
 }
