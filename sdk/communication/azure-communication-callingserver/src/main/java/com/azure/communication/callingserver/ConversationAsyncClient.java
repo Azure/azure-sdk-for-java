@@ -5,18 +5,16 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.ConversationsImpl;
-import com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingResponse;
-import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.JoinCallRequestConverter;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
+import com.azure.communication.callingserver.models.GetCallRecordingStateResponse;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.JoinCallResponse;
-import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.callingserver.models.StartCallRecordingResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -220,7 +218,7 @@ public final class ConversationAsyncClient {
      * @return response for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResult> startRecording(String conversationId, URI recordingStateCallbackUri) {
+    public Mono<StartCallRecordingResponse> startRecording(String conversationId, URI recordingStateCallbackUri) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
@@ -228,12 +226,10 @@ public final class ConversationAsyncClient {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' cannot be non absolute Uri"));
             }
 
-            StartCallRecordingRequest request = createStartCallRecordingRequest(recordingStateCallbackUri);
+            StartCallRecordingRequest request = new StartCallRecordingRequest().setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
             return this.conversationsClient.startRecordingAsync(conversationId, request)
                     .flatMap((StartCallRecordingResponse response) -> {
-                        StartCallRecordingResult startCallRecordingResult = convertGetCallRecordingStateResponse(
-                                response);
-                        return Mono.just(startCallRecordingResult);
+                        return Mono.just(response);
                     });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -249,12 +245,12 @@ public final class ConversationAsyncClient {
      * @return response for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(String conversationId,
+    public Mono<Response<StartCallRecordingResponse>> startRecordingWithResponse(String conversationId,
         URI recordingStateCallbackUri) {    
         return startRecordingWithResponse(conversationId, recordingStateCallbackUri, null);
     }
 
-    Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(String conversationId,
+    Mono<Response<StartCallRecordingResponse>> startRecordingWithResponse(String conversationId,
             URI recordingStateCallbackUri, Context context) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
@@ -266,12 +262,10 @@ public final class ConversationAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                StartCallRecordingRequest request = createStartCallRecordingRequest(recordingStateCallbackUri);
+                StartCallRecordingRequest request = new StartCallRecordingRequest().setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
                 return this.conversationsClient.startRecordingWithResponseAsync(conversationId, request)
                         .flatMap((Response<StartCallRecordingResponse> response) -> {
-                            StartCallRecordingResult startCallRecordingResult = convertGetCallRecordingStateResponse(
-                                    response.getValue());
-                            return Mono.just(new SimpleResponse<>(response, startCallRecordingResult));
+                            return Mono.just(new SimpleResponse<>(response, response.getValue()));
                         });
             });
         } catch (RuntimeException ex) {
@@ -422,15 +416,13 @@ public final class ConversationAsyncClient {
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCallRecordingStateResult> getRecordingState(String conversationId, String recordingId) {
+    public Mono<GetCallRecordingStateResponse> getRecordingState(String conversationId, String recordingId) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return this.conversationsClient.recordingStateAsync(conversationId, recordingId)
                     .flatMap((GetCallRecordingStateResponse response) -> {
-                        GetCallRecordingStateResult getRecordingStateResult = convertGetCallRecordingStateResponse(
-                                response);
-                        return Mono.just(getRecordingStateResult);
+                        return Mono.just(response);
                     });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -445,12 +437,12 @@ public final class ConversationAsyncClient {
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetCallRecordingStateResult>> getRecordingStateWithResponse(String conversationId,
+    public Mono<Response<GetCallRecordingStateResponse>> getRecordingStateWithResponse(String conversationId,
             String recordingId) {
         return getRecordingStateWithResponse(conversationId, recordingId, null);
     }
 
-    Mono<Response<GetCallRecordingStateResult>> getRecordingStateWithResponse(String conversationId,
+    Mono<Response<GetCallRecordingStateResponse>> getRecordingStateWithResponse(String conversationId,
             String recordingId, Context context) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
@@ -461,9 +453,7 @@ public final class ConversationAsyncClient {
                 } 
                 return this.conversationsClient.recordingStateWithResponseAsync(conversationId, recordingId)
                         .flatMap((Response<GetCallRecordingStateResponse> response) -> {
-                            GetCallRecordingStateResult getRecordingStateResult = convertGetCallRecordingStateResponse(
-                                    response.getValue());
-                            return Mono.just(new SimpleResponse<>(response, getRecordingStateResult));
+                            return Mono.just(new SimpleResponse<>(response, response.getValue()));
                         });
             });
         } catch (RuntimeException ex) {
@@ -497,7 +487,7 @@ public final class ConversationAsyncClient {
         }
     }
 
-    public Mono<PlayAudioResponse> playAudio(String conversationId, PlayAudioRequest request) {
+    Mono<PlayAudioResponse> playAudio(String conversationId, PlayAudioRequest request) {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
@@ -545,22 +535,5 @@ public final class ConversationAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    private StartCallRecordingRequest createStartCallRecordingRequest(URI recordingStateCallbackUri) {
-        StartCallRecordingRequest request = new StartCallRecordingRequest();
-        request.setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
-        return request;
-    }
-
-    private GetCallRecordingStateResult convertGetCallRecordingStateResponse(
-            com.azure.communication.callingserver.implementation.models.GetCallRecordingStateResponse response) {
-        return new GetCallRecordingStateResult()
-                .setRecordingState(com.azure.communication.callingserver.models.CallRecordingState
-                        .fromString(response.getRecordingState().toString()));
-    }
-
-    private StartCallRecordingResult convertGetCallRecordingStateResponse(StartCallRecordingResponse response) {
-        return new StartCallRecordingResult().setRecordingId(response.getRecordingId());
     }
 }

@@ -37,7 +37,7 @@ java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse
+custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse,OperationStatus,StartCallRecordingResponse,GetCallRecordingStateResponse,CallRecordingState,CallState,CreateCallResponse
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
