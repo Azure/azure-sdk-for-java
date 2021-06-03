@@ -10,8 +10,8 @@ import java.net.URISyntaxException;
 
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
-import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
-import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.callingserver.models.GetCallRecordingStateResponse;
+import com.azure.communication.callingserver.models.StartCallRecordingResponse;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -36,7 +36,7 @@ public class ConversationClientTests extends CallingServerTestBase {
         URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
 
         try {
-            StartCallRecordingResult startCallRecordingResponse = conversationAsyncClient.startRecording(conversationId, recordingStateCallbackUri);
+            StartCallRecordingResponse startCallRecordingResponse = conversationAsyncClient.startRecording(conversationId, recordingStateCallbackUri);
             recordingId = startCallRecordingResponse.getRecordingId();
             validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
 
@@ -63,9 +63,9 @@ public class ConversationClientTests extends CallingServerTestBase {
         System.out.println("conversationId: " + conversationId);
 
         try {
-            Response<StartCallRecordingResult> response = conversationClient.startRecordingWithResponse(conversationId, recordingStateCallbackUri, Context.NONE);
+            Response<StartCallRecordingResponse> response = conversationClient.startRecordingWithResponse(conversationId, recordingStateCallbackUri, Context.NONE);
             assertEquals(response.getStatusCode(), 200);
-            StartCallRecordingResult startCallRecordingResponse = response.getValue();
+            StartCallRecordingResponse startCallRecordingResponse = response.getValue();
             recordingId = startCallRecordingResponse.getRecordingId();
             validateCallRecordingState(conversationClient, conversationId, recordingId, CallRecordingState.ACTIVE);
 
@@ -92,7 +92,7 @@ public class ConversationClientTests extends CallingServerTestBase {
         System.out.println("conversationId: " + invalidConversationId);
 
         try {
-            Response<StartCallRecordingResult> response = conversationClient.startRecordingWithResponse(invalidConversationId, recordingStateCallbackUri, Context.NONE);
+            Response<StartCallRecordingResponse> response = conversationClient.startRecordingWithResponse(invalidConversationId, recordingStateCallbackUri, Context.NONE);
             assertEquals(response.getStatusCode(), 400);
         } catch (CommunicationErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
@@ -118,7 +118,7 @@ public class ConversationClientTests extends CallingServerTestBase {
          */
         sleepIfRunningAgainstService(6000);
 
-        GetCallRecordingStateResult callRecordingStateResult = conversationClient.getRecordingState(conversationId, recordingId);
+        GetCallRecordingStateResponse callRecordingStateResult = conversationClient.getRecordingState(conversationId, recordingId);
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
 }

@@ -18,14 +18,13 @@ import com.azure.communication.callingserver.implementation.converters.InvitePar
 import com.azure.communication.callingserver.implementation.models.CallModality;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.CreateCallResponse;
 import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.CreateCallResult;
+import com.azure.communication.callingserver.models.CreateCallResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -59,7 +58,7 @@ public final class CallAsyncClient {
      * @return response for a successful CreateCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets,
+    public Mono<CreateCallResponse> createCall(CommunicationIdentifier source, Iterable<CommunicationIdentifier> targets,
             CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -68,8 +67,7 @@ public final class CallAsyncClient {
 
             CreateCallRequestInternal request = createCreateCallRequest(source, targets, createCallOptions);
             return this.callClient.createCallAsync(request).flatMap((CreateCallResponse response) -> {
-                CreateCallResult createCallResult = convertCreateCallWithResponse(response);
-                return Mono.just(createCallResult);
+                return Mono.just(response);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -85,12 +83,12 @@ public final class CallAsyncClient {
      * @return response for a successful CreateCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResult>> createCallWithResponse(CommunicationIdentifier source,
+    public Mono<Response<CreateCallResponse>> createCallWithResponse(CommunicationIdentifier source,
             Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions) {
         return createCallWithResponse(source, targets, createCallOptions, null);
     }
 
-    Mono<Response<CreateCallResult>> createCallWithResponse(CommunicationIdentifier source,
+    Mono<Response<CreateCallResponse>> createCallWithResponse(CommunicationIdentifier source,
             Iterable<CommunicationIdentifier> targets, CreateCallOptions createCallOptions, Context context) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -105,8 +103,7 @@ public final class CallAsyncClient {
                 }
                 return this.callClient.createCallWithResponseAsync(request)
                         .flatMap((Response<CreateCallResponse> response) -> {
-                            CreateCallResult createCallResult = convertCreateCallWithResponse(response.getValue());
-                            return Mono.just(new SimpleResponse<>(response, createCallResult));
+                            return Mono.just(new SimpleResponse<>(response, response.getValue()));
                         });
             });
         } catch (RuntimeException ex) {
@@ -138,7 +135,7 @@ public final class CallAsyncClient {
         }
     }
 
-    public Mono<PlayAudioResponse> playAudio(String callId, PlayAudioRequest request) {
+    Mono<PlayAudioResponse> playAudio(String callId, PlayAudioRequest request) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(request, "'request' cannot be null.");
@@ -376,7 +373,7 @@ public final class CallAsyncClient {
                 if (context != null) {
                     contextValue = context;
                 }
-                return this.callClient.inviteParticipantsWithResponseAsync(callId,request);
+                return this.callClient.inviteParticipantsWithResponseAsync(callId, request);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -458,9 +455,5 @@ public final class CallAsyncClient {
         request.setRequestedCallEvents(requestedCallEvents).setSourceAlternateIdentity(sourceAlternateIdentity);
 
         return request;
-    }
-
-    private CreateCallResult convertCreateCallWithResponse(CreateCallResponse response) {
-        return new CreateCallResult().setCallLegId(response.getCallLegId());
     }
 }

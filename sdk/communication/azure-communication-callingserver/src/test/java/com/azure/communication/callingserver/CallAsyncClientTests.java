@@ -10,7 +10,7 @@ import java.util.UUID;
 import com.azure.communication.callingserver.implementation.models.CallModality;
 import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.CreateCallResult;
+import com.azure.communication.callingserver.models.CreateCallResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -49,7 +49,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
             
-            CreateCallResult createCallResult = callAsyncClient.createCall(
+            CreateCallResponse createCallResult = callAsyncClient.createCall(
                 new CommunicationUserIdentifier(from), 
                 new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
                 options).block();
@@ -90,7 +90,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
             
-            Response<CreateCallResult> createCallResponse = callAsyncClient.createCallWithResponse(
+            Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
                 new CommunicationUserIdentifier(from), 
                 new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
                 options, 
@@ -133,7 +133,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
             
-            CreateCallResult createCallResult = callAsyncClient.createCall(
+            CreateCallResponse createCallResult = callAsyncClient.createCall(
                 new CommunicationUserIdentifier(from), 
                 new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
                 options).block();
@@ -172,7 +172,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
             
-            Response<CreateCallResult> createCallResponse = callAsyncClient.createCallWithResponse(
+            Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
                 new CommunicationUserIdentifier(from), 
                 new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
                 options, 
