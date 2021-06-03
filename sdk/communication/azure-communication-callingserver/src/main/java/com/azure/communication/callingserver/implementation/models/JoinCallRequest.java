@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The request payload for join call. */
 @Fluent
-public final class JoinCallRequestInternal {
+public final class JoinCallRequest {
     /*
      * The source of the call.
      */
@@ -54,9 +54,9 @@ public final class JoinCallRequestInternal {
      * Set the source property: The source of the call.
      *
      * @param source the source value to set.
-     * @return the JoinCallRequestInternal object itself.
+     * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequestInternal setSource(CommunicationIdentifierModel source) {
+    public JoinCallRequest setSource(CommunicationIdentifierModel source) {
         this.source = source;
         return this;
     }
@@ -74,9 +74,9 @@ public final class JoinCallRequestInternal {
      * Set the subject property: The subject.
      *
      * @param subject the subject value to set.
-     * @return the JoinCallRequestInternal object itself.
+     * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequestInternal setSubject(String subject) {
+    public JoinCallRequest setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -94,9 +94,9 @@ public final class JoinCallRequestInternal {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the JoinCallRequestInternal object itself.
+     * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequestInternal setCallbackUri(String callbackUri) {
+    public JoinCallRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }
@@ -114,9 +114,9 @@ public final class JoinCallRequestInternal {
      * Set the requestedModalities property: The requested modalities.
      *
      * @param requestedModalities the requestedModalities value to set.
-     * @return the JoinCallRequestInternal object itself.
+     * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequestInternal setRequestedModalities(List<CallModality> requestedModalities) {
+    public JoinCallRequest setRequestedModalities(List<CallModality> requestedModalities) {
         this.requestedModalities = requestedModalities;
         return this;
     }
@@ -134,9 +134,9 @@ public final class JoinCallRequestInternal {
      * Set the requestedCallEvents property: The requested call events to subscribe to.
      *
      * @param requestedCallEvents the requestedCallEvents value to set.
-     * @return the JoinCallRequestInternal object itself.
+     * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequestInternal setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public JoinCallRequest setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }

@@ -3,12 +3,13 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.models.JoinCallResponse;
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.models.InviteParticipantsRequest;
-import com.azure.communication.callingserver.models.JoinCallRequest;
+import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.JoinCallResponse;
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -32,50 +33,58 @@ public final class ConversationClient {
      * Join a call
      *
      * @param conversationId The conversation id.
-     * @param request Join Call request.
-     * @return response for a successful inviteParticipants request.
+     * @param source of Join Call request.
+     * @param joinCallOptions to Join Call.
+     * @return JoinCallResponse for a successful JoinCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JoinCallResponse joinCall(String conversationId, JoinCallRequest request) {
-        return conversationAsyncClient.joinCall(conversationId, request).block();
+    public JoinCallResponse joinCall(String conversationId, CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
+        return conversationAsyncClient.joinCall(conversationId, source, joinCallOptions).block();
     }
 
     /**
      * Join a call
      *
      * @param conversationId The conversation id.
-     * @param request Join Call request.
+     * @param source of Join Call request.
+     * @param joinCallOptions to Join Call.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful inviteParticipants request.
+     * @return response for a successful JoinCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JoinCallResponse> inviteParticipantsWithResponse(String conversationId, JoinCallRequest request, Context context) {
-        return conversationAsyncClient.joinCallWithResponse(conversationId, request, context).block();
+    public Response<JoinCallResponse> joinCallWithResponse(String conversationId, CommunicationIdentifier source, JoinCallOptions joinCallOptions, Context context) {
+        return conversationAsyncClient.joinCallWithResponse(conversationId, source, joinCallOptions, context).block();
     }
 
     /**
      * Invite participants to a Conversation.
      *
      * @param conversationId The conversation id.
-     * @param request Invite participant request.
+     * @param participant Invited participant.
+     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param operationContext operationContext.
+     * @param callBackUri callBackUri to get notifications.
      * @return response for a successful inviteParticipants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void inviteParticipants(String conversationId, InviteParticipantsRequest request) {
-        return conversationAsyncClient.inviteParticipants(conversationId, request).block();
+    public Void addParticipant(String conversationId, CommunicationIdentifier participant, String alternateCallerId, String operationContext, String callBackUri) {
+        return conversationAsyncClient.addParticipant(conversationId, participant, alternateCallerId, operationContext, callBackUri).block();
     }
 
     /**
      * Invite participants to a Conversation.
      *
      * @param conversationId The conversation id.
-     * @param request Invite participant request.
+     * @param participant Invited participant.
+     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param operationContext operationContext.
+     * @param callBackUri callBackUri to get notifications.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful inviteParticipants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> inviteParticipantsWithResponse(String conversationId, InviteParticipantsRequest request, Context context) {
-        return conversationAsyncClient.inviteParticipantsWithResponse(conversationId, request, context).block();
+    public Response<Void> addParticipantWithResponse(String conversationId, CommunicationIdentifier participant, String alternateCallerId, String operationContext, String callBackUri, Context context) {
+        return conversationAsyncClient.addParticipantWithResponse(conversationId, participant, alternateCallerId, operationContext, callBackUri, context).block();
     }
 
     /**
@@ -241,8 +250,12 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
-        return conversationAsyncClient.playAudio(conversationId, audioFileUri, audioFileId, callbackUri, operationContext).block();
+    public PlayAudioResponse playAudio(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
+        
+        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest().
+            setAudioFileUri(audioFileUri.toString()).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri.toString()).setOperationContext(operationContext);
+        return conversationAsyncClient.playAudio(conversationId, playAudioRequest).block();
     }
 
     /**
@@ -257,7 +270,11 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
-        return conversationAsyncClient.playAudioWithResponse(conversationId, audioFileUri, audioFileId, callbackUri, operationContext, context).block();
+    public Response<PlayAudioResponse> playAudioWithResponse(String conversationId, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
+        
+        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest().
+            setAudioFileUri(audioFileUri.toString()).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri.toString()).setOperationContext(operationContext);
+        return conversationAsyncClient.playAudioWithResponse(conversationId, playAudioRequest, context).block();
     }
 }

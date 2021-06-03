@@ -4,34 +4,34 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequestInternal;
+import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
- * A converter between {@link com.azure.communication.callingserver.models.InviteParticipantsRequest} and
- * {@link InviteParticipantsRequestInternal}.
+ * A converter for {@link com.azure.communication.callingserver.models.InviteParticipantsRequest}
  */
 public final class InviteParticipantsRequestConverter {
     /**
-     * Maps from {com.azure.communication.callingserver.models.InviteParticipantsRequest} to {@link InviteParticipantsRequestInternal}.
+     * Maps to {@link InviteParticipantsRequest}.
      */
-    public static InviteParticipantsRequestInternal convert(com.azure.communication.callingserver.models.InviteParticipantsRequest obj) {
-        if (obj == null) {
+    public static InviteParticipantsRequest convert(CommunicationIdentifier participant, String alternateCallerId, String operationContext, String callBackUri) {
+        if (participant == null) {
             return null;
         }
-        List<CommunicationIdentifierModel> participants = new ArrayList<>();
-        for (CommunicationIdentifier participant : obj.getParticipants()) {
-            participants.add(CommunicationIdentifierConverter.convert(participant));
-        }
+        PhoneNumberIdentifierModel phoneNumberIdentifierModel = (alternateCallerId == null || alternateCallerId.isEmpty()) ? null 
+            : CommunicationIdentifierConverter.convert(new PhoneNumberIdentifier(alternateCallerId)).getPhoneNumber();
 
-        InviteParticipantsRequestInternal inviteParticipantsRequest = new InviteParticipantsRequestInternal()
-            .setParticipants(participants)
-            .setAlternateCallerId(obj.getAlternateCallerId() == null ? null : CommunicationIdentifierConverter.convert(obj.getAlternateCallerId()).getPhoneNumber())
-            .setOperationContext(obj.getOperationContext())
-            .setCallbackUri(obj.getCallbackUri());
+        InviteParticipantsRequest inviteParticipantsRequest = new InviteParticipantsRequest()
+            .setParticipants(new LinkedList<CommunicationIdentifierModel>(Arrays.asList(CommunicationIdentifierConverter.convert(participant))))
+            .setAlternateCallerId(phoneNumberIdentifierModel)
+            .setOperationContext(operationContext)
+            .setCallbackUri(callBackUri);
+
         return inviteParticipantsRequest;
     }
 

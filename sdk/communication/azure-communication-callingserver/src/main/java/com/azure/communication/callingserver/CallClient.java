@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
-import com.azure.communication.callingserver.models.InviteParticipantsRequest;
-import com.azure.communication.callingserver.models.PlayAudioRequest;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
-import com.azure.communication.callingserver.models.CancelMediaOperationsResult;
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -65,21 +63,9 @@ public final class CallClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext) {
+    public PlayAudioResponse playAudio(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext) {
         PlayAudioRequest playAudioRequest = new PlayAudioRequest().
             setAudioFileUri(audioFileUri).setLoop(loop).setAudioFileId(audioFileId).setOperationContext(operationContext);
-        return callAsyncClient.playAudio(callId, playAudioRequest).block();
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param callId The call id.
-     * @param playAudioRequest Play audio request.
-     * @return the response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String callId, PlayAudioRequest playAudioRequest) {
         return callAsyncClient.playAudio(callId, playAudioRequest).block();
     }
 
@@ -95,7 +81,7 @@ public final class CallClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext, Context context) {
+    public Response<PlayAudioResponse> playAudioWithResponse(String callId, String audioFileUri, boolean loop, String audioFileId, String operationContext, Context context) {
         PlayAudioRequest playAudioRequest = new PlayAudioRequest().
             setAudioFileUri(audioFileUri).setLoop(loop).setAudioFileId(audioFileId).setOperationContext(operationContext);
         return callAsyncClient.playAudioWithResponse(callId, playAudioRequest, context).block();
@@ -151,48 +137,54 @@ public final class CallClient {
      * Cancel Media Operations.
      *
      * @param callId Call id to to cancel media Operations.
+     * @param operationContext operationContext.
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelMediaOperationsResult cancelAllMediaOperations(String callId, CancelAllMediaOperationsRequest request) {
-        return callAsyncClient.cancelAllMediaOperations(callId, request).block();
+    public CancelAllMediaOperationsResponse cancelAllMediaOperations(String callId, String operationContext) {
+        return callAsyncClient.cancelAllMediaOperations(callId, operationContext).block();
     }
 
     /**
      * Cancel Media Operations.
      *
      * @param callId Call id to to cancel media Operations.
+     * @param operationContext operationContext.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelMediaOperationsResult> cancelAllMediaOperationsWithResponse(String callId, CancelAllMediaOperationsRequest request, Context context) {
-        return callAsyncClient.cancelAllMediaOperationsWithResponse(callId, request, context).block();
+    public Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsWithResponse(String callId, String operationContext, Context context) {
+        return callAsyncClient.cancelAllMediaOperationsWithResponse(callId, operationContext, context).block();
     }
 
     /**
      * Invite participants to a call.
      *
      * @param callId Call id.
-     * @param request Invite participant request.
+     * @param participant Invited participant.
+     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param operationContext operationContext.
      * @return response for a successful inviteParticipants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void inviteParticipants(String callId, InviteParticipantsRequest request) {
-        return callAsyncClient.inviteParticipants(callId, request).block();
+    public Void addParticipant(String callId, CommunicationIdentifier participant, String alternateCallerId, String operationContext) {
+        return callAsyncClient.addParticipant(callId, participant, alternateCallerId, operationContext).block();
     }
 
     /**
      * Invite participants to a call.
      *
      * @param callId Call id.
-     * @param request Invite participant request.
+     * @param participant Invited participant.
+     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param operationContext operationContext.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful inviteParticipants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> inviteParticipantsWithResponse(String callId, InviteParticipantsRequest request, Context context) {
-        return callAsyncClient.inviteParticipantsWithResponse(callId, request, context).block();
+    public Response<Void> addParticipantWithResponse(String callId, CommunicationIdentifier participant, String alternateCallerId, String operationContext, Context context) {
+        return callAsyncClient.addParticipantWithResponse(callId, participant, alternateCallerId, operationContext, context).block();
     }
 
     /**

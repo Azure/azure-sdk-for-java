@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The invite participants request. */
 @Fluent
-public final class InviteParticipantsRequestInternal {
+public final class InviteParticipantsRequest {
     /*
      * The alternate identity of source participant.
      */
@@ -48,9 +48,9 @@ public final class InviteParticipantsRequestInternal {
      * Set the alternateCallerId property: The alternate identity of source participant.
      *
      * @param alternateCallerId the alternateCallerId value to set.
-     * @return the InviteParticipantsRequestInternal object itself.
+     * @return the InviteParticipantsRequest object itself.
      */
-    public InviteParticipantsRequestInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+    public InviteParticipantsRequest setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
         return this;
     }
@@ -68,9 +68,9 @@ public final class InviteParticipantsRequestInternal {
      * Set the participants property: The list of participants to be added to the call.
      *
      * @param participants the participants value to set.
-     * @return the InviteParticipantsRequestInternal object itself.
+     * @return the InviteParticipantsRequest object itself.
      */
-    public InviteParticipantsRequestInternal setParticipants(List<CommunicationIdentifierModel> participants) {
+    public InviteParticipantsRequest setParticipants(List<CommunicationIdentifierModel> participants) {
         this.participants = participants;
         return this;
     }
@@ -88,9 +88,9 @@ public final class InviteParticipantsRequestInternal {
      * Set the operationContext property: The operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the InviteParticipantsRequestInternal object itself.
+     * @return the InviteParticipantsRequest object itself.
      */
-    public InviteParticipantsRequestInternal setOperationContext(String operationContext) {
+    public InviteParticipantsRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -108,9 +108,9 @@ public final class InviteParticipantsRequestInternal {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the InviteParticipantsRequestInternal object itself.
+     * @return the InviteParticipantsRequest object itself.
      */
-    public InviteParticipantsRequestInternal setCallbackUri(String callbackUri) {
+    public InviteParticipantsRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }
