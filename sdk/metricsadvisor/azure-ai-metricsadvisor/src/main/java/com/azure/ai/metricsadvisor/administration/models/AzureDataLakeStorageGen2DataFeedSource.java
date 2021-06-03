@@ -83,11 +83,11 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      *
      * @return The AzureDataLakeStorageGen2DataFeedSource.
      */
-    public static AzureDataLakeStorageGen2DataFeedSource usingBasicCredential(final String accountName,
-                                                                              final String accountKey,
-                                                                              final String fileSystemName,
-                                                                              final String directoryTemplate,
-                                                                              final String fileTemplate) {
+    public static AzureDataLakeStorageGen2DataFeedSource fromBasicCredential(final String accountName,
+                                                                             final String accountKey,
+                                                                             final String fileSystemName,
+                                                                             final String directoryTemplate,
+                                                                             final String fileTemplate) {
         return new AzureDataLakeStorageGen2DataFeedSource(accountName,
             accountKey,
             fileSystemName,
@@ -111,7 +111,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      *
      * @return The AzureDataLakeStorageGen2DataFeedSource.
      */
-    public static AzureDataLakeStorageGen2DataFeedSource usingSharedKeyCredential(
+    public static AzureDataLakeStorageGen2DataFeedSource fromSharedKeyCredential(
         final String accountName,
         final String fileSystemName,
         final String directoryTemplate,
@@ -140,11 +140,11 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      *
      * @return The AzureDataLakeStorageGen2DataFeedSource.
      */
-    public static AzureDataLakeStorageGen2DataFeedSource usingServicePrincipalCredential(final String accountName,
-                                                                                         final String fileSystemName,
-                                                                                         final String directoryTemplate,
-                                                                                         final String fileTemplate,
-                                                                                         final String credentialId) {
+    public static AzureDataLakeStorageGen2DataFeedSource fromServicePrincipalCredential(final String accountName,
+                                                                                        final String fileSystemName,
+                                                                                        final String directoryTemplate,
+                                                                                        final String fileTemplate,
+                                                                                        final String credentialId) {
         return new AzureDataLakeStorageGen2DataFeedSource(accountName,
             null,
             fileSystemName,
@@ -168,7 +168,7 @@ public final class AzureDataLakeStorageGen2DataFeedSource extends DataFeedSource
      *
      * @return The AzureDataLakeStorageGen2DataFeedSource.
      */
-    public static AzureDataLakeStorageGen2DataFeedSource usingServicePrincipalInKeyVaultCredential(
+    public static AzureDataLakeStorageGen2DataFeedSource fromServicePrincipalInKeyVaultCredential(
         final String accountName,
         final String fileSystemName,
         final String directoryTemplate,

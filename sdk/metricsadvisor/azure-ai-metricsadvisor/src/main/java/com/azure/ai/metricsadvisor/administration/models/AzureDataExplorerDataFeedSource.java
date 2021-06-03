@@ -59,8 +59,8 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      *
      * @return The AzureDataExplorerDataFeedSource.
      */
-    public static AzureDataExplorerDataFeedSource usingBasicCredential(final String connectionString,
-                                                               final String query) {
+    public static AzureDataExplorerDataFeedSource fromBasicCredential(final String connectionString,
+                                                                      final String query) {
         return new AzureDataExplorerDataFeedSource(connectionString, query, null, DatasourceAuthenticationType.BASIC);
     }
 
@@ -73,8 +73,8 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      *
      * @return The AzureDataExplorerDataFeedSource.
      */
-    public static AzureDataExplorerDataFeedSource usingManagedIdentityCredential(final String connectionString,
-                                                                                 final String query) {
+    public static AzureDataExplorerDataFeedSource fromManagedIdentityCredential(final String connectionString,
+                                                                                final String query) {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             null,
@@ -93,9 +93,9 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      *
      * @return The SQLServerDataFeedSource.
      */
-    public static AzureDataExplorerDataFeedSource usingServicePrincipalCredential(final String connectionString,
-                                                                                  final String query,
-                                                                                  final String credentialId) {
+    public static AzureDataExplorerDataFeedSource fromServicePrincipalCredential(final String connectionString,
+                                                                                 final String query,
+                                                                                 final String credentialId) {
         return new AzureDataExplorerDataFeedSource(connectionString,
             query,
             credentialId,
@@ -114,7 +114,7 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
      *
      * @return The AzureDataExplorerDataFeedSource.
      */
-    public static AzureDataExplorerDataFeedSource usingServicePrincipalInKeyVaultCredential(
+    public static AzureDataExplorerDataFeedSource fromServicePrincipalInKeyVaultCredential(
         final String connectionString,
         final String query,
         final String credentialId) {

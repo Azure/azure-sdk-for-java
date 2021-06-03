@@ -88,11 +88,11 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      *
      * @return The AzureLogAnalyticsDataFeedSource.
      */
-    public static  AzureLogAnalyticsDataFeedSource usingBasicCredential(final String tenantId,
-                                                                        final String clientId,
-                                                                        final String clientSecret,
-                                                                        final String workspaceId,
-                                                                        final String query) {
+    public static  AzureLogAnalyticsDataFeedSource fromBasicCredential(final String tenantId,
+                                                                       final String clientId,
+                                                                       final String clientSecret,
+                                                                       final String workspaceId,
+                                                                       final String query) {
         return new AzureLogAnalyticsDataFeedSource(tenantId,
             clientId,
             clientSecret,
@@ -113,9 +113,9 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      *
      * @return The AzureLogAnalyticsDataFeedSource.
      */
-    public static AzureLogAnalyticsDataFeedSource usingServicePrincipalCredential(final String workspaceId,
-                                                                                  final String query,
-                                                                                  final String credentialId) {
+    public static AzureLogAnalyticsDataFeedSource fromServicePrincipalCredential(final String workspaceId,
+                                                                                 final String query,
+                                                                                 final String credentialId) {
         return new AzureLogAnalyticsDataFeedSource(null,
             null,
             null,
@@ -136,7 +136,7 @@ public final class AzureLogAnalyticsDataFeedSource extends DataFeedSource {
      *
      * @return The AzureLogAnalyticsDataFeedSource.
      */
-    public static AzureLogAnalyticsDataFeedSource usingServicePrincipalInKeyVaultCredential(
+    public static AzureLogAnalyticsDataFeedSource fromServicePrincipalInKeyVaultCredential(
         final String workspaceId,
         final String query,
         final String credentialId) {

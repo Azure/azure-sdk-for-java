@@ -116,12 +116,12 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
             dataFeed = new DataFeed().setSource(new AzureAppInsightsDataFeedSource(
                 APP_INSIGHTS_APPLICATION_ID, APP_INSIGHTS_API_KEY, TestUtils.AZURE_CLOUD, APP_INSIGHTS_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_BLOB) {
-            dataFeed = new DataFeed().setSource(AzureBlobDataFeedSource.usingBasicCredential(
+            dataFeed = new DataFeed().setSource(AzureBlobDataFeedSource.fromBasicCredential(
                 BLOB_CONNECTION_STRING,
                 TEST_DB_NAME, BLOB_TEMPLATE));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_DATA_EXPLORER) {
             dataFeed =
-                new DataFeed().setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
+                new DataFeed().setSource(AzureDataExplorerDataFeedSource.fromBasicCredential(
                     DATA_EXPLORER_CONNECTION_STRING,
                     DATA_EXPLORER_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_TABLE) {
@@ -140,19 +140,19 @@ public abstract class DataFeedTestBase extends MetricsAdvisorAdministrationClien
             dataFeed = new DataFeed().setSource(new PostgreSqlDataFeedSource(POSTGRE_SQL_DB_CONNECTION_STRING,
                 TEMPLATE_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.SQL_SERVER_DB) {
-            dataFeed = new DataFeed().setSource(SqlServerDataFeedSource.usingBasicCredential(
+            dataFeed = new DataFeed().setSource(SqlServerDataFeedSource.fromBasicCredential(
                 SQL_SERVER_CONNECTION_STRING,
                 TEMPLATE_QUERY));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_COSMOS_DB) {
             dataFeed = new DataFeed().setSource(new AzureCosmosDbDataFeedSource(COSMOS_DB_CONNECTION_STRING,
                 TEMPLATE_QUERY, TEST_DB_NAME, TEST_DB_NAME));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2) {
-            dataFeed = new DataFeed().setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
+            dataFeed = new DataFeed().setSource(AzureDataLakeStorageGen2DataFeedSource.fromBasicCredential(
                 "adsampledatalakegen2",
                 AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                 TEST_DB_NAME, DIRECTORY_TEMPLATE, FILE_TEMPLATE));
         } else if (dataFeedSourceType == DataFeedSourceType.AZURE_LOG_ANALYTICS) {
-            dataFeed = new DataFeed().setSource(AzureLogAnalyticsDataFeedSource.usingBasicCredential(
+            dataFeed = new DataFeed().setSource(AzureLogAnalyticsDataFeedSource.fromBasicCredential(
                 AZURE_METRICS_ADVISOR_TENANT_ID,
                 AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID,
                 AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET,

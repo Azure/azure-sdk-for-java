@@ -59,8 +59,8 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      *
      * @return The SQLServerDataFeedSource.
      */
-    public static SqlServerDataFeedSource usingBasicCredential(final String connectionString,
-                                                               final String query) {
+    public static SqlServerDataFeedSource fromBasicCredential(final String connectionString,
+                                                              final String query) {
         return new SqlServerDataFeedSource(connectionString, query, null, DatasourceAuthenticationType.BASIC);
     }
 
@@ -72,8 +72,8 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      * @param query The query that retrieves the values to be analyzed for anomalies.
      * @return The SQLServerDataFeedSource.
      */
-    public static SqlServerDataFeedSource usingManagedIdentityCredential(final String connectionString,
-                                                                         final String query) {
+    public static SqlServerDataFeedSource fromManagedIdentityCredential(final String connectionString,
+                                                                        final String query) {
         return new SqlServerDataFeedSource(connectionString,
             query,
             null,
@@ -90,8 +90,8 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      * {@link DatasourceSqlServerConnectionString}.
      * @return The SQLServerDataFeedSource.
      */
-    public static SqlServerDataFeedSource usingConnectionStringCredential(final String query,
-                                                                          final String credentialId) {
+    public static SqlServerDataFeedSource fromConnectionStringCredential(final String query,
+                                                                         final String credentialId) {
         return new SqlServerDataFeedSource(null,
             query,
             credentialId,
@@ -110,9 +110,9 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      *
      * @return The SQLServerDataFeedSource.
      */
-    public static SqlServerDataFeedSource usingServicePrincipalCredential(final String connectionString,
-                                                                          final String query,
-                                                                          final String credentialId) {
+    public static SqlServerDataFeedSource fromServicePrincipalCredential(final String connectionString,
+                                                                         final String query,
+                                                                         final String credentialId) {
         return new SqlServerDataFeedSource(connectionString,
             query,
             credentialId,
@@ -131,9 +131,9 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      *
      * @return The SQLServerDataFeedSource.
      */
-    public static SqlServerDataFeedSource usingServicePrincipalInKeyVaultCredential(final String connectionString,
-                                                                                    final String query,
-                                                                                    final String credentialId) {
+    public static SqlServerDataFeedSource fromServicePrincipalInKeyVaultCredential(final String connectionString,
+                                                                                   final String query,
+                                                                                   final String credentialId) {
         return new SqlServerDataFeedSource(connectionString,
             query,
             credentialId,

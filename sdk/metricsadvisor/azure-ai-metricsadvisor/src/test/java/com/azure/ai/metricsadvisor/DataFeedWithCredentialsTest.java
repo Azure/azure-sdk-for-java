@@ -47,7 +47,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         DataFeed dataFeed = super.initDataFeed();
         try {
             // Create SqlFeed with basic credentials in connection string.
-            dataFeed.setSource(SqlServerDataFeedSource.usingBasicCredential(
+            dataFeed.setSource(SqlServerDataFeedSource.fromBasicCredential(
                 SQL_SERVER_CONNECTION_STRING,
                 TEMPLATE_QUERY));
 
@@ -60,7 +60,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
 
             // Update SqlFeed to use MSI.
             dataFeed
-                .setSource(SqlServerDataFeedSource.usingManagedIdentityCredential(SQL_SERVER_CONNECTION_STRING,
+                .setSource(SqlServerDataFeedSource.fromManagedIdentityCredential(SQL_SERVER_CONNECTION_STRING,
                 TEMPLATE_QUERY));
 
             DataFeed updatedDataFeed = client.updateDataFeed(dataFeed);
@@ -96,7 +96,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         credIds.add(createdCredential.getId());
         sqlConStrCred = (DatasourceSqlServerConnectionString) createdCredential;
 
-        dataFeed.setSource(SqlServerDataFeedSource.usingConnectionStringCredential(
+        dataFeed.setSource(SqlServerDataFeedSource.fromConnectionStringCredential(
             TEMPLATE_QUERY,
             sqlConStrCred.getId()));
 
@@ -114,7 +114,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         credIds.add(createdCredential.getId());
         servicePrincipalCred = ((DatasourceServicePrincipal) createdCredential);
 
-        dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalCredential(
+        dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalCredential(
             SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY,
             servicePrincipalCred.getId()));
@@ -133,7 +133,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         credIds.add(createdCredential.getId());
         servicePrincipalInKVCred = (DatasourceServicePrincipalInKeyVault) createdCredential;
 
-        dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+        dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
             SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY,
             servicePrincipalInKVCred.getId()));
@@ -155,7 +155,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         DataFeed dataFeed = initDataFeed();
         try {
             // Create DataLakeFeed with basic credentials in key.
-            dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
+            dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromBasicCredential(
                 "adsampledatalakegen2",
                 AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                 TEST_DB_NAME,
@@ -197,7 +197,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         credIds.add(createdCredential.getId());
         sharedKeyCred = (DatasourceDataLakeGen2SharedKey) createdCredential;
 
-        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingSharedKeyCredential("adsampledatalakegen2",
+        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromSharedKeyCredential("adsampledatalakegen2",
             TEST_DB_NAME,
             DIRECTORY_TEMPLATE,
             FILE_TEMPLATE,
@@ -217,7 +217,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         credIds.add(createdCredential.getId());
         servicePrincipalCred = (DatasourceServicePrincipal) createdCredential;
 
-        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalCredential(
+        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalCredential(
             "adsampledatalakegen2",
             TEST_DB_NAME,
             DIRECTORY_TEMPLATE,
@@ -238,7 +238,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         credIds.add(createdCredential.getId());
         servicePrincipalInKVCred = (DatasourceServicePrincipalInKeyVault) createdCredential;
 
-        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalInKeyVaultCredential(
+        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalInKeyVaultCredential(
             "adsampledatalakegen2",
             TEST_DB_NAME,
             DIRECTORY_TEMPLATE,
@@ -261,7 +261,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         DataFeed dataFeed = initDataFeed();
         try {
             // Create SqlFeed with basic credentials in connection string.
-            dataFeed.setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
+            dataFeed.setSource(AzureDataExplorerDataFeedSource.fromBasicCredential(
                 DATA_EXPLORER_CONNECTION_STRING,
                 DATA_EXPLORER_QUERY));
 
@@ -277,7 +277,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
 
             // Update DataExplorerFeed to use MSI.
             dataFeed
-                .setSource(AzureDataExplorerDataFeedSource.usingManagedIdentityCredential(
+                .setSource(AzureDataExplorerDataFeedSource.fromManagedIdentityCredential(
                     DATA_EXPLORER_CONNECTION_STRING,
                     DATA_EXPLORER_QUERY));
 
@@ -316,7 +316,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         credIds.add(createdCredential.getId());
         servicePrincipalCred = (DatasourceServicePrincipal) createdCredential;
 
-        dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalCredential(
+        dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalCredential(
             DATA_EXPLORER_CONNECTION_STRING,
             DATA_EXPLORER_QUERY,
             servicePrincipalCred.getId()));
@@ -336,7 +336,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         servicePrincipalInKVCred = (DatasourceServicePrincipalInKeyVault) createdCredential;
 
 
-        dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+        dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
             DATA_EXPLORER_CONNECTION_STRING,
             DATA_EXPLORER_QUERY,
             servicePrincipalInKVCred.getId()));
@@ -355,7 +355,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
         DataFeed dataFeed = initDataFeed();
         try {
             // Create BlobFeed with basic credentials in connection string.
-            dataFeed.setSource(AzureBlobDataFeedSource.usingBasicCredential(
+            dataFeed.setSource(AzureBlobDataFeedSource.fromBasicCredential(
                 BLOB_CONNECTION_STRING,
                 TEST_DB_NAME, BLOB_TEMPLATE));
 
@@ -367,7 +367,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
 
             // Update BlobFeed to use MSI.
             dataFeed
-                .setSource(AzureBlobDataFeedSource.usingManagedIdentityCredential(BLOB_CONNECTION_STRING,
+                .setSource(AzureBlobDataFeedSource.fromManagedIdentityCredential(BLOB_CONNECTION_STRING,
                     TEST_DB_NAME, BLOB_TEMPLATE));
 
             DataFeed updatedDataFeed = client.updateDataFeed(dataFeed);

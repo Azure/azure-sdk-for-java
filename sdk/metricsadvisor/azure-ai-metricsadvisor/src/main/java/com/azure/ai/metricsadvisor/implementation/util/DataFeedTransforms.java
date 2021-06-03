@@ -167,12 +167,12 @@ public final class DataFeedTransforms {
             final AzureBlobParameter dataSourceParameter = ((AzureBlobDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(AzureBlobDataFeedSource.usingBasicCredential(
+                dataFeed.setSource(AzureBlobDataFeedSource.fromBasicCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getContainer(),
                     dataSourceParameter.getBlobTemplate()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
-                dataFeed.setSource(AzureBlobDataFeedSource.usingManagedIdentityCredential(
+                dataFeed.setSource(AzureBlobDataFeedSource.fromManagedIdentityCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getContainer(),
                     dataSourceParameter.getBlobTemplate()));
@@ -195,23 +195,23 @@ public final class DataFeedTransforms {
             final SqlSourceParameter dataSourceParameter =
                 ((AzureDataExplorerDataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.fromBasicCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery()
                 ));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
-                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingManagedIdentityCredential(
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.fromManagedIdentityCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery()
                 ));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
-                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalCredential(
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery(),
                     dataFeedDetail.getCredentialId()
                 ));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
-                dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery(),
                     dataFeedDetail.getCredentialId()
@@ -264,24 +264,24 @@ public final class DataFeedTransforms {
             final SqlSourceParameter dataSourceParameter = ((SQLServerDataFeed) dataFeedDetail)
                 .getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(SqlServerDataFeedSource.usingBasicCredential(
+                dataFeed.setSource(SqlServerDataFeedSource.fromBasicCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.MANAGED_IDENTITY) {
-                dataFeed.setSource(SqlServerDataFeedSource.usingManagedIdentityCredential(
+                dataFeed.setSource(SqlServerDataFeedSource.fromManagedIdentityCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.AZURE_SQLCONNECTION_STRING) {
-                dataFeed.setSource(SqlServerDataFeedSource.usingConnectionStringCredential(
+                dataFeed.setSource(SqlServerDataFeedSource.fromConnectionStringCredential(
                     dataSourceParameter.getQuery(),
                     dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
-                dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalCredential(
+                dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery(),
                     dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
-                dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
                     dataSourceParameter.getConnectionString(),
                     dataSourceParameter.getQuery(),
                     dataFeedDetail.getCredentialId()));
@@ -303,7 +303,7 @@ public final class DataFeedTransforms {
             final AzureDataLakeStorageGen2Parameter azureDataLakeStorageGen2Parameter =
                 ((AzureDataLakeStorageGen2DataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromBasicCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getAccountKey(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
@@ -311,7 +311,7 @@ public final class DataFeedTransforms {
                     azureDataLakeStorageGen2Parameter.getFileTemplate()
                 ));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.DATA_LAKE_GEN2SHARED_KEY) {
-                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingSharedKeyCredential(
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromSharedKeyCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
                     azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
@@ -319,7 +319,7 @@ public final class DataFeedTransforms {
                     dataFeedDetail.getCredentialId()
                 ));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
-                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalCredential(
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
                     azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
@@ -327,7 +327,7 @@ public final class DataFeedTransforms {
                     dataFeedDetail.getCredentialId()
                 ));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
-                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalInKeyVaultCredential(
                     azureDataLakeStorageGen2Parameter.getAccountName(),
                     azureDataLakeStorageGen2Parameter.getFileSystemName(),
                     azureDataLakeStorageGen2Parameter.getDirectoryTemplate(),
@@ -344,19 +344,19 @@ public final class DataFeedTransforms {
             final AzureLogAnalyticsParameter azureLogAnalyticsDataFeed =
                 ((AzureLogAnalyticsDataFeed) dataFeedDetail).getDataSourceParameter();
             if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.BASIC) {
-                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.usingBasicCredential(
+                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.fromBasicCredential(
                     azureLogAnalyticsDataFeed.getTenantId(),
                     azureLogAnalyticsDataFeed.getClientId(),
                     azureLogAnalyticsDataFeed.getClientSecret(),
                     azureLogAnalyticsDataFeed.getWorkspaceId(),
                     azureLogAnalyticsDataFeed.getQuery()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL) {
-                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.usingServicePrincipalCredential(
+                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.fromServicePrincipalCredential(
                     azureLogAnalyticsDataFeed.getWorkspaceId(),
                     azureLogAnalyticsDataFeed.getQuery(),
                     dataFeedDetail.getCredentialId()));
             } else if (dataFeedDetail.getAuthenticationType() == AuthenticationTypeEnum.SERVICE_PRINCIPAL_IN_KV) {
-                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+                dataFeed.setSource(AzureLogAnalyticsDataFeedSource.fromServicePrincipalInKeyVaultCredential(
                     azureLogAnalyticsDataFeed.getWorkspaceId(),
                     azureLogAnalyticsDataFeed.getQuery(),
                     dataFeedDetail.getCredentialId()));

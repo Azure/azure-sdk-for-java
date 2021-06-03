@@ -48,7 +48,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
         try {
             // Create SqlFeed with basic credentials in connection string.
-            dataFeed.get().setSource(SqlServerDataFeedSource.usingBasicCredential(
+            dataFeed.get().setSource(SqlServerDataFeedSource.fromBasicCredential(
                 SQL_SERVER_CONNECTION_STRING,
                 TEMPLATE_QUERY));
 
@@ -64,7 +64,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
 
             // Update SqlFeed to use MSI.
             dataFeed.get()
-                .setSource(SqlServerDataFeedSource.usingManagedIdentityCredential(SQL_SERVER_CONNECTION_STRING,
+                .setSource(SqlServerDataFeedSource.fromManagedIdentityCredential(SQL_SERVER_CONNECTION_STRING,
                 TEMPLATE_QUERY));
 
             StepVerifier.create(client.updateDataFeed(dataFeed.get()))
@@ -113,7 +113,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(SqlServerDataFeedSource.usingConnectionStringCredential(
+        dataFeed.setSource(SqlServerDataFeedSource.fromConnectionStringCredential(
             TEMPLATE_QUERY,
             sqlConStrCred.get().getId()));
 
@@ -143,7 +143,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalCredential(
+        dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalCredential(
             SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY,
             servicePrincipalCred.get().getId()));
@@ -172,7 +172,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(SqlServerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+        dataFeed.setSource(SqlServerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
             SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY,
             servicePrincipalInKVCred.get().getId()));
@@ -199,7 +199,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
         try {
             // Create DataLakeFeed with basic credentials in key.
-            dataFeed.get().setSource(AzureDataLakeStorageGen2DataFeedSource.usingBasicCredential(
+            dataFeed.get().setSource(AzureDataLakeStorageGen2DataFeedSource.fromBasicCredential(
                 "adsampledatalakegen2",
                 AZURE_DATALAKEGEN2_ACCOUNT_KEY,
                 TEST_DB_NAME,
@@ -252,7 +252,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingSharedKeyCredential("adsampledatalakegen2",
+        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromSharedKeyCredential("adsampledatalakegen2",
             TEST_DB_NAME,
             DIRECTORY_TEMPLATE,
             FILE_TEMPLATE,
@@ -283,7 +283,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalCredential(
+        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalCredential(
             "adsampledatalakegen2",
             TEST_DB_NAME,
             DIRECTORY_TEMPLATE,
@@ -314,7 +314,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.usingServicePrincipalInKeyVaultCredential(
+        dataFeed.setSource(AzureDataLakeStorageGen2DataFeedSource.fromServicePrincipalInKeyVaultCredential(
             "adsampledatalakegen2",
             TEST_DB_NAME,
             DIRECTORY_TEMPLATE,
@@ -342,7 +342,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
         try {
             // Create SqlFeed with basic credentials in connection string.
-            dataFeed.get().setSource(AzureDataExplorerDataFeedSource.usingBasicCredential(
+            dataFeed.get().setSource(AzureDataExplorerDataFeedSource.fromBasicCredential(
                 DATA_EXPLORER_CONNECTION_STRING,
                 DATA_EXPLORER_QUERY));
 
@@ -360,7 +360,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
 
             // Update DataExplorerFeed to use MSI.
             dataFeed.get()
-                .setSource(AzureDataExplorerDataFeedSource.usingManagedIdentityCredential(
+                .setSource(AzureDataExplorerDataFeedSource.fromManagedIdentityCredential(
                     DATA_EXPLORER_CONNECTION_STRING,
                     DATA_EXPLORER_QUERY));
 
@@ -407,7 +407,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalCredential(
+        dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalCredential(
             DATA_EXPLORER_CONNECTION_STRING,
             DATA_EXPLORER_QUERY,
             servicePrincipalCred.get().getId()));
@@ -436,7 +436,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
             })
             .verifyComplete();
 
-        dataFeed.setSource(AzureDataExplorerDataFeedSource.usingServicePrincipalInKeyVaultCredential(
+        dataFeed.setSource(AzureDataExplorerDataFeedSource.fromServicePrincipalInKeyVaultCredential(
             DATA_EXPLORER_CONNECTION_STRING,
             DATA_EXPLORER_QUERY,
             servicePrincipalInKVCred.get().getId()));
@@ -460,7 +460,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
         final AtomicReference<DataFeed> dataFeed = new AtomicReference<>(initDataFeed());
         try {
             // Create BlobFeed with basic credentials in connection string.
-            dataFeed.get().setSource(AzureBlobDataFeedSource.usingBasicCredential(
+            dataFeed.get().setSource(AzureBlobDataFeedSource.fromBasicCredential(
                 BLOB_CONNECTION_STRING,
                 TEST_DB_NAME, BLOB_TEMPLATE));
 
@@ -475,7 +475,7 @@ public class DataFeedWithCredentialsAsyncTest extends DataFeedWithCredentialsTes
 
             // Update BlobFeed to use MSI.
             dataFeed.get()
-                .setSource(AzureBlobDataFeedSource.usingManagedIdentityCredential(BLOB_CONNECTION_STRING,
+                .setSource(AzureBlobDataFeedSource.fromManagedIdentityCredential(BLOB_CONNECTION_STRING,
                     TEST_DB_NAME, BLOB_TEMPLATE));
 
             StepVerifier.create(client.updateDataFeed(dataFeed.get()))

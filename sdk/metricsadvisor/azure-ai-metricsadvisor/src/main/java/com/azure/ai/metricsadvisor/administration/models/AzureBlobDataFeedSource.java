@@ -67,9 +67,9 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      *
      * @return The AzureBlobDataFeedSource.
      */
-    public static AzureBlobDataFeedSource usingBasicCredential(final String connectionString,
-                                                               final String container,
-                                                               final String blobTemplate) {
+    public static AzureBlobDataFeedSource fromBasicCredential(final String connectionString,
+                                                              final String container,
+                                                              final String blobTemplate) {
         return new AzureBlobDataFeedSource(connectionString, container, blobTemplate, DatasourceAuthenticationType.BASIC);
     }
 
@@ -83,9 +83,9 @@ public final class AzureBlobDataFeedSource extends DataFeedSource {
      *
      * @return The AzureBlobDataFeedSource.
      */
-    public static AzureBlobDataFeedSource usingManagedIdentityCredential(final String connectionString,
-                                                                         final String container,
-                                                                         final String blobTemplate) {
+    public static AzureBlobDataFeedSource fromManagedIdentityCredential(final String connectionString,
+                                                                        final String container,
+                                                                        final String blobTemplate) {
         return new AzureBlobDataFeedSource(connectionString,
             container,
             blobTemplate,
