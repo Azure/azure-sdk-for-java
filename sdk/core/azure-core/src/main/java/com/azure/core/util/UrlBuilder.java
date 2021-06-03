@@ -172,7 +172,9 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setQuery(String query) {
-        if (query != null && !query.isEmpty()) {
+        if (query == null || query.isEmpty()) {
+            this.query.clear();
+        } else {
             with(query, UrlTokenizerState.QUERY);
         }
         return this;

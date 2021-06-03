@@ -62,7 +62,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final String relativePath;
     private final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
-    private final List<Substitution> querySubstitutions = new ArrayList<>();
+    private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
@@ -185,19 +185,19 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 if (annotationType.equals(HostParam.class)) {
                     final HostParam hostParamAnnotation = (HostParam) annotation;
                     hostSubstitutions.add(new Substitution(hostParamAnnotation.value(), parameterIndex,
-                        !hostParamAnnotation.encoded(), false));
+                        !hostParamAnnotation.encoded()));
                 } else if (annotationType.equals(PathParam.class)) {
                     final PathParam pathParamAnnotation = (PathParam) annotation;
                     pathSubstitutions.add(new Substitution(pathParamAnnotation.value(), parameterIndex,
-                        !pathParamAnnotation.encoded(), false));
+                        !pathParamAnnotation.encoded()));
                 } else if (annotationType.equals(QueryParam.class)) {
                     final QueryParam queryParamAnnotation = (QueryParam) annotation;
-                    querySubstitutions.add(new Substitution(queryParamAnnotation.value(), parameterIndex,
+                    querySubstitutions.add(new QuerySubstitution(queryParamAnnotation.value(), parameterIndex,
                         !queryParamAnnotation.encoded(), queryParamAnnotation.multipleQueryParams()));
                 } else if (annotationType.equals(HeaderParam.class)) {
                     final HeaderParam headerParamAnnotation = (HeaderParam) annotation;
                     headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex,
-                            false, false));
+                            false));
                 } else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
@@ -206,7 +206,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 } else if (annotationType.equals(FormParam.class)) {
                     final FormParam formParamAnnotation = (FormParam) annotation;
                     formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex,
-                        !formParamAnnotation.encoded(), false));
+                        !formParamAnnotation.encoded()));
                     bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
                     bodyJavaType = String.class;
                 }
@@ -280,12 +280,12 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             return;
         }
 
-        for (Substitution substitution : querySubstitutions) {
+        for (QuerySubstitution substitution : querySubstitutions) {
             final int parameterIndex = substitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
                 List<Object> methodArguments = new ArrayList<Object>();
-                if (methodArgument instanceof List && substitution.shouldDoMultipleQueryParams()) {
+                if (methodArgument instanceof List && !substitution.shouldMergeQueryParams()) {
                     methodArguments.addAll((List<Object>) methodArgument);
                 } else {
                     methodArguments.add(methodArgument);
