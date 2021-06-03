@@ -2,6 +2,7 @@
 
 ## 1.3.0-beta.1 (Unreleased)
 
+- Added Support for Challenge Based Authentication in `ArmChallengeAuthenticationPolicy`.
 - Fixed bug in `ManagementErrorDeserializer`.
 
 ## 1.2.2 (2021-05-07)
