@@ -6,8 +6,6 @@ package com.azure.security.keyvault.jca;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 public class FileSystemCertificatesTest {
 
     FileSystemCertificates fileSystemCertificates;
@@ -19,7 +17,7 @@ public class FileSystemCertificatesTest {
 
     @Test
     public void testSetCertificateEntry() {
-        fileSystemCertificates = FileSystemCertificates.getInstance(Arrays.asList(getFilePath()));
+        fileSystemCertificates = new FileSystemCertificates(getFilePath());
         fileSystemCertificates.loadCertificatesFromFileSystem();
         Assertions.assertTrue(fileSystemCertificates.getAliases().contains("sideload"));
     }

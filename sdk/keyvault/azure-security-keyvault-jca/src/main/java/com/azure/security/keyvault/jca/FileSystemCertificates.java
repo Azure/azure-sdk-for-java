@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.jca;
 
 import java.io.InputStream;
-import java.io.ByteArrayInputStream;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.File;
@@ -14,14 +14,14 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.List;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Objects;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Arrays;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -29,14 +29,17 @@ import static java.util.logging.Level.WARNING;
 /**
  * Store certificates loaded from file system.
  */
-final class FileSystemCertificates implements AzureCertificates {
+public final class FileSystemCertificates implements AzureCertificates {
 
     /**
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(FileSystemCertificates.class.getName());
 
-    private final Map<String, List<String>> fileSystemAlias = new HashMap<>();
+    /**
+     * Stores the jre key store aliases.
+     */
+    private final List<String> aliases = new ArrayList<>();
 
     /**
      * Stores the file system certificates by alias.
@@ -48,32 +51,11 @@ final class FileSystemCertificates implements AzureCertificates {
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
 
-    private final List<String> certPaths;
-
-    private static volatile FileSystemCertificates fileSystemCertificatesInstance;
-
-    /**
-     * Get instance
-     * @return FileSystemCertificates instance
-     */
-    static FileSystemCertificates getInstance(List<String> certPaths) {
-        if (fileSystemCertificatesInstance == null) {
-            synchronized (FileSystemCertificates.class) {
-                if (fileSystemCertificatesInstance == null) {
-                    fileSystemCertificatesInstance = new FileSystemCertificates(certPaths);
-                }
-            }
-        }
-        return fileSystemCertificatesInstance;
-    }
-
+    private final String certificatePath;
 
     @Override
     public List<String> getAliases() {
-        return fileSystemAlias.values()
-                              .stream()
-                              .flatMap(l -> l.stream())
-                              .collect(Collectors.toList());
+        return aliases;
     }
 
     @Override
@@ -88,74 +70,58 @@ final class FileSystemCertificates implements AzureCertificates {
 
     @Override
     public void deleteEntry(String alias) {
-        fileSystemAlias.values().forEach(a -> a.remove(alias));
+        if (aliases != null) {
+            aliases.remove(alias);
+        }
         certificates.remove(alias);
         certificateKeys.remove(alias);
     }
 
-    private FileSystemCertificates(List<String> certPaths) {
-        this.certPaths = certPaths;
-        loadCertificatesFromFileSystem();
+    FileSystemCertificates(String certificatePath) {
+        this.certificatePath = certificatePath;
     }
 
     /**
      * Add alias
-     * @param filePath file path for certificate
      * @param alias certificate alias
      * @param certificate certificate value
      */
-    public void setCertificateEntry(String filePath, String alias, Certificate certificate) {
-        List<String> allAlias = fileSystemAlias.values()
-                                               .stream()
-                                               .flatMap(l -> l.stream())
-                                               .collect(Collectors.toList());
-        if (!allAlias.contains(alias)) {
-            if (fileSystemAlias.get(filePath) == null) {
-                fileSystemAlias.put(filePath, new ArrayList<>());
-            }
-            fileSystemAlias.get(filePath).add(alias);
+    public void setCertificateEntry(String alias, Certificate certificate) {
+        if (aliases != null) {
+            aliases.add(alias);
             certificates.put(alias, certificate);
         }
     }
 
-
-    private X509Certificate getCertificateByAliasAndStream(InputStream inputStream, String filename, String alias) throws IOException {
+    private void setCertificateByAliasAndFile(String alias, File file) throws IOException {
         X509Certificate certificate = null;
-        if (alias != null) {
-            byte[] bytes = KeyVaultKeyStore.readAllBytes(inputStream);
-            try {
-                CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                certificate = (X509Certificate) cf.generateCertificate(
-                    new ByteArrayInputStream(bytes));
-            } catch (CertificateException e) {
-                LOGGER.log(WARNING, "Unable to load file system certificate from: " + filename, e);
+        try (InputStream inputStream = new FileInputStream(file)) {
+
+            BufferedInputStream bytes = new BufferedInputStream(inputStream);
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            certificate = (X509Certificate) cf.generateCertificate(bytes);
+
+            if (certificate != null) {
+                setCertificateEntry(alias, certificate);
+                LOGGER.log(INFO, "Load file system certificate: {0} from: {1}",
+                    new Object[]{alias, file.getName()});
             }
+
+        } catch (CertificateException e) {
+            LOGGER.log(WARNING, "Unable to load file system certificate from: " + file.getName(), e);
         }
-        return certificate;
     }
 
     void loadCertificatesFromFileSystem() {
         try {
-            for (String filePath: certPaths) {
-                String[] filenames = getAbsoluteFilename(filePath);
-                if (filenames.length > 0) {
-                    for (String filename : filenames) {
-                        try (InputStream inputStream = new FileInputStream(new File(filePath + filename))) {
-                            String alias = filename;
-                            if (alias != null) {
-                                if (alias.lastIndexOf('.') != -1) {
-                                    alias = alias.substring(0, alias.lastIndexOf('.'));
-                                }
-                                X509Certificate certificate = getCertificateByAliasAndStream(inputStream, alias, filename);
-                                if (certificate != null) {
-                                    setCertificateEntry(filePath, alias, certificate);
-                                    LOGGER.log(INFO, "Load file system certificate: {0} from: {1}",
-                                        new Object[]{alias, filename});
-                                }
-                            }
-                        }
-                    }
+            List<File> files = getFiles();
+            for (File file : files) {
+                String alias = file.getName();
+                if (alias.lastIndexOf('.') != -1) {
+                    alias = alias.substring(0, alias.lastIndexOf('.'));
                 }
+                setCertificateByAliasAndFile(alias, file);
+
             }
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to determine certificates to file system", ioe);
@@ -163,21 +129,20 @@ final class FileSystemCertificates implements AzureCertificates {
     }
 
     /**
-     * Get the filenames.
-     *
-     * @param path the path.
-     * @return the filenames.
+     * Load all certificates in the folder
      */
-    private String[] getAbsoluteFilename(String path) {
-        List<String> filenames = new ArrayList<>();
-        File file = new File(path);
-        File[] array = file.listFiles();
+    private List<File> getFiles() {
+        List<File> files = new ArrayList<>();
+        File filePackage = new File(certificatePath);
+        File[] array = filePackage.listFiles();
         Optional.ofNullable(array)
-                .map(Arrays::stream)
-                .orElseGet(Stream::empty)
-                .filter(File::isFile)
-                .map(File::getName)
-                .forEach(filename -> filenames.add(filename));
-        return filenames.toArray(new String[0]);
+            .map(Arrays::stream)
+            .orElseGet(Stream::empty)
+            .filter(Objects::nonNull)
+            .filter(File::isFile)
+            .filter(File::exists)
+            .filter(File::canRead)
+            .forEach(a -> files.add(a));
+        return files;
     }
 }

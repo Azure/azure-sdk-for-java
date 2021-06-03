@@ -66,9 +66,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final KeyVaultCertificates keyVaultCertificates;
 
     /**
-     * Store certificates loaded from fileSystem.
+     * Store custom certificates loaded from file system.
      */
-    private final FileSystemCertificates fileSystemCertificates;
+    private final FileSystemCertificates customCertificates;
+
+    /**
+     * Store well Know certificates loaded from file system.
+     */
+    private final FileSystemCertificates wellKnowCertificates;
 
     /**
      * Stores the Jre key store certificates.
@@ -132,9 +137,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
         jreCertificates = JreCertificates.getInstance();
-        fileSystemCertificates = FileSystemCertificates.getInstance(Arrays.asList(customPath, wellKnowPath));
-        allCertificates = Arrays.asList(keyVaultCertificates, classpathCertificates, jreCertificates, fileSystemCertificates);
-
+        customCertificates = new FileSystemCertificates(customPath);
+        wellKnowCertificates = new FileSystemCertificates(wellKnowPath);
+        allCertificates = Arrays.asList(keyVaultCertificates, classpathCertificates, jreCertificates, wellKnowCertificates, customCertificates);
     }
 
     @Override
@@ -269,11 +274,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
         loadCertificatesFromClasspath();
+        wellKnowCertificates.loadCertificatesFromFileSystem();
+        customCertificates.loadCertificatesFromFileSystem();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
         loadCertificatesFromClasspath();
+        wellKnowCertificates.loadCertificatesFromFileSystem();
+        customCertificates.loadCertificatesFromFileSystem();
     }
 
     @Override
