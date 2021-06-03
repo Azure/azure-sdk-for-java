@@ -49,4 +49,10 @@ directive:
     - rename-model:
         from: CreateCallRequest
         to: CreateCallRequestInternal
+    - rename-model:
+        from: ParticipantsUpdatedEvent
+        to: ParticipantsUpdatedEventInternal
+    - rename-model:
+        from: CommunicationParticipant
+        to: CommunicationParticipantInternal        
 ```
