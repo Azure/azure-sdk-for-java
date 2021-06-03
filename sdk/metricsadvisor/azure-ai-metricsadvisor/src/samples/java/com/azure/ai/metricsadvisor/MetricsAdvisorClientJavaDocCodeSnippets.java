@@ -553,7 +553,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorClient#createMetricFeedbackWithResponse(String, MetricFeedback, Context)}.
+     * Code snippet for {@link MetricsAdvisorClient#addFeedbackWithResponse(String, MetricFeedback, Context)}.
      */
     public void createMetricFeedbackWithResponse() {
         // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedbackWithResponse#String-MetricFeedback-Context
@@ -564,7 +564,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
             = new MetricChangePointFeedback(startTime, endTime, ChangePointValue.AUTO_DETECT);
 
         final Response<MetricFeedback> metricFeedbackResponse
-            = metricsAdvisorClient.createMetricFeedbackWithResponse(metricId, metricChangePointFeedback, Context.NONE);
+            = metricsAdvisorClient.addFeedbackWithResponse(metricId, metricChangePointFeedback, Context.NONE);
 
         System.out.printf("Data Feed Metric feedback creation operation status %s%n",
             metricFeedbackResponse.getStatusCode());

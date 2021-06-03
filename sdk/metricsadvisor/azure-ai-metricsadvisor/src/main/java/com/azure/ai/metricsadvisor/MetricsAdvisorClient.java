@@ -639,7 +639,7 @@ public final class MetricsAdvisorClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricFeedback addFeedback(String metricId, MetricFeedback metricFeedback) {
-        return createMetricFeedbackWithResponse(metricId, metricFeedback, Context.NONE).getValue();
+        return addFeedbackWithResponse(metricId, metricFeedback, Context.NONE).getValue();
     }
 
     /**
@@ -656,8 +656,8 @@ public final class MetricsAdvisorClient {
      * @throws NullPointerException If {@code metricId}, {@code metricFeedback.dimensionFilter} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricFeedback> createMetricFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
-        Context context) {
+    public Response<MetricFeedback> addFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
+                                                            Context context) {
         return client.addFeedbackWithResponse(metricId, metricFeedback, context).block();
     }
 
