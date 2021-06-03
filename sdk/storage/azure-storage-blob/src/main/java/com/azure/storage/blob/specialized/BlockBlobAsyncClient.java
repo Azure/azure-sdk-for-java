@@ -391,7 +391,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getTagsConditions(),
             null, options.getContentMd5(), tagsToString(options.getTags()),
-            options.isCopySourceBlobProperties(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            options.isCopySourceBlobProperties(), null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
@@ -558,7 +558,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName, base64BlockId, 0,
             url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
-            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
+            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null, null,
             getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
