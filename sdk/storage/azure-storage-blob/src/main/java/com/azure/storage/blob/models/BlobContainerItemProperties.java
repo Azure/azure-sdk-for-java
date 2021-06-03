@@ -89,8 +89,8 @@ public final class BlobContainerItemProperties {
     /*
      * Indicates if version level worm is enabled on this container.
      */
-    @JsonProperty(value = "VersionLevelWormEnabled")
-    private Boolean isVersionLevelWormEnabled;
+    @JsonProperty(value = "ImmutableStorageWithVersioningEnabled")
+    private Boolean isImmutableStorageWithVersioningEnabled;
 
     /**
      * Get the lastModified property: The Last-Modified property.
@@ -348,22 +348,25 @@ public final class BlobContainerItemProperties {
     }
 
     /**
-     * Get the isVersionLevelWormEnabled property: Indicates if version level worm is enabled on this container.
+     * Get the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
+     * container.
      *
-     * @return the isVersionLevelWormEnabled value.
+     * @return the isImmutableStorageWithVersioningEnabled value.
      */
-    public Boolean isVersionLevelWormEnabled() {
-        return this.isVersionLevelWormEnabled;
+    public Boolean isImmutableStorageWithVersioningEnabled() {
+        return this.isImmutableStorageWithVersioningEnabled;
     }
 
     /**
-     * Set the isVersionLevelWormEnabled property: Indicates if version level worm is enabled on this container.
+     * Set the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
+     * container.
      *
-     * @param isVersionLevelWormEnabled the isVersionLevelWormEnabled value to set.
+     * @param isImmutableStorageWithVersioningEnabled the isImmutableStorageWithVersioningEnabled value to set.
      * @return the BlobContainerItemProperties object itself.
      */
-    public BlobContainerItemProperties setIsVersionLevelWormEnabled(Boolean isVersionLevelWormEnabled) {
-        this.isVersionLevelWormEnabled = isVersionLevelWormEnabled;
+    public BlobContainerItemProperties setIsImmutableStorageWithVersioningEnabled(
+            Boolean isImmutableStorageWithVersioningEnabled) {
+        this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
         return this;
     }
 }
