@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The request payload start call recording operation. */
 @Fluent
-public final class StartCallRecordingRequestInternal {
+public final class StartCallRecordingRequest {
     /*
      * The uri to send notifications to.
      */
@@ -29,9 +29,9 @@ public final class StartCallRecordingRequestInternal {
      * Set the recordingStateCallbackUri property: The uri to send notifications to.
      *
      * @param recordingStateCallbackUri the recordingStateCallbackUri value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
+     * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequestInternal setRecordingStateCallbackUri(String recordingStateCallbackUri) {
+    public StartCallRecordingRequest setRecordingStateCallbackUri(String recordingStateCallbackUri) {
         this.recordingStateCallbackUri = recordingStateCallbackUri;
         return this;
     }

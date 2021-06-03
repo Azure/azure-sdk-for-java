@@ -11,8 +11,7 @@ import com.azure.communication.callingserver.implementation.models.CallModality;
 import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
-import com.azure.communication.callingserver.models.InviteParticipantsRequest;
-import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
@@ -60,7 +59,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
 
             // Play Audio
             var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            PlayAudioResult playAudioResult = callAsyncClient.playAudio(
+            PlayAudioResponse playAudioResult = callAsyncClient.playAudio(
                 callId, 
                 audioFileUri, 
                 false, 
@@ -102,7 +101,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
 
             // Play Audio
             var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            Response<PlayAudioResult> playAudioResponse = callAsyncClient.playAudioWithResponse(
+            Response<PlayAudioResponse> playAudioResponse = callAsyncClient.playAudioWithResponse(
                 callId, 
                 audioFileUri, 
                 false, 
@@ -144,10 +143,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
 
             // Invite User
             var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            InviteParticipantsRequest inviteParticipantsRequest = new InviteParticipantsRequest();
-            inviteParticipantsRequest.setParticipants(new LinkedList<CommunicationIdentifier>(Arrays.asList(new CommunicationUserIdentifier(invitedUser))));
-            inviteParticipantsRequest.setOperationContext(operationContext);
-            callAsyncClient.inviteParticipants(callId, inviteParticipantsRequest).block();
+            callAsyncClient.addParticipant(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
             
             // Remove Participant
             var participantId = "845156dc-15ad-4dec-883c-ee2e27cdb99e";
@@ -187,10 +183,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
 
             // Invite User
             var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            InviteParticipantsRequest inviteParticipantsRequest = new InviteParticipantsRequest();
-            inviteParticipantsRequest.setParticipants(new LinkedList<CommunicationIdentifier>(Arrays.asList(new CommunicationUserIdentifier(invitedUser))));
-            inviteParticipantsRequest.setOperationContext(operationContext);
-            Response<Void> inviteParticipantResponse = callAsyncClient.inviteParticipantsWithResponse(callId, inviteParticipantsRequest, Context.NONE).block();
+            Response<Void> inviteParticipantResponse = callAsyncClient.addParticipantWithResponse(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext, Context.NONE).block();
             CallingServerTestUtils.validateInviteParticipantResponse(inviteParticipantResponse);
              
             // Remove Participant
