@@ -13,12 +13,9 @@ import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -62,9 +59,24 @@ public interface RequestContent {
      * @param length Length of the data.
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code bytes} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than {@code bytes.length}.
      */
     static RequestContent fromBytes(byte[] bytes, int offset, int length) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
+        if (offset < 0) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'offset' cannot be negative."));
+        }
+        if (length < 0) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'length' cannot be negative."));
+        }
+        if (offset + length > bytes.length) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'offset' plus 'length' cannot be greater than 'bytes.length'."));
+        }
+
         return new ArrayContent(bytes, offset, length);
     }
 
@@ -101,15 +113,10 @@ public interface RequestContent {
      * @param file The {@link Path} that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code file} is null.
-     * @throws UncheckedIOException If the size of the {@code file} cannot be determined.
      */
     static RequestContent fromFile(Path file) {
         Objects.requireNonNull(file, "'file' cannot be null.");
-        try {
-            return fromFile(file, 0, Files.size(file));
-        } catch (IOException e) {
-            throw new ClientLogger(RequestContent.class).logExceptionAsError(new UncheckedIOException(e));
-        }
+        return fromFile(file, 0, file.toFile().length());
     }
 
     /**
@@ -120,9 +127,24 @@ public interface RequestContent {
      * @param length Length of the data.
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
+     * length} is greater than the file size.
      */
     static RequestContent fromFile(Path file, long offset, long length) {
         Objects.requireNonNull(file, "'file' cannot be null.");
+        if (offset < 0) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'offset' cannot be negative."));
+        }
+        if (length < 0) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'length' cannot be negative."));
+        }
+        if (offset + length > file.toFile().length()) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'offset' plus 'length' cannot be greater than the file's size."));
+        }
+
         return new FileContent(file, offset, length);
     }
 
