@@ -10,8 +10,7 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class MetricsAdvisorKeyCredential {
-    private volatile String subscriptionKey;
-    private volatile String apiKey;
+    private volatile MetricsAdvisorKeys keys;
     private final Object updateLock = new Object();
 
     /**
@@ -21,26 +20,17 @@ public final class MetricsAdvisorKeyCredential {
      * @param apiKey the api key used to authorize requests
      */
     public MetricsAdvisorKeyCredential(String subscriptionKey, String apiKey) {
-        this.subscriptionKey = subscriptionKey;
-        this.apiKey = apiKey;
+        this.keys = new MetricsAdvisorKeys(subscriptionKey, apiKey);
     }
 
     /**
-     * Retrieves the subscription key associated to this credential.
+     * Retrieves the {@link MetricsAdvisorKeys} containing the subscription key and api key
+     * associated with this credential.
      *
-     * @return The subscription key being used to authorize requests.
+     * @return The {@link MetricsAdvisorKeys} containing the subscription key and api key.
      */
-    public String getSubscriptionKey() {
-        return this.subscriptionKey;
-    }
-
-    /**
-     * Retrieves the api key associated to this credential.
-     *
-     * @return The api key being used to authorize requests.
-     */
-    public String getApiKey() {
-        return this.apiKey;
+    public MetricsAdvisorKeys getKeys() {
+        return this.keys;
     }
 
     /**
@@ -55,8 +45,7 @@ public final class MetricsAdvisorKeyCredential {
      */
     public MetricsAdvisorKeyCredential updateKey(String subscriptionKey, String apiKey) {
         synchronized (this.updateLock) {
-            this.subscriptionKey = subscriptionKey;
-            this.apiKey = apiKey;
+            this.keys = new MetricsAdvisorKeys(subscriptionKey, apiKey);
         }
         return this;
     }

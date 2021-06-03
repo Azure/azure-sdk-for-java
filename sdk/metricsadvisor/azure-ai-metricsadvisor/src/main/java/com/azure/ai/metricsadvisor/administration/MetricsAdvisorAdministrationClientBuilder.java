@@ -191,10 +191,10 @@ public final class MetricsAdvisorAdministrationClientBuilder {
         // Authentications
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-        } else if (!CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getSubscriptionKey())
-            || !CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getApiKey())) {
-            headers.set(OCP_APIM_SUBSCRIPTION_KEY, metricsAdvisorKeyCredential.getSubscriptionKey());
-            headers.set(API_KEY, metricsAdvisorKeyCredential.getApiKey());
+        } else if (!CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getKeys().getSubscriptionKey())
+            || !CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getKeys().getApiKey())) {
+            headers.set(OCP_APIM_SUBSCRIPTION_KEY, metricsAdvisorKeyCredential.getKeys().getSubscriptionKey());
+            headers.set(API_KEY, metricsAdvisorKeyCredential.getKeys().getApiKey());
         } else {
             // Throw exception that credential cannot be null
             throw logger.logExceptionAsError(

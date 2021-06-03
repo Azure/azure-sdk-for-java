@@ -39,6 +39,7 @@
 - Renamed Data feed ingestion granularity type to `"PerMinute"` and `"PerSecond"` instead of `"Minutely"` and `"Secondly"`.
 - Renamed Feedback api's from `createMetricFeedback`, `getMetricFeedback` and `listMetricFeedbacks` 
 to `addFeedback`, `getFeedback` and `listFeedback` respectively.
+- Removed `getSubscriptionKey` and `getApiKey` from `MetricsAdvisorKeyCredential` and introduced `MetricsAdvisorKeys`.
 
 ## 1.0.0-beta.1 (2020-10-07)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a Azure Metrics Advisor client library that is developer-friendly
