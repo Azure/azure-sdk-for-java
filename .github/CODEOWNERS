@@ -9,7 +9,7 @@
 /sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu
 
 # BOM
-# PRLabel: %Azure.Core
+# PRLabel: %bom
 /sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy @pallavit
 # PRLabel: %azure-spring
 /sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
