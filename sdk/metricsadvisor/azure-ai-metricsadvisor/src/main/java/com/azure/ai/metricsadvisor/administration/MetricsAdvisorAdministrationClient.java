@@ -956,8 +956,8 @@ public final class MetricsAdvisorAdministrationClient {
      * @param credentialId The data source credential entity unique id.
      *
      * @return The data source credential entity for the provided id.
-     * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasourceCredentialEntity getDatasourceCredential(String credentialId) {
@@ -1025,8 +1025,8 @@ public final class MetricsAdvisorAdministrationClient {
      *
      * @param credentialId The data source credential entity unique id.
      *
-     * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDatasourceCredential(String credentialId) {

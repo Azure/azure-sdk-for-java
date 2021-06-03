@@ -1816,8 +1816,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param credentialId The data source credential entity unique id.
      *
      * @return The data source credential entity for the provided id.
-     * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasourceCredentialEntity> getDatasourceCredential(String credentialId) {
@@ -1830,17 +1830,17 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDatasourceCredentialWithResponse#String}
      *
-     * @param credentialEntityId The data source credential entity unique id.
+     * @param credentialId The data source credential entity unique id.
      *
      * @return The data source credential entity for the provided id.
-     * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the UUID format specification.
-     * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasourceCredentialEntity>> getDatasourceCredentialWithResponse(
-        String credentialEntityId) {
+        String credentialId) {
         try {
-            return withContext(context -> getDatasourceCredentialWithResponse(credentialEntityId, context));
+            return withContext(context -> getDatasourceCredentialWithResponse(credentialId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1856,7 +1856,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     /**
-     * Deletes the data source credential entity identified by {@code credentialEntityId}.
+     * Deletes the data source credential entity identified by {@code credentialId}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredential#String}
@@ -1864,9 +1864,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param credentialId The data source credential entity id.
      *
      * @return An empty Mono.
-     * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the
      * UUID format specification.
-     * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDatasourceCredential(String credentialId) {
@@ -1874,7 +1874,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     /**
-     * Deletes the data source credential entity identified by {@code credentialEntityId}.
+     * Deletes the data source credential entity identified by {@code credentialId}.
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDatasourceCredentialWithResponse#String}
@@ -1882,9 +1882,9 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param credentialId The data source credential entity id.
      *
      * @return A response containing status code and headers returned after the operation.
-     * @throws IllegalArgumentException If {@code credentialEntityId} does not conform to the
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the
      * UUID format specification.
-     * @throws NullPointerException thrown if the {@code credentialEntityId} is null.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatasourceCredentialWithResponse(String credentialId) {

@@ -83,25 +83,6 @@ public final class AzureDataExplorerDataFeedSource extends DataFeedSource {
 
     /**
      * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
-     * entity of type {@link DatasourceSqlServerConnectionString} that contains the SQL
-     * connection string.
-     *
-     * @param credentialEntityId The unique id of a credential entity of type
-     * {@link DatasourceSqlServerConnectionString}.
-     * @param query The query that retrieves the values to be analyzed for anomalies.
-     *
-     * @return The AzureDataExplorerDataFeedSource.
-     */
-    public static AzureDataExplorerDataFeedSource usingConnectionStringCredential(final String credentialEntityId,
-                                                                                  final String query) {
-        return new AzureDataExplorerDataFeedSource(null,
-            query,
-            credentialEntityId,
-            DatasourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
-    }
-
-    /**
-     * Create a AzureDataExplorerDataFeedSource with the {@code credentialId} identifying a credential
      * entity of type {@link DatasourceServicePrincipal}, the entity contains
      * Service Principal to access the SQL Server.
      *
