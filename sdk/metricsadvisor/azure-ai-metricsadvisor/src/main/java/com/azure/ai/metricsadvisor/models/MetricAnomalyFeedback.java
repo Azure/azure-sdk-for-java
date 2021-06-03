@@ -96,6 +96,19 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
     }
 
     /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricAnomalyFeedback object itself.
+     */
+    @Override
+    public MetricAnomalyFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
+    }
+
+    /**
      * Get the corresponding anomaly detection configuration Id of this
      * feedback.
      *

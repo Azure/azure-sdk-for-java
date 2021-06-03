@@ -34,6 +34,19 @@ public final class MetricChangePointFeedback extends MetricFeedback {
     }
 
     /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricChangePointFeedback object itself.
+     */
+    @Override
+    public MetricChangePointFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
+    }
+
+    /**
      * Get the change point feedback value.
      *
      * @return the changePointValue value.

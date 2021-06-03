@@ -27,6 +27,19 @@ public final class MetricPeriodFeedback extends MetricFeedback {
     }
 
     /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricPeriodFeedback object itself.
+     */
+    @Override
+    public MetricPeriodFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
+    }
+
+    /**
      * Get the type of setting period.
      *
      * @return the periodType value.

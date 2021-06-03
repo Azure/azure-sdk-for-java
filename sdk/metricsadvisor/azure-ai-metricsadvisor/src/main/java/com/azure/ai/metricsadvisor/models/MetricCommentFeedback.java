@@ -34,6 +34,19 @@ public final class MetricCommentFeedback extends MetricFeedback {
     }
 
     /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricCommentFeedback object itself.
+     */
+    @Override
+    public MetricCommentFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
+    }
+
+    /**
      * Get the comment value.
      *
      * @return the comment value.
