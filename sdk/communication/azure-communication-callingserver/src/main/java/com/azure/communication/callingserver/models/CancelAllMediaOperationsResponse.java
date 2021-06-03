@@ -4,7 +4,6 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.communication.callingserver.implementation.models.OperationStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
