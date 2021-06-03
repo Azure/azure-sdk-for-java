@@ -5,7 +5,6 @@ package com.azure.core.implementation.util;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.RequestContent;
-import com.azure.core.util.RequestOutbound;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 
 /**
@@ -40,23 +38,16 @@ public final class FileContent implements RequestContent {
     }
 
     @Override
-    public void writeTo(RequestOutbound requestOutbound) {
-        try {
-            FileChannel.open(file).transferTo(offset, length, requestOutbound.getRequestChannel());
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
-    }
-
-    @Override
     public Flux<ByteBuffer> asFluxByteBuffer() {
-        return Flux.using(() -> AsynchronousFileChannel.open(file), FluxUtil::readFile, channel -> {
-            try {
-                channel.close();
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(new UncheckedIOException(ex));
-            }
-        });
+        return Flux.using(() -> AsynchronousFileChannel.open(file),
+            channel -> FluxUtil.readFile(channel, offset, length),
+            channel -> {
+                try {
+                    channel.close();
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(new UncheckedIOException(ex));
+                }
+            });
     }
 
     @Override

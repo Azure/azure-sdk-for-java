@@ -3,7 +3,7 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.util.PublisherByteBufferContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.RequestContent;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -11,7 +11,6 @@ import reactor.core.publisher.Flux;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
@@ -61,7 +60,7 @@ public class HttpRequest {
      * @param body the request content
      */
     public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {
-        this(httpMethod, url, headers, new PublisherByteBufferContent(body));
+        this(httpMethod, url, headers, new FluxByteBufferContent(body));
     }
 
     /**
@@ -186,8 +185,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(String content) {
-        final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return setBody(bodyBytes);
+        return setRequestContent(RequestContent.fromString(content));
     }
 
     /**
@@ -213,7 +211,7 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(Flux<ByteBuffer> content) {
-        this.requestContent = new PublisherByteBufferContent(content);
+        this.requestContent = new FluxByteBufferContent(content);
         return this;
     }
 

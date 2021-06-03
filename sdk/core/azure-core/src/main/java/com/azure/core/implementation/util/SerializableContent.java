@@ -4,21 +4,15 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.RequestContent;
-import com.azure.core.util.RequestOutbound;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 
 /**
  * A {@link RequestContent} implementation which is backed by a serializable object.
  */
 public final class SerializableContent implements RequestContent {
-    private final ClientLogger logger = new ClientLogger(SerializableContent.class);
-
     private final Object serializable;
     private final ObjectSerializer objectSerializer;
 
@@ -31,15 +25,6 @@ public final class SerializableContent implements RequestContent {
     public SerializableContent(Object serializable, ObjectSerializer objectSerializer) {
         this.serializable = serializable;
         this.objectSerializer = objectSerializer;
-    }
-
-    @Override
-    public void writeTo(RequestOutbound requestOutbound) {
-        try {
-            requestOutbound.getRequestChannel().write(ByteBuffer.wrap(objectSerializer.serializeToBytes(serializable)));
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
     }
 
     @Override

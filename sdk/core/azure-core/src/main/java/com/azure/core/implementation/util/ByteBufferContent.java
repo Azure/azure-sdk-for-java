@@ -4,20 +4,14 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.RequestContent;
-import com.azure.core.util.RequestOutbound;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 
 /**
  * A {@link RequestContent} implementation which is backed by a {@link ByteBuffer}.
  */
 public final class ByteBufferContent implements RequestContent {
-    private final ClientLogger logger = new ClientLogger(ByteBufferContent.class);
-
     private final ByteBuffer byteBuffer;
     private final long length;
 
@@ -29,15 +23,6 @@ public final class ByteBufferContent implements RequestContent {
     public ByteBufferContent(ByteBuffer byteBuffer) {
         this.byteBuffer = byteBuffer;
         this.length = byteBuffer.remaining();
-    }
-
-    @Override
-    public void writeTo(RequestOutbound requestOutbound) {
-        try {
-            requestOutbound.getRequestChannel().write(byteBuffer.duplicate());
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
     }
 
     @Override

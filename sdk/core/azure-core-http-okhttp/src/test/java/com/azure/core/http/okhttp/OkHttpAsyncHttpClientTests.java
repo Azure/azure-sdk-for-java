@@ -159,9 +159,13 @@ public class OkHttpAsyncHttpClientTests {
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
-            .verify(Duration.ofSeconds(10));
+        try {
+            StepVerifier.create(client.send(request))
+                .expectErrorMessage("boo")
+                .verify(Duration.ofSeconds(10));
+        } catch (Exception ex) {
+            assertEquals("boo", ex.getMessage());
+        }
     }
 
     @Test

@@ -6,12 +6,12 @@ package com.azure.core.util;
 import com.azure.core.implementation.util.ArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -26,23 +26,6 @@ import java.util.Objects;
  * Represents the content sent as part of a request.
  */
 public interface RequestContent {
-    /**
-     * Write the {@link RequestContent} to the {@link RequestOutbound}.
-     *
-     * @param requestOutbound The outbound where the request will be written.
-     * @return An asynchronous response which will emit once the request has completed writing.
-     */
-    default Mono<Void> writeToAsync(RequestOutbound requestOutbound) {
-        return Mono.defer(() -> Mono.fromRunnable(() -> writeTo(requestOutbound)));
-    }
-
-    /**
-     * Write the {@link RequestContent} to the {@link RequestOutbound}.
-     *
-     * @param requestOutbound The outbound where the request will be written.
-     */
-    void writeTo(RequestOutbound requestOutbound);
-
     /**
      * Converts the {@link RequestContent} into a {@code Flux<ByteBuffer>} for use in reactive streams.
      *
@@ -66,9 +49,9 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code bytes} is null.
      */
-    static RequestContent create(byte[] bytes) {
+    static RequestContent fromBytes(byte[] bytes) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
-        return create(bytes, 0, bytes.length);
+        return fromBytes(bytes, 0, bytes.length);
     }
 
     /**
@@ -80,7 +63,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code bytes} is null.
      */
-    static RequestContent create(byte[] bytes, int offset, int length) {
+    static RequestContent fromBytes(byte[] bytes, int offset, int length) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
         return new ArrayContent(bytes, offset, length);
     }
@@ -89,15 +72,15 @@ public interface RequestContent {
      * Creates a {@link RequestContent} that uses {@link String} as its data.
      * <p>
      * The passed {@link String} is converted using {@link StandardCharsets#UTF_8}, if another character set is required
-     * use {@link #create(byte[])} and pass {@link String#getBytes(Charset)} using the required character set.
+     * use {@link #fromBytes(byte[])} and pass {@link String#getBytes(Charset)} using the required character set.
      *
      * @param content The string that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code content} is null.
      */
-    static RequestContent create(String content) {
+    static RequestContent fromString(String content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
-        return create(content.getBytes(StandardCharsets.UTF_8));
+        return fromBytes(content.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -107,7 +90,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code content} is null.
      */
-    static RequestContent create(BinaryData content) {
+    static RequestContent fromBinaryData(BinaryData content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         return new ByteBufferContent(content.toByteBuffer());
     }
@@ -120,10 +103,10 @@ public interface RequestContent {
      * @throws NullPointerException If {@code file} is null.
      * @throws UncheckedIOException If the size of the {@code file} cannot be determined.
      */
-    static RequestContent create(Path file) {
+    static RequestContent fromFile(Path file) {
         Objects.requireNonNull(file, "'file' cannot be null.");
         try {
-            return create(file, 0, Files.size(file));
+            return fromFile(file, 0, Files.size(file));
         } catch (IOException e) {
             throw new ClientLogger(RequestContent.class).logExceptionAsError(new UncheckedIOException(e));
         }
@@ -138,7 +121,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code file} is null.
      */
-    static RequestContent create(Path file, long offset, long length) {
+    static RequestContent fromFile(Path file, long offset, long length) {
         Objects.requireNonNull(file, "'file' cannot be null.");
         return new FileContent(file, offset, length);
     }
@@ -151,8 +134,8 @@ public interface RequestContent {
      * @param serializable An {@link Object} that will be serialized to be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
      */
-    static RequestContent create(Object serializable) {
-        return create(serializable, JsonSerializerProviders.createInstance(true));
+    static RequestContent fromObject(Object serializable) {
+        return fromObject(serializable, JsonSerializerProviders.createInstance(true));
     }
 
     /**
@@ -163,8 +146,70 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code serializer} is null.
      */
-    static RequestContent create(Object serializable, ObjectSerializer serializer) {
+    static RequestContent fromObject(Object serializable, ObjectSerializer serializer) {
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         return new SerializableContent(serializable, serializer);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses a {@link Flux} of {@link ByteBuffer} as its data.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} that will be the {@link RequestContent} data.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code content} is null.
+     */
+    static RequestContent fromFlux(Flux<ByteBuffer> content) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
+        return new FluxByteBufferContent(content);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses a {@link Flux} of {@link ByteBuffer} as its data.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} that will be the {@link RequestContent} data.
+     * @param length The length of the content.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code content} is null.
+     * @throws IllegalStateException If {@code length} is less than 0.
+     */
+    static RequestContent fromFlux(Flux<ByteBuffer> content, long length) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
+        if (length < 0) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'length' cannot be less than 0."));
+        }
+
+        return new FluxByteBufferContent(content, length);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses a {@link BufferedFluxByteBuffer} as its data.
+     *
+     * @param content The {@link BufferedFluxByteBuffer} that will be the {@link RequestContent} data.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code content} is null.
+     */
+    static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
+        return new FluxByteBufferContent(content);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses a {@link BufferedFluxByteBuffer} as its data.
+     *
+     * @param content The {@link BufferedFluxByteBuffer} that will be the {@link RequestContent} data.
+     * @param length The length of the content.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code content} is null.
+     * @throws IllegalStateException If {@code length} is less than 0.
+     */
+    static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content, long length) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
+        if (length < 0) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'length' cannot be less than 0."));
+        }
+
+        return new FluxByteBufferContent(content, length);
     }
 }
