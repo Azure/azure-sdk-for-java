@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -24,13 +26,13 @@ import org.junit.jupiter.params.provider.MethodSource;
  * test will not run in LIVE or RECORD as they cannot get their own conversationId.
  */
 public class ConversationAsyncClientTests extends CallingServerTestBase {
-    private String conversationId = "aHR0cHM6Ly9jb252LXVzc2MtMDkuY29udi5za3lwZS5jb20vY29udi9LQTd3NzZVZk4wcUVKc1dOSFBwOHB3P2k9MTg5JmU9NjM3NTc4Mjc3MjE0Mzg0Njkz";
+    private String conversationId = "aHR0cHM6Ly9jb252LXVzZWEtMDcuY29udi5za3lwZS5jb20vY29udi85M0FnUnVMbGdVdUU2MWdxa1pnaHVBP2k9NTEmZT02Mzc1NzY1NzUwOTIzMTQ3OTU";
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctions");
+        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsAsync");
         String recordingId = "";        
         URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
 
@@ -56,7 +58,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctions");
+        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
         String recordingId = "";        
         URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
         System.out.println("conversationId: " + conversationId);
@@ -83,9 +85,51 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runPlayAudioFunctionAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionAsync");
+        
+        var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+        String audioFileUri =  "https://host.app/audio/bot-callcenter-intro.wav";      
+        String callbackUri = "https://dev.skype.net:6448";
+        
+        System.out.println("conversationId: " + conversationId);
+        try {
+            PlayAudioResponse playAudioResponse = conversationAsyncClient.playAudio(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext).block();
+            CallingServerTestUtils.validatePlayAudioResult(playAudioResponse, operationContext);
+           
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runPlayAudioFunctionWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
+        
+        var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+        String audioFileUri =  "https://host.app/audio/bot-callcenter-intro.wav";      
+        String callbackUri = "https://dev.skype.net:6448";
+        
+        System.out.println("conversationId: " + conversationId);
+        try {
+            Response<PlayAudioResponse> playAudioResponse = conversationAsyncClient.playAudioWithResponse(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext).block();
+            CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
+           
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void startRecordingFailsAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctions");
+        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "startRecordingFailsAsync");
         var invalidConversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";       
         URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
         System.out.println("conversationId: " + invalidConversationId);
