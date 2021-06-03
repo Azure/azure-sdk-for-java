@@ -12,7 +12,7 @@ import java.util.UUID;
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
-import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -95,7 +95,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         
         System.out.println("conversationId: " + conversationId);
         try {
-            PlayAudioResult playAudioResponse = conversationAsyncClient.playAudio(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext).block();
+            PlayAudioResponse playAudioResponse = conversationAsyncClient.playAudio(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext).block();
             CallingServerTestUtils.validatePlayAudioResult(playAudioResponse, operationContext);
            
         } catch (Exception e) {
@@ -116,7 +116,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         
         System.out.println("conversationId: " + conversationId);
         try {
-            Response<PlayAudioResult> playAudioResponse = conversationAsyncClient.playAudioWithResponse(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext).block();
+            Response<PlayAudioResponse> playAudioResponse = conversationAsyncClient.playAudioWithResponse(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
            
         } catch (Exception e) {
