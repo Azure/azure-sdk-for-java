@@ -208,6 +208,7 @@ public final class PageBlobsImpl {
                 @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -757,6 +758,8 @@ public final class PageBlobsImpl {
      * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
      * @param cpkInfo Parameter group.
      * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
@@ -790,6 +793,7 @@ public final class PageBlobsImpl {
             String sourceIfMatch,
             String sourceIfNoneMatch,
             String requestId,
+            String copySourceAuthorization,
             CpkInfo cpkInfo,
             EncryptionScope encryptionScope,
             Context context) {
@@ -858,6 +862,7 @@ public final class PageBlobsImpl {
                 sourceIfNoneMatch,
                 this.client.getVersion(),
                 requestId,
+                copySourceAuthorization,
                 accept,
                 context);
     }
