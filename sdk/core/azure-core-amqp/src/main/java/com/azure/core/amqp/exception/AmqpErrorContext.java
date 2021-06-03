@@ -5,7 +5,6 @@ package com.azure.core.amqp.exception;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 
 import java.io.Serializable;
@@ -22,7 +21,6 @@ import java.util.Objects;
  * @see SessionErrorContext
  * @see LinkErrorContext
  */
-@Fluent
 public class AmqpErrorContext implements Serializable {
     static final String MESSAGE_PARAMETER_DELIMITER = ", ";
 
