@@ -2232,8 +2232,8 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (entry.getContent().getQueueDescription() == null) {
             final TopicDescriptionEntry entryTopic = deserialize(response.getValue(), TopicDescriptionEntry.class);
             if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getTopicDescription() != null) {
-                throw logger.logExceptionAsError(
-                    new RuntimeException(String.format("'[%s]' is not a queue, it is a topic.", entryTopic.getTitle())));
+                logger.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             }
         }
 
@@ -2315,10 +2315,10 @@ public final class ServiceBusAdministrationAsyncClient {
             logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getTopicDescription() == null) {
-            final QueueDescriptionEntry entryTopic = deserialize(response.getValue(), QueueDescriptionEntry.class);
-            if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getQueueDescription() != null) {
-                throw logger.logExceptionAsError(
-                    new RuntimeException(String.format("'[%s]' is not a topic, it is a queue.", entryTopic.getTitle())));
+            final QueueDescriptionEntry entryQueue = deserialize(response.getValue(), QueueDescriptionEntry.class);
+            if (entryQueue != null && entryQueue.getContent() != null && entryQueue.getContent().getQueueDescription() != null) {
+                logger.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             }
         }
 
