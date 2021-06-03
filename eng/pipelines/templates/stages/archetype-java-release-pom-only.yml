@@ -88,10 +88,15 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
-                        path: azure-sdk-for-java
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          SkipDefaultCheckout: true
+                          Repositories:
+                            - Name: Azure/azure-sdk-for-java
+                              Commitish: $(Build.SourceVersion)
+                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                       - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
