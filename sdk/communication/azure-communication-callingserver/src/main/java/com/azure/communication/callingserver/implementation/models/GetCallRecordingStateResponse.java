@@ -14,14 +14,14 @@ public final class GetCallRecordingStateResponse {
      * The recording state of the recording
      */
     @JsonProperty(value = "recordingState")
-    private CallRecordingStateModel recordingState;
+    private CallRecordingState recordingState;
 
     /**
      * Get the recordingState property: The recording state of the recording.
      *
      * @return the recordingState value.
      */
-    public CallRecordingStateModel getRecordingState() {
+    public CallRecordingState getRecordingState() {
         return this.recordingState;
     }
 
@@ -31,7 +31,7 @@ public final class GetCallRecordingStateResponse {
      * @param recordingState the recordingState value to set.
      * @return the GetCallRecordingStateResponse object itself.
      */
-    public GetCallRecordingStateResponse setRecordingState(CallRecordingStateModel recordingState) {
+    public GetCallRecordingStateResponse setRecordingState(CallRecordingState recordingState) {
         this.recordingState = recordingState;
         return this;
     }

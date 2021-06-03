@@ -20,7 +20,7 @@ public final class PlayAudioResponse {
      * Gets or sets the status of the operation
      */
     @JsonProperty(value = "status")
-    private OperationStatusModel status;
+    private OperationStatus status;
 
     /*
      * Gets or sets the operation context
@@ -59,7 +59,7 @@ public final class PlayAudioResponse {
      *
      * @return the status value.
      */
-    public OperationStatusModel getStatus() {
+    public OperationStatus getStatus() {
         return this.status;
     }
 
@@ -69,7 +69,7 @@ public final class PlayAudioResponse {
      * @param status the status value to set.
      * @return the PlayAudioResponse object itself.
      */
-    public PlayAudioResponse setStatus(OperationStatusModel status) {
+    public PlayAudioResponse setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }

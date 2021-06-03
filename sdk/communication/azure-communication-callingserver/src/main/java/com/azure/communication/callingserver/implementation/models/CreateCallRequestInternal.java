@@ -46,13 +46,13 @@ public final class CreateCallRequestInternal {
      * The requested modalities.
      */
     @JsonProperty(value = "requestedModalities", required = true)
-    private List<CallModalityModel> requestedModalities;
+    private List<CallModality> requestedModalities;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents", required = true)
-    private List<EventSubscriptionTypeModel> requestedCallEvents;
+    private List<EventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the sourceAlternateIdentity property: The alternate identity of the source of the call if dialing out to a
@@ -161,7 +161,7 @@ public final class CreateCallRequestInternal {
      *
      * @return the requestedModalities value.
      */
-    public List<CallModalityModel> getRequestedModalities() {
+    public List<CallModality> getRequestedModalities() {
         return this.requestedModalities;
     }
 
@@ -171,7 +171,7 @@ public final class CreateCallRequestInternal {
      * @param requestedModalities the requestedModalities value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setRequestedModalities(List<CallModalityModel> requestedModalities) {
+    public CreateCallRequestInternal setRequestedModalities(List<CallModality> requestedModalities) {
         this.requestedModalities = requestedModalities;
         return this;
     }
@@ -181,7 +181,7 @@ public final class CreateCallRequestInternal {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionTypeModel> getRequestedCallEvents() {
+    public List<EventSubscriptionType> getRequestedCallEvents() {
         return this.requestedCallEvents;
     }
 
@@ -191,7 +191,7 @@ public final class CreateCallRequestInternal {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setRequestedCallEvents(List<EventSubscriptionTypeModel> requestedCallEvents) {
+    public CreateCallRequestInternal setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }

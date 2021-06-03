@@ -33,13 +33,13 @@ public final class JoinCallRequestInternal {
      * The requested modalities.
      */
     @JsonProperty(value = "requestedModalities", required = true)
-    private List<CallModalityModel> requestedModalities;
+    private List<CallModality> requestedModalities;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents", required = true)
-    private List<EventSubscriptionTypeModel> requestedCallEvents;
+    private List<EventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the source property: The source of the call.
@@ -106,7 +106,7 @@ public final class JoinCallRequestInternal {
      *
      * @return the requestedModalities value.
      */
-    public List<CallModalityModel> getRequestedModalities() {
+    public List<CallModality> getRequestedModalities() {
         return this.requestedModalities;
     }
 
@@ -116,7 +116,7 @@ public final class JoinCallRequestInternal {
      * @param requestedModalities the requestedModalities value to set.
      * @return the JoinCallRequestInternal object itself.
      */
-    public JoinCallRequestInternal setRequestedModalities(List<CallModalityModel> requestedModalities) {
+    public JoinCallRequestInternal setRequestedModalities(List<CallModality> requestedModalities) {
         this.requestedModalities = requestedModalities;
         return this;
     }
@@ -126,7 +126,7 @@ public final class JoinCallRequestInternal {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionTypeModel> getRequestedCallEvents() {
+    public List<EventSubscriptionType> getRequestedCallEvents() {
         return this.requestedCallEvents;
     }
 
@@ -136,7 +136,7 @@ public final class JoinCallRequestInternal {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the JoinCallRequestInternal object itself.
      */
-    public JoinCallRequestInternal setRequestedCallEvents(List<EventSubscriptionTypeModel> requestedCallEvents) {
+    public JoinCallRequestInternal setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }
