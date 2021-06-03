@@ -4,6 +4,6 @@
 /**
  * This is for testing the modularization of module azure.security.keyvault.jca
  */
-module azure.security.test.keyvault.jca {
+module azure.security.keyvault.jca.test {
     requires azure.security.keyvault.jca;
 }
