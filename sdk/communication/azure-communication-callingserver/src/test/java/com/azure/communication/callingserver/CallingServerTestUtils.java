@@ -5,20 +5,20 @@ package com.azure.communication.callingserver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.communication.callingserver.implementation.models.OperationStatus;
-import com.azure.communication.callingserver.models.CreateCallResult;
+import com.azure.communication.callingserver.models.CreateCallResponse;
+import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.core.http.rest.Response;
 
 public class CallingServerTestUtils {
-    protected static void validateCreateCallResponse(Response<CreateCallResult> createCallResponse) {
+    protected static void validateCreateCallResponse(Response<CreateCallResponse> createCallResponse) {
         assertNotNull(createCallResponse);
         assertTrue(createCallResponse.getStatusCode() == 201);
         assertNotNull(createCallResponse.getValue());
         validateCreateCallResult(createCallResponse.getValue());
     }
 
-    protected static void validateCreateCallResult(CreateCallResult createCallResult) {
+    protected static void validateCreateCallResult(CreateCallResponse createCallResult) {
         assertNotNull(createCallResult);
         assertNotNull(createCallResult.getCallLegId());
         assertTrue(!createCallResult.getCallLegId().isEmpty());
