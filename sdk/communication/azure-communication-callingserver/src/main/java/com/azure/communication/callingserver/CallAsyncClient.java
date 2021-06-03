@@ -8,19 +8,18 @@ import com.azure.communication.callingserver.implementation.CallsImpl;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.ResultInfoConverter;
-import com.azure.communication.callingserver.implementation.models.CancelMediaOperationsResponse;
-import com.azure.communication.callingserver.implementation.models.CallModalityModel;
+import com.azure.communication.callingserver.implementation.models.CallModality;
+import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
+import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsResponse;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.implementation.models.CreateCallResponse;
-import com.azure.communication.callingserver.implementation.models.EventSubscriptionTypeModel;
+import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequestInternal;
 import com.azure.communication.callingserver.implementation.models.PlayAudioResponse;
-import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CancelMediaOperationsResult;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioRequest;
@@ -305,13 +304,13 @@ public final class CallAsyncClient {
      * @return the response payload of the cancel media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelMediaOperationsResult> cancelMediaOperations(String callId) {
+    public Mono<CancelMediaOperationsResult> cancelAllMediaOperations(String callId, CancelAllMediaOperationsRequest request) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
 
-            return this.callClient.cancelMediaOperationsAsync(callId)
-                    .flatMap((CancelMediaOperationsResponse response) -> {
-                        CancelMediaOperationsResult cancelMediaOperationsResult = convertCancelMediaOperationsResponse(
+            return this.callClient.cancelAllMediaOperationsAsync(callId, request)
+                    .flatMap((CancelAllMediaOperationsResponse response) -> {
+                        CancelMediaOperationsResult cancelMediaOperationsResult = convertCancelAllMediaOperationsResponse(
                                 response);
                         return Mono.just(cancelMediaOperationsResult);
                     });
@@ -327,11 +326,11 @@ public final class CallAsyncClient {
      * @return the response payload of the cancel media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelMediaOperationsResult>> cancelMediaOperationsWithResponse(String callId) {
-        return cancelMediaOperationsWithResponse(callId, null);
+    public Mono<Response<CancelMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String callId, CancelAllMediaOperationsRequest request) {
+        return cancelAllMediaOperationsWithResponse(callId, request, null);
     }
 
-    Mono<Response<CancelMediaOperationsResult>> cancelMediaOperationsWithResponse(String callId, Context context) {
+    Mono<Response<CancelMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String callId, CancelAllMediaOperationsRequest request, Context context) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             return withContext(contextValue -> {
@@ -339,10 +338,10 @@ public final class CallAsyncClient {
                     contextValue = context;
                 }
                 return this.callClient
-                        .cancelMediaOperationsWithResponseAsync(callId, context)
+                        .cancelAllMediaOperationsWithResponseAsync(callId, request, context)
                         .flatMap((
-                                Response<CancelMediaOperationsResponse> response) -> {
-                            CancelMediaOperationsResult cancelMediaOperationsResult = convertCancelMediaOperationsResponse(
+                                Response<CancelAllMediaOperationsResponse> response) -> {
+                            CancelMediaOperationsResult cancelMediaOperationsResult = convertCancelAllMediaOperationsResponse(
                                     response.getValue());
                             return Mono.just(new SimpleResponse<>(response, cancelMediaOperationsResult));
                         });
@@ -457,13 +456,13 @@ public final class CallAsyncClient {
         List<CommunicationIdentifier> targetsList = new ArrayList<>();
         targets.forEach(targetsList::add);
 
-        List<CallModalityModel> requestedModalities = new ArrayList<>();
+        List<CallModality> requestedModalities = new ArrayList<CallModality>();
         for (CallModality modality : createCallOptions.getRequestedModalities()) {
-            requestedModalities.add(CallModalityModel.fromString(modality.toString()));
+            requestedModalities.add(CallModality.fromString(modality.toString()));
         }
-        List<EventSubscriptionTypeModel> requestedCallEvents = new ArrayList<>();
+        List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
         for (EventSubscriptionType requestedCallEvent : createCallOptions.getRequestedCallEvents()) {
-            requestedCallEvents.add(EventSubscriptionTypeModel.fromString(requestedCallEvent.toString()));
+            requestedCallEvents.add(EventSubscriptionType.fromString(requestedCallEvent.toString()));
         }
 
         PhoneNumberIdentifierModel sourceAlternateIdentity = createCallOptions.getAlternateCallerId() == null
@@ -473,8 +472,9 @@ public final class CallAsyncClient {
         request.setSource(CommunicationIdentifierConverter.convert(source))
                 .setTargets(targetsList.stream().map(target -> CommunicationIdentifierConverter.convert(target))
                         .collect(Collectors.toList()))
-                .setCallbackUri(createCallOptions.getCallbackUri()).setRequestedModalities(requestedModalities)
-                .setRequestedCallEvents(requestedCallEvents).setSourceAlternateIdentity(sourceAlternateIdentity);
+                .setCallbackUri(createCallOptions.getCallbackUri());
+        request.setRequestedModalities(requestedModalities);
+        request.setRequestedCallEvents(requestedCallEvents).setSourceAlternateIdentity(sourceAlternateIdentity);
 
         return request;
     }
@@ -486,7 +486,7 @@ public final class CallAsyncClient {
                 .setResultInfo(ResultInfoConverter.convert(response.getResultInfo()));
     }
 
-    private CancelMediaOperationsResult convertCancelMediaOperationsResponse(CancelMediaOperationsResponse response) {
+    private CancelMediaOperationsResult convertCancelAllMediaOperationsResponse(CancelAllMediaOperationsResponse response) {
         return new CancelMediaOperationsResult().setId(response.getId())
                 .setStatus(OperationStatus.fromString(response.getStatus().toString()))
                 .setOperationContext(response.getOperationContext())

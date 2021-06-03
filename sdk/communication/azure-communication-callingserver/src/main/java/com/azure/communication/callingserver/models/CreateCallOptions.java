@@ -3,6 +3,8 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.models.CallModality;
+import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
 import com.azure.communication.common.PhoneNumberIdentifier;
 
 import java.util.ArrayList;

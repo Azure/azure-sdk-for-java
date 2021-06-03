@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.implementation.models.CallModality;
+import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResult;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
