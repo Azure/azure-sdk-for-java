@@ -54,18 +54,20 @@ stages:
         jobs:
           - deployment: TagRepository
             displayName: "Create release tag"
-            condition: ne(variables['Skip.TagRepository'], 'true')
+            condition: and(ne(variables['Skip.TagRepository'], 'true'))
             environment: github
             timeoutInMinutes: 5
             variables:
               - template: ../variables/globals.yml
             pool:
+              name: Azure Pipelines
               vmImage: vs2017-win2016
             strategy:
               runOnce:
                 deploy:
                   steps:
-                    - checkout: self
+                    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    - template: /eng/common/pipelines/templates/steps/retain-run.yml
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
