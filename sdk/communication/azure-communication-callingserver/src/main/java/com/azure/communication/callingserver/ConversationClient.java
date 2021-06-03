@@ -3,9 +3,11 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.GetCallRecordingStateResult;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.JoinCallResponse;
+import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -235,5 +237,44 @@ public final class ConversationClient {
     public Response<GetCallRecordingStateResult> getRecordingStateWithResponse(String conversationId,
             String recordingId, Context context) {
         return conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId, context).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id.
+     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The value to identify context of the operation.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayAudioResponse playAudio(String conversationId, String audioFileUri, String audioFileId, String callbackUri, String operationContext) {
+        
+        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest().
+            setAudioFileUri(audioFileUri).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri).setOperationContext(operationContext);
+        return conversationAsyncClient.playAudio(conversationId, playAudioRequest).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param conversationId The conversation id.
+     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The value to identify context of the operation.
+     * @param context A {@link Context} representing the request context.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayAudioResponse> playAudioWithResponse(String conversationId, String audioFileUri, String audioFileId, String callbackUri, String operationContext, Context context) {
+
+        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest().
+            setAudioFileUri(audioFileUri).setLoop(false).setAudioFileId(audioFileId).setCallbackUri(callbackUri).setOperationContext(operationContext);
+        return conversationAsyncClient.playAudioWithResponse(conversationId, playAudioRequest, context).block();
     }
 }
