@@ -54,7 +54,7 @@ stages:
         jobs:
           - deployment: TagRepository
             displayName: "Create release tag"
-            condition: and(ne(variables['Skip.TagRepository'], 'true'))
+            condition: ne(variables['Skip.TagRepository'], 'true')
             environment: github
             timeoutInMinutes: 5
             variables:
