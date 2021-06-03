@@ -4,6 +4,8 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.util.BinaryData
+import com.azure.core.util.Context
 import com.azure.core.util.CoreUtils
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerClient
@@ -24,6 +26,8 @@ import com.azure.storage.blob.models.SequenceNumberActionType
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
+import com.azure.storage.blob.options.StageBlockFromUrlOptions
+import com.azure.storage.blob.options.UploadPagesFromUrlOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Ignore
@@ -596,6 +600,46 @@ class PageBlobAPITest extends APISpec {
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
         null                  | null                    | null          | receivedEtag
+    }
+
+    def "Stage block from URL source oauth"() {
+        setup:
+        def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(BinaryData.fromBytes(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        def oauthHeader = getAuthToken().block()
+
+        when:
+        bc.uploadPagesFromUrlWithResponse(
+            new UploadPagesFromUrlOptions()
+                .setRange(pageRange)
+                .setSourceUrl(sourceBlob.getBlobUrl())
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
+
+        then:
+        def os = new ByteArrayOutputStream(data.defaultDataSize)
+        bc.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Stage block from URL source oauth fail"() {
+        setup:
+        def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultBinaryData)
+        def oauthHeader = "garbage"
+
+        when:
+        bc.uploadPagesFromUrlWithResponse(
+            new UploadPagesFromUrlOptions()
+                .setRange(pageRange)
+                .setSourceUrl(sourceBlob.getBlobUrl())
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
+
+        then:
+        thrown(BlobStorageException)
     }
 
     def "Clear page"() {

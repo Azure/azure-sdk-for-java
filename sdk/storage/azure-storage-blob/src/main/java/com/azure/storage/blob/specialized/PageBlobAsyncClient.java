@@ -37,6 +37,7 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.UploadPagesFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -423,54 +424,75 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
             BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset,
-                sourceContentMd5, destRequestConditions, sourceRequestConditions, context));
+            return withContext(context -> uploadPagesFromUrlWithResponse(new UploadPagesFromUrlOptions()
+                .setRange(range).setSourceUrl(sourceUrl).setSourceOffset(sourceOffset)
+                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
+                .setSourceRequestConditions(sourceRequestConditions), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset,
-            byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
-            BlobRequestConditions sourceRequestConditions, Context context) {
-        if (range == null) {
+    /**
+     * Writes one or more pages from the source page blob to this page blob. The write size must be a multiple of 512.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions}
+     *
+     * @param options Parameters for the operation.
+     * @return A reactive response containing the information of the uploaded pages.
+     *
+     * @throws IllegalArgumentException If {@code range} is {@code null}
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(UploadPagesFromUrlOptions options) {
+        try {
+            return withContext(context -> uploadPagesFromUrlWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(UploadPagesFromUrlOptions options, Context context) {
+        if (options.getRange() == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(new IllegalArgumentException("range cannot be null."));
         }
 
-        String rangeString = pageRangeToString(range);
+        String rangeString = pageRangeToString(options.getRange());
 
-        if (sourceOffset == null) {
-            sourceOffset = 0L;
-        }
+        long sourceOffset = options.getSourceOffset() == null ? 0L : options.getSourceOffset();
 
         String sourceRangeString = pageRangeToString(new PageRange()
             .setStart(sourceOffset)
-            .setEnd(sourceOffset + (range.getEnd() - range.getStart())));
+            .setEnd(sourceOffset + (options.getRange().getEnd() - options.getRange().getStart())));
 
-        destRequestConditions = (destRequestConditions == null) ? new PageBlobRequestConditions()
-            : destRequestConditions;
-        sourceRequestConditions = (sourceRequestConditions == null)
-            ? new BlobRequestConditions() : sourceRequestConditions;
+        PageBlobRequestConditions destRequestConditions = (options.getDestinationRequestConditions() == null)
+            ? new PageBlobRequestConditions() : options.getDestinationRequestConditions();
+        BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
+            ? new BlobRequestConditions() : options.getSourceRequestConditions();
 
         URL url;
         try {
-            url = new URL(sourceUrl);
+            url = new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getPageBlobs().uploadPagesFromURLWithResponseAsync(
-            containerName, blobName, url, sourceRangeString, 0, rangeString, sourceContentMd5, null, null,
+            containerName, blobName, url, sourceRangeString, 0, rangeString, options.getSourceContentMd5(), null, null,
             destRequestConditions.getLeaseId(), destRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
             destRequestConditions.getIfSequenceNumberLessThan(), destRequestConditions.getIfSequenceNumberEqualTo(),
             destRequestConditions.getIfModifiedSince(), destRequestConditions.getIfUnmodifiedSince(),
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-            sourceRequestConditions.getIfNoneMatch(), null, null/*sourceauth*/, getCustomerProvidedKey(),
+            sourceRequestConditions.getIfNoneMatch(), null, options.getSourceBearerToken(), getCustomerProvidedKey(),
             encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();

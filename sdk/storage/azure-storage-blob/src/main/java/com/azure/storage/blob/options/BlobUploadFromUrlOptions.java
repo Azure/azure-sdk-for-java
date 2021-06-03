@@ -23,6 +23,7 @@ public class BlobUploadFromUrlOptions {
     private BlobRequestConditions destinationRequestConditions;
     private BlobRequestConditions sourceRequestConditions;
     private Boolean copySourceBlobProperties;
+    private String sourceBearerToken;
 
     /**
      * @param sourceUrl The source URL to upload from.
@@ -157,6 +158,15 @@ public class BlobUploadFromUrlOptions {
      */
     public BlobUploadFromUrlOptions setCopySourceBlobProperties(Boolean copySourceBlobProperties) {
         this.copySourceBlobProperties = copySourceBlobProperties;
+        return this;
+    }
+
+    public String getSourceBearerToken() {
+        return sourceBearerToken;
+    }
+
+    public BlobUploadFromUrlOptions setSourceBearerToken(String sourceBearerToken) {
+        this.sourceBearerToken = sourceBearerToken;
         return this;
     }
 }

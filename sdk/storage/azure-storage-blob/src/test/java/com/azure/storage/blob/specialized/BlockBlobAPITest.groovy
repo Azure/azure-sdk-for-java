@@ -35,6 +35,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
+import com.azure.storage.blob.options.StageBlockFromUrlOptions
 import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
@@ -310,6 +311,47 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blockBlobClient.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(), null, null, "garbage", null, null, null)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Stage block from URL source oauth"() {
+        setup:
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultBinaryData)
+        def oauthHeader = getAuthToken().block()
+        def blockId = Base64.getEncoder().encodeToString("myBlockId".getBytes())
+
+        when:
+        blockBlobClient.stageBlockFromUrlWithResponse(
+            new StageBlockFromUrlOptions()
+                .setSourceUrl(sourceBlob.getBlobUrl())
+                .setBase64BlockId(blockId)
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
+        blockBlobClient.commitBlockList([blockId])
+
+        then:
+        def os = new ByteArrayOutputStream(data.defaultDataSize)
+        blockBlobClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Stage block from URL source oauth fail"() {
+        setup:
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultBinaryData)
+        def oauthHeader = "garbage"
+        def blockId = Base64.getEncoder().encodeToString("myBlockId".getBytes())
+
+        when:
+        blockBlobClient.stageBlockFromUrlWithResponse(
+            new StageBlockFromUrlOptions()
+                .setSourceUrl(sourceBlob.getBlobUrl())
+                .setBase64BlockId(blockId)
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
 
         then:
         thrown(BlobStorageException)
@@ -2069,6 +2111,40 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL
+    }
+
+    def "Upload from URL source oauth"() {
+        setup:
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultBinaryData)
+        def oauthHeader = getAuthToken().block()
+
+        when:
+        blockBlobClient.uploadFromUrlWithResponse(
+            new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
+
+        then:
+        def os = new ByteArrayOutputStream(data.defaultDataSize)
+        blockBlobClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload from URL source oauth fail"() {
+        setup:
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultBinaryData)
+        def oauthHeader = "garbage"
+
+        when:
+        blockBlobClient.uploadFromUrlWithResponse(
+            new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
+
+        then:
+        thrown(BlobStorageException)
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")

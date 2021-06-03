@@ -16,7 +16,9 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
+import com.azure.storage.blob.options.AppendBlockFromUrlOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import com.azure.storage.blob.options.StageBlockFromUrlOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
@@ -576,6 +578,42 @@ class AppendBlobAPITest extends APISpec {
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
         null                  | null                    | null          | receivedEtag
+    }
+
+    def "Append block from URL source oauth"() {
+        setup:
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultBinaryData)
+        def oauthHeader = getAuthToken().block()
+
+        when:
+        bc.appendBlockFromUrlWithResponse(
+            new AppendBlockFromUrlOptions()
+                .setSourceUrl(sourceBlob.getBlobUrl())
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
+
+        then:
+        def os = new ByteArrayOutputStream(data.defaultDataSize)
+        bc.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Append block from URL source oauth fail"() {
+        setup:
+        def sourceBlob = cc.getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultBinaryData)
+        def oauthHeader = "garbage"
+
+        when:
+        bc.appendBlockFromUrlWithResponse(
+            new AppendBlockFromUrlOptions()
+                .setSourceUrl(sourceBlob.getBlobUrl())
+                .setSourceBearerToken(oauthHeader),
+            null, Context.NONE)
+
+        then:
+        thrown(BlobStorageException)
     }
 
     def "Get Container Name"() {

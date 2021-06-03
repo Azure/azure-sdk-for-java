@@ -31,6 +31,7 @@ import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.StageBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -530,33 +531,55 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl,
-                sourceRange, sourceContentMd5, leaseId, sourceRequestConditions, context));
+            return this.stageBlockFromUrlWithResponse(new StageBlockFromUrlOptions()
+                .setBase64BlockId(base64BlockId).setSourceUrl(sourceUrl).setSourceRange(sourceRange)
+                .setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
+                .setSourceRequestConditions(sourceRequestConditions));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
-        byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Context context) {
-        sourceRange = (sourceRange == null) ? new BlobRange(0) : sourceRange;
-        sourceRequestConditions = (sourceRequestConditions == null)
-            ? new BlobRequestConditions() : sourceRequestConditions;
+    /**
+     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-from-url">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions}
+     *
+     * @param options parameters for the operation.
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stageBlockFromUrlWithResponse(StageBlockFromUrlOptions options) {
+        try {
+            return withContext(context -> stageBlockFromUrlWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> stageBlockFromUrlWithResponse(StageBlockFromUrlOptions options, Context context) {
+        BlobRange sourceRange = (options.getSourceRange() == null) ? new BlobRange(0) : options.getSourceRange();
+        BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
+            ? new BlobRequestConditions() : options.getSourceRequestConditions();
 
         URL url;
         try {
-            url = new URL(sourceUrl);
+            url = new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName, base64BlockId, 0,
-            url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
-            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
-            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            null/*sourceauth*/, getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName,
+            options.getBase64BlockId(), 0, url, sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
+            options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
+            sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+            sourceRequestConditions.getIfNoneMatch(), null, options.getSourceBearerToken(), getCustomerProvidedKey(),
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 

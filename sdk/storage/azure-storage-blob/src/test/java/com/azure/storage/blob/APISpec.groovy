@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
@@ -789,5 +790,11 @@ class APISpec extends StorageSpec {
                 return HttpPipelinePosition.PER_CALL
             }
         }
+    }
+
+    static Mono<String> getAuthToken() {
+        new EnvironmentCredentialBuilder().build()
+            .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
+            .map { it.getToken() }
     }
 }
