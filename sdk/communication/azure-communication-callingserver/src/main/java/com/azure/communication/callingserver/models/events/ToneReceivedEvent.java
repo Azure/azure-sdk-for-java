@@ -4,11 +4,12 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.models.ToneInfo;
+import com.azure.core.util.BinaryData;
 
 /**
  * The subscribe to tone event.
  */
-public final class ToneReceivedEvent extends CallEventBase {
+public final class ToneReceivedEvent extends CallingServerEventBase {
     /**
      * The event type.
      */
@@ -80,5 +81,18 @@ public final class ToneReceivedEvent extends CallEventBase {
         }
         this.toneInfo = toneInfo;
         this.callLegId = callLegId;
+    }
+
+    /**
+     * Deserialize {@see ToneReceivedEvent} event.
+     * 
+     * @param eventData binary data for event
+     * @return {@see ToneReceivedEvent} event.
+     */
+    public static ToneReceivedEvent deserialize(BinaryData eventData) {
+        if (eventData == null) {
+            return null;
+        }
+        return eventData.toObject(ToneReceivedEvent.class);
     }
 }

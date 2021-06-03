@@ -10,7 +10,7 @@ import java.util.List;
 
 /** Class to represent roster update. */
 @Fluent
-public final class ParticipantsUpdatedEvent {
+public final class ParticipantsUpdatedEventInternal {
     /*
      * The call leg.id.
      */
@@ -21,7 +21,7 @@ public final class ParticipantsUpdatedEvent {
      * The list of participants
      */
     @JsonProperty(value = "participants")
-    private List<CommunicationParticipant> participants;
+    private List<CommunicationParticipantInternal> participants;
 
     /**
      * Get the callLegId property: The call leg.id.
@@ -36,9 +36,9 @@ public final class ParticipantsUpdatedEvent {
      * Set the callLegId property: The call leg.id.
      *
      * @param callLegId the callLegId value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
+     * @return the ParticipantsUpdatedEventInternal object itself.
      */
-    public ParticipantsUpdatedEvent setCallLegId(String callLegId) {
+    public ParticipantsUpdatedEventInternal setCallLegId(String callLegId) {
         this.callLegId = callLegId;
         return this;
     }
@@ -48,7 +48,7 @@ public final class ParticipantsUpdatedEvent {
      *
      * @return the participants value.
      */
-    public List<CommunicationParticipant> getParticipants() {
+    public List<CommunicationParticipantInternal> getParticipants() {
         return this.participants;
     }
 
@@ -56,9 +56,9 @@ public final class ParticipantsUpdatedEvent {
      * Set the participants property: The list of participants.
      *
      * @param participants the participants value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
+     * @return the ParticipantsUpdatedEventInternal object itself.
      */
-    public ParticipantsUpdatedEvent setParticipants(List<CommunicationParticipant> participants) {
+    public ParticipantsUpdatedEventInternal setParticipants(List<CommunicationParticipantInternal> participants) {
         this.participants = participants;
         return this;
     }
