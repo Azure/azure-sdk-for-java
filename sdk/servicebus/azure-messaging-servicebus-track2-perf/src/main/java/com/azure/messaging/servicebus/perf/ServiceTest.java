@@ -30,15 +30,16 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     private final ClientLogger logger = new ClientLogger(ServiceTest.class);
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
-    private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
-    private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
-    private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
-    private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
+    protected static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
+    protected static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
+    protected static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
+    protected static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
     final ServiceBusReceiverClient receiver;
     final ServiceBusSenderClient sender;
     final ServiceBusSenderAsyncClient senderAsync;
     final ServiceBusProcessorClient processorClient;
+    ServiceBusReceiverAsyncClient receiverAsync;
 
 
     /**
@@ -78,7 +79,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
             .queueName(queueName);
 
         receiver = receiverBuilder.buildClient();
-        receiverAsync = receiverBuilder.buildAsyncClient();
+        //receiverAsync = receiverBuilder.buildAsyncClient();
 
         sender = senderBuilder.buildClient();
         senderAsync = senderBuilder.buildAsyncClient();
@@ -91,7 +92,6 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
 
         processorClient = processorBuilder.buildProcessorClient();
     }
-}
 
     private static void processMessage(ServiceBusReceivedMessageContext context) {
         ServiceBusReceivedMessage message = context.getMessage();
@@ -104,3 +104,4 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
         // when building the session receiver.
     }
 }
+
