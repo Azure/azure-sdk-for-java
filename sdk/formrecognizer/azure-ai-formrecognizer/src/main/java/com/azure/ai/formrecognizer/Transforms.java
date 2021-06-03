@@ -305,13 +305,12 @@ final class Transforms {
                 if (fieldValue != null) {
                     List<FormElement> formElementList = setReferenceElements(fieldValue.getElements(), readResults);
                     FieldData valueData;
-                    // Bounding box, page and text are not returned by the service in two scenarios:
+                    // Bounding box and page an are not returned by the service in two scenarios:
                     //   - When this field is global and not associated with a specific page (e.g. ReceiptType).
                     //   - When this field is a collection, such as a list or dictionary.
                     //
                     // In these scenarios we do not set a ValueData.
-                    if (fieldValue.getText() == null && fieldValue.getPage() == null
-                        && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
+                    if (fieldValue.getPage() == null && CoreUtils.isNullOrEmpty(fieldValue.getBoundingBox())) {
                         valueData = null;
                     } else {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
@@ -432,16 +431,18 @@ final class Transforms {
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
                                                              List<ReadResult> readResults) {
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
-        valueObject.forEach((key, fieldValue) ->
-            fieldValueObjectMap.put(key,
-                setFormField(key,
-                    new FieldData(fieldValue.getText(),
-                        toBoundingBox(fieldValue.getBoundingBox()),
-                        fieldValue.getPage(),
-                        setReferenceElements(fieldValue.getElements(), readResults)),
-                    fieldValue,
-                    readResults)
-            ));
+        valueObject.forEach((key, fieldValue) -> {
+
+            FieldData valueData = null;
+            // has ho value data when bounding box and page info is null.
+            if (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null) {
+                valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                    fieldValue.getPage(),
+                    setReferenceElements(fieldValue.getElements(), readResults));
+            }
+            fieldValueObjectMap.put(key, setFormField(key, valueData, fieldValue, readResults));
+        });
+
         return fieldValueObjectMap;
     }
 
