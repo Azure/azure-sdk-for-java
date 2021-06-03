@@ -7,6 +7,7 @@ import com.azure.communication.callingserver.models.CreateCallResult;
 import com.azure.communication.callingserver.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
 import com.azure.communication.callingserver.models.CancelMediaOperationsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -153,8 +154,8 @@ public final class CallClient {
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelMediaOperationsResult cancelMediaOperations(String callId) {
-        return callAsyncClient.cancelMediaOperations(callId).block();
+    public CancelMediaOperationsResult cancelAllMediaOperations(String callId, CancelAllMediaOperationsRequest request) {
+        return callAsyncClient.cancelAllMediaOperations(callId, request).block();
     }
 
     /**
@@ -165,8 +166,8 @@ public final class CallClient {
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelMediaOperationsResult> cancelMediaOperationsWithResponse(String callId, Context context) {
-        return callAsyncClient.cancelMediaOperationsWithResponse(callId, context).block();
+    public Response<CancelMediaOperationsResult> cancelAllMediaOperationsWithResponse(String callId, CancelAllMediaOperationsRequest request, Context context) {
+        return callAsyncClient.cancelAllMediaOperationsWithResponse(callId, request, context).block();
     }
 
     /**

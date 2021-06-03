@@ -32,7 +32,7 @@ To update generated files for calling service, run the following command
 ### Code generation settings
 ``` yaml
 tag: package-callingserver-2021-05-18
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/f5df5d9c6a1ddd1da567f19a7f9cf5fe8946938d/specification/communication/data-plane/CallingServer/preview/2021-04-15-preview1/communicationservicescallingserver.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/9550e58c98dc0af9474d896493335bf0543b2b4d/specification/communication/data-plane/CallingServer/preview/2021-04-15-preview1/communicationservicescallingserver.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
@@ -43,4 +43,23 @@ sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 title: Azure Communication CallingServer Service
+directive:
+    - rename-model:
+        from: CreateCallRequest
+        to: CreateCallRequestInternal
+    - rename-model:
+        from: PlayAudioRequest
+        to: PlayAudioRequestInternal
+    - rename-model:
+        from: InviteParticipantsRequest
+        to: InviteParticipantsRequestInternal
+    - rename-model:
+        from: StartCallRecordingRequest
+        to: StartCallRecordingRequestInternal
+    - rename-model:
+        from: ResultInfo
+        to: ResultInfoInternal
+    - rename-model:
+        from: JoinCallRequest
+        to: JoinCallRequestInternal
 ```

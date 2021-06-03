@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response payload of the cancel media processing operation. */
 @Fluent
-public final class CancelMediaOperationsResponse {
+public final class CancelAllMediaOperationsResponse {
     /*
      * Gets or sets the identifier.
      */
@@ -20,7 +20,7 @@ public final class CancelMediaOperationsResponse {
      * Gets or sets the status of the operation
      */
     @JsonProperty(value = "status")
-    private OperationStatusModel status;
+    private OperationStatus status;
 
     /*
      * Gets or sets the operation context
@@ -47,9 +47,9 @@ public final class CancelMediaOperationsResponse {
      * Set the id property: Gets or sets the identifier.
      *
      * @param id the id value to set.
-     * @return the CancelMediaOperationsResponse object itself.
+     * @return the CancelAllMediaOperationsResponse object itself.
      */
-    public CancelMediaOperationsResponse setId(String id) {
+    public CancelAllMediaOperationsResponse setId(String id) {
         this.id = id;
         return this;
     }
@@ -59,7 +59,7 @@ public final class CancelMediaOperationsResponse {
      *
      * @return the status value.
      */
-    public OperationStatusModel getStatus() {
+    public OperationStatus getStatus() {
         return this.status;
     }
 
@@ -67,9 +67,9 @@ public final class CancelMediaOperationsResponse {
      * Set the status property: Gets or sets the status of the operation.
      *
      * @param status the status value to set.
-     * @return the CancelMediaOperationsResponse object itself.
+     * @return the CancelAllMediaOperationsResponse object itself.
      */
-    public CancelMediaOperationsResponse setStatus(OperationStatusModel status) {
+    public CancelAllMediaOperationsResponse setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }
@@ -87,9 +87,9 @@ public final class CancelMediaOperationsResponse {
      * Set the operationContext property: Gets or sets the operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the CancelMediaOperationsResponse object itself.
+     * @return the CancelAllMediaOperationsResponse object itself.
      */
-    public CancelMediaOperationsResponse setOperationContext(String operationContext) {
+    public CancelAllMediaOperationsResponse setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -107,9 +107,9 @@ public final class CancelMediaOperationsResponse {
      * Set the resultInfo property: Gets or sets the result info.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the CancelMediaOperationsResponse object itself.
+     * @return the CancelAllMediaOperationsResponse object itself.
      */
-    public CancelMediaOperationsResponse setResultInfo(ResultInfoInternal resultInfo) {
+    public CancelAllMediaOperationsResponse setResultInfo(ResultInfoInternal resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
