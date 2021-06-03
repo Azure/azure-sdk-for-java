@@ -40,7 +40,8 @@
 - Renamed Feedback api's from `createMetricFeedback`, `getMetricFeedback` and `listMetricFeedbacks` 
 to `addFeedback`, `getFeedback` and `listFeedback` respectively.
 - Removed `getSubscriptionKey` and `getApiKey` from `MetricsAdvisorKeyCredential` and introduced `MetricsAdvisorKeys`.
-
+- Renamed model `ErrorCode` to `MetricsAdvisorError` and `ErrorCodeException`
+to `MetricsAdvisorResponseException`
 ## 1.0.0-beta.1 (2020-10-07)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a Azure Metrics Advisor client library that is developer-friendly
 and idiomatic to the Java ecosystem. The principles that guide

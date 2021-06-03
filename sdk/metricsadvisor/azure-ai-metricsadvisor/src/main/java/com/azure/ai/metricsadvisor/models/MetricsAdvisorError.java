@@ -7,9 +7,9 @@ package com.azure.ai.metricsadvisor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MetricsAdvisorErrorCode model. */
+/** The MetricsAdvisorError model. */
 @Fluent
-public final class MetricsAdvisorErrorCode {
+public final class MetricsAdvisorError {
     /*
      * The message property.
      */
@@ -35,9 +35,9 @@ public final class MetricsAdvisorErrorCode {
      * Set the message property: The message property.
      *
      * @param message the message value to set.
-     * @return the MetricsAdvisorErrorCode object itself.
+     * @return the MetricsAdvisorError object itself.
      */
-    public MetricsAdvisorErrorCode setMessage(String message) {
+    public MetricsAdvisorError setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -55,9 +55,9 @@ public final class MetricsAdvisorErrorCode {
      * Set the code property: The code property.
      *
      * @param code the code value to set.
-     * @return the MetricsAdvisorErrorCode object itself.
+     * @return the MetricsAdvisorError object itself.
      */
-    public MetricsAdvisorErrorCode setCode(String code) {
+    public MetricsAdvisorError setCode(String code) {
         this.code = code;
         return this;
     }

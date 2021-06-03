@@ -8,8 +8,8 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCode;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCodeException;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.core.http.HttpClient;
@@ -734,8 +734,8 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
             // Act & Assert
             StepVerifier.create(client.getDataFeedWithResponse(createdDataFeed.getId()))
                 .verifyErrorSatisfies(throwable -> {
-                    assertEquals(MetricsAdvisorErrorCodeException.class, throwable.getClass());
-                    final MetricsAdvisorErrorCode errorCode = ((MetricsAdvisorErrorCodeException) throwable).getValue();
+                    assertEquals(MetricsAdvisorResponseException.class, throwable.getClass());
+                    final MetricsAdvisorError errorCode = ((MetricsAdvisorResponseException) throwable).getValue();
                     assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
                     assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
                 });
