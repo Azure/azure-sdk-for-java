@@ -25,7 +25,6 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.InfluxDbDataFeedSource;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.administration.models.MongoDbDataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.administration.models.PostgreSqlDataFeedSource;

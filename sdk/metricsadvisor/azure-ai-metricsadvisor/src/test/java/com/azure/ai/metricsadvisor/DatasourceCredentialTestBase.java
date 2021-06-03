@@ -9,7 +9,6 @@ import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEnt
 import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipal;
 import com.azure.ai.metricsadvisor.administration.models.DatasourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.administration.models.DatasourceSqlServerConnectionString;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

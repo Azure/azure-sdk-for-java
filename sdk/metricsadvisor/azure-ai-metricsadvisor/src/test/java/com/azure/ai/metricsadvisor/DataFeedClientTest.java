@@ -15,7 +15,6 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCode;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorErrorCodeException;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.administration.models.PostgreSqlDataFeedSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;

@@ -10,7 +10,6 @@ import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigs
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.CoreUtils;
