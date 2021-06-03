@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.test;
+package com.azure.security.keyvault.jca.test;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultKeyStore;
@@ -20,7 +20,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 
-import static com.azure.security.keyvault.test.PropertyConvertorUtils.SYSTEM_PROPERTIES;
+import static com.azure.security.keyvault.jca.test.PropertyConvertorUtils.SYSTEM_PROPERTIES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
