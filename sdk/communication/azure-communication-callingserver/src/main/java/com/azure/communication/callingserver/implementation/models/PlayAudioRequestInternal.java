@@ -40,6 +40,12 @@ public final class PlayAudioRequestInternal {
     @JsonProperty(value = "audioFileId")
     private String audioFileId;
 
+    /*
+     * The callback Uri to receive PlayAudio status notifications.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
     /**
      * Get the audioFileUri property: The media resource uri of the play audio request. Currently only Wave file (.wav)
      * format audio prompts are supported. More specifically, the audio content in the wave file must be mono
@@ -121,6 +127,26 @@ public final class PlayAudioRequestInternal {
      */
     public PlayAudioRequestInternal setAudioFileId(String audioFileId) {
         this.audioFileId = audioFileId;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback Uri to receive PlayAudio status notifications.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback Uri to receive PlayAudio status notifications.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the PlayAudioRequestInternal object itself.
+     */
+    public PlayAudioRequestInternal setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }
