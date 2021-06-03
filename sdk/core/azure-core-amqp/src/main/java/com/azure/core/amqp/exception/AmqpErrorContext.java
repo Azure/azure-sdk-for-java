@@ -26,7 +26,7 @@ import java.util.Objects;
 public class AmqpErrorContext implements Serializable {
     static final String MESSAGE_PARAMETER_DELIMITER = ", ";
 
-    private static final long serialVersionUID = -2819764407122954927L;
+    private static final long serialVersionUID = -2819764407122954922L;
 
     private final String namespace;
     private final Map<String, Object> errorInfo;
