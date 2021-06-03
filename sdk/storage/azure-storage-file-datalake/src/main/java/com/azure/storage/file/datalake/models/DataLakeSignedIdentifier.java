@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * signed identifier.
  */
 @Fluent
-public final class DataLakeSignedIdentifier {
+public class DataLakeSignedIdentifier {
     /*
      * a unique id
      */
