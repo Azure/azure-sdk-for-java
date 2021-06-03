@@ -24,6 +24,7 @@ interface RestClient {
      *
      * @param url the URL.
      * @param body the request body.
+     * @param contentType the content type
      * @return the response body as a string.
      */
     String post(String url, String body, String contentType);

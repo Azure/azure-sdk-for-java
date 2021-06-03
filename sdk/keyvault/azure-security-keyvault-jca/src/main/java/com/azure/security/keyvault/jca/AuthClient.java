@@ -91,6 +91,7 @@ public class AuthClient extends DelegateRestClient {
      *
      * @param resource the resource.
      * @param tenantId the tenant ID.
+     * @param aadAuthenticationUrl the AAD authentication url
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      * @return the authorization token.
