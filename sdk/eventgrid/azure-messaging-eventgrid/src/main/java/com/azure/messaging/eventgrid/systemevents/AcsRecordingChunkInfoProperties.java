@@ -28,6 +28,18 @@ public final class AcsRecordingChunkInfoProperties {
     @JsonProperty(value = "endReason")
     private String endReason;
 
+    /*
+     * The location of the metadata for this chunk
+     */
+    @JsonProperty(value = "metadataLocation")
+    private String metadataLocation;
+
+    /*
+     * The location of the content for this chunk
+     */
+    @JsonProperty(value = "contentLocation")
+    private String contentLocation;
+
     /**
      * Get the documentId property: The documentId of the recording chunk.
      *
@@ -85,6 +97,46 @@ public final class AcsRecordingChunkInfoProperties {
      */
     public AcsRecordingChunkInfoProperties setEndReason(String endReason) {
         this.endReason = endReason;
+        return this;
+    }
+
+    /**
+     * Get the metadataLocation property: The location of the metadata for this chunk.
+     *
+     * @return the metadataLocation value.
+     */
+    public String getMetadataLocation() {
+        return this.metadataLocation;
+    }
+
+    /**
+     * Set the metadataLocation property: The location of the metadata for this chunk.
+     *
+     * @param metadataLocation the metadataLocation value to set.
+     * @return the AcsRecordingChunkInfoProperties object itself.
+     */
+    public AcsRecordingChunkInfoProperties setMetadataLocation(String metadataLocation) {
+        this.metadataLocation = metadataLocation;
+        return this;
+    }
+
+    /**
+     * Get the contentLocation property: The location of the content for this chunk.
+     *
+     * @return the contentLocation value.
+     */
+    public String getContentLocation() {
+        return this.contentLocation;
+    }
+
+    /**
+     * Set the contentLocation property: The location of the content for this chunk.
+     *
+     * @param contentLocation the contentLocation value to set.
+     * @return the AcsRecordingChunkInfoProperties object itself.
+     */
+    public AcsRecordingChunkInfoProperties setContentLocation(String contentLocation) {
+        this.contentLocation = contentLocation;
         return this;
     }
 }
