@@ -5,11 +5,12 @@ package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.ResultInfo;
+import com.azure.core.util.BinaryData;
 
 /**
  * The invited participants result event.
  */
-public final class InviteParticipantsResultEvent extends CallEventBase {
+public final class InviteParticipantsResultEvent extends CallingServerEventBase {
     /**
      * The event type.
      */
@@ -142,5 +143,18 @@ public final class InviteParticipantsResultEvent extends CallEventBase {
         this.operationContext = operationContext;
         this.status = status;
         this.callLegId = callLegId;
+    }
+
+    /**
+     * Deserialize {@see InviteParticipantsResultEvent} event.
+     * 
+     * @param eventData binary data for event
+     * @return {@see InviteParticipantsResultEvent} event.
+     */
+    public static InviteParticipantsResultEvent deserialize(BinaryData eventData) {
+        if (eventData == null) {
+            return null;
+        }
+        return eventData.toObject(InviteParticipantsResultEvent.class);
     }
 }
