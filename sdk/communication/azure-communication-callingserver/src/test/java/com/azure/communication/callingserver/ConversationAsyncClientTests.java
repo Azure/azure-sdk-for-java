@@ -5,13 +5,12 @@ package com.azure.communication.callingserver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
-import com.azure.communication.callingserver.models.GetCallRecordingStateResponse;
+import com.azure.communication.callingserver.models.CallRecordingStateResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResponse;
 import com.azure.core.http.HttpClient;
@@ -34,7 +33,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsAsync");
         String recordingId = "";        
-        URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
+        String recordingStateCallbackUri = "https://dev.skype.net:6448";
 
         try {
             StartCallRecordingResponse startCallRecordingResponse = conversationAsyncClient.startRecording(conversationId, recordingStateCallbackUri).block();
@@ -60,7 +59,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
         String recordingId = "";        
-        URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
+        String recordingStateCallbackUri = "https://dev.skype.net:6448";
         System.out.println("conversationId: " + conversationId);
 
         try {
@@ -131,7 +130,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "startRecordingFailsAsync");
         var invalidConversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";       
-        URI recordingStateCallbackUri = new URI("https://dev.skype.net:6448");
+        String recordingStateCallbackUri = "https://dev.skype.net:6448";
         System.out.println("conversationId: " + invalidConversationId);
 
         try {
@@ -161,7 +160,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
          */
         sleepIfRunningAgainstService(6000);
 
-        GetCallRecordingStateResponse callRecordingStateResult = conversationAsyncClient.getRecordingState(conversationId, recordingId).block();
+        CallRecordingStateResponse callRecordingStateResult = conversationAsyncClient.getRecordingState(conversationId, recordingId).block();
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
 }

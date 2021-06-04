@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response payload of get call recording state operation. */
 @Fluent
-public final class GetCallRecordingStateResponse {
+public final class CallRecordingStateResponse {
     /*
      * The recording state of the recording
      */
@@ -29,9 +29,9 @@ public final class GetCallRecordingStateResponse {
      * Set the recordingState property: The recording state of the recording.
      *
      * @param recordingState the recordingState value to set.
-     * @return the GetCallRecordingStateResponse object itself.
+     * @return the CallRecordingStateResponse object itself.
      */
-    public GetCallRecordingStateResponse setRecordingState(CallRecordingState recordingState) {
+    public CallRecordingStateResponse setRecordingState(CallRecordingState recordingState) {
         this.recordingState = recordingState;
         return this;
     }

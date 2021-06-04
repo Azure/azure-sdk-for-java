@@ -9,7 +9,7 @@ import com.azure.communication.callingserver.implementation.models.InvitePartici
 import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
-import com.azure.communication.callingserver.models.GetCallRecordingStateResponse;
+import com.azure.communication.callingserver.models.CallRecordingStateResponse;
 import com.azure.communication.callingserver.models.JoinCallResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResponse;
@@ -135,7 +135,7 @@ public final class ConversationsImpl {
                 value = CommunicationErrorException.class,
                 code = {400, 404, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<GetCallRecordingStateResponse>> recordingState(
+        Mono<Response<CallRecordingStateResponse>> recordingState(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("conversationId") String conversationId,
                 @PathParam("recordingId") String recordingId,
@@ -820,7 +820,7 @@ public final class ConversationsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetCallRecordingStateResponse>> recordingStateWithResponseAsync(
+    public Mono<Response<CallRecordingStateResponse>> recordingStateWithResponseAsync(
             String conversationId, String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -847,7 +847,7 @@ public final class ConversationsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetCallRecordingStateResponse>> recordingStateWithResponseAsync(
+    public Mono<Response<CallRecordingStateResponse>> recordingStateWithResponseAsync(
             String conversationId, String recordingId, Context context) {
         final String accept = "application/json";
         return service.recordingState(
@@ -866,10 +866,10 @@ public final class ConversationsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCallRecordingStateResponse> recordingStateAsync(String conversationId, String recordingId) {
+    public Mono<CallRecordingStateResponse> recordingStateAsync(String conversationId, String recordingId) {
         return recordingStateWithResponseAsync(conversationId, recordingId)
                 .flatMap(
-                        (Response<GetCallRecordingStateResponse> res) -> {
+                        (Response<CallRecordingStateResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -891,11 +891,11 @@ public final class ConversationsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetCallRecordingStateResponse> recordingStateAsync(
+    public Mono<CallRecordingStateResponse> recordingStateAsync(
             String conversationId, String recordingId, Context context) {
         return recordingStateWithResponseAsync(conversationId, recordingId, context)
                 .flatMap(
-                        (Response<GetCallRecordingStateResponse> res) -> {
+                        (Response<CallRecordingStateResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -916,7 +916,7 @@ public final class ConversationsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCallRecordingStateResponse recordingState(String conversationId, String recordingId) {
+    public CallRecordingStateResponse recordingState(String conversationId, String recordingId) {
         return recordingStateAsync(conversationId, recordingId).block();
     }
 
@@ -933,7 +933,7 @@ public final class ConversationsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetCallRecordingStateResponse> recordingStateWithResponse(
+    public Response<CallRecordingStateResponse> recordingStateWithResponse(
             String conversationId, String recordingId, Context context) {
         return recordingStateWithResponseAsync(conversationId, recordingId, context).block();
     }

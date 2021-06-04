@@ -4,7 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-import com.azure.communication.callingserver.models.GetCallRecordingStateResponse;
+import com.azure.communication.callingserver.models.CallRecordingStateResponse;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.JoinCallResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
@@ -15,8 +15,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.net.URI;
 
 /**
  * Sync Client that supports server call operations.
@@ -120,7 +118,7 @@ public final class ConversationClient {
      * @return response for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResponse startRecording(String conversationId, URI recordingStateCallbackUri) {
+    public StartCallRecordingResponse startRecording(String conversationId, String recordingStateCallbackUri) {
         return conversationAsyncClient.startRecording(conversationId, recordingStateCallbackUri).block();
     }
 
@@ -134,7 +132,7 @@ public final class ConversationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResponse> startRecordingWithResponse(String conversationId,
-            URI recordingStateCallbackUri, Context context) {
+            String recordingStateCallbackUri, Context context) {
         return conversationAsyncClient.startRecordingWithResponse(conversationId, recordingStateCallbackUri, context).block();
     }
 
@@ -221,7 +219,7 @@ public final class ConversationClient {
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetCallRecordingStateResponse getRecordingState(String conversationId, String recordingId) {
+    public CallRecordingStateResponse getRecordingState(String conversationId, String recordingId) {
         return conversationAsyncClient.getRecordingState(conversationId, recordingId).block();
     }
 
@@ -234,7 +232,7 @@ public final class ConversationClient {
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetCallRecordingStateResponse> getRecordingStateWithResponse(String conversationId,
+    public Response<CallRecordingStateResponse> getRecordingStateWithResponse(String conversationId,
             String recordingId, Context context) {
         return conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId, context).block();
     }
