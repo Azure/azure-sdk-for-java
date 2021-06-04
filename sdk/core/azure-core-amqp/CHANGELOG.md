@@ -1,6 +1,10 @@
 # Release History
 
 ## 2.1.0-beta.1 (Unreleased)
+
+### New Features
+- Exposing CbsAuthorizationType.
+
 ### Bug Fixes
 - Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
 
