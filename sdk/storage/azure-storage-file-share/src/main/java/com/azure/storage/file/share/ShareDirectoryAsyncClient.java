@@ -26,11 +26,11 @@ import com.azure.storage.file.share.implementation.models.DirectoriesGetProperti
 import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesResponse;
+import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
-import com.azure.storage.file.share.models.ListFilesIncludeType;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;

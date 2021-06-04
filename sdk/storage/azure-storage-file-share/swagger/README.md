@@ -29,7 +29,7 @@ license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,ListFilesIncludeType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
+custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
 customization-jar-path: target/azure-storage-file-share-customization-1.0.0-beta.1.jar
 customization-class: com.azure.storage.file.share.customization.ShareStorageCustomization
 ```
@@ -656,18 +656,6 @@ directive:
   where: $.definitions.ErrorCode
   transform: >
     $["x-ms-enum"].name = "ShareErrorCode";
-```
-
-### FileItemDateTimeFormat
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.FileProperty.properties
-  transform: >
-    $.CreationTime.format = "date-time";
-    $.LastAccessTime.format = "date-time";
-    $.LastWriteTime.format = "date-time";
-    $.ChangeTime.format = "date-time";
 ```
 
 ### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy

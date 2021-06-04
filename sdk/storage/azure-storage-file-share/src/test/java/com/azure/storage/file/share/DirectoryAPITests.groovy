@@ -6,16 +6,17 @@ package com.azure.storage.file.share
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
-import com.azure.storage.file.share.models.ListFilesIncludeType
+
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareFileItem
+import com.azure.storage.file.share.models.ShareFileItemProperties
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareDirectoryListFilesAndDirectoriesOptions
 import spock.lang.Unroll
 
-import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -448,8 +449,16 @@ class DirectoryAPITests extends APISpec {
             .stream().collect(Collectors.toList())
 
         then:
-        // directories list first
-        def dirListItem = listResults[0]
+        ShareFileItem dirListItem
+        ShareFileItem fileListItem
+        if (listResults[0].isDirectory()) {
+            dirListItem = listResults[0]
+            fileListItem = listResults[1]
+        } else {
+            dirListItem = listResults[1]
+            fileListItem = listResults[0]
+        }
+
         new File(dir.getDirectoryPath()).getName() == dirListItem.getName()
         dirListItem.isDirectory()
         dirListItem.getId() && !dirListItem.getId().allWhitespace
@@ -462,7 +471,6 @@ class DirectoryAPITests extends APISpec {
         dirListItem.getProperties().getLastModified()
         dirListItem.getProperties().getETag() && !dirListItem.getProperties().getETag().allWhitespace
 
-        def fileListItem = listResults[1]
         new File(file.getFilePath()).getName() == fileListItem.getName()
         !fileListItem.isDirectory()
         fileListItem.getId() && !fileListItem.getId().allWhitespace
