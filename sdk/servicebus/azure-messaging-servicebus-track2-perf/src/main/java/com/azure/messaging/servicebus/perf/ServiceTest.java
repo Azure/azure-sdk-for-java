@@ -17,6 +17,7 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -39,12 +40,13 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     protected static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
     protected static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     protected static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
-
     protected final String connectionString;
     protected final String queueName;
-    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy-HHMMSSS");
-
     protected ServiceBusReceiverAsyncClient receiverAsync;
+
+    private static final String FILE_FORMAT = "%s%ssb-performance-test-result-t2-%s.csv";
+
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy-HHMMSSS");
 
     final ServiceBusReceiverClient receiver;
     final ServiceBusSenderClient sender;
@@ -62,7 +64,8 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     ServiceTest(TOptions options, ServiceBusReceiveMode receiveMode) {
         super(options);
 
-        resultFilePath = System.getProperty("user.dir") + "\\sb-performance-test-result-t2-"+dateFormatter.format(new Date())+".csv";
+        resultFilePath = String.format(FILE_FORMAT, System.getProperty("user.dir"), File.separatorChar,
+            dateFormatter.format(new Date()));
         updateResult("Date, Use case, Number of messages, Total time(Seconds), messages/seconds, SDK Version");
         connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
