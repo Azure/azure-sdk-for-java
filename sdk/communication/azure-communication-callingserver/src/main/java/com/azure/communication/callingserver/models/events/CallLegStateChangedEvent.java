@@ -114,10 +114,10 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Deserialize {@see CallLegStateChangedEvent} event.
+     * Deserialize {@link CallLegStateChangedEvent} event.
      * 
      * @param eventData binary data for event
-     * @return {@see CallLegStateChangedEvent} event.
+     * @return {@link CallLegStateChangedEvent} event.
      */
     public static CallLegStateChangedEvent deserialize(BinaryData eventData) {
         if (eventData == null) {

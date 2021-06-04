@@ -146,10 +146,10 @@ public final class InviteParticipantsResultEvent extends CallingServerEventBase 
     }
 
     /**
-     * Deserialize {@see InviteParticipantsResultEvent} event.
+     * Deserialize {@link InviteParticipantsResultEvent} event.
      * 
      * @param eventData binary data for event
-     * @return {@see InviteParticipantsResultEvent} event.
+     * @return {@link InviteParticipantsResultEvent} event.
      */
     public static InviteParticipantsResultEvent deserialize(BinaryData eventData) {
         if (eventData == null) {

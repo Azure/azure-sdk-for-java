@@ -147,10 +147,10 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
     }
 
     /**
-     * Deserialize {@see CallRecordingStateChangeEvent} event.
+     * Deserialize {@link CallRecordingStateChangeEvent} event.
      * 
      * @param eventData binary data for event
-     * @return {@see CallRecordingStateChangeEvent} event.
+     * @return {@link CallRecordingStateChangeEvent} event.
      */
     public static CallRecordingStateChangeEvent deserialize(BinaryData eventData) {
         if (eventData == null) {

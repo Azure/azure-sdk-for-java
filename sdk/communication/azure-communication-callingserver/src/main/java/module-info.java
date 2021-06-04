@@ -12,5 +12,5 @@ module com.azure.communication.callingserver {
 
     // exporting some packages specifically for Jackson
     opens com.azure.communication.callingserver.models to com.fasterxml.jackson.databind;
-    opens com.azure.communication.callingserver.implementation.models to com.fasterxml.jackson.databind;
+    opens com.azure.communication.callingserver.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
 }
