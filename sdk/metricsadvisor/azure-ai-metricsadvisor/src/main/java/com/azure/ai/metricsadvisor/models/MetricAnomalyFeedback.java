@@ -3,13 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.implementation.util.MetricAnomalyFeedbackHelper;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
 /**
- * The MetricAnomalyFeedback class.
+ * A feedback to indicate a set of data points as Anomaly or NotAnomaly.
  */
 @Fluent
 public final class MetricAnomalyFeedback extends MetricFeedback {
@@ -91,6 +92,19 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
     public MetricAnomalyFeedback setDetectionConfigurationId(
         final String detectionConfigurationId) {
         this.detectionConfigurationId = detectionConfigurationId;
+        return this;
+    }
+
+    /**
+     * Set the series keys value for the feedback.
+     *
+     * @param dimensionFilter the dimensionFilter value to set.
+     *
+     * @return the MetricAnomalyFeedback object itself.
+     */
+    @Override
+    public MetricAnomalyFeedback setDimensionFilter(final DimensionKey dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
         return this;
     }
 

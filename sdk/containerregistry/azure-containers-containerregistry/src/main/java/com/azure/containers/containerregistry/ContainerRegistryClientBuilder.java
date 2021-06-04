@@ -114,7 +114,7 @@ public final class ContainerRegistryClientBuilder {
      *
      * <p>
      * Example:- For Azure public cloud this value is same as AzureEnvironment.Azure.managementEndpoint().
-     * For more information - http://azure.github.io/ref-docs/java/com/microsoft/azure/AzureEnvironment.html
+     * For more information - https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities#azure-resource-manager
      * </p>
      *
      * @param authenticationScope ARM management scope associated with the given registry.
