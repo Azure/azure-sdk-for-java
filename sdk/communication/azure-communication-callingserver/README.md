@@ -44,10 +44,15 @@ Once you initialized a `CallClient` class, you can do the following chat operati
 
 ### Create, Join, Answer, Reject, Transfer, Hangup and Delete a call
 
+In progress.
+
 ### Start, Stop, Pause, Resume, and Get a recording
+
+In progress.
 
 ### Add, Delete, Mute, Unmute participants
 
+In progress.
 
 ## Contributing
 
@@ -78,3 +83,11 @@ Check out other client libraries for Azure Communication Services
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-callingserver
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java-pr/tree/master/sdk/communication/azure-communication-callingserver/src
+
+## Contributing
+
+This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
