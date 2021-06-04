@@ -13,7 +13,7 @@ private object CosmosConstants {
     CoreUtils.getProperties(propertiesFileName).get("version")
   val currentName: String =
     CoreUtils.getProperties(propertiesFileName).get("name")
-  val userAgentSuffix = s" $currentName/$currentVersion"
+  val userAgentSuffix = s"SparkConnector/$currentName/$currentVersion"
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
