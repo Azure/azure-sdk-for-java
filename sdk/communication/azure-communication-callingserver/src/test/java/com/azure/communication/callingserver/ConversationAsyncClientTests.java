@@ -13,6 +13,7 @@ import com.azure.communication.callingserver.implementation.models.Communication
 import com.azure.communication.callingserver.models.CallRecordingStateResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResponse;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 
@@ -138,6 +139,52 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
             assertEquals(response.getStatusCode(), 400);
         } catch (CommunicationErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAddRemoveScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAddRemoveScenarioAsync");        
+        try {
+            // Add User
+            String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
+            var participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
+            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            var callBackUri = "https://host.app/api/callback/calling";
+            conversationAsyncClient.addParticipant(conversationId, new CommunicationUserIdentifier(participant), null, operationContext, callBackUri).block();
+
+            // Remove User
+            var participantId = "2bbea6fd-e898-4296-ba38-7a6a1a5f697f"; 
+            conversationAsyncClient.removeParticipant(conversationId, participantId).block();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAddRemoveScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runAddRemoveScenarioWithResponseAsync");        
+        try {
+            // Add User
+            String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
+            var participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
+            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            var callBackUri = "https://host.app/api/callback/calling";
+            Response<Void> addResponse = conversationAsyncClient.addParticipantWithResponse(conversationId, new CommunicationUserIdentifier(participant), null, operationContext, callBackUri).block();
+            CallingServerTestUtils.validateResponse(addResponse);
+
+            // Remove User
+            var participantId = "d5f93caf-2e3f-4c82-a395-8323fb9e08c6"; 
+            Response<Void> removeResponse = conversationAsyncClient.removeParticipantWithResponse(conversationId, participantId).block();
+            CallingServerTestUtils.validateResponse(removeResponse);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
         }
     }
 
