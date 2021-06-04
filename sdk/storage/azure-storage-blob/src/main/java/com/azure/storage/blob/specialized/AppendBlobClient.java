@@ -280,7 +280,7 @@ public final class AppendBlobClient extends BlobClientBase {
         byte[] sourceContentMd5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
-            new AppendBlockFromUrlOptions().setSourceUrl(sourceUrl).setSourceRange(sourceRange)
+            new AppendBlockFromUrlOptions(sourceUrl).setSourceRange(sourceRange)
                 .setSourceContentMD5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

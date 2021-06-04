@@ -1214,8 +1214,8 @@ public class ShareFileClient {
     public Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlWithResponse(long length, long destinationOffset,
         long sourceOffset, String sourceUrl, ShareRequestConditions requestConditions, Duration timeout,
         Context context) {
-        return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions().setLength(length)
-            .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset).setSourceUrl(sourceUrl)
+        return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(length, sourceUrl)
+            .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset)
             .setDestinationRequestConditions(requestConditions), timeout, context);
     }
 

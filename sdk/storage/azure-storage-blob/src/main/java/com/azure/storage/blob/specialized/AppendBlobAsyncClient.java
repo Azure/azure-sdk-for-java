@@ -338,7 +338,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
         try {
-            return appendBlockFromUrlWithResponse(new AppendBlockFromUrlOptions().setSourceUrl(sourceUrl)
+            return appendBlockFromUrlWithResponse(new AppendBlockFromUrlOptions(sourceUrl)
                 .setSourceRange(sourceRange).setSourceContentMD5(sourceContentMD5)
                 .setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions));

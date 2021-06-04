@@ -424,9 +424,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
             BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> uploadPagesFromUrlWithResponse(new UploadPagesFromUrlOptions()
-                .setRange(range).setSourceUrl(sourceUrl).setSourceOffset(sourceOffset)
-                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
+            return withContext(context -> uploadPagesFromUrlWithResponse(new UploadPagesFromUrlOptions(range, sourceUrl)
+                .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMd5)
+                .setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions), context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
