@@ -146,10 +146,10 @@ public final class PlayAudioResultEvent extends CallingServerEventBase {
     }
 
     /**
-     * Deserialize {@see PlayAudioResultEvent} event.
+     * Deserialize {@link PlayAudioResultEvent} event.
      * 
      * @param eventData binary data for event
-     * @return {@see PlayAudioResultEvent} event.
+     * @return {@link PlayAudioResultEvent} event.
      */
     public static PlayAudioResultEvent deserialize(BinaryData eventData) {
         if (eventData == null) {

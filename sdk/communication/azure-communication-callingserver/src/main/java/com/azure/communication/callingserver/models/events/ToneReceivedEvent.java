@@ -84,10 +84,10 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Deserialize {@see ToneReceivedEvent} event.
+     * Deserialize {@link ToneReceivedEvent} event.
      * 
      * @param eventData binary data for event
-     * @return {@see ToneReceivedEvent} event.
+     * @return {@link ToneReceivedEvent} event.
      */
     public static ToneReceivedEvent deserialize(BinaryData eventData) {
         if (eventData == null) {
