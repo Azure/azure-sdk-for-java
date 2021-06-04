@@ -153,9 +153,6 @@ public class BlobSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String stringToSign = stringToSign(canonicalName);
-        if (encryptionScope != null) {
-            System.out.println("'" + stringToSign + "'");
-        }
         StorageImplUtils.logStringToSign(logger, stringToSign, context);
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
