@@ -124,6 +124,7 @@ known_content_issues:
   - ['sdk/core/README.md', '#3113']
   - ['sdk/core/azure-core-experimental/README.md', '#3113']
   - ['sdk/cognitiveservices/ms-azure-cs-textanalytics/README.md', '#3113']
+  - ['sdk/communication/azure-communication-callingserver/swagger/README.md', '#3113']
   - ['sdk/communication/azure-communication-chat/swagger/README.md', '#3113']
   - ['sdk/communication/azure-communication-sms/swagger/README.md', '#3113']
   - ['sdk/communication/azure-communication-identity/swagger/README.md', '#3113']
