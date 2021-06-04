@@ -302,17 +302,9 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public void dispose() {
-        if (isDisposed.getAndSet(true)) {
-            logger.verbose("connectionId[{}] Was already closed. Not disposing again.", connectionId);
-            return;
-        }
-
         // Because the reactor executor schedules the pending close after the timeout, we want to give sufficient time
         // for the rest of the tasks to run.
         final Duration timeout = operationTimeout.plus(operationTimeout);
-        closeAsync(new AmqpShutdownSignal(false, true, "Disposed by client."))
-            .publishOn(Schedulers.boundedElastic())
-            .block(timeout);
     }
 
     /**
@@ -356,12 +348,19 @@ public class ReactorConnection implements AmqpConnection {
                 new ClientLogger(RequestResponseChannel.class + ":" + entityPath)));
     }
 
+    @Override
+    public Mono<Void> closeAsync() {
+        if (isDisposed.getAndSet(true)) {
+            logger.verbose("connectionId[{}] Was already closed. Not disposing again.", connectionId);
+            return isClosedMono.asMono();
+        }
+
+        return closeAsync(new AmqpShutdownSignal(false, true,
+            "Disposed by client."));
+    }
+
     Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
         logger.info("connectionId[{}] signal[{}]: Disposing of ReactorConnection.", connectionId, shutdownSignal);
-
-        if (cbsChannelProcessor != null) {
-            cbsChannelProcessor.dispose();
-        }
 
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
         if (result.isFailure()) {
@@ -369,7 +368,14 @@ public class ReactorConnection implements AmqpConnection {
             logger.info("connectionId[{}] signal[{}] result[{}] Unable to emit shutdown signal.", connectionId, result);
         }
 
-        return Mono.fromRunnable(() -> {
+        final Mono<Void> cbsCloseOperation;
+        if (cbsChannelProcessor != null) {
+            cbsCloseOperation = cbsChannelProcessor.flatMap(channel -> channel.closeAsync());
+        } else {
+            cbsCloseOperation = Mono.empty();
+        }
+
+        final Mono<Void> closeReactor = Mono.fromRunnable(() -> {
             final ReactorDispatcher dispatcher = reactorProvider.getReactorDispatcher();
 
             try {
@@ -383,7 +389,9 @@ public class ReactorConnection implements AmqpConnection {
                     connectionId, e);
                 closeConnectionWork();
             }
-        }).then(isClosedMono.asMono());
+        });
+
+        return Mono.whenDelayError(cbsCloseOperation, closeReactor, isClosedMono.asMono());
     }
 
     private synchronized void closeConnectionWork() {
