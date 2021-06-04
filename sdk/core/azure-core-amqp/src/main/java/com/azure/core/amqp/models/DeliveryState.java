@@ -8,6 +8,8 @@ package com.azure.core.amqp.models;
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-delivery-state">Delivery
  *     state</a>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-txn-work">Transactional
+ *     work</a>
  */
 public enum DeliveryState {
     // indicates successful processing at the receiver.
