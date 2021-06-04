@@ -15,10 +15,10 @@ import com.azure.communication.callingserver.implementation.AzureCommunicationCa
 import com.azure.communication.callingserver.implementation.CallsImpl;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
-import com.azure.communication.callingserver.implementation.models.CallModality;
+import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
-import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;

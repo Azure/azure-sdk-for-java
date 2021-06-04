@@ -37,7 +37,7 @@ java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse,OperationStatus,StartCallRecordingResponse,GetCallRecordingStateResponse,CallRecordingState,CallState,CreateCallResponse
+custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse,OperationStatus,StartCallRecordingResponse,GetCallRecordingStateResponse,CallRecordingState,CallState,CreateCallResponse,EventSubscriptionType,CallModality
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
@@ -45,7 +45,7 @@ sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 title: Azure Communication CallingServer Service
-directive:
+directive: 
     - rename-model:
         from: CreateCallRequest
         to: CreateCallRequestInternal
@@ -54,5 +54,13 @@ directive:
         to: ParticipantsUpdatedEventInternal
     - rename-model:
         from: CommunicationParticipant
-        to: CommunicationParticipantInternal        
+        to: CommunicationParticipantInternal
+#    from: swagger-document
+#    where: $.definitions
+#    transform: >
+#        delete  $["CallLegStateChangedEvent"];
+#        delete  $["CallRecordingStateChangeEvent"];
+#        delete  $["InviteParticipantsResultEvent"];
+#        delete  $["PlayAudioResultEvent"];
+#        delete  $["ToneReceivedEvent"];               
 ```
