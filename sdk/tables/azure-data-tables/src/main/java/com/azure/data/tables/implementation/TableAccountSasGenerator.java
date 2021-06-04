@@ -103,13 +103,13 @@ public class TableAccountSasGenerator {
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SERVICE_VERSION, this.version);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SERVICES, this.services);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_RESOURCES_TYPES, this.resourceTypes);
-        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_START_TIME,
             formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_EXPIRY_TIME,
             formatQueryParameterDate(this.expiryTime));
-        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNATURE, signature);
 
         return sb.toString();

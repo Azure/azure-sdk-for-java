@@ -288,42 +288,42 @@ public class SasModelsTest {
 
     @Test
     public void tableSasPermissionToString() {
-        assertEquals("raup", new TableSasPermission()
+        assertEquals("raud", new TableSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
             .setUpdatePermission(true)
-            .setProcessPermission(true)
+            .setDeletePermission(true)
             .toString());
         assertEquals("r", new TableSasPermission().setReadPermission(true).toString());
         assertEquals("a", new TableSasPermission().setAddPermission(true).toString());
         assertEquals("u", new TableSasPermission().setUpdatePermission(true).toString());
-        assertEquals("p", new TableSasPermission().setProcessPermission(true).toString());
+        assertEquals("d", new TableSasPermission().setDeletePermission(true).toString());
     }
 
     @Test
     public void tableSasPermissionParse() {
-        TableSasPermission tableSasPermission = TableSasPermission.parse("raup");
+        TableSasPermission tableSasPermission = TableSasPermission.parse("raud");
 
         assertTrue(tableSasPermission.hasReadPermission());
         assertTrue(tableSasPermission.hasAddPermission());
         assertTrue(tableSasPermission.hasUpdatePermission());
-        assertTrue(tableSasPermission.hasProcessPermission());
+        assertTrue(tableSasPermission.hasDeletePermission());
 
-        tableSasPermission = TableSasPermission.parse("urpa");
+        tableSasPermission = TableSasPermission.parse("urda");
 
         assertTrue(tableSasPermission.hasReadPermission());
         assertTrue(tableSasPermission.hasAddPermission());
         assertTrue(tableSasPermission.hasUpdatePermission());
-        assertTrue(tableSasPermission.hasProcessPermission());
+        assertTrue(tableSasPermission.hasDeletePermission());
 
         assertTrue(TableSasPermission.parse("r").hasReadPermission());
         assertTrue(TableSasPermission.parse("a").hasAddPermission());
         assertTrue(TableSasPermission.parse("u").hasUpdatePermission());
-        assertTrue(TableSasPermission.parse("p").hasProcessPermission());
+        assertTrue(TableSasPermission.parse("d").hasDeletePermission());
     }
 
     @Test
     public void tableSasPermissionParseIllegalString() {
-        assertThrows(IllegalArgumentException.class, () -> TableSasPermission.parse("rauq"));
+        assertThrows(IllegalArgumentException.class, () -> TableSasPermission.parse("raud"));
     }
 }

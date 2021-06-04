@@ -12,14 +12,18 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
-import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionActionType;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import com.azure.data.tables.models.TableTransactionResult;
+import com.azure.data.tables.sas.TableSasIpRange;
+import com.azure.data.tables.sas.TableSasPermission;
+import com.azure.data.tables.sas.TableSasProtocol;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,6 +33,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,13 +77,16 @@ public class TableAsyncClientTest extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
+
             builder.httpClient(playbackClient);
         } else {
             builder.httpClient(HttpClient.createDefault());
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
+
                 builder.addPolicy(recordPolicy);
             }
+
             builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
                 Duration.ofSeconds(100))));
         }
@@ -882,6 +890,123 @@ public class TableAsyncClientTest extends TestBase {
                 && e.getMessage().contains("CreateEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue2)
                 && e.getMessage().contains("rowKey='" + rowKeyValue2))
+            .verify();
+    }
+
+    @Test
+    @Tag("SAS")
+    public void generateSasTokenWithMinimumParameters() {
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final TableSasPermission permissions = TableSasPermission.parse("r");
+        final TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
+
+        final TableSasSignatureValues sasSignatureValues =
+            new TableSasSignatureValues(expiryTime, permissions)
+                .setProtocol(protocol)
+                .setVersion(TableServiceVersion.V2019_02_02.getVersion());
+
+        final String sas = tableClient.generateSas(sasSignatureValues);
+
+        assertTrue(
+            sas.startsWith(
+                "sv=2019-02-02"
+                    + "&se=2021-12-12T00%3A00%3A00Z"
+                    + "&tn=" + tableClient.getTableName()
+                    + "&sp=r"
+                    + "&spr=https"
+                    + "&sig="
+            )
+        );
+    }
+
+    @Test
+    @Tag("SAS")
+    public void generateSasTokenWithAllParameters() {
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final TableSasPermission permissions = TableSasPermission.parse("raud");
+        final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
+
+        final OffsetDateTime startTime = OffsetDateTime.of(2015, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final TableSasIpRange ipRange = TableSasIpRange.parse("a-b");
+        final String startPartitionKey = "startPartitionKey";
+        final String startRowKey = "startRowKey";
+        final String endPartitionKey = "endPartitionKey";
+        final String endRowKey = "endRowKey";
+
+        final TableSasSignatureValues sasSignatureValues =
+            new TableSasSignatureValues(expiryTime, permissions)
+                .setProtocol(protocol)
+                .setVersion(TableServiceVersion.V2019_02_02.getVersion())
+                .setStartTime(startTime)
+                .setSasIpRange(ipRange)
+                .setStartPartitionKey(startPartitionKey)
+                .setStartRowKey(startRowKey)
+                .setEndPartitionKey(endPartitionKey)
+                .setEndRowKey(endRowKey);
+
+        final String sas = tableClient.generateSas(sasSignatureValues);
+
+        assertTrue(
+            sas.startsWith(
+                "sv=2019-02-02"
+                    + "&st=2015-01-01T00%3A00%3A00Z"
+                    + "&se=2021-12-12T00%3A00%3A00Z"
+                    + "&tn=" + tableClient.getTableName()
+                    + "&sp=raud"
+                    + "&spk=startPartitionKey"
+                    + "&srk=startRowKey"
+                    + "&epk=endPartitionKey"
+                    + "&erk=endRowKey"
+                    + "&sip=a-b"
+                    + "&spr=https%2Chttp"
+                    + "&sig="
+            )
+        );
+    }
+
+    @Test
+    @Tag("SAS")
+    public void canUseSasTokenToCreateValidTableClient() {
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final TableSasPermission permissions = TableSasPermission.parse("a");
+        final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
+
+        final TableSasSignatureValues sasSignatureValues =
+            new TableSasSignatureValues(expiryTime, permissions)
+                .setProtocol(protocol)
+                .setVersion(TableServiceVersion.V2019_02_02.getVersion());
+
+        final String sas = tableClient.generateSas(sasSignatureValues);
+
+        final TableClientBuilder tableClientBuilder = new TableClientBuilder()
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .endpoint(tableClient.getTableEndpoint())
+            .sasToken(sas)
+            .tableName(tableClient.getTableName());
+
+        if (interceptorManager.isPlaybackMode()) {
+            tableClientBuilder.httpClient(playbackClient);
+        } else {
+            tableClientBuilder.httpClient(HttpClient.createDefault());
+
+            if (!interceptorManager.isLiveMode()) {
+                tableClientBuilder.addPolicy(recordPolicy);
+            }
+
+            tableClientBuilder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
+                Duration.ofSeconds(100))));
+        }
+
+        // Create a new client authenticated with the SAS token.
+        final TableAsyncClient tableAsyncClient = tableClientBuilder.buildAsyncClient();
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue);
+        final int expectedStatusCode = 204;
+
+        StepVerifier.create(tableAsyncClient.createEntityWithResponse(entity))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
             .verify();
     }
 }

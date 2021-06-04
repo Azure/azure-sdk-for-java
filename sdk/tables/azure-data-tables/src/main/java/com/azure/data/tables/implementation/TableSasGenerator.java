@@ -11,6 +11,7 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 
 import java.time.OffsetDateTime;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.azure.data.tables.implementation.TableSasUtils.computeHmac256;
@@ -89,19 +90,20 @@ public class TableSasGenerator {
         StringBuilder sb = new StringBuilder();
 
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SERVICE_VERSION, this.version);
-        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_START_TIME,
             formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_EXPIRY_TIME,
             formatQueryParameterDate(this.expiryTime));
-        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
-        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_NAME, tableName);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
-        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNATURE, signature);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_START_PARTITION_KEY, startPartitionKey);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_START_ROW_KEY, startRowKey);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_END_PARTITION_KEY, endPartitionKey);
         tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_TABLE_END_ROW_KEY, endRowKey);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_PROTOCOL, this.protocol);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
+        tryAppendQueryParameter(sb, StorageConstants.UrlConstants.SAS_SIGNATURE, signature);
 
         return sb.toString();
     }
@@ -162,7 +164,7 @@ public class TableSasGenerator {
             this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
             this.expiryTime == null ? "" : StorageConstants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            canonicalName,
+            canonicalName.toLowerCase(Locale.ROOT),
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),

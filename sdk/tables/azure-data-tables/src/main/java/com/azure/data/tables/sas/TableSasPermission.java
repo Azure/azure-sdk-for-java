@@ -27,7 +27,7 @@ public final class TableSasPermission {
     private boolean readPermission;
     private boolean addPermission;
     private boolean updatePermission;
-    private boolean processPermission;
+    private boolean deletePermission;
 
     /**
      * Creates a {@link TableSasPermission} from the specified permissions string. This method will throw an
@@ -37,7 +37,7 @@ public final class TableSasPermission {
      *
      * @return A {@link TableSasPermission} generated from the given {@link String}.
      *
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, u, or p.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, u, or d.
      */
     public static TableSasPermission parse(String permString) {
         TableSasPermission permissions = new TableSasPermission();
@@ -57,8 +57,8 @@ public final class TableSasPermission {
                     permissions.updatePermission = true;
 
                     break;
-                case 'p':
-                    permissions.processPermission = true;
+                case 'd':
+                    permissions.deletePermission = true;
 
                     break;
                 default:
@@ -149,24 +149,24 @@ public final class TableSasPermission {
     }
 
     /**
-     * Gets the process permission status.
+     * Gets the delete permission status.
      *
      * @return {@code true} if the SAS has permission to delete entities from the table. {@code false}, otherwise.
      */
-    public boolean hasProcessPermission() {
-        return processPermission;
+    public boolean hasDeletePermission() {
+        return deletePermission;
     }
 
     /**
      * Sets the process permission status.
      *
-     * @param hasProcessPermission {@code true} if the SAS has permission to delete entities from the table.
+     * @param hasDeletePermission {@code true} if the SAS has permission to delete entities from the table.
      * {@code false}, otherwise.
      *
      * @return The updated {@link TableSasPermission} object.
      */
-    public TableSasPermission setProcessPermission(boolean hasProcessPermission) {
-        this.processPermission = hasProcessPermission;
+    public TableSasPermission setDeletePermission(boolean hasDeletePermission) {
+        this.deletePermission = hasDeletePermission;
 
         return this;
     }
@@ -196,8 +196,8 @@ public final class TableSasPermission {
             builder.append('u');
         }
 
-        if (this.processPermission) {
-            builder.append('p');
+        if (this.deletePermission) {
+            builder.append('d');
         }
 
         return builder.toString();

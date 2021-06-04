@@ -330,6 +330,11 @@ public final class StorageConstants {
         public static final String SAS_CONTENT_TYPE = "rsct";
 
         /**
+         * The SAS table name parameter.
+         */
+        public static final String SAS_TABLE_NAME = "tn";
+
+        /**
          * The SAS signed object id parameter for user delegation SAS.
          */
         public static final String SAS_SIGNED_OBJECT_ID = "skoid";
