@@ -75,6 +75,13 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
 
     /**
      * Initializes a new instance of ParticipantsUpdatedEvent.
+     */
+    public ParticipantsUpdatedEvent() {
+
+    }
+
+    /**
+     * Initializes a new instance of ParticipantsUpdatedEvent.
      * 
      * @param callLegId The call leg id.
      * @param participants The conversation id.
