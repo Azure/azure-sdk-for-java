@@ -3,11 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Describes the additional parameters for the API to list the alerts triggered.
  */
+@Fluent
 public final class ListAlertOptions {
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
     private AlertQueryTimeMode alertQueryTimeMode;
 
@@ -34,10 +37,10 @@ public final class ListAlertOptions {
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maxPageSize value.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -53,11 +56,11 @@ public final class ListAlertOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The skip value.
+     * @param maxPageSize The skip value.
      * @return ListAlertOptions itself.
      */
-    public ListAlertOptions setTop(int top) {
-        this.top = top;
+    public ListAlertOptions setMaxPageSize(int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 

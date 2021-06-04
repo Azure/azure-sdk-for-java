@@ -8,8 +8,8 @@ import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import org.hamcrest.core.IsInstanceOf;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_ID;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_KEY;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.TENANT_ID;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyVaultEnvironmentPostProcessorTest {
     private KeyVaultEnvironmentPostProcessorHelper keyVaultEnvironmentPostProcessorHelper;
@@ -36,7 +36,7 @@ public class KeyVaultEnvironmentPostProcessorTest {
     private MutablePropertySources propertySources;
     private Map<String, Object> testProperties = new HashMap<>();
 
-    @Before
+    @BeforeEach
     public void setup() {
         environment = new MockEnvironment();
         environment.setProperty(KeyVaultProperties.getPropertyName(ALLOW_TELEMETRY), "false");
@@ -114,16 +114,16 @@ public class KeyVaultEnvironmentPostProcessorTest {
     @Test
     public void postProcessorOrderConfigurable() {
         final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(OrderedProcessConfig.class))
-                .withPropertyValues("azure.keyvault.uri=fakeuri", "azure.keyvault.enabled=true");
+            .withConfiguration(AutoConfigurations.of(OrderedProcessConfig.class))
+            .withPropertyValues("azure.keyvault.uri=fakeuri", "azure.keyvault.enabled=true");
 
         contextRunner.run(context -> {
             assertThat("Configured order for KeyVaultEnvironmentPostProcessor is different with default order "
                     + "value.",
                 KeyVaultEnvironmentPostProcessor.DEFAULT_ORDER != OrderedProcessConfig.TEST_ORDER);
-            assertEquals("KeyVaultEnvironmentPostProcessor order should be changed.",
-                    OrderedProcessConfig.TEST_ORDER,
-                    context.getBean(KeyVaultEnvironmentPostProcessor.class).getOrder());
+            assertEquals(OrderedProcessConfig.TEST_ORDER,
+                context.getBean(KeyVaultEnvironmentPostProcessor.class).getOrder(), "KeyVaultEnvironmentPostProcessor"
+                    + " order should be changed.");
         });
     }
 

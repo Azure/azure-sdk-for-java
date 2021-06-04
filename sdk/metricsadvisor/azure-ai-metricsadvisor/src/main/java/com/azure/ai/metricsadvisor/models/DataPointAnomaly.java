@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.implementation.util.AnomalyHelper;
 
 import java.time.OffsetDateTime;
@@ -11,6 +12,7 @@ import java.time.OffsetDateTime;
  * Describes an anomaly detected in a metric series.
  */
 public final class DataPointAnomaly {
+    private String dataFeedId;
     private String metricId;
     private DimensionKey seriesKey;
     private String detectionConfigurationId;
@@ -19,9 +21,16 @@ public final class DataPointAnomaly {
     private OffsetDateTime timeStamp;
     private OffsetDateTime createdTime;
     private OffsetDateTime modifiedTime;
+    private Double value;
+    private Double expectedValue;
 
     static {
         AnomalyHelper.setAccessor(new AnomalyHelper.AnomalyAccessor() {
+            @Override
+            public void setDataFeedId(DataPointAnomaly anomaly, String dataFeedId) {
+                anomaly.setDataFeedId(dataFeedId);
+            }
+
             @Override
             public void setMetricId(DataPointAnomaly anomaly, String metricId) {
                 anomaly.setMetricId(metricId);
@@ -61,7 +70,26 @@ public final class DataPointAnomaly {
             public void setModifiedTime(DataPointAnomaly anomaly, OffsetDateTime modifiedTime) {
                 anomaly.setModifiedTime(modifiedTime);
             }
+
+            @Override
+            public void setValue(DataPointAnomaly anomaly, Double value) {
+                anomaly.setValue(value);
+            }
+
+            @Override
+            public void setExpectedValue(DataPointAnomaly anomaly, Double value) {
+                anomaly.setExpectedValue(value);
+            }
         });
+    }
+
+    /**
+     * Get the data feed id.
+     *
+     * @return The data feed id.
+     */
+    public String getDataFeedId() {
+        return this.dataFeedId;
     }
 
     /**
@@ -136,6 +164,28 @@ public final class DataPointAnomaly {
         return this.modifiedTime;
     }
 
+    /**
+     * Gets the value of the anomaly.
+     *
+     * @return The anomaly value.
+     */
+    public Double getValue() {
+        return this.value;
+    }
+
+    /**
+     * Gets the expected value of the data point computed by the smart-detector
+     * had it not an anomaly.
+     *
+     * @return The expected value.
+     */
+    public Double getExpectedValue() {
+        return this.expectedValue;
+    }
+
+    void setDataFeedId(String dataFeedId) {
+        this.dataFeedId = dataFeedId;
+    }
 
     void setMetricId(String metricId) {
         this.metricId = metricId;
@@ -167,5 +217,13 @@ public final class DataPointAnomaly {
 
     void setModifiedTime(OffsetDateTime modifiedTime) {
         this.modifiedTime = modifiedTime;
+    }
+
+    void setValue(Double value) {
+        this.value = value;
+    }
+
+    void setExpectedValue(Double value) {
+        this.expectedValue = value;
     }
 }

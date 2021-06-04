@@ -472,7 +472,7 @@
         <!--          <plugin>-->
         <!--            <groupId>net.jonathangiles.tools</groupId>-->
         <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-        <!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+        <!--            <version>1.0.6</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
         <!--            <inherited>false</inherited>-->
         <!--            <executions>-->
         <!--              <execution>-->
@@ -732,6 +732,7 @@
         <module>sdk/datamigration</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
@@ -779,6 +780,7 @@
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>

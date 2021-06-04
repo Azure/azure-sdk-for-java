@@ -29,6 +29,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -475,9 +476,10 @@ public final class KeyVaultBackupAsyncClient {
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
-                                                                            String sasToken) {
-        return beginSelectiveRestore(keyName, folderUrl, sasToken, getDefaultPollingInterval());
+    public PollerFlux<KeyVaultSelectiveKeyRestoreOperation, Void> beginSelectiveKeyRestore(String keyName,
+                                                                                           String folderUrl,
+                                                                                           String sasToken) {
+        return beginSelectiveKeyRestore(keyName, folderUrl, sasToken, getDefaultPollingInterval());
     }
 
     /**
@@ -500,8 +502,10 @@ public final class KeyVaultBackupAsyncClient {
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<KeyVaultRestoreOperation, Void> beginSelectiveRestore(String keyName, String folderUrl,
-                                                                            String sasToken, Duration pollingInterval) {
+    public PollerFlux<KeyVaultSelectiveKeyRestoreOperation, Void> beginSelectiveKeyRestore(String keyName,
+                                                                                           String folderUrl,
+                                                                                           String sasToken,
+                                                                                           Duration pollingInterval) {
         if (keyName == null) {
             throw logger.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
@@ -521,8 +525,8 @@ public final class KeyVaultBackupAsyncClient {
         }
 
         return new PollerFlux<>(pollingInterval,
-            selectiveRestoreActivationOperation(keyName, folderUrl, sasToken),
-            selectiveRestorePollOperation(),
+            selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken),
+            selectiveKeyRestorePollOperation(),
             (pollingContext, firstResponse) -> Mono.empty(),
             (pollingContext) -> Mono.empty());
     }
@@ -541,8 +545,10 @@ public final class KeyVaultBackupAsyncClient {
      *
      * @return A {@link PollerFlux} polling on the {@link KeyVaultRestoreOperation backup operation} status.
      */
-    Mono<Response<KeyVaultRestoreOperation>> selectiveRestoreWithResponse(String keyName, String folderUrl,
-                                                                          String sasToken, Context context) {
+    Mono<Response<KeyVaultSelectiveKeyRestoreOperation>> selectiveKeyRestoreWithResponse(String keyName,
+                                                                                         String folderUrl,
+                                                                                         String sasToken,
+                                                                                         Context context) {
         String[] segments = folderUrl.split("/");
         String folderName = segments[segments.length - 1];
         String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
@@ -570,17 +576,17 @@ public final class KeyVaultBackupAsyncClient {
                     new SimpleResponse<>(restoreOperationResponse.getRequest(),
                         restoreOperationResponse.getStatusCode(),
                         restoreOperationResponse.getHeaders(),
-                        (KeyVaultRestoreOperation) transformToLongRunningOperation(
+                        (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
                             restoreOperationResponse.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
-    private Function<PollingContext<KeyVaultRestoreOperation>, Mono<KeyVaultRestoreOperation>> selectiveRestoreActivationOperation(String keyName, String folderUrl, String sasToken) {
+    private Function<PollingContext<KeyVaultSelectiveKeyRestoreOperation>, Mono<KeyVaultSelectiveKeyRestoreOperation>> selectiveKeyRestoreActivationOperation(String keyName, String folderUrl, String sasToken) {
         return (pollingContext) -> {
             try {
-                return withContext(context -> selectiveRestoreWithResponse(keyName, folderUrl, sasToken, context))
+                return withContext(context -> selectiveKeyRestoreWithResponse(keyName, folderUrl, sasToken, context))
                     .flatMap(selectiveKeyRestoreResponse -> Mono.just(selectiveKeyRestoreResponse.getValue()));
             } catch (RuntimeException e) {
                 return monoError(logger, e);
@@ -588,10 +594,10 @@ public final class KeyVaultBackupAsyncClient {
         };
     }
 
-    private Function<PollingContext<KeyVaultRestoreOperation>, Mono<PollResponse<KeyVaultRestoreOperation>>> selectiveRestorePollOperation() {
+    private Function<PollingContext<KeyVaultSelectiveKeyRestoreOperation>, Mono<PollResponse<KeyVaultSelectiveKeyRestoreOperation>>> selectiveKeyRestorePollOperation() {
         return (pollingContext) -> {
             try {
-                PollResponse<KeyVaultRestoreOperation> pollResponse = pollingContext.getLatestResponse();
+                PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = pollingContext.getLatestResponse();
 
                 if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
                     || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
@@ -599,23 +605,22 @@ public final class KeyVaultBackupAsyncClient {
                     return Mono.just(pollResponse);
                 }
 
-                final KeyVaultRestoreOperation keyVaultRestoreOperation = pollResponse.getValue();
+                final KeyVaultSelectiveKeyRestoreOperation keyVaultSelectiveKeyRestoreOperation = pollResponse.getValue();
 
-                if (keyVaultRestoreOperation == null) {
+                if (keyVaultSelectiveKeyRestoreOperation == null) {
                     logger.warning("Restore operation does not exist. Activation operation failed.");
 
-                    return Mono.just(new PollResponse<KeyVaultRestoreOperation>(
+                    return Mono.just(new PollResponse<KeyVaultSelectiveKeyRestoreOperation>(
                         LongRunningOperationStatus.fromString("SELECTIVE_RESTORE_START_FAILED", true), null));
                 }
 
-                final String jobId = keyVaultRestoreOperation.getJobId();
+                final String jobId = keyVaultSelectiveKeyRestoreOperation.getJobId();
 
                 return withContext(context -> clientImpl.restoreStatusWithResponseAsync(vaultUrl, jobId,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE)))
-                    .map(response ->
-                        new SimpleResponse<>(response,
-                            (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue())))
-                    .flatMap(KeyVaultBackupAsyncClient::processRestoreOperationResponse);
+                    .map(response -> new SimpleResponse<>(response,
+                        (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(response.getValue())))
+                    .flatMap(KeyVaultBackupAsyncClient::processSelectiveKeyRestoreOperationResponse);
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
                 logger.logExceptionAsError(e);
@@ -625,6 +630,15 @@ public final class KeyVaultBackupAsyncClient {
                 return monoError(logger, e);
             }
         };
+    }
+
+    private static Mono<PollResponse<KeyVaultSelectiveKeyRestoreOperation>> processSelectiveKeyRestoreOperationResponse(
+        Response<KeyVaultSelectiveKeyRestoreOperation> response) {
+
+        String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
+
+        return Mono.just(new PollResponse<>(
+            toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)), response.getValue()));
     }
 
     private static <O> KeyVaultLongRunningOperation transformToLongRunningOperation(O operation) {
@@ -638,7 +652,7 @@ public final class KeyVaultBackupAsyncClient {
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
-            return new KeyVaultRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
+            return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
                 selectiveKeyRestoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
                 selectiveKeyRestoreOperation.getJobId(),
@@ -655,6 +669,15 @@ public final class KeyVaultBackupAsyncClient {
         } else {
             throw new UnsupportedOperationException();
         }
+    }
+
+    private static KeyVaultLongRunningOperation restoreOperationToSelectiveKeyRestoreOperation(RestoreOperation operation) {
+        return new KeyVaultSelectiveKeyRestoreOperation(operation.getStatus(),
+            operation.getStatusDetails(),
+            createKeyVaultErrorFromError(operation.getError()),
+            operation.getJobId(),
+            longToOffsetDateTime(operation.getStartTime()),
+            longToOffsetDateTime(operation.getEndTime()));
     }
 
     private static OffsetDateTime longToOffsetDateTime(Long epochInSeconds) {

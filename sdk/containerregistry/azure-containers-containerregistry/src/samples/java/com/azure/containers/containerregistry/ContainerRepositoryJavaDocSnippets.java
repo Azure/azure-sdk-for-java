@@ -3,10 +3,8 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.containers.containerregistry.models.DeleteRepositoryResult;
-import com.azure.containers.containerregistry.models.ManifestOrderBy;
-import com.azure.containers.containerregistry.models.RepositoryProperties;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -23,12 +21,12 @@ public class ContainerRepositoryJavaDocSnippets {
         String endpoint = getEndpoint();
         String repository = getRepository();
         TokenCredential credential = getTokenCredentials();
-        // BEGIN: com.azure.containers.containerregistry.repository.instantiation
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.instantiation
         ContainerRepository repositoryClient = new ContainerRegistryClientBuilder()
             .endpoint(endpoint)
             .credential(credential)
             .buildClient().getRepository(repository);
-        // END: com.azure.containers.containerregistry.repository.instantiation
+        // END: com.azure.containers.containerregistry.ContainerRepository.instantiation
         return repositoryClient;
     }
 
@@ -36,7 +34,7 @@ public class ContainerRepositoryJavaDocSnippets {
         String endpoint = getEndpoint();
         String repository = getRepository();
         TokenCredential credential = getTokenCredentials();
-        // BEGIN: com.azure.containers.containerregistry.repository.pipeline.instantiation
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(/* add policies */)
             .build();
@@ -46,98 +44,90 @@ public class ContainerRepositoryJavaDocSnippets {
             .endpoint(endpoint)
             .credential(credential)
             .buildClient().getRepository(repository);
-        // END: com.azure.containers.containerregistry.repository.pipeline.instantiation
+        // END: com.azure.containers.containerregistry.ContainerRepository.pipeline.instantiation
         return repositoryClient;
     }
 
     public void deleteRepositoryCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.deleteRepository
-        DeleteRepositoryResult result = client.delete();
-        System.out.printf(
-            "Tag Count: %1d, Artifact Count: %2d",
-            result.getDeletedTags(),
-            result.getDeletedManifests());
-        // END: com.azure.containers.containerregistry.repository.deleteRepository
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.deleteRepository
+        client.delete();
+        System.out.printf("Successfully initiated delete.");
+        // END: com.azure.containers.containerregistry.ContainerRepository.deleteRepository
     }
 
     public void deleteRepositoryWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.deleteRepositoryWithResponse
-        Response<DeleteRepositoryResult> response = client.deleteWithResponse(Context.NONE);
-        DeleteRepositoryResult result = response.getValue();
-        System.out.printf(
-            "Tag Count: %1d, Artifact Count: %2d",
-            result.getDeletedTags(),
-            result.getDeletedManifests());
-        // END: com.azure.containers.containerregistry.repository.deleteRepositoryWithResponse
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.deleteRepositoryWithResponse
+        Response<Void> response = client.deleteWithResponse(Context.NONE);
+        System.out.printf("Successfully initiated delete.");
+        // END: com.azure.containers.containerregistry.ContainerRepository.deleteRepositoryWithResponse
     }
-
-
 
     public void getPropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.getProperties
-        RepositoryProperties properties = client.getProperties();
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.getProperties
+        ContainerRepositoryProperties properties = client.getProperties();
         System.out.printf("Name:%s,", properties.getName());
-        // END: com.azure.containers.containerregistry.repository.getProperties
+        // END: com.azure.containers.containerregistry.ContainerRepository.getProperties
     }
 
     public void getPropertiesWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.getPropertiesWithResponse
-        Response<RepositoryProperties> response = client.getPropertiesWithResponse(Context.NONE);
-        final RepositoryProperties properties = response.getValue();
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.getPropertiesWithResponse
+        Response<ContainerRepositoryProperties> response = client.getPropertiesWithResponse(Context.NONE);
+        final ContainerRepositoryProperties properties = response.getValue();
         System.out.printf("Name:%s,", properties.getName());
-        // END: com.azure.containers.containerregistry.repository.getPropertiesWithResponse
+        // END: com.azure.containers.containerregistry.ContainerRepository.getPropertiesWithResponse
     }
 
     public void updatePropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.updateProperties
-        ContentProperties properties = getContentProperties();
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.updateProperties
+        ContainerRepositoryProperties properties = getRepositoryProperties();
         client.updateProperties(properties);
-        // END: com.azure.containers.containerregistry.repository.updateProperties
+        // END: com.azure.containers.containerregistry.ContainerRepository.updateProperties
     }
 
     public void updatePropertiesWithResponseCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
-        ContentProperties properties = getContentProperties();
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.updatePropertiesWithResponse
+        ContainerRepositoryProperties properties = getRepositoryProperties();
         client.updatePropertiesWithResponse(properties, Context.NONE);
-        // END: com.azure.containers.containerregistry.repository.updatePropertiesWithResponse
+        // END: com.azure.containers.containerregistry.ContainerRepository.updatePropertiesWithResponse
     }
 
     public void listManifestPropertiesCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifests
-        client.listManifests().iterableByPage(10)
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestProperties
+        client.listManifestProperties().iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifests
+        // END: com.azure.containers.containerregistry.ContainerRepository.listManifestProperties
+    }
+
+    public void listManifestPropertiesWithOptionsNoContextCodeSnippet() {
+        ContainerRepository client = getClient();
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext
+        client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING).iterableByPage(10)
+            .forEach(pagedResponse -> {
+                pagedResponse.getValue().stream().forEach(
+                    ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
+            });
+        // END: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext
     }
 
     public void listManifestPropertiesWithOptionsCodeSnippet() {
         ContainerRepository client = getClient();
-        // BEGIN: com.azure.containers.containerregistry.repository.listManifestsWithOptions
-        client.listManifests(ManifestOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
+        // BEGIN: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions
+        client.listManifestProperties(ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING, Context.NONE).iterableByPage(10)
             .forEach(pagedResponse -> {
                 pagedResponse.getValue().stream().forEach(
                     ManifestProperties -> System.out.println(ManifestProperties.getDigest()));
             });
-        // END: com.azure.containers.containerregistry.repository.listManifestsWithOptions
-    }
-
-
-    /**
-     * Implementation not provided for this method.
-     *
-     * @return {@code null}
-     */
-    private ContentProperties getContentProperties() {
-        return null;
+        // END: com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions
     }
 
     /**
@@ -145,16 +135,7 @@ public class ContainerRepositoryJavaDocSnippets {
      *
      * @return {@code null}
      */
-    private String getTagOrDigest() {
-        return null;
-    }
-
-    /**
-     * Implementation not provided for this method.
-     *
-     * @return {@code null}
-     */
-    private String getTag() {
+    private ContainerRepositoryProperties getRepositoryProperties() {
         return null;
     }
 
@@ -164,6 +145,15 @@ public class ContainerRepositoryJavaDocSnippets {
      * @return {@code null}
      */
     private String getDigest() {
+        return null;
+    }
+
+    /**
+     * Implementation not provided for this method.
+     *
+     * @return {@code null}
+     */
+    private String getTag() {
         return null;
     }
 

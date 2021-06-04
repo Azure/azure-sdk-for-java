@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
@@ -27,9 +27,9 @@ public class ListsAnomaliesForDetectionConfigAsyncSample {
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
             .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
-            .setTop(10)
+            .setMaxPageSize(10)
             .setFilter(filter);
-        advisorAsyncClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
+        advisorAsyncClient.listAnomalies(detectionConfigurationId,
                 startTime, endTime, options)
             .doOnNext(anomaly -> {
                 System.out.printf("DataPoint Anomaly Severity: %s%n", anomaly.getSeverity());

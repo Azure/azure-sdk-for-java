@@ -4,12 +4,12 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
+import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -73,7 +73,8 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
                 // Act
                 final AtomicInteger i = new AtomicInteger(-1);
                 client.listAnomalyAlertConfigs(inputAnomalyAlertList.get(i.incrementAndGet())
-                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId())
+                    .getMetricAlertConfigurations().get(i.get()).getDetectionConfigurationId(),
+                    new ListAnomalyAlertConfigsOptions())
                     .forEach(actualAnomalyAlertList::add);
 
                 expectedAnomalyAlertIdList.set(expectedAnomalyAlertList.stream()
@@ -207,10 +208,10 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
             assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
 
             // Act & Assert
-            Exception exception = assertThrows(ErrorCodeException.class, () ->
+            Exception exception = assertThrows(MetricsAdvisorResponseException.class, () ->
                 client.getAnomalyAlertConfig(createdAnomalyAlert.getId()));
-            assertEquals(ErrorCodeException.class, exception.getClass());
-            final ErrorCodeException errorCodeException = ((ErrorCodeException) exception);
+            assertEquals(MetricsAdvisorResponseException.class, exception.getClass());
+            final MetricsAdvisorResponseException errorCodeException = ((MetricsAdvisorResponseException) exception);
             assertEquals(HttpResponseStatus.NOT_FOUND.code(), errorCodeException.getResponse().getStatusCode());
         });
     }

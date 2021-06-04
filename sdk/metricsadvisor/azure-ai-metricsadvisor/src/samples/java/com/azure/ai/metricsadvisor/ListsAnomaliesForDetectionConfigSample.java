@@ -7,7 +7,7 @@ import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.core.http.rest.PagedIterable;
 
 import java.time.OffsetDateTime;
@@ -29,10 +29,10 @@ public class ListsAnomaliesForDetectionConfigSample {
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
             .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
         final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
-            .setTop(10)
+            .setMaxPageSize(10)
             .setFilter(filter);
         PagedIterable<DataPointAnomaly> anomaliesIterable
-            = advisorClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
+            = advisorClient.listAnomalies(detectionConfigurationId,
                 startTime, endTime);
 
         for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
