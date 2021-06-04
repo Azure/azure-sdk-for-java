@@ -4,19 +4,18 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
-import com.azure.ai.metricsadvisor.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCode;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
-import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
-import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.PostgreSqlDataFeedSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -45,20 +44,20 @@ import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_S
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
-import static com.azure.ai.metricsadvisor.models.DataFeedGranularityType.DAILY;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_APP_INSIGHTS;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_BLOB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_COSMOS_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_LOG_ANALYTICS;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_TABLE;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.INFLUX_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MONGO_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MYSQL_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.POSTGRE_SQL_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedStatus.ACTIVE;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.DAILY;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_APP_INSIGHTS;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_BLOB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_COSMOS_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_LOG_ANALYTICS;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_TABLE;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.INFLUX_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.MONGO_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.MYSQL_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.POSTGRE_SQL_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.SQL_SERVER_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedStatus.ACTIVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -106,8 +105,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
                         .collect(Collectors.toList());
 
                 assertEquals(inputDataFeedList.size(), actualList.size());
-                expectedDataFeedList.sort(Comparator.comparing(DataFeed::getSourceType));
-                actualList.sort(Comparator.comparing(DataFeed::getSourceType));
+                expectedDataFeedList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
+                actualList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 final AtomicInteger i = new AtomicInteger(-1);
                 final List<DataFeedSourceType> dataFeedSourceTypes = Arrays.asList(AZURE_BLOB, SQL_SERVER_DB);
                 expectedDataFeedList.forEach(expectedDataFeed ->
@@ -726,9 +725,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
-            ErrorCodeException exception = assertThrows(ErrorCodeException.class, () ->
+            MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class, () ->
                 client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
-            final ErrorCode errorCode = exception.getValue();
+            final MetricsAdvisorError errorCode = exception.getValue();
             assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
@@ -781,8 +780,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
             creatDataFeedRunner(expectedDataFeed -> {
                 expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));
                 // Act & Assert
-                final ErrorCodeException errorCodeException
-                    = assertThrows(ErrorCodeException.class, () -> client.createDataFeed(expectedDataFeed));
+                final MetricsAdvisorResponseException errorCodeException
+                    = assertThrows(MetricsAdvisorResponseException.class, () -> client.createDataFeed(expectedDataFeed));
 
                 assertEquals("The metric name 'cost' is duplicate,please remove one.",
                     errorCodeException.getValue().getMessage());

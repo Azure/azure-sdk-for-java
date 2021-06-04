@@ -11,6 +11,8 @@ import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentP
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
+import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -130,6 +132,21 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public int maximumNodeSize() {
         return ResourceManagerUtils.toPrimitiveInt(innerModel().maxCount());
+    }
+
+    @Override
+    public ScaleSetPriority virtualMachinePriority() {
+        return innerModel().scaleSetPriority();
+    }
+
+    @Override
+    public ScaleSetEvictionPolicy virtualMachineEvictionPolicy() {
+        return innerModel().scaleSetEvictionPolicy();
+    }
+
+    @Override
+    public Double virtualMachineMaximumPrice() {
+        return innerModel().spotMaxPrice().doubleValue();
     }
 
     @Override
@@ -258,6 +275,31 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public KubernetesClusterAgentPoolImpl withNodeTaints(List<String> nodeTaints) {
         innerModel().withNodeTaints(nodeTaints);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withVirtualMachinePriority(ScaleSetPriority priority) {
+        innerModel().withScaleSetPriority(priority);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withSpotPriorityVirtualMachine() {
+        innerModel().withScaleSetPriority(ScaleSetPriority.SPOT);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withSpotPriorityVirtualMachine(ScaleSetEvictionPolicy policy) {
+        innerModel().withScaleSetPriority(ScaleSetPriority.SPOT);
+        innerModel().withScaleSetEvictionPolicy(policy);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withVirtualMachineMaximumPrice(Double maxPriceInUsDollars) {
+        innerModel().withSpotMaxPrice(maxPriceInUsDollars.floatValue());
         return this;
     }
 }

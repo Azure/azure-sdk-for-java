@@ -3,11 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.util.List;
 
 /**
  * Describes the additional parameters for the API to list incidents detected.
  */
+@Fluent
 public final class ListIncidentsDetectedOptions {
     private Integer maxPageSize;
     private List<DimensionKey> dimensionsToFilter;
