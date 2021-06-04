@@ -1034,7 +1034,7 @@ public class BlobAsyncClientBase {
                         try {
                             return downloadRange(
                                 new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context)
-                                .flatMapMany(StreamResponse::getValue);
+                                .flatMapMany(r -> r.getValue().timeout(TIMEOUT_VALUE));
                         } catch (Exception e) {
                             return Flux.error(e);
                         }
