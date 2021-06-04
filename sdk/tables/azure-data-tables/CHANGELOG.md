@@ -23,8 +23,7 @@
     - `updateEntity(TableEntity entity, TableEntityUpdateMode updateMode,
       boolean ifUnchanged)`
     - `getEntity(String partitionKey, String rowKey, List<String> select)`
-- Client builders now throw an `IllegalStateException` when calling `buildClient()` or `buildAsyncClient()` if more than one of `credential(AzureNamedKeyCredential)`, `credential(AzureSasCredential)`, `sasToken(String)` and `connectionString(String)` were used, as providing more than one form of authentication is not allowed.
-- Client builders now throw an `IllegalStateException` when calling `buildClient()` or `buildAsyncClient()` if no endpoint or form of authentication has been set.
+- Client builders now also throw an `IllegalStateException` when calling `buildClient()` and `buildAsyncClient()` if multiple forms of authentication are provided, with the exception of `sasToken` + `connectionString`; or if `endpoint` and/or `sasToken` are set alongside a `connectionString` and the endpoint and/or SAS token in the latter are different than the former, respectively.
 
 ## 12.0.0-beta.7 (2021-05-15)
 

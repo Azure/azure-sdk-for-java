@@ -66,7 +66,11 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code endpoint} is {@code null}.
      * @throws IllegalArgumentException If {@code endpoint} is malformed or empty.
-     * @throws IllegalStateException If no form of authentication or {@code endpoint} have been specified.
+     * @throws IllegalStateException If no form of authentication or {@code endpoint} have been specified or if
+     * multiple forms of authentication are provided, with the exception of {@code sasToken} +
+     * {@code connectionString}. Also thrown if {@code endpoint} and/or {@code sasToken} are set alongside a
+     * {@code connectionString} and the endpoint and/or SAS token in the latter are different than the former,
+     * respectively.
      */
     public TableServiceClient buildClient() {
         return new TableServiceClient(buildAsyncClient());
@@ -82,7 +86,8 @@ public final class TableServiceClientBuilder {
      * @throws IllegalStateException If no form of authentication or {@code endpoint} have been specified or if
      * multiple forms of authentication are provided, with the exception of {@code sasToken} +
      * {@code connectionString}. Also thrown if {@code endpoint} and/or {@code sasToken} are set alongside a
-     * {@code connectionString} and the endpoint and/or SAS token in the latter are different, respectively.
+     * {@code connectionString} and the endpoint and/or SAS token in the latter are different than the former,
+     * respectively.
      */
     public TableServiceAsyncClient buildAsyncClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
