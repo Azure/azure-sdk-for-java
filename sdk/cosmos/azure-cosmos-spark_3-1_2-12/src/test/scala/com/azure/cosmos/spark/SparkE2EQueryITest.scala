@@ -609,6 +609,48 @@ class SparkE2EQueryITest
     item.getAs[String]("id") shouldEqual id
   }
 
+  "spark query" should "use Custom Query also for inference" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    for (state <- Array(true, false)) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's duck")
+      objectNode.put("type", "duck")
+      objectNode.put("age", 20)
+      objectNode.put("isAlive", state)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val cfgWithInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.customQuery" -> "SELECT c.type, c.age, c.isAlive FROM c where c.type = 'duck' and c.isAlive = true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    // Not passing schema, letting inference work
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
+    val rowsArrayWithInference = dfWithInference.collect()
+    rowsArrayWithInference should have size 1
+
+    val rowWithInference = rowsArrayWithInference(0)
+    rowWithInference.getAs[String]("type") shouldEqual "duck"
+    rowWithInference.getAs[Integer]("age") shouldEqual 20
+    rowWithInference.getAs[Boolean]("isAlive") shouldEqual true
+
+    val fieldNames = rowWithInference.schema.fields.map(field => field.name)
+    fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.TimestampAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe false
+    fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
+  }
+
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }
