@@ -89,7 +89,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionAsync");
         
-        var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+        String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
         String audioFileUri =  "https://host.app/audio/bot-callcenter-intro.wav";      
         String callbackUri = "https://dev.skype.net:6448";
         
@@ -110,7 +110,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
         
-        var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+        String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
         String audioFileUri =  "https://host.app/audio/bot-callcenter-intro.wav";      
         String callbackUri = "https://dev.skype.net:6448";
         
@@ -130,7 +130,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
     public void startRecordingFailsAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         ConversationAsyncClient conversationAsyncClient = setupAsyncClient(builder, "startRecordingFailsAsync");
-        var invalidConversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";       
+        String invalidConversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";       
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         System.out.println("conversationId: " + invalidConversationId);
 
@@ -150,13 +150,13 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         try {
             // Add User
             String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
-            var participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
-            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            var callBackUri = "https://host.app/api/callback/calling";
+            String participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
+            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String callBackUri = "https://host.app/api/callback/calling";
             conversationAsyncClient.addParticipant(conversationId, new CommunicationUserIdentifier(participant), null, operationContext, callBackUri).block();
 
             // Remove User
-            var participantId = "2bbea6fd-e898-4296-ba38-7a6a1a5f697f"; 
+            String participantId = "2bbea6fd-e898-4296-ba38-7a6a1a5f697f"; 
             conversationAsyncClient.removeParticipant(conversationId, participantId).block();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -172,14 +172,14 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         try {
             // Add User
             String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
-            var participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
-            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            var callBackUri = "https://host.app/api/callback/calling";
+            String participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
+            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String callBackUri = "https://host.app/api/callback/calling";
             Response<Void> addResponse = conversationAsyncClient.addParticipantWithResponse(conversationId, new CommunicationUserIdentifier(participant), null, operationContext, callBackUri).block();
             CallingServerTestUtils.validateResponse(addResponse);
 
             // Remove User
-            var participantId = "d5f93caf-2e3f-4c82-a395-8323fb9e08c6"; 
+            String participantId = "d5f93caf-2e3f-4c82-a395-8323fb9e08c6"; 
             Response<Void> removeResponse = conversationAsyncClient.removeParticipantWithResponse(conversationId, participantId).block();
             CallingServerTestUtils.validateResponse(removeResponse);
         } catch (Exception e) {

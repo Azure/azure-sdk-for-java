@@ -38,8 +38,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        var builder = getCallClientUsingConnectionString(httpClient);
-        var callAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioAsync");
+        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallAsyncClient callAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioAsync");
 
         try {
             // Establish a call
@@ -56,10 +56,10 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 options).block();
             
             CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            var callId = createCallResult.getCallLegId();            
+            String callId = createCallResult.getCallLegId();            
 
             // Play Audio
-            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             PlayAudioResponse playAudioResult = callAsyncClient.playAudio(
                 callId, 
                 audioFileUri, 
@@ -69,7 +69,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             CallingServerTestUtils.validatePlayAudioResult(playAudioResult, operationContext);
 
             // Cancel All Media Operations
-            var cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
+            String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
             CancelAllMediaOperationsResponse cancelAllMediaOperationsResponse = callAsyncClient.cancelAllMediaOperations(callId, cancelMediaOperationContext).block();
             CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
 
@@ -84,8 +84,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        var builder = getCallClientUsingConnectionString(httpClient);
-        var callAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioWithResponseAsync");
+        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallAsyncClient callAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioWithResponseAsync");
 
         try {
             // Establish a call
@@ -103,10 +103,10 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 Context.NONE).block();
             
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            var callId = createCallResponse.getValue().getCallLegId();            
+            String callId = createCallResponse.getValue().getCallLegId();            
 
             // Play Audio
-            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             Response<PlayAudioResponse> playAudioResponse = callAsyncClient.playAudioWithResponse(
                 callId, 
                 audioFileUri, 
@@ -116,7 +116,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
 
             // Cancel All Media Operations
-            var cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
+            String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
             Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse = callAsyncClient.cancelAllMediaOperationsWithResponse(callId, cancelMediaOperationContext, Context.NONE).block();
             CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
 
@@ -132,8 +132,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        var builder = getCallClientUsingConnectionString(httpClient);
-        var callAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioAsync");
+        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallAsyncClient callAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioAsync");
 
         try {
             // Establish a call
@@ -150,14 +150,14 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 options).block();
             
             CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            var callId = createCallResult.getCallLegId();            
+            String callId = createCallResult.getCallLegId();            
 
             // Invite User
-            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             callAsyncClient.addParticipant(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
             
             // Remove Participant
-            var participantId = "9d265602-aee7-4553-ac75-a7e167e0b083";
+            String participantId = "9d265602-aee7-4553-ac75-a7e167e0b083";
             callAsyncClient.removeParticipant(callId, participantId).block();
 
             // Hang up
@@ -171,8 +171,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        var builder = getCallClientUsingConnectionString(httpClient);
-        var callAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioWithResponseAsync");
+        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallAsyncClient callAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioWithResponseAsync");
 
         try {
             // Establish a call
@@ -190,15 +190,15 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 Context.NONE).block();
             
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            var callId = createCallResponse.getValue().getCallLegId();            
+            String callId = createCallResponse.getValue().getCallLegId();            
 
             // Invite User
-            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             Response<Void> inviteParticipantResponse = callAsyncClient.addParticipantWithResponse(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext, Context.NONE).block();
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
              
             // Remove Participant
-            var participantId = "4c100bf4-304c-48e0-87a8-03597ec75464";
+            String participantId = "4c100bf4-304c-48e0-87a8-03597ec75464";
             Response<Void> removeParticipantResponse = callAsyncClient.removeParticipantWithResponse(callId, participantId, Context.NONE).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
@@ -214,8 +214,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateDeleteScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        var builder = getCallClientUsingConnectionString(httpClient);
-        var callAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioAsync");
+        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallAsyncClient callAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioAsync");
 
         try {
             // Establish a call
@@ -232,7 +232,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 options).block();
             
             CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            var callId = createCallResult.getCallLegId();            
+            String callId = createCallResult.getCallLegId();            
 
             // Delete Call
             callAsyncClient.deleteCall(callId).block();
@@ -245,8 +245,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateDeleteScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        var builder = getCallClientUsingConnectionString(httpClient);
-        var callAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioWithResponseAsync");
+        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallAsyncClient callAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioWithResponseAsync");
 
         try {
             // Establish a call
@@ -264,7 +264,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
                 Context.NONE).block();
             
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            var callId = createCallResponse.getValue().getCallLegId();            
+            String callId = createCallResponse.getValue().getCallLegId();            
 
             // Delete Call
             Response<Void> hangupResponse = callAsyncClient.deleteCallWithResponse(callId, Context.NONE).block();
@@ -274,9 +274,6 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             throw e;
         }
     } 
-    
-    
-
     
     private CallAsyncClient setupAsyncClient(CallClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();
