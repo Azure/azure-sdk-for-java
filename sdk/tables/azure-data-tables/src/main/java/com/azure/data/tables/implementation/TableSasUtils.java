@@ -4,8 +4,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.TableAzureNamedKeyCredentialPolicy;
 
 import javax.crypto.Mac;

@@ -236,19 +236,10 @@ public class TableClientBuilderTest {
     }
 
     @Test
-    public void buildWithSameSasTokenInConnectionStringWithPermissionsInDifferentOrderDoesNotThrow() {
-        assertDoesNotThrow(() -> new TableClientBuilder()
-            .sasToken("sv=2020-02-10&ss=t&srt=o&sp=lacurwd&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
-            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
-            .tableName("myTable")
-            .buildAsyncClient());
-    }
-
-    @Test
     public void buildWithDifferentSasTokenInConnectionStringThrows() {
         assertThrows(IllegalStateException.class, () -> new TableClientBuilder()
             .sasToken("sv=2020-02-10&ss=t&srt=o&sp=rwd&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
-            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=anotherSignature")
             .tableName("myTable")
             .buildAsyncClient());
     }

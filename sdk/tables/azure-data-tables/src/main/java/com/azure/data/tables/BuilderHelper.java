@@ -37,8 +37,6 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.data.tables.implementation.TableUtils.sasTokenEquals;
-
 final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-data-tables.properties");
@@ -146,7 +144,7 @@ final class BuilderHelper {
             StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
 
             if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
-                if (sasTokenEquals(sasToken, authSettings.getSasToken())) {
+                if (sasToken.equals(authSettings.getSasToken())) {
                     return;
                 } else {
                     throw logger.logExceptionAsError(new IllegalStateException("'connectionString' contains a SAS token"
