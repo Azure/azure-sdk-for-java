@@ -1008,8 +1008,11 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
+        BlobRequestConditions finalRequestConditions =
+            requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        return downloadRange(finalRange, requestConditions, requestConditions.getIfMatch(), getMD5, context)
+        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context)
             .map(response -> {
                 String eTag = ModelHelper.getETag(response.getHeaders());
                 BlobsDownloadHeaders blobsDownloadHeaders =
@@ -1030,13 +1033,13 @@ public class BlobAsyncClientBase {
                         }
                         try {
                             return downloadRange(
-                                new BlobRange(offset, newCount), requestConditions, eTag, getMD5, context)
+                                new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context)
                                 .flatMapMany(StreamResponse::getValue);
                         } catch (Exception e) {
                             return Flux.error(e);
                         }
                     },
-                    options.getMaxRetryRequests(),
+                    finalOptions.getMaxRetryRequests(),
                     finalRange.getOffset()
                 );
 
