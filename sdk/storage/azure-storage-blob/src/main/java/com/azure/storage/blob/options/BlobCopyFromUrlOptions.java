@@ -22,6 +22,7 @@ public class BlobCopyFromUrlOptions {
     private AccessTier tier;
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
+    private String sourceBearerToken;
 
     /**
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -116,6 +117,22 @@ public class BlobCopyFromUrlOptions {
      */
     public BlobCopyFromUrlOptions setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
+        return this;
+    }
+
+    /**
+     * @return Bearer token for access to source.
+     */
+    public String getSourceBearerToken() {
+        return sourceBearerToken;
+    }
+
+    /**
+     * @param sourceBearerToken Bearer token for access to source.
+     * @return The updated options.
+     */
+    public BlobCopyFromUrlOptions setSourceBearerToken(String sourceBearerToken) {
+        this.sourceBearerToken = sourceBearerToken;
         return this;
     }
 }
