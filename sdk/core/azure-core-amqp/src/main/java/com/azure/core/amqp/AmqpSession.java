@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,7 @@ import java.time.Duration;
 /**
  * An AMQP session representing bidirectional communication that supports multiple {@link AmqpLink AMQP links}.
  */
-public interface AmqpSession extends Disposable {
+public interface AmqpSession extends Disposable, AsyncCloseable {
     /**
      * Gets the name for this AMQP session.
      *
@@ -91,4 +92,9 @@ public interface AmqpSession extends Disposable {
      * @return A completable mono.
      */
     Mono<Void> rollbackTransaction(AmqpTransaction transaction);
+
+    @Override
+    default Mono<Void> closeAsync() {
+        return Mono.fromRunnable(() -> dispose());
+    }
 }
