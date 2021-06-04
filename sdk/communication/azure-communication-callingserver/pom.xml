@@ -115,16 +115,7 @@
           <includes>
             <include>com/azure/communication/callingserver/*.class</include>
           </includes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>coverage-report</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>        
+        </configuration>      
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
