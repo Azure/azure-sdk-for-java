@@ -37,7 +37,7 @@ java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse,OperationStatus,StartCallRecordingResponse,GetCallRecordingStateResponse,CallRecordingState,CallState,CreateCallResponse,EventSubscriptionType,CallModality
+custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse,OperationStatus,StartCallRecordingResponse,CallRecordingStateResponse,CallRecordingState,CallState,CreateCallResponse,EventSubscriptionType,CallModality
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
@@ -55,6 +55,9 @@ directive:
     - rename-model:
         from: CommunicationParticipant
         to: CommunicationParticipantInternal
+    - rename-model:
+        from: GetCallRecordingStateResponse
+        to: CallRecordingStateResponse        
 #    from: swagger-document
 #    where: $.definitions
 #    transform: >
