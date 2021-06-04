@@ -8,11 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
-import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
+import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.models.CallRecordingStateResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResponse;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -32,25 +33,25 @@ public class ConversationClientTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctions(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        ConversationClient conversationAsyncClient = setupClient(builder, "runAllClientFunctions");
+        ConversationClient conversationClient = setupClient(builder, "runAllClientFunctions");
         String recordingId = "";        
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
 
         try {
-            StartCallRecordingResponse startCallRecordingResponse = conversationAsyncClient.startRecording(conversationId, recordingStateCallbackUri);
+            StartCallRecordingResponse startCallRecordingResponse = conversationClient.startRecording(conversationId, recordingStateCallbackUri);
             recordingId = startCallRecordingResponse.getRecordingId();
-            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingState(conversationClient, conversationId, recordingId, CallRecordingState.ACTIVE);
 
-            conversationAsyncClient.pauseRecording(conversationId, recordingId);
-            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
+            conversationClient.pauseRecording(conversationId, recordingId);
+            validateCallRecordingState(conversationClient, conversationId, recordingId, CallRecordingState.INACTIVE);
 
-            conversationAsyncClient.resumeRecording(conversationId, recordingId);
-            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            conversationClient.resumeRecording(conversationId, recordingId);
+            validateCallRecordingState(conversationClient, conversationId, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         } finally {
-            conversationAsyncClient.stopRecording(conversationId, recordingId);
+            conversationClient.stopRecording(conversationId, recordingId);
         }
     }
 
@@ -87,14 +88,14 @@ public class ConversationClientTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunction(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        ConversationClient conversationAsyncClient = setupClient(builder, "runPlayAudioFunction");
+        ConversationClient conversationClient = setupClient(builder, "runPlayAudioFunction");
         var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
         String audioFileUri =  "https://host.app/audio/bot-callcenter-intro.wav";      
         String callbackUri = "https://dev.skype.net:6448";
         
         System.out.println("conversationId: " + conversationId);
         try {
-            PlayAudioResponse playAudioResponse = conversationAsyncClient.playAudio(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext);
+            PlayAudioResponse playAudioResponse = conversationClient.playAudio(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext);
             CallingServerTestUtils.validatePlayAudioResult(playAudioResponse, operationContext);
            
         } catch (Exception e) {
@@ -107,14 +108,14 @@ public class ConversationClientTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        ConversationClient conversationAsyncClient = setupClient(builder, "runPlayAudioFunctionWithResponse");
+        ConversationClient conversationClient = setupClient(builder, "runPlayAudioFunctionWithResponse");
         var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
         String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";      
         String callbackUri = "https://dev.skype.net:6448";
         
         System.out.println("conversationId: " + conversationId);
         try {
-            Response<PlayAudioResponse> playAudioResponse = conversationAsyncClient.playAudioWithResponse(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext, Context.NONE);
+            Response<PlayAudioResponse> playAudioResponse = conversationClient.playAudioWithResponse(conversationId, audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext, Context.NONE);
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
            
         } catch (Exception e) {
@@ -139,7 +140,75 @@ public class ConversationClientTests extends CallingServerTestBase {
             assertEquals(e.getResponse().getStatusCode(), 400);
         }
     }
+
+    // @ParameterizedTest
+    // @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    // public void runJoinScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    //     ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+    //     ConversationClient conversationClient = setupClient(builder, "runJoinScenario");
+    //     String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
+    //     String callBackUri = "https://84612e0a8d55.ngrok.io/api/callback/calling"; 
+    //     CommunicationIdentifier source = new CommunicationUserIdentifier(from);
+    //     JoinCallOptions joinCallOptions = new JoinCallOptions().
+    //         setCallbackUri(callBackUri).setRequestedModalities(new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO))).
+    //         setRequestedCallEvents(new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
+
+    //     String conversationId = "";
+    //     try {
+    //         JoinCallResponse joinCallResponse = conversationClient.joinCall(conversationId, source, joinCallOptions);
+    //         CallingServerTestUtils.validateJoinCall(joinCallResponse);
+    //     } catch (Exception e) {
+    //         System.out.println("Error: " + e.getMessage());
+    //         throw e;
+    //     }
+    // }
     
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAddRemoveScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        ConversationClient conversationClient = setupClient(builder, "runAddScenario");        
+        try {
+            // Add User
+            String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
+            var participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
+            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            var callBackUri = "https://host.app/api/callback/calling";
+            conversationClient.addParticipant(conversationId, new CommunicationUserIdentifier(participant), null, operationContext, callBackUri);
+
+            // Remove User
+            var participantId = "ebe62cd6-2085-4faf-8ceb-38a9a4482de8"; 
+            conversationClient.removeParticipant(conversationId, participantId);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAddRemoveScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        ConversationClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        ConversationClient conversationClient = setupClient(builder, "runAddRemoveScenarioWithResponse");        
+        try {
+            // Add User
+            String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
+            var participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
+            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            var callBackUri = "https://host.app/api/callback/calling";
+            Response<Void> addResponse = conversationClient.addParticipantWithResponse(conversationId, new CommunicationUserIdentifier(participant), null, operationContext, callBackUri, Context.NONE);
+            CallingServerTestUtils.validateResponse(addResponse);
+
+            // Remove User
+            var participantId = "2a7155ef-a580-49cd-bcee-2ae4e8cdc602"; 
+            Response<Void> removeResponse = conversationClient.removeParticipantWithResponse(conversationId, participantId, Context.NONE);
+            CallingServerTestUtils.validateResponse(removeResponse);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+
     private ConversationClient setupClient(ConversationClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildClient();
     }

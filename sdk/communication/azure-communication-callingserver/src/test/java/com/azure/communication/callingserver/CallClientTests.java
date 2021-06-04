@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResponse;
@@ -30,15 +31,15 @@ public class CallClientTests extends CallingServerTestBase {
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
     private String alternateId =   "+18445764430";
     private String to =   "+15125189815";      
-    private String callBackUri = "https://host.app/api/callback/calling";
-    private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
-    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6d91-5555-b5bb-a43a0d00068c";
+    private String callBackUri = "https://host.app/api/callback/calling";   
+    private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";    
+    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreatePlayAudioHangupScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreatePlayCancelHangupScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         var builder = getCallClientUsingConnectionString(httpClient);
-        var callClient = setupClient(builder, "runCreatePlayAudioHangupScenario");
+        var callClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
 
         try {
             // Establish a call
@@ -58,14 +59,19 @@ public class CallClientTests extends CallingServerTestBase {
             var callId = createCallResult.getCallLegId();            
 
             // Play Audio
-            var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            var playAudioOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             PlayAudioResponse playAudioResult = callClient.playAudio(
                 callId, 
                 audioFileUri, 
                 false, 
                 UUID.randomUUID().toString(), 
-                operationContext);
-            CallingServerTestUtils.validatePlayAudioResult(playAudioResult, operationContext);
+                playAudioOperationContext);
+            CallingServerTestUtils.validatePlayAudioResult(playAudioResult, playAudioOperationContext);
+
+            // Cancel All Media Operations
+            var cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
+            CancelAllMediaOperationsResponse cancelAllMediaOperationsResponse = callClient.cancelAllMediaOperations(callId, cancelMediaOperationContext);
+            CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
 
             // Hang up
             callClient.hangupCall(callId);
@@ -77,9 +83,9 @@ public class CallClientTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreatePlayAudioHangupScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         var builder = getCallClientUsingConnectionString(httpClient);
-        var callClient = setupClient(builder, "runCreatePlayAudioHangupScenarioWithResponse");
+        var callClient = setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
 
         try {
             // Establish a call
@@ -110,9 +116,14 @@ public class CallClientTests extends CallingServerTestBase {
                 Context.NONE);
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
 
+            // Cancel All Media Operations
+            var cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
+            Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse = callClient.cancelAllMediaOperationsWithResponse(callId, cancelMediaOperationContext, Context.NONE);
+            CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
+
             // Hang up
             Response<Void> hangupResponse = callClient.hangupCallWithResponse(callId, Context.NONE);
-            CallingServerTestUtils.validateHangupResponse(hangupResponse);
+            CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -121,9 +132,9 @@ public class CallClientTests extends CallingServerTestBase {
     
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void inviteUserRemoveParticipantScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreateAddRemoveHangupScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         var builder = getCallClientUsingConnectionString(httpClient);
-        var callClient = setupClient(builder, "inviteUserRemoveParticipantScenario");
+        var callClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
 
         try {
             // Establish a call
@@ -142,12 +153,12 @@ public class CallClientTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCreateCallResult(createCallResult);
             var callId = createCallResult.getCallLegId();            
 
-            // Invite User
+            // Add User
             var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             callClient.addParticipant(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext);
             
             // Remove Participant
-            var participantId = "39659b2c-53a8-40a3-93d5-5da018967401";
+            var participantId = "ec1f7dc0-9d1b-4598-9f88-51902818ed40";
             callClient.removeParticipant(callId, participantId);
            
             // Hang up
@@ -160,9 +171,9 @@ public class CallClientTests extends CallingServerTestBase {
     
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void inviteUserRemoveParticipantScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
         var builder = getCallClientUsingConnectionString(httpClient);
-        var callClient = setupClient(builder, "inviteUserRemoveParticipantScenarioWithResponse");
+        var callClient = setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
 
         try {
             // Establish a call
@@ -182,25 +193,25 @@ public class CallClientTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
             var callId = createCallResponse.getValue().getCallLegId();            
 
-            // Invite User
+            // Add User
             var operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             Response<Void> inviteParticipantResponse = callClient.addParticipantWithResponse(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext, Context.NONE);
-            CallingServerTestUtils.validateInviteParticipantResponse(inviteParticipantResponse);
+            CallingServerTestUtils.validateResponse(inviteParticipantResponse);
             
             // Remove Participant
-            var participantId = "d702fa95-a3ee-4e2d-8101-8e100e7aaf8a";
+            var participantId = "78a9ca1d-b0af-450c-82ed-07ce34e9275e";
             Response<Void> removeParticipantResponse = callClient.removeParticipantWithResponse(callId, participantId, Context.NONE);
-            CallingServerTestUtils.validateRemoveParticipantResponse(removeParticipantResponse);
+            CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
             Response<Void> hangupResponse = callClient.hangupCallWithResponse(callId, Context.NONE);
-            CallingServerTestUtils.validateHangupResponse(hangupResponse);
+            CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         }
     }
-
+    
     private CallClient setupClient(CallClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildClient();
     }
