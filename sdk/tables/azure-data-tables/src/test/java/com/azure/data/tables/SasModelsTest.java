@@ -324,6 +324,6 @@ public class SasModelsTest {
 
     @Test
     public void tableSasPermissionParseIllegalString() {
-        assertThrows(IllegalArgumentException.class, () -> TableSasPermission.parse("raud"));
+        assertThrows(IllegalArgumentException.class, () -> TableSasPermission.parse("raup"));
     }
 }
