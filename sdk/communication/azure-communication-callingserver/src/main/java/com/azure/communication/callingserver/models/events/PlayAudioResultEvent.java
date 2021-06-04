@@ -117,6 +117,13 @@ public final class PlayAudioResultEvent extends CallingServerEventBase {
     }
 
     /**
+     * Initializes a new instance of PlayAudioResultEvent.
+     */
+    public PlayAudioResultEvent() {
+
+    }
+
+    /**
      * Initializes a new instance of PlayAudioResultEvent
      * 
      * @param resultInfo The result info.

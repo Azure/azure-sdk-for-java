@@ -92,6 +92,13 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
 
     /**
      * Initializes a new instance of CallLegStateChangedEvent.
+     */
+    public CallLegStateChangedEvent() {
+
+    }
+
+    /**
+     * Initializes a new instance of CallLegStateChangedEvent.
      * 
      * @param conversationId The conversation id.
      * @param callLegId The call leg id.
