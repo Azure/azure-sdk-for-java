@@ -155,7 +155,7 @@ public class KeyVaultCertificates implements AzureCertificates {
      * Overall refresh certificates' info
      */
     public static void updateLastForceRefreshTime() {
-        lastForceRefreshTime = new Date();
+        lastForceRefreshTime = new Date(System.currentTimeMillis() + 1);
     }
 
 }
