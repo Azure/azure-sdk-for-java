@@ -440,8 +440,11 @@ class DirectoryAPITests extends APISpec {
         def dir = parentDir.createSubdirectory(namer.getRandomName(60))
 
         when:
-        def listResults = parentDir.listFilesAndDirectories(new ShareDirectoryListFilesAndDirectoriesOptions()
-            .setIncludeExtendedInfo(true).setShareFileTraits(EnumSet.allOf(ListFilesIncludeType.class)), null, null)
+        def listResults = parentDir.listFilesAndDirectories(
+            new ShareDirectoryListFilesAndDirectoriesOptions()
+                .setIncludeExtendedInfo(true).setIncludeTimestamps(true).setIncludePermissionKey(true).setIncludeETag(true)
+                .setIncludeAttributes(true),
+            null, null)
             .stream().collect(Collectors.toList())
 
         then:
