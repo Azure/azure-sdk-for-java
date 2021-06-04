@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for DataSourceAuthenticationType. */
-public class DatasourceAuthenticationType extends ExpandableStringEnum<DatasourceAuthenticationType> {
+public final class DatasourceAuthenticationType extends ExpandableStringEnum<DatasourceAuthenticationType> {
     /** Static value Basic for DataSourceAuthenticationType. */
     public static final DatasourceAuthenticationType BASIC = fromString("Basic");
 
