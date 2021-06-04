@@ -1,6 +1,8 @@
 # Release History
 
 ## 2.1.0-beta.1 (Unreleased)
+### Bug Fixes
+- Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
 
 ## 2.0.6 (2021-05-24)
 ### Bug Fixes
