@@ -4,7 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

@@ -7,6 +7,7 @@ import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 
 /**
  * Sample demonstrates how to list incidents in an alert.
@@ -24,10 +25,11 @@ public class ListIncidentsAlertedSample {
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setMaxPageSize(10);
 
-        PagedIterable<AnomalyIncident> incidentsIterable = advisorClient.listIncidentsForAlert(
+        PagedIterable<AnomalyIncident> incidentsIterable = advisorClient.listIncidents(
             alertConfigurationId,
             alertId,
-            options);
+            options,
+            Context.NONE);
 
         for (AnomalyIncident anomalyIncident : incidentsIterable) {
             System.out.printf("DataFeedMetric Id: %s%n", anomalyIncident.getMetricId());
