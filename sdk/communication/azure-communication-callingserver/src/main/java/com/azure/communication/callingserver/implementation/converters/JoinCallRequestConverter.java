@@ -6,8 +6,8 @@ package com.azure.communication.callingserver.implementation.converters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.communication.callingserver.implementation.models.CallModality;
-import com.azure.communication.callingserver.implementation.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
