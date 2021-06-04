@@ -102,6 +102,10 @@ class MessageUtils {
         }
 
         final AmqpAddress messageTo = properties.getTo();
+        if (response.getProperties() == null) {
+            response.setProperties(new Properties());
+        }
+
         response.getProperties().setTo(messageTo != null ? messageTo.toString() : null);
 
         response.getProperties().setUserId(new Binary(properties.getUserId()));
@@ -193,9 +197,12 @@ class MessageUtils {
         final AmqpMessageHeader responseHeader = response.getHeader();
         responseHeader.setTimeToLive(Duration.ofMillis(message.getTtl()));
         responseHeader.setDeliveryCount(message.getDeliveryCount());
-        responseHeader.setDurable(message.getHeader().getDurable());
-        responseHeader.setFirstAcquirer(message.getHeader().getFirstAcquirer());
         responseHeader.setPriority(message.getPriority());
+
+        if (message.getHeader() != null) {
+            responseHeader.setDurable(message.getHeader().getDurable());
+            responseHeader.setFirstAcquirer(message.getHeader().getFirstAcquirer());
+        }
 
         // Footer
         final Footer footer = message.getFooter();
