@@ -99,10 +99,10 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Deserialize {@see ParticipantsUpdatedEvent} event.
+     * Deserialize {@link ParticipantsUpdatedEvent} event.
      * 
      * @param eventData binary data for event
-     * @return {@see ParticipantsUpdatedEvent} event.
+     * @return {@link ParticipantsUpdatedEvent} event.
      */
     public static ParticipantsUpdatedEvent deserialize(BinaryData eventData) {
         if (eventData == null) {
