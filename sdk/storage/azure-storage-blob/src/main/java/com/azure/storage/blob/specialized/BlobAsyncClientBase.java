@@ -1029,8 +1029,9 @@ public class BlobAsyncClientBase {
                             newCount -= (offset - finalRange.getOffset());
                         }
                         try {
-                        return downloadRange(new BlobRange(offset, newCount), requestConditions, eTag, getMD5, context)
-                            .flatMapMany(StreamResponse::getValue);
+                            return downloadRange(
+                                new BlobRange(offset, newCount), requestConditions, eTag, getMD5, context)
+                                .flatMapMany(StreamResponse::getValue);
                         } catch (Exception e) {
                             return Flux.error(e);
                         }
