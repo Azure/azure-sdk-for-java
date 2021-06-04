@@ -30,7 +30,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class CallAsyncClientTests extends CallingServerTestBase {
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
     private String alternateId =   "+18445764430";
-    private String to =   "+15125189815";      
+    private String to =   "+15125189815";
     private String callBackUri = "https://host.app/api/callback/calling";   
     private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";   
     private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";;
@@ -210,6 +210,73 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             throw e;
         }
     }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runCreateDeleteScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        var builder = getCallClientUsingConnectionString(httpClient);
+        var callAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioAsync");
+
+        try {
+            // Establish a call
+            CreateCallOptions options = new CreateCallOptions(
+                callBackUri, 
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
+                
+            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            
+            CreateCallResponse createCallResult = callAsyncClient.createCall(
+                new CommunicationUserIdentifier(from), 
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
+                options).block();
+            
+            CallingServerTestUtils.validateCreateCallResult(createCallResult);
+            var callId = createCallResult.getCallLegId();            
+
+            // Delete Call
+            callAsyncClient.deleteCall(callId).block();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }   
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runCreateDeleteScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+        var builder = getCallClientUsingConnectionString(httpClient);
+        var callAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioWithResponseAsync");
+
+        try {
+            // Establish a call
+            CreateCallOptions options = new CreateCallOptions(
+                callBackUri, 
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
+                
+            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            
+            Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
+                new CommunicationUserIdentifier(from), 
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
+                options, 
+                Context.NONE).block();
+            
+            CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
+            var callId = createCallResponse.getValue().getCallLegId();            
+
+            // Delete Call
+            Response<Void> hangupResponse = callAsyncClient.deleteCallWithResponse(callId, Context.NONE).block();
+            CallingServerTestUtils.validateResponse(hangupResponse);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    } 
+    
+    
+
     
     private CallAsyncClient setupAsyncClient(CallClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();
