@@ -5,11 +5,12 @@
 ### New Features
 
 - Introduced the `TableTransactionAction` class and the `TableTransactionActionType` enum.
-- Added support for generating SAS tokens at the Account and Table Service in all clients.
+- Added support for generating SAS tokens at the Account and Table Service level in all clients.
 - Added the following methods to `TableClient`, `TableAsyncClient`:
     - `listAccessPolicies()`
     - `setAccessPolicies()`
     - `setAccessPoliciesWithResponse()`
+    - `generateSasToken()`
 - Added the following methods to `TableServiceClient`, `TableServiceAsyncClient`:
     - `getProperties()`
     - `getPropertiesWithResponse()`
@@ -17,6 +18,7 @@
     - `setPropertiesWithResponse()`
     - `getStatistics()`
     - `getStatisticsWithResponse()`
+    - `generateAccountSasToken()`
 
 ### Breaking Changes
 
