@@ -78,8 +78,9 @@ public final class ExceptionUtil {
             case NOT_FOUND:
                 return distinguishNotFound(description, errorContext);
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, "This condition '%s' is not known.",
-                    condition));
+                return new AmqpException(false, condition, String.format("errorCondition[%s]. description[%s] "
+                        + "Condition could not be mapped to a transient condition or not.",
+                    errorCondition, description), errorContext);
         }
 
         return new AmqpException(isTransient, condition, description, errorContext);
