@@ -4,7 +4,6 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.file.share.ShareAsyncClient;
 
 /**
  * Extended options for a directory listing operation.
