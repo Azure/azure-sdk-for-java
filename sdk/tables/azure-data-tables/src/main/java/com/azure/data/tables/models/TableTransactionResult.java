@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.Context;
 import com.azure.data.tables.TableAsyncClient;
 import com.azure.data.tables.TableClient;
@@ -16,6 +17,7 @@ import java.util.Map;
  * {@link TableClient#submitTransactionWithResponse(List, Duration, Context)},
  * {@link TableAsyncClient#submitTransaction(List)} or {@link TableAsyncClient#submitTransactionWithResponse(List)}.
  */
+@Immutable
 public final class TableTransactionResult {
     private final List<TableTransactionActionResponse> transactionActionResponses;
     private final Map<String, TableTransactionActionResponse> lookupMap;
