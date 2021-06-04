@@ -96,25 +96,7 @@ public final class TableClient {
      * {@link AzureNamedKeyCredential}.
      */
     public String generateSas(TableSasSignatureValues tableSasSignatureValues) {
-        return client.generateSas(tableSasSignatureValues, Context.NONE);
-    }
-
-    /**
-     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
-     *
-     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
-     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
-     *
-     * @param tableSasSignatureValues {@link TableSasSignatureValues}
-     * @param context Additional context that is passed through the code when generating a SAS.
-     *
-     * @return A {@code String} representing the SAS query parameters.
-     *
-     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
-     * {@link AzureNamedKeyCredential}.
-     */
-    public String generateSas(TableSasSignatureValues tableSasSignatureValues, Context context) {
-        return client.generateSas(tableSasSignatureValues, context);
+        return client.generateSas(tableSasSignatureValues);
     }
 
     /**
@@ -433,8 +415,8 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> getAccessPolicy() {
-        return new PagedIterable<>(client.getAccessPolicy());
+    public PagedIterable<TableSignedIdentifier> listAccessPolicies() {
+        return new PagedIterable<>(client.listAccessPolicies());
     }
 
     /**
@@ -448,8 +430,8 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.getAccessPolicy(context), timeout));
+    public PagedIterable<TableSignedIdentifier> listAccessPolicies(Duration timeout, Context context) {
+        return new PagedIterable<>(applyOptionalTimeout(client.listAccessPolicies(context), timeout));
     }
 
     /**
@@ -458,8 +440,8 @@ public final class TableClient {
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setAccessPolicy(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        client.setAccessPolicy(tableSignedIdentifiers).block();
+    public void setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        client.setAccessPolicies(tableSignedIdentifiers).block();
     }
 
     /**
@@ -473,9 +455,9 @@ public final class TableClient {
      * @return The HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
-                                                      Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.setAccessPolicyWithResponse(tableSignedIdentifiers, context), timeout);
+    public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                        Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setAccessPoliciesWithResponse(tableSignedIdentifiers, context), timeout);
     }
 
     /**

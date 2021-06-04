@@ -166,25 +166,6 @@ public final class TableServiceAsyncClient {
      * {@link AzureNamedKeyCredential}.
      */
     public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues) {
-        return generateAccountSas(tableAccountSasSignatureValues, Context.NONE);
-    }
-
-    /**
-     * Generates an account SAS for the Azure Storage account using the specified
-     * {@link TableAccountSasSignatureValues}.
-     *
-     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}.
-     * <p>See {@link TableAccountSasSignatureValues} for more information on how to construct an account SAS.</p>
-     *
-     * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
-     * @param context Additional context that is passed through the code when generating a SAS.
-     *
-     * @return A {@link String} representing the SAS query parameters.
-     *
-     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
-     * {@link AzureNamedKeyCredential}.
-     */
-    public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues, Context context) {
         AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
 
         if (azureNamedKeyCredential == null) {

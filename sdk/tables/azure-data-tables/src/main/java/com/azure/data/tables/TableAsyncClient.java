@@ -213,24 +213,6 @@ public final class TableAsyncClient {
      * {@link AzureNamedKeyCredential}.
      */
     public String generateSas(TableSasSignatureValues tableSasSignatureValues) {
-        return generateSas(tableSasSignatureValues, Context.NONE);
-    }
-
-    /**
-     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
-     *
-     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
-     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
-     *
-     * @param tableSasSignatureValues {@link TableSasSignatureValues}
-     * @param context Additional context that is passed through the code when generating a SAS.
-     *
-     * @return A {@code String} representing the SAS query parameters.
-     *
-     * @throws IllegalStateException If this {@link TableAsyncClient} is not authenticated with an
-     * {@link AzureNamedKeyCredential}.
-     */
-    public String generateSas(TableSasSignatureValues tableSasSignatureValues, Context context) {
         AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
 
         if (azureNamedKeyCredential == null) {
@@ -867,11 +849,11 @@ public final class TableAsyncClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TableSignedIdentifier> getAccessPolicy() {
-        return (PagedFlux<TableSignedIdentifier>) fluxContext(this::getAccessPolicy);
+    public PagedFlux<TableSignedIdentifier> listAccessPolicies() {
+        return (PagedFlux<TableSignedIdentifier>) fluxContext(this::listAccessPolicies);
     }
 
-    PagedFlux<TableSignedIdentifier> getAccessPolicy(Context context) {
+    PagedFlux<TableSignedIdentifier> listAccessPolicies(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {
@@ -916,8 +898,8 @@ public final class TableAsyncClient {
      * @return An empty reactive result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setAccessPolicy(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        return this.setAccessPolicyWithResponse(tableSignedIdentifiers).flatMap(FluxUtil::toMono);
+    public Mono<Void> setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return this.setAccessPoliciesWithResponse(tableSignedIdentifiers).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -929,12 +911,12 @@ public final class TableAsyncClient {
      * @return A reactive result containing the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        return withContext(context -> this.setAccessPolicyWithResponse(tableSignedIdentifiers, context));
+    public Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return withContext(context -> this.setAccessPoliciesWithResponse(tableSignedIdentifiers, context));
     }
 
-    Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
-                                                     Context context) {
+    Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                       Context context) {
         context = context == null ? Context.NONE : context;
 
         try {
