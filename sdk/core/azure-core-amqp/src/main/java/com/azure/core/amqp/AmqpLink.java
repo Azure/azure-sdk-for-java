@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.AsyncCloseable;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Represents a unidirectional AMQP link.
