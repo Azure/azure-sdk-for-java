@@ -667,7 +667,7 @@ public class ShareDirectoryAsyncClient {
             (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, modifiedOptions.getPrefix(),
                     snapshot, marker, pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null,
-                    includeTypes, modifiedOptions.includeExtendedInfo(), context), timeout)
+                    finalIncludeTypes, modifiedOptions.includeExtendedInfo(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
