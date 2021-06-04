@@ -73,12 +73,13 @@ public class MappingCosmosConverter
 
     private <R> R readInternal(final CosmosPersistentEntity<?> entity, Class<R> type,
                                final JsonNode jsonNode) {
-        if (jsonNode.isValueNode()) {
-            return readJsonNodeAsValue(jsonNode, type);
-        }
-        Assert.notNull(entity, "Entity is null.");
-        final ObjectNode objectNode = jsonNode.deepCopy();
         try {
+            if (jsonNode.isValueNode()) {
+                return objectMapper.treeToValue(jsonNode, type);
+            }
+
+            Assert.notNull(entity, "Entity is null.");
+            final ObjectNode objectNode = jsonNode.deepCopy();
             final CosmosPersistentProperty idProperty = entity.getIdProperty();
             final JsonNode idValue = jsonNode.get("id");
             if (idProperty != null) {
@@ -93,30 +94,9 @@ public class MappingCosmosConverter
             return objectMapper.treeToValue(objectNode, type);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Failed to read the source document "
-                + objectNode.toPrettyString()
+                + jsonNode.toPrettyString()
                 + "  to target type "
                 + type, e);
-        }
-    }
-
-    private <R> R readJsonNodeAsValue(JsonNode jsonNode, Class<R> type) {
-        switch (jsonNode.getNodeType()) {
-            case BOOLEAN:
-                return objectMapper.convertValue(jsonNode.asBoolean(), type);
-            case NUMBER:
-                if (jsonNode.isInt()) {
-                    return objectMapper.convertValue(jsonNode.asInt(), type);
-                } else if (jsonNode.isLong()) {
-                    return objectMapper.convertValue(jsonNode.asLong(), type);
-                } else if (jsonNode.isDouble()) {
-                    return objectMapper.convertValue(jsonNode.asDouble(), type);
-                } else {
-                    return objectMapper.convertValue(jsonNode, type);
-                }
-            case STRING:
-                return objectMapper.convertValue(jsonNode.asText(), type);
-            default:
-                return objectMapper.convertValue(jsonNode, type);
         }
     }
 
