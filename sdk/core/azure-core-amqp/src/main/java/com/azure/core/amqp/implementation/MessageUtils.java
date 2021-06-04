@@ -32,8 +32,8 @@ import java.util.Objects;
 /**
  * Converts {@link AmqpAnnotatedMessage messages} to and from proton-j messages.
  */
-class AmqpAnnotatedMessageUtils {
-    private static final ClientLogger CLIENT_LOGGER = new ClientLogger(AmqpAnnotatedMessageUtils.class);
+class MessageUtils {
+    private static final ClientLogger CLIENT_LOGGER = new ClientLogger(MessageUtils.class);
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
@@ -272,6 +272,6 @@ class AmqpAnnotatedMessageUtils {
     /**
      * Private constructor.
      */
-    private AmqpAnnotatedMessageUtils() {
+    private MessageUtils() {
     }
 }
