@@ -71,9 +71,7 @@ public class ProcessorReceiveAndLockMessageTest extends ServiceTest<ServiceBusSt
 
     @Override
     public void run() {
-        AtomicReference<CountDownLatch> countdownLatch = new AtomicReference<>();
-        countdownLatch.set(new CountDownLatch(1));
-        processorClient.start();
+        runAsync().block(testDuration);
     }
 
     @Override
