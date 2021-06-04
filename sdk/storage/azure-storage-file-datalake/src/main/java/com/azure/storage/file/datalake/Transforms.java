@@ -450,11 +450,8 @@ class Transforms {
             return new BlobQueryParquetSerialization();
         } else {
             throw new IllegalArgumentException(
-                String.format("'serialization' must be one of %s, %s, %s, or %s",
-                    FileQueryJsonSerialization.class.getSimpleName(),
-                    FileQueryDelimitedSerialization.class.getSimpleName(),
-                    FileQueryArrowSerialization.class.getSimpleName(),
-                    FileQueryParquetSerialization.class.getSimpleName()));
+                String.format("'serialization' must be a subtype of %s.",
+                    FileQuerySerialization.class.getSimpleName()));
         }
     }
 

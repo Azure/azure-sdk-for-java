@@ -324,6 +324,8 @@ public class BlobQueryReader {
      * @return {@link JsonTextConfiguration}
      */
     private static Object transformParquet(BlobQueryParquetSerialization parquetSerialization) {
+        /* This method returns an Object since the ParquetConfiguration currently accepts no options. This results in
+        the generator generating ParquetConfiguration as an Object. */
         if (parquetSerialization == null) {
             return null;
         }
