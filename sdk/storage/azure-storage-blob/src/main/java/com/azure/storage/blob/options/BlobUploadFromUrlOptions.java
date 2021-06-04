@@ -161,10 +161,17 @@ public class BlobUploadFromUrlOptions {
         return this;
     }
 
+    /**
+     * @return Bearer token for access to source.
+     */
     public String getSourceBearerToken() {
         return sourceBearerToken;
     }
 
+    /**
+     * @param sourceBearerToken Bearer token for access to source.
+     * @return The updated options.
+     */
     public BlobUploadFromUrlOptions setSourceBearerToken(String sourceBearerToken) {
         this.sourceBearerToken = sourceBearerToken;
         return this;

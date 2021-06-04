@@ -325,9 +325,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blockBlobClient.stageBlockFromUrlWithResponse(
-            new StageBlockFromUrlOptions()
-                .setSourceUrl(sourceBlob.getBlobUrl())
-                .setBase64BlockId(blockId)
+            new StageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
                 .setSourceBearerToken(oauthHeader),
             null, Context.NONE)
         blockBlobClient.commitBlockList([blockId])
@@ -347,9 +345,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blockBlobClient.stageBlockFromUrlWithResponse(
-            new StageBlockFromUrlOptions()
-                .setSourceUrl(sourceBlob.getBlobUrl())
-                .setBase64BlockId(blockId)
+            new StageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
                 .setSourceBearerToken(oauthHeader),
             null, Context.NONE)
 

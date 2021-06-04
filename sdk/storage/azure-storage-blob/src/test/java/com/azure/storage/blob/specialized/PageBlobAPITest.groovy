@@ -611,9 +611,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesFromUrlWithResponse(
-            new UploadPagesFromUrlOptions()
-                .setRange(pageRange)
-                .setSourceUrl(sourceBlob.getBlobUrl())
+            new UploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
                 .setSourceBearerToken(oauthHeader),
             null, Context.NONE)
 
@@ -632,9 +630,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesFromUrlWithResponse(
-            new UploadPagesFromUrlOptions()
-                .setRange(pageRange)
-                .setSourceUrl(sourceBlob.getBlobUrl())
+            new UploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
                 .setSourceBearerToken(oauthHeader),
             null, Context.NONE)
 

@@ -1,6 +1,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
 /**
@@ -8,12 +9,19 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  */
 @Fluent
 public class ShareFileUploadRangeFromUrlOptions {
-    private long length;
+    private final long length;
+    private final String sourceUrl;
     private long destinationOffset;
     private long sourceOffset;
-    private String sourceUrl;
     private String sourceBearerToken;
     private ShareRequestConditions destinationRequestConditions;
+
+    public ShareFileUploadRangeFromUrlOptions(
+        long length, String sourceUrl) {
+        StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
+        this.length = length;
+        this.sourceUrl = sourceUrl;
+    }
 
     /**
      * @return data length to upload for this operation.
@@ -23,12 +31,10 @@ public class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
-     * @param length data length to upload.
-     * @return modified options.
+     * @return source URL for this operation.
      */
-    public ShareFileUploadRangeFromUrlOptions setLength(long length) {
-        this.length = length;
-        return this;
+    public String getSourceUrl() {
+        return sourceUrl;
     }
 
     /**
@@ -60,22 +66,6 @@ public class ShareFileUploadRangeFromUrlOptions {
      */
     public ShareFileUploadRangeFromUrlOptions setSourceOffset(long sourceOffset) {
         this.sourceOffset = sourceOffset;
-        return this;
-    }
-
-    /**
-     * @return source URL for this operation.
-     */
-    public String getSourceUrl() {
-        return sourceUrl;
-    }
-
-    /**
-     * @param sourceUrl upload source URL.
-     * @return modified options.
-     */
-    public ShareFileUploadRangeFromUrlOptions setSourceUrl(String sourceUrl) {
-        this.sourceUrl = sourceUrl;
         return this;
     }
 

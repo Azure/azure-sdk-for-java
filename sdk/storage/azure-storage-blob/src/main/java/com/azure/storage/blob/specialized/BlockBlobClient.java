@@ -541,9 +541,9 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
             byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Duration timeout,
             Context context) {
-        return stageBlockFromUrlWithResponse(new StageBlockFromUrlOptions().setBase64BlockId(base64BlockId)
-            .setSourceUrl(sourceUrl).setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5)
-            .setLeaseId(leaseId).setSourceRequestConditions(sourceRequestConditions), timeout, context);
+        return stageBlockFromUrlWithResponse(new StageBlockFromUrlOptions(base64BlockId, sourceUrl)
+            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
+            .setSourceRequestConditions(sourceRequestConditions), timeout, context);
     }
 
     /**

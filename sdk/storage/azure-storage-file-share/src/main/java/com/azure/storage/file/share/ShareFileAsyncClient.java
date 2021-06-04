@@ -1636,8 +1636,8 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
         long destinationOffset, long sourceOffset, String sourceUrl,
         ShareRequestConditions destinationRequestConditions) {
-        return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions().setLength(length)
-            .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset).setSourceUrl(sourceUrl)
+        return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(length, sourceUrl)
+            .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset)
             .setDestinationRequestConditions(destinationRequestConditions));
     }
 

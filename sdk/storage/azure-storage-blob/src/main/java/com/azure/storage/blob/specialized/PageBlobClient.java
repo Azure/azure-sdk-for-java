@@ -322,7 +322,7 @@ public final class PageBlobClient extends BlobClientBase {
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
 
         return uploadPagesFromUrlWithResponse(
-            new UploadPagesFromUrlOptions().setRange(range).setSourceUrl(sourceUrl).setSourceOffset(sourceOffset)
+            new UploadPagesFromUrlOptions(range, sourceUrl).setSourceOffset(sourceOffset)
                 .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions),
             timeout, context);

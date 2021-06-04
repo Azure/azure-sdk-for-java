@@ -588,8 +588,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.appendBlockFromUrlWithResponse(
-            new AppendBlockFromUrlOptions()
-                .setSourceUrl(sourceBlob.getBlobUrl())
+            new AppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
                 .setSourceBearerToken(oauthHeader),
             null, Context.NONE)
 
@@ -607,8 +606,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.appendBlockFromUrlWithResponse(
-            new AppendBlockFromUrlOptions()
-                .setSourceUrl(sourceBlob.getBlobUrl())
+            new AppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
                 .setSourceBearerToken(oauthHeader),
             null, Context.NONE)
 
