@@ -212,4 +212,4 @@ Check out other client libraries for Azure Communication Services
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-callingserver
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java-pr/tree/master/sdk/communication/azure-communication-callingserver/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/feature/communication-ServerCalling/sdk/communication/azure-communication-callingserver/src
