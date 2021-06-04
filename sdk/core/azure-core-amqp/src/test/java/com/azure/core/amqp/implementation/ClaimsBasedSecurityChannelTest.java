@@ -215,4 +215,42 @@ class ClaimsBasedSecurityChannelTest {
             })
             .verify();
     }
+
+    /**
+     * Verifies that it closes the CBS node asynchronously.
+     */
+    @Test
+    void closesAsync() {
+        // Arrange
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(
+            Mono.defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
+
+        when(requestResponseChannel.closeAsync()).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(cbsChannel.closeAsync())
+            .expectComplete()
+            .verify();
+
+        verify(requestResponseChannel).closeAsync();
+    }
+
+    /**
+     * Verifies that it closes the cbs node synchronously.
+     */
+    @Test
+    void closes() {
+        // Arrange
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(
+            Mono.defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
+
+        when(requestResponseChannel.closeAsync()).thenReturn(Mono.empty());
+
+        // Act & Assert
+        cbsChannel.close();
+
+        verify(requestResponseChannel).closeAsync();
+    }
 }

@@ -35,7 +35,6 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
 
-    private final ClientLogger logger = new ClientLogger(ClaimsBasedSecurityChannel.class);
     private final TokenCredential credential;
     private final Mono<RequestResponseChannel> cbsChannelMono;
     private final CbsAuthorizationType authorizationType;
@@ -87,9 +86,11 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
     @Override
     public void close() {
-        final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.getTryTimeout());
-        if (channel != null) {
-            channel.closeAsync().block();
-        }
+        closeAsync().block(retryOptions.getTryTimeout());
+    }
+
+    @Override
+    public Mono<Void> closeAsync() {
+        return cbsChannelMono.flatMap(channel -> channel.closeAsync());
     }
 }
