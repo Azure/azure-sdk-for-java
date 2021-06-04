@@ -472,7 +472,7 @@
         <!--          <plugin>-->
         <!--            <groupId>net.jonathangiles.tools</groupId>-->
         <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-        <!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+        <!--            <version>1.0.6</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
         <!--            <inherited>false</inherited>-->
         <!--            <executions>-->
         <!--              <execution>-->

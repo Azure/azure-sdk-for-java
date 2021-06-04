@@ -75,5 +75,11 @@
       <version>5.3.7</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

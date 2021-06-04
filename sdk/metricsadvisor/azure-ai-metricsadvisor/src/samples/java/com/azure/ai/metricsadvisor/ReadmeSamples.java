@@ -5,37 +5,37 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectorDirection;
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
-import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedOptions;
-import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedRollupType;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
-import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
-import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
-import com.azure.ai.metricsadvisor.models.SeverityCondition;
-import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
-import com.azure.ai.metricsadvisor.models.SuppressCondition;
+import com.azure.ai.metricsadvisor.administration.models.MySqlDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
+import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.SuppressCondition;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -43,7 +43,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.SQL_SERVER_DB;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -143,7 +143,7 @@ public class ReadmeSamples {
 
         if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
             System.out.printf("Data feed sql server query: %s%n",
-                ((SQLServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
+                ((SqlServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
         }
     }
 
@@ -263,7 +263,7 @@ public class ReadmeSamples {
                 System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
 
                 // List anomalies for returned alerts
-                metricsAdvisorClient.listAnomaliesForAlert(
+                metricsAdvisorClient.listAnomalies(
                     alertConfigurationId,
                     alert.getId())
                     .forEach(anomaly -> {

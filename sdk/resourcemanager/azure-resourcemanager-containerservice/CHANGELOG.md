@@ -2,6 +2,8 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 
+- Supported spot virtual machine for agent pool of `KubernetesCluster`.
+
 ## 2.5.0 (2021-05-28)
 - Supported system-assigned managed identity and auto-scaler profile for `KubernetesCluster`.
 - Supported auto-scaling, availability zones, node labels and taints for agent pool of `KubernetesCluster`.

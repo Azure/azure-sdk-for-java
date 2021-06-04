@@ -67,6 +67,15 @@ public interface KubernetesClusterAgentPool
     /** @return the maximum number of nodes for auto-scaling */
     int maximumNodeSize();
 
+    /** @return the priority of each virtual machines in the agent pool */
+    ScaleSetPriority virtualMachinePriority();
+
+    /** @return the eviction policy of each virtual machines in the agent pool */
+    ScaleSetEvictionPolicy virtualMachineEvictionPolicy();
+
+    /** @return the maximum price of each spot virtual machines in the agent pool, -1 means pay-as-you-go prices */
+    Double virtualMachineMaximumPrice();
+
     // Fluent interfaces
 
     /**
@@ -283,6 +292,54 @@ public interface KubernetesClusterAgentPool
         }
 
         /**
+         * The stage of a container service agent pool definition allowing to specify the priority of the virtual
+         * machine.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithVMPriority<ParentT> {
+            /**
+             * Specifies the priority of the virtual machines.
+             *
+             * @param priority the priority
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withVirtualMachinePriority(ScaleSetPriority priority);
+
+            /**
+             * Specify that virtual machines should be spot priority VMs.
+             *
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withSpotPriorityVirtualMachine();
+
+            /**
+             * Specify that virtual machines should be spot priority VMs with provided eviction policy.
+             *
+             * @param policy eviction policy for the virtual machines.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withSpotPriorityVirtualMachine(ScaleSetEvictionPolicy policy);
+        }
+
+        /**
+         * The stage of a container service agent pool definition allowing to specify the agent pool mode.
+         *
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
+         */
+        interface WithBillingProfile<ParentT> {
+            /**
+             * Sets the maximum price for virtual machine in agent pool. This price is in US Dollars.
+             *
+             * Default is -1 if not specified, as up to pay-as-you-go prices.
+             *
+             * @param maxPriceInUsDollars the maximum price in US Dollars
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withVirtualMachineMaximumPrice(Double maxPriceInUsDollars);
+        }
+
+        /**
          * The final stage of a container service agent pool definition. At this stage, any remaining optional settings
          * can be specified, or the container service agent pool can be attached to the parent container service
          * definition.
@@ -300,6 +357,8 @@ public interface KubernetesClusterAgentPool
                 WithAutoScaling<ParentT>,
                 WithAvailabilityZones<ParentT>,
                 WithNodeLabelsTaints<ParentT>,
+                WithVMPriority<ParentT>,
+                WithBillingProfile<ParentT>,
                 Attachable.InDefinition<ParentT> {
         }
     }

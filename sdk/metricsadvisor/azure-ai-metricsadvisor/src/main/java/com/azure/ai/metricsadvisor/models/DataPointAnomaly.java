@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.implementation.util.AnomalyHelper;
 
 import java.time.OffsetDateTime;
