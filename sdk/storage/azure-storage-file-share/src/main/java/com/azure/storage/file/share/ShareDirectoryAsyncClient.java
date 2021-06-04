@@ -50,6 +50,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -644,15 +645,29 @@ public class ShareDirectoryAsyncClient {
 
     PagedFlux<ShareFileItem> listFilesAndDirectoriesWithOptionalTimeout(
         ShareDirectoryListFilesAndDirectoriesOptions options, Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("options", options);
-        List<ListFilesIncludeType> includeTypes = options.getShareFileTraits() != null
-            ? new ArrayList<>(options.getShareFileTraits()) : null;
+        final ShareDirectoryListFilesAndDirectoriesOptions modifiedOptions = options == null
+            ? new ShareDirectoryListFilesAndDirectoriesOptions() : options;
+
+        List<ListFilesIncludeType> includeTypes = new LinkedList<>();
+        if (modifiedOptions.includeAttributes()) {
+            includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
+        }
+        if (modifiedOptions.includeETag()) {
+            includeTypes.add(ListFilesIncludeType.ETAG);
+        }
+        if (modifiedOptions.includeTimestamps()) {
+            includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
+        }
+        if (modifiedOptions.includePermissionKey()) {
+            includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
+        }
+        final List<ListFilesIncludeType> finalIncludeTypes = includeTypes.size() == 0 ? null : includeTypes;
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever =
             (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
-                .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, options.getPrefix(),
-                    snapshot, marker, pageSize == null ? options.getMaxResultsPerPage() : pageSize, null, includeTypes,
-                    options.includeExtendedInfo(), context), timeout)
+                .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, modifiedOptions.getPrefix(),
+                    snapshot, marker, pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null,
+                    includeTypes, modifiedOptions.includeExtendedInfo(), context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),

@@ -78,6 +78,9 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @return updated options.
      */
     public ShareDirectoryListFilesAndDirectoriesOptions setIncludeExtendedInfo(boolean includeExtendedInfo) {
+        if (includeTimestamps || includeETag || includeAttributes || includePermissionKey) {
+            throw new IllegalStateException("includeExtendedInfo must be true in the current state.");
+        }
         this.includeExtendedInfo = includeExtendedInfo;
         return this;
     }

@@ -418,7 +418,6 @@ class DirectoryAPITests extends APISpec {
         else {
             assert returnedFileList.size() == 0
         }
-        true
 
         where:
         extraPrefix | maxResults | timestamps | etag  | attributes | permissionKey | includeExtendedInfo || includeExtendedInfoIsTrue | expectingResults
