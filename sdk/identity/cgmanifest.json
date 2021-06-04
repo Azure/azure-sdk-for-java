@@ -1,0 +1,44 @@
+{"Registrations":[
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
+        "ArtifactId": "guava",
+        "GroupId": "com.google.guava",
+        "Version": "19.0"
+      }
+    }
+  },
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
+        "ArtifactId": "KeePassJava2",
+        "GroupId": "org.linguafranca.pwdb",
+        "Version": "2.1.4"
+      }
+    }
+  },
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
+        "ArtifactId": "bcprov-jdk15on",
+        "GroupId": "org.bouncycastle",
+        "Version": "1.64"
+      }
+    }
+  },
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
+        "ArtifactId": "de.slackspace",
+        "GroupId": "openkeepass",
+        "Version": "0.8.1"
+      }
+    }
+  }
+],
+  "Version": 1
+}
