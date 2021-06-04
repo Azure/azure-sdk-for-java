@@ -4,6 +4,8 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
+import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
