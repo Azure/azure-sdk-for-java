@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.security.SecureRandom;
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -186,17 +187,77 @@ public class TableServiceClientBuilderTest {
 
     @Test
     public void multipleFormsOfAuthenticationPresent() {
-        TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder().sasToken("sasToken");
+        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
+            .sasToken("sasToken")
+            .credential(new AzureNamedKeyCredential("name", "key"))
+            .endpoint("https://myaccount.table.core.windows.net")
+            .buildAsyncClient());
 
-        assertThrows(IllegalStateException.class, () -> tableServiceClientBuilder.connectionString(connectionString));
-        assertThrows(IllegalStateException.class,
-            () -> tableServiceClientBuilder.credential(new AzureNamedKeyCredential("name", "key")));
-        assertThrows(IllegalStateException.class,
-            () -> tableServiceClientBuilder.credential(new AzureSasCredential("sasToken")));
+        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
+            .sasToken("sasToken")
+            .credential(new AzureSasCredential("sasToken"))
+            .endpoint("https://myaccount.table.core.windows.net")
+            .buildAsyncClient());
 
-        TableServiceClientBuilder tableServiceClientBuilder2 =
-            new TableServiceClientBuilder().connectionString(connectionString);
+        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
+            .credential(new AzureNamedKeyCredential("name", "key"))
+            .credential(new AzureSasCredential("sasToken"))
+            .endpoint("https://myaccount.table.core.windows.net")
+            .buildAsyncClient());
 
-        assertThrows(IllegalStateException.class, () -> tableServiceClientBuilder2.sasToken("sasToken"));
+        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
+            .sasToken("sasToken")
+            .credential(new AzureNamedKeyCredential("name", "key"))
+            .credential(new AzureSasCredential("sasToken"))
+            .endpoint("https://myaccount.table.core.windows.net")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void buildWithSameSasTokenInConnectionStringDoesNotThrow() {
+        assertDoesNotThrow(() -> new TableServiceClientBuilder()
+            .sasToken("sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void buildWithSameSasTokenInConnectionStringWithPermissionsInDifferentOrderDoesNotThrow() {
+        assertDoesNotThrow(() -> new TableServiceClientBuilder()
+            .sasToken("sv=2020-02-10&ss=t&srt=o&sp=lacurwd&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void buildWithDifferentSasTokenInConnectionStringThrows() {
+        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
+            .sasToken("sv=2020-02-10&ss=t&srt=o&sp=rwd&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void buildWithSameEndpointInConnectionStringDoesNotThrow() {
+        assertDoesNotThrow(() -> new TableServiceClientBuilder()
+            .endpoint("https://myaccount.table.core.windows.net/")
+            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void buildWithSameEndpointInConnectionStringWithTrailingSlashDoesNotThrow() {
+        assertDoesNotThrow(() -> new TableServiceClientBuilder()
+            .endpoint("https://myaccount.table.core.windows.net")
+            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void buildWithDifferentEndpointInConnectionStringThrows() {
+        assertThrows(IllegalStateException.class, () -> new TableServiceClientBuilder()
+            .endpoint("https://myotheraccount.table.core.windows.net/")
+            .connectionString("TableEndpoint=https://myaccount.table.core.windows.net/;SharedAccessSignature=sv=2020-02-10&ss=t&srt=o&sp=rwdlacu&se=2021-06-04T04:45:57Z&st=2021-06-03T20:45:57Z&spr=https&sig=someSignature")
+            .buildAsyncClient());
     }
 }
