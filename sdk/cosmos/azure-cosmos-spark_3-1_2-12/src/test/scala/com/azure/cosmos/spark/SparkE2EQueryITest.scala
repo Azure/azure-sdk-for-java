@@ -629,7 +629,8 @@ class SparkE2EQueryITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "true",
-      "spark.cosmos.read.customQuery" -> "SELECT c.type, c.age, c.isAlive FROM c where c.type = 'duck' and c.isAlive = true",
+      "spark.cosmos.read.customQuery" ->
+        "SELECT c.type, c.age, c.isAlive FROM c where c.type = 'duck' and c.isAlive = true",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
