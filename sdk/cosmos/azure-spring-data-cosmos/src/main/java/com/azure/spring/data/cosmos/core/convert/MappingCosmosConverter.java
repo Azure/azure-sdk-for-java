@@ -62,7 +62,6 @@ public class MappingCosmosConverter
     public <R> R read(Class<R> type, JsonNode jsonNode) {
 
         final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
-        Assert.notNull(entity, "Entity is null.");
 
         return readInternal(entity, type, jsonNode);
     }
@@ -74,6 +73,10 @@ public class MappingCosmosConverter
 
     private <R> R readInternal(final CosmosPersistentEntity<?> entity, Class<R> type,
                                final JsonNode jsonNode) {
+        if (jsonNode.isValueNode()) {
+            return readJsonNodeAsValue(jsonNode, type);
+        }
+        Assert.notNull(entity, "Entity is null.");
         final ObjectNode objectNode = jsonNode.deepCopy();
         try {
             final CosmosPersistentProperty idProperty = entity.getIdProperty();
@@ -93,6 +96,27 @@ public class MappingCosmosConverter
                 + objectNode.toPrettyString()
                 + "  to target type "
                 + type, e);
+        }
+    }
+
+    private <R> R readJsonNodeAsValue(JsonNode jsonNode, Class<R> type) {
+        switch (jsonNode.getNodeType()) {
+            case BOOLEAN:
+                return objectMapper.convertValue(jsonNode.asBoolean(), type);
+            case NUMBER:
+                if (jsonNode.isInt()) {
+                    return objectMapper.convertValue(jsonNode.asInt(), type);
+                } else if (jsonNode.isLong()) {
+                    return objectMapper.convertValue(jsonNode.asLong(), type);
+                } else if (jsonNode.isDouble()) {
+                    return objectMapper.convertValue(jsonNode.asDouble(), type);
+                } else {
+                    return objectMapper.convertValue(jsonNode, type);
+                }
+            case STRING:
+                return objectMapper.convertValue(jsonNode.asText(), type);
+            default:
+                return objectMapper.convertValue(jsonNode, type);
         }
     }
 

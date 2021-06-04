@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.repository.repository;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.repository.Query;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -36,4 +37,12 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
     @Query("select * from a where a.city = @city")
     List<Address> annotatedFindByCity(@Param("city") String city, Sort pageable);
 
+    @Query("select DISTINCT value a.postalCode from a where a.city = @city")
+    Page<String> annotatedFindPostalCodeValuesByCity(@Param("city") String city, Pageable pageable);
+
+    @Query("select DISTINCT a.postalCode from a where a.city = @city")
+    Page<JsonNode> annotatedFindPostalCodesByCity(@Param("city") String city, Pageable pageable);
+
+    @Query("select DISTINCT value a.postalCode from a where a.city = @city")
+    List<String> annotatedFindPostalCodeValuesByCity(@Param("city") String city);
 }
