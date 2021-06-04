@@ -1,3 +1,32 @@
+/*
+ * Copyright openkeepass Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ * -------------------------------------------------------------------------------------------------
+ * Note:
+ *
+ * The AES implementation taken from the project: https://github.com/cternes/openkeepass
+ *
+ * is specifically from the following file:
+ *
+ *  https://github.com/cternes/openkeepass/blob/master/src/main/java/de/slackspace/openkeepass/crypto/Aes.java
+ *
+ * The original idea is modified and refactored to adapt to identity use case.
+ *  -------------------------------------------------------------------------------------------------
+ */
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
 package com.azure.identity.implementation.intellij;
 
 import javax.crypto.*;

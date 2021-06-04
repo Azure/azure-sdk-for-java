@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
 
 package com.azure.identity.implementation.intellij;
 
@@ -48,6 +51,9 @@ import java.util.Arrays;
  * number and length fields are low order byte first.
  *
  * @author Jo
+ */
+/*
+ * Portions Copyright (c) Microsoft Corporation
  */
 public class HashedBlockInputStream extends InputStream {
 
