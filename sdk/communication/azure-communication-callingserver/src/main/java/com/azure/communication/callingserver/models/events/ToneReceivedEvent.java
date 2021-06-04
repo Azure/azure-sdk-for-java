@@ -67,6 +67,13 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
 
     /**
      * Initializes a new instance of ToneReceivedEvent.
+     */
+    public ToneReceivedEvent() {
+
+    }
+
+    /**
+     * Initializes a new instance of ToneReceivedEvent.
      * 
      * @param toneInfo The tone info.
      * @param callLegId The call leg id.

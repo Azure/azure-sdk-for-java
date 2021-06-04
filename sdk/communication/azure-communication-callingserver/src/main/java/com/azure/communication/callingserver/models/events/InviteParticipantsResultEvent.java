@@ -117,6 +117,13 @@ public final class InviteParticipantsResultEvent extends CallingServerEventBase 
     }
 
     /**
+     * Initializes a new instance of InviteParticipantsResultEvent.
+     */
+    public InviteParticipantsResultEvent() {
+
+    }
+
+    /**
      * Initializes a new instance of InviteParticipantsResultEvent
      * 
      * @param resultInfo The result info.
