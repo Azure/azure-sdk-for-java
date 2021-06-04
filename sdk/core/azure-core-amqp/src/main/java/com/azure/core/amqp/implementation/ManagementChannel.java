@@ -45,6 +45,7 @@ public class ManagementChannel implements AmqpManagementNode {
     public Mono<AmqpAnnotatedMessage> send(AmqpAnnotatedMessage message) {
         return isAuthorized().then(createChannel.flatMap(channel -> {
             final Message protonJMessage = MessageUtils.toProtonJMessage(message);
+
             return channel.sendWithAck(protonJMessage)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
@@ -58,7 +59,8 @@ public class ManagementChannel implements AmqpManagementNode {
     public Mono<AmqpAnnotatedMessage> send(AmqpAnnotatedMessage message, DeliveryOutcome deliveryOutcome) {
         return isAuthorized().then(createChannel.flatMap(channel -> {
             final Message protonJMessage = MessageUtils.toProtonJMessage(message);
-            DeliveryState protonJDeliveryState = MessageUtils.toProtonJDeliveryState(deliveryOutcome);
+            final DeliveryState protonJDeliveryState = MessageUtils.toProtonJDeliveryState(deliveryOutcome);
+
             return channel.sendWithAck(protonJMessage, protonJDeliveryState)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
@@ -103,11 +105,11 @@ public class ManagementChannel implements AmqpManagementNode {
         }
 
         final String statusDescription = RequestResponseUtils.getStatusDescription(response);
-        final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription, errorContext);
 
         logger.warning("status[{}] description[{}] condition[{}] Operation not successful.",
             statusCode, statusDescription, errorCondition);
 
+        final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription, errorContext);
         sink.error(throwable);
     }
 
