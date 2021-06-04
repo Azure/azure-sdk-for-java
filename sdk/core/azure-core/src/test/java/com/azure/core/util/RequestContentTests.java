@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -39,7 +41,8 @@ public class RequestContentTests {
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(content.asFluxByteBuffer()))
             .assertNext(bytes -> assertArrayEquals(expected, bytes))
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(30));
     }
 
     private static Stream<Arguments> expectedContentSupplier() throws IOException {
@@ -118,6 +121,13 @@ public class RequestContentTests {
                 randomBytes),
             Arguments.of(
                 RequestContent.fromBufferedFlux(new BufferedFluxByteBuffer(chunkedRandomFlux), randomBytes.length),
+                true, randomBytes),
+
+            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(emptyBytes)), false, emptyBytes),
+            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(emptyBytes), 0), true, emptyBytes),
+
+            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(randomBytes)), false, randomBytes),
+            Arguments.of(RequestContent.fromInputStream(new ByteArrayInputStream(randomBytes), randomBytes.length),
                 true, randomBytes)
         );
     }
@@ -192,6 +202,15 @@ public class RequestContentTests {
             // length cannot be negative
             Arguments.of(
                 createExecutable(() -> RequestContent.fromBufferedFlux(new BufferedFluxByteBuffer(Flux.empty()), -1)),
+                IllegalArgumentException.class),
+
+            // content cannot be null
+            Arguments.of(createExecutable(() -> RequestContent.fromInputStream(null)), NullPointerException.class),
+            Arguments.of(createExecutable(() -> RequestContent.fromInputStream(null, 0)), NullPointerException.class),
+
+            // length cannot be negative
+            Arguments.of(
+                createExecutable(() -> RequestContent.fromInputStream(new ByteArrayInputStream(dummyBytes), -1)),
                 IllegalArgumentException.class)
         );
     }

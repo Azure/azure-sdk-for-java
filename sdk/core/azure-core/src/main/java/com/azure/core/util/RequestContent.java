@@ -7,12 +7,14 @@ import com.azure.core.implementation.util.ArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import reactor.core.publisher.Flux;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -175,6 +177,9 @@ public interface RequestContent {
 
     /**
      * Creates a {@link RequestContent} that uses a {@link Flux} of {@link ByteBuffer} as its data.
+     * <p>
+     * {@link RequestContent#getLength()} will be null if this factory method is used, if the length needs to be
+     * non-null use {@link RequestContent#fromFlux(Flux, long)}.
      *
      * @param content The {@link Flux} of {@link ByteBuffer} that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
@@ -206,6 +211,9 @@ public interface RequestContent {
 
     /**
      * Creates a {@link RequestContent} that uses a {@link BufferedFluxByteBuffer} as its data.
+     * <p>
+     * {@link RequestContent#getLength()} will be null if this factory method is used, if the length needs to be
+     * non-null use {@link RequestContent#fromBufferedFlux(BufferedFluxByteBuffer, long)}.
      *
      * @param content The {@link BufferedFluxByteBuffer} that will be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
@@ -233,5 +241,40 @@ public interface RequestContent {
         }
 
         return new FluxByteBufferContent(content, length);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses an {@link InputStream} as its data.
+     * <p>
+     * {@link RequestContent#getLength()} will be null if this factory method is used, if the length needs to be
+     * non-null use {@link RequestContent#fromInputStream(InputStream, long)}.
+     *
+     * @param content The {@link InputStream} that will be the {@link RequestContent} data.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code inputStream} is null.
+     */
+    static RequestContent fromInputStream(InputStream content) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
+
+        return new InputStreamContent(content);
+    }
+
+    /**
+     * Creates a {@link RequestContent} that uses an {@link InputStream} as its data.
+     *
+     * @param content The {@link InputStream} that will be the {@link RequestContent} data.
+     * @param length The length of the content.
+     * @return A new {@link RequestContent}.
+     * @throws NullPointerException If {@code inputStream} is null.
+     * @throws IllegalArgumentException If {@code length} is less than 0.
+     */
+    static RequestContent fromInputStream(InputStream content, long length) {
+        Objects.requireNonNull(content, "'content' cannot be null.");
+        if (length < 0) {
+            throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
+                "'length' cannot be less than 0."));
+        }
+
+        return new InputStreamContent(content, length);
     }
 }

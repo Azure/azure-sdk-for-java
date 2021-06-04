@@ -3,15 +3,14 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.RequestContent;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 
 /**
@@ -39,15 +38,27 @@ public final class FileContent implements RequestContent {
 
     @Override
     public Flux<ByteBuffer> asFluxByteBuffer() {
-        return Flux.using(() -> AsynchronousFileChannel.open(file),
-            channel -> FluxUtil.readFile(channel, offset, length),
-            channel -> {
-                try {
-                    channel.close();
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(new UncheckedIOException(ex));
-                }
-            });
+        return Flux.using(() -> FileChannel.open(file), channel -> Flux.generate(() -> 0, (count, sink) -> {
+            if (count == length) {
+                sink.complete();
+                return count;
+            }
+
+            int readCount = (int) Math.min(8096, length - count);
+            try {
+                sink.next(channel.map(FileChannel.MapMode.READ_ONLY, offset + count, readCount));
+            } catch (IOException ex) {
+                sink.error(ex);
+            }
+
+            return count + readCount;
+        }), channel -> {
+            try {
+                channel.close();
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
+            }
+        });
     }
 
     @Override
