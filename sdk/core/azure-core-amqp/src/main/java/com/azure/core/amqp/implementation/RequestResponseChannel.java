@@ -156,7 +156,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 handleError(error, "Error in ReceiveLinkHandler.");
                 onTerminalState("ReceiveLinkHandler");
             }, () -> {
-                closeAsync("ReceiveLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync().subscribe();
                 onTerminalState("ReceiveLinkHandler");
             }),
 
@@ -166,13 +166,13 @@ public class RequestResponseChannel implements AsyncCloseable {
                 handleError(error, "Error in SendLinkHandler.");
                 onTerminalState("SendLinkHandler");
             }, () -> {
-                closeAsync("SendLinkHandler. Endpoint states complete.").subscribe();
+                closeAsync().subscribe();
                 onTerminalState("SendLinkHandler");
             }),
 
             amqpConnection.getShutdownSignals().next().flatMap(signal -> {
                 logger.verbose("connectionId[{}] linkName[{}]: Shutdown signal received.", connectionId, linkName);
-                return closeAsync(" Shutdown signal received.");
+                return closeAsync();
             }).subscribe()
         );
         //@formatter:on
@@ -201,17 +201,13 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     @Override
     public Mono<Void> closeAsync() {
-        return this.closeAsync("");
-    }
-
-    public Mono<Void> closeAsync(String message) {
         if (isDisposed.getAndSet(true)) {
             return closeMono.asMono().subscribeOn(Schedulers.boundedElastic());
         }
 
-        return Mono.fromRunnable(() -> {
-            logger.verbose("connectionId[{}] linkName[{}] {}", connectionId, linkName, message);
+        logger.verbose("connectionId[{}] linkName[{}] Closing request/response channel.", connectionId, linkName);
 
+        return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> {
                     sendLink.close();
@@ -365,7 +361,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         unconfirmedSends.forEach((key, value) -> value.error(error));
         unconfirmedSends.clear();
 
-        closeAsync("Disposing channel due to error.").subscribe();
+        closeAsync().subscribe();
     }
 
     private void onTerminalState(String handlerName) {
