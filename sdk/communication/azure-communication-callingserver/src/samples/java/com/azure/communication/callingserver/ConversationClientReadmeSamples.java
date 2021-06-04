@@ -59,7 +59,7 @@ public class ConversationClientReadmeSamples {
      * @param conversationId Identifier of the current conversation (call).
      * @param recordingId Identifier of the recording to pause.
      */
-    public void pauseCall(ConversationClient conversationClient,
+    public void pauseRecording(ConversationClient conversationClient,
             String conversationId, String recordingId) {
         conversationClient.pauseRecording(conversationId, recordingId);
     }
