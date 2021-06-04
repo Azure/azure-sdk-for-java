@@ -80,6 +80,16 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample code for hanging up a call using the sync call client.
+     */
+    public void hangupCall() {
+        CallClient callClient = createCallClient();
+
+        String callId = "callId";
+        callClient.hangupCall(callId);
+    }
+
+    /**
      * Sample code for deleting a call using the sync call client.
      */
     public void deleteCall() {
@@ -87,5 +97,16 @@ public class ReadmeSamples {
 
         String callId = "callId";
         callClient.deleteCall(callId);
+    }
+
+    /**
+     * Sample code for deleting a call using the sync call client.
+     */
+    public void addParticipant() {
+        CallClient callClient = createCallClient();
+
+        String callId = "callId";
+        CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
+        callClient.addParticipant(callId, thirdCallee, "ACS User 2", "<string-for-tracing-responses>");
     }
 }
