@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultClientTest {
@@ -26,7 +27,7 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetAliases() {
-        assertNotNull(keyVaultClient.getAliases());
+        assertTrue(keyVaultClient.getAliases().contains(certificateName));
     }
 
     @Test
