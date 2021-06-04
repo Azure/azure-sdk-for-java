@@ -3,9 +3,12 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Describes the additional parameters for the API to list anomalies detected.
  */
+@Fluent
 public final class ListAnomaliesDetectedOptions {
     private Integer maxPageSize;
     private Integer skip;
