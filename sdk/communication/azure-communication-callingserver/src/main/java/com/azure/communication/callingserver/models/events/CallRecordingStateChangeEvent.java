@@ -119,6 +119,13 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
 
     /**
      * Initializes a new instance of CallRecordingStateChangeEvent.
+     */
+    public CallRecordingStateChangeEvent() {
+
+    }
+
+    /**
+     * Initializes a new instance of CallRecordingStateChangeEvent.
      * 
      * @param recordingId The recording id.
      * @param state The state.
