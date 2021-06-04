@@ -130,14 +130,15 @@ public final class TableAccountSasResourceType {
 
     /**
      * Converts the given resource types to a {@link String}. Using this method will guarantee the resource types are in
-     * an order accepted by the service.
+     * an order accepted by the service. If all resource types are set to false, an empty string is returned from this
+     * method.
      *
      * @return A {@code String} which represents the {@link TableAccountSasResourceType account resource types}.
      */
     @Override
     public String toString() {
         // The order of the characters should be as specified here to ensure correctness:
-        // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
+        // https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
         StringBuilder builder = new StringBuilder();
 
         if (this.service) {

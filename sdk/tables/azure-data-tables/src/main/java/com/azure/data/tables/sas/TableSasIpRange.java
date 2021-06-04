@@ -11,12 +11,6 @@ public final class TableSasIpRange {
     private String ipMax;
 
     /**
-     * Constructs an {@link TableSasIpRange} object.
-     */
-    public TableSasIpRange() {
-    }
-
-    /**
      * Creates a {@link TableSasIpRange} from the specified string.
      *
      * @param rangeStr The {@link String} representation of the {@link TableSasIpRange}.
@@ -73,7 +67,9 @@ public final class TableSasIpRange {
     }
 
     /**
-     * Output the single IP address or range of IP addresses formatted as a {@link String}.
+     * Output the single IP address or range of IP addresses formatted as a {@link String}. If {@code minIpRange} is set
+     * to {@code null}, an empty string is returned from this method. Otherwise, if {@code maxIpRange} is set
+     * to {@code null}, then this method returns the value of {@code minIpRange}.
      *
      * @return The single IP address or range of IP addresses formatted as a {@link String}.
      */

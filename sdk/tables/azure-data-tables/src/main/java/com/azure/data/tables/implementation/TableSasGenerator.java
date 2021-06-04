@@ -14,9 +14,8 @@ import com.azure.data.tables.sas.TableSasSignatureValues;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-import static com.azure.data.tables.implementation.TableSasUtils.computeHMac256;
+import static com.azure.data.tables.implementation.TableSasUtils.computeHmac256;
 import static com.azure.data.tables.implementation.TableSasUtils.formatQueryParameterDate;
-import static com.azure.data.tables.implementation.TableSasUtils.logStringToSign;
 import static com.azure.data.tables.implementation.TableSasUtils.tryAppendQueryParameter;
 
 /**
@@ -45,11 +44,9 @@ public class TableSasGenerator {
      * @param sasValues The {@link TableSasSignatureValues} to generate the SAS token with.
      * @param tableName The table name.
      * @param azureNamedKeyCredential An {@link AzureNamedKeyCredential} whose key will be used to sign the SAS.
-     * @param context Additional context that is passed through the code when generating a SAS.
      */
     public TableSasGenerator(TableSasSignatureValues sasValues, String tableName,
-                             AzureNamedKeyCredential azureNamedKeyCredential,
-                             Context context) {
+                             AzureNamedKeyCredential azureNamedKeyCredential) {
         Objects.requireNonNull(sasValues, "'sasValues' cannot be null.");
         Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
 
@@ -71,10 +68,7 @@ public class TableSasGenerator {
         // Signature is generated on the un-url-encoded values.
         String canonicalName = getCanonicalName(azureNamedKeyCredential.getAzureNamedKey().getName());
         String stringToSign = stringToSign(canonicalName);
-
-        logStringToSign(logger, stringToSign, context);
-
-        String signature = computeHMac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
+        String signature = computeHmac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
 
         this.sas = encode(signature);
     }

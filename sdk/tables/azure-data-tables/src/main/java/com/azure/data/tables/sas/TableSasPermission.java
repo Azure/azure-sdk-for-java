@@ -30,12 +30,6 @@ public final class TableSasPermission {
     private boolean processPermission;
 
     /**
-     * Initializes a {@link TableSasPermission} object with all fields set to {@code false}.
-     */
-    public TableSasPermission() {
-    }
-
-    /**
      * Creates a {@link TableSasPermission} from the specified permissions string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
@@ -179,14 +173,14 @@ public final class TableSasPermission {
 
     /**
      * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
-     * order accepted by the service.
+     * order accepted by the service. If all permissions are set to false, an empty string is returned from this method.
      *
      * @return A {@link String} which represents the {@link TableSasPermission}.
      */
     @Override
     public String toString() {
         // The order of the characters should be as specified here to ensure correctness:
-        // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+        // https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 
         final StringBuilder builder = new StringBuilder();
 

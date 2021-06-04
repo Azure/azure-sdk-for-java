@@ -346,14 +346,14 @@ public final class TableAccountSasPermission {
 
     /**
      * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
-     * order accepted by the service.
+     * order accepted by the service. If all permissions are set to false, an empty string is returned from this method.
      *
      * @return A {@link String} which represents the {@link TableAccountSasPermission}.
      */
     @Override
     public String toString() {
         // The order of the characters should be as specified here to ensure correctness:
-        // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
+        // https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
         final StringBuilder builder = new StringBuilder();
 
         if (this.readPermission) {

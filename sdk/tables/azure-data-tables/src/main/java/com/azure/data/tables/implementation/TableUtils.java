@@ -19,6 +19,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.time.Duration;
@@ -26,7 +27,10 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
@@ -443,5 +447,69 @@ public final class TableUtils {
         }
 
         return retVals;
+    }
+
+    public static boolean sasTokenEquals(String sasToken1, String sasToken2) {
+        List<String> keysToCompareUnsorted = new ArrayList<>();
+        keysToCompareUnsorted.add("ss"); // Services
+        keysToCompareUnsorted.add("srt"); // Resource types
+        keysToCompareUnsorted.add("sp"); // Permissions
+
+        Map<String, String[]> queryParams1 = parseQueryString(sasToken1);
+        Map<String, String[]> queryParams2 = parseQueryString(sasToken2);
+
+        if (queryParams1.size() != queryParams2.size()) {
+            // More query parameters on one token than the other.
+            return false;
+        }
+
+        for (String key : queryParams1.keySet()) {
+            if (!queryParams2.containsKey(key)) {
+                // Different query parameters.
+                return false;
+            }
+
+            String[] param1 = queryParams1.get(key);
+            String[] param2 = queryParams2.get(key);
+
+            if (keysToCompareUnsorted.contains(key)) {
+                for (int i = 0; i < param1.length; i++) {
+                    param1[i] = orderString(param1[i]);
+                }
+
+                for (int i = 0; i < param2.length; i++) {
+                    param2[i] = orderString(param2[i]);
+                }
+
+            }
+
+            if (!sasArrayEquals(param1, param2)) {
+                return false;
+            }
+        }
+
+        // SAS tokens are the same.
+        return true;
+    }
+
+    private static String orderString(String str) {
+        char[] charArray = str.toCharArray();
+
+        Arrays.sort(charArray);
+
+        return new String(charArray);
+    }
+
+    private static boolean sasArrayEquals(String[] array1, String[] array2) {
+        if (array1.length > 1) {
+            Arrays.sort(array1);
+        }
+
+        if (array2.length > 1) {
+            Arrays.sort(array2);
+        }
+
+        // Different values in these query parameters.
+        return Arrays.equals(array1, array2);
     }
 }

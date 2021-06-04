@@ -188,7 +188,7 @@ public final class TableSasSignatureValues {
 
     /**
      * @return The name of the access policy on the table this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {
@@ -197,7 +197,7 @@ public final class TableSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the table this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      *
      * @param identifier Name of the access policy

@@ -141,14 +141,14 @@ public final class TableAccountSasService {
 
     /**
      * Converts the given services to a {@link String}. Using this method will guarantee the services are in an order
-     * accepted by the service.
+     * accepted by the service. If all services are set to false, an empty string is returned from this method.
      *
      * @return A {@link String} which represents the {@link TableAccountSasService account services}.
      */
     @Override
     public String toString() {
         // The order of the characters should be as specified here to ensure correctness:
-        // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
+        // https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
         StringBuilder value = new StringBuilder();
 
         if (this.blob) {

@@ -3,7 +3,6 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.sas.TableAccountSasPermission;
@@ -14,9 +13,8 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-import static com.azure.data.tables.implementation.TableSasUtils.computeHMac256;
+import static com.azure.data.tables.implementation.TableSasUtils.computeHmac256;
 import static com.azure.data.tables.implementation.TableSasUtils.formatQueryParameterDate;
-import static com.azure.data.tables.implementation.TableSasUtils.logStringToSign;
 import static com.azure.data.tables.implementation.TableSasUtils.tryAppendQueryParameter;
 
 /**
@@ -40,11 +38,9 @@ public class TableAccountSasGenerator {
      *
      * @param sasValues The {@link TableAccountSasSignatureValues account signature values}.
      * @param azureNamedKeyCredential An {@link AzureNamedKeyCredential} whose key will be used to sign the SAS.
-     * @param context Additional context that is passed through the code when generating a SAS.
      */
     public TableAccountSasGenerator(TableAccountSasSignatureValues sasValues,
-                                    AzureNamedKeyCredential azureNamedKeyCredential,
-                                    Context context) {
+                                    AzureNamedKeyCredential azureNamedKeyCredential) {
         Objects.requireNonNull(sasValues, "'sasValues' cannot be null.");
         Objects.requireNonNull(azureNamedKeyCredential, "'azureNamedKeyCredential' cannot be null.");
         Objects.requireNonNull(sasValues.getServices(), "'services' in 'sasValues' cannot be null.");
@@ -67,10 +63,8 @@ public class TableAccountSasGenerator {
 
         String stringToSign = stringToSign(azureNamedKeyCredential);
 
-        logStringToSign(logger, stringToSign, context);
-
         // Signature is generated on the un-url-encoded values.
-        String signature = computeHMac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
+        String signature = computeHmac256(azureNamedKeyCredential.getAzureNamedKey().getKey(), stringToSign);
 
         this.sas = encode(signature);
     }

@@ -56,20 +56,6 @@ public class TableSasUtils {
     }
 
     /**
-     * Logs the string to sign if a valid context is provided.
-     *
-     * @param logger A {@link ClientLogger} to log the signed string to.
-     * @param stringToSign The string to sign to log.
-     * @param context Additional context to determine if the string to sign should be logged.
-     */
-    public static void logStringToSign(ClientLogger logger, String stringToSign, Context context) {
-        if (context != null && Boolean.TRUE.equals(context.getData(StorageConstants.STORAGE_LOG_STRING_TO_SIGN).orElse(false))) {
-            logger.info(STRING_TO_SIGN_LOG_INFO_MESSAGE, stringToSign, System.lineSeparator());
-            logger.warning(STRING_TO_SIGN_LOG_WARNING_MESSAGE, StorageConstants.STORAGE_LOG_STRING_TO_SIGN);
-        }
-    }
-
-    /**
      * Extracts the {@link AzureNamedKeyCredential} from a {@link HttpPipeline}
      *
      * @param pipeline An {@link HttpPipeline} to extract an {@link AzureNamedKeyCredential} from.
@@ -99,7 +85,7 @@ public class TableSasUtils {
      * @throws RuntimeException If the HMAC-SHA256 algorithm isn't support, if the key isn't a valid Base64 encoded
      * string, or the UTF-8 charset isn't supported.
      */
-    public static String computeHMac256(final String base64Key, final String stringToSign) {
+    public static String computeHmac256(final String base64Key, final String stringToSign) {
         try {
             byte[] key = Base64.getDecoder().decode(base64Key);
             Mac hmacSHA256 = Mac.getInstance("HmacSHA256");

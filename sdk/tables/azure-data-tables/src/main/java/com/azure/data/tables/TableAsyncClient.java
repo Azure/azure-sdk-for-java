@@ -238,8 +238,7 @@ public final class TableAsyncClient {
                 + " is not authenticated with an AzureNamedKeyCredential."));
         }
 
-        return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential, context)
-            .getSas();
+        return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential).getSas();
     }
 
     /**

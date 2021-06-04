@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.azure.data.tables.implementation.TableSasUtils.computeHMac256;
+import static com.azure.data.tables.implementation.TableSasUtils.computeHmac256;
 import static com.azure.data.tables.implementation.TableUtils.parseQueryStringSplitValues;
 
 /**
@@ -61,7 +61,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      * @return The auth header
      */
     String generateAuthorizationHeader(URL requestUrl, Map<String, String> headers) {
-        String signature = computeHMac256(credential.getAzureNamedKey().getKey(), buildStringToSign(requestUrl,
+        String signature = computeHmac256(credential.getAzureNamedKey().getKey(), buildStringToSign(requestUrl,
             headers));
         return String.format(AUTHORIZATION_HEADER_FORMAT, credential.getAzureNamedKey().getName(), signature);
     }
