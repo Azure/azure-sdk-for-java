@@ -1,7 +1,11 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.2.4 (2021-06-04)
 
+### Dependency Updates
+
+- Updated `azure-core` from `1.16.0` to `1.17.0`.
+- Updated Jackson from `2.12.2` to `2.12.3`.
 
 ## 1.2.3 (2021-05-07)
 
