@@ -62,6 +62,7 @@
             <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <includes>
+                <include>com/azure/communication/callingserver/*.class</include>              
                 <include>com/azure/communication/chat/*.class</include>
                 <include>com/azure/communication/sms/*.class</include>
                 <include>com/azure/communication/phonenumbers/*.class</include>
