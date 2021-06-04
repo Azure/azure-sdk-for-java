@@ -3,23 +3,43 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpTransaction;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.amqp.models.DeliveryOutcome;
+import com.azure.core.amqp.models.DeliveryState;
+import com.azure.core.amqp.models.ModifiedDeliveryOutcome;
+import com.azure.core.amqp.models.ReceivedDeliveryOutcome;
+import com.azure.core.amqp.models.RejectedDeliveryOutcome;
+import com.azure.core.amqp.models.TransactionalDeliveryOutcome;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
+import org.apache.qpid.proton.amqp.UnsignedLong;
+import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Footer;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Modified;
+import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Properties;
+import org.apache.qpid.proton.amqp.messaging.Received;
+import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.amqp.transaction.Declared;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
+import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Duration;
@@ -239,6 +259,266 @@ class MessageUtils {
         }
 
         return response;
+    }
+
+    /**
+     * Converts a proton-j delivery state to one supported by azure-core-amqp.
+     *
+     * @param deliveryState Delivery state to convert.
+     *
+     * @return The corresponding delivery outcome or null if parameter was null.
+     *
+     * @throws IllegalArgumentException if {@code deliveryState} type but there is no transactional state associated
+     *     or transaction id. If {@code deliveryState} is declared but there is no transaction id or the type is not
+     *     {@link Declared}.
+     * @throws UnsupportedOperationException If the {@link DeliveryStateType} is unknown.
+     */
+    static DeliveryOutcome toDeliveryOutcome(org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState) {
+        if (deliveryState == null) {
+            return null;
+        }
+
+        switch (deliveryState.getType()) {
+            case Accepted:
+                return new DeliveryOutcome(DeliveryState.ACCEPTED);
+            case Modified:
+                if (!(deliveryState instanceof Modified)) {
+                    return new ModifiedDeliveryOutcome();
+                }
+
+                return toDeliveryOutcome((Modified) deliveryState);
+            case Received:
+                if (!(deliveryState instanceof Received)) {
+                    throw CLIENT_LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "Received delivery state should have a Received state."));
+                }
+
+                final Received received = (Received) deliveryState;
+                if (received.getSectionNumber() == null || received.getSectionOffset() == null) {
+                    throw CLIENT_LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "Received delivery state does not have any offset or section number. " + received));
+                }
+
+                return new ReceivedDeliveryOutcome(received.getSectionNumber().intValue(),
+                    received.getSectionOffset().longValue());
+            case Rejected:
+                if (!(deliveryState instanceof Rejected)) {
+                    return new DeliveryOutcome(DeliveryState.REJECTED);
+                }
+
+                return toDeliveryOutcome((Rejected) deliveryState);
+            case Released:
+                return new DeliveryOutcome(DeliveryState.RELEASED);
+            case Declared:
+                if (!(deliveryState instanceof Declared)) {
+                    throw CLIENT_LOGGER.logThrowableAsError(new IllegalArgumentException(
+                        "Declared delivery type should have a declared outcome"));
+                }
+                return toDeliveryOutcome((Declared) deliveryState);
+            case Transactional:
+                if (!(deliveryState instanceof TransactionalState)) {
+                    throw CLIENT_LOGGER.logThrowableAsError(new IllegalArgumentException(
+                        "Transactional delivery type should have a TransactionalState outcome."));
+                }
+
+                final TransactionalState transactionalState = (TransactionalState) deliveryState;
+                if (transactionalState.getTxnId() == null) {
+                    throw CLIENT_LOGGER.logThrowableAsError(new IllegalArgumentException(
+                        "Transactional delivery states should have an associated transaction id."));
+                }
+
+                final AmqpTransaction transaction = new AmqpTransaction(transactionalState.getTxnId().asByteBuffer());
+                final DeliveryOutcome outcome = toDeliveryOutcome(transactionalState.getOutcome());
+                return new TransactionalDeliveryOutcome(transaction).setOutcome(outcome);
+            default:
+                throw CLIENT_LOGGER.logThrowableAsError(new UnsupportedOperationException(
+                    "Delivery state not supported: " + deliveryState.getType()));
+        }
+    }
+
+    /**
+     * Converts from a proton-j outcome to its corresponding {@link DeliveryOutcome}.
+     *
+     * @param outcome Outcome to convert.
+     *
+     * @return Corresponding {@link DeliveryOutcome} or null if parameter was null.
+     *
+     * @throws UnsupportedOperationException If the type of {@link Outcome} is unknown.
+     */
+    static DeliveryOutcome toDeliveryOutcome(Outcome outcome) {
+        if (outcome == null) {
+            return null;
+        }
+
+        if (outcome instanceof Accepted) {
+            return new DeliveryOutcome(DeliveryState.ACCEPTED);
+        } else if (outcome instanceof Modified) {
+            return toDeliveryOutcome((Modified) outcome);
+        } else if (outcome instanceof Rejected) {
+            return toDeliveryOutcome((Rejected) outcome);
+        } else if (outcome instanceof Released) {
+            return new DeliveryOutcome(DeliveryState.RELEASED);
+        } else if (outcome instanceof Declared) {
+            return toDeliveryOutcome((Declared) outcome);
+        } else {
+            throw CLIENT_LOGGER.logThrowableAsError(new UnsupportedOperationException(
+                "Outcome is not known: " + outcome));
+        }
+    }
+
+    static org.apache.qpid.proton.amqp.transport.DeliveryState toProtonJDeliveryState(DeliveryOutcome outcome) {
+        if (outcome == null) {
+            return null;
+        }
+
+        switch (outcome.getDeliveryState()) {
+            case ACCEPTED:
+                return Accepted.getInstance();
+            case REJECTED:
+                return toProtonJRejected(outcome);
+            case RELEASED:
+                return Released.getInstance();
+            case MODIFIED:
+                return toProtonJModified(outcome);
+            case RECEIVED:
+                final ReceivedDeliveryOutcome receivedDeliveryOutcome = (ReceivedDeliveryOutcome) outcome;
+                final Received received = new Received();
+
+                received.setSectionNumber(UnsignedInteger.valueOf(receivedDeliveryOutcome.getSectionNumber()));
+                received.setSectionOffset(UnsignedLong.valueOf(receivedDeliveryOutcome.getSectionOffset()));
+                return received;
+            default:
+                if (outcome instanceof TransactionalDeliveryOutcome) {
+                    final TransactionalDeliveryOutcome transaction = ((TransactionalDeliveryOutcome) outcome);
+                    final TransactionalState state = new TransactionalState();
+                    if (transaction.getTransactionId() == null) {
+                        throw CLIENT_LOGGER.logExceptionAsError(new IllegalArgumentException(
+                            "Transactional deliveries require an id."));
+                    }
+
+                    final Binary binary = Objects.requireNonNull(Binary.create(transaction.getTransactionId()),
+                        "Transaction Ids are required for a transaction.");
+
+                    state.setOutcome(toProtonJOutcome(transaction.getOutcome()));
+                    state.setTxnId(binary);
+                    return state;
+                }
+
+                throw CLIENT_LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                    "Outcome could not be translated to a proton-j delivery outcome:" + outcome.getDeliveryState()));
+        }
+    }
+
+    static Outcome toProtonJOutcome(DeliveryOutcome deliveryOutcome) {
+        if (deliveryOutcome == null) {
+            return null;
+        }
+
+        switch (deliveryOutcome.getDeliveryState()) {
+            case ACCEPTED:
+                return Accepted.getInstance();
+            case REJECTED:
+                return toProtonJRejected(deliveryOutcome);
+            case RELEASED:
+                return Released.getInstance();
+            case MODIFIED:
+                return toProtonJModified(deliveryOutcome);
+            default:
+                throw CLIENT_LOGGER.logThrowableAsError(new UnsupportedOperationException(
+                    "DeliveryOutcome cannot be converted to proton-j outcome: " + deliveryOutcome.getDeliveryState()));
+        }
+    }
+
+    private static Modified toProtonJModified(DeliveryOutcome outcome) {
+        final Modified modified = new Modified();
+
+        if (!(outcome instanceof ModifiedDeliveryOutcome)) {
+            return modified;
+        }
+
+        final ModifiedDeliveryOutcome modifiedDeliveryOutcome = (ModifiedDeliveryOutcome) outcome;
+        modified.setMessageAnnotations(modifiedDeliveryOutcome.getMessageAnnotations());
+        modified.setUndeliverableHere(modifiedDeliveryOutcome.isUndeliverableHere());
+        modified.setDeliveryFailed(modifiedDeliveryOutcome.isDeliveryFailed());
+
+        return modified;
+    }
+
+    private static Rejected toProtonJRejected(DeliveryOutcome outcome) {
+        if (!(outcome instanceof RejectedDeliveryOutcome)) {
+            return new Rejected();
+        }
+        final Rejected rejected = new Rejected();
+
+        final RejectedDeliveryOutcome rejectedDeliveryOutcome = (RejectedDeliveryOutcome) outcome;
+        final AmqpErrorCondition errorCondition = rejectedDeliveryOutcome.getErrorCondition();
+        if (errorCondition == null) {
+            return rejected;
+        }
+
+        final ErrorCondition condition = new ErrorCondition(
+            Symbol.getSymbol(errorCondition.getErrorCondition()), errorCondition.toString());
+        condition.setInfo(rejectedDeliveryOutcome.getErrorInfo());
+
+        rejected.setError(condition);
+        return rejected;
+    }
+
+    private static DeliveryOutcome toDeliveryOutcome(Modified modified) {
+        final ModifiedDeliveryOutcome modifiedOutcome = new ModifiedDeliveryOutcome();
+
+        if (modified.getDeliveryFailed() != null) {
+            modifiedOutcome.setDeliveryFailed(modified.getDeliveryFailed());
+        }
+
+        if (modified.getUndeliverableHere() != null) {
+            modifiedOutcome.setUndeliverableHere(modified.getUndeliverableHere());
+        }
+
+        return modifiedOutcome.setMessageAnnotations(convertMap(modified.getMessageAnnotations()));
+    }
+
+    private static DeliveryOutcome toDeliveryOutcome(Rejected rejected) {
+        final ErrorCondition rejectedError = rejected.getError();
+
+        if (rejectedError == null || rejectedError.getCondition() == null) {
+            return new DeliveryOutcome(DeliveryState.REJECTED);
+        }
+
+        AmqpErrorCondition errorCondition =
+            AmqpErrorCondition.fromString(rejectedError.getCondition().toString());
+        if (errorCondition == null) {
+            CLIENT_LOGGER.warning("Error condition is unknown: {}", rejected.getError());
+            errorCondition = AmqpErrorCondition.INTERNAL_ERROR;
+        }
+
+        return new RejectedDeliveryOutcome(errorCondition)
+            .setErrorInfo(convertMap(rejectedError.getInfo()));
+    }
+
+    private static DeliveryOutcome toDeliveryOutcome(Declared declared) {
+        if (declared.getTxnId() == null) {
+            throw CLIENT_LOGGER.logThrowableAsError(new IllegalArgumentException(
+                "Declared delivery states should have an associated transaction id."));
+        }
+
+        return new TransactionalDeliveryOutcome(new AmqpTransaction(declared.getTxnId().asByteBuffer()));
+    }
+
+    /**
+     * Converts from the "raw" map type exposed by proton-j (which is backed by a Symbol, Object to a generic map.
+     *
+     * @param map the map to use.
+     *
+     * @return A corresponding map.
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static Map<String, Object> convertMap(Map map) {
+        // proton-j only exposes "Map" even though the underlying data structure is this.
+        final Map<String, Object> outcomeMessageAnnotations = new HashMap<>();
+        setValues(map, outcomeMessageAnnotations);
+
+        return outcomeMessageAnnotations;
     }
 
     private static void setValues(Map<Symbol, Object> sourceMap, Map<String, Object> targetMap) {
