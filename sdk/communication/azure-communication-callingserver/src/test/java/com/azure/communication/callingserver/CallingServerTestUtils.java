@@ -5,7 +5,9 @@ package com.azure.communication.callingserver;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
 import com.azure.communication.callingserver.models.CreateCallResponse;
+import com.azure.communication.callingserver.models.JoinCallResponse;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.core.http.rest.Response;
@@ -22,6 +24,12 @@ public class CallingServerTestUtils {
         assertNotNull(createCallResult);
         assertNotNull(createCallResult.getCallLegId());
         assertTrue(!createCallResult.getCallLegId().isEmpty());
+    }
+
+    protected static void validateJoinCall(JoinCallResponse joinCallResponse) {
+        assertNotNull(joinCallResponse);
+        assertNotNull(joinCallResponse.getCallLegId());
+        assertTrue(!joinCallResponse.getCallLegId().isEmpty());
     }
 
     protected static void validatePlayAudioResponse(Response<PlayAudioResponse> playAudioResponse, String operationContext) {   
@@ -41,18 +49,25 @@ public class CallingServerTestUtils {
         assertTrue(playAudioResponse.getStatus() == OperationStatus.RUNNING);
     }
 
-    protected static void validateHangupResponse(Response<Void> hangupResponse) {
-        assertNotNull(hangupResponse);
-        assertTrue(hangupResponse.getStatusCode() == 202);
+    protected static void validateCancelAllMediaOperationsResponse(Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse, String cancelMediaOperationContext) {   
+        assertNotNull(cancelAllMediaOperationsResponse);
+        assertTrue(cancelAllMediaOperationsResponse.getStatusCode() == 200);
+        assertNotNull(cancelAllMediaOperationsResponse.getValue());
+        validateCancelAllMediaOperations(cancelAllMediaOperationsResponse.getValue(), cancelMediaOperationContext);
     }
 
-    protected static void validateInviteParticipantResponse(Response<Void> inviteParticipantResponse) {
-        assertNotNull(inviteParticipantResponse);
-        assertTrue(inviteParticipantResponse.getStatusCode() == 202);
+    protected static void validateCancelAllMediaOperations(CancelAllMediaOperationsResponse cancelAllMediaOperationsResponse, String cancelMediaOperationContext) {
+        assertNotNull(cancelAllMediaOperationsResponse);
+        assertNotNull(cancelAllMediaOperationsResponse.getId());
+        assertTrue(!cancelAllMediaOperationsResponse.getId().isEmpty());
+        assertNotNull(cancelAllMediaOperationsResponse.getOperationContext());
+        assertTrue(cancelAllMediaOperationsResponse.getOperationContext().equalsIgnoreCase(cancelMediaOperationContext));
+        assertNotNull(cancelAllMediaOperationsResponse.getStatus());
+        assertTrue(cancelAllMediaOperationsResponse.getStatus() == OperationStatus.COMPLETED);
     }
 
-    protected static void validateRemoveParticipantResponse(Response<Void> removeParticipantResponse) {
-        assertNotNull(removeParticipantResponse);
-        assertTrue(removeParticipantResponse.getStatusCode() == 202);
+    protected static void validateResponse(Response<Void> response) {
+        assertNotNull(response);
+        assertTrue(response.getStatusCode() == 202);
     }
 }
