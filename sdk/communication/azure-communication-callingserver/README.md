@@ -40,6 +40,8 @@ Based on if the Contoso app join a call or not, APIs can be divided into two cat
 
 - Out-of-call APIs: Contoso app can invoke these set of APIs without joining a call. It is applicable for actions on P2P calls, A2P calls, P2A calls and group calls.  
 
+## Examples
+
 ### Create CallClient
 
 Once you initialized a `CallClient` class, you can do the following chat operations:
@@ -181,6 +183,14 @@ String callbackUri = "<webhook endpoint to which calling service can report stat
 String context = "<Identifier for correlating responses>";
 PlayAudioResponse playAudioResponse = conversationClient.playAudio(conversationId, audioFileUri, audioFileId,   callbackUri, context);
 ```
+
+## Troubleshooting
+
+If you recieve a CommunicationErrorException with the messagae: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
+the call, or participants did not accept the call before the call timed out. 
+
+If you fail to start a call because of an HMAC validation error, be sure your access key is correct, and
+that you are passing in a valid conversation id.
 
 ## Contributing
 
