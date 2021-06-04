@@ -317,7 +317,8 @@ public class BlobSasImplUtil {
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
             this.contentLanguage == null ? "" : this.contentLanguage,
-            this.contentType == null ? "" : this.contentType
+            this.contentType == null ? "" : this.contentType,
+            this.encryptionScope == null ? "" : this.encryptionScope
         );
     }
 
@@ -346,7 +347,8 @@ public class BlobSasImplUtil {
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
             this.contentLanguage == null ? "" : this.contentLanguage,
-            this.contentType == null ? "" : this.contentType
+            this.contentType == null ? "" : this.contentType,
+            this.encryptionScope == null ? "" : this.encryptionScope
         );
     }
 }

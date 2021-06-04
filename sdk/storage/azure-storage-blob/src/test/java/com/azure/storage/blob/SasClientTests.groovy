@@ -30,6 +30,8 @@ import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import jdk.nashorn.internal.ir.annotations.Ignore
+import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
 
@@ -299,7 +301,7 @@ class SasClientTests extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "blob sas encryption scope"() {
         setup:
-        def scope = "testscope1"
+        def scope = "scope-1"
         def permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -312,23 +314,25 @@ class SasClientTests extends APISpec {
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
 
         when:
-        client.upload(data.defaultInputStream, data.defaultDataSize)
+        client.upload(data.defaultInputStream, data.defaultDataSize, true)
 
         then:
         notThrown(BlobStorageException)
 
         when:
         def os = new ByteArrayOutputStream()
-        client.download(os)
+        def resp = client.downloadWithResponse(os, null, null, null, false, null, null)
 
         then:
         os.toByteArray() == data.defaultBytes
+        resp.getDeserializedHeaders().getEncryptionScope() == scope
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    @Ignore // TODO (gapra): Record and undo ignore when there is an account in prod
     def "blob sas encryption scope user delegation"() {
         setup:
-        def scope = "testscope1"
+        def scope = "scope-1"
         def permissions = new BlobSasPermission()
             .setReadPermission(true)
             .setWritePermission(true)
@@ -341,17 +345,18 @@ class SasClientTests extends APISpec {
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
 
         when:
-        client.upload(data.defaultInputStream, data.defaultDataSize)
+        client.upload(data.defaultInputStream, data.defaultDataSize, true)
 
         then:
         notThrown(BlobStorageException)
 
         when:
         def os = new ByteArrayOutputStream()
-        client.download(os)
+        def resp = client.downloadWithResponse(os, null, null, null, false, null, null)
 
         then:
         os.toByteArray() == data.defaultBytes
+        resp.getDeserializedHeaders().getEncryptionScope() == scope
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
