@@ -4,7 +4,6 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AnomalyIncident;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestBase;
@@ -39,7 +38,7 @@ public class AnomalyIncidentForAlertAsyncTest extends IncidentForAlertTestBase {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         PagedFlux<AnomalyIncident> incidentsFlux
-            = client.listIncidentsForAlert(
+            = client.listIncidents(
             ListIncidentsForAlertInput.INSTANCE.alertConfigurationId,
             ListIncidentsForAlertInput.INSTANCE.alertId,
             ListIncidentsForAlertInput.INSTANCE.options);

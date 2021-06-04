@@ -4,7 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 
 /**
  * The helper class to set the non-public properties of an {@link AnomalyAlertConfiguration} instance.

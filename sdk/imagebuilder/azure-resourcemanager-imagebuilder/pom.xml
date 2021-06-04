@@ -9,7 +9,7 @@
 
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-imagebuilder</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-imagebuilder;current} -->
+    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-imagebuilder;current} -->
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for ImageBuilder Management</name>
@@ -66,7 +66,7 @@
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-resources</artifactId>
-            <version>2.4.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+            <version>2.5.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
             <scope>test</scope>
         </dependency>
     </dependencies>

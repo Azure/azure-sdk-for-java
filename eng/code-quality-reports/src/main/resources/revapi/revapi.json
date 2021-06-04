@@ -490,8 +490,9 @@
         "justification": "Adding a final method to an abstract class that is rarely extended. New final method uses an unlikely name that wouldn't be found in sub-types."
       },
       {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method java.util.function.Predicate<C> com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::getContinuationPredicate()",
+        "regex": true,
+        "code": "java\\.method\\.finalMethodAddedToNonFinalClass",
+        "new": "method java\\.util\\.function\\.Predicate<C> com\\.azure\\.core\\.util\\.paging\\.ContinuablePagedFlux<C, T, P extends com\\.azure\\.core\\.util\\.paging\\.ContinuablePage<C extends java\\.lang\\.Object, T extends java\\.lang\\.Object>>::getContinuationPredicate\\(\\).*",
         "justification": "Adding a final method to an abstract class that is rarely extended. New final method uses an unlikely name that wouldn't be found in sub-types."
       },
       {
@@ -505,6 +506,12 @@
         "code": "java.annotation.attributeValueChanged",
         "new": "@interface com.azure.core.annotation.JsonFlatten",
         "justification": "Changes made the annotation more permissive on the target types."
+      },
+      {
+        "code": "java.field.serialVersionUIDUnchanged",
+        "old": "field com.azure.core.amqp.exception.AmqpErrorContext.serialVersionUID",
+        "new": "field com.azure.core.amqp.exception.AmqpErrorContext.serialVersionUID",
+        "justification": "The field ErrorInfo was added to AmqpErrorContext, but no existing fields were removed or changed."
       }
     ]
   }

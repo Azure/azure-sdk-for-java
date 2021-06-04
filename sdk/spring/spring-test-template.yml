@@ -5,9 +5,11 @@ parameters:
   TestResourceDirectories:
     - spring/azure-spring-boot-test-cosmos
     - spring/azure-spring-boot-test-keyvault
+    - spring/azure-spring-boot-test-keyvault-certificate
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
     - spring/azure-spring-cloud-test-eventhubs
+    - spring/azure-spring-cloud-test-servicebus-binder
     - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder
     - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
   Artifacts:
@@ -38,6 +40,9 @@ parameters:
     - name: azure-spring-boot-test-keyvault
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvault
+    - name: azure-spring-boot-test-keyvault-certificate
+      groupId: com.azure.spring
+      safeName: azurespringboottestkeyvaultcertificate
     - name: azure-spring-boot-test-keyvault-reactive
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvaultreactive
@@ -59,6 +64,9 @@ parameters:
     - name: azure-spring-cloud-sample-eventhubs-kafka
       groupId: com.azure.spring
       safeName: azurespringcloudsampleeventhubskafka
+    - name: azure-spring-cloud-test-servicebus-binder
+      groupId: com.azure.spring
+      safeName: azurespringcloudtestservicebusbinder
   EnvVars:
     AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
     AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
@@ -97,7 +105,8 @@ stages:
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
-          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+          options: '$(DefaultTestOptions) -DskipSpringITs=false'
+          mavenOptions: '$(DefaultTestMavenOptions)'
           goals: "verify"
         PreSteps:
             - script: |
@@ -147,7 +156,9 @@ stages:
             inputs:
               mavenPomFile: pom.xml
               goals: verify
-              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+              options: '$(DefaultTestOptions) -DskipSpringITs=false'
+              mavenOptions: '$(DefaultTestMavenOptions)'
+
             env:
               ${{ parameters.EnvVars }}
 

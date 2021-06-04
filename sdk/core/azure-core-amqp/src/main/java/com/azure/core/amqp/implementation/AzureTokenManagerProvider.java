@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -57,14 +58,13 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      */
     @Override
     public String getScopesFromResource(String resource) {
-        switch (authorizationType) {
-            case JSON_WEB_TOKEN:
-                return activeDirectoryScope;
-            case SHARED_ACCESS_SIGNATURE:
-                return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                    "'%s' is not supported authorization type for token audience.", authorizationType)));
+        if (CbsAuthorizationType.JSON_WEB_TOKEN.equals(authorizationType)) {
+            return activeDirectoryScope;
+        } else if (CbsAuthorizationType.SHARED_ACCESS_SIGNATURE.equals(authorizationType)) {
+            return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "'%s' is not supported authorization type for token audience.", authorizationType)));
         }
     }
 }

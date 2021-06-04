@@ -26,6 +26,7 @@ public class ServiceBusQueuePartitionBinderTests
     extends AzurePartitionBinderTests<ServiceBusQueueTestBinder,
                                          ExtendedConsumerProperties<ServiceBusConsumerProperties>,
                                          ExtendedProducerProperties<ServiceBusProducerProperties>> {
+    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
     ServiceBusQueueClientFactory clientFactory;

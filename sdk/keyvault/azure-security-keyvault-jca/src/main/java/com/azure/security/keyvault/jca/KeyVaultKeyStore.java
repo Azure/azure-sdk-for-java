@@ -23,10 +23,14 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Arrays;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
@@ -52,19 +56,24 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
     /**
-     * Stores the list of aliases.
+     * Store certificates loaded from classpath.
      */
-    private List<String> aliases;
+    private final ClasspathCertificates classpathCertificates;
 
     /**
-     * Stores the certificates by alias.
+     * Store certificates loaded from KeyVault.
      */
-    private final HashMap<String, Certificate> certificates = new HashMap<>();
+    private final KeyVaultCertificates keyVaultCertificates;
 
     /**
-     * Stores the certificate keys by alias.
+     * Stores the Jre key store certificates.
      */
-    private final HashMap<String, Key> certificateKeys = new HashMap<>();
+    private final JreCertificates jreCertificates;
+
+    /**
+     * Stores all the certificates.
+     */
+    private final List<AzureCertificates> allCertificates;
 
     /**
      * Stores the creation date.
@@ -76,13 +85,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private KeyVaultClient keyVaultClient;
 
+    private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
+
     /**
      * Constructor.
      *
      * <p>
      * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>, 
-     * <code>azure.keyvault.aadAuthenticationUrl</code>, 
+     * <code>azure.keyvault.uri</code>,
+     * <code>azure.keyvault.aadAuthenticationUrl</code>,
      * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
      * <code>azure.keyvault.clientSecret</code> and
@@ -102,14 +113,27 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
+        long refreshInterval = Optional.ofNullable(System.getProperty("azure.keyvault.jca.certificates-refresh-interval"))
+            .map(Long::valueOf)
+            .orElse(0L);
+        refreshCertificatesWhenHaveUnTrustCertificate = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate"))
+            .map(Boolean::parseBoolean)
+            .orElse(false);
+        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
+        classpathCertificates = new ClasspathCertificates();
+        jreCertificates = JreCertificates.getInstance();
+        allCertificates = Arrays.asList(keyVaultCertificates, classpathCertificates, jreCertificates);
     }
 
     @Override
     public Enumeration<String> engineAliases() {
-        if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
-        }
-        return Collections.enumeration(aliases);
+        List<String> aliasList = allCertificates.stream()
+            .map(AzureCertificates::getAliases)
+            .flatMap(Collection::stream)
+            .distinct()
+            .collect(Collectors.toList());
+
+        return Collections.enumeration(aliasList);
     }
 
     @Override
@@ -119,6 +143,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineDeleteEntry(String alias) {
+        keyVaultCertificates.deleteEntry(alias);
+        classpathCertificates.deleteEntry(alias);
     }
 
     @Override
@@ -128,20 +154,16 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Certificate engineGetCertificate(String alias) {
-        Certificate certificate;
-        if (certificates.containsKey(alias)) {
-            certificate = certificates.get(alias);
-        } else {
-            certificate = keyVaultClient.getCertificate(alias);
-            if (certificate != null) {
-                certificates.put(alias, certificate);
-                if (aliases == null) {
-                    aliases = keyVaultClient.getAliases();
-                }
-                if (!aliases.contains(alias)) {
-                    aliases.add(alias);
-                }
-            }
+        Certificate certificate = allCertificates.stream()
+            .map(AzureCertificates::getCertificates)
+            .filter(a -> a.containsKey(alias))
+            .findFirst()
+            .map(certificates -> certificates.get(alias))
+            .orElse(null);
+
+        if (refreshCertificatesWhenHaveUnTrustCertificate && certificate == null) {
+            KeyVaultCertificates.updateLastForceRefreshTime();
+            certificate = keyVaultCertificates.getCertificates().get(alias);
         }
         return certificate;
     }
@@ -150,16 +172,22 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public String engineGetCertificateAlias(Certificate cert) {
         String alias = null;
         if (cert != null) {
-            if (aliases == null) {
-                aliases = keyVaultClient.getAliases();
-            }
-            for (String candidateAlias : aliases) {
+            List<String> aliasList = allCertificates.stream()
+                .map(AzureCertificates::getAliases)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toList());
+
+            for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
                 if (certificate.equals(cert)) {
                     alias = candidateAlias;
                     break;
                 }
             }
+        }
+        if (refreshCertificatesWhenHaveUnTrustCertificate && alias == null) {
+            alias = keyVaultCertificates.refreshAndGetAliasByCertificate(cert);
         }
         return alias;
     }
@@ -187,30 +215,21 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Key engineGetKey(String alias, char[] password) {
-        Key key;
-        if (certificateKeys.containsKey(alias)) {
-            key = certificateKeys.get(alias);
-        } else {
-            key = keyVaultClient.getKey(alias, password);
-            if (key != null) {
-                certificateKeys.put(alias, key);
-                if (aliases == null) {
-                    aliases = keyVaultClient.getAliases();
-                }
-                if (!aliases.contains(alias)) {
-                    aliases.add(alias);
-                }
-            }
-        }
-        return key;
+        return allCertificates.stream()
+                        .map(AzureCertificates::getCertificateKeys)
+                        .filter(a -> a.containsKey(alias))
+                        .findFirst()
+                        .map(certificateKeys -> certificateKeys.get(alias))
+                        .orElse(null);
     }
 
     @Override
     public boolean engineIsCertificateEntry(String alias) {
-        if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
-        }
-        return aliases.contains(alias);
+        return allCertificates.stream()
+                     .map(AzureCertificates::getAliases)
+                     .flatMap(Collection::stream)
+                     .distinct()
+                     .anyMatch(a -> Objects.equals(a, alias));
     }
 
     @Override
@@ -236,24 +255,31 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             } else {
                 keyVaultClient = new KeyVaultClient(parameter.getUri());
             }
+            keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
-        sideLoad();
+        loadCertificatesFromClasspath();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
-        sideLoad();
+        loadCertificatesFromClasspath();
     }
 
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
-        if (aliases == null) {
-            aliases = keyVaultClient.getAliases();
+        if (keyVaultCertificates.getAliases().contains(alias)) {
+            return;
         }
-        if (!aliases.contains(alias)) {
-            aliases.add(alias);
-            certificates.put(alias, certificate);
-        }
+        engineSetClasspathCertificateEntry(alias, certificate);
+    }
+
+    /**
+     * Store alias and certificates to Classpath
+     * @param alias Classpath certificate's alias
+     * @param certificate Classpath certificate
+     */
+    public void engineSetClasspathCertificateEntry(String alias, Certificate certificate) {
+        classpathCertificates.setCertificateEntry(alias, certificate);
     }
 
     @Override
@@ -271,7 +297,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public int engineSize() {
-        return aliases != null ? aliases.size() : 0;
+        return allCertificates.stream()
+                     .map(AzureCertificates::getAliases)
+                     .flatMap(Collection::stream)
+                     .distinct()
+                     .collect(Collectors.toList())
+                     .size();
     }
 
     @Override
@@ -330,7 +361,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Side-load certificate from classpath.
      */
-    private void sideLoad() {
+    private void loadCertificatesFromClasspath() {
         try {
             String[] filenames = getFilenames("/keyvault");
             if (filenames.length > 0) {
@@ -346,7 +377,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
                                         new ByteArrayInputStream(bytes));
-                                engineSetCertificateEntry(alias, certificate);
+                                engineSetClasspathCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
                                         new Object[]{alias, filename});
                             } catch (CertificateException e) {

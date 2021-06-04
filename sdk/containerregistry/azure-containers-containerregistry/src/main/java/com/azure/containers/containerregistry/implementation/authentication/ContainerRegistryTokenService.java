@@ -30,11 +30,11 @@ public class ContainerRegistryTokenService implements TokenCredential {
      * @param pipeline           the pipeline to be used for the rest calls to the service.
      * @param serializerAdapter  the serializer adapter to be used for the rest calls to the service.
      */
-    public ContainerRegistryTokenService(TokenCredential aadTokenCredential, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
+    public ContainerRegistryTokenService(TokenCredential aadTokenCredential, String authenticationScope, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
         this.tokenService = new TokenServiceImpl(url, pipeline, serializerAdapter);
 
         if (aadTokenCredential != null) {
-            this.refreshTokenCache = new AccessTokenCacheImpl(new ContainerRegistryRefreshTokenCredential(tokenService, aadTokenCredential));
+            this.refreshTokenCache = new AccessTokenCacheImpl(new ContainerRegistryRefreshTokenCredential(tokenService, aadTokenCredential, authenticationScope));
         } else {
             isAnonymousAccess = true;
         }

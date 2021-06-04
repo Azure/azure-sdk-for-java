@@ -25,10 +25,10 @@ public class ListIncidentsDetectedAsyncSample {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
         final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
-            .setTop(1000);
+            .setMaxPageSize(1000);
 
         PagedFlux<AnomalyIncident> incidentsFlux
-            = advisorAsyncClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime, options);
+            = advisorAsyncClient.listIncidents(detectionConfigurationId, startTime, endTime, options);
 
         incidentsFlux.doOnNext(incident -> {
             System.out.printf("Data Feed Metric Id: %s%n", incident.getMetricId());

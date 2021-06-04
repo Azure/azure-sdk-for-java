@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- * Defines values for FormReadingOrder.
+ * Defines values for the order in which recognized text lines are returned.
  */
 public final class FormReadingOrder extends ExpandableStringEnum<FormReadingOrder> {
 

@@ -6,14 +6,16 @@ package com.azure.ai.metricsadvisor.implementation.util;
 import com.azure.ai.metricsadvisor.implementation.models.EmailHookInfo;
 import com.azure.ai.metricsadvisor.implementation.models.EmailHookInfoPatch;
 import com.azure.ai.metricsadvisor.implementation.models.EmailHookParameter;
+import com.azure.ai.metricsadvisor.implementation.models.EmailHookParameterPatch;
 import com.azure.ai.metricsadvisor.implementation.models.HookInfo;
 import com.azure.ai.metricsadvisor.implementation.models.HookInfoPatch;
 import com.azure.ai.metricsadvisor.implementation.models.WebhookHookInfo;
 import com.azure.ai.metricsadvisor.implementation.models.WebhookHookInfoPatch;
 import com.azure.ai.metricsadvisor.implementation.models.WebhookHookParameter;
-import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.WebNotificationHook;
+import com.azure.ai.metricsadvisor.implementation.models.WebhookHookParameterPatch;
+import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -89,7 +91,7 @@ public final class HookTransforms {
             innerEmailHook.setHookName(emailHook.getName());
             innerEmailHook.setDescription(emailHook.getDescription());
             innerEmailHook.setExternalLink(emailHook.getExternalLink());
-            innerEmailHook.setHookParameter(new EmailHookParameter()
+            innerEmailHook.setHookParameter(new EmailHookParameterPatch()
                 .setToList(emailHook.getEmailsToAlert()));
             return innerEmailHook;
         } else if (notificationHook instanceof WebNotificationHook) {
@@ -98,13 +100,15 @@ public final class HookTransforms {
             innerWebHook.setHookName(webHook.getName());
             innerWebHook.setDescription(webHook.getDescription());
             innerWebHook.setExternalLink(webHook.getExternalLink());
-            innerWebHook.setHookParameter(new WebhookHookParameter()
+
+            innerWebHook.setHookParameter(new WebhookHookParameterPatch()
                 .setEndpoint(webHook.getEndpoint())
                 .setUsername(webHook.getUsername())
                 .setPassword(webHook.getPassword())
                 .setCertificateKey(webHook.getClientCertificate())
                 .setCertificatePassword(webHook.getClientCertificatePassword())
                 .setHeaders(webHook.getHttpHeaders().toMap()));
+
             return innerWebHook;
         } else {
             throw logger

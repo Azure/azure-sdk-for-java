@@ -4,7 +4,6 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.ListAnomalyDimensionValuesOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public abstract class AnomalyDimensionValuesTestBase extends MetricsAdvisorClien
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
         final ListAnomalyDimensionValuesOptions options
             = new ListAnomalyDimensionValuesOptions()
-            .setTop(10);
+            .setMaxPageSize(10);
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
         final String dimensionName = DIMENSION_NAME;
     }
