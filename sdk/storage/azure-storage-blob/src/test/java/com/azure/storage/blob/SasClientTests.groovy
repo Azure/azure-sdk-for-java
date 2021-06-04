@@ -30,8 +30,7 @@ import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
-import jdk.nashorn.internal.ir.annotations.Ignore
-import spock.lang.IgnoreIf
+import spock.lang.Ignore
 import spock.lang.Retry
 import spock.lang.Unroll
 
