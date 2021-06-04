@@ -1019,6 +1019,18 @@ public class BlobAsyncClientBase {
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
                     blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
 
+                /*
+                    If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+                    from the response for better book keeping towards the end.
+                */
+                long finalCount;
+                if (finalRange.getCount() == null) {
+                    long blobLength = BlobAsyncClientBase.getBlobLength(blobDownloadHeaders);
+                    finalCount = blobLength - finalRange.getOffset();
+                } else {
+                    finalCount = finalRange.getCount();
+                }
+
                 Flux<ByteBuffer> bufferFlux  = FluxUtil.createRetriableDownloadFlux(
                     () -> response.getValue().timeout(TIMEOUT_VALUE),
                     (throwable, offset) -> {
@@ -1026,10 +1038,21 @@ public class BlobAsyncClientBase {
                             return Flux.error(throwable);
                         }
 
-                        Long newCount = finalRange.getCount();
-                        if (newCount != null) {
-                            newCount -= (offset - finalRange.getOffset());
+                        long newCount = finalCount - (offset - finalRange.getOffset());
+
+                        /*
+                         It is possible that the network stream will throw an error after emitting all data but before
+                         completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
+                         and offset values. Because we have read the intended amount of data, we can ignore the error at the end
+                         of the stream.
+                         */
+                        if (newCount == 0) {
+                            logger.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                                + "but before stream signaled completion. Returning success as all data was downloaded. "
+                                + "Exception message: " + throwable.getMessage());
+                            return Flux.empty();
                         }
+
                         try {
                             return downloadRange(
                                 new BlobRange(offset, newCount), finalRequestConditions, eTag, getMD5, context)
