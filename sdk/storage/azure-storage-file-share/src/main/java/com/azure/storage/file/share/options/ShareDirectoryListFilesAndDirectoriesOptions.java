@@ -3,10 +3,14 @@
 
 package com.azure.storage.file.share.options;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.file.share.ShareAsyncClient;
+
 /**
  * Extended options for a directory listing operation.
  */
 public class ShareDirectoryListFilesAndDirectoriesOptions {
+    private final ClientLogger logger = new ClientLogger(ShareDirectoryListFilesAndDirectoriesOptions.class);
 
     private String prefix;
     private Integer maxResultsPerPage;
@@ -76,10 +80,12 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      *
      * @param includeExtendedInfo whether to include extended info.
      * @return updated options.
+     * @throws IllegalStateException Throws when attempting to set false when other parameters require it to be true.
      */
     public ShareDirectoryListFilesAndDirectoriesOptions setIncludeExtendedInfo(boolean includeExtendedInfo) {
         if (includeTimestamps || includeETag || includeAttributes || includePermissionKey) {
-            throw new IllegalStateException("includeExtendedInfo must be true in the current state.");
+            throw logger.logExceptionAsError(
+                new IllegalStateException("includeExtendedInfo must be true in the current state."));
         }
         this.includeExtendedInfo = includeExtendedInfo;
         return this;

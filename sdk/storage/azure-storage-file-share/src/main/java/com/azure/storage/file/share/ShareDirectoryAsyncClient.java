@@ -661,13 +661,16 @@ public class ShareDirectoryAsyncClient {
         if (modifiedOptions.includePermissionKey()) {
             includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
         }
+
+        // these options must be absent from request if empty or false
         final List<ListFilesIncludeType> finalIncludeTypes = includeTypes.size() == 0 ? null : includeTypes;
+        final Boolean finalIncludeExtendedInfo = modifiedOptions.includeExtendedInfo() ? true : null;
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever =
             (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
                 .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, modifiedOptions.getPrefix(),
                     snapshot, marker, pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null,
-                    finalIncludeTypes, modifiedOptions.includeExtendedInfo(), context), timeout)
+                    finalIncludeTypes, finalIncludeExtendedInfo, context), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
