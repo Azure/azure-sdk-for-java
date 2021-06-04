@@ -45,25 +45,25 @@ sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 title: Azure Communication CallingServer Service
-directive: 
-    - rename-model:
-        from: CreateCallRequest
-        to: CreateCallRequestInternal
-    - rename-model:
-        from: ParticipantsUpdatedEvent
-        to: ParticipantsUpdatedEventInternal
-    - rename-model:
-        from: CommunicationParticipant
-        to: CommunicationParticipantInternal
-    - rename-model:
-        from: GetCallRecordingStateResponse
-        to: CallRecordingStateResponse        
-#    from: swagger-document
-#    where: $.definitions
-#    transform: >
-#        delete  $["CallLegStateChangedEvent"];
-#        delete  $["CallRecordingStateChangeEvent"];
-#        delete  $["InviteParticipantsResultEvent"];
-#        delete  $["PlayAudioResultEvent"];
-#        delete  $["ToneReceivedEvent"];               
+directive:       
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete  $["CallLegStateChangedEvent"];
+    delete  $["CallRecordingStateChangeEvent"];
+    delete  $["InviteParticipantsResultEvent"];
+    delete  $["PlayAudioResultEvent"];
+    delete  $["ToneReceivedEvent"]; 
+- rename-model:
+    from: CreateCallRequest
+    to: CreateCallRequestInternal
+- rename-model:
+    from: ParticipantsUpdatedEvent
+    to: ParticipantsUpdatedEventInternal
+- rename-model:
+    from: CommunicationParticipant
+    to: CommunicationParticipantInternal
+- rename-model:
+    from: GetCallRecordingStateResponse
+    to: CallRecordingStateResponse               
 ```
