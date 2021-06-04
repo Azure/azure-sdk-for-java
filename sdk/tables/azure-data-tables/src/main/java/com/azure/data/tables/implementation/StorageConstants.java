@@ -3,6 +3,8 @@
 
 package com.azure.data.tables.implementation;
 
+import com.azure.data.tables.sas.TableSasProtocol;
+
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -36,12 +38,12 @@ public final class StorageConstants {
     public static final long TB = 1024L * GB;
 
     /**
-     * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
+     * Represents the value for {@link TableSasProtocol#HTTPS_ONLY}.
      */
     public static final String HTTPS = "https";
 
     /**
-     * Represents the value for {@link SasProtocol#HTTPS_HTTP}.
+     * Represents the value for {@link TableSasProtocol#HTTPS_HTTP}.
      */
     public static final String HTTPS_HTTP = "https,http";
 
@@ -328,6 +330,11 @@ public final class StorageConstants {
         public static final String SAS_CONTENT_TYPE = "rsct";
 
         /**
+         * The SAS table name parameter.
+         */
+        public static final String SAS_TABLE_NAME = "tn";
+
+        /**
          * The SAS signed object id parameter for user delegation SAS.
          */
         public static final String SAS_SIGNED_OBJECT_ID = "skoid";
@@ -381,5 +388,25 @@ public final class StorageConstants {
          * The SAS queue constant.
          */
         public static final String SAS_QUEUE_CONSTANT = "q";
+
+        /**
+         * The SAS table start partition key.
+         */
+        public static final String SAS_TABLE_START_PARTITION_KEY = "spk";
+
+        /**
+         * The SAS table start row key.
+         */
+        public static final String SAS_TABLE_START_ROW_KEY = "srk";
+
+        /**
+         * The SAS table end partition key.
+         */
+        public static final String SAS_TABLE_END_PARTITION_KEY = "epk";
+
+        /**
+         * The SAS table end row key.
+         */
+        public static final String SAS_TABLE_END_ROW_KEY = "erk";
     }
 }
