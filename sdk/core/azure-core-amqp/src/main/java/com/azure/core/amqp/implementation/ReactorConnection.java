@@ -533,7 +533,7 @@ public class ReactorConnection implements AmqpConnection {
             }
 
             if (session instanceof ReactorSession) {
-                ((ReactorSession) session).dispose("Closing session.", null, true)
+                ((ReactorSession) session).closeAsync("Closing session.", null, true)
                     .subscribe();
             } else {
                 session.dispose();
