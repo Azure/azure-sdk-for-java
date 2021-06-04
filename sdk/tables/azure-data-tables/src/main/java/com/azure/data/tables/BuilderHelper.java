@@ -59,8 +59,8 @@ final class BuilderHelper {
 
         if (endpoint == null) {
             throw logger.logExceptionAsError(
-                new IllegalStateException("An 'endpoint' is required to create a client. Use a builder's 'endpoint()'"
-                    + " or 'connectionString()' methods to set this value."));
+                new IllegalStateException("An 'endpoint' is required to create a client. Use builders' 'endpoint()' or"
+                    + " 'connectionString()' methods to set this value."));
         } else if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
             policies.add(new CosmosPatchTransformPolicy());
         }

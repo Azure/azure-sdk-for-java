@@ -13,7 +13,7 @@ import java.util.Objects;
  * of the SAS which can then be applied to a new client using the {@code sasToken(String)} method on the desired
  * client builder.
  *
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service SAS</a>
  */
 @Fluent

@@ -16,7 +16,7 @@ import java.util.Map;
  * {@link TableClient#submitTransactionWithResponse(List, Duration, Context)},
  * {@link TableAsyncClient#submitTransaction(List)} or {@link TableAsyncClient#submitTransactionWithResponse(List)}.
  */
-public class TableTransactionResult {
+public final class TableTransactionResult {
     private final List<TableTransactionActionResponse> transactionActionResponses;
     private final Map<String, TableTransactionActionResponse> lookupMap;
 

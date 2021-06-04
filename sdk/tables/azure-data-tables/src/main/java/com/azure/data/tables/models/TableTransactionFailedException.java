@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Exception thrown for an invalid response on a transactional operation with {@link TableServiceError} information.
  */
-public class TableTransactionFailedException extends TableServiceException {
+public final class TableTransactionFailedException extends TableServiceException {
     private final Integer failedTransactionActionIndex;
 
     /**
