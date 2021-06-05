@@ -388,7 +388,7 @@ public final class ServiceBusClientBuilder {
                     final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
                     final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                         connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                        ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+                        connectionOptions.getAuthorizationScope());
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
                         connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer);
@@ -439,8 +439,9 @@ public final class ServiceBusClientBuilder {
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode, product, clientVersion);
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+            ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+            options, verificationMode, product, clientVersion);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
