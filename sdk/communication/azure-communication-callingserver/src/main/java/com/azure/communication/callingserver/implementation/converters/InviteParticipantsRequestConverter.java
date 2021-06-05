@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
- * A converter for {@link com.azure.communication.callingserver.models.InviteParticipantsRequest}
+ * A converter for {@link com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest}
  */
 public final class InviteParticipantsRequestConverter {
     /**
@@ -23,7 +23,7 @@ public final class InviteParticipantsRequestConverter {
         if (participant == null) {
             return null;
         }
-        PhoneNumberIdentifierModel phoneNumberIdentifierModel = (alternateCallerId == null || alternateCallerId.isEmpty()) ? null 
+        PhoneNumberIdentifierModel phoneNumberIdentifierModel = (alternateCallerId == null || alternateCallerId.isEmpty()) ? null
             : CommunicationIdentifierConverter.convert(new PhoneNumberIdentifier(alternateCallerId)).getPhoneNumber();
 
         InviteParticipantsRequest inviteParticipantsRequest = new InviteParticipantsRequest()

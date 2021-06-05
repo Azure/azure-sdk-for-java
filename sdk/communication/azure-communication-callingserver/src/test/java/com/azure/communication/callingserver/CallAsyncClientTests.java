@@ -29,10 +29,10 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class CallAsyncClientTests extends CallingServerTestBase {
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
-    private String alternateId =   "+18445764430";
-    private String to =   "+15125189815";
-    private String callBackUri = "https://host.app/api/callback/calling";   
-    private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";   
+    private String alternateId =   "+11111111111";
+    private String to =   "+11111111111";
+    private String callBackUri = "https://host.app/api/callback/calling";
+    private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
     private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";;
 
     @ParameterizedTest
@@ -44,27 +44,27 @@ public class CallAsyncClientTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri, 
-                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                callBackUri,
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)),
                 new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
-                
+
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
-            
+
             CreateCallResponse createCallResult = callAsyncClient.createCall(
-                new CommunicationUserIdentifier(from), 
-                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
+                new CommunicationUserIdentifier(from),
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))),
                 options).block();
-            
+
             CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            String callId = createCallResult.getCallLegId();            
+            String callId = createCallResult.getCallLegId();
 
             // Play Audio
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             PlayAudioResponse playAudioResult = callAsyncClient.playAudio(
-                callId, 
-                audioFileUri, 
-                false, 
-                UUID.randomUUID().toString(), 
+                callId,
+                audioFileUri,
+                false,
+                UUID.randomUUID().toString(),
                 operationContext).block();
             CallingServerTestUtils.validatePlayAudioResult(playAudioResult, operationContext);
 
@@ -79,7 +79,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             System.out.println("Error: " + e.getMessage());
             throw e;
         }
-    }   
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -90,28 +90,28 @@ public class CallAsyncClientTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri, 
-                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                callBackUri,
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)),
                 new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
-                
+
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
-            
+
             Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
-                new CommunicationUserIdentifier(from), 
-                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
-                options, 
+                new CommunicationUserIdentifier(from),
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))),
+                options,
                 Context.NONE).block();
-            
+
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            String callId = createCallResponse.getValue().getCallLegId();            
+            String callId = createCallResponse.getValue().getCallLegId();
 
             // Play Audio
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             Response<PlayAudioResponse> playAudioResponse = callAsyncClient.playAudioWithResponse(
-                callId, 
-                audioFileUri, 
-                false, 
-                UUID.randomUUID().toString(), 
+                callId,
+                audioFileUri,
+                false,
+                UUID.randomUUID().toString(),
                 operationContext).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
 
@@ -127,8 +127,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             System.out.println("Error: " + e.getMessage());
             throw e;
         }
-    } 
-    
+    }
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
@@ -138,24 +138,24 @@ public class CallAsyncClientTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri, 
-                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                callBackUri,
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)),
                 new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
-                
+
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
-            
+
             CreateCallResponse createCallResult = callAsyncClient.createCall(
-                new CommunicationUserIdentifier(from), 
-                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
+                new CommunicationUserIdentifier(from),
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))),
                 options).block();
-            
+
             CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            String callId = createCallResult.getCallLegId();            
+            String callId = createCallResult.getCallLegId();
 
             // Invite User
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             callAsyncClient.addParticipant(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
-            
+
             // Remove Participant
             String participantId = "9d265602-aee7-4553-ac75-a7e167e0b083";
             callAsyncClient.removeParticipant(callId, participantId).block();
@@ -177,26 +177,26 @@ public class CallAsyncClientTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri, 
-                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                callBackUri,
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)),
                 new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
-                
+
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
-            
+
             Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
-                new CommunicationUserIdentifier(from), 
-                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
-                options, 
+                new CommunicationUserIdentifier(from),
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))),
+                options,
                 Context.NONE).block();
-            
+
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            String callId = createCallResponse.getValue().getCallLegId();            
+            String callId = createCallResponse.getValue().getCallLegId();
 
             // Invite User
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
             Response<Void> inviteParticipantResponse = callAsyncClient.addParticipantWithResponse(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext, Context.NONE).block();
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
-             
+
             // Remove Participant
             String participantId = "4c100bf4-304c-48e0-87a8-03597ec75464";
             Response<Void> removeParticipantResponse = callAsyncClient.removeParticipantWithResponse(callId, participantId, Context.NONE).block();
@@ -220,19 +220,19 @@ public class CallAsyncClientTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri, 
-                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                callBackUri,
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)),
                 new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
-                
+
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
-            
+
             CreateCallResponse createCallResult = callAsyncClient.createCall(
-                new CommunicationUserIdentifier(from), 
-                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
+                new CommunicationUserIdentifier(from),
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))),
                 options).block();
-            
+
             CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            String callId = createCallResult.getCallLegId();            
+            String callId = createCallResult.getCallLegId();
 
             // Delete Call
             callAsyncClient.deleteCall(callId).block();
@@ -240,7 +240,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             System.out.println("Error: " + e.getMessage());
             throw e;
         }
-    }   
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -251,20 +251,20 @@ public class CallAsyncClientTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri, 
-                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)), 
+                callBackUri,
+                new LinkedList<CallModality>(Arrays.asList(CallModality.AUDIO)),
                 new LinkedList<EventSubscriptionType>(Arrays.asList(EventSubscriptionType.PARTICIPANTS_UPDATED)));
-                
+
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
-            
+
             Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
-                new CommunicationUserIdentifier(from), 
-                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))), 
-                options, 
+                new CommunicationUserIdentifier(from),
+                new LinkedList<CommunicationIdentifier>(Arrays.asList(new PhoneNumberIdentifier(to))),
+                options,
                 Context.NONE).block();
-            
+
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            String callId = createCallResponse.getValue().getCallLegId();            
+            String callId = createCallResponse.getValue().getCallLegId();
 
             // Delete Call
             Response<Void> hangupResponse = callAsyncClient.deleteCallWithResponse(callId, Context.NONE).block();
@@ -273,8 +273,8 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             System.out.println("Error: " + e.getMessage());
             throw e;
         }
-    } 
-    
+    }
+
     private CallAsyncClient setupAsyncClient(CallClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
