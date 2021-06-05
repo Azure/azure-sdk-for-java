@@ -15,12 +15,12 @@ import com.azure.communication.callingserver.implementation.AzureCommunicationCa
 import com.azure.communication.callingserver.implementation.CallsImpl;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.InviteParticipantsRequestConverter;
+import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
-import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
 import com.azure.communication.callingserver.models.CreateCallOptions;
@@ -129,7 +129,7 @@ public final class CallAsyncClient {
 
             PlayAudioRequest playAudioRequest = new PlayAudioRequest().
                 setAudioFileUri(audioFileUri).setLoop(loop).setAudioFileId(audioFileId).setOperationContext(operationContext);
-            return playAudio(callId, playAudioRequest);           
+            return playAudio(callId, playAudioRequest);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -141,7 +141,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(request, "'request' cannot be null.");
 
             return this.callClient.playAudioAsync(callId, request).flatMap(
-                (PlayAudioResponse response) -> {                    
+                (PlayAudioResponse response) -> {
                     return Mono.just(response);
                 });
         } catch (RuntimeException ex) {

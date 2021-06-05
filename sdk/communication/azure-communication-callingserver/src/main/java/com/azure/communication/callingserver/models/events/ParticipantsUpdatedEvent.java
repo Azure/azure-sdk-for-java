@@ -55,7 +55,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
 
     /**
      * Get the list of participants.
-     * 
+     *
      * @return the result info value.
      */
     public List<CommunicationParticipant> getParticipants() {
@@ -64,7 +64,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
 
     /**
      * Set the list of participants.
-     * 
+     *
      * @param participants the list of participants.
      * @return the ParticipantsUpdatedEvent object itself.
      */
@@ -82,7 +82,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
 
     /**
      * Initializes a new instance of ParticipantsUpdatedEvent.
-     * 
+     *
      * @param callLegId The call leg id.
      * @param participants The conversation id.
      * @throws IllegalArgumentException if any parameter is null or empty.
@@ -107,7 +107,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
 
     /**
      * Deserialize {@link ParticipantsUpdatedEvent} event.
-     * 
+     *
      * @param eventData binary data for event
      * @return {@link ParticipantsUpdatedEvent} event.
      */
