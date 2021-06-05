@@ -17,9 +17,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
-import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * AMQP node responsible for performing management and metadata operations on an Azure AMQP message broker.

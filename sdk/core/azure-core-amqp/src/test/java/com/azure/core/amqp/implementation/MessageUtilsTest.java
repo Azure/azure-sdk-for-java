@@ -9,7 +9,6 @@ import com.azure.core.amqp.models.DeliveryState;
 import com.azure.core.amqp.models.ModifiedDeliveryOutcome;
 import com.azure.core.amqp.models.ReceivedDeliveryOutcome;
 import com.azure.core.amqp.models.RejectedDeliveryOutcome;
-import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;

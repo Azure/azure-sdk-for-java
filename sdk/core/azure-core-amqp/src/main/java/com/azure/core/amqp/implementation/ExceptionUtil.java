@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

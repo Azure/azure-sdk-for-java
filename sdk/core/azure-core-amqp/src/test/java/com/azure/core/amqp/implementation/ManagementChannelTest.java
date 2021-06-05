@@ -31,8 +31,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -57,7 +55,6 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -90,8 +87,6 @@ public class ManagementChannelTest {
     private RequestResponseChannel requestResponseChannel;
     @Mock
     private AmqpRetryPolicy retryPolicy;
-    @Captor
-    private ArgumentCaptor<Message> messageCaptor;
 
     @BeforeAll
     public static void beforeAll() {
