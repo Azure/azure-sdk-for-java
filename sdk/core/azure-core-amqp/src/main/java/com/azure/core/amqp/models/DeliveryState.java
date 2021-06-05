@@ -17,25 +17,25 @@ public class DeliveryState extends ExpandableStringEnum<DeliveryState> {
     /**
      * Indicates successful processing at the receiver.
      */
-    public static DeliveryState ACCEPTED = fromString("ACCEPTED", DeliveryState.class);
+    public static final DeliveryState ACCEPTED = fromString("ACCEPTED", DeliveryState.class);
     /**
      * Indicates an invalid and unprocessable message.
      */
-    public static DeliveryState REJECTED = fromString("REJECTED", DeliveryState.class);
+    public static final DeliveryState REJECTED = fromString("REJECTED", DeliveryState.class);
     /**
      * Indicates that the message was not (and will not be) processed.
      */
-    public static DeliveryState RELEASED = fromString("RELEASED", DeliveryState.class);
+    public static final DeliveryState RELEASED = fromString("RELEASED", DeliveryState.class);
     /**
      * indicates that the message was modified, but not processed.
      */
-    public static DeliveryState MODIFIED = fromString("MODIFIED", DeliveryState.class);
+    public static final DeliveryState MODIFIED = fromString("MODIFIED", DeliveryState.class);
     /**
      * indicates partial message data seen by the receiver as well as the starting point for a resumed transfer.
      */
-    public static DeliveryState RECEIVED = fromString("RECEIVED", DeliveryState.class);
+    public static final DeliveryState RECEIVED = fromString("RECEIVED", DeliveryState.class);
     /**
      * Indicates that this delivery is part of a transaction.
      */
-    public static DeliveryState TRANSACTIONAL = fromString("TRANSACTIONAL", DeliveryState.class);
+    public static final DeliveryState TRANSACTIONAL = fromString("TRANSACTIONAL", DeliveryState.class);
 }
