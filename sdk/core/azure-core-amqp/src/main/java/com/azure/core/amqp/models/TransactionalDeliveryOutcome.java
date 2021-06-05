@@ -18,8 +18,9 @@ import java.util.Objects;
  */
 @Fluent
 public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
-    private DeliveryOutcome outcome;
     private final AmqpTransaction amqpTransaction;
+    private final ClientLogger logger = new ClientLogger(TransactionalDeliveryOutcome.class);
+    private DeliveryOutcome outcome;
 
     /**
      * Creates an outcome with the given transaction.
@@ -73,7 +74,7 @@ public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
      */
     public TransactionalDeliveryOutcome setOutcome(DeliveryOutcome outcome) {
         if (outcome instanceof TransactionalDeliveryOutcome) {
-            throw new ClientLogger(TransactionalDeliveryOutcome.class).logExceptionAsError(
+            throw logger.logExceptionAsError(
                 new IllegalArgumentException("Cannot set the outcome as another nested transaction outcome."));
         }
 
