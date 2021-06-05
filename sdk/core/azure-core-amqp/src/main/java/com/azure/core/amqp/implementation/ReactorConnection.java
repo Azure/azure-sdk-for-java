@@ -356,6 +356,7 @@ public class ReactorConnection implements AmqpConnection {
         // Because the reactor executor schedules the pending close after the timeout, we want to give sufficient time
         // for the rest of the tasks to run.
         final Duration timeout = operationTimeout.plus(operationTimeout);
+        closeAsync().block(timeout);
     }
 
     /**
