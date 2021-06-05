@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
 
@@ -13,6 +14,7 @@ import java.net.URL;
  * Information about a {@link KeyVaultKey} parsed from the key URL. You can use this information when calling methods
  * of {@link KeyClient} or {@link KeyAsyncClient}.
  */
+@Immutable
 public final class KeyVaultKeyIdentifier {
     private final String sourceId, vaultUrl, name, version;
 

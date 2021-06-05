@@ -16,7 +16,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.util.context.Context;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -212,15 +211,6 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
                 System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
             });
         // END: com.azure.keyvault.secrets.secretclient.deleteSecret#String
-
-        // BEGIN: com.azure.keyvault.secrets.secretclient.deleteSecret#String-Duration
-        secretAsyncClient.beginDeleteSecret("secretName", Duration.ofSeconds(1))
-            .subscribe(pollResponse -> {
-                System.out.println("Delete Status: " + pollResponse.getStatus().toString());
-                System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
-                System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
-            });
-        // END: com.azure.keyvault.secrets.secretclient.deleteSecret#String-Duration
     }
 
     /**
@@ -274,8 +264,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#beginRecoverDeletedSecret(String)} and
-     * {@link SecretAsyncClient#beginRecoverDeletedSecret(String, Duration)}.
+     * Method to insert code snippets for {@link SecretAsyncClient#beginRecoverDeletedSecret(String)}.
      */
     public void recoverDeletedSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
@@ -287,15 +276,6 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
                 System.out.println("Recovered Secret Value: " + pollResponse.getValue().getValue());
             });
         // END: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String
-
-        // BEGIN: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String-Duration
-        secretAsyncClient.beginRecoverDeletedSecret("deletedSecretName")
-            .subscribe(pollResponse -> {
-                System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
-                System.out.println("Recovered Secret Name: " + pollResponse.getValue().getName());
-                System.out.println("Recovered Secret Value: " + pollResponse.getValue().getValue());
-            });
-        // END: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String-Duration
     }
 
     /**

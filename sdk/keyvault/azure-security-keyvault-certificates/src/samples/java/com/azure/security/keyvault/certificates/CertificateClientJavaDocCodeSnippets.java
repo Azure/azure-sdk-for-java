@@ -12,20 +12,19 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-import com.azure.security.keyvault.certificates.models.DeletedCertificate;
-import com.azure.security.keyvault.certificates.models.IssuerProperties;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.AdministratorContact;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.DeletedCertificate;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.IssuerProperties;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -129,8 +128,7 @@ public final class CertificateClientJavaDocCodeSnippets {
 
     /**
      * Method to insert code snippets for
-     * {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map)},
-     * {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map, Duration)} and
+     * {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map)} and
      * {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy)}.
      */
     public void createCertificateCodeSnippets() {
@@ -145,17 +143,6 @@ public final class CertificateClientJavaDocCodeSnippets {
         System.out.printf("Certificate created with name %s", createdCertificate.getName());
         // END: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Duration
-        CertificatePolicy certificatePolicy = new CertificatePolicy("Self",
-            "CN=SelfSignedJavaPkcs12");
-        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
-            certificateClient.beginCreateCertificate("certificateName", certificatePolicy, true, new HashMap<>(),
-                Duration.ofSeconds(1));
-        certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-        KeyVaultCertificate certificate = certificatePoller.getFinalResult();
-        System.out.printf("Certificate created with name %s", certificate.getName());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Duration
-
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy
         CertificatePolicy certPolicy = new CertificatePolicy("Self",
             "CN=SelfSignedJavaPkcs12");
@@ -168,8 +155,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#getCertificateOperation(String)} and
-     * {@link CertificateClient#getCertificateOperation(String, Duration)}.
+     * Method to insert code snippets for {@link CertificateClient#getCertificateOperation(String)}.
      */
     public void getCertificateOperation() {
         CertificateClient certificateClient = getCertificateClient();
@@ -180,14 +166,6 @@ public final class CertificateClientJavaDocCodeSnippets {
         KeyVaultCertificate cert = getCertPoller.getFinalResult();
         System.out.printf("Certificate created with name %s", cert.getName());
         // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String-Duration
-        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificatePoller = certificateClient
-            .getCertificateOperation("certificateName", Duration.ofSeconds(1));
-        getCertificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-        KeyVaultCertificate certificate = getCertificatePoller.getFinalResult();
-        System.out.printf("Certificate created with name %s", certificate.getName());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String-Duration
     }
 
 
@@ -316,8 +294,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#beginDeleteCertificate(String)} and
-     * {@link CertificateClient#beginDeleteCertificate(String, Duration)}.
+     * Method to insert code snippets for {@link CertificateClient#beginDeleteCertificate(String)}.
      */
     public void deleteCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
@@ -330,17 +307,6 @@ public final class CertificateClientJavaDocCodeSnippets {
             deleteCertPollResponse.getValue().getName(), deleteCertPollResponse.getValue().getRecoveryId());
         deleteCertPoller.waitForCompletion();
         // END: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String
-
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String-Duration
-        SyncPoller<DeletedCertificate, Void> deleteCertificatePoller =
-            certificateClient.beginDeleteCertificate("certificateName", Duration.ofSeconds(1));
-        // Deleted Certificate is accessible as soon as polling beings.
-        PollResponse<DeletedCertificate> deleteCertificatePollResponse = deleteCertificatePoller.poll();
-        System.out.printf("Deleted certificate with name %s and recovery id %s",
-            deleteCertificatePollResponse.getValue().getName(),
-            deleteCertificatePollResponse.getValue().getRecoveryId());
-        deleteCertificatePoller.waitForCompletion();
-        // END: com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String-Duration
     }
 
     /**
@@ -407,8 +373,7 @@ public final class CertificateClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link CertificateClient#beginRecoverDeletedCertificate(String)} and
-     * {@link CertificateClient#beginRecoverDeletedCertificate(String, Duration)}.
+     * Method to insert code snippets for {@link CertificateClient#beginRecoverDeletedCertificate(String)}.
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
@@ -422,18 +387,6 @@ public final class CertificateClientJavaDocCodeSnippets {
             recoverDeletedCertPollResponse.getValue().getProperties().getId());
         recoverDeletedCertPoller.waitForCompletion();
         // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
-
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String-Duration
-        SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverDeletedCertificatePoller = certificateClient
-            .beginRecoverDeletedCertificate("deletedCertificateName", Duration.ofSeconds(1));
-        // Recovered certificate is accessible as soon as polling beings
-        PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificatePollResponse =
-            recoverDeletedCertificatePoller.poll();
-        System.out.printf(" Recovered Deleted certificate with name %s and id %s",
-            recoverDeletedCertificatePollResponse.getValue().getProperties().getName(),
-            recoverDeletedCertificatePollResponse.getValue().getProperties().getId());
-        recoverDeletedCertificatePoller.waitForCompletion();
-        // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String-Duration
     }
 
     /**

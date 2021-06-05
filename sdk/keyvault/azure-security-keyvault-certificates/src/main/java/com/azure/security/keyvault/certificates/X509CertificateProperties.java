@@ -46,7 +46,7 @@ class X509CertificateProperties {
     private List<CertificateKeyUsage> keyUsage;
 
     /**
-     * The duration that the ceritifcate is valid in months.
+     * The duration that the certificate is valid in months.
      */
     @JsonProperty(value = "validity_months")
     private Integer validityInMonths;

@@ -3,12 +3,15 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /**
  * A class that contains the details of a selective key restore operation.
  */
-public class KeyVaultSelectiveKeyRestoreOperation extends KeyVaultLongRunningOperation {
+@Immutable
+public final class KeyVaultSelectiveKeyRestoreOperation extends KeyVaultLongRunningOperation {
     /**
      * Creates an object containing the details of a {@link KeyVaultSelectiveKeyRestoreOperation}.
      *

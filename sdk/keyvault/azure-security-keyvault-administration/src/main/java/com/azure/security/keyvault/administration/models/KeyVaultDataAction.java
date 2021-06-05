@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 /**
  * Defines values for {@link KeyVaultDataAction}.
  */
-public class KeyVaultDataAction extends ExpandableStringEnum<KeyVaultDataAction> {
+public final class KeyVaultDataAction extends ExpandableStringEnum<KeyVaultDataAction> {
     /**
      * Static value Microsoft.KeyVault/managedHsm/keys/read/action for {@link KeyVaultDataAction}.
      */

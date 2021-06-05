@@ -77,7 +77,7 @@ public class AccessControlHelloWorldAsync {
         createdAssignment from the previous example. */
         accessControlAsyncClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, createdRoleAssignment.getName())
             .doOnSuccess((deletedRoleAssignment) ->
-                System.out.printf("Retrieved role assignment with name: %s %n", deletedRoleAssignment.getName()))
+                System.out.printf("Deleted role assignment with name: %s %n", createdRoleAssignment.getName()))
             .block();
 
         /* NOTE: block() and blockLast() will block until the above operations are completed. This is strongly

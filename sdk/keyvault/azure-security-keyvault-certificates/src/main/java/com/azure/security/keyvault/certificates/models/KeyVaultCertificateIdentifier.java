@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 
@@ -13,6 +14,7 @@ import java.net.URL;
  * Information about a {@link KeyVaultCertificate} parsed from the certificate URL. You can use this information when
  * calling methods of {@link CertificateClient} or {@link CertificateAsyncClient}.
  */
+@Immutable
 public final class KeyVaultCertificateIdentifier {
     private final String sourceId, vaultUrl, name, version;
 

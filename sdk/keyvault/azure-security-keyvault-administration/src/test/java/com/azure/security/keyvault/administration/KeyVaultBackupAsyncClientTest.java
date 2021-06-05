@@ -13,9 +13,13 @@ import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRes
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupAsyncClient asyncClient;
@@ -26,6 +30,14 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @Override
     protected void beforeTest() {
         beforeTestSetup();
+    }
+
+    private void createAsyncClient(HttpClient httpClient, boolean forCleanup) {
+        asyncClient = spy(getClientBuilder(httpClient, forCleanup).buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
     }
 
     /**
@@ -41,7 +53,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             return;
         }
 
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        createAsyncClient(httpClient, false);
 
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
             asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
@@ -65,7 +77,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             return;
         }
 
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        createAsyncClient(httpClient, false);
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
@@ -93,7 +105,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             return;
         }
 
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        createAsyncClient(httpClient, false);
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =

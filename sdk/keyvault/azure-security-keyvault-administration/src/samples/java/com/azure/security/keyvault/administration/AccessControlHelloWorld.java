@@ -72,10 +72,9 @@ public class AccessControlHelloWorld {
 
         /* To remove a role assignment from a service principal, the role assignment must be deleted. Let's delete the
         createdAssignment from the previous example. */
-        KeyVaultRoleAssignment deletedRoleAssignment =
-            accessControlClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, createdRoleAssignment.getName());
+        accessControlClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, createdRoleAssignment.getName());
 
-        System.out.printf("Deleted role assignment with name: %s %n", deletedRoleAssignment.getName());
+        System.out.printf("Deleted role assignment with name: %s %n", createdRoleAssignment.getName());
     }
 }
 

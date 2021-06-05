@@ -14,9 +14,13 @@ import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRes
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
@@ -27,6 +31,16 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
+    }
+
+    private void createClient(HttpClient httpClient, boolean forCleanup) {
+        KeyVaultBackupAsyncClient asyncClient = spy(getClientBuilder(httpClient, forCleanup).buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
+
+        client = new KeyVaultBackupClient(asyncClient);
     }
 
     /**
@@ -41,7 +55,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
             return;
         }
 
-        client = getClientBuilder(httpClient, false).buildClient();
+        createClient(httpClient, false);
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
@@ -65,7 +79,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
             return;
         }
 
-        client = getClientBuilder(httpClient, false).buildClient();
+        createClient(httpClient, false);
 
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
@@ -95,7 +109,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
             return;
         }
 
-        client = getClientBuilder(httpClient, false).buildClient();
+        createClient(httpClient, false);
 
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);

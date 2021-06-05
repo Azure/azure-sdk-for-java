@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.security.keyvault.administration.implementation.models.Error;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.models.KeyVaultError;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 
@@ -16,18 +17,13 @@ public final class KeyVaultAdministrationUtils {
     }
 
     /**
-     * Convert an implementation
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException} to a public
-     * {@link KeyVaultAdministrationException}.
+     * Convert a {@link KeyVaultErrorException} to a {@link KeyVaultAdministrationException}.
      *
-     * @param exception The implementation
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException}.
+     * @param exception The {@link KeyVaultErrorException}.
      *
      * @return An instance of the public {@link KeyVaultAdministrationException}.
      */
-    public static KeyVaultAdministrationException toKeyVaultAdministrationException(
-        com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException exception) {
-
+    public static KeyVaultAdministrationException toKeyVaultAdministrationException(KeyVaultErrorException exception) {
         if (exception == null) {
             return null;
         }
@@ -76,8 +72,7 @@ public final class KeyVaultAdministrationUtils {
 
     /**
      * Maps a {@link Throwable} to {@link KeyVaultAdministrationException} if it's an instance of
-     * {@link com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException}, else it returns
-     * the original throwable.
+     * {@link KeyVaultErrorException}, else it returns the original throwable.
      *
      * @param throwable A {@link Throwable}.
      *
@@ -85,11 +80,8 @@ public final class KeyVaultAdministrationUtils {
      * original {@link Throwable}.
      */
     public static Throwable mapThrowableToKeyVaultAdministrationException(Throwable throwable) {
-        if (throwable
-            instanceof com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException) {
-
-            return toKeyVaultAdministrationException(
-                (com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException) throwable);
+        if (throwable instanceof KeyVaultErrorException) {
+            return toKeyVaultAdministrationException((KeyVaultErrorException) throwable);
         } else {
             return throwable;
         }
