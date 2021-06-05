@@ -28,6 +28,15 @@ from form documents. It includes the following main functionalities:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+> Note: This version of the client library defaults to the `v2.1` version of the service.
+
+This table shows the relationship between SDK versions and supported API versions of the service:
+
+|SDK version|Supported API version of service
+|-|-
+|3.0.0 | 2.0
+|3.0.1 | 2.0
+|3.1.0 | 2.1
 
 #### Create a Form Recognizer resource
 Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
@@ -478,7 +487,7 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 
 ### Additional documentation
 
-For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc].
+For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][github_io_docs].
 
 ## Contributing
 
@@ -492,7 +501,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
-[api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
+[api_reference_doc]: https://docs.microsoft.com/java/api/overview/azure/ai-formrecognizer-readme?view=azure-java-stable                      
+[github_io_docs]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
