@@ -17,9 +17,9 @@ public class ReadmeSamples {
      * Sample for creating low level client.
      */
     public void createClient() {
-        FarmersBaseClient client = new FarmBeatsClientBuilder()
+        FarmersClient client = new FarmBeatsClientBuilder()
                 .endpoint("https://<farmbeats resource name>.farmbeats-dogfood.azure.net")
                 .credential(new DefaultAzureCredentialBuilder().build())
-                .buildFarmersBaseClient();
+                .buildFarmersClient();
     }
 }

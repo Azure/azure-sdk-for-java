@@ -5,6 +5,5 @@
 module com.azure.verticals.agrifood.farming {
     requires transitive com.azure.core;
     requires transitive com.azure.core.experimental;
-
     exports com.azure.verticals.agrifood.farming;
 }
