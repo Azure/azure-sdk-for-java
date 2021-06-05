@@ -79,7 +79,7 @@ final class MessageUtils {
             case VALUE:
             case SEQUENCE:
             default:
-                throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                     "bodyType [" + body.getBodyType() + "] is not supported yet."));
         }
 
@@ -320,19 +320,19 @@ final class MessageUtils {
                 return new DeliveryOutcome(DeliveryState.RELEASED);
             case Declared:
                 if (!(deliveryState instanceof Declared)) {
-                    throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "Declared delivery type should have a declared outcome"));
                 }
                 return toDeliveryOutcome((Declared) deliveryState);
             case Transactional:
                 if (!(deliveryState instanceof TransactionalState)) {
-                    throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "Transactional delivery type should have a TransactionalState outcome."));
                 }
 
                 final TransactionalState transactionalState = (TransactionalState) deliveryState;
                 if (transactionalState.getTxnId() == null) {
-                    throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                         "Transactional delivery states should have an associated transaction id."));
                 }
 
@@ -340,7 +340,7 @@ final class MessageUtils {
                 final DeliveryOutcome outcome = toDeliveryOutcome(transactionalState.getOutcome());
                 return new TransactionalDeliveryOutcome(transaction).setOutcome(outcome);
             default:
-                throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                     "Delivery state not supported: " + deliveryState.getType()));
         }
     }
@@ -370,7 +370,7 @@ final class MessageUtils {
         } else if (outcome instanceof Declared) {
             return toDeliveryOutcome((Declared) outcome);
         } else {
-            throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                 "Outcome is not known: " + outcome));
         }
     }
@@ -378,9 +378,14 @@ final class MessageUtils {
     /**
      * Converts from a delivery outcome to its corresponding proton-j delivery state.
      *
-     * @param deliveryOutcome Outcome to convert.
+     * @param deliveryOutcome Outcome to convert. {@code null} if the outcome is null.
      *
      * @return Proton-j delivery state.
+     *
+     * @throws IllegalArgumentException if deliveryState is {@link DeliveryState#RECEIVED} but its {@code
+     *     deliveryOutcome} is not {@link ReceivedDeliveryOutcome}. If {@code deliveryOutcome} is {@link
+     *     TransactionalDeliveryOutcome} but there is no transaction id.
+     * @throws UnsupportedOperationException if {@code deliveryState} is unsupported.
      */
     static org.apache.qpid.proton.amqp.transport.DeliveryState toProtonJDeliveryState(DeliveryOutcome deliveryOutcome) {
         if (deliveryOutcome == null) {
@@ -397,6 +402,11 @@ final class MessageUtils {
             case MODIFIED:
                 return toProtonJModified(deliveryOutcome);
             case RECEIVED:
+                if (!(deliveryOutcome instanceof ReceivedDeliveryOutcome)) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Received delivery type should be "
+                        + "ReceivedDeliveryOutcome. Actual: " + deliveryOutcome.getClass()));
+                }
+
                 final ReceivedDeliveryOutcome receivedDeliveryOutcome = (ReceivedDeliveryOutcome) deliveryOutcome;
                 final Received received = new Received();
 
@@ -450,7 +460,7 @@ final class MessageUtils {
             case MODIFIED:
                 return toProtonJModified(deliveryOutcome);
             default:
-                throw LOGGER.logThrowableAsError(new UnsupportedOperationException(
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                     "DeliveryOutcome cannot be converted to proton-j outcome: " + deliveryOutcome.getDeliveryState()));
         }
     }
@@ -524,7 +534,7 @@ final class MessageUtils {
 
     private static DeliveryOutcome toDeliveryOutcome(Declared declared) {
         if (declared.getTxnId() == null) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Declared delivery states should have an associated transaction id."));
         }
 
