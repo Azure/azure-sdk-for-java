@@ -294,7 +294,7 @@ public final class CallClientBuilder {
         }
 
         // Add logging policy
-        policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
+        policyList.add(new HttpLoggingPolicy(this.getHttpLogOptions()));
 
         return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient)
                 .build();
@@ -302,17 +302,9 @@ public final class CallClientBuilder {
 
     private HttpLogOptions getHttpLogOptions() {
         if (this.httpLogOptions == null) {
-            this.httpLogOptions = this.createDefaultHttpLogOptions();
+            this.httpLogOptions = new HttpLogOptions();
         }
 
         return this.httpLogOptions;
-    }
-
-    HttpLogOptions createDefaultHttpLogOptions() {
-        return new HttpLogOptions();
-    }
-
-    HttpLoggingPolicy createHttpLoggingPolicy(HttpLogOptions httpLogOptions) {
-        return new HttpLoggingPolicy(httpLogOptions);
     }
 }

@@ -14,11 +14,11 @@ import com.azure.communication.common.CommunicationIdentifier;
 
 /**
  * A converter between {@link com.azure.communication.callingserver.models.JoinCallOptions} and
- * {@link JoinCallRequestInternal}.
+ * {@link JoinCallRequest}.
  */
 public final class JoinCallRequestConverter {
     /**
-     * Maps from {com.azure.communication.callingserver.models.JoinCallRequest} to {@link JoinCallRequestInternal}.
+     * Maps from {com.azure.communication.callingserver.models.JoinCallRequest} to {@link JoinCallRequest}.
      */
     public static JoinCallRequest convert(CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
         if (source == null) {
@@ -50,7 +50,7 @@ public final class JoinCallRequestConverter {
             }
             joinCallRequest.setRequestedCallEvents(requestedCallEvents);
         }
- 
+
         return joinCallRequest;
     }
 

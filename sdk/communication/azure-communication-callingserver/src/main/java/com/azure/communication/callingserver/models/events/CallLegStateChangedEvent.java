@@ -22,7 +22,7 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
 
     /**
      * Get the conversation id.
-     * 
+     *
      * @return the conversationId value.
      */
     public String getConversationId() {
@@ -99,7 +99,7 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
 
     /**
      * Initializes a new instance of CallLegStateChangedEvent.
-     * 
+     *
      * @param conversationId The conversation id.
      * @param callLegId The call leg id.
      * @param callState The call state.
@@ -122,7 +122,7 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
 
     /**
      * Deserialize {@link CallLegStateChangedEvent} event.
-     * 
+     *
      * @param eventData binary data for event
      * @return {@link CallLegStateChangedEvent} event.
      */
