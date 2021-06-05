@@ -34,6 +34,9 @@ public final class ModifiedDeliveryOutcome extends DeliveryOutcome {
     private Boolean isUndeliverableHere;
     private Boolean isDeliveryFailed;
 
+    /**
+     * Creates an instance with the delivery state modified set.
+     */
     public ModifiedDeliveryOutcome() {
         super(DeliveryState.MODIFIED);
     }
