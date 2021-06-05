@@ -165,7 +165,8 @@ class EventHubProducerAsyncClientTest {
     void teardown(TestInfo testInfo) {
         testScheduler.dispose();
         Mockito.framework().clearInlineMocks();
-        Mockito.reset(sendLink, connection);
+        Mockito.reset(sendLink);
+        Mockito.reset(connection);
         singleMessageCaptor = null;
         messagesCaptor = null;
     }
