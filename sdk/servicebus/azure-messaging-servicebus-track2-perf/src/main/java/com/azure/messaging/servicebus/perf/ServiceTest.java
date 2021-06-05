@@ -26,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
-import java.util.function.Consumer;
 
 /**
  * Base class for performance test.
@@ -109,16 +108,17 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
             fileWriter.write("\n");
             fileWriter.close();
         } catch (IOException ex) {
-            LOGGER.verbose("Could not write to the result file %s." , resultFilePath);
+            LOGGER.verbose("Could not write to the result file %s.", resultFilePath);
         } finally {
             if (fileWriter != null) {
                 try {
                     fileWriter.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                }
             }
         }
 
-        LOGGER.verbose("Written to result file %s." , resultFilePath);
+        LOGGER.verbose("Written to result file %s.", resultFilePath);
     }
 
     protected String getSDKVersion() {
