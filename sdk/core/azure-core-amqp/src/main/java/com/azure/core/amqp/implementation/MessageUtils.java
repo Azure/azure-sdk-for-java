@@ -392,46 +392,43 @@ final class MessageUtils {
             return null;
         }
 
-        switch (deliveryOutcome.getDeliveryState()) {
-            case ACCEPTED:
-                return Accepted.getInstance();
-            case REJECTED:
-                return toProtonJRejected(deliveryOutcome);
-            case RELEASED:
-                return Released.getInstance();
-            case MODIFIED:
-                return toProtonJModified(deliveryOutcome);
-            case RECEIVED:
-                if (!(deliveryOutcome instanceof ReceivedDeliveryOutcome)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Received delivery type should be "
-                        + "ReceivedDeliveryOutcome. Actual: " + deliveryOutcome.getClass()));
-                }
+        if (DeliveryState.ACCEPTED.equals(deliveryOutcome.getDeliveryState())) {
+            return Accepted.getInstance();
+        } else if (DeliveryState.REJECTED.equals(deliveryOutcome.getDeliveryState())) {
+            return toProtonJRejected(deliveryOutcome);
+        } else if (DeliveryState.RELEASED.equals(deliveryOutcome.getDeliveryState())) {
+            return Released.getInstance();
+        } else if (DeliveryState.MODIFIED.equals(deliveryOutcome.getDeliveryState())) {
+            return toProtonJModified(deliveryOutcome);
+        } else if (DeliveryState.RECEIVED.equals(deliveryOutcome.getDeliveryState())) {
+            if (!(deliveryOutcome instanceof ReceivedDeliveryOutcome)) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Received delivery type should be "
+                    + "ReceivedDeliveryOutcome. Actual: " + deliveryOutcome.getClass()));
+            }
 
-                final ReceivedDeliveryOutcome receivedDeliveryOutcome = (ReceivedDeliveryOutcome) deliveryOutcome;
-                final Received received = new Received();
+            final ReceivedDeliveryOutcome receivedDeliveryOutcome = (ReceivedDeliveryOutcome) deliveryOutcome;
+            final Received received = new Received();
 
-                received.setSectionNumber(UnsignedInteger.valueOf(receivedDeliveryOutcome.getSectionNumber()));
-                received.setSectionOffset(UnsignedLong.valueOf(receivedDeliveryOutcome.getSectionOffset()));
-                return received;
-            default:
-                if (deliveryOutcome instanceof TransactionalDeliveryOutcome) {
-                    final TransactionalDeliveryOutcome transaction = ((TransactionalDeliveryOutcome) deliveryOutcome);
-                    final TransactionalState state = new TransactionalState();
-                    if (transaction.getTransactionId() == null) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                            "Transactional deliveries require an id."));
-                    }
+            received.setSectionNumber(UnsignedInteger.valueOf(receivedDeliveryOutcome.getSectionNumber()));
+            received.setSectionOffset(UnsignedLong.valueOf(receivedDeliveryOutcome.getSectionOffset()));
+            return received;
+        } else if (deliveryOutcome instanceof TransactionalDeliveryOutcome) {
+            final TransactionalDeliveryOutcome transaction = ((TransactionalDeliveryOutcome) deliveryOutcome);
+            final TransactionalState state = new TransactionalState();
+            if (transaction.getTransactionId() == null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Transactional deliveries require an id."));
+            }
 
-                    final Binary binary = Objects.requireNonNull(Binary.create(transaction.getTransactionId()),
-                        "Transaction Ids are required for a transaction.");
+            final Binary binary = Objects.requireNonNull(Binary.create(transaction.getTransactionId()),
+                "Transaction Ids are required for a transaction.");
 
-                    state.setOutcome(toProtonJOutcome(transaction.getOutcome()));
-                    state.setTxnId(binary);
-                    return state;
-                }
-
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                    "Outcome could not be translated to a proton-j delivery outcome:" + deliveryOutcome.getDeliveryState()));
+            state.setOutcome(toProtonJOutcome(transaction.getOutcome()));
+            state.setTxnId(binary);
+            return state;
+        } else {
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Outcome could not be translated to a proton-j delivery outcome:" + deliveryOutcome.getDeliveryState()));
         }
     }
 
@@ -450,18 +447,17 @@ final class MessageUtils {
             return null;
         }
 
-        switch (deliveryOutcome.getDeliveryState()) {
-            case ACCEPTED:
-                return Accepted.getInstance();
-            case REJECTED:
-                return toProtonJRejected(deliveryOutcome);
-            case RELEASED:
-                return Released.getInstance();
-            case MODIFIED:
-                return toProtonJModified(deliveryOutcome);
-            default:
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                    "DeliveryOutcome cannot be converted to proton-j outcome: " + deliveryOutcome.getDeliveryState()));
+        if (DeliveryState.ACCEPTED.equals(deliveryOutcome.getDeliveryState())) {
+            return Accepted.getInstance();
+        } else if (DeliveryState.REJECTED.equals(deliveryOutcome.getDeliveryState())) {
+            return toProtonJRejected(deliveryOutcome);
+        } else if (DeliveryState.RELEASED.equals(deliveryOutcome.getDeliveryState())) {
+            return Released.getInstance();
+        } else if (DeliveryState.MODIFIED.equals(deliveryOutcome.getDeliveryState())) {
+            return toProtonJModified(deliveryOutcome);
+        } else {
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "DeliveryOutcome cannot be converted to proton-j outcome: " + deliveryOutcome.getDeliveryState()));
         }
     }
 
