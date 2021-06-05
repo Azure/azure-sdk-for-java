@@ -167,6 +167,8 @@ class MessageUtils {
      * @throws NullPointerException if {@code message} is null.
      */
     static AmqpAnnotatedMessage toAmqpAnnotatedMessage(Message message) {
+        Objects.requireNonNull(message, "'message' cannot be null");
+
         final byte[] bytes;
         final Section body = message.getBody();
         if (body != null) {
@@ -373,30 +375,37 @@ class MessageUtils {
         }
     }
 
-    static org.apache.qpid.proton.amqp.transport.DeliveryState toProtonJDeliveryState(DeliveryOutcome outcome) {
-        if (outcome == null) {
+    /**
+     * Converts from a delivery outcome to its corresponding proton-j delivery state.
+     *
+     * @param deliveryOutcome Outcome to convert.
+     *
+     * @return Proton-j delivery state.
+     */
+    static org.apache.qpid.proton.amqp.transport.DeliveryState toProtonJDeliveryState(DeliveryOutcome deliveryOutcome) {
+        if (deliveryOutcome == null) {
             return null;
         }
 
-        switch (outcome.getDeliveryState()) {
+        switch (deliveryOutcome.getDeliveryState()) {
             case ACCEPTED:
                 return Accepted.getInstance();
             case REJECTED:
-                return toProtonJRejected(outcome);
+                return toProtonJRejected(deliveryOutcome);
             case RELEASED:
                 return Released.getInstance();
             case MODIFIED:
-                return toProtonJModified(outcome);
+                return toProtonJModified(deliveryOutcome);
             case RECEIVED:
-                final ReceivedDeliveryOutcome receivedDeliveryOutcome = (ReceivedDeliveryOutcome) outcome;
+                final ReceivedDeliveryOutcome receivedDeliveryOutcome = (ReceivedDeliveryOutcome) deliveryOutcome;
                 final Received received = new Received();
 
                 received.setSectionNumber(UnsignedInteger.valueOf(receivedDeliveryOutcome.getSectionNumber()));
                 received.setSectionOffset(UnsignedLong.valueOf(receivedDeliveryOutcome.getSectionOffset()));
                 return received;
             default:
-                if (outcome instanceof TransactionalDeliveryOutcome) {
-                    final TransactionalDeliveryOutcome transaction = ((TransactionalDeliveryOutcome) outcome);
+                if (deliveryOutcome instanceof TransactionalDeliveryOutcome) {
+                    final TransactionalDeliveryOutcome transaction = ((TransactionalDeliveryOutcome) deliveryOutcome);
                     final TransactionalState state = new TransactionalState();
                     if (transaction.getTransactionId() == null) {
                         throw CLIENT_LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -412,10 +421,20 @@ class MessageUtils {
                 }
 
                 throw CLIENT_LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                    "Outcome could not be translated to a proton-j delivery outcome:" + outcome.getDeliveryState()));
+                    "Outcome could not be translated to a proton-j delivery outcome:" + deliveryOutcome.getDeliveryState()));
         }
     }
 
+    /**
+     * Converts from delivery outcome to its corresponding proton-j outcome.
+     *
+     * @param deliveryOutcome Delivery outcome.
+     *
+     * @return Corresponding proton-j outcome.
+     *
+     * @throws UnsupportedOperationException when an unsupported delivery state is passed such as {@link
+     *     DeliveryState#RECEIVED};
+     */
     static Outcome toProtonJOutcome(DeliveryOutcome deliveryOutcome) {
         if (deliveryOutcome == null) {
             return null;
