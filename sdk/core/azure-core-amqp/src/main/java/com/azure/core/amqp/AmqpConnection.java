@@ -87,7 +87,9 @@ public interface AmqpConnection extends Disposable, AsyncCloseable {
      * @param entityPath Entity for which to get the management node of.
      * @return A Mono that completes with the management node.
      */
-    default Mono<AmqpManagementNode> getManagementNode(String entityPath) { return Mono.error(new UnsupportedOperationException("This has not been implemented.")); }
+    default Mono<AmqpManagementNode> getManagementNode(String entityPath) {
+        return Mono.error(new UnsupportedOperationException("This has not been implemented."));
+    }
 
     /**
      * Disposes of the AMQP connection.
