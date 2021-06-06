@@ -4,35 +4,38 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.models.ToneInfo;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The subscribe to tone event.
- */
-public final class ToneReceivedEvent extends CallingServerEventBase {
-    /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.DtmfReceived";
-
-    /**
+/** The subscribe to tone event. */
+@Fluent
+public final class ToneReceivedEvent {
+    /*
      * The tone info.
      */
+    @JsonProperty(value = "toneInfo")
     private ToneInfo toneInfo;
 
+    /*
+     * The call leg.id.
+     */
+    @JsonProperty(value = "callLegId")
+    private String callLegId;
+
     /**
-     * Get the tone info.
-     * 
-     * @return the tone info value.
+     * Get the toneInfo property: The tone info.
+     *
+     * @return the toneInfo value.
      */
     public ToneInfo getToneInfo() {
         return this.toneInfo;
     }
 
     /**
-     * Set the tone info.
-     * 
-     * @param toneInfo the tone info.
+     * Set the toneInfo property: The tone info.
+     *
+     * @param toneInfo the toneInfo value to set.
      * @return the ToneReceivedEvent object itself.
      */
     public ToneReceivedEvent setToneInfo(ToneInfo toneInfo) {
@@ -41,23 +44,18 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
     }
 
     /**
-     * The call leg Id.
-     */
-    private String callLegId;
-
-    /**
-     * Get the call leg Id.
+     * Get the callLegId property: The call leg.id.
      *
-     * @return the time of the recording started.
+     * @return the callLegId value.
      */
     public String getCallLegId() {
         return this.callLegId;
     }
 
     /**
-     * Set the call leg Id.
+     * Set the callLegId property: The call leg.id.
      *
-     * @param callLegId the call leg id.
+     * @param callLegId the callLegId value to set.
      * @return the ToneReceivedEvent object itself.
      */
     public ToneReceivedEvent setCallLegId(String callLegId) {
@@ -66,33 +64,8 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Initializes a new instance of ToneReceivedEvent.
-     */
-    public ToneReceivedEvent() {
-
-    }
-
-    /**
-     * Initializes a new instance of ToneReceivedEvent.
-     * 
-     * @param toneInfo The tone info.
-     * @param callLegId The call leg id.
-     * @throws IllegalArgumentException if any parameter is null or empty.
-     */
-    public ToneReceivedEvent(ToneInfo toneInfo, String callLegId) {
-        if (toneInfo == null) {
-            throw new IllegalArgumentException("object toneInfo cannot be null");
-        }
-        if (callLegId == null || callLegId.isEmpty()) {
-            throw new IllegalArgumentException("object callLegId cannot be null or empty");
-        }
-        this.toneInfo = toneInfo;
-        this.callLegId = callLegId;
-    }
-
-    /**
      * Deserialize {@link ToneReceivedEvent} event.
-     * 
+     *
      * @param eventData binary data for event
      * @return {@link ToneReceivedEvent} event.
      */
