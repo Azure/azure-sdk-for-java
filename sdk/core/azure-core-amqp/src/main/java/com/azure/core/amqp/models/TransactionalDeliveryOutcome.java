@@ -29,7 +29,7 @@ public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
      * @throws NullPointerException if {@code transaction} is {@code null}.
      */
     public TransactionalDeliveryOutcome(AmqpTransaction transaction) {
-        super(null);
+        super(DeliveryState.TRANSACTIONAL);
         this.amqpTransaction = Objects.requireNonNull(transaction, "'transaction' cannot be null.");
     }
 
@@ -40,17 +40,6 @@ public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
      */
     public ByteBuffer getTransactionId() {
         return amqpTransaction.getTransactionId();
-    }
-
-    /**
-     * Gets the delivery state associated with this transaction outcome.
-     *
-     * @return the delivery state associated with this transaction, {@code null} if there is no delivery state
-     *     associated with this transaction yet.
-     */
-    @Override
-    public DeliveryState getDeliveryState() {
-        return super.getDeliveryState();
     }
 
     /**
@@ -79,10 +68,6 @@ public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
         }
 
         this.outcome = outcome;
-        if (outcome != null) {
-            setDeliveryState(outcome.getDeliveryState());
-        }
-
         return this;
     }
 }
