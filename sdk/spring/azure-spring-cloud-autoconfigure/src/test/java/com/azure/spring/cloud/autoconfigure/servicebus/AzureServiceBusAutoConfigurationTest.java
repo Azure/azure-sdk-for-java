@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
-import com.microsoft.azure.servicebus.IMessage;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureServiceBusAutoConfigurationTest {
 
@@ -59,14 +60,15 @@ public class AzureServiceBusAutoConfigurationTest {
 
     @Test
     public void testWithoutServiceBusSDKInClasspath() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(IMessage.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusReceivedMessage.class))
                           .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProperties.class));
     }
 
-    @Test(expected = NoSuchBeanDefinitionException.class)
+    @Test
     public void testAzureServiceBusPropertiesValidation() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(IMessage.class))
-                          .run(context -> context.getBean(AzureServiceBusProperties.class));
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusReceivedMessage.class))
+                          .run(context -> assertThrows(NoSuchBeanDefinitionException.class,
+                              () -> context.getBean(AzureServiceBusProperties.class)));
     }
 
     @Test

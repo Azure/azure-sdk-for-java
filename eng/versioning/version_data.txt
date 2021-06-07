@@ -18,7 +18,7 @@ com.microsoft.azure.cognitiveservices:azure-cognitiveservices-newssearch;1.1.0-b
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-videosearch;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-visualsearch;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-websearch;1.1.0-beta.1;1.1.0-beta.1
-com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;1.0.6-beta;1.0.7-beta
+com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;1.0.7-beta;1.0.8-beta
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-contentmoderator;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customvision-prediction;1.1.0-beta.3;1.1.0-beta.3
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-customvision-training;1.1.0-beta.3;1.1.0-beta.3
@@ -34,7 +34,7 @@ com.microsoft.azure:azure-keyvault-cryptography;1.2.4;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-extensions;1.2.4;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-test;1.2.3;1.2.4
 com.microsoft.azure:azure-keyvault-webkey;1.2.4;1.3.0-beta.1
-com.microsoft.azure:azure-servicebus;3.6.3;3.7.0-beta.1
+com.microsoft.azure:azure-servicebus;3.6.3;3.6.4
 com.microsoft.azure:azure-storage;8.6.5;8.6.5
 com.microsoft.azure:azure-storage-blob;11.0.2;11.0.2
 com.microsoft.azure.msi_auth_token_provider:azure-authentication-msi-token-provider;1.1.0-beta.1;1.1.0-beta.1

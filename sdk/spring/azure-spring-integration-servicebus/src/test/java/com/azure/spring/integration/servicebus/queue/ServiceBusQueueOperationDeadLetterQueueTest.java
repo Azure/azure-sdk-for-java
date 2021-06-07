@@ -3,84 +3,47 @@
 
 package com.azure.spring.integration.servicebus.queue;
 
-import com.microsoft.azure.servicebus.IMessageHandler;
-import com.microsoft.azure.servicebus.IQueueClient;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.api.CheckpointConfig;
+import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.GenericMessage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+public class ServiceBusQueueOperationDeadLetterQueueTest extends ServiceBusQueueOperationSendSubscribeTest {
 
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+    private AutoCloseable closeable;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ServiceBusQueueOperationDeadLetterQueueTest
-        extends ServiceBusQueueOperationSendSubscribeTest {
+    @BeforeEach
+    public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
 
-    private String payload = "payload";
-    private User user = new User(payload);
-    private Map<String, Object> headers = new HashMap<>();
-    private Message<User> userMessage;
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
 
-    @Before
-    @Override
-    public void setUp() {
-        super.setUp();
-        headers.put(AzureHeaders.LOCK_TOKEN, UUID.randomUUID());
-        userMessage = new GenericMessage<>(user, headers);
+    @Test
+    public void testSendDeadLetterQueueWithoutManualCheckpointModel() {
+        subscribe(destination, m -> sendSubscribeOperation.deadLetter(destination, m, "reason", "desc"), User.class);
+
+        sendSubscribeOperation.sendAsync(destination, userMessage);
+        verifyDeadLetterCalledTimes(1);
+        verifyCompleteCalledTimes(1);
     }
 
     @Test
     public void testSendDeadLetterQueueWithManualCheckpointModel() {
+        setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
+
+        subscribe(destination, m -> sendSubscribeOperation.deadLetter(destination, m, "reason", "desc"), User.class);
+
         sendSubscribeOperation.sendAsync(destination, userMessage);
-        sendSubscribeOperation.deadLetter(destination, userMessage, "deadletterqueue",
-                "deadletterqueueexception");
-        verifyDeadLetterQueueSuccessCalled(1);
+
+        verifyDeadLetterCalledTimes(1);
+        verifyCompleteCalledTimes(0);
     }
 
-    @Test
-    public void testSendDeadLetterQueue() {
-        sendSubscribeOperation.sendAsync(destination, userMessage);
-        sendSubscribeOperation.abandon(destination, userMessage);
-        verifyAbandonCalled(1);
-    }
-
-    private void verifyDeadLetterQueueSuccessCalled(int times) {
-        try {
-            verify(this.queueClient, times(times)).deadLetter(any(), anyString(), anyString());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ServiceBusException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void verifyAbandonCalled(int times) {
-        try {
-            verify(this.queueClient, times(times)).abandon(any());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ServiceBusException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void whenRegisterMessageHandler(IQueueClient queueClient) {
-        try {
-            doNothing().when(queueClient).registerMessageHandler(isA(IMessageHandler.class));
-        } catch (InterruptedException | ServiceBusException e) {
-            fail("Exception should not throw" + e);
-        }
-    }
 }

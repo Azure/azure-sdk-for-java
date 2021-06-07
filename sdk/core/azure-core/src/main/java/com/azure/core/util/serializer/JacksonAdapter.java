@@ -402,6 +402,8 @@ public class JacksonAdapter implements SerializerAdapter {
             .addModule(HttpHeadersSerializer.getModule())
             .addModule(UnixTimeSerializer.getModule())
             .addModule(UnixTimeDeserializer.getModule())
+            .addModule(GeoJsonSerializer.getModule())
+            .addModule(GeoJsonDeserializer.getModule())
             .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
             .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
             .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)

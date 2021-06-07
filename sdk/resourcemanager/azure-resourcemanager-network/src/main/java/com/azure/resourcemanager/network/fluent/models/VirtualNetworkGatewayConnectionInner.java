@@ -59,6 +59,18 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private LocalNetworkGatewayInner localNetworkGateway2;
 
     /*
+     * List of ingress NatRules.
+     */
+    @JsonProperty(value = "properties.ingressNatRules")
+    private List<SubResource> ingressNatRules;
+
+    /*
+     * List of egress NatRules.
+     */
+    @JsonProperty(value = "properties.egressNatRules")
+    private List<SubResource> egressNatRules;
+
+    /*
      * Gateway connection type.
      */
     @JsonProperty(value = "properties.connectionType", required = true)
@@ -269,6 +281,46 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     public VirtualNetworkGatewayConnectionInner withLocalNetworkGateway2(
         LocalNetworkGatewayInner localNetworkGateway2) {
         this.localNetworkGateway2 = localNetworkGateway2;
+        return this;
+    }
+
+    /**
+     * Get the ingressNatRules property: List of ingress NatRules.
+     *
+     * @return the ingressNatRules value.
+     */
+    public List<SubResource> ingressNatRules() {
+        return this.ingressNatRules;
+    }
+
+    /**
+     * Set the ingressNatRules property: List of ingress NatRules.
+     *
+     * @param ingressNatRules the ingressNatRules value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withIngressNatRules(List<SubResource> ingressNatRules) {
+        this.ingressNatRules = ingressNatRules;
+        return this;
+    }
+
+    /**
+     * Get the egressNatRules property: List of egress NatRules.
+     *
+     * @return the egressNatRules value.
+     */
+    public List<SubResource> egressNatRules() {
+        return this.egressNatRules;
+    }
+
+    /**
+     * Set the egressNatRules property: List of egress NatRules.
+     *
+     * @param egressNatRules the egressNatRules value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withEgressNatRules(List<SubResource> egressNatRules) {
+        this.egressNatRules = egressNatRules;
         return this;
     }
 

@@ -573,7 +573,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        BufferStagingArea pool = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(),
+        BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(),
             BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data,
@@ -585,8 +585,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
          only concurrency + 1 chunks at a time.
          */
-        return chunkedSource.flatMapSequential(pool::write, 1)
-            .concatWith(Flux.defer(pool::flush))
+        return chunkedSource.flatMapSequential(stagingArea::write, 1)
+            .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(

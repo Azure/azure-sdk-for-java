@@ -4,7 +4,6 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.implementation.ImplUtils;
@@ -23,15 +22,16 @@ import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.LOGIN_SERVER_SUFFIX;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
-import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
-import static com.azure.containers.containerregistry.TestUtils.TAG_UNKNOWN;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
+import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerRegistryClientIntegrationTests extends ContainerRegistryClientsTestBase {
 
@@ -49,7 +49,15 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @BeforeEach
     void beforeEach() {
         TestUtils.importImage(ImplUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
-        TestUtils.importImage(ImplUtils.getTestMode(), ALPINE_REPOSITORY_NAME, Arrays.asList("latest"));
+        TestUtils.importImage(
+            ImplUtils.getTestMode(),
+            ALPINE_REPOSITORY_NAME,
+            Arrays.asList(
+                LATEST_TAG_NAME,
+                V1_TAG_NAME,
+                V2_TAG_NAME,
+                V3_TAG_NAME,
+                V4_TAG_NAME));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -104,16 +112,11 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
         registryClient = getContainerRegistryClient(httpClient);
 
-        StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(TAG_UNKNOWN))
-            .verifyError(ResourceNotFoundException.class);
-
         StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(null))
             .verifyError(NullPointerException.class);
 
-        assertThrows(ResourceNotFoundException.class, () -> registryClient.deleteRepository(TAG_UNKNOWN));
         assertThrows(NullPointerException.class, () -> registryClient.deleteRepository(null));
 
-        assertThrows(ResourceNotFoundException.class, () -> registryClient.deleteRepositoryWithResponse(TAG_UNKNOWN, Context.NONE));
         assertThrows(NullPointerException.class, () -> registryClient.deleteRepositoryWithResponse(null, Context.NONE));
     }
 
@@ -157,15 +160,13 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
         registryClient = getContainerRegistryClient(httpClient);
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            assertTrue(registryAsyncClient.getLoginServer().endsWith(LOGIN_SERVER_SUFFIX));
-            assertEquals(REGISTRY_NAME, registryAsyncClient.getName());
-            assertEquals(REGISTRY_ENDPOINT, registryAsyncClient.getEndpoint());
-
-            assertTrue(registryClient.getLoginServer().endsWith(LOGIN_SERVER_SUFFIX));
-            assertEquals(REGISTRY_NAME, registryClient.getName());
-            assertEquals(REGISTRY_ENDPOINT, registryClient.getEndpoint());
+        String registryEndpoint = REGISTRY_ENDPOINT;
+        if (getTestMode() == TestMode.PLAYBACK) {
+            registryEndpoint = REGISTRY_ENDPOINT_PLAYBACK;
         }
+
+        assertEquals(registryEndpoint, registryAsyncClient.getEndpoint());
+        assertEquals(registryEndpoint, registryClient.getEndpoint());
     }
 }
 

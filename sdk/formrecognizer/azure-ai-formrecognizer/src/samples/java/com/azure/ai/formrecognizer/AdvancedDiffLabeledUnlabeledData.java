@@ -23,7 +23,7 @@ import java.util.List;
  * The models used in this sample can be created using TrainModelsWithLabels.java and TrainModelsWithoutLabels.java.
  * <p>
  * See
- * <a href = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels">here </a>
+ * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels">here</a>
  * for service documentation on training with and without labels.
  * </p>
  */

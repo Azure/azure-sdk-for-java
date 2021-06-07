@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    stream:
+      function:
+        definition: queueConsume;queueSupply;topicConsume;topicSupply;
+      bindings:
+        topicConsume-in-0:
+          destination: topic1
+          group: topicSub
+        topicSupply-out-0:
+          destination: topic1
+        queueConsume-in-0:
+          binder: servicebus-2
+          destination: queue1
+        queueSupply-out-0:
+          binder: servicebus-2
+          destination: queue1
+      binders:
+        servicebus-1:
+          type: servicebus-topic
+          default-candidate: true
+          environment:
+            spring:
+              cloud:
+                azure:
+                  servicebus:
+                    connection-string: ${SERVICEBUS2_BINDER_TEST_CONNECTION_STRING}
+        servicebus-2:
+          type: servicebus-queue
+          default-candidate: false
+          environment:
+            spring:
+              cloud:
+                azure:
+                  servicebus:
+                    connection-string: ${SERVICEBUS3_BINDER_TEST_CONNECTION_STRING}

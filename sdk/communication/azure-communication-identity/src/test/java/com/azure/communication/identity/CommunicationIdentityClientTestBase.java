@@ -3,6 +3,7 @@
 
 package com.azure.communication.identity;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -20,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -30,19 +30,9 @@ import java.util.regex.Pattern;
 
 public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
-    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
-
-    protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
-    protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", ACCESSKEYENCODED);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
-
-    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
-        .get("TEST_PACKAGES_ENABLED", "all");
+        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -54,8 +44,13 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected CommunicationIdentityClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder.endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(ACCESSKEY))
+
+        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        String communicationEndpoint = communicationConnectionString.getEndpoint();
+        String communicationAccessKey = communicationConnectionString.getAccessKey();
+
+        builder.endpoint(communicationEndpoint)
+            .credential(new AzureKeyCredential(communicationAccessKey))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -69,8 +64,12 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected CommunicationIdentityClientBuilder createClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+
+        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        String communicationEndpoint = communicationConnectionString.getEndpoint();
+
         builder
-            .endpoint(ENDPOINT)
+            .endpoint(communicationEndpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -134,10 +133,6 @@ public class CommunicationIdentityClientTestBase extends TestBase {
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
-    }
-
-    protected boolean shouldEnableIdentityTests() {
-        return TEST_PACKAGES_ENABLED.matches("(all|identity)");
     }
 
     static class FakeCredentials implements TokenCredential {

@@ -6,6 +6,7 @@ package com.azure.storage.file.share
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.file.share.implementation.util.ModelHelper
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareProtocols
@@ -28,7 +29,7 @@ class ShareAsyncAPITests extends APISpec {
     ShareAsyncClient primaryShareAsyncClient
     String shareName
     static Map<String, String> testMetadata
-    static FileSmbProperties smbProperties
+    FileSmbProperties smbProperties
     static def filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL"
 
     def setup() {
@@ -41,7 +42,7 @@ class ShareAsyncAPITests extends APISpec {
 
     def "Get share URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName)
         when:
         def shareURL = primaryShareAsyncClient.getShareUrl()
@@ -112,7 +113,7 @@ class ShareAsyncAPITests extends APISpec {
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
@@ -138,7 +139,7 @@ class ShareAsyncAPITests extends APISpec {
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
@@ -196,7 +197,7 @@ class ShareAsyncAPITests extends APISpec {
     }
 
     @Unroll
-    @Requires({ playbackMode() })
+    @PlaybackOnly
     def "Get properties premium"() {
         given:
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol)
@@ -228,7 +229,7 @@ class ShareAsyncAPITests extends APISpec {
     }
 
     @Unroll
-    @Requires({ playbackMode() })
+    @PlaybackOnly
     def "Set premium properties"() {
         setup:
         def premiumShareClient = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),

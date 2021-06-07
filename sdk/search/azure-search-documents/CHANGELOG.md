@@ -1,11 +1,33 @@
 # Release History
 
-## 11.4.0-beta.2 (Unreleased)
+## 11.4.0-beta.3 (Unreleased)
 
+## 11.3.2 (2021-05-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
+
+## 11.4.0-beta.2 (2021-05-10)
+
+### Features Added
+
+- Added Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Added the ability to configure Knowledge Store in skillsets.
+- Added factory method to `SynonymMap` to enable creation from a file.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
 
 ## 11.3.1 (2021-04-08)
 
 ### Dependency Updates
+
 - Updated `azure-core` from `1.14.0` to `1.15.0`.
 - Updated `azure-core-http-netty` from `1.9.0` to `1.9.1`.
 - Updated `azure-core-serializer-json-jackson` from `1.2.0` to `1.2.2`.

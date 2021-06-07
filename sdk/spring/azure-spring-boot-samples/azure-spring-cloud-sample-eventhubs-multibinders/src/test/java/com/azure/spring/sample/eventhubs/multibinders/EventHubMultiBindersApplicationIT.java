@@ -3,15 +3,15 @@
 
 package com.azure.spring.sample.eventhubs.multibinders;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.OutputCaptureRule;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -21,23 +21,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = EventHubMultiBindersApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties")
+@ExtendWith({ OutputCaptureExtension.class, MockitoExtension.class })
 public class EventHubMultiBindersApplicationIT {
 
-    @Rule
-    public OutputCaptureRule capture = new OutputCaptureRule();
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void testSendAndReceiveMessage() throws Exception {
+    public void testSendAndReceiveMessage(CapturedOutput capture) throws Exception {
         String message = UUID.randomUUID().toString();
 
         mvc.perform(post("/messages?message=" + message)).andExpect(status().isOk())
-            .andExpect(content().string(message));
+           .andExpect(content().string(message));
 
         String messageReceivedLog = String.format("[1] New message received: '%s'", message);
         String messageCheckpointedLog = String.format("[1] Message '%s' successfully checkpointed", message);
@@ -64,11 +62,11 @@ public class EventHubMultiBindersApplicationIT {
     }
 
     @Test
-    public void testSendAndReceiveMessage_2() throws Exception {
+    public void testSendAndReceiveMessage_2(CapturedOutput capture) throws Exception {
         String message = UUID.randomUUID().toString();
 
         mvc.perform(post("/messages1?message=" + message)).andExpect(status().isOk())
-            .andExpect(content().string(message));
+           .andExpect(content().string(message));
 
         String messageReceivedLog = String.format("[2] New message received: '%s'", message);
         String messageCheckpointedLog = String.format("[2] Message '%s' successfully checkpointed", message);

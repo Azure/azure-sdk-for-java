@@ -4,8 +4,8 @@
 package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.AbstractInboundChannelAdapter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -17,44 +17,18 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannelAdapter> {
 
-    protected String destination = "dest";
-    protected String consumerGroup = "group";
     protected A adapter;
-    private String[] payloads = {"payload1", "payload2"};
-    private List<Message<?>> messages =
-        Arrays.stream(payloads).map(p -> MessageBuilder.withPayload(p).build()).collect(Collectors.toList());
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public String getConsumerGroup() {
-        return consumerGroup;
-    }
-
-    public void setConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-    }
-
-    public A getAdapter() {
-        return adapter;
-    }
-
-    public void setAdapter(A adapter) {
-        this.adapter = adapter;
-    }
-
-    @Before
-    public abstract void setUp();
+    protected String consumerGroup = "group";
+    protected String destination = "dest";
+    private String[] payloads = { "payload1", "payload2" };
+    private List<Message<?>> messages = Arrays.stream(payloads)
+                                              .map(p -> MessageBuilder.withPayload(p).build())
+                                              .collect(Collectors.toList());
 
     @Test
     public void sendAndReceive() throws InterruptedException {
@@ -75,10 +49,37 @@ public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannel
         });
 
         this.messages.forEach(this.adapter::receiveMessage);
-        assertTrue("Failed to receive message", latch.await(5L, TimeUnit.SECONDS));
+        assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
         for (int i = 0; i < receivedMessages.size(); i++) {
             assertEquals(receivedMessages.get(i), payloads[i]);
         }
+    }
+
+    @BeforeEach
+    public abstract void setUp();
+
+    public A getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(A adapter) {
+        this.adapter = adapter;
+    }
+
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    public void setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }
