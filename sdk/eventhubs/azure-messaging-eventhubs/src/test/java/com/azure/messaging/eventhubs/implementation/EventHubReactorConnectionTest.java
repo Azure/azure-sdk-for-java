@@ -115,8 +115,9 @@ public class EventHubReactorConnectionTest {
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
-            scheduler, clientOptions, SslDomain.VerifyMode.VERIFY_PEER_NAME, "product-test",
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy, scheduler, clientOptions,
+            SslDomain.VerifyMode.VERIFY_PEER_NAME, "product-test",
             "client-test-version");
         final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, ConnectionHandler.AMQPS_PORT);
 
