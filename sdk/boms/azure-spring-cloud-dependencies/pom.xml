@@ -46,7 +46,7 @@
     <azure.spring.cloud.version>${project.version}</azure.spring.cloud.version>
     <azure.spring.identity.version>1.5.0</azure.spring.identity.version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;dependency} -->
     <azure.spring.appconfigure.version>1.3.0</azure.spring.appconfigure.version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;dependency} -->
-    <azure.core.version>1.16.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    <azure.core.version>1.17.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     <azure.eventhub.version>5.7.1</azure.eventhub.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     <azure.eventhub.checkpoint.version>1.7.1</azure.eventhub.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     <azure.servicebus.version>3.6.1</azure.servicebus.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
