@@ -33,9 +33,6 @@ steps:
   parameters:
     ArtifactDirectory: $(Artifacts)
 
-- publish: $(Artifacts)
-  artifact: packages-signed
-
 - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 - template: /eng/pipelines/templates/steps/java-publishing.yml
   parameters:
@@ -44,3 +41,6 @@ steps:
     BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
     JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
     StageOnly: $(StageOnly)
+
+- publish: $(Artifacts)
+  artifact: packages-signed
