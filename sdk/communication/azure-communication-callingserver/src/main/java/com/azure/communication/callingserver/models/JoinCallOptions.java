@@ -3,8 +3,6 @@
 
 package com.azure.communication.callingserver.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,13 +25,13 @@ public final class JoinCallOptions {
      * The requested modalities.
      */
     @JsonProperty(value = "requestedModalities", required = true)
-    private List<CallModality> requestedModalities;
+    private CallModality[] requestedModalities;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents", required = true)
-    private List<EventSubscriptionType> requestedCallEvents;
+    private EventSubscriptionType[] requestedCallEvents;
 
     /**
      * Get the subject property: The subject.
@@ -48,7 +46,7 @@ public final class JoinCallOptions {
      * Set the subject property: The subject.
      *
      * @param subject the subject value to set.
-     * @return the JoinCallRequest object itself.
+     * @return the JoinCallOptions object itself.
      */
     public JoinCallOptions setSubject(String subject) {
         this.subject = subject;
@@ -68,7 +66,7 @@ public final class JoinCallOptions {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the JoinCallRequest object itself.
+     * @return the JoinCallOptions object itself.
      */
     public JoinCallOptions setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
@@ -80,18 +78,24 @@ public final class JoinCallOptions {
      *
      * @return the requestedModalities value.
      */
-    public List<CallModality> getRequestedModalities() {
-        return this.requestedModalities;
+    public CallModality[] getRequestedModalities() {
+        if (this.requestedModalities == null) {
+            return new CallModality[0];
+        }
+        CallModality[] requestedModalities = new CallModality[this.requestedModalities.length];
+        System.arraycopy(this.requestedModalities, 0, requestedModalities, 0, this.requestedModalities.length);
+        return requestedModalities;
     }
 
     /**
      * Set the requestedModalities property: The requested modalities.
      *
      * @param requestedModalities the requestedModalities value to set.
-     * @return the JoinCallRequest object itself.
+     * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedModalities(List<CallModality> requestedModalities) {
-        this.requestedModalities = requestedModalities;
+    public JoinCallOptions setRequestedModalities(CallModality[] requestedModalities) {
+        this.requestedModalities = new CallModality[requestedModalities.length];
+        System.arraycopy(requestedModalities, 0, this.requestedModalities, 0, requestedModalities.length);
         return this;
     }
 
@@ -101,8 +105,13 @@ public final class JoinCallOptions {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
-        return this.requestedCallEvents;
+    public EventSubscriptionType[] getRequestedCallEvents() {
+        if (this.requestedCallEvents == null) {
+            return new EventSubscriptionType[0];
+        }
+        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[this.requestedCallEvents.length];
+        System.arraycopy(this.requestedCallEvents, 0, requestedCallEvents, 0, this.requestedCallEvents.length);
+        return requestedCallEvents;
     }
 
     /**
@@ -110,10 +119,11 @@ public final class JoinCallOptions {
      * to.
      *
      * @param requestedCallEvents the requestedCallEvents value to set.
-     * @return the JoinCallRequest object itself.
+     * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
-        this.requestedCallEvents = requestedCallEvents;
+    public JoinCallOptions setRequestedCallEvents(EventSubscriptionType[] requestedCallEvents) {
+        this.requestedCallEvents = new EventSubscriptionType[requestedCallEvents.length];
+        System.arraycopy(requestedCallEvents, 0, this.requestedCallEvents, 0, requestedCallEvents.length);
         return this;
     }
 }

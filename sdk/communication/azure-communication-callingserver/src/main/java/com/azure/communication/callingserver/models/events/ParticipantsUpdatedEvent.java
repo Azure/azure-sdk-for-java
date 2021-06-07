@@ -7,15 +7,13 @@ import com.azure.communication.callingserver.implementation.converters.Communica
 import com.azure.communication.callingserver.implementation.models.CommunicationParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
 import com.azure.communication.callingserver.models.CommunicationParticipant;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.BinaryData;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The invited participants result event.
+ * The participants updated event.
  */
 public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
@@ -29,9 +27,9 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     private String callLegId;
 
     /**
-     * The list of participants.
+     * The participants.
      */
-    private List<CommunicationParticipant> participants;
+    private CommunicationParticipant[] participants;
 
     /**
      * Get the call leg Id.
@@ -54,22 +52,25 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Get the list of participants.
-     * 
+     * Get the participants.
+     *
      * @return the result info value.
      */
-    public List<CommunicationParticipant> getParticipants() {
-        return this.participants;
+    public CommunicationParticipant[] getParticipants() {
+        CommunicationParticipant[] participants = new CommunicationParticipant[this.participants.length];
+        System.arraycopy(this.participants, 0, participants, 0, this.participants.length);
+        return participants;
     }
 
     /**
-     * Set the list of participants.
-     * 
+     * Set the participants.
+     *
      * @param participants the list of participants.
      * @return the ParticipantsUpdatedEvent object itself.
      */
-    public ParticipantsUpdatedEvent setParticipants(List<CommunicationParticipant> participants) {
-        this.participants = participants;
+    public ParticipantsUpdatedEvent setParticipants(CommunicationParticipant[] participants) {
+        this.participants = new CommunicationParticipant[participants.length];
+        System.arraycopy(participants, 0, this.participants, 0, participants.length);
         return this;
     }
 
@@ -82,12 +83,12 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
 
     /**
      * Initializes a new instance of ParticipantsUpdatedEvent.
-     * 
+     *
      * @param callLegId The call leg id.
      * @param participants The conversation id.
      * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ParticipantsUpdatedEvent(String callLegId, Iterable<CommunicationParticipant> participants) {
+    public ParticipantsUpdatedEvent(String callLegId, CommunicationParticipant[] participants) {
         if (callLegId == null || callLegId.isEmpty()) {
             throw new IllegalArgumentException("object callLegId cannot be null or empty");
         }
@@ -96,18 +97,14 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
         }
 
         this.callLegId = callLegId;
-        this.participants = new ArrayList<>();
 
-        participants.forEach(this.participants::add);
-        if (this.participants.size() == 0) {
-            throw new IllegalArgumentException(
-                    String.format("object '%s' cannot be empty", participants.getClass().getName()));
-        }
+        this.participants = new CommunicationParticipant[participants.length];
+        System.arraycopy(participants, 0, this.participants, 0, participants.length);
     }
 
     /**
      * Deserialize {@link ParticipantsUpdatedEvent} event.
-     * 
+     *
      * @param eventData binary data for event
      * @return {@link ParticipantsUpdatedEvent} event.
      */
@@ -118,11 +115,13 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
         ParticipantsUpdatedEventInternal internalEvent = eventData.toObject(ParticipantsUpdatedEventInternal.class);
         List<CommunicationParticipant> participants = new LinkedList<>();
         for (CommunicationParticipantInternal communicationParticipantInternal : internalEvent.getParticipants()) {
-            CommunicationIdentifier communicationIdentifier = CommunicationIdentifierConverter.convert(communicationParticipantInternal.getIdentifier());
-            CommunicationParticipant communicationParticipant = new CommunicationParticipant(communicationIdentifier, communicationParticipantInternal.getParticipantId(), communicationParticipantInternal.isMuted());
-            participants.add(communicationParticipant);
+            participants.add(
+                new CommunicationParticipant(
+                    CommunicationIdentifierConverter.convert(communicationParticipantInternal.getIdentifier()),
+                    communicationParticipantInternal.getParticipantId(),
+                    communicationParticipantInternal.isMuted()));
         }
-        ParticipantsUpdatedEvent event = new ParticipantsUpdatedEvent(internalEvent.getCallLegId(), participants);
-        return event;
+        return new ParticipantsUpdatedEvent(internalEvent.getCallLegId(),
+            participants.toArray(new CommunicationParticipant[participants.size()]));
     }
 }

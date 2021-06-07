@@ -4,25 +4,39 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.models.CallState;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The call leg state change event.
- */
+/** The call state change event. */
+@Fluent
 public final class CallLegStateChangedEvent extends CallingServerEventBase {
     /**
      * The event type.
      */
     public static final String EVENT_TYPE = "Microsoft.Communication.CallLegStateChanged";
 
-    /**
-     * The conversation id.
+    /*
+     * The conversation.id.
      */
+    @JsonProperty(value = "conversationId")
     private String conversationId;
 
+    /*
+     * The call leg.id.
+     */
+    @JsonProperty(value = "callLegId")
+    private String callLegId;
+
+    /*
+     * The call state.
+     */
+    @JsonProperty(value = "callState")
+    private CallState callState;
+
     /**
-     * Get the conversation id.
-     * 
+     * Get the conversationId property: The conversation.id.
+     *
      * @return the conversationId value.
      */
     public String getConversationId() {
@@ -30,9 +44,9 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the subject.
+     * Set the conversationId property: The conversation.id.
      *
-     * @param conversationId the conversation id.
+     * @param conversationId the conversationId value to set.
      * @return the CallLegStateChangedEvent object itself.
      */
     public CallLegStateChangedEvent setConversationId(String conversationId) {
@@ -41,23 +55,18 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
     }
 
     /**
-     * The call leg.id.
-     */
-    private String callLegId;
-
-    /**
-     * Get the call leg id.
+     * Get the callLegId property: The call leg.id.
      *
-     * @return the call leg id value.
+     * @return the callLegId value.
      */
     public String getCallLegId() {
         return this.callLegId;
     }
 
     /**
-     * Set the subject.
+     * Set the callLegId property: The call leg.id.
      *
-     * @param callLegId the call leg id.
+     * @param callLegId the callLegId value to set.
      * @return the CallLegStateChangedEvent object itself.
      */
     public CallLegStateChangedEvent setCallLegId(String callLegId) {
@@ -66,23 +75,18 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
     }
 
     /**
-     * The call state.
-     */
-    private CallState callState;
-
-    /**
-     * Get the call state.
+     * Get the callState property: The call state.
      *
-     * @return the call state value.
+     * @return the callState value.
      */
     public CallState getCallState() {
         return this.callState;
     }
 
     /**
-     * Set the call state.
+     * Set the callState property: The call state.
      *
-     * @param callState the call state.
+     * @param callState the callState value to set.
      * @return the CallLegStateChangedEvent object itself.
      */
     public CallLegStateChangedEvent setCallState(CallState callState) {
@@ -91,45 +95,12 @@ public final class CallLegStateChangedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Initializes a new instance of CallLegStateChangedEvent.
-     */
-    public CallLegStateChangedEvent() {
-
-    }
-
-    /**
-     * Initializes a new instance of CallLegStateChangedEvent.
-     * 
-     * @param conversationId The conversation id.
-     * @param callLegId The call leg id.
-     * @param callState The call state.
-     * @throws IllegalArgumentException if any parameter is null or empty.
-     */
-    public CallLegStateChangedEvent(String conversationId, String callLegId, CallState callState) {
-        if (conversationId == null || conversationId.isEmpty()) {
-            throw new IllegalArgumentException("object conversationId cannot be null or empty");
-        }
-        if (callLegId == null || callLegId.isEmpty()) {
-            throw new IllegalArgumentException("object callLegId cannot be null or empty");
-        }
-        if (callState == null) {
-            throw new IllegalArgumentException("object callState cannot be null");
-        }
-        this.conversationId = conversationId;
-        this.callLegId = callLegId;
-        this.callState = callState;
-    }
-
-    /**
      * Deserialize {@link CallLegStateChangedEvent} event.
-     * 
+     *
      * @param eventData binary data for event
      * @return {@link CallLegStateChangedEvent} event.
      */
     public static CallLegStateChangedEvent deserialize(BinaryData eventData) {
-        if (eventData == null) {
-            return null;
-        }
-        return eventData.toObject(CallLegStateChangedEvent.class);
+        return eventData == null ? null : eventData.toObject(CallLegStateChangedEvent.class);
     }
 }
