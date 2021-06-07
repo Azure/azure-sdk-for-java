@@ -14,7 +14,7 @@ import java.util.LinkedList;
 /**
  * A converter for {@link InviteParticipantsRequest}
  */
-public final class InviteParticipantsConverter {
+public final class AddParticipantConverter {
     /**
      * Maps to {@link InviteParticipantsRequest}.
      */
@@ -35,6 +35,6 @@ public final class InviteParticipantsConverter {
         return inviteParticipantsRequest;
     }
 
-    private InviteParticipantsConverter() {
+    private AddParticipantConverter() {
     }
 }

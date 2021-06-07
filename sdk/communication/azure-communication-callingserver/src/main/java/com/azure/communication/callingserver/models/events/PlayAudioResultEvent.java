@@ -12,10 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The play audio result event. */
 @Fluent
 public final class PlayAudioResultEvent extends CallingServerEventBase {
-    /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.PlayAudioResult";
     /*
      * The result details.
      */

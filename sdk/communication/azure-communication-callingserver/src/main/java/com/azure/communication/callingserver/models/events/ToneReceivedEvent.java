@@ -11,10 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The subscribe to tone event. */
 @Fluent
 public final class ToneReceivedEvent extends CallingServerEventBase {
-    /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.DtmfReceived";
     /*
      * The tone info.
      */

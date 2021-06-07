@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.CallsImpl;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.InviteParticipantsConverter;
+import com.azure.communication.callingserver.implementation.converters.AddParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
@@ -116,7 +116,9 @@ public final class CallAsyncClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri call back uri to receive notifications.
@@ -145,7 +147,9 @@ public final class CallAsyncClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @return the response payload for play audio operation.
      */
@@ -180,7 +184,9 @@ public final class CallAsyncClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+      *                     audio prompts are supported. More specifically, the audio content in the wave file must
+      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri call back uri to receive notifications.
@@ -203,7 +209,9 @@ public final class CallAsyncClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @return the response payload for play audio operation.
      */
@@ -310,7 +318,7 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Cancel Media Operations.
+     * Cancel all media operations in the call.
      *
      * @param callId The call leg id.
      * @param operationContext operationContext
@@ -332,7 +340,7 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Cancel Media Operations.
+     * Cancel all media operations in the call.
      *
      * @param callId The call leg id.
      * @param operationContext operationContext
@@ -363,13 +371,13 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Invite Participats to a Call.
+     * Add a participant to the call.
      *
      * @param callId Call id.
      * @param participant Invited participant.
-     * @param alternateCallerId of the Invited participant.
+     * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
-     * @return response for a successful inviteParticipants request.
+     * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addParticipant(String callId,
@@ -379,7 +387,7 @@ public final class CallAsyncClient {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(participant, "'request' cannot be null.");
-            InviteParticipantsRequest request = InviteParticipantsConverter.convert(participant,
+            InviteParticipantsRequest request = AddParticipantConverter.convert(participant,
                 alternateCallerId,
                 operationContext,
                 null);
@@ -390,13 +398,13 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Invite Participats to a Call.
+     * Add a participant to the call.
      *
      * @param callId Call id.
      * @param participant Invited participant.
-     * @param alternateCallerId of the Invited participant.
+     * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
-     * @return response for a successful inviteParticipants request.
+     * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addParticipantWithResponse(String callId,
@@ -418,7 +426,7 @@ public final class CallAsyncClient {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(participant, "'participant' cannot be null.");
-            InviteParticipantsRequest request = InviteParticipantsConverter.convert(participant, alternateCallerId, operationContext, null);
+            InviteParticipantsRequest request = AddParticipantConverter.convert(participant, alternateCallerId, operationContext, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return this.callClient.inviteParticipantsWithResponseAsync(callId, request, contextValue);
@@ -429,7 +437,7 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Remove participant from the call.
+     * Remove a participant from the call.
      *
      * @param callId Call id.
      * @param participantId Participant id.
@@ -447,7 +455,7 @@ public final class CallAsyncClient {
     }
 
     /**
-     * Remove participant from the call.
+     * Remove a participant from the call.
      *
      * @param callId Call id.
      * @param participantId Participant id.

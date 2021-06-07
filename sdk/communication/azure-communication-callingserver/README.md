@@ -51,7 +51,7 @@ Once you initialized a `CallClient` class, you can do the following chat operati
 String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 
 // Your connectionString retrieved from your Azure Communication Service
-String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
 
 // Initialize the call client
 final CallClientBuilder builder = new CallClientBuilder();
