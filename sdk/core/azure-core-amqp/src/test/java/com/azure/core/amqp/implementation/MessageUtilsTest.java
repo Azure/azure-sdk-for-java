@@ -17,11 +17,18 @@ import com.azure.core.amqp.models.ModifiedDeliveryOutcome;
 import com.azure.core.amqp.models.ReceivedDeliveryOutcome;
 import com.azure.core.amqp.models.RejectedDeliveryOutcome;
 import com.azure.core.amqp.models.TransactionalDeliveryOutcome;
+import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedByte;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Footer;
 import org.apache.qpid.proton.amqp.messaging.Header;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Properties;
@@ -98,6 +105,85 @@ public class MessageUtilsTest {
      */
     public static Stream<AmqpMessageBodyType> getUnsupportedMessageBody() {
         return Stream.of(AmqpMessageBodyType.VALUE, AmqpMessageBodyType.SEQUENCE);
+    }
+
+    /**
+     * Converts from a proton-j message to an AMQP annotated message.
+     */
+    @Test
+    public void toAmqpAnnotatedMessage() {
+        final byte[] contents = "foo-bar".getBytes(StandardCharsets.UTF_8);
+        final Data body = new Data(Binary.create(ByteBuffer.wrap(contents)));
+
+        final Header header = new Header();
+        header.setDurable(true);
+        header.setDeliveryCount(new UnsignedInteger(17));
+        header.setPriority(new UnsignedByte((byte) 2));
+        header.setFirstAcquirer(false);
+        header.setTtl(new UnsignedInteger(10));
+        final String messageId = "Test-message-id";
+        final String correlationId = "correlation-id-test";
+        final byte[] userId = "baz".getBytes(StandardCharsets.UTF_8);
+        final Properties properties = new Properties();
+
+        final OffsetDateTime absoluteDate = OffsetDateTime.parse("2021-02-04T10:15:30+00:00");
+        properties.setAbsoluteExpiryTime(Date.from(absoluteDate.toInstant()));
+        properties.setContentEncoding(Symbol.valueOf("content-encoding-test"));
+        properties.setContentType(Symbol.valueOf("content-type-test"));
+        properties.setCorrelationId(correlationId);
+
+        final OffsetDateTime creationTime = OffsetDateTime.parse("2021-02-03T10:15:30+00:00");
+        properties.setCreationTime(Date.from(creationTime.toInstant()));
+        properties.setGroupId("group-id-test");
+        properties.setGroupSequence(new UnsignedInteger(16));
+        properties.setMessageId(messageId);
+        properties.setReplyToGroupId("reply-to-group-id-test");
+        properties.setReplyTo("foo");
+        properties.setTo("bar");
+        properties.setSubject("subject-item");
+        properties.setUserId(Binary.create(ByteBuffer.wrap(userId)));
+
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put("1", "one");
+        applicationProperties.put("two", 2);
+
+        final Map<Symbol, Object> deliveryAnnotations = new HashMap<>();
+        deliveryAnnotations.put(Symbol.valueOf("delivery1"), 1);
+        deliveryAnnotations.put(Symbol.valueOf("delivery2"), 2);
+
+        final Map<Symbol, Object> messageAnnotations = new HashMap<>();
+        messageAnnotations.put(Symbol.valueOf("something"), "else");
+
+        final Map<Symbol, Object> footer = new HashMap<>();
+        footer.put(Symbol.valueOf("1"), false);
+
+        final Message message = Proton.message();
+        message.setBody(body);
+        message.setHeader(header);
+        message.setProperties(properties);
+        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
+        message.setMessageAnnotations(new MessageAnnotations(messageAnnotations));
+        message.setDeliveryAnnotations(new DeliveryAnnotations(deliveryAnnotations));
+        message.setFooter(new Footer(footer));
+
+        // Act
+        final AmqpAnnotatedMessage actual = MessageUtils.toAmqpAnnotatedMessage(message);
+
+        // Assert
+        assertNotNull(actual);
+        assertNotNull(actual.getBody());
+        assertArrayEquals(contents, actual.getBody().getFirstData());
+
+        assertHeader(actual.getHeader(), header);
+        assertProperties(actual.getProperties(), properties);
+
+        assertNotNull(actual.getApplicationProperties());
+        assertEquals(applicationProperties.size(), actual.getApplicationProperties().size());
+        applicationProperties.forEach((key, value) -> assertEquals(value, actual.getApplicationProperties().get(key)));
+
+        assertSymbolMap(deliveryAnnotations, actual.getDeliveryAnnotations());
+        assertSymbolMap(messageAnnotations, actual.getMessageAnnotations());
+        assertSymbolMap(footer, actual.getFooter());
     }
 
     /**
@@ -738,21 +824,6 @@ public class MessageUtilsTest {
 
         @SuppressWarnings("unchecked") final Map<Symbol, Object> actualMap = protonJModified.getMessageAnnotations();
         assertSymbolMap(actualMap, modified.getMessageAnnotations());
-    }
-
-    private static void assertMap(Map<String, Object> expected, Map<String, Object> actual) {
-        if (expected == null) {
-            assertNull(actual);
-            return;
-        }
-
-        assertNotNull(actual);
-        assertEquals(expected.size(), actual.size());
-
-        expected.forEach((key, value) -> {
-            assertTrue(actual.containsKey(key));
-            assertEquals(value, actual.get(key));
-        });
     }
 
     private static void assertSymbolMap(Map<Symbol, Object> symbolMap, Map<String, Object> stringMap) {
