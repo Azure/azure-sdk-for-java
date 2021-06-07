@@ -15,6 +15,7 @@
 ### Breaking Changes
 - Removed `EXPORT` from the `KeyOperation` enum.
 - Re-ordered parameters in the `EncryptResult` constructor to show `authenticationTag` before `additionalAuthenticatedData` to align with classes like `DecryptParameters`.
+- Removed service method overloads that take a `pollingDuration`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
 
 ### Non-Breaking Changes
 - Renamed `keyId` to `sourceId` in `KeyVaultKeyIdentifier`.
