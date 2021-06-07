@@ -20,6 +20,7 @@ import com.azure.core.amqp.models.TransactionalDeliveryOutcome;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Header;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
@@ -31,6 +32,7 @@ import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,6 +40,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -102,7 +105,72 @@ public class MessageUtilsTest {
      */
     @Test
     public void toProtonJMessage() {
+        // Arrange
+        final byte[] contents = "foo-bar".getBytes(StandardCharsets.UTF_8);
+        final AmqpMessageBody body = AmqpMessageBody.fromData(contents);
+        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(body);
+        final AmqpMessageHeader header = expected.getHeader().setDurable(true)
+            .setDeliveryCount(17L)
+            .setPriority((short) 2)
+            .setFirstAcquirer(false)
+            .setTimeToLive(Duration.ofSeconds(10));
+        final String messageId = "Test-message-id";
+        final AmqpMessageId amqpMessageId = new AmqpMessageId(messageId);
+        final AmqpMessageId correlationId = new AmqpMessageId("correlation-id-test");
+        final AmqpAddress replyTo = new AmqpAddress("foo");
+        final AmqpAddress to = new AmqpAddress("bar");
+        final byte[] userId = "baz".getBytes(StandardCharsets.UTF_8);
+        final AmqpMessageProperties properties = expected.getProperties()
+            .setAbsoluteExpiryTime(OffsetDateTime.parse("2021-02-04T10:15:30+00:00"))
+            .setContentEncoding("content-encoding-test")
+            .setContentType("content-type-test")
+            .setCorrelationId(correlationId)
+            .setCreationTime(OffsetDateTime.parse("2021-02-03T10:15:30+00:00"))
+            .setGroupId("group-id-test")
+            .setGroupSequence(22L)
+            .setMessageId(amqpMessageId)
+            .setReplyToGroupId("reply-to-group-id-test")
+            .setReplyTo(replyTo)
+            .setTo(to)
+            .setSubject("subject-item")
+            .setUserId(userId);
 
+        final Map<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put("1", "one");
+        applicationProperties.put("two", 2);
+
+        applicationProperties.forEach((key, value) ->
+            expected.getApplicationProperties().put(key, value));
+
+        final Map<String, Object> deliveryAnnotations = new HashMap<>();
+        deliveryAnnotations.put("delivery1", 1);
+        deliveryAnnotations.put("delivery2", 2);
+
+        deliveryAnnotations.forEach((key, value) -> expected.getDeliveryAnnotations().put(key, value));
+
+        final Map<String, Object> messageAnnotations = new HashMap<>();
+        messageAnnotations.put("something", "else");
+
+        messageAnnotations.forEach((key, value) -> expected.getMessageAnnotations().put(key, value));
+
+        final Map<String, Object> footer = new HashMap<>();
+        footer.put("1", false);
+
+        footer.forEach((key, value) -> expected.getFooter().put(key, value));
+
+        // Act
+        final Message actual = MessageUtils.toProtonJMessage(expected);
+
+        // Assert
+        assertNotNull(actual);
+
+        assertTrue(actual.getBody() instanceof Data);
+
+        final Data dataBody = (Data) actual.getBody();
+        assertArrayEquals(body.getFirstData(), dataBody.getValue().getArray());
+
+        assertHeader(header, actual.getHeader());
+        assertProperties(properties, actual.getProperties());
     }
 
     /**
@@ -654,8 +722,8 @@ public class MessageUtilsTest {
         assertNotNull(protonJRejected.getError());
         assertEquals(expectedCondition.getErrorCondition(), protonJRejected.getError().getCondition().toString());
 
-        @SuppressWarnings("unchecked") final Map<String, Object> actualMap = protonJRejected.getError().getInfo();
-        assertMap(rejected.getErrorInfo(), actualMap);
+        @SuppressWarnings("unchecked") final Map<Symbol, Object> actualMap = protonJRejected.getError().getInfo();
+        assertSymbolMap(actualMap, rejected.getErrorInfo());
     }
 
     private static void assertModified(ModifiedDeliveryOutcome modified, Modified protonJModified) {
@@ -668,11 +736,11 @@ public class MessageUtilsTest {
         assertEquals(modified.isDeliveryFailed(), protonJModified.getDeliveryFailed());
         assertEquals(modified.isUndeliverableHere(), protonJModified.getUndeliverableHere());
 
-        @SuppressWarnings("unchecked") final Map<String, Object> actualMap = protonJModified.getMessageAnnotations();
-        assertMap(modified.getMessageAnnotations(), actualMap);
+        @SuppressWarnings("unchecked") final Map<Symbol, Object> actualMap = protonJModified.getMessageAnnotations();
+        assertSymbolMap(actualMap, modified.getMessageAnnotations());
     }
 
-    private static <T> void assertMap(Map<T, Object> expected, Map<T, Object> actual) {
+    private static void assertMap(Map<String, Object> expected, Map<String, Object> actual) {
         if (expected == null) {
             assertNull(actual);
             return;
@@ -765,7 +833,7 @@ public class MessageUtilsTest {
         }
 
         assertNotNull(id);
-        assertEquals(amqpMessageId.toString(), id);
+        assertEquals(amqpMessageId.toString(), id.toString());
     }
 
     private static void assertDate(OffsetDateTime offsetDateTime, Date date) {
