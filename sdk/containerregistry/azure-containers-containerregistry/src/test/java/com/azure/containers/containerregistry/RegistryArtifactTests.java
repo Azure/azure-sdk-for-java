@@ -93,7 +93,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
     @MethodSource("getHttpClients")
     public void delete(HttpClient httpClient) {
         client = getRegistryArtifactClient(httpClient, V4_TAG_NAME);
-        String digest = getChildArtifactDigest(client.getManifestProperties().getManifestReferences());
+        String digest = getChildArtifactDigest(client.getManifestProperties().getRelatedArtifacts());
 
         asyncClient = getRegistryArtifactAsyncClient(httpClient, digest);
 
@@ -209,7 +209,7 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
     public void deleteFromRecordFile() {
         recordFileName = "RegistryArtifactTests.delete[1].json";
         client = getRegistryArtifactClient(V4_TAG_NAME);
-        String digest = getChildArtifactDigest(client.getManifestProperties().getManifestReferences());
+        String digest = getChildArtifactDigest(client.getManifestProperties().getRelatedArtifacts());
 
         asyncClient = getRegistryArtifactAsyncClient(digest);
         client = getRegistryArtifactClient(digest);

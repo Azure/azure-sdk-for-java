@@ -15,6 +15,7 @@ public final class Constants {
     public static final String DEFAULT_REPOSITORY_IMPLEMENT_POSTFIX = "Impl";
     public static final int DEFAULT_TIME_TO_LIVE = -1; // Indicates never expire
     public static final boolean DEFAULT_AUTO_CREATE_CONTAINER = true;
+    public static final boolean DEFAULT_AUTO_SCALE = false;
 
     public static final String ID_PROPERTY_NAME = "id";
     public static final String ETAG_PROPERTY_DEFAULT_NAME = "_etag";

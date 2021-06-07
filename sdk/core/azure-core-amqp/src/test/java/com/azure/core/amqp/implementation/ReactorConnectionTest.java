@@ -13,6 +13,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
@@ -32,7 +33,13 @@ import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -673,12 +680,12 @@ class ReactorConnectionTest {
         connection2.getReactorConnection().subscribe();
 
         // Act and Assert
-        StepVerifier.create(connection2.dispose(signal))
+        StepVerifier.create(connection2.closeAsync(signal))
             .verifyComplete();
 
         assertTrue(connection2.isDisposed());
 
-        StepVerifier.create(connection2.dispose(signal))
+        StepVerifier.create(connection2.closeAsync(signal))
             .verifyComplete();
     }
 

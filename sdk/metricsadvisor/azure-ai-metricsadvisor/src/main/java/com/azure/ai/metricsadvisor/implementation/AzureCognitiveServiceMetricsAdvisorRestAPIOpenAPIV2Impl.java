@@ -58,10 +58,10 @@ import com.azure.ai.metricsadvisor.implementation.models.RootCauseList;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesResultList;
 import com.azure.ai.metricsadvisor.implementation.models.UsageStats;
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -195,13 +195,13 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     private interface AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service {
         @Get("/stats/latest")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<UsageStats>> getActiveSeriesCount(
                 @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -210,7 +210,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Patch("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyAlertingConfiguration>> updateAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -220,7 +220,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Delete("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> deleteAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -229,7 +229,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/alert/anomaly/configurations")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateAnomalyAlertingConfigurationResponse> createAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") AnomalyAlertingConfiguration body,
@@ -238,7 +238,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/alert/anomaly/configurations/{configurationId}/alerts/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AlertResultList>> getAlertsByAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -250,7 +250,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/anomalies")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesFromAlertByAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -262,7 +262,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/incidents")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsFromAlertByAnomalyAlertingConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -274,7 +274,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfiguration>> getAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -283,7 +283,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Patch("/enrichment/anomalyDetection/configurations/{configurationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfiguration>> updateAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -293,7 +293,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Delete("/enrichment/anomalyDetection/configurations/{configurationId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> deleteAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -302,7 +302,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/enrichment/anomalyDetection/configurations")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") AnomalyDetectionConfiguration body,
@@ -311,7 +311,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}/alert/anomaly/configurations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyAlertingConfigurationList>>
                 getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
                         @HostParam("endpoint") String endpoint,
@@ -323,7 +323,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/series/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<SeriesResultList>> getSeriesByAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -333,7 +333,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesByAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -345,7 +345,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/dimension/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDimensionList>> getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -357,7 +357,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -368,7 +368,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNextPages(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -379,7 +379,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/{incidentId}/rootCause")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<RootCauseList>> getRootCauseOfIncidentByAnomalyDetectionConfiguration(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
@@ -389,7 +389,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/credentials")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateCredentialResponse> createCredential(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") DataSourceCredential body,
@@ -398,7 +398,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/credentials")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredentialList>> listCredentials(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("$skip") Integer skip,
@@ -408,7 +408,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Patch("/credentials/{credentialId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredential>> updateCredential(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("credentialId") UUID credentialId,
@@ -418,7 +418,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Delete("/credentials/{credentialId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> deleteCredential(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("credentialId") UUID credentialId,
@@ -427,7 +427,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/credentials/{credentialId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredential>> getCredential(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("credentialId") UUID credentialId,
@@ -436,7 +436,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/dataFeeds")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedList>> listDataFeeds(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("dataFeedName") String dataFeedName,
@@ -451,7 +451,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/dataFeeds")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateDataFeedResponse> createDataFeed(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") DataFeedDetail body,
@@ -460,7 +460,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedDetail>> getDataFeedById(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
@@ -469,7 +469,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Patch("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedDetail>> updateDataFeed(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
@@ -479,7 +479,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Delete("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> deleteDataFeed(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
@@ -488,7 +488,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/feedback/metric/{feedbackId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricFeedback>> getMetricFeedback(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("feedbackId") UUID feedbackId,
@@ -497,7 +497,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/feedback/metric/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricFeedbackList>> listMetricFeedbacks(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("$skip") Integer skip,
@@ -508,7 +508,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/feedback/metric")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateMetricFeedbackResponse> createMetricFeedback(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") MetricFeedback body,
@@ -517,7 +517,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/hooks")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookList>> listHooks(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("hookName") String hookName,
@@ -528,7 +528,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/hooks")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateHookResponse> createHook(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") HookInfo body,
@@ -537,7 +537,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/hooks/{hookId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookInfo>> getHook(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("hookId") UUID hookId,
@@ -546,7 +546,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Patch("/hooks/{hookId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookInfo>> updateHook(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("hookId") UUID hookId,
@@ -556,7 +556,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Delete("/hooks/{hookId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> deleteHook(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("hookId") UUID hookId,
@@ -565,7 +565,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/dataFeeds/{dataFeedId}/ingestionStatus/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IngestionStatusList>> getDataFeedIngestionStatus(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
@@ -577,7 +577,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/dataFeeds/{dataFeedId}/ingestionProgress/reset")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> resetDataFeedIngestionStatus(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
@@ -587,7 +587,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/dataFeeds/{dataFeedId}/ingestionProgress")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedIngestionProgress>> getIngestionProgress(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
@@ -596,7 +596,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/metrics/{metricId}/data/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricDataList>> getMetricData(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
@@ -606,7 +606,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/metrics/{metricId}/series/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricSeriesList>> getMetricSeries(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
@@ -618,7 +618,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/metrics/{metricId}/dimension/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricDimensionList>> getMetricDimension(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
@@ -630,7 +630,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("/metrics/{metricId}/enrichment/anomalyDetection/configurations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfigurationList>> getAnomalyDetectionConfigurationsByMetric(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
@@ -641,7 +641,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("/metrics/{metricId}/status/enrichment/anomalyDetection/query")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<EnrichmentStatusList>> getEnrichmentStatusByMetric(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
@@ -653,7 +653,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AlertResultList>> getAlertsByAnomalyAlertingConfigurationNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -663,7 +663,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesByAnomalyDetectionConfigurationNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -673,7 +673,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDimensionList>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -683,7 +683,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricFeedbackList>> listMetricFeedbacksNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -693,7 +693,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IngestionStatusList>> getDataFeedIngestionStatusNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -703,7 +703,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricSeriesList>> getMetricSeriesNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -713,7 +713,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricDimensionList>> getMetricDimensionNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -723,7 +723,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Post("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<EnrichmentStatusList>> getEnrichmentStatusByMetricNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -733,7 +733,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesFromAlertByAnomalyAlertingConfigurationNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -742,7 +742,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsFromAlertByAnomalyAlertingConfigurationNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -751,7 +751,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyAlertingConfigurationList>>
                 getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNext(
                         @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -761,7 +761,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -770,7 +770,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNextPagesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -779,7 +779,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredentialList>> listCredentialsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -788,7 +788,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedList>> listDataFeedsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -797,7 +797,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookList>> listHooksNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -806,7 +806,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorCodeException.class)
+        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfigurationList>> getAnomalyDetectionConfigurationsByMetricNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -817,7 +817,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     /**
      * Get latest usage stats.
      *
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest usage stats.
      */
@@ -832,7 +832,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest usage stats.
      */
@@ -845,7 +845,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     /**
      * Get latest usage stats.
      *
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest usage stats.
      */
@@ -867,7 +867,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest usage stats.
      */
@@ -887,7 +887,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     /**
      * Get latest usage stats.
      *
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest usage stats.
      */
@@ -901,7 +901,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return latest usage stats.
      */
@@ -915,7 +915,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -934,7 +934,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -950,7 +950,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -973,7 +973,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -996,7 +996,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1011,7 +1011,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1027,7 +1027,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param body anomaly alerting configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1048,7 +1048,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly alerting configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1065,7 +1065,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param body anomaly alerting configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1090,7 +1090,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly alerting configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1114,7 +1114,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param body anomaly alerting configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1131,7 +1131,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly alerting configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1146,7 +1146,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1165,7 +1165,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1181,7 +1181,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1197,7 +1197,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1212,7 +1212,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly alerting configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1226,7 +1226,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly alerting configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1240,7 +1240,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body anomaly alerting configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1258,7 +1258,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly alerting configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1274,7 +1274,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body anomaly alerting configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1290,7 +1290,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly alerting configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1305,7 +1305,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body anomaly alerting configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1319,7 +1319,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly alerting configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1337,7 +1337,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1369,7 +1369,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1398,7 +1398,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1419,7 +1419,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1441,7 +1441,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1461,7 +1461,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1480,7 +1480,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1518,7 +1518,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1547,7 +1547,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1570,7 +1570,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1592,7 +1592,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1612,7 +1612,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1632,7 +1632,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1670,7 +1670,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1699,7 +1699,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1722,7 +1722,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1744,7 +1744,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1764,7 +1764,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1781,7 +1781,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1800,7 +1800,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1816,7 +1816,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1839,7 +1839,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1862,7 +1862,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1877,7 +1877,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1893,7 +1893,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param body anomaly detection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1914,7 +1914,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly detection configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1931,7 +1931,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param body anomaly detection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1956,7 +1956,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly detection configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1980,7 +1980,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param body anomaly detection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1997,7 +1997,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly detection configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2012,7 +2012,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2031,7 +2031,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2047,7 +2047,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2063,7 +2063,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2078,7 +2078,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param configurationId anomaly detection configuration unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2092,7 +2092,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2106,7 +2106,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body anomaly detection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2124,7 +2124,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly detection configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2140,7 +2140,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body anomaly detection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2156,7 +2156,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly detection configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2171,7 +2171,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body anomaly detection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2185,7 +2185,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body anomaly detection configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2202,7 +2202,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2234,7 +2234,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2263,7 +2263,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2286,7 +2286,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2309,7 +2309,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2329,7 +2329,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2347,7 +2347,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param body query series detection result request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2368,7 +2368,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query series detection result request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2386,7 +2386,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param body query series detection result request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2411,7 +2411,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query series detection result request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2435,7 +2435,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param body query series detection result request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2451,7 +2451,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query series detection result request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2469,7 +2469,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2501,7 +2501,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2534,7 +2534,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2557,7 +2557,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2583,7 +2583,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2603,7 +2603,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2626,7 +2626,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2658,7 +2658,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2687,7 +2687,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2710,7 +2710,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2734,7 +2734,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2754,7 +2754,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2773,7 +2773,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query detection incident result request.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2804,7 +2804,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2832,7 +2832,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query detection incident result request.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2852,7 +2852,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2873,7 +2873,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query detection incident result request.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2892,7 +2892,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2910,7 +2910,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param token the token for getting the next page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2941,7 +2941,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param token the token for getting the next page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2969,7 +2969,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param token the token for getting the next page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2991,7 +2991,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param token the token for getting the next page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3012,7 +3012,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param token the token for getting the next page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3031,7 +3031,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param token the token for getting the next page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3049,7 +3049,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param incidentId incident id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3070,7 +3070,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param incidentId incident id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3088,7 +3088,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param incidentId incident id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3113,7 +3113,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param incidentId incident id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3138,7 +3138,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param configurationId anomaly detection configuration unique id.
      * @param incidentId incident id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3155,7 +3155,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param incidentId incident id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3172,7 +3172,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body Create data source credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3188,7 +3188,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Create data source credential request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3204,7 +3204,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body Create data source credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3219,7 +3219,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Create data source credential request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3233,7 +3233,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body Create data source credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3247,7 +3247,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Create data source credential request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3262,7 +3262,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3289,7 +3289,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3315,7 +3315,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3333,7 +3333,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3350,7 +3350,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3366,7 +3366,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3381,7 +3381,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param body Update data source credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3400,7 +3400,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Update data source credential request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3417,7 +3417,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param body Update data source credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3441,7 +3441,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Update data source credential request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3465,7 +3465,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param body Update data source credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3481,7 +3481,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Update data source credential request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3496,7 +3496,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param credentialId Data source credential unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3513,7 +3513,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3528,7 +3528,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param credentialId Data source credential unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3543,7 +3543,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3557,7 +3557,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param credentialId Data source credential unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3571,7 +3571,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3585,7 +3585,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param credentialId Data source credential unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data source credential.
      */
@@ -3602,7 +3602,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data source credential.
      */
@@ -3617,7 +3617,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param credentialId Data source credential unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data source credential.
      */
@@ -3640,7 +3640,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data source credential.
      */
@@ -3662,7 +3662,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param credentialId Data source credential unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data source credential.
      */
@@ -3677,7 +3677,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param credentialId Data source credential unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data source credential.
      */
@@ -3697,7 +3697,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3747,7 +3747,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3795,7 +3795,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3827,7 +3827,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3866,7 +3866,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3895,7 +3895,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3919,7 +3919,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body parameters to create a data feed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3935,7 +3935,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body parameters to create a data feed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3950,7 +3950,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body parameters to create a data feed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3965,7 +3965,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body parameters to create a data feed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3979,7 +3979,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body parameters to create a data feed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3993,7 +3993,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body parameters to create a data feed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4007,7 +4007,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data feed by its id.
      */
@@ -4024,7 +4024,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data feed by its id.
      */
@@ -4039,7 +4039,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data feed by its id.
      */
@@ -4062,7 +4062,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data feed by its id.
      */
@@ -4084,7 +4084,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data feed by its id.
      */
@@ -4099,7 +4099,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a data feed by its id.
      */
@@ -4114,7 +4114,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param body parameters to update a data feed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4132,7 +4132,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body parameters to update a data feed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4149,7 +4149,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param body parameters to update a data feed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4173,7 +4173,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body parameters to update a data feed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4196,7 +4196,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param body parameters to update a data feed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4212,7 +4212,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body parameters to update a data feed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4227,7 +4227,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4243,7 +4243,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4258,7 +4258,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4273,7 +4273,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4287,7 +4287,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4301,7 +4301,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4315,7 +4315,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param feedbackId the unique feedback ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a metric feedback by its id.
      */
@@ -4332,7 +4332,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param feedbackId the unique feedback ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a metric feedback by its id.
      */
@@ -4347,7 +4347,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param feedbackId the unique feedback ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a metric feedback by its id.
      */
@@ -4370,7 +4370,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param feedbackId the unique feedback ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a metric feedback by its id.
      */
@@ -4392,7 +4392,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param feedbackId the unique feedback ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a metric feedback by its id.
      */
@@ -4407,7 +4407,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param feedbackId the unique feedback ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a metric feedback by its id.
      */
@@ -4423,7 +4423,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4454,7 +4454,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4481,7 +4481,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4501,7 +4501,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4520,7 +4520,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4538,7 +4538,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4553,7 +4553,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body metric feedback.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4569,7 +4569,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body metric feedback.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4585,7 +4585,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body metric feedback.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4600,7 +4600,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body metric feedback.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4615,7 +4615,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body metric feedback.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4629,7 +4629,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body metric feedback.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4645,7 +4645,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4673,7 +4673,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4700,7 +4700,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4719,7 +4719,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4737,7 +4737,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4754,7 +4754,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4768,7 +4768,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body Create hook request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4784,7 +4784,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Create hook request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4799,7 +4799,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body Create hook request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4814,7 +4814,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Create hook request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4828,7 +4828,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param body Create hook request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4842,7 +4842,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Create hook request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4856,7 +4856,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param hookId Hook unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a hook by its id.
      */
@@ -4872,7 +4872,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a hook by its id.
      */
@@ -4887,7 +4887,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param hookId Hook unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a hook by its id.
      */
@@ -4910,7 +4910,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a hook by its id.
      */
@@ -4932,7 +4932,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param hookId Hook unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a hook by its id.
      */
@@ -4947,7 +4947,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a hook by its id.
      */
@@ -4962,7 +4962,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param body Update hook request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4979,7 +4979,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Update hook request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4995,7 +4995,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param body Update hook request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5019,7 +5019,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Update hook request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5042,7 +5042,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param body Update hook request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5058,7 +5058,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body Update hook request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5072,7 +5072,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param hookId Hook unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5088,7 +5088,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5103,7 +5103,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param hookId Hook unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5118,7 +5118,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5132,7 +5132,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param hookId Hook unique ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5146,7 +5146,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param hookId Hook unique ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5163,7 +5163,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -5195,7 +5195,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -5224,7 +5224,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -5245,7 +5245,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -5265,7 +5265,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -5284,7 +5284,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -5300,7 +5300,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param body The backfill time range.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5319,7 +5319,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body The backfill time range.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5336,7 +5336,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param body The backfill time range.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5353,7 +5353,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body The backfill time range.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5370,7 +5370,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param body The backfill time range.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5385,7 +5385,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body The backfill time range.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5400,7 +5400,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data last success ingestion job timestamp by data feed.
      */
@@ -5417,7 +5417,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data last success ingestion job timestamp by data feed.
      */
@@ -5433,7 +5433,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data last success ingestion job timestamp by data feed.
      */
@@ -5456,7 +5456,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data last success ingestion job timestamp by data feed.
      */
@@ -5478,7 +5478,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param dataFeedId The data feed unique id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data last success ingestion job timestamp by data feed.
      */
@@ -5493,7 +5493,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param dataFeedId The data feed unique id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data last success ingestion job timestamp by data feed.
      */
@@ -5508,7 +5508,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param metricId metric unique id.
      * @param body query time series data condition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return time series data from metric.
      */
@@ -5526,7 +5526,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query time series data condition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return time series data from metric.
      */
@@ -5543,7 +5543,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param metricId metric unique id.
      * @param body query time series data condition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return time series data from metric.
      */
@@ -5567,7 +5567,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query time series data condition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return time series data from metric.
      */
@@ -5590,7 +5590,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param metricId metric unique id.
      * @param body query time series data condition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return time series data from metric.
      */
@@ -5606,7 +5606,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query time series data condition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return time series data from metric.
      */
@@ -5624,7 +5624,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5656,7 +5656,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5684,7 +5684,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5705,7 +5705,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5725,7 +5725,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5744,7 +5744,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5762,7 +5762,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5794,7 +5794,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5822,7 +5822,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5843,7 +5843,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5863,7 +5863,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5882,7 +5882,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5899,7 +5899,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5930,7 +5930,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5958,7 +5958,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5978,7 +5978,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5997,7 +5997,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6015,7 +6015,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6034,7 +6034,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6066,7 +6066,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6095,7 +6095,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6116,7 +6116,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6136,7 +6136,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param skip for paging, skipped number.
      * @param maxpagesize the maximum number of items in one page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6155,7 +6155,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param maxpagesize the maximum number of items in one page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6171,7 +6171,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body query alerting result request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6201,7 +6201,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query alerting result request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6227,7 +6227,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body query detection anomaly result request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6257,7 +6257,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query detection anomaly result request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6284,7 +6284,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body query dimension values request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6314,7 +6314,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query dimension values request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6341,7 +6341,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body metric feedback filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6369,7 +6369,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body metric feedback filter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6395,7 +6395,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body The query time range.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -6425,7 +6425,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body The query time range.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data ingestion status by data feed.
      */
@@ -6451,7 +6451,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body filter to query series.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6479,7 +6479,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body filter to query series.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6505,7 +6505,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body query dimension option.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6533,7 +6533,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query dimension option.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6559,7 +6559,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink the next link.
      * @param body query options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6589,7 +6589,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param body query options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6614,7 +6614,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6643,7 +6643,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6669,7 +6669,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6698,7 +6698,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6724,7 +6724,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6753,7 +6753,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6780,7 +6780,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6809,7 +6809,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6834,7 +6834,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6863,7 +6863,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6889,7 +6889,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6915,7 +6915,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6940,7 +6940,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6965,7 +6965,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6989,7 +6989,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7014,7 +7014,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7038,7 +7038,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7067,7 +7067,7 @@ public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
