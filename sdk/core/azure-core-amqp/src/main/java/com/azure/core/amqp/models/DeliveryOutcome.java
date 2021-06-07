@@ -6,7 +6,9 @@ package com.azure.core.amqp.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * There are different outcomes accepted by the AMQP protocol layer.
+ * Outcomes accepted by the AMQP protocol layer. Some outcomes have metadata associated with them, such as {@link
+ * ModifiedDeliveryOutcome Modified} while others require only a {@link DeliveryState}. An outcome with no metadata is
+ * {@link DeliveryState#ACCEPTED}.
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-accepted">Delivery
  *     State: Accepted</a>
