@@ -16,9 +16,9 @@ import com.azure.communication.common.CommunicationIdentifier;
  * A converter between {@link JoinCallOptions} and
  * {@link JoinCallRequest}.
  */
-public final class JoinCallRequestConverter {
+public final class JoinCallConverter {
     /**
-     * Maps from {@Link com.azure.communication.callingserver.models.JoinCallRequest} to {@link JoinCallRequest}.
+     * Maps from {@Link JoinCallOptions} to {@link JoinCallRequest}.
      */
     public static JoinCallRequest convert(CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
         if (source == null) {
@@ -35,26 +35,24 @@ public final class JoinCallRequestConverter {
         joinCallRequest.setSubject(joinCallOptions.getSubject());
         joinCallRequest.setCallbackUri(joinCallOptions.getCallbackUri());
 
-        if (joinCallOptions.getRequestedModalities() != null) {
-            List<CallModality> requestedModalities = new ArrayList<>();
-            for (CallModality callModality : joinCallOptions.getRequestedModalities()) {
-                requestedModalities.add(callModality);
-            }
-            joinCallRequest.setRequestedModalities(requestedModalities);
-        }
 
-        if (joinCallOptions.getRequestedCallEvents() != null) {
-            List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
-            for (EventSubscriptionType eventSubscription : joinCallOptions.getRequestedCallEvents()) {
-                requestedCallEvents.add(eventSubscription);
-            }
-            joinCallRequest.setRequestedCallEvents(requestedCallEvents);
+        List<CallModality> requestedModalities = new ArrayList<>();
+        for (CallModality callModality : joinCallOptions.getRequestedModalities()) {
+            requestedModalities.add(callModality);
         }
+        joinCallRequest.setRequestedModalities(requestedModalities);
+
+
+        List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
+        for (EventSubscriptionType eventSubscription : joinCallOptions.getRequestedCallEvents()) {
+            requestedCallEvents.add(eventSubscription);
+        }
+        joinCallRequest.setRequestedCallEvents(requestedCallEvents);
 
         return joinCallRequest;
     }
 
-    private JoinCallRequestConverter() {
+    private JoinCallConverter() {
     }
 }
 

@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -15,7 +14,7 @@ import java.util.LinkedList;
 /**
  * A converter for {@link InviteParticipantsRequest}
  */
-public final class InviteParticipantsRequestConverter {
+public final class InviteParticipantsConverter {
     /**
      * Maps to {@link InviteParticipantsRequest}.
      */
@@ -36,6 +35,6 @@ public final class InviteParticipantsRequestConverter {
         return inviteParticipantsRequest;
     }
 
-    private InviteParticipantsRequestConverter() {
+    private InviteParticipantsConverter() {
     }
 }

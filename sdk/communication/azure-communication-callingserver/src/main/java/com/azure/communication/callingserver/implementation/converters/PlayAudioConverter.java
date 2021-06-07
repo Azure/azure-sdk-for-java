@@ -6,7 +6,7 @@ package com.azure.communication.callingserver.implementation.converters;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 
-public class PlayAudioOptionsConverter {
+public class PlayAudioConverter {
     /**
      * Convert PlayAudioOptions into PlayAudioRequest
      * @param audioFileUri Audio file uri to be added during conversion
@@ -28,8 +28,8 @@ public class PlayAudioOptionsConverter {
      * @param audioFileUri The media resource uri of the play audio request.
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param operationContext The value to identify context of the operation.
      * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The value to identify context of the operation.
      * @return PlayAudioRequest
      */
     public static PlayAudioRequest convert(String audioFileUri,
