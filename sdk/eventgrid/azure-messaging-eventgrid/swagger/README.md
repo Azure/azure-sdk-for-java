@@ -14,14 +14,7 @@ Install Autorest beta with NPM:
 
 ## Using
 
-Fork and clone the autorest.java repo (https://github.com/Azure/autorest.java)
-and checkout the v4 branch. Then run `mvn clean package -Dlocal` to generate build files.
-
-Then fork and clone the Azure rest API specs from the repo 
-(https://github.com/Azure/azure-rest-api-specs) and run `autorest --java readme.md` 
-in this folder, with the following tags:
-
-`--use=<path to autorest clone>`
+run `autorest readme.md`
 
 If you are adding or updating swagger files, please make sure that they are included 
 in the input file list. Also, if you are adding an additional service event, make sure that 
