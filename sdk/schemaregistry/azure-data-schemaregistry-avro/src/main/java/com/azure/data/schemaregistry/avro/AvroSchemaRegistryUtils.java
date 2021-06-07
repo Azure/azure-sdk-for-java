@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * Base Codec class for Avro encoder and decoder implementations
  */
-class AvroSchemaRegistryUtils {
+public class AvroSchemaRegistryUtils {
     private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryUtils.class);
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
