@@ -78,7 +78,7 @@ public final class ExceptionUtil {
                 return distinguishNotFound(description, errorContext);
             default:
                 return new AmqpException(false, condition, String.format("errorCondition[%s]. description[%s] "
-                        + "Condition could not be mapped to a transient condition or not.",
+                        + "Condition could not be mapped to a transient condition.",
                     errorCondition, description), errorContext);
         }
 
