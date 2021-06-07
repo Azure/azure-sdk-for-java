@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
- * A converter for {@link com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest}
+ * A converter for {@link InviteParticipantsRequest}
  */
 public final class InviteParticipantsRequestConverter {
     /**
@@ -23,14 +23,15 @@ public final class InviteParticipantsRequestConverter {
         if (participant == null) {
             return null;
         }
-        PhoneNumberIdentifierModel phoneNumberIdentifierModel = (alternateCallerId == null || alternateCallerId.isEmpty()) ? null
-            : CommunicationIdentifierConverter.convert(new PhoneNumberIdentifier(alternateCallerId)).getPhoneNumber();
+        PhoneNumberIdentifierModel phoneNumberIdentifierModel =
+            (alternateCallerId == null || alternateCallerId.isEmpty()) ? null
+                : CommunicationIdentifierConverter.convert(new PhoneNumberIdentifier(alternateCallerId)).getPhoneNumber();
 
-        InviteParticipantsRequest inviteParticipantsRequest = new InviteParticipantsRequest()
-            .setParticipants(new LinkedList<CommunicationIdentifierModel>(Arrays.asList(CommunicationIdentifierConverter.convert(participant))))
-            .setAlternateCallerId(phoneNumberIdentifierModel)
-            .setOperationContext(operationContext)
-            .setCallbackUri(callBackUri);
+        InviteParticipantsRequest inviteParticipantsRequest = new InviteParticipantsRequest();
+        inviteParticipantsRequest.setParticipants(new LinkedList<>(Arrays.asList(CommunicationIdentifierConverter.convert(participant))));
+        inviteParticipantsRequest.setAlternateCallerId(phoneNumberIdentifierModel);
+        inviteParticipantsRequest.setOperationContext(operationContext);
+        inviteParticipantsRequest.setCallbackUri(callBackUri);
 
         return inviteParticipantsRequest;
     }

@@ -13,12 +13,12 @@ import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 
 /**
- * A converter between {@link com.azure.communication.callingserver.models.JoinCallOptions} and
+ * A converter between {@link JoinCallOptions} and
  * {@link JoinCallRequest}.
  */
 public final class JoinCallRequestConverter {
     /**
-     * Maps from {com.azure.communication.callingserver.models.JoinCallRequest} to {@link JoinCallRequest}.
+     * Maps from {@Link com.azure.communication.callingserver.models.JoinCallRequest} to {@link JoinCallRequest}.
      */
     public static JoinCallRequest convert(CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
         if (source == null) {
