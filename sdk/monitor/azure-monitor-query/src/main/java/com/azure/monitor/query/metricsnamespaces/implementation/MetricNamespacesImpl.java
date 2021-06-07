@@ -24,7 +24,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.query.metricsnamespaces.implementation.models.ErrorResponseException;
-import com.azure.monitor.query.models.MetricsNamespace;
+import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.metricsnamespaces.implementation.models.MetricNamespaceCollection;
 import reactor.core.publisher.Mono;
 
@@ -78,7 +78,7 @@ public final class MetricNamespacesImpl {
      * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricsNamespace>> listSinglePageAsync(String resourceUri, String startTime) {
+    public Mono<PagedResponse<MetricNamespace>> listSinglePageAsync(String resourceUri, String startTime) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -119,7 +119,7 @@ public final class MetricNamespacesImpl {
      * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricsNamespace>> listSinglePageAsync(
+    public Mono<PagedResponse<MetricNamespace>> listSinglePageAsync(
             String resourceUri, String startTime, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
@@ -152,7 +152,7 @@ public final class MetricNamespacesImpl {
      * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricsNamespace> listAsync(String resourceUri, String startTime) {
+    public PagedFlux<MetricNamespace> listAsync(String resourceUri, String startTime) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, startTime));
     }
 
@@ -168,7 +168,7 @@ public final class MetricNamespacesImpl {
      * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricsNamespace> listAsync(String resourceUri, String startTime, Context context) {
+    public PagedFlux<MetricNamespace> listAsync(String resourceUri, String startTime, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, startTime, context));
     }
 
@@ -183,7 +183,7 @@ public final class MetricNamespacesImpl {
      * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricsNamespace> list(String resourceUri, String startTime) {
+    public PagedIterable<MetricNamespace> list(String resourceUri, String startTime) {
         return new PagedIterable<>(listAsync(resourceUri, startTime));
     }
 
@@ -199,7 +199,7 @@ public final class MetricNamespacesImpl {
      * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricsNamespace> list(String resourceUri, String startTime, Context context) {
+    public PagedIterable<MetricNamespace> list(String resourceUri, String startTime, Context context) {
         return new PagedIterable<>(listAsync(resourceUri, startTime, context));
     }
 }

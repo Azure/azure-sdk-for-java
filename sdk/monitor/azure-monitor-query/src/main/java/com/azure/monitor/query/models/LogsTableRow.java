@@ -88,23 +88,26 @@ public final class LogsTableRow {
                                 return;
                             }
                             field.setAccessible(true);
-                            if (tableCell.getColumnType() == ColumnDataType.BOOL) {
+                            if (tableCell.getColumnType() == LogsColumnType.BOOL) {
                                 field.set(t, tableCell.getValueAsBoolean());
-                            } else if (tableCell.getColumnType() == ColumnDataType.DATETIME) {
+                            } else if (tableCell.getColumnType() == LogsColumnType.DATETIME) {
                                 field.set(t, tableCell.getValueAsDateTime());
-                            } else if (tableCell.getColumnType() == ColumnDataType.DYNAMIC) {
+                            } else if (tableCell.getColumnType() == LogsColumnType.DYNAMIC) {
                                 if (tableCell.getValueAsDynamic() != null) {
                                     field.set(t,
                                             tableCell.getValueAsDynamic()
                                                     .toObject(TypeReference.createInstance(field.getType())));
                                 }
-                            } else if (tableCell.getColumnType() == ColumnDataType.INT) {
+                            } else if (tableCell.getColumnType() == LogsColumnType.INT) {
                                 field.set(t, tableCell.getValueAsInteger());
-                            } else if (tableCell.getColumnType() == ColumnDataType.LONG) {
+                            } else if (tableCell.getColumnType() == LogsColumnType.LONG) {
                                 field.set(t, tableCell.getValueAsLong());
-                            } else if (tableCell.getColumnType() == ColumnDataType.REAL) {
+                            } else if (tableCell.getColumnType() == LogsColumnType.REAL
+                                || tableCell.getColumnType() == LogsColumnType.DECIMAL) {
                                 field.set(t, tableCell.getValueAsDouble());
-                            } else if (tableCell.getColumnType() == ColumnDataType.STRING) {
+                            } else if (tableCell.getColumnType() == LogsColumnType.STRING
+                                || tableCell.getColumnType() == LogsColumnType.GUID
+                                || tableCell.getColumnType() == LogsColumnType.TIMESPAN) {
                                 field.set(t, tableCell.getValueAsString());
                             }
                             field.setAccessible(false);

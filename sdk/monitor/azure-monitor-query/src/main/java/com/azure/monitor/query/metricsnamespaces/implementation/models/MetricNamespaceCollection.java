@@ -5,7 +5,7 @@
 package com.azure.monitor.query.metricsnamespaces.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.monitor.query.models.MetricsNamespace;
+import com.azure.monitor.query.models.MetricNamespace;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,7 +17,7 @@ public final class MetricNamespaceCollection {
      * The values for the metric namespaces.
      */
     @JsonProperty(value = "value", required = true)
-    private List<MetricsNamespace> value;
+    private List<MetricNamespace> value;
 
     /**
      * Creates an instance of MetricNamespaceCollection class.
@@ -25,7 +25,7 @@ public final class MetricNamespaceCollection {
      * @param value the value value to set.
      */
     @JsonCreator
-    public MetricNamespaceCollection(@JsonProperty(value = "value", required = true) List<MetricsNamespace> value) {
+    public MetricNamespaceCollection(@JsonProperty(value = "value", required = true) List<MetricNamespace> value) {
         this.value = value;
     }
 
@@ -34,7 +34,7 @@ public final class MetricNamespaceCollection {
      *
      * @return the value value.
      */
-    public List<MetricsNamespace> getValue() {
+    public List<MetricNamespace> getValue() {
         return this.value;
     }
 

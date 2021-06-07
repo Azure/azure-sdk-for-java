@@ -25,7 +25,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.query.metricsdefinitions.implementation.models.ErrorResponseException;
 import com.azure.monitor.query.metricsdefinitions.implementation.models.MetricDefinitionCollection;
-import com.azure.monitor.query.models.MetricsDefinition;
+import com.azure.monitor.query.models.MetricDefinition;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricDefinitions. */
@@ -78,7 +78,7 @@ public final class MetricDefinitionsImpl {
      * @return represents collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricsDefinition>> listSinglePageAsync(String resourceUri, String metricnamespace) {
+    public Mono<PagedResponse<MetricDefinition>> listSinglePageAsync(String resourceUri, String metricnamespace) {
         if (this.client.getHost() == null) {
             return Mono.error(
                     new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -119,7 +119,7 @@ public final class MetricDefinitionsImpl {
      * @return represents collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricsDefinition>> listSinglePageAsync(
+    public Mono<PagedResponse<MetricDefinition>> listSinglePageAsync(
             String resourceUri, String metricnamespace, Context context) {
         if (this.client.getHost() == null) {
             return Mono.error(
@@ -158,7 +158,7 @@ public final class MetricDefinitionsImpl {
      * @return represents collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricsDefinition> listAsync(String resourceUri, String metricnamespace) {
+    public PagedFlux<MetricDefinition> listAsync(String resourceUri, String metricnamespace) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, metricnamespace));
     }
 
@@ -174,7 +174,7 @@ public final class MetricDefinitionsImpl {
      * @return represents collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricsDefinition> listAsync(String resourceUri, String metricnamespace, Context context) {
+    public PagedFlux<MetricDefinition> listAsync(String resourceUri, String metricnamespace, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, metricnamespace, context));
     }
 
@@ -189,7 +189,7 @@ public final class MetricDefinitionsImpl {
      * @return represents collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricsDefinition> list(String resourceUri, String metricnamespace) {
+    public PagedIterable<MetricDefinition> list(String resourceUri, String metricnamespace) {
         return new PagedIterable<>(listAsync(resourceUri, metricnamespace));
     }
 
@@ -205,7 +205,7 @@ public final class MetricDefinitionsImpl {
      * @return represents collection of metric definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricsDefinition> list(String resourceUri, String metricnamespace, Context context) {
+    public PagedIterable<MetricDefinition> list(String resourceUri, String metricnamespace, Context context) {
         return new PagedIterable<>(listAsync(resourceUri, metricnamespace, context));
     }
 }

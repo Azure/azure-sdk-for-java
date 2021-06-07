@@ -35,24 +35,6 @@ public final class QueryBody {
     @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
-    /*
-     * A list of qualified workspace names that are included in the query.
-     */
-    @JsonProperty(value = "qualifiedNames")
-    private List<String> qualifiedNames;
-
-    /*
-     * A list of workspace IDs that are included in the query.
-     */
-    @JsonProperty(value = "workspaceIds")
-    private List<String> workspaceIds;
-
-    /*
-     * A list of Azure resource IDs that are included in the query.
-     */
-    @JsonProperty(value = "azureResourceIds")
-    private List<String> azureResourceIds;
-
     /**
      * Creates an instance of QueryBody class.
      *
@@ -111,66 +93,6 @@ public final class QueryBody {
      */
     public QueryBody setWorkspaces(List<String> workspaces) {
         this.workspaces = workspaces;
-        return this;
-    }
-
-    /**
-     * Get the qualifiedNames property: A list of qualified workspace names that are included in the query.
-     *
-     * @return the qualifiedNames value.
-     */
-    public List<String> getQualifiedNames() {
-        return this.qualifiedNames;
-    }
-
-    /**
-     * Set the qualifiedNames property: A list of qualified workspace names that are included in the query.
-     *
-     * @param qualifiedNames the qualifiedNames value to set.
-     * @return the QueryBody object itself.
-     */
-    public QueryBody setQualifiedNames(List<String> qualifiedNames) {
-        this.qualifiedNames = qualifiedNames;
-        return this;
-    }
-
-    /**
-     * Get the workspaceIds property: A list of workspace IDs that are included in the query.
-     *
-     * @return the workspaceIds value.
-     */
-    public List<String> getWorkspaceIds() {
-        return this.workspaceIds;
-    }
-
-    /**
-     * Set the workspaceIds property: A list of workspace IDs that are included in the query.
-     *
-     * @param workspaceIds the workspaceIds value to set.
-     * @return the QueryBody object itself.
-     */
-    public QueryBody setWorkspaceIds(List<String> workspaceIds) {
-        this.workspaceIds = workspaceIds;
-        return this;
-    }
-
-    /**
-     * Get the azureResourceIds property: A list of Azure resource IDs that are included in the query.
-     *
-     * @return the azureResourceIds value.
-     */
-    public List<String> getAzureResourceIds() {
-        return this.azureResourceIds;
-    }
-
-    /**
-     * Set the azureResourceIds property: A list of Azure resource IDs that are included in the query.
-     *
-     * @param azureResourceIds the azureResourceIds value to set.
-     * @return the QueryBody object itself.
-     */
-    public QueryBody setAzureResourceIds(List<String> azureResourceIds) {
-        this.azureResourceIds = azureResourceIds;
         return this;
     }
 

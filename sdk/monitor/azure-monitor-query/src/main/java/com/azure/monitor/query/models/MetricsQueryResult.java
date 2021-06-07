@@ -19,7 +19,7 @@ public final class MetricsQueryResult {
     private final Duration interval;
     private final String namespace;
     private final String resourceRegion;
-    private final List<Metrics> metrics;
+    private final List<Metric> metrics;
 
     /**
      * Creates an instance of the response to a metrics query.
@@ -31,7 +31,7 @@ public final class MetricsQueryResult {
      * @param resourceRegion the region of the resource been queried for metrics.
      * @param metrics the value of the collection.
      */
-    public MetricsQueryResult(Integer cost, String timeSpan, Duration interval, String namespace, String resourceRegion, List<Metrics> metrics) {
+    public MetricsQueryResult(Integer cost, String timeSpan, Duration interval, String namespace, String resourceRegion, List<Metric> metrics) {
         this.cost = cost;
         this.timeSpan = timeSpan;
         this.interval = interval;
@@ -86,7 +86,7 @@ public final class MetricsQueryResult {
      * Returns the value of the collection.
      * @return the value of the collection.
      */
-    public List<Metrics> getMetrics() {
+    public List<Metric> getMetrics() {
         return metrics;
     }
 }

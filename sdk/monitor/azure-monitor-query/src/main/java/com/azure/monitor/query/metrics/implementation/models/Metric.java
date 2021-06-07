@@ -5,7 +5,7 @@
 package com.azure.monitor.query.metrics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.monitor.query.models.MetricsUnit;
+import com.azure.monitor.query.models.MetricUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -48,7 +48,7 @@ public final class Metric {
      * the unit of the metric.
      */
     @JsonProperty(value = "unit", required = true)
-    private MetricsUnit unit;
+    private MetricUnit unit;
 
     /*
      * the time series returned when a data query is performed.
@@ -72,7 +72,7 @@ public final class Metric {
             @JsonProperty(value = "type", required = true) String type,
             @JsonProperty(value = "name", required = true) LocalizableString name,
             @JsonProperty(value = "displayDescription", required = true) String displayDescription,
-            @JsonProperty(value = "unit", required = true) MetricsUnit unit,
+            @JsonProperty(value = "unit", required = true) MetricUnit unit,
             @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
@@ -143,7 +143,7 @@ public final class Metric {
      *
      * @return the unit value.
      */
-    public MetricsUnit getUnit() {
+    public MetricUnit getUnit() {
         return this.unit;
     }
 
