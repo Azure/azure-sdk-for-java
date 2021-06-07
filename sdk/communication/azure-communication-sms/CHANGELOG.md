@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.0.3 (2021-06-08)
-- Dependency versions updated.
+- Updated azure-communication-sms version
 
 ## 1.0.2 (2021-05-27)
 - Dependency versions updated.
