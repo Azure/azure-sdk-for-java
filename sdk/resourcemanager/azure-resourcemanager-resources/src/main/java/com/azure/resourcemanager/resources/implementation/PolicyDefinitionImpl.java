@@ -125,7 +125,7 @@ final class PolicyDefinitionImpl extends
     }
 
     @Override
-    public DefinitionStages.WithCreate withParameter(String name, ParameterType parameterType, Object defaultValue) {
+    public PolicyDefinitionImpl withParameter(String name, ParameterType parameterType, Object defaultValue) {
         if (innerModel().parameters() == null) {
             innerModel().withParameters(new TreeMap<>());
         }
