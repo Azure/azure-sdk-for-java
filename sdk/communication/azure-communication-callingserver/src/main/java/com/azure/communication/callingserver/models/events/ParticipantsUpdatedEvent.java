@@ -17,11 +17,6 @@ import java.util.List;
  */
 public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.ParticipantsUpdated";
-
-    /**
      * The call leg Id.
      */
     private String callLegId;

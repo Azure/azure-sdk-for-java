@@ -64,7 +64,9 @@ public final class CallClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri call back uri to receive notifications.
@@ -87,7 +89,9 @@ public final class CallClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri call back uri to receive notifications.
@@ -112,7 +116,9 @@ public final class CallClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @return the response payload for play audio operation.
      */
@@ -126,7 +132,9 @@ public final class CallClient {
      * Play audio in a call.
      *
      * @param callId The call id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @param context A {@link Context} representing the request context.
      * @return the response payload for play audio operation.
@@ -143,7 +151,7 @@ public final class CallClient {
     /**
      * Disconnect the current caller in a Group-call or end a p2p-call.
      *
-     * @param callId Call id to to hang up.
+     * @param callId Call id to hang up.
      * @return response for a successful HangupCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -154,7 +162,7 @@ public final class CallClient {
     /**
      * Disconnect the current caller in a Group-call or end a p2p-call.
      *
-     * @param callId Call id to to hang up.
+     * @param callId Call id to hang up.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful HangupCall request.
      */
@@ -187,7 +195,7 @@ public final class CallClient {
     }
 
     /**
-     * Cancel Media Operations.
+     * Cancel all media operations in the call.
      *
      * @param callId Call id to to cancel media Operations.
      * @param operationContext operationContext.
@@ -199,7 +207,7 @@ public final class CallClient {
     }
 
     /**
-     * Cancel Media Operations.
+     * Cancel all media operations in the call.
      *
      * @param callId Call id to to cancel media Operations.
      * @param operationContext operationContext.
@@ -216,13 +224,13 @@ public final class CallClient {
     }
 
     /**
-     * Invite participants to a call.
+     * Add a participant to the call.
      *
      * @param callId Call id.
      * @param participant Invited participant.
-     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
-     * @return response for a successful inviteParticipants request.
+     * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void addParticipant(String callId,
@@ -236,14 +244,14 @@ public final class CallClient {
     }
 
     /**
-     * Invite participants to a call.
+     * Add a participant to the call.
      *
      * @param callId Call id.
      * @param participant Invited participant.
-     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful inviteParticipants request.
+     * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addParticipantWithResponse(String callId,
@@ -259,7 +267,7 @@ public final class CallClient {
     }
 
     /**
-     * Remove participant from the call.
+     * Remove a participant from the call.
      *
      * @param callId Call id.
      * @param participantId Participant id.
@@ -271,7 +279,7 @@ public final class CallClient {
     }
 
     /**
-     * Remove participant from the call.
+     * Remove a participant from the call.
      *
      * @param callId Call id.
      * @param participantId Participant id.
