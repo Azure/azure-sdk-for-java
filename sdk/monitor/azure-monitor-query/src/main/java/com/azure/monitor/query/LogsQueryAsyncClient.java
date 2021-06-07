@@ -315,35 +315,4 @@ public final class LogsQueryAsyncClient {
         }
         return allWorkspaces;
     }
-
-    // private LogsQueryResult getLogsQueryResult(QueryResults queryResults) {
-    //     List<LogsTable> tables = new ArrayList<>();
-    //     LogsQueryResult logsQueryResult = new LogsQueryResult(tables, new LogsQueryStatistics(queryResults.get));
-    //
-    //     if (queryResults.getTables() == null) {
-    //         return null;
-    //     }
-    //
-    //     for (Table table : queryResults.getTables()) {
-    //         List<LogsTableCell> tableCells = new ArrayList<>();
-    //         List<LogsTableRow> tableRows = new ArrayList<>();
-    //         List<LogsTableColumn> tableColumns = new ArrayList<>();
-    //         LogsTable logsTable = new LogsTable(tableCells, tableRows, tableColumns);
-    //         tables.add(logsTable);
-    //         List<List<String>> rows = table.getRows();
-    //
-    //         for (int i = 0; i < rows.size(); i++) {
-    //             List<String> row = rows.get(i);
-    //             LogsTableRow tableRow = new LogsTableRow(i, new ArrayList<>());
-    //             tableRows.add(tableRow);
-    //             for (int j = 0; j < row.size(); j++) {
-    //                 LogsTableCell cell = new LogsTableCell(table.getColumns().get(j).getName(),
-    //                         table.getColumns().get(j).getType(), j, i, row.get(j));
-    //                 tableCells.add(cell);
-    //                 tableRow.getTableRow().add(cell);
-    //             }
-    //         }
-    //     }
-    //     return logsQueryResult;
-    // }
 }
