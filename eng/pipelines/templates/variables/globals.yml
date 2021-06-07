@@ -1,16 +1,22 @@
 variables:
   DocWardenVersion: '0.7.1'
-  WagonOptions: '-Dmaven.wagon.rto=300000 -Dmaven.wagon.http.retryHandler.count=3'
-  DefaultOptions: '--batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-  MemoryOptions: '-Xmx3072m'
-  #Agent.Source.Git.ShallowFetchDepth: 1
-  skipComponentGovernanceDetection: true
-  AdditionalOptions: ''
-  # format !<group1Id>:<artifact1Id>, !<group2Id>:<artifact2Id>,... no trailing comma is necessary
-  PLSkipOptions: ''
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
   JavaBuildVersion: '1.11'
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.11'
+
+  # Maven build/test options
+  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
+  # See https://github.com/actions/virtual-environments/issues/1499 for more info about the wagon options
+  # If reports about Maven dependency downloads become more common investigate re-introducing "-Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false", or other iterations of the configurations.
+  WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60'
+  DefaultOptions: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+  MemoryOptions: '-Xmx3072m'
+  DefaultTestOptions: '$(DefaultOptions) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
+  DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+  AdditionalOptions: ''
+  TestFromSource: false
+
+  skipComponentGovernanceDetection: true
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]

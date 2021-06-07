@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The FormTable model.
+ * Represents a table recognized from the input document.
  */
 @Immutable
 public final class FormTable {
@@ -112,6 +112,7 @@ public final class FormTable {
 
     /**
      * Get the bounding box information for the the form table.
+     *
      * @return the bounding box information for the the form table.
      */
     public FieldBoundingBox getBoundingBox() {

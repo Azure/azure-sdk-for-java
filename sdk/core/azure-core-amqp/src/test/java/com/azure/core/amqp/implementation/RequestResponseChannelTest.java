@@ -163,7 +163,7 @@ class RequestResponseChannelTest {
             receiverSettleMode);
         final AmqpErrorContext errorContext = channel.getErrorContext();
 
-        StepVerifier.create(channel.closeAsync("Test-method"))
+        StepVerifier.create(channel.closeAsync())
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();
@@ -192,7 +192,7 @@ class RequestResponseChannelTest {
         sendEndpoints.next(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(channel.closeAsync("Test"))
+        StepVerifier.create(channel.closeAsync())
             .then(() -> {
                 sendEndpoints.complete();
                 receiveEndpoints.complete();

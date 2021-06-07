@@ -1,7 +1,22 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.17.0 (2021-06-07)
 
+### Features Added
+
+- Added `AsyncCloseable` interface to support closing resources asynchronously.
+- Added GeoJSON classes to the models package.
+- Added `createRetriableDownloadFlux` to `FluxUtil`.
+- Added `HttpRange` to the http package.
+- Added the ability to terminate paging using a custom predicate in `ContinuablePagedFlux`.
+- Added `getPollInterval` to `PollerFlux`.
+- Added `setResponseTimeout` and `setReadTimeout` to `HttpClientOptions`.
+- Added support for the `JsonFlatten` annotation to target fields.
+
+### Dependency Updates
+
+- Upgraded Jackson from `2.12.2` to `2.12.3`.
+- Upgraded Reactor from `3.4.5` to `3.4.6`.
 
 ## 1.16.0 (2021-05-07)
 
@@ -21,7 +36,7 @@
 
 ### Dependency Updates
 
-- Updated Reactor from `3.4.3` to `3.4.5`.
+- Upgraded Reactor from `3.4.3` to `3.4.5`.
 
 ## 1.15.0 (2021-04-02)
 

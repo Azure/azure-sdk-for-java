@@ -24,15 +24,15 @@ public class SampleApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplateWithTLS() throws Exception {
-        KeyStore trustStore = KeyStore.getInstance("AzureKeyVault");
+        KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
-        trustStore.load(parameter);
+        azureKeyVaultKeyStore.load(parameter);
         SSLContext sslContext = SSLContexts.custom()
-                                           .loadTrustMaterial(trustStore, null)
+                                           .loadTrustMaterial(azureKeyVaultKeyStore, null)
                                            .build();
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
                                                                                   (hostname, session) -> true);
@@ -46,16 +46,16 @@ public class SampleApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplateWithMTLS() throws Exception {
-        KeyStore azuerKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
+        KeyStore azureKeyVaultKeyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"));
-        azuerKeyVaultKeyStore.load(parameter);
+        azureKeyVaultKeyStore.load(parameter);
         SSLContext sslContext = SSLContexts.custom()
-                                           .loadTrustMaterial(azuerKeyVaultKeyStore, null)
-                                           .loadKeyMaterial(azuerKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
+                                           .loadTrustMaterial(azureKeyVaultKeyStore, null)
+                                           .loadKeyMaterial(azureKeyVaultKeyStore, "".toCharArray(), new ClientPrivateKeyStrategy())
                                            .build();
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext,
             (hostname, session) -> true);

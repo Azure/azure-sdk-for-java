@@ -238,13 +238,13 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     }
 
     @Override
-    public VaultImpl enableRoleBasedAccessControl() {
+    public VaultImpl withRoleBasedAccessControl() {
         innerModel().properties().withEnableRbacAuthorization(true);
         return this;
     }
 
     @Override
-    public VaultImpl disableRoleBasedAccessControl() {
+    public VaultImpl withoutRoleBasedAccessControl() {
         innerModel().properties().withEnableRbacAuthorization(false);
         return this;
     }

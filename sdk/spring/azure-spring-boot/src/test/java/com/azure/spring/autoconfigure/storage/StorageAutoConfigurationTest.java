@@ -5,8 +5,7 @@ package com.azure.spring.autoconfigure.storage;
 
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -15,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 public class StorageAutoConfigurationTest {
@@ -35,10 +36,11 @@ public class StorageAutoConfigurationTest {
                           .run(context -> assertThat(context).doesNotHaveBean(StorageProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureStoragePropertiesIllegal() {
         this.contextRunner.withPropertyValues("azure.storage.accountName=a")
-                          .run(context -> context.getBean(StorageProperties.class));
+                          .run(context -> assertThrows(IllegalStateException.class,
+                              () -> context.getBean(StorageProperties.class)));
     }
 
     @Test
@@ -49,9 +51,9 @@ public class StorageAutoConfigurationTest {
                           .run(context -> {
                               assertThat(context).hasSingleBean(StorageProperties.class);
                               final StorageProperties storageProperties = context.getBean(StorageProperties.class);
-                              Assertions.assertThat(storageProperties.getAccountName()).isEqualTo("acc1");
-                              Assertions.assertThat(storageProperties.getAccountKey()).isEqualTo("key1");
-                              Assertions.assertThat(storageProperties.getBlobEndpoint()).isEqualTo("endpoint1");
+                              assertThat(storageProperties.getAccountName()).isEqualTo("acc1");
+                              assertThat(storageProperties.getAccountKey()).isEqualTo("key1");
+                              assertThat(storageProperties.getBlobEndpoint()).isEqualTo("endpoint1");
                           });
     }
 

@@ -1,5 +1,20 @@
 # Release History
 
+## 2.1.0-beta.1 (Unreleased)
+
+### New Features
+- Exposing CbsAuthorizationType.
+- Exposing ManagementNode that can perform management and metadata operations on an AMQP message broker.
+- AmqpConnection, AmqpSession, AmqpSendLink, and AmqpReceiveLink extend from AsyncCloseable.
+- Delivery outcomes and delivery states are added.
+
+### Bug Fixes
+- Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
+
+## 2.0.6 (2021-05-24)
+### Bug Fixes
+- Fixed a bug that caused amqp connection not to retry when network error happened.
+
 ## 2.0.5 (2021-05-07)
 
 ### Dependency Updates
