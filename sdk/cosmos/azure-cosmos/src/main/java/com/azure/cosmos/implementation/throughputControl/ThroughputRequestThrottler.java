@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
@@ -90,7 +91,17 @@ public class ThroughputRequestThrottler {
                     return value;
                 }));
 
-            if (this.availableThroughput.get() > 0) {
+            boolean shouldAccept;
+            if (request.getOperationType() == OperationType.Batch &&
+                request.getResourceType() == ResourceType.Document ) {
+                request.clientContext.incrementRetryCount();
+                shouldAccept = request.clientContext.getRetryCount() >= 2;
+            } else {
+                shouldAccept = this.availableThroughput.get() > 0;
+            }
+
+
+            if (shouldAccept) {
                 if (StringUtils.isEmpty(request.requestContext.throughputControlCycleId)) {
                     request.requestContext.throughputControlCycleId = this.cycleId;
                 }

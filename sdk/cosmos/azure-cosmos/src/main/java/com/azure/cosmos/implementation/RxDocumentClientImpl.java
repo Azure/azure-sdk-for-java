@@ -177,6 +177,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final AtomicBoolean throughputControlEnabled;
     private ThroughputControlStore throughputControlStore;
 
+    private Integer retryCount = 0;
+
+    public void incrementRetryCount() {
+        this.retryCount += 1;
+    }
+
+    public int getRetryCount() {
+        return this.retryCount;
+    }
+
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
                                 List<Permission> permissionFeed,

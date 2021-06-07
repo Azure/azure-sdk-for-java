@@ -30,7 +30,7 @@ import java.util.UUID;
  */
 public class RxDocumentServiceRequest implements Cloneable {
 
-    private final DiagnosticsClientContext clientContext;
+    public final DiagnosticsClientContext clientContext;
     public volatile boolean forcePartitionKeyRangeRefresh;
     public volatile boolean forceCollectionRoutingMapRefresh;
     private String resourceId;

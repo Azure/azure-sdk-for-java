@@ -49,20 +49,26 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void createItem_withBulk() {
-        int totalRequest = getTotalRequest();
+        int totalRequest = 1000;
+        ThroughputControlGroupConfig groupConfig = new ThroughputControlGroupConfigBuilder()
+            .setGroupName("test-group")
+            .setTargetThroughputThreshold(0.001)
+            .setDefault(true)
+            .build();
+        bulkAsyncContainer.enableLocalThroughputControlGroup(groupConfig);
 
         Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 TestDoc testDoc = this.populateTestDoc(partitionKey);
 
-                return BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+                return BulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey));
             }),
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
 
-                return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+                return BulkOperations.getUpsertItemOperation(eventDoc, new PartitionKey(partitionKey));
             }));
 
         BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();

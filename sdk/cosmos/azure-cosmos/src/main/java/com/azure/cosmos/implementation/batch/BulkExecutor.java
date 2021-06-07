@@ -234,8 +234,17 @@ public final class BulkExecutor<TContext> {
                 return ((ItemBulkOperation<?>) itemOperation).getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
                         if (result.shouldRetry) {
-                            groupSink.next(itemOperation);
-                            return Mono.empty();
+                            if (result.backOffTime == null || result.backOffTime.isZero()) {
+                                groupSink.next(itemOperation);
+                                return Mono.empty();
+                            } else {
+                                return Mono
+                                    .delay(result.backOffTime)
+                                    .flatMap((dumm) -> {
+                                        groupSink.next(itemOperation);
+                                        return Mono.empty();
+                                    });
+                            }
                         } else {
                             return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
                                 itemOperation, cosmosBulkItemResponse, this.batchContext));

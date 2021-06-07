@@ -29,6 +29,10 @@ public interface DiagnosticsClientContext {
 
     CosmosDiagnostics createDiagnostics();
 
+    public void incrementRetryCount() ;
+
+    public int getRetryCount();
+
 
     static final class ClientContextSerializer extends StdSerializer<DiagnosticsClientContext> {
         private final static Logger logger = LoggerFactory.getLogger(ClientContextSerializer.class);
