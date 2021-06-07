@@ -1,9 +1,19 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2021-06-07)
+
+
+### Features Added
 
 - Added Support for Challenge Based Authentication in `ArmChallengeAuthenticationPolicy`.
-- Fixed bug in `ManagementErrorDeserializer`.
+  
+### Fixed
+
+- Fixed bug in `ManagementErrorDeserializer`. ([#21615](https://github.com/Azure/azure-sdk-for-java/issues/21615))
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
 
 ## 1.2.2 (2021-05-07)
 
