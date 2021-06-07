@@ -10,7 +10,7 @@ package com.azure.core.amqp.models;
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-received">Received
  *     outcome</a>
  */
-public class ReceivedDeliveryOutcome extends DeliveryOutcome {
+public final class ReceivedDeliveryOutcome extends DeliveryOutcome {
     private final int sectionNumber;
     private final long sectionOffset;
 
