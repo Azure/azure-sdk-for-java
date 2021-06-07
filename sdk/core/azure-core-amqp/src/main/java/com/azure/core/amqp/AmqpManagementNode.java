@@ -9,7 +9,7 @@ import com.azure.core.util.AsyncCloseable;
 import reactor.core.publisher.Mono;
 
 /**
- * Management node.
+ * An AMQP endpoint that allows users to perform management and metadata operations on it.
  */
 public interface AmqpManagementNode extends AsyncCloseable {
     /**
@@ -22,7 +22,7 @@ public interface AmqpManagementNode extends AsyncCloseable {
     Mono<AmqpAnnotatedMessage> send(AmqpAnnotatedMessage message);
 
     /**
-     * Sends a message to the management node.
+     * Sends a message to the management node and associates the {@code deliveryOutcome} with that message.
      *
      * @param message Message to send.
      * @param deliveryOutcome Delivery outcome to associate with the message.
