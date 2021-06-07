@@ -21,8 +21,6 @@ public class UploadPagesFromUrlOptions {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public UploadPagesFromUrlOptions(PageRange range, String sourceUrl) {
-        StorageImplUtils.assertNotNull("range", range);
-        StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
         this.range = range;
         this.sourceUrl = sourceUrl;
     }

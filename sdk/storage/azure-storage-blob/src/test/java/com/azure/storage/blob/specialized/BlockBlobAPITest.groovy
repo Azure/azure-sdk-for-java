@@ -328,7 +328,7 @@ class BlockBlobAPITest extends APISpec {
             new StageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
                 .setSourceBearerToken(oauthHeader),
             null, Context.NONE)
-        blockBlobClient.commitBlockList([blockId])
+        blockBlobClient.commitBlockList([blockId], true)
 
         then:
         def os = new ByteArrayOutputStream(data.defaultDataSize)

@@ -606,7 +606,8 @@ class PageBlobAPITest extends APISpec {
         setup:
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         def sourceBlob = cc.getBlobClient(generateBlobName())
-        sourceBlob.upload(BinaryData.fromBytes(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
+        def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
+        sourceBlob.upload(BinaryData.fromBytes(data))
         def oauthHeader = getAuthToken().block()
 
         when:
@@ -616,9 +617,9 @@ class PageBlobAPITest extends APISpec {
             null, Context.NONE)
 
         then:
-        def os = new ByteArrayOutputStream(data.defaultDataSize)
+        def os = new ByteArrayOutputStream(data.length)
         bc.download(os)
-        os.toByteArray() == data.defaultBytes
+        os.toByteArray() == data
     }
 
     def "Stage block from URL source oauth fail"() {

@@ -19,7 +19,6 @@ public class AppendBlockFromUrlOptions {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public AppendBlockFromUrlOptions(String sourceUrl) {
-        StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
         this.sourceUrl = sourceUrl;
     }
 

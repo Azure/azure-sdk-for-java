@@ -369,6 +369,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             options.getSourceRequestConditions() == null ? new BlobRequestConditions()
             : options.getSourceRequestConditions();
         context = context == null ? Context.NONE : context;
+        String sourceAuth = options.getSourceBearerToken() == null
+            ? null : "Bearer " + options.getSourceBearerToken();
 
         URL url;
         try {
@@ -388,7 +390,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getTagsConditions(),
             null, options.getContentMd5(), tagsToString(options.getTags()),
-            options.isCopySourceBlobProperties(), options.getSourceBearerToken(), options.getHeaders(),
+            options.isCopySourceBlobProperties(), sourceAuth, options.getHeaders(),
             getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
@@ -573,12 +575,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
         context = context == null ? Context.NONE : context;
+        String sourceAuth = options.getSourceBearerToken() == null
+            ? null : "Bearer " + options.getSourceBearerToken();
 
         return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName,
             options.getBase64BlockId(), 0, url, sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
             options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-            sourceRequestConditions.getIfNoneMatch(), null, options.getSourceBearerToken(), getCustomerProvidedKey(),
+            sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
             encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }

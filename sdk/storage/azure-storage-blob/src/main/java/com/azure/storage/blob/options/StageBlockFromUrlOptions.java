@@ -20,8 +20,6 @@ public class StageBlockFromUrlOptions {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public StageBlockFromUrlOptions(String base64BlockId, String sourceUrl) {
-        StorageImplUtils.assertNotNull("base64BlockId", base64BlockId);
-        StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
         this.base64BlockId = base64BlockId;
         this.sourceUrl = sourceUrl;
     }
