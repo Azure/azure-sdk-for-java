@@ -533,7 +533,7 @@ private object CosmosSchemaInferenceConfig {
   private val inferSchemaForceNullableProperties = CosmosConfigEntry[Boolean](
     key = CosmosConfigNames.ReadInferSchemaForceNullableProperties,
     mandatory = false,
-    defaultValue = Some(false),
+    defaultValue = Some(true),
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should enforce inferred properties to be nullable - even when no null-values are contained in the sample set")
 

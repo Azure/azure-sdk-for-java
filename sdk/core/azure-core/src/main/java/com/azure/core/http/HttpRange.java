@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.Objects;
  * <p>
  * If {@link #getLength() length} is unspecified, null, then the range extends to the end of the HTTP resource.
  */
+@Immutable
 public final class HttpRange {
     private final long offset;
     private final Long length;

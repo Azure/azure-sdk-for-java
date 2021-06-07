@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.management.implementation.http.AuthenticationChallenge;
+import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -98,8 +99,15 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
         });
     }
 
-    protected String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
-        return scopes;
+    /**
+     * Gets the scopes for the specific request.
+     *
+     * @param context The request.
+     * @param scopes Default scopes used by the policy.
+     * @return The scopes for the specific request.
+     */
+    public String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
+        return CoreUtils.clone(scopes);
     }
 
     List<AuthenticationChallenge> parseChallenges(String header) {

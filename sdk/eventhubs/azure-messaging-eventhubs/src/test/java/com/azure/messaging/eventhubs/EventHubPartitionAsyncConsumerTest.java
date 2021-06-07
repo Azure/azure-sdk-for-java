@@ -49,6 +49,7 @@ import java.util.function.Supplier;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -229,7 +230,6 @@ class EventHubPartitionAsyncConsumerTest {
         Assertions.assertTrue(linkProcessor.isTerminated());
     }
 
-
     /**
      * Verifies that the consumer closes and completes any listeners on a shutdown signal.
      */
@@ -277,7 +277,7 @@ class EventHubPartitionAsyncConsumerTest {
             Assertions.assertTrue(successful);
             Assertions.assertEquals(0, shutdownReceived.getCount());
 
-            verify(link1).dispose();
+            verify(link1, atMost(1)).dispose();
         } finally {
             subscriptions.dispose();
         }
