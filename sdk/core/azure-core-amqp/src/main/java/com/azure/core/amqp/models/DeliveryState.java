@@ -5,6 +5,8 @@ package com.azure.core.amqp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /**
  * States for a message delivery.
  *
@@ -38,4 +40,24 @@ public final class DeliveryState extends ExpandableStringEnum<DeliveryState> {
      * Indicates that this delivery is part of a transaction.
      */
     public static final DeliveryState TRANSACTIONAL = fromString("TRANSACTIONAL", DeliveryState.class);
+
+    /**
+     * Gets the corresponding delivery state from its string representation.
+     *
+     * @param name The delivery state to convert.
+     *
+     * @return The corresponding delivery state.
+     */
+    public static DeliveryState fromString(String name) {
+        return fromString(name, DeliveryState.class);
+    }
+
+    /**
+     * Gets all the current delivery states.
+     *
+     * @return Gets the current delivery states.
+     */
+    public static Collection<DeliveryState> values() {
+        return values(DeliveryState.class);
+    }
 }
