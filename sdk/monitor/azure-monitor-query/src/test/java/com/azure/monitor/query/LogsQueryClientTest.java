@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class LogsQueryClientTest extends TestBase {
 
     public static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
-            .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
+            .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
     private LogsQueryClient client;
 
     @BeforeEach

@@ -28,7 +28,9 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class MetricsQueryClientTest extends TestBase {
     public static final String RESOURCE_URI = Configuration.getGlobalConfiguration()
-            .get("AZURE_MONITOR_METRICS_RESOURCE_URI");
+            .get("AZURE_MONITOR_METRICS_RESOURCE_URI",
+                    "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics");
     private MetricsQueryClient client;
 
     @BeforeEach
@@ -107,7 +110,7 @@ public class MetricsQueryClientTest extends TestBase {
     @Test
     public void testMetricsNamespaces() {
         PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricsNamespace(RESOURCE_URI,
-                OffsetDateTime.now().minusMonths(2));
+                OffsetDateTime.of(LocalDateTime.of(2021, 06, 01, 0, 0), ZoneOffset.UTC));
         assertEquals(2, metricsNamespaces.stream().count());
     }
 }
