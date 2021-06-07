@@ -5,6 +5,8 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
@@ -115,7 +117,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
 
-        return link.updateDisposition(lockToken, deliveryState);
+        return link.updateDisposition(lockToken, deliveryState).onErrorResume(error -> {
+            if (error instanceof AmqpException) {
+                AmqpException amqpException = (AmqpException) error;
+                if (AmqpErrorCondition.TIMEOUT_ERROR.equals(amqpException.getErrorCondition())) {
+                    return link.closeAsync().then(Mono.error(error));
+                }
+            }
+            return Mono.error(error);
+        });
     }
 
     /**

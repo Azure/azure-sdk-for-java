@@ -7,7 +7,7 @@ import com.azure.ai.metricsadvisor.implementation.models.AnomalyResult;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyFilterCondition;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.SeverityFilterCondition;
-import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;

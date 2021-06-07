@@ -28,7 +28,7 @@
         <module>sdk/communication/azure-communication-sms</module>
 
         <!-- Azure Confidential Ledger -->
-        <module>sdk/confidentialledger/azure-data-confidentialledger</module>
+        <module>sdk/confidentialledger/azure-security-confidentialledger</module>
 
         <!-- Azure Container Registry -->
         <module>sdk/containerregistry/azure-containers-containerregistry</module>
@@ -367,7 +367,7 @@
                   </group>
                   <group>
                     <title>Azure Confidential Ledger</title>
-                    <packages>com.azure.data.confidentialledger.*</packages>
+                    <packages>com.azure.security.confidentialledger.*</packages>
                   </group>
                 </groups>
                 <links combine.children="append">
@@ -472,7 +472,7 @@
         <!--          <plugin>-->
         <!--            <groupId>net.jonathangiles.tools</groupId>-->
         <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-        <!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+        <!--            <version>1.0.6</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
         <!--            <inherited>false</inherited>-->
         <!--            <executions>-->
         <!--              <execution>-->
@@ -589,7 +589,7 @@
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/confidentialledger/azure-data-confidentialledger/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java

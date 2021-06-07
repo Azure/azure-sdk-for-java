@@ -549,7 +549,7 @@ private object CosmosSchemaInferenceConfig {
     parseFromStringFunction = query => query,
     helpMessage = "When schema inference is enabled, used as custom query to infer it")
 
-  def parseCosmosReadConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
+  def parseCosmosInferenceConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
     val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
     val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
     val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)

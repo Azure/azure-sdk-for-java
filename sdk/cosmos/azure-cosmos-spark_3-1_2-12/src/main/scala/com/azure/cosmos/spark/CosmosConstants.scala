@@ -8,9 +8,12 @@ import com.azure.cosmos.implementation.HttpConstants
 
 // cosmos db related constants
 private object CosmosConstants {
-  private[this] val currentVersion =
-    CoreUtils.getProperties(HttpConstants.Versions.AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version")
-  val userAgentSuffix = s" SparkConnector/$currentVersion"
+  private[this] val propertiesFileName = "azure-cosmos-spark.properties"
+  val currentVersion: String =
+    CoreUtils.getProperties(propertiesFileName).get("version")
+  val currentName: String =
+    CoreUtils.getProperties(propertiesFileName).get("name")
+  val userAgentSuffix = s"SparkConnector/$currentName/$currentVersion"
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
