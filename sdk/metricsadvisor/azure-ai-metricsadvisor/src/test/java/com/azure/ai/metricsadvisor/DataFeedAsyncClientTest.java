@@ -736,7 +736,6 @@ public class DataFeedAsyncClientTest extends DataFeedTestBase {
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(MetricsAdvisorResponseException.class, throwable.getClass());
                     final MetricsAdvisorError errorCode = ((MetricsAdvisorResponseException) throwable).getValue();
-                    assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
                     assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
                 });
         }, SQL_SERVER_DB);
