@@ -469,7 +469,9 @@ final class MessageUtils {
         }
 
         final ModifiedDeliveryOutcome modifiedDeliveryOutcome = (ModifiedDeliveryOutcome) outcome;
-        modified.setMessageAnnotations(modifiedDeliveryOutcome.getMessageAnnotations());
+        final Map<Symbol, Object> annotations = convert(modifiedDeliveryOutcome.getMessageAnnotations());
+
+        modified.setMessageAnnotations(annotations);
         modified.setUndeliverableHere(modifiedDeliveryOutcome.isUndeliverableHere());
         modified.setDeliveryFailed(modifiedDeliveryOutcome.isDeliveryFailed());
 
@@ -488,9 +490,11 @@ final class MessageUtils {
             return rejected;
         }
 
+
         final ErrorCondition condition = new ErrorCondition(
             Symbol.getSymbol(errorCondition.getErrorCondition()), errorCondition.toString());
-        condition.setInfo(rejectedDeliveryOutcome.getErrorInfo());
+
+        condition.setInfo(convert(rejectedDeliveryOutcome.getErrorInfo()));
 
         rejected.setError(condition);
         return rejected;
