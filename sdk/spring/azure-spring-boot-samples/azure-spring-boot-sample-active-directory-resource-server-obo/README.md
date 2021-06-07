@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-ad-resource-server-obo
+description: "Azure OAuth 2.0 Sample project for Azure AD resource server obo client library"
+urlFragment: "azure-ad-resource-server-obo-sample"
+---
+
 # Azure OAuth 2.0 Sample for azure-spring-boot-sample-active-directory-resource-server-obo client library for Java
 
 ## Key concepts

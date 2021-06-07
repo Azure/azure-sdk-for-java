@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-spring-cloud-for-storage-queue-integration
+description: "Azure Spring Cloud Sample project for Storage Queue Integration client library"
+urlFragment: "azure-spring-cloud-for-storage-queue-integration-sample"
+---
+
 # Spring Cloud Azure Storage Queue Integration Code Sample shared library for Java
 
 ## Key concepts

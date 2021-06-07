@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-spring-cloud-stream-binder-for-multiple-event-hub-namespace
+description: "Azure Spring Cloud Stream Binder Sample project for Multiple Event Hub Namespace client library"
+urlFragment: "azure-spring-cloud-stream-binder-for-multiple-event-hub-namespace-sample"
+---
+
 # Spring Cloud Azure Stream Binder for Multiple Event Hub Namespace Code Sample shared library for Java
 
 ## Key concepts

@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-spring-cloud-stream-binder-for-event-hub
+description: "Azure Spring Cloud Stream Binder Sample project for Event Hub client library"
+urlFragment: "azure-spring-cloud-stream-binder-for-event-hub-sample"
+---
+
 # Azure Spring Cloud Stream Binder for Event Hub Code Sample shared library for Java
 
 ## Key concepts
