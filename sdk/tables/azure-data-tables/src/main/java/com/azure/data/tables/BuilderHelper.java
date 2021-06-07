@@ -26,11 +26,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
+import com.azure.data.tables.implementation.StorageAuthenticationSettings;
+import com.azure.data.tables.implementation.StorageConnectionString;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,12 +54,14 @@ final class BuilderHelper {
         retryPolicy = (retryPolicy == null) ? new RetryPolicy() : retryPolicy;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
-        validateSingleCredentialIsPresent(azureNamedKeyCredential, azureSasCredential, sasToken, logger);
-
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
+        if (endpoint == null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("An 'endpoint' is required to create a client. Use builders' 'endpoint()' or"
+                    + " 'connectionString()' methods to set this value."));
+        } else if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
             policies.add(new CosmosPatchTransformPolicy());
         }
 
@@ -82,7 +87,9 @@ final class BuilderHelper {
         policies.add(retryPolicy);
 
         policies.add(new AddDatePolicy());
+
         HttpPipelinePolicy credentialPolicy;
+
         if (azureNamedKeyCredential != null) {
             credentialPolicy = new TableAzureNamedKeyCredentialPolicy(azureNamedKeyCredential);
         } else if (azureSasCredential != null) {
@@ -90,12 +97,12 @@ final class BuilderHelper {
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else {
-            credentialPolicy = null;
+            throw logger.logExceptionAsError(
+                new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
+                    + "'credential()', 'sasToken()' or 'connectionString()' methods to set a form of authentication."));
         }
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
-        }
+        policies.add(credentialPolicy);
 
         // Add per retry additional policies.
         policies.addAll(perRetryAdditionalPolicies);
@@ -121,17 +128,56 @@ final class BuilderHelper {
             .build();
     }
 
-    private static void validateSingleCredentialIsPresent(AzureNamedKeyCredential azureNamedKeyCredential,
-                                                          AzureSasCredential azureSasCredential, String sasToken,
-                                                          ClientLogger logger) {
-        List<Object> usedCredentials = Stream.of(azureNamedKeyCredential, azureSasCredential, sasToken)
-            .filter(Objects::nonNull).collect(Collectors.toList());
+    static void validateCredentials(AzureNamedKeyCredential azureNamedKeyCredential,
+                                    AzureSasCredential azureSasCredential, String sasToken, String connectionString,
+                                    ClientLogger logger) {
+        List<Object> usedCredentials =
+            Stream.of(azureNamedKeyCredential, azureSasCredential, sasToken, connectionString)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        // Only allow two forms of authentication when 'connectionString' and 'sasToken' are provided. Validate that
+        // both contain the same SAS settings.
+        if (usedCredentials.size() == 2 && connectionString != null && sasToken != null) {
+            StorageConnectionString storageConnectionString =
+                StorageConnectionString.create(connectionString, logger);
+            StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+
+            if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+                if (sasToken.equals(authSettings.getSasToken())) {
+                    return;
+                } else {
+                    throw logger.logExceptionAsError(new IllegalStateException("'connectionString' contains a SAS token"
+                        + " with different settings than 'sasToken'."));
+                }
+            }
+
+            // If the 'connectionString' auth type is not SAS_TOKEN and a 'sasToken' was provided, then multiplte
+            // incompatible forms of authentication were specified in the client builder.
+        }
+
         if (usedCredentials.size() > 1) {
+            StringJoiner usedCredentialsStringBuilder = new StringJoiner(", ");
+
+            if (azureNamedKeyCredential != null) {
+                usedCredentialsStringBuilder.add("azureNamedKeyCredential");
+            }
+
+            if (azureSasCredential != null) {
+                usedCredentialsStringBuilder.add("azureSasCredential");
+            }
+
+            if (sasToken != null) {
+                usedCredentialsStringBuilder.add("sasToken");
+            }
+
+            if (connectionString != null) {
+                usedCredentialsStringBuilder.add("connectionString");
+            }
+
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Only one credential should be used. Credentials present: "
-                    + usedCredentials.stream().map(c -> c instanceof String ? "sasToken" : c.getClass().getName())
-                    .collect(Collectors.joining(","))
-            ));
+                "Only one form of authentication should be used. The authentication forms present are: "
+                    + usedCredentialsStringBuilder + "."));
         }
     }
 }
