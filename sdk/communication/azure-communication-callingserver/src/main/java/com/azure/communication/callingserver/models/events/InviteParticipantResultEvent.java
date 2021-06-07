@@ -9,13 +9,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InviteParticipantsResultEvent model. */
+/** The InviteParticipantResultEvent model. */
 @Fluent
-public final class InviteParticipantsResultEvent extends CallingServerEventBase {
-    /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.InviteParticipantResult";
+public final class InviteParticipantResultEvent extends CallingServerEventBase {
     /*
      * The result details.
      */
@@ -47,9 +43,9 @@ public final class InviteParticipantsResultEvent extends CallingServerEventBase 
      * Set the resultInfo property: The result details.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the InviteParticipantsResultEvent object itself.
+     * @return the InviteParticipantResultEvent object itself.
      */
-    public InviteParticipantsResultEvent setResultInfo(ResultInfo resultInfo) {
+    public InviteParticipantResultEvent setResultInfo(ResultInfo resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
@@ -67,9 +63,9 @@ public final class InviteParticipantsResultEvent extends CallingServerEventBase 
      * Set the operationContext property: The operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the InviteParticipantsResultEvent object itself.
+     * @return the InviteParticipantResultEvent object itself.
      */
-    public InviteParticipantsResultEvent setOperationContext(String operationContext) {
+    public InviteParticipantResultEvent setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -87,20 +83,20 @@ public final class InviteParticipantsResultEvent extends CallingServerEventBase 
      * Set the status property: Gets or sets the status of the operation.
      *
      * @param status the status value to set.
-     * @return the InviteParticipantsResultEvent object itself.
+     * @return the InviteParticipantResultEvent object itself.
      */
-    public InviteParticipantsResultEvent setStatus(OperationStatus status) {
+    public InviteParticipantResultEvent setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }
 
     /**
-     * Deserialize {@link InviteParticipantsResultEvent} event.
+     * Deserialize {@link InviteParticipantResultEvent} event.
      *
      * @param eventData binary data for event
-     * @return {@link InviteParticipantsResultEvent} event.
+     * @return {@link InviteParticipantResultEvent} event.
      */
-    public static InviteParticipantsResultEvent deserialize(BinaryData eventData) {
-        return eventData == null ? null : eventData.toObject(InviteParticipantsResultEvent.class);
+    public static InviteParticipantResultEvent deserialize(BinaryData eventData) {
+        return eventData == null ? null : eventData.toObject(InviteParticipantResultEvent.class);
     }
 }

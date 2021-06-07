@@ -11,11 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The call state change event. */
 @Fluent
 public final class CallLegStateChangedEvent extends CallingServerEventBase {
-    /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.CallLegStateChanged";
-
     /*
      * The conversation.id.
      */

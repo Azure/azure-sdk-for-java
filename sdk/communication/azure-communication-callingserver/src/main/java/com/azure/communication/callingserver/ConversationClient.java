@@ -57,14 +57,14 @@ public final class ConversationClient {
     }
 
     /**
-     * Invite participants to a Conversation.
+     * Add a participant to the call.
      *
      * @param conversationId The conversation id.
      * @param participant Invited participant.
      * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
-     * @return response for a successful inviteParticipants request.
+     * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void addParticipant(String conversationId,
@@ -76,15 +76,15 @@ public final class ConversationClient {
     }
 
     /**
-     * Invite participants to a Conversation.
+     * Add a participant to the call.
      *
      * @param conversationId The conversation id.
      * @param participant Invited participant.
      * @param callBackUri callBackUri to get notifications.
-     * @param alternateCallerId alternateCallerId of Invited participant.
+     * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful inviteParticipants request.
+     * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addParticipantWithResponse(String conversationId,
@@ -103,7 +103,7 @@ public final class ConversationClient {
     }
 
     /**
-     * Remove participant from the Conversation.
+     * Remove a participant from the call.
      *
      * @param conversationId The conversation id.
      * @param participantId Participant id.
@@ -115,7 +115,7 @@ public final class ConversationClient {
     }
 
     /**
-     * Remove participant from the Conversation.
+     * Remove a participant from the call.
      *
      * @param conversationId The conversation id.
      * @param participantId Participant id.
@@ -258,7 +258,9 @@ public final class ConversationClient {
      * Play audio in a call.
      *
      * @param conversationId The conversation id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri The callback Uri to receive PlayAudio status notifications.
      * @param operationContext The value to identify context of the operation.
@@ -280,7 +282,9 @@ public final class ConversationClient {
      * Play audio in a call.
      *
      * @param conversationId The conversation id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri The callback Uri to receive PlayAudio status notifications.
      * @param operationContext The value to identify context of the operation.
@@ -304,7 +308,9 @@ public final class ConversationClient {
      * Play audio in a call.
      *
      * @param conversationId The conversation id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @return the response payload for play audio operation.
      */
@@ -321,7 +327,9 @@ public final class ConversationClient {
      * Play audio in a call.
      *
      * @param conversationId The conversation id.
-     * @param audioFileUri The media resource uri of the play audio request.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @param context A {@link Context} representing the request context.
      * @return the response payload for play audio operation.

@@ -13,11 +13,6 @@ import java.time.OffsetDateTime;
 /** The call recording state change event. */
 @Fluent
 public final class CallRecordingStateChangeEvent extends CallingServerEventBase {
-    /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.CallRecordingStateChange";
-
     /*
      * The call recording id
      */
