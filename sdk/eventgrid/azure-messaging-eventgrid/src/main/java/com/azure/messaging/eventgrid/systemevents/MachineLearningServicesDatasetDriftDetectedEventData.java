@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The MachineLearningServicesDatasetDriftDetectedEventData model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.DatasetDriftDetected event.
+ */
 @Fluent
 public final class MachineLearningServicesDatasetDriftDetectedEventData {
     /*

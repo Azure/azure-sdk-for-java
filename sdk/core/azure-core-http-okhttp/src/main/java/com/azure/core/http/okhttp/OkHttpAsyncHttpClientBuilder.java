@@ -211,13 +211,13 @@ public class OkHttpAsyncHttpClientBuilder {
             : configuration;
 
         ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
-            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
             : proxyOptions;
 
         if (buildProxyOptions != null) {
             httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
                 buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions.getAddress(),
+                buildProxyOptions::getAddress,
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {

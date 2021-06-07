@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.CosmosException;
@@ -52,15 +53,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions) {
 
-        this.throttlingRetry = new ResourceThrottleRetryPolicy(
-                throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
-                throttlingRetryOptions.getMaxRetryWaitTime());
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
         this.sessionTokenRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
+        this.throttlingRetry = new ResourceThrottleRetryPolicy(
+            throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
+            throttlingRetryOptions.getMaxRetryWaitTime(),
+            BridgeInternal.getRetryContext(this.getCosmosDiagnostics()));
     }
 
     @Override
@@ -168,7 +170,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // on all locations, then don't retry the request
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, this.sessionTokenRetryCount > 1);
+                    this.retryContext = new RetryContext(this.sessionTokenRetryCount , true);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             } else {
@@ -177,7 +179,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // we have already tried this request on the write location
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, false);
+                    this.retryContext = new RetryContext(0, false);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             }
@@ -289,6 +291,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             request.requestContext.routeToLocation(this.locationEndpoint);
         }
     }
+
+    @Override
+    public com.azure.cosmos.implementation.RetryContext getRetryContext() {
+        return BridgeInternal.getRetryContext(this.getCosmosDiagnostics());
+    }
+
+    CosmosDiagnostics getCosmosDiagnostics() {
+        return cosmosDiagnostics;
+    }
+
     private static class RetryContext {
 
         public int retryCount;

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** ExpressRoutePort resource definition. */
 @JsonFlatten
@@ -301,6 +302,20 @@ public class ExpressRoutePortInner extends Resource {
      */
     public ExpressRoutePortInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRoutePortInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRoutePortInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

@@ -22,15 +22,21 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
-@PrepareForTest({DefaultEventHubClientFactory.class})
+@PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
+@PrepareForTest({ DefaultEventHubClientFactory.class })
 public class DefaultEventHubClientFactoryTest {
+    //TODO (Xiaobing Zhu): Due to Powermock, it is currently impossible to upgrade JUnit 4 to JUnit 5.
 
     @Mock
     EventHubConsumerAsyncClient eventHubConsumerClient;
@@ -77,9 +83,8 @@ public class DefaultEventHubClientFactoryTest {
         when(blobContainerClientBuilder.buildAsyncClient()).thenReturn(this.blobContainerClient);
         when(this.blobContainerClient.exists()).thenReturn(Mono.just(true));
         when(eventProcessorClientBuilder.buildEventProcessorClient()).thenReturn(this.eventProcessorClient);
-        when(connectionStringProvider.getConnectionString()).thenReturn(connectionString);
 
-        this.clientFactory = spy(new DefaultEventHubClientFactory(connectionStringProvider, connectionString,
+        this.clientFactory = spy(new DefaultEventHubClientFactory(connectionString, connectionString,
             container));
     }
 
@@ -135,8 +140,8 @@ public class DefaultEventHubClientFactoryTest {
         assertNotNull(client);
         clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor);
 
-        verifyPrivate(clientFactory).invoke("createEventProcessorClientInternal", eventHubName, consumerGroup,
-            eventHubProcessor);
+        verifyPrivate(clientFactory, times(1))
+            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor);
     }
 
     @Test

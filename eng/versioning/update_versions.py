@@ -230,7 +230,7 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
         for root, _, files in os.walk("."):
             for file_name in files:
                 file_path = root + os.sep + file_name
-                if (file_name.endswith('.md') and not skip_readme) or (file_name.startswith('pom.') and file_name.endswith('.xml')):
+                if (file_name.endswith('.md') and not skip_readme) or (file_name.startswith('pom') and file_name.endswith('.xml')):
                     update_versions(update_type, version_map, ext_dep_map, file_path, skip_readme, auto_version_increment)
 
     # This is a temporary stop gap to deal with versions hard coded in java files.
@@ -252,7 +252,8 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
                     if os.path.isfile(java_file_to_update):
                         update_versions(update_type, version_map, ext_dep_map, java_file_to_update, skip_readme, auto_version_increment)
                     else:
-                        raise FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), java_file_to_update)
+                        # In pipeline contexts, files not local to the current SDK directory may not be checked out from git.
+                        print(java_file_to_update + ' does not exist. Skipping')
         else:
             print(version_java_file + ' does not exist. Skipping.')
     # END:Versions_in_java_files

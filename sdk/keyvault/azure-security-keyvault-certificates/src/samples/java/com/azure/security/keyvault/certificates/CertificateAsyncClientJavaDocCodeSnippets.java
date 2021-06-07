@@ -12,21 +12,21 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
-import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
-import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import reactor.util.context.Context;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -622,8 +622,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts
-        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
-        certificateAsyncClient.setContacts(Arrays.asList(contactToAdd)).subscribe(contact ->
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@example.com");
+        certificateAsyncClient.setContacts(Collections.singletonList(contactToAdd)).subscribe(contact ->
             System.out.printf("Contact name %s and email %s", contact.getName(), contact.getEmail())
         );
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.setContacts#contacts

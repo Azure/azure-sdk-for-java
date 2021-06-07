@@ -27,4 +27,9 @@ public interface Operation extends HasInner<OperationInner>, HasManager<HDInsigh
      */
     String name();
 
+    /**
+     * @return the properties value.
+     */
+    OperationProperties properties();
+
 }

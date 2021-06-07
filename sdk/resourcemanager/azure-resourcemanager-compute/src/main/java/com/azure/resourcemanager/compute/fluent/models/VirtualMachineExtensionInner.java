@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Describes a Virtual Machine Extension. */
 @JsonFlatten
@@ -52,6 +53,13 @@ public class VirtualMachineExtensionInner extends Resource {
      */
     @JsonProperty(value = "properties.autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
+
+    /*
+     * Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     */
+    @JsonProperty(value = "properties.enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
 
     /*
      * Json formatted public settings for the extension.
@@ -185,6 +193,28 @@ public class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the VirtualMachineExtensionInner object itself.
+     */
+    public VirtualMachineExtensionInner withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
+        return this;
+    }
+
+    /**
      * Get the settings property: Json formatted public settings for the extension.
      *
      * @return the settings value.
@@ -252,6 +282,20 @@ public class VirtualMachineExtensionInner extends Resource {
      */
     public VirtualMachineExtensionInner withInstanceView(VirtualMachineExtensionInstanceView instanceView) {
         this.instanceView = instanceView;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineExtensionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineExtensionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

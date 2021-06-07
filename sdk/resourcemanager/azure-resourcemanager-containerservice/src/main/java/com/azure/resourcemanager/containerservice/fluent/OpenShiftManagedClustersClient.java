@@ -162,7 +162,7 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param parameters OpenShift Managed cluster.
+     * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -177,7 +177,7 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param parameters OpenShift Managed cluster.
+     * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,7 +192,7 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param parameters OpenShift Managed cluster.
+     * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -207,7 +207,7 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param parameters OpenShift Managed cluster.
+     * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,7 +223,7 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param parameters OpenShift Managed cluster.
+     * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,7 +238,7 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param parameters OpenShift Managed cluster.
+     * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,7 +253,7 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param parameters OpenShift Managed cluster.
+     * @param parameters Parameters supplied to the Create or Update an OpenShift Managed Cluster operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -372,6 +372,19 @@ public interface OpenShiftManagedClustersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return openShift Managed cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OpenShiftManagedClusterInner updateTags(String resourceGroupName, String resourceName);
+
+    /**
+     * Updates an OpenShift managed cluster with the specified tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the OpenShift managed cluster resource.
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,19 +395,6 @@ public interface OpenShiftManagedClustersClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     OpenShiftManagedClusterInner updateTags(
         String resourceGroupName, String resourceName, Map<String, String> tags, Context context);
-
-    /**
-     * Updates an OpenShift managed cluster with the specified tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the OpenShift managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShift Managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenShiftManagedClusterInner updateTags(String resourceGroupName, String resourceName);
 
     /**
      * Deletes the OpenShift managed cluster with a specified resource group and name.

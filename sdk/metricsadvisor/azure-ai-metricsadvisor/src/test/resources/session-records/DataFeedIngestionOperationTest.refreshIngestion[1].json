@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/9860df01-e740-40ec-94a2-6351813552ba/ingestionProgress/reset",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.4 (1.8.0_221; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "69a5dda6-f22f-4614-87c1-9b5cc76fbaae",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "e51a84a8-1980-4ce3-8cd3-6c0aeee42024",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "193",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "e51a84a8-1980-4ce3-8cd3-6c0aeee42024",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Mon, 24 May 2021 21:31:39 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

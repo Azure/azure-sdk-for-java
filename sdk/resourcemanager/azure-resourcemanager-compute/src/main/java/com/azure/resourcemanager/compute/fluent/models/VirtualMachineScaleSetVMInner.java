@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtecti
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Describes a virtual machine scale set virtual machine. */
 @JsonFlatten
@@ -112,6 +114,12 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     private OSProfile osProfile;
 
     /*
+     * Specifies the Security related profile settings for the virtual machine.
+     */
+    @JsonProperty(value = "properties.securityProfile")
+    private SecurityProfile securityProfile;
+
+    /*
      * Specifies the network interfaces of the virtual machine.
      */
     @JsonProperty(value = "properties.networkProfile")
@@ -134,12 +142,12 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      * Specifies information about the availability set that the virtual
      * machine should be assigned to. Virtual machines specified in the same
      * availability set are allocated to different nodes to maximize
-     * availability. For more information about availability sets, see [Manage
-     * the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * <br><br> For more information on Azure planned maintenance, see [Planned
-     * maintenance for virtual machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * availability. For more information about availability sets, see
+     * [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview).
+     * <br><br> For more information on Azure planned maintenance, see
+     * [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates)
      * <br><br> Currently, a VM can only be added to availability set at
      * creation time. An existing VM cannot be added to an availability set.
      */
@@ -154,13 +162,14 @@ public class VirtualMachineScaleSetVMInner extends Resource {
 
     /*
      * Specifies that the image or disk that is being used was licensed
-     * on-premises. This element is only used for images that contain the
-     * Windows Server operating system. <br><br> Possible values are: <br><br>
-     * Windows_Client <br><br> Windows_Server <br><br> If this element is
-     * included in a request for an update, the value must match the initial
-     * value. This value cannot be updated. <br><br> For more information, see
-     * [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * on-premises. <br><br> Possible values for Windows Server operating
+     * system are: <br><br> Windows_Client <br><br> Windows_Server <br><br>
+     * Possible values for Linux Server operating system are: <br><br>
+     * RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * <br><br> [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
      * <br><br> Minimum api-version: 2015-06-15
      */
     @JsonProperty(value = "properties.licenseType")
@@ -179,6 +188,13 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      */
     @JsonProperty(value = "properties.protectionPolicy")
     private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
+
+    /*
+     * UserData for the VM, which must be base-64 encoded. Customer should not
+     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
+     */
+    @JsonProperty(value = "properties.userData")
+    private String userData;
 
     /**
      * Get the instanceId property: The virtual machine instance ID.
@@ -356,6 +372,26 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
+     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machine.
+     *
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machine.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineScaleSetVMInner object itself.
+     */
+    public VirtualMachineScaleSetVMInner withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Get the networkProfile property: Specifies the network interfaces of the virtual machine.
      *
      * @return the networkProfile value.
@@ -421,13 +457,12 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     /**
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     * machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     * cannot be added to an availability set.
+     * to maximize availability. For more information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
+     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
+     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
+     * set.
      *
      * @return the availabilitySet value.
      */
@@ -438,13 +473,12 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     /**
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     * machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     * cannot be added to an availability set.
+     * to maximize availability. For more information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
+     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
+     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
+     * set.
      *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
@@ -464,13 +498,15 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises. This
-     * element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible
-     * values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this
-     * element is included in a request for an update, the value must match the initial value. This value cannot be
-     * updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
+     * Minimum api-version: 2015-06-15.
      *
      * @return the licenseType value.
      */
@@ -479,13 +515,15 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises. This
-     * element is only used for images that contain the Windows Server operating system. &lt;br&gt;&lt;br&gt; Possible
-     * values are: &lt;br&gt;&lt;br&gt; Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; If this
-     * element is included in a request for an update, the value must match the initial value. This value cannot be
-     * updated. &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
+     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
+     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
+     * information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
+     * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
+     * Minimum api-version: 2015-06-15.
      *
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
@@ -527,6 +565,42 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
+     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @return the userData value.
+     */
+    public String userData() {
+        return this.userData;
+    }
+
+    /**
+     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @param userData the userData value to set.
+     * @return the VirtualMachineScaleSetVMInner object itself.
+     */
+    public VirtualMachineScaleSetVMInner withUserData(String userData) {
+        this.userData = userData;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -555,6 +629,9 @@ public class VirtualMachineScaleSetVMInner extends Resource {
         }
         if (osProfile() != null) {
             osProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
         if (networkProfile() != null) {
             networkProfile().validate();

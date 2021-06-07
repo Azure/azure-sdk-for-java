@@ -21,10 +21,10 @@ import java.time.OffsetDateTime;
  * representation of the SAS which can then be applied to a new client using the .sasToken(String) method on the
  * desired client builder.
  *
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas>Constructing a Service
  * SAS</a>
- * @see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas>Constructing a
+ * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-user-delegation-sas>Constructing a
  * User Delegation SAS</a>
  */
 public final class BlobServiceSasSignatureValues {
@@ -287,6 +287,7 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated BlobServiceSASSignatureValues object
      */
@@ -380,7 +381,7 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * @return the name of the access policy on the container this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {
@@ -389,7 +390,7 @@ public final class BlobServiceSasSignatureValues {
 
     /**
      * Sets the name of the access policy on the container this SAS references if any. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      *
      * @param identifier Name of the access policy

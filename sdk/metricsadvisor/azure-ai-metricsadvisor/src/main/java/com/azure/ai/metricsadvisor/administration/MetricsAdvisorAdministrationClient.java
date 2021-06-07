@@ -4,14 +4,16 @@
 package com.azure.ai.metricsadvisor.administration;
 
 import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.models.DataFeed;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
+import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -515,16 +517,19 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions}
      *
      * @param metricId The metric id.
+     * @param options th e additional configurable options to specify when querying the result.
      * @return The anomaly detection configurations.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId) {
-        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId,
+    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options) {
+        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, options,
             Context.NONE));
     }
 
@@ -532,18 +537,21 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions-Context}
      *
      * @param metricId The metric id.
+     * @param options th e additional configurable options to specify when querying the result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The anomaly detection configurations.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId,
-                                                                                                  Context context) {
-        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId,
+    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options,
+        Context context) {
+        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, options,
             context == null ? Context.NONE : context));
     }
 
@@ -867,9 +875,10 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions}
      *
      * @param detectionConfigurationId The id of the detection configuration.
+     * @param options th e additional configurable options to specify when querying the result.
      *
      * @return A {@link PagedIterable} containing information of all the
      * {@link AnomalyAlertConfiguration anomaly alert configurations} for the specified detection configuration.
@@ -879,17 +888,18 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId) {
-        return listAnomalyAlertConfigs(detectionConfigurationId, Context.NONE);
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
+        return listAnomalyAlertConfigs(detectionConfigurationId, options, Context.NONE);
     }
 
     /**
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions-Context}
      *
      * @param detectionConfigurationId The id of the detection configuration.
+     * @param options th e additional configurable options to specify when querying the result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link PagedIterable} containing information of all the
@@ -900,8 +910,8 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId, Context context) {
-        return new PagedIterable<>(client.listAnomalyAlertConfigs(detectionConfigurationId,
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
+        return new PagedIterable<>(client.listAnomalyAlertConfigs(detectionConfigurationId, options,
             context == null ? Context.NONE : context));
     }
 }

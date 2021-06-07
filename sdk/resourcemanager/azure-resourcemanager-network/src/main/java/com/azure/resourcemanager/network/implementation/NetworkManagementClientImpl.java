@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -48,9 +49,11 @@ import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
 import com.azure.resourcemanager.network.fluent.BastionHostsClient;
 import com.azure.resourcemanager.network.fluent.BgpServiceCommunitiesClient;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
+import com.azure.resourcemanager.network.fluent.CustomIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.DdosCustomPoliciesClient;
 import com.azure.resourcemanager.network.fluent.DdosProtectionPlansClient;
 import com.azure.resourcemanager.network.fluent.DefaultSecurityRulesClient;
+import com.azure.resourcemanager.network.fluent.DscpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitAuthorizationsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsClient;
@@ -69,6 +72,7 @@ import com.azure.resourcemanager.network.fluent.FlowLogsClient;
 import com.azure.resourcemanager.network.fluent.HubRouteTablesClient;
 import com.azure.resourcemanager.network.fluent.HubVirtualNetworkConnectionsClient;
 import com.azure.resourcemanager.network.fluent.InboundNatRulesClient;
+import com.azure.resourcemanager.network.fluent.InboundSecurityRuleOperationsClient;
 import com.azure.resourcemanager.network.fluent.IpAllocationsClient;
 import com.azure.resourcemanager.network.fluent.IpGroupsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerBackendAddressPoolsClient;
@@ -80,6 +84,7 @@ import com.azure.resourcemanager.network.fluent.LoadBalancerProbesClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.NatGatewaysClient;
+import com.azure.resourcemanager.network.fluent.NatRulesClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
@@ -118,6 +123,7 @@ import com.azure.resourcemanager.network.fluent.VirtualHubIpConfigurationsClient
 import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2SClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayNatRulesClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkTapsClient;
@@ -135,6 +141,7 @@ import com.azure.resourcemanager.network.fluent.VpnSiteLinksClient;
 import com.azure.resourcemanager.network.fluent.VpnSitesClient;
 import com.azure.resourcemanager.network.fluent.VpnSitesConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.WebApplicationFirewallPoliciesClient;
+import com.azure.resourcemanager.network.fluent.WebCategoriesClient;
 import com.azure.resourcemanager.network.fluent.models.BastionActiveSessionInner;
 import com.azure.resourcemanager.network.fluent.models.BastionSessionStateInner;
 import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner;
@@ -334,6 +341,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.azureFirewallFqdnTags;
     }
 
+    /** The WebCategoriesClient object to access its operations. */
+    private final WebCategoriesClient webCategories;
+
+    /**
+     * Gets the WebCategoriesClient object to access its operations.
+     *
+     * @return the WebCategoriesClient object.
+     */
+    public WebCategoriesClient getWebCategories() {
+        return this.webCategories;
+    }
+
     /** The BastionHostsClient object to access its operations. */
     private final BastionHostsClient bastionHosts;
 
@@ -344,6 +363,42 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public BastionHostsClient getBastionHosts() {
         return this.bastionHosts;
+    }
+
+    /** The NetworkInterfacesClient object to access its operations. */
+    private final NetworkInterfacesClient networkInterfaces;
+
+    /**
+     * Gets the NetworkInterfacesClient object to access its operations.
+     *
+     * @return the NetworkInterfacesClient object.
+     */
+    public NetworkInterfacesClient getNetworkInterfaces() {
+        return this.networkInterfaces;
+    }
+
+    /** The PublicIpAddressesClient object to access its operations. */
+    private final PublicIpAddressesClient publicIpAddresses;
+
+    /**
+     * Gets the PublicIpAddressesClient object to access its operations.
+     *
+     * @return the PublicIpAddressesClient object.
+     */
+    public PublicIpAddressesClient getPublicIpAddresses() {
+        return this.publicIpAddresses;
+    }
+
+    /** The CustomIpPrefixesClient object to access its operations. */
+    private final CustomIpPrefixesClient customIpPrefixes;
+
+    /**
+     * Gets the CustomIpPrefixesClient object to access its operations.
+     *
+     * @return the CustomIpPrefixesClient object.
+     */
+    public CustomIpPrefixesClient getCustomIpPrefixes() {
+        return this.customIpPrefixes;
     }
 
     /** The DdosCustomPoliciesClient object to access its operations. */
@@ -368,6 +423,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public DdosProtectionPlansClient getDdosProtectionPlans() {
         return this.ddosProtectionPlans;
+    }
+
+    /** The DscpConfigurationsClient object to access its operations. */
+    private final DscpConfigurationsClient dscpConfigurations;
+
+    /**
+     * Gets the DscpConfigurationsClient object to access its operations.
+     *
+     * @return the DscpConfigurationsClient object.
+     */
+    public DscpConfigurationsClient getDscpConfigurations() {
+        return this.dscpConfigurations;
     }
 
     /** The AvailableEndpointServicesClient object to access its operations. */
@@ -670,18 +737,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.natGateways;
     }
 
-    /** The NetworkInterfacesClient object to access its operations. */
-    private final NetworkInterfacesClient networkInterfaces;
-
-    /**
-     * Gets the NetworkInterfacesClient object to access its operations.
-     *
-     * @return the NetworkInterfacesClient object.
-     */
-    public NetworkInterfacesClient getNetworkInterfaces() {
-        return this.networkInterfaces;
-    }
-
     /** The NetworkInterfaceIpConfigurationsClient object to access its operations. */
     private final NetworkInterfaceIpConfigurationsClient networkInterfaceIpConfigurations;
 
@@ -802,6 +857,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.virtualApplianceSkus;
     }
 
+    /** The InboundSecurityRuleOperationsClient object to access its operations. */
+    private final InboundSecurityRuleOperationsClient inboundSecurityRuleOperations;
+
+    /**
+     * Gets the InboundSecurityRuleOperationsClient object to access its operations.
+     *
+     * @return the InboundSecurityRuleOperationsClient object.
+     */
+    public InboundSecurityRuleOperationsClient getInboundSecurityRuleOperations() {
+        return this.inboundSecurityRuleOperations;
+    }
+
     /** The NetworkWatchersClient object to access its operations. */
     private final NetworkWatchersClient networkWatchers;
 
@@ -908,18 +975,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public PrivateLinkServicesClient getPrivateLinkServices() {
         return this.privateLinkServices;
-    }
-
-    /** The PublicIpAddressesClient object to access its operations. */
-    private final PublicIpAddressesClient publicIpAddresses;
-
-    /**
-     * Gets the PublicIpAddressesClient object to access its operations.
-     *
-     * @return the PublicIpAddressesClient object.
-     */
-    public PublicIpAddressesClient getPublicIpAddresses() {
-        return this.publicIpAddresses;
     }
 
     /** The PublicIpPrefixesClient object to access its operations. */
@@ -1150,6 +1205,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.localNetworkGateways;
     }
 
+    /** The VirtualNetworkGatewayNatRulesClient object to access its operations. */
+    private final VirtualNetworkGatewayNatRulesClient virtualNetworkGatewayNatRules;
+
+    /**
+     * Gets the VirtualNetworkGatewayNatRulesClient object to access its operations.
+     *
+     * @return the VirtualNetworkGatewayNatRulesClient object.
+     */
+    public VirtualNetworkGatewayNatRulesClient getVirtualNetworkGatewayNatRules() {
+        return this.virtualNetworkGatewayNatRules;
+    }
+
     /** The VirtualNetworkTapsClient object to access its operations. */
     private final VirtualNetworkTapsClient virtualNetworkTaps;
 
@@ -1282,6 +1349,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.vpnGateways;
     }
 
+    /** The VpnLinkConnectionsClient object to access its operations. */
+    private final VpnLinkConnectionsClient vpnLinkConnections;
+
+    /**
+     * Gets the VpnLinkConnectionsClient object to access its operations.
+     *
+     * @return the VpnLinkConnectionsClient object.
+     */
+    public VpnLinkConnectionsClient getVpnLinkConnections() {
+        return this.vpnLinkConnections;
+    }
+
     /** The VpnConnectionsClient object to access its operations. */
     private final VpnConnectionsClient vpnConnections;
 
@@ -1306,16 +1385,16 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         return this.vpnSiteLinkConnections;
     }
 
-    /** The VpnLinkConnectionsClient object to access its operations. */
-    private final VpnLinkConnectionsClient vpnLinkConnections;
+    /** The NatRulesClient object to access its operations. */
+    private final NatRulesClient natRules;
 
     /**
-     * Gets the VpnLinkConnectionsClient object to access its operations.
+     * Gets the NatRulesClient object to access its operations.
      *
-     * @return the VpnLinkConnectionsClient object.
+     * @return the NatRulesClient object.
      */
-    public VpnLinkConnectionsClient getVpnLinkConnections() {
-        return this.vpnLinkConnections;
+    public NatRulesClient getNatRules() {
+        return this.natRules;
     }
 
     /** The P2SVpnGatewaysClient object to access its operations. */
@@ -1462,9 +1541,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.availableServiceAliases = new AvailableServiceAliasesClientImpl(this);
         this.azureFirewalls = new AzureFirewallsClientImpl(this);
         this.azureFirewallFqdnTags = new AzureFirewallFqdnTagsClientImpl(this);
+        this.webCategories = new WebCategoriesClientImpl(this);
         this.bastionHosts = new BastionHostsClientImpl(this);
+        this.networkInterfaces = new NetworkInterfacesClientImpl(this);
+        this.publicIpAddresses = new PublicIpAddressesClientImpl(this);
+        this.customIpPrefixes = new CustomIpPrefixesClientImpl(this);
         this.ddosCustomPolicies = new DdosCustomPoliciesClientImpl(this);
         this.ddosProtectionPlans = new DdosProtectionPlansClientImpl(this);
+        this.dscpConfigurations = new DscpConfigurationsClientImpl(this);
         this.availableEndpointServices = new AvailableEndpointServicesClientImpl(this);
         this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsClientImpl(this);
         this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsClientImpl(this);
@@ -1490,7 +1574,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.loadBalancerNetworkInterfaces = new LoadBalancerNetworkInterfacesClientImpl(this);
         this.loadBalancerProbes = new LoadBalancerProbesClientImpl(this);
         this.natGateways = new NatGatewaysClientImpl(this);
-        this.networkInterfaces = new NetworkInterfacesClientImpl(this);
         this.networkInterfaceIpConfigurations = new NetworkInterfaceIpConfigurationsClientImpl(this);
         this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersClientImpl(this);
         this.networkInterfaceTapConfigurations = new NetworkInterfaceTapConfigurationsClientImpl(this);
@@ -1501,6 +1584,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.networkVirtualAppliances = new NetworkVirtualAppliancesClientImpl(this);
         this.virtualApplianceSites = new VirtualApplianceSitesClientImpl(this);
         this.virtualApplianceSkus = new VirtualApplianceSkusClientImpl(this);
+        this.inboundSecurityRuleOperations = new InboundSecurityRuleOperationsClientImpl(this);
         this.networkWatchers = new NetworkWatchersClientImpl(this);
         this.packetCaptures = new PacketCapturesClientImpl(this);
         this.connectionMonitors = new ConnectionMonitorsClientImpl(this);
@@ -1510,7 +1594,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesClientImpl(this);
         this.privateDnsZoneGroups = new PrivateDnsZoneGroupsClientImpl(this);
         this.privateLinkServices = new PrivateLinkServicesClientImpl(this);
-        this.publicIpAddresses = new PublicIpAddressesClientImpl(this);
         this.publicIpPrefixes = new PublicIpPrefixesClientImpl(this);
         this.routeFilters = new RouteFiltersClientImpl(this);
         this.routeFilterRules = new RouteFilterRulesClientImpl(this);
@@ -1530,6 +1613,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.virtualNetworkGateways = new VirtualNetworkGatewaysClientImpl(this);
         this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsClientImpl(this);
         this.localNetworkGateways = new LocalNetworkGatewaysClientImpl(this);
+        this.virtualNetworkGatewayNatRules = new VirtualNetworkGatewayNatRulesClientImpl(this);
         this.virtualNetworkTaps = new VirtualNetworkTapsClientImpl(this);
         this.virtualRouters = new VirtualRoutersClientImpl(this);
         this.virtualRouterPeerings = new VirtualRouterPeeringsClientImpl(this);
@@ -1541,9 +1625,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.virtualHubs = new VirtualHubsClientImpl(this);
         this.hubVirtualNetworkConnections = new HubVirtualNetworkConnectionsClientImpl(this);
         this.vpnGateways = new VpnGatewaysClientImpl(this);
+        this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
         this.vpnConnections = new VpnConnectionsClientImpl(this);
         this.vpnSiteLinkConnections = new VpnSiteLinkConnectionsClientImpl(this);
-        this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
+        this.natRules = new NatRulesClientImpl(this);
         this.p2SVpnGateways = new P2SVpnGatewaysClientImpl(this);
         this.vpnServerConfigurationsAssociatedWithVirtualWans =
             new VpnServerConfigurationsAssociatedWithVirtualWansClientImpl(this);
@@ -1565,7 +1650,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface NetworkManagementClientService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}/createShareableLinks")
@@ -1578,9 +1663,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}/deleteShareableLinks")
@@ -1593,9 +1679,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}/getShareableLinks")
@@ -1608,9 +1695,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BastionShareableLinkListRequest bslRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}/getActiveSessions")
@@ -1622,9 +1710,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}/disconnectActiveSessions")
@@ -1637,9 +1726,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") SessionIds sessionIds,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         @ExpectedResponses({200})
@@ -1650,9 +1740,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @QueryParam("domainNameLabel") String domainNameLabel,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
                 + "/{virtualWANName}/supportedSecurityProviders")
@@ -1664,9 +1755,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
                 + "/{virtualWANName}/GenerateVpnProfile")
@@ -1679,35 +1771,48 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VirtualWanVpnProfileParameters vpnClientParams,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BastionShareableLinkListResult>> putBastionShareableLinkNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BastionShareableLinkListResult>> getBastionShareableLinkNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BastionActiveSessionListResult>> getActiveSessionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BastionSessionDeleteResult>> disconnectActiveSessionsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -1744,7 +1849,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
         return FluxUtil
@@ -1759,6 +1865,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                                 apiVersion,
                                 this.getSubscriptionId(),
                                 bslRequest,
+                                accept,
                                 context)
                             .cache();
                     return Mono
@@ -1783,7 +1890,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getT2().value(),
                         res.getT2().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -1821,7 +1928,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
         context = this.mergeContext(context);
@@ -1834,6 +1942,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                     apiVersion,
                     this.getSubscriptionId(),
                     bslRequest,
+                    accept,
                     context)
                 .cache();
         return Mono
@@ -1875,7 +1984,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
         return new PagedFlux<>(
             () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink));
+            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, vms));
     }
 
     /**
@@ -1894,7 +2003,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         final List<BastionShareableLinkInner> vms = null;
         return new PagedFlux<>(
             () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink));
+            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, vms));
     }
 
     /**
@@ -1914,7 +2023,24 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return new PagedFlux<>(
             () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms, context),
-            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, context));
+            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, vms, context));
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
+        String resourceGroupName, String bastionHostname) {
+        final List<BastionShareableLinkInner> vms = null;
+        return new PagedIterable<>(putBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms));
     }
 
     /**
@@ -1933,23 +2059,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     public PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return new PagedIterable<>(putBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context));
-    }
-
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
-        String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return new PagedIterable<>(putBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms));
     }
 
     /**
@@ -1986,7 +2095,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
         return FluxUtil
@@ -2000,8 +2110,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             apiVersion,
                             this.getSubscriptionId(),
                             bslRequest,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2039,7 +2150,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
         context = this.mergeContext(context);
@@ -2051,6 +2163,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 apiVersion,
                 this.getSubscriptionId(),
                 bslRequest,
+                accept,
                 context);
     }
 
@@ -2153,6 +2266,24 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostname) {
+        final List<BastionShareableLinkInner> vms = null;
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
+            .last()
+            .flatMap(this::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
      * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2173,24 +2304,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
-            .last()
-            .flatMap(this::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
      * @param vms List of VM references.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2199,6 +2312,21 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).block();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteBastionShareableLink(String resourceGroupName, String bastionHostname) {
+        final List<BastionShareableLinkInner> vms = null;
         deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).block();
     }
 
@@ -2220,21 +2348,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteBastionShareableLink(String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).block();
-    }
-
-    /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
      *
      * @param resourceGroupName The name of the resource group.
@@ -2268,7 +2381,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
         return FluxUtil
@@ -2282,6 +2396,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             apiVersion,
                             this.getSubscriptionId(),
                             bslRequest,
+                            accept,
                             context))
             .<PagedResponse<BastionShareableLinkInner>>map(
                 res ->
@@ -2292,7 +2407,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2330,7 +2445,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (vms != null) {
             vms.forEach(e -> e.validate());
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
         bslRequest.withVms(vms);
         context = this.mergeContext(context);
@@ -2342,6 +2458,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 apiVersion,
                 this.getSubscriptionId(),
                 bslRequest,
+                accept,
                 context)
             .map(
                 res ->
@@ -2370,7 +2487,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
         return new PagedFlux<>(
             () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink));
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, vms));
     }
 
     /**
@@ -2389,7 +2506,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         final List<BastionShareableLinkInner> vms = null;
         return new PagedFlux<>(
             () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink));
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, vms));
     }
 
     /**
@@ -2409,7 +2526,24 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return new PagedFlux<>(
             () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms, context),
-            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, context));
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, vms, context));
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for all the Bastion Shareable Link endpoints.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
+        String resourceGroupName, String bastionHostname) {
+        final List<BastionShareableLinkInner> vms = null;
+        return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms));
     }
 
     /**
@@ -2428,23 +2562,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
         String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
         return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context));
-    }
-
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
-        String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms));
     }
 
     /**
@@ -2477,7 +2594,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> {
@@ -2489,6 +2607,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                                 bastionHostname,
                                 apiVersion,
                                 this.getSubscriptionId(),
+                                accept,
                                 context)
                             .cache();
                     return Mono
@@ -2513,7 +2632,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getT2().value(),
                         res.getT2().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2547,7 +2666,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             service
@@ -2557,6 +2677,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                     bastionHostname,
                     apiVersion,
                     this.getSubscriptionId(),
+                    accept,
                     context)
                 .cache();
         return Mono
@@ -2683,7 +2804,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         SessionIds sessionIds = new SessionIds();
         sessionIds.withSessionIds(sessionIdsSessionIds);
         return FluxUtil
@@ -2697,6 +2819,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             apiVersion,
                             this.getSubscriptionId(),
                             sessionIds,
+                            accept,
                             context))
             .<PagedResponse<BastionSessionStateInner>>map(
                 res ->
@@ -2707,7 +2830,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2742,7 +2865,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         SessionIds sessionIds = new SessionIds();
         sessionIds.withSessionIds(sessionIdsSessionIds);
         context = this.mergeContext(context);
@@ -2754,6 +2878,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 apiVersion,
                 this.getSubscriptionId(),
                 sessionIds,
+                accept,
                 context)
             .map(
                 res ->
@@ -2782,7 +2907,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds) {
         return new PagedFlux<>(
             () -> disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds),
-            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink));
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, sessionIdsSessionIds));
     }
 
     /**
@@ -2801,7 +2926,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         final List<String> sessionIdsSessionIds = null;
         return new PagedFlux<>(
             () -> disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds),
-            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink));
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, sessionIdsSessionIds));
     }
 
     /**
@@ -2823,7 +2948,25 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             () ->
                 disconnectActiveSessionsSinglePageAsync(
                     resourceGroupName, bastionHostname, sessionIdsSessionIds, context),
-            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, context));
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, sessionIdsSessionIds, context));
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for DisconnectActiveSessions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
+        String resourceGroupName, String bastionHostname) {
+        final List<String> sessionIdsSessionIds = null;
+        return new PagedIterable<>(
+            disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds));
     }
 
     /**
@@ -2843,24 +2986,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context) {
         return new PagedIterable<>(
             disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds, context));
-    }
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
-        String resourceGroupName, String bastionHostname) {
-        final List<String> sessionIdsSessionIds = null;
-        return new PagedIterable<>(
-            disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds));
     }
 
     /**
@@ -2893,7 +3018,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2904,8 +3030,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             domainNameLabel,
                             apiVersion,
                             this.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -2939,11 +3066,12 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         context = this.mergeContext(context);
         return service
             .checkDnsNameAvailability(
-                this.getEndpoint(), location, domainNameLabel, apiVersion, this.getSubscriptionId(), context);
+                this.getEndpoint(), location, domainNameLabel, apiVersion, this.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -3033,7 +3161,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3044,8 +3173,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             resourceGroupName,
                             virtualWanName,
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3078,11 +3208,18 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         context = this.mergeContext(context);
         return service
             .supportedSecurityProviders(
-                this.getEndpoint(), this.getSubscriptionId(), resourceGroupName, virtualWanName, apiVersion, context);
+                this.getEndpoint(),
+                this.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                apiVersion,
+                accept,
+                context);
     }
 
     /**
@@ -3148,7 +3285,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3179,7 +3316,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3191,8 +3329,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                             virtualWanName,
                             apiVersion,
                             vpnClientParams,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3201,7 +3340,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3236,7 +3375,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-02-01";
+        final String accept = "application/json";
         context = this.mergeContext(context);
         return service
             .generatevirtualwanvpnserverconfigurationvpnprofile(
@@ -3246,6 +3386,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 virtualWanName,
                 apiVersion,
                 vpnClientParams,
+                accept,
                 context);
     }
 
@@ -3255,7 +3396,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3283,7 +3424,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3312,7 +3453,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3333,7 +3474,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3358,7 +3499,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3379,7 +3520,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3404,7 +3545,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3424,7 +3565,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3446,18 +3587,30 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param vms List of VM references.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for all the Bastion Shareable Link endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkNextSinglePageAsync(
+        String nextLink, List<BastionShareableLinkInner> vms) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String accept = "application/json";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
         return FluxUtil
-            .withContext(context -> service.putBastionShareableLinkNext(nextLink, context))
+            .withContext(context -> service.putBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<BastionShareableLinkInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3467,13 +3620,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3482,13 +3636,23 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkNextSinglePageAsync(
-        String nextLink, Context context) {
+        String nextLink, List<BastionShareableLinkInner> vms, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String accept = "application/json";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
         context = this.mergeContext(context);
         return service
-            .putBastionShareableLinkNext(nextLink, context)
+            .putBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3504,18 +3668,30 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param vms List of VM references.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for all the Bastion Shareable Link endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(
+        String nextLink, List<BastionShareableLinkInner> vms) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String accept = "application/json";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
         return FluxUtil
-            .withContext(context -> service.getBastionShareableLinkNext(nextLink, context))
+            .withContext(context -> service.getBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<BastionShareableLinkInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3525,13 +3701,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3540,13 +3717,23 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(
-        String nextLink, Context context) {
+        String nextLink, List<BastionShareableLinkInner> vms, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (vms != null) {
+            vms.forEach(e -> e.validate());
+        }
+        final String accept = "application/json";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
         context = this.mergeContext(context);
         return service
-            .getBastionShareableLinkNext(nextLink, context)
+            .getBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3572,8 +3759,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getActiveSessionsNext(nextLink, context))
+            .withContext(context -> service.getActiveSessionsNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<BastionActiveSessionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3583,7 +3775,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -3602,9 +3794,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.mergeContext(context);
         return service
-            .getActiveSessionsNext(nextLink, context)
+            .getActiveSessionsNext(nextLink, this.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -3620,18 +3817,27 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param sessionIdsSessionIds List of session IDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for DisconnectActiveSessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(
+        String nextLink, List<String> sessionIdsSessionIds) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        SessionIds sessionIds = new SessionIds();
+        sessionIds.withSessionIds(sessionIdsSessionIds);
         return FluxUtil
-            .withContext(context -> service.disconnectActiveSessionsNext(nextLink, context))
+            .withContext(context -> service.disconnectActiveSessionsNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<BastionSessionStateInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -3641,13 +3847,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param sessionIdsSessionIds List of session IDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3656,13 +3863,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(
-        String nextLink, Context context) {
+        String nextLink, List<String> sessionIdsSessionIds, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        SessionIds sessionIds = new SessionIds();
+        sessionIds.withSessionIds(sessionIdsSessionIds);
         context = this.mergeContext(context);
         return service
-            .disconnectActiveSessionsNext(nextLink, context)
+            .disconnectActiveSessionsNext(nextLink, this.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

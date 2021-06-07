@@ -1,7 +1,31 @@
 # Release History
 
-## 12.8.0-beta.2 (Unreleased)
+## 12.10.0-beta.2 (Unreleased)
 
+
+## 12.10.0-beta.1 (2021-05-13)
+- Added support for the 2020-08-04 service version.
+
+## 12.9.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-storage-blob` to version `12.11.1`
+- Updated `azure-core` to version `1.16.0`
+
+## 12.9.0 (2021-04-29)
+- GA release
+
+## 12.9.0-beta.3 (2021-04-16)
+- Update `azure-storage-blob` to version `12.11.0-beta.3`
+
+## 12.9.0-beta.2 (2021-03-29)
+- Update `azure-storage-blob` to version `12.11.0-beta.2`
+
+## 12.9.0-beta.1 (2021-02-10)
+- Added support for the 2020-06-12 service version. 
+- Added support to create a BlobBatchClient from a BlobContainerClient to perform container level operations.
+
+## 12.8.0 (2021-01-14)
+- GA release
 
 ## 12.8.0-beta.1 (2020-12-07)
 - Reuse the Http client configured in the provided HttpPipeline during BlobBatch construction.
@@ -71,7 +95,7 @@ and
 - Added BlobBatchStorageException
 - Changed exception throwing to throw StorageBlobException on invalid request and BlobBatchStorageException when batch operations fail
 
-## 12.0.0-preview.4 (2019-10-8)
+## 12.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (October 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
 This package's

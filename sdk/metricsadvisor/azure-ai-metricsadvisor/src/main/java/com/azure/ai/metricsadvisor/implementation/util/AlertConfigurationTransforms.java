@@ -4,9 +4,8 @@
 package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationCrossMetricsOperator;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationLogicType;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatchCrossMetricsOperator;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyScope;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.Direction;
@@ -21,6 +20,8 @@ import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperat
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScopeType;
 import com.azure.ai.metricsadvisor.models.MetricBoundaryCondition;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public final class AlertConfigurationTransforms {
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
         innerAlertConfiguration.setCrossMetricsOperator(alertConfiguration.getCrossMetricsOperator() == null
-            ? null : AnomalyAlertingConfigurationCrossMetricsOperator.fromString(
+            ? null : AnomalyAlertingConfigurationLogicType.fromString(
             alertConfiguration.getCrossMetricsOperator().toString()));
         innerAlertConfiguration.setHookIds(alertConfiguration.getIdOfHooksToAlert()
             .stream()
@@ -79,7 +80,7 @@ public final class AlertConfigurationTransforms {
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
         innerAlertConfiguration.setCrossMetricsOperator(alertConfiguration.getCrossMetricsOperator() == null
-            ? null : AnomalyAlertingConfigurationPatchCrossMetricsOperator.fromString(
+            ? null : AnomalyAlertingConfigurationLogicType.fromString(
             alertConfiguration.getCrossMetricsOperator().toString()));
         innerAlertConfiguration.setHookIds(alertConfiguration.getIdOfHooksToAlert()
             .stream()
@@ -165,6 +166,28 @@ public final class AlertConfigurationTransforms {
             innerMetricAlertConfigurations.add(innerMetricAlertConfiguration);
         }
         return innerMetricAlertConfigurations;
+    }
+
+    public static PagedResponse<AnomalyAlertConfiguration> fromInnerPagedResponse(
+        PagedResponse<AnomalyAlertingConfiguration> innerResponse) {
+        final List<AnomalyAlertingConfiguration>
+            innerConfigurationList = innerResponse.getValue();
+        List<AnomalyAlertConfiguration> configurationList;
+        if (innerConfigurationList != null) {
+            configurationList = innerConfigurationList
+                .stream()
+                .map(innerConfiguration -> fromInner(innerConfiguration))
+                .collect(Collectors.toList());
+        } else {
+            configurationList = new ArrayList<>();
+        }
+        return new PagedResponseBase<Void, AnomalyAlertConfiguration>(
+            innerResponse.getRequest(),
+            innerResponse.getStatusCode(),
+            innerResponse.getHeaders(),
+            configurationList,
+            innerResponse.getContinuationToken(),
+            null);
     }
 
     /**

@@ -3,6 +3,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -306,6 +307,27 @@ public class ShareServiceAsyncJavaDocCodeSamples {
         // Client must be authenticated via StorageSharedKeyCredential
         String sas = fileServiceAsyncClient.generateAccountSas(sasValues);
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceAsyncClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        ShareServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = fileServiceAsyncClient.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
     }
 
     /**

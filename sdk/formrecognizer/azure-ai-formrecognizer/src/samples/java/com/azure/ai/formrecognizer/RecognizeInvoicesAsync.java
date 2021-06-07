@@ -35,7 +35,6 @@ public class RecognizeInvoicesAsync {
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
-     *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
@@ -45,8 +44,8 @@ public class RecognizeInvoicesAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "invoices/Invoice_1.pdf");
+        File invoice = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
+            + "sample-forms/invoices/sample_invoice.jpg");
         byte[] fileContent = Files.readAllBytes(invoice.toPath());
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeInvoicesPoller;
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
@@ -58,7 +57,6 @@ public class RecognizeInvoicesAsync {
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
@@ -131,6 +129,49 @@ public class RecognizeInvoicesAsync {
                         Float invoiceTotal = invoiceTotalField.getValue().asFloat();
                         System.out.printf("Invoice Total: %.2f, confidence: %.2f%n",
                             invoiceTotal, invoiceTotalField.getConfidence());
+                    }
+                }
+
+                FormField invoiceItemsField = recognizedFields.get("Items");
+                if (invoiceItemsField != null) {
+                    System.out.printf("Invoice Items: %n");
+                    if (FieldValueType.LIST == invoiceItemsField.getValue().getValueType()) {
+                        List<FormField> invoiceItems = invoiceItemsField.getValue().asList();
+                        invoiceItems.stream()
+                            .filter(invoiceItem -> FieldValueType.MAP == invoiceItem.getValue().getValueType())
+                            .map(formField -> formField.getValue().asMap())
+                            .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                // See a full list of fields found on an invoice here:
+                                // https://aka.ms/formrecognizer/invoicefields
+                                if ("Description".equals(key)) {
+                                    if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                                        String name = formField.getValue().asString();
+                                        System.out.printf("Description: %s, confidence: %.2fs%n",
+                                            name, formField.getConfidence());
+                                    }
+                                }
+                                if ("Quantity".equals(key)) {
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float quantity = formField.getValue().asFloat();
+                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                            quantity, formField.getConfidence());
+                                    }
+                                }
+                                if ("UnitPrice".equals(key)) {
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float unitPrice = formField.getValue().asFloat();
+                                        System.out.printf("Unit Price: %f, confidence: %.2f%n",
+                                            unitPrice, formField.getConfidence());
+                                    }
+                                }
+                                if ("ProductCode".equals(key)) {
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float productCode = formField.getValue().asFloat();
+                                        System.out.printf("Product Code: %f, confidence: %.2f%n",
+                                            productCode, formField.getConfidence());
+                                    }
+                                }
+                            }));
                     }
                 }
             }

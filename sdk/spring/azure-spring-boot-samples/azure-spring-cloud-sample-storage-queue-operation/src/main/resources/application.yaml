@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    azure:
+      storage:
+        account: [storage-account]
+        access-key: [storage-account-access-key]

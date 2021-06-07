@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr93590?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr93590?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "8ebf4321-3c84-481f-8192-ac78f8932966",
@@ -79,7 +79,7 @@
       "Expires" : "-1",
       "Content-Length" : "353",
       "x-ms-request-id" : "a34844a6-0c26-40bc-a5b0-b23840ae675c",
-      "Body" : "{\"uploadUrl\":\"https://wcusmanaged2.blob.core.windows.net/777f6ce57c32426981c61eb3bd643c0f-czznz2x0cr/source/202010130000/40c0d1c7-5615-4c96-9083-be95a869610d.tar.gz?sv=2018-03-28&sr=b&sig=hfjCXKaWu%2FM7PtaT8CzVZLecpa70vlnxLpWB8PIimg4%3D&se=2020-10-13T04%3A09%3A22Z&sp=cw\",\"relativePath\":\"source/202010130000/40c0d1c7-5615-4c96-9083-be95a869610d.tar.gz\"}",
+      "Body" : "{\"uploadUrl\":\"https://wcusmanaged2.blob.core.windows.net/777f6ce57c32426981c61eb3bd643c0f-czznz2x0cr/source/202010130000/40c0d1c7-5615-4c96-9083-be95a869610d.tar.gz?sv=2018-03-28&sr=b&sig=***REMOVED***&se=2020-10-13T04%3A09%3A22Z&sp=cw\",\"relativePath\":\"source/202010130000/40c0d1c7-5615-4c96-9083-be95a869610d.tar.gz\"}",
       "x-ms-client-request-id" : "9593a3c4-da19-4941-938a-eb475b67b4e2",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -109,14 +109,14 @@
       "Expires" : "-1",
       "Content-Length" : "353",
       "x-ms-request-id" : "0811b740-eecc-4f49-8ee6-74867429d1df",
-      "Body" : "{\"uploadUrl\":\"https://wcusmanaged2.blob.core.windows.net/777f6ce57c32426981c61eb3bd643c0f-czznz2x0cr/source/202010130000/9df150a2-6648-4975-8b0a-8ff7259d49cb.tar.gz?sv=2018-03-28&sr=b&sig=JnY3i2WheA9fIf4d4N6jEpetE6%2BmYe0DCNefuz3JXBk%3D&se=2020-10-13T04%3A09%3A22Z&sp=cw\",\"relativePath\":\"source/202010130000/9df150a2-6648-4975-8b0a-8ff7259d49cb.tar.gz\"}",
+      "Body" : "{\"uploadUrl\":\"https://wcusmanaged2.blob.core.windows.net/777f6ce57c32426981c61eb3bd643c0f-czznz2x0cr/source/202010130000/9df150a2-6648-4975-8b0a-8ff7259d49cb.tar.gz?sv=2018-03-28&sr=b&sig=***REMOVED***&se=2020-10-13T04%3A09%3A22Z&sp=cw\",\"relativePath\":\"source/202010130000/9df150a2-6648-4975-8b0a-8ff7259d49cb.tar.gz\"}",
       "x-ms-client-request-id" : "e59afe7e-d18a-46c5-9bd4-ebdfac68eace",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr93590?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr93590?api-version=2021-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "5984f8c3-4703-4fb7-abee-0cb5a0122c71",

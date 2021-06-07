@@ -13,13 +13,15 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -39,8 +41,7 @@ public class HttpResponseHeaderDecoderTests {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getHeadersType()).thenReturn(null);
 
-        StepVerifier.create(HttpResponseHeaderDecoder.decode(null, null, decodeData))
-            .verifyComplete();
+        assertNull(HttpResponseHeaderDecoder.decode(null, null, decodeData));
     }
 
     @Test
@@ -53,8 +54,8 @@ public class HttpResponseHeaderDecoderTests {
 
         HttpResponse response = new MockHttpResponse(null, 200);
 
-        StepVerifier.create(HttpResponseHeaderDecoder.decode(response, serializer, decodeData))
-            .verifyError(HttpResponseException.class);
+        assertThrows(HttpResponseException.class,
+            () -> HttpResponseHeaderDecoder.decode(response, serializer, decodeData));
     }
 
     @Test
@@ -62,15 +63,13 @@ public class HttpResponseHeaderDecoderTests {
         HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
         when(decodeData.getHeadersType()).thenReturn(MockHeaders.class);
 
-        HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders().put("mock-a", "a"));
+        HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders().set("mock-a", "a"));
 
-        StepVerifier.create(HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(), decodeData))
-            .assertNext(actual -> {
-                assertTrue(actual instanceof MockHeaders);
-                MockHeaders mockHeaders = (MockHeaders) actual;
-                assertEquals(Collections.singletonMap("a", "a"), mockHeaders.getHeaderCollection());
-            })
-            .verifyComplete();
+        Object actual = assertDoesNotThrow(() -> HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(),
+            decodeData));
+        assertTrue(actual instanceof MockHeaders);
+        MockHeaders mockHeaders = (MockHeaders) actual;
+        assertEquals(Collections.singletonMap("a", "a"), mockHeaders.getHeaderCollection());
     }
 
     public static final class MockHeaders {

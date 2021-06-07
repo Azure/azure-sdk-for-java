@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
@@ -14,6 +15,7 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -24,9 +26,8 @@ pr:
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    SDKType: data
     ServiceDirectory: batch
     Artifacts:
-      - name: azure-batch
-        groupId: com.microsoft.azure
-        safeName: azurebatch
+      - name: azure-resourcemanager-batch
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerbatch

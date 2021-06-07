@@ -8,6 +8,7 @@ import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,7 +26,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
-import org.mockito.Mockito;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -35,6 +36,8 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
@@ -96,10 +99,6 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
         StepVerifier.resetDefaultTimeout();
         afterTest();
-
-        // Tear down any inline mocks to avoid memory leaks.
-        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -329,9 +328,18 @@ public abstract class IntegrationTestBase extends TestBase {
             return;
         }
 
+        final List<Mono<Void>> closeableMonos = new ArrayList<>();
+
         for (final AutoCloseable closeable : closeables) {
             if (closeable == null) {
                 continue;
+            }
+
+            if (closeable instanceof AsyncCloseable) {
+                final Mono<Void> voidMono = ((AsyncCloseable) closeable).closeAsync();
+                closeableMonos.add(voidMono);
+
+                voidMono.subscribe();
             }
 
             try {
@@ -341,12 +349,18 @@ public abstract class IntegrationTestBase extends TestBase {
                     closeable.getClass().getSimpleName()), error);
             }
         }
+
+        Mono.when(closeableMonos).block(TIMEOUT);
+    }
+
+    protected ServiceBusMessage getMessage(byte[] content, String messageId, boolean isSessionEnabled) {
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(content, messageId);
+        logger.verbose("Message id '{}'.", messageId);
+        return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
-        logger.verbose("Message id '{}'.", messageId);
-        return isSessionEnabled ? message.setSessionId(sessionId) : message;
+        return getMessage(CONTENTS_BYTES, messageId, isSessionEnabled);
     }
 
     protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {

@@ -25,7 +25,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitorb78597476/providers/Microsoft.Storage/storageAccounts/samonitorac332875e?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitorb78597476/providers/Microsoft.Storage/storageAccounts/samonitorac332875e?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.storage/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -44,14 +44,14 @@
       "x-content-type-options" : "nosniff",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20200424T074758Z:a06be307-3ac4-414b-ae75-4e783d947116",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/634daa9f-91b3-426c-b15a-7f530c798a38?monitor=true&api-version=2019-06-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/634daa9f-91b3-426c-b15a-7f530c798a38?monitor=true&api-version=2021-02-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "634daa9f-91b3-426c-b15a-7f530c798a38",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/634daa9f-91b3-426c-b15a-7f530c798a38?monitor=true&api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/634daa9f-91b3-426c-b15a-7f530c798a38?monitor=true&api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
     },
@@ -75,7 +75,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitorb78597476/providers/Microsoft.Storage/storageAccounts/samonitorac332875e?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitorb78597476/providers/Microsoft.Storage/storageAccounts/samonitorac332875e?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.storage/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -100,7 +100,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitorb78597476/providers/Microsoft.Storage/storageAccounts/samonitorac332875e/listKeys?api-version=2019-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgmonitorb78597476/providers/Microsoft.Storage/storageAccounts/samonitorac332875e/listKeys?api-version=2021-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.management.storage/2.0.0 (13.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"

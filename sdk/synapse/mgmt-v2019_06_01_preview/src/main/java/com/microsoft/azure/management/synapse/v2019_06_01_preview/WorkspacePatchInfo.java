@@ -60,6 +60,12 @@ public class WorkspacePatchInfo {
     private String provisioningState;
 
     /**
+     * The encryption details of the workspace.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private EncryptionDetails encryption;
+
+    /**
      * Get resource tags.
      *
      * @return the tags value
@@ -186,6 +192,26 @@ public class WorkspacePatchInfo {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the encryption details of the workspace.
+     *
+     * @return the encryption value
+     */
+    public EncryptionDetails encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption details of the workspace.
+     *
+     * @param encryption the encryption value to set
+     * @return the WorkspacePatchInfo object itself.
+     */
+    public WorkspacePatchInfo withEncryption(EncryptionDetails encryption) {
+        this.encryption = encryption;
+        return this;
     }
 
 }

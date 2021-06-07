@@ -245,7 +245,7 @@ public final class PollOperation {
         } else {
             try {
                 return (U) serializerAdapter.deserialize(value, type, SerializerEncoding.JSON);
-            } catch (IOException ioe) {
+            } catch (IOException | RuntimeException ioe) {
                 LOGGER.logExceptionAsWarning(new IllegalArgumentException("Unable to decode '" + value + "' to: "
                     + type.getTypeName(), ioe));
                 return null;

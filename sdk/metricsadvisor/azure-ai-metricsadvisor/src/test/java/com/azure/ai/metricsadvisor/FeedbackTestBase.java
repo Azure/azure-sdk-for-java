@@ -40,6 +40,7 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
     static final OffsetDateTime FEEDBACK_START_TIME = TIME_SERIES_START_TIME;
     static final OffsetDateTime FEEDBACK_END_TIME = TIME_SERIES_END_TIME;
     static final HashMap<String, String> DIMENSION_FILTER = SERIES_KEY_FILTER;
+    static final int LISTING_FILTER_BY_FEEDBACK_TYPE_LIMIT = 50;
 
     @Override
     protected void beforeTest() {

@@ -10,32 +10,46 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
+import com.azure.resourcemanager.compute.fluent.CloudServiceOperatingSystemsClient;
+import com.azure.resourcemanager.compute.fluent.CloudServiceRoleInstancesClient;
+import com.azure.resourcemanager.compute.fluent.CloudServiceRolesClient;
+import com.azure.resourcemanager.compute.fluent.CloudServicesClient;
+import com.azure.resourcemanager.compute.fluent.CloudServicesUpdateDomainsClient;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
-import com.azure.resourcemanager.compute.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostGroupsClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostsClient;
+import com.azure.resourcemanager.compute.fluent.DiskAccessesClient;
 import com.azure.resourcemanager.compute.fluent.DiskEncryptionSetsClient;
+import com.azure.resourcemanager.compute.fluent.DiskRestorePointsClient;
 import com.azure.resourcemanager.compute.fluent.DisksClient;
 import com.azure.resourcemanager.compute.fluent.GalleriesClient;
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.compute.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.fluent.ProximityPlacementGroupsClient;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
+import com.azure.resourcemanager.compute.fluent.RestorePointCollectionsClient;
+import com.azure.resourcemanager.compute.fluent.RestorePointsClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesEdgeZonesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
@@ -220,6 +234,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.virtualMachineImages;
     }
 
+    /** The VirtualMachineImagesEdgeZonesClient object to access its operations. */
+    private final VirtualMachineImagesEdgeZonesClient virtualMachineImagesEdgeZones;
+
+    /**
+     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesEdgeZonesClient object.
+     */
+    public VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones() {
+        return this.virtualMachineImagesEdgeZones;
+    }
+
     /** The UsagesClient object to access its operations. */
     private final UsagesClient usages;
 
@@ -242,6 +268,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public VirtualMachinesClient getVirtualMachines() {
         return this.virtualMachines;
+    }
+
+    /** The VirtualMachineScaleSetsClient object to access its operations. */
+    private final VirtualMachineScaleSetsClient virtualMachineScaleSets;
+
+    /**
+     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetsClient object.
+     */
+    public VirtualMachineScaleSetsClient getVirtualMachineScaleSets() {
+        return this.virtualMachineScaleSets;
     }
 
     /** The VirtualMachineSizesClient object to access its operations. */
@@ -268,16 +306,28 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.images;
     }
 
-    /** The VirtualMachineScaleSetsClient object to access its operations. */
-    private final VirtualMachineScaleSetsClient virtualMachineScaleSets;
+    /** The RestorePointCollectionsClient object to access its operations. */
+    private final RestorePointCollectionsClient restorePointCollections;
 
     /**
-     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     * Gets the RestorePointCollectionsClient object to access its operations.
      *
-     * @return the VirtualMachineScaleSetsClient object.
+     * @return the RestorePointCollectionsClient object.
      */
-    public VirtualMachineScaleSetsClient getVirtualMachineScaleSets() {
-        return this.virtualMachineScaleSets;
+    public RestorePointCollectionsClient getRestorePointCollections() {
+        return this.restorePointCollections;
+    }
+
+    /** The RestorePointsClient object to access its operations. */
+    private final RestorePointsClient restorePoints;
+
+    /**
+     * Gets the RestorePointsClient object to access its operations.
+     *
+     * @return the RestorePointsClient object.
+     */
+    public RestorePointsClient getRestorePoints() {
+        return this.restorePoints;
     }
 
     /** The VirtualMachineScaleSetExtensionsClient object to access its operations. */
@@ -352,6 +402,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.virtualMachineRunCommands;
     }
 
+    /** The VirtualMachineScaleSetVMRunCommandsClient object to access its operations. */
+    private final VirtualMachineScaleSetVMRunCommandsClient virtualMachineScaleSetVMRunCommands;
+
+    /**
+     * Gets the VirtualMachineScaleSetVMRunCommandsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMRunCommandsClient object.
+     */
+    public VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands() {
+        return this.virtualMachineScaleSetVMRunCommands;
+    }
+
     /** The ResourceSkusClient object to access its operations. */
     private final ResourceSkusClient resourceSkus;
 
@@ -398,6 +460,30 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public DiskEncryptionSetsClient getDiskEncryptionSets() {
         return this.diskEncryptionSets;
+    }
+
+    /** The DiskAccessesClient object to access its operations. */
+    private final DiskAccessesClient diskAccesses;
+
+    /**
+     * Gets the DiskAccessesClient object to access its operations.
+     *
+     * @return the DiskAccessesClient object.
+     */
+    public DiskAccessesClient getDiskAccesses() {
+        return this.diskAccesses;
+    }
+
+    /** The DiskRestorePointsClient object to access its operations. */
+    private final DiskRestorePointsClient diskRestorePoints;
+
+    /**
+     * Gets the DiskRestorePointsClient object to access its operations.
+     *
+     * @return the DiskRestorePointsClient object.
+     */
+    public DiskRestorePointsClient getDiskRestorePoints() {
+        return this.diskRestorePoints;
     }
 
     /** The GalleriesClient object to access its operations. */
@@ -460,16 +546,112 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.galleryApplicationVersions;
     }
 
-    /** The ContainerServicesClient object to access its operations. */
-    private final ContainerServicesClient containerServices;
+    /** The GallerySharingProfilesClient object to access its operations. */
+    private final GallerySharingProfilesClient gallerySharingProfiles;
 
     /**
-     * Gets the ContainerServicesClient object to access its operations.
+     * Gets the GallerySharingProfilesClient object to access its operations.
      *
-     * @return the ContainerServicesClient object.
+     * @return the GallerySharingProfilesClient object.
      */
-    public ContainerServicesClient getContainerServices() {
-        return this.containerServices;
+    public GallerySharingProfilesClient getGallerySharingProfiles() {
+        return this.gallerySharingProfiles;
+    }
+
+    /** The SharedGalleriesClient object to access its operations. */
+    private final SharedGalleriesClient sharedGalleries;
+
+    /**
+     * Gets the SharedGalleriesClient object to access its operations.
+     *
+     * @return the SharedGalleriesClient object.
+     */
+    public SharedGalleriesClient getSharedGalleries() {
+        return this.sharedGalleries;
+    }
+
+    /** The SharedGalleryImagesClient object to access its operations. */
+    private final SharedGalleryImagesClient sharedGalleryImages;
+
+    /**
+     * Gets the SharedGalleryImagesClient object to access its operations.
+     *
+     * @return the SharedGalleryImagesClient object.
+     */
+    public SharedGalleryImagesClient getSharedGalleryImages() {
+        return this.sharedGalleryImages;
+    }
+
+    /** The SharedGalleryImageVersionsClient object to access its operations. */
+    private final SharedGalleryImageVersionsClient sharedGalleryImageVersions;
+
+    /**
+     * Gets the SharedGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the SharedGalleryImageVersionsClient object.
+     */
+    public SharedGalleryImageVersionsClient getSharedGalleryImageVersions() {
+        return this.sharedGalleryImageVersions;
+    }
+
+    /** The CloudServiceRoleInstancesClient object to access its operations. */
+    private final CloudServiceRoleInstancesClient cloudServiceRoleInstances;
+
+    /**
+     * Gets the CloudServiceRoleInstancesClient object to access its operations.
+     *
+     * @return the CloudServiceRoleInstancesClient object.
+     */
+    public CloudServiceRoleInstancesClient getCloudServiceRoleInstances() {
+        return this.cloudServiceRoleInstances;
+    }
+
+    /** The CloudServiceRolesClient object to access its operations. */
+    private final CloudServiceRolesClient cloudServiceRoles;
+
+    /**
+     * Gets the CloudServiceRolesClient object to access its operations.
+     *
+     * @return the CloudServiceRolesClient object.
+     */
+    public CloudServiceRolesClient getCloudServiceRoles() {
+        return this.cloudServiceRoles;
+    }
+
+    /** The CloudServicesClient object to access its operations. */
+    private final CloudServicesClient cloudServices;
+
+    /**
+     * Gets the CloudServicesClient object to access its operations.
+     *
+     * @return the CloudServicesClient object.
+     */
+    public CloudServicesClient getCloudServices() {
+        return this.cloudServices;
+    }
+
+    /** The CloudServicesUpdateDomainsClient object to access its operations. */
+    private final CloudServicesUpdateDomainsClient cloudServicesUpdateDomains;
+
+    /**
+     * Gets the CloudServicesUpdateDomainsClient object to access its operations.
+     *
+     * @return the CloudServicesUpdateDomainsClient object.
+     */
+    public CloudServicesUpdateDomainsClient getCloudServicesUpdateDomains() {
+        return this.cloudServicesUpdateDomains;
+    }
+
+    /** The CloudServiceOperatingSystemsClient object to access its operations. */
+    private final CloudServiceOperatingSystemsClient cloudServiceOperatingSystems;
+
+    /**
+     * Gets the CloudServiceOperatingSystemsClient object to access its operations.
+     *
+     * @return the CloudServiceOperatingSystemsClient object.
+     */
+    public CloudServiceOperatingSystemsClient getCloudServiceOperatingSystems() {
+        return this.cloudServiceOperatingSystems;
     }
 
     /**
@@ -505,26 +687,40 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesClientImpl(this);
         this.virtualMachineExtensions = new VirtualMachineExtensionsClientImpl(this);
         this.virtualMachineImages = new VirtualMachineImagesClientImpl(this);
+        this.virtualMachineImagesEdgeZones = new VirtualMachineImagesEdgeZonesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
+        this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
         this.virtualMachineSizes = new VirtualMachineSizesClientImpl(this);
         this.images = new ImagesClientImpl(this);
-        this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
+        this.restorePointCollections = new RestorePointCollectionsClientImpl(this);
+        this.restorePoints = new RestorePointsClientImpl(this);
         this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
         this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
         this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClientImpl(this);
         this.logAnalytics = new LogAnalyticsClientImpl(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClientImpl(this);
+        this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.disks = new DisksClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
         this.diskEncryptionSets = new DiskEncryptionSetsClientImpl(this);
+        this.diskAccesses = new DiskAccessesClientImpl(this);
+        this.diskRestorePoints = new DiskRestorePointsClientImpl(this);
         this.galleries = new GalleriesClientImpl(this);
         this.galleryImages = new GalleryImagesClientImpl(this);
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
-        this.containerServices = new ContainerServicesClientImpl(this);
+        this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
+        this.sharedGalleries = new SharedGalleriesClientImpl(this);
+        this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
+        this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);
+        this.cloudServiceRoleInstances = new CloudServiceRoleInstancesClientImpl(this);
+        this.cloudServiceRoles = new CloudServiceRolesClientImpl(this);
+        this.cloudServices = new CloudServicesClientImpl(this);
+        this.cloudServicesUpdateDomains = new CloudServicesUpdateDomainsClientImpl(this);
+        this.cloudServiceOperatingSystems = new CloudServiceOperatingSystemsClientImpl(this);
     }
 }

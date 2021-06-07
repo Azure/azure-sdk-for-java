@@ -39,7 +39,7 @@ public final class ManageAvailabilitySet {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMA", 15);
         final String availSetName1 = Utils.randomResourceName(azureResourceManager, "av1", 15);
         final String availSetName2 = Utils.randomResourceName(azureResourceManager, "av2", 15);

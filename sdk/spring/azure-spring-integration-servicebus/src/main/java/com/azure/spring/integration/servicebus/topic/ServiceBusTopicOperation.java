@@ -3,17 +3,18 @@
 
 package com.azure.spring.integration.servicebus.topic;
 
-import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
-import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
+import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 
 /**
- * Azure service bus topic operation to support send {@link org.springframework.messaging.Message} asynchronously
- * and subscribe by {@link ServiceBusSubscription} as consumer group
+ * Azure service bus topic operation to support sending {@link org.springframework.messaging.Message} asynchronously
+ * and subscribing a topic.
  *
  * @author Warren Zhu
  */
 public interface ServiceBusTopicOperation extends SendOperation, SubscribeByGroupOperation {
+
     void setClientConfig(ServiceBusClientConfig clientConfig);
+
 }

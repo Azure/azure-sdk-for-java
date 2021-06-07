@@ -49,7 +49,7 @@ public final class RequestRetryOptions {
      * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
      *
      * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
-     * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>Azure Docs</a>
+     * <a href=https://docs.microsoft.com/azure/storage/common/storage-designing-ha-apps-with-ragrs>Azure Docs</a>
      * for more information.</p>
      * @throws IllegalArgumentException If {@code getRetryDelayInMs} and {@code getMaxRetryDelayInMs} are not both null
      * or non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL}
@@ -81,7 +81,7 @@ public final class RequestRetryOptions {
      * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
      *
      * <p>Before setting this understand the issues around reading stale and potentially-inconsistent data, view these
-     * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>Azure Docs</a>
+     * <a href=https://docs.microsoft.com/azure/storage/common/storage-designing-ha-apps-with-ragrs>Azure Docs</a>
      * for more information.</p>
      * @throws IllegalArgumentException If {@code getRetryDelayInMs} and {@code getMaxRetryDelayInMs} are not both null
      * or non-null or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL}

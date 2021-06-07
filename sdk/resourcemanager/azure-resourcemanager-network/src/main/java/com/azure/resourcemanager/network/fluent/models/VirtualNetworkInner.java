@@ -11,17 +11,25 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Virtual Network resource. */
 @JsonFlatten
 @Fluent
 public class VirtualNetworkInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkInner.class);
+
+    /*
+     * The extended location of the virtual network.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -42,6 +50,12 @@ public class VirtualNetworkInner extends Resource {
      */
     @JsonProperty(value = "properties.dhcpOptions")
     private DhcpOptions dhcpOptions;
+
+    /*
+     * The FlowTimeout value (in minutes) for the Virtual Network
+     */
+    @JsonProperty(value = "properties.flowTimeoutInMinutes")
+    private Integer flowTimeoutInMinutes;
 
     /*
      * A list of subnets in a Virtual Network.
@@ -108,6 +122,26 @@ public class VirtualNetworkInner extends Resource {
     private String id;
 
     /**
+     * Get the extendedLocation property: The extended location of the virtual network.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the virtual network.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
@@ -157,6 +191,26 @@ public class VirtualNetworkInner extends Resource {
      */
     public VirtualNetworkInner withDhcpOptions(DhcpOptions dhcpOptions) {
         this.dhcpOptions = dhcpOptions;
+        return this;
+    }
+
+    /**
+     * Get the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
+     *
+     * @return the flowTimeoutInMinutes value.
+     */
+    public Integer flowTimeoutInMinutes() {
+        return this.flowTimeoutInMinutes;
+    }
+
+    /**
+     * Set the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
+     *
+     * @param flowTimeoutInMinutes the flowTimeoutInMinutes value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withFlowTimeoutInMinutes(Integer flowTimeoutInMinutes) {
+        this.flowTimeoutInMinutes = flowTimeoutInMinutes;
         return this;
     }
 
@@ -344,12 +398,29 @@ public class VirtualNetworkInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (addressSpace() != null) {
             addressSpace().validate();
         }

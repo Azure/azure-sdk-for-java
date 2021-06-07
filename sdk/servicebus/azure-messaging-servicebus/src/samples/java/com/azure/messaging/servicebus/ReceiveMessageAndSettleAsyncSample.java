@@ -28,20 +28,8 @@ public class ReceiveMessageAndSettleAsyncSample {
     private boolean sampleWorks = true;
 
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
-     * Queue
-     *
-     * @param args Unused arguments to the program.
-     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
-     */
-    public static void main(String[] args) throws InterruptedException {
-        ReceiveMessageAndSettleAsyncSample sample = new ReceiveMessageAndSettleAsyncSample();
-        sample.run();
-    }
-
-    /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
-     * Queue.
+     * The run method is to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure
+     * Service Bus Queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */

@@ -33,6 +33,12 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     private VirtualMachineScaleSetUpdateNetworkProfile networkProfile;
 
     /*
+     * The virtual machine scale set Security profile
+     */
+    @JsonProperty(value = "securityProfile")
+    private SecurityProfile securityProfile;
+
+    /*
      * The virtual machine scale set diagnostics profile.
      */
     @JsonProperty(value = "diagnosticsProfile")
@@ -62,6 +68,13 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
      */
     @JsonProperty(value = "scheduledEventsProfile")
     private ScheduledEventsProfile scheduledEventsProfile;
+
+    /*
+     * UserData for the VM, which must be base-64 encoded. Customer should not
+     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
+     */
+    @JsonProperty(value = "userData")
+    private String userData;
 
     /**
      * Get the osProfile property: The virtual machine scale set OS profile.
@@ -122,6 +135,26 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     public VirtualMachineScaleSetUpdateVMProfile withNetworkProfile(
         VirtualMachineScaleSetUpdateNetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: The virtual machine scale set Security profile.
+     *
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: The virtual machine scale set Security profile.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
         return this;
     }
 
@@ -230,6 +263,28 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
+     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @return the userData value.
+     */
+    public String userData() {
+        return this.userData;
+    }
+
+    /**
+     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @param userData the userData value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile withUserData(String userData) {
+        this.userData = userData;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -243,6 +298,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
         }
         if (networkProfile() != null) {
             networkProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
         if (diagnosticsProfile() != null) {
             diagnosticsProfile().validate();

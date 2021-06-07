@@ -17,18 +17,20 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_WEST_CENTRAL;
+    private Region region = Region.US_WEST;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -38,7 +40,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -112,7 +114,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withoutPrimaryPublicIPAddress()
                 .withGeneralizedLinuxCustomImage(image.id())
                 .withRootUsername("javauser")
-                .withRootPassword("12NewPA$$w0rd!")
+                .withRootPassword(password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
@@ -372,7 +374,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //
-        deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIPAddress().fqdn(), 22, uname, password);
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+        deprovisionAgentInLinuxVM(virtualMachine);
         virtualMachine.deallocate();
         virtualMachine.generalize();
         return virtualMachine;

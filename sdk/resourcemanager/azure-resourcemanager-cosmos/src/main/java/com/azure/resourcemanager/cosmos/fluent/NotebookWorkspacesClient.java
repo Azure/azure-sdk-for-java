@@ -15,7 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceConnectionInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
-import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
+import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -131,8 +131,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,7 +142,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -151,8 +150,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,7 +161,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -171,8 +169,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -183,7 +180,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -191,8 +188,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,7 +200,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context);
 
     /**
@@ -213,8 +209,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,7 +220,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -233,8 +228,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -245,7 +239,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters);
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -253,8 +247,7 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @param notebookCreateUpdateParameters The resource model definition for a ARM proxy resource. It will have
-     *     everything other than required location and tags.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,7 +259,7 @@ public interface NotebookWorkspacesClient {
         String resourceGroupName,
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
-        ArmProxyResource notebookCreateUpdateParameters,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context);
 
     /**

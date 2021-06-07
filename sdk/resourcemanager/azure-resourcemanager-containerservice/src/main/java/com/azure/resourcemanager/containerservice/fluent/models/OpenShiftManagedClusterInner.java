@@ -17,6 +17,7 @@ import com.azure.resourcemanager.containerservice.models.PurchasePlan;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** OpenShift Managed cluster. */
 @JsonFlatten
@@ -268,6 +269,20 @@ public class OpenShiftManagedClusterInner extends Resource {
      */
     public OpenShiftManagedClusterInner withAuthProfile(OpenShiftManagedClusterAuthProfile authProfile) {
         this.authProfile = authProfile;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OpenShiftManagedClusterInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OpenShiftManagedClusterInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

@@ -6,8 +6,9 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
+import com.puppycrawl.tools.checkstyle.utils.ScopeUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,9 +24,9 @@ import java.util.stream.Collectors;
  * blacklisted words.
  */
 public class BlacklistedWordsCheck extends AbstractCheck {
-    private final Set<String> blacklistedWords = new HashSet<>(Arrays.asList());
-    private final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow " +
-        "Camelcase standards for the following words: %s.";
+    private final Set<String> blacklistedWords = new HashSet<>();
+    private static final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
+        + "Camelcase standards for the following words: %s.";
 
     /**
      * Adds words that Classes, Methods and Variables that should follow Camelcasing standards
@@ -60,12 +61,22 @@ public class BlacklistedWordsCheck extends AbstractCheck {
             case TokenTypes.CLASS_DEF:
             case TokenTypes.METHOD_DEF:
             case TokenTypes.VARIABLE_DEF:
-                if (isPublicApi(token)) {
-                    String tokenName = token.findFirstToken(TokenTypes.IDENT).getText();
-                    if (hasBlacklistedWords(tokenName)) {
-                        log(token, String.format(ERROR_MESSAGE, tokenName, this.blacklistedWords.stream().collect(Collectors.joining(", ", "", ""))));
-                    }
+                if (!isPublicApi(token)) {
+                    break;
                 }
+
+                final String tokenName = token.findFirstToken(TokenTypes.IDENT).getText();
+                if (!hasBlacklistedWords(tokenName)) {
+                    break;
+                }
+
+                // In an interface all the fields (variables) are by default public, static and final.
+                if (token.getType() == TokenTypes.VARIABLE_DEF && ScopeUtil.isInInterfaceBlock(token)) {
+                    break;
+                }
+
+                log(token, String.format(ERROR_MESSAGE, tokenName, String.join(", ", this.blacklistedWords)));
+
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
@@ -80,11 +91,10 @@ public class BlacklistedWordsCheck extends AbstractCheck {
      * @return true if we should check such member.
      */
     private boolean isPublicApi(DetailAST token) {
-        final DetailAST modifiersAST =
-            token.findFirstToken(TokenTypes.MODIFIERS);
-        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersAST);
+        final DetailAST modifiersAST = token.findFirstToken(TokenTypes.MODIFIERS);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(token);
         final boolean isStatic = modifiersAST.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
-        return (accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED)) && !isStatic;
+        return (accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED)) && !isStatic;
     }
 
     /**

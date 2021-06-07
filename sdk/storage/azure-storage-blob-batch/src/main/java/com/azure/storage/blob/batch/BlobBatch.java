@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.batch;
 
-import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -15,6 +15,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.batch.options.BlobBatchSetBlobAccessTierOptions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -33,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -71,7 +71,7 @@ public final class BlobBatch {
     private Deque<BlobBatchOperation<?>> batchOperationQueue;
     private BlobBatchType batchType;
 
-    BlobBatch(String accountUrl, HttpPipeline pipeline) {
+    BlobBatch(String accountUrl, HttpPipeline pipeline, BlobServiceVersion serviceVersion) {
         boolean batchHeadersPolicySet = false;
         HttpPipelineBuilder batchPipelineBuilder = new HttpPipelineBuilder();
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -97,6 +97,7 @@ public final class BlobBatch {
         this.blobAsyncClient = new BlobClientBuilder()
             .endpoint(accountUrl)
             .blobName("")
+            .serviceVersion(serviceVersion)
             .pipeline(batchPipelineBuilder.build())
             .buildAsyncClient();
 
@@ -353,10 +354,11 @@ public final class BlobBatch {
         context.getHttpRequest().getHeaders().remove(X_MS_VERSION);
 
         // Remove any null headers (this is done in Netty and OkHttp normally).
-        Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
-        headers.entrySet().removeIf(header -> header.getValue() == null);
-
-        context.getHttpRequest().setHeaders(new HttpHeaders(headers));
+        for (HttpHeader hdr : context.getHttpRequest().getHeaders()) {
+            if (hdr.getValue() == null) {
+                context.getHttpRequest().getHeaders().remove(hdr.getName());
+            }
+        }
 
         return next.process();
     }

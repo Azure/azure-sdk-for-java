@@ -171,7 +171,7 @@ public class CommonSasQueryParameters {
     /**
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String encode() {
         /*
@@ -223,7 +223,7 @@ public class CommonSasQueryParameters {
     }
 
     /**
-     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {

@@ -158,6 +158,13 @@ public final class ImageReference extends SubResource {
         return this.exactVersion;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ImageReference withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

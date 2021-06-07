@@ -3,8 +3,10 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.search.documents.implementation.util.Utility;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -59,16 +61,23 @@ public final class ScoringParameter {
         // Deep clone the values.
         this.values = new ArrayList<>(values);
     }
-//
-//    /**
-//     * Initializes a new instance of the ScoringParameter class with the given name and GeographyPoint value.
-//     *
-//     * @param name Name of the scoring parameter.
-//     * @param value Value of the scoring parameter.
-//     */
-//    public ScoringParameter(String name, PointGeometry value) {
-//        this(name, toLonLatStrings(value));
-//    }
+
+    /**
+     * Initializes a new instance of the ScoringParameter class with the given name and GeographyPoint value.
+     *
+     * @param name Name of the scoring parameter.
+     * @param value Value of the scoring parameter.
+     * @throws NullPointerException If {@code value} is null.
+     */
+    public ScoringParameter(String name, GeoPoint value) {
+        this(name, toLonLatStrings(value));
+    }
+
+    private static List<String> toLonLatStrings(GeoPoint point) {
+        Objects.requireNonNull(point);
+        return Arrays.asList(Utility.formatCoordinate(point.getCoordinates().getLongitude()),
+            Utility.formatCoordinate(point.getCoordinates().getLatitude()));
+    }
 
     /**
      * Gets the name of the scoring parameter.
@@ -87,12 +96,6 @@ public final class ScoringParameter {
     public List<String> getValues() {
         return new ArrayList<>(values);
     }
-
-//    private static List<String> toLonLatStrings(PointGeometry point) {
-//        Objects.requireNonNull(point);
-//        return Arrays.asList(String.valueOf(point.getPosition().getLongitude()),
-//            String.valueOf(point.getPosition().getLatitude()));
-//    }
 
     /**
      * Covert {@link ScoringParameter} to string.

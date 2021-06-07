@@ -9,6 +9,7 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreM
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AppConfigurationEndpoint {
@@ -31,7 +32,7 @@ public class AppConfigurationEndpoint {
         JsonNode requestTopic = request.findValue(VALIDATION_TOPIC);
         if (requestTopic != null) {
             String topic = requestTopic.asText();
-            store = topic.substring(topic.indexOf(CONFIG_STORE_TOPIC) + CONFIG_STORE_TOPIC.length() + 1);
+            store = topic.substring(topic.toLowerCase(Locale.ROOT).indexOf(CONFIG_STORE_TOPIC) + CONFIG_STORE_TOPIC.length() + 1);
             endpoint = String.format("https://%s.azconfig.io", store);
         } else {
             throw new IllegalArgumentException("Refresh request missing topic field.");

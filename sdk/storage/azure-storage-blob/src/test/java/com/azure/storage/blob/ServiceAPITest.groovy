@@ -4,9 +4,12 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -14,6 +17,7 @@ import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.BlobSignedIdentifier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -22,19 +26,25 @@ import com.azure.storage.blob.models.StaticWebsite
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.IgnoreIf
+import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
 
+@ResourceLock("ServiceProperties")
 class ServiceAPITest extends APISpec {
 
     BlobServiceClient anonymousClient;
@@ -43,7 +53,7 @@ class ServiceAPITest extends APISpec {
         setup:
         // We shouldnt be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
-            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .endpoint(env.primaryAccount.blobEndpoint)
             .buildClient()
         def disabled = new BlobRetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
@@ -74,14 +84,66 @@ class ServiceAPITest extends APISpec {
             .setDefaultServiceVersion("2018-03-28"))
     }
 
+    @Unroll
+    def "SAS Sanitization"() {
+        given:
+        def identifier = "id with spaces"
+        def blobName = generateBlobName()
+        cc.setAccessPolicy(null, Arrays.asList(new BlobSignedIdentifier()
+            .setId(identifier)
+            .setAccessPolicy(new BlobAccessPolicy()
+                .setPermissions("racwdl")
+                .setExpiresOn(namer.getUtcNow().plusDays(1)))))
+        cc.getBlobClient(blobName).upload(BinaryData.fromBytes("test".getBytes()))
+        def sas = cc.generateSas(new BlobServiceSasSignatureValues(identifier))
+        if (unsanitize) {
+            sas = sas.replace("%20", " ")
+        }
+
+        when: "Endpoint with SAS built in"
+        instrument(new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
+            .buildClient()
+            .getBlobClient(blobName)
+            .downloadContent()
+
+        then: "Works as expected"
+        notThrown(Exception)
+
+// TODO AzureSasCredential doesn't currently sanitize inputs
+//
+//        when: "Endpoint with SAS separate through Credential"
+//        new BlobContainerClientBuilder().endpoint(cc.getBlobContainerUrl()).credential(new AzureSasCredential(sas)).buildClient().getBlobClient(blobName).downloadContent()
+//
+//        then: "Works as expected"
+//        notThrown(Exception)
+
+        when: "Connection string with SAS"
+        def connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas
+        instrument(new BlobContainerClientBuilder()
+            .connectionString(connectionString)
+            .containerName(cc.getBlobContainerName()))
+            .buildClient()
+            .getBlobClient(blobName)
+            .downloadContent()
+
+        then: "Works as expected"
+        notThrown(Exception)
+
+        where:
+        _ | unsanitize
+        _ | true
+        _ | false
+    }
+
     def "List containers"() {
         when:
         def response =
-            primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setPrefix(containerPrefix + testName), null)
+            primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix()), null)
 
         then:
         for (BlobContainerItem c : response) {
-            c.getName().startsWith(containerPrefix)
+            c.getName().startsWith(namer.getResourcePrefix())
             c.getProperties().getLastModified() != null
             c.getProperties().getETag() != null
             c.getProperties().getLeaseStatus() != null
@@ -126,56 +188,72 @@ class ServiceAPITest extends APISpec {
         setup:
         def metadata = new HashMap<String, String>()
         metadata.put("foo", "bar")
-        cc = primaryBlobServiceClient.createBlobContainerWithResponse("aaa" + generateContainerName(), metadata, null, null).getValue()
+        def containerName = generateContainerName()
+        cc = primaryBlobServiceClient.createBlobContainerWithResponse(containerName, metadata, null, null).getValue()
 
         expect:
         primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
             .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
-            .setPrefix("aaa" + containerPrefix), null)
+            .setPrefix(containerName), null)
             .iterator().next().getMetadata() == metadata
-
-        // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
-        cc.deleteWithResponse(null, null, null).getStatusCode() == 202
     }
 
     def "List containers maxResults"() {
         setup:
         def NUM_CONTAINERS = 5
         def PAGE_RESULTS = 3
-        def containerName = generateContainerName()
-        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
-
+        def containerNamePrefix = namer.getRandomName(50)
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
         }
 
         expect:
         primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
-            .setPrefix(containerPrefix)
+            .setPrefix(containerNamePrefix)
             .setMaxResultsPerPage(PAGE_RESULTS), null)
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
+    }
+
+    def "List containers maxResults by page"() {
+        setup:
+        def NUM_CONTAINERS = 5
+        def PAGE_RESULTS = 3
+        def containerNamePrefix = namer.getRandomName(50)
+
+        def containers = [] as Collection<BlobContainerClient>
+        for (i in (1..NUM_CONTAINERS)) {
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
+        }
+
+        expect:
+        for (def page : primaryBlobServiceClient.listBlobContainers(new ListBlobContainersOptions()
+            .setPrefix(containerNamePrefix), null)
+            .iterableByPage(PAGE_RESULTS)) {
+            assert page.getValue().size() <= PAGE_RESULTS
+        }
+
 
         cleanup:
         containers.each { container -> container.delete() }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "List deleted"() {
         given:
         def NUM_CONTAINERS = 5
-        def containerName = generateContainerName()
-        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+        def containerNamePrefix = namer.getRandomName(50)
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
         }
         containers.each { container -> container.delete() }
 
         when:
         def listResult = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
-            .setPrefix(containerPrefix)
+            .setPrefix(containerNamePrefix)
             .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null)
 
@@ -186,22 +264,22 @@ class ServiceAPITest extends APISpec {
         listResult.size() == NUM_CONTAINERS
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "List with all details"() {
         given:
         def NUM_CONTAINERS = 5
-        def containerName = generateContainerName()
-        def containerPrefix = containerName.substring(0, Math.min(60, containerName.length()))
+        def containerNamePrefix = namer.getRandomName(50)
 
         def containers = [] as Collection<BlobContainerClient>
         for (i in (1..NUM_CONTAINERS)) {
-            containers << primaryBlobServiceClient.createBlobContainer(containerPrefix + i)
+            containers << primaryBlobServiceClient.createBlobContainer(containerNamePrefix + i)
         }
         containers.each { container -> container.delete() }
 
         when:
         def listResult = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
-                .setPrefix(containerPrefix)
+                .setPrefix(containerNamePrefix)
                 .setDetails(new BlobContainerListDetails()
                     .setRetrieveDeleted(true)
                     .setRetrieveMetadata(true)),
@@ -250,6 +328,7 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Find blobs min"() {
         when:
         primaryBlobServiceClient.findBlobsByTags("\"key\"='value'").iterator().hasNext()
@@ -258,17 +337,18 @@ class ServiceAPITest extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_04_08")
     def "Find blobs query"() {
         setup:
         def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
             .setTags(Collections.singletonMap("key", "value")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
             .setTags(Collections.singletonMap("bar", "foo")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         sleepIfRecord(10 * 1000) // To allow tags to index
 
@@ -286,13 +366,14 @@ class ServiceAPITest extends APISpec {
         containerClient.delete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Find blobs marker"() {
         setup:
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def tags = Collections.singletonMap("tag", "value")
         for (int i = 0; i < 10; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
         }
 
         sleepIfRecord(10 * 1000) // To allow tags to index
@@ -315,6 +396,7 @@ class ServiceAPITest extends APISpec {
         cc.delete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Find blobs maxResults"() {
         setup:
         def NUM_BLOBS = 7
@@ -324,7 +406,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
         }
 
         expect:
@@ -332,6 +414,31 @@ class ServiceAPITest extends APISpec {
             primaryBlobServiceClient.findBlobsByTags(
                 new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
                 .iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+
+        cleanup:
+        cc.delete()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    def "Find blobs maxResults by page"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def tags = Collections.singletonMap("tag", "value")
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            primaryBlobServiceClient.findBlobsByTags(
+                new FindBlobsOptions("\"tag\"='value'"), null, Context.NONE)
+                .iterableByPage(PAGE_RESULTS)) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
 
@@ -356,6 +463,7 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Find blobs with timeout still backed by PagedFlux"() {
         setup:
         def NUM_BLOBS = 5
@@ -365,7 +473,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
         }
 
         when: "Consume results by page"
@@ -505,6 +613,7 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Set props static website"() {
         setup:
         def serviceProperties = primaryBlobServiceClient.getProperties()
@@ -530,7 +639,7 @@ class ServiceAPITest extends APISpec {
 
     def "Set props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
             .setProperties(new BlobServiceProperties())
 
         then:
@@ -552,7 +661,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props error"() {
         when:
-        getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
+        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -619,8 +728,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        def secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
-        def serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
+        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
         def response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
@@ -633,8 +741,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats min"() {
         setup:
-        def secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCredential.getAccountName())
-        def serviceClient = getServiceClient(primaryCredential, secondaryEndpoint)
+        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
 
         expect:
         serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
@@ -677,7 +784,7 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         def badURL = new URL("http://fake.blobfake.core.windows.net")
-        def client = getServiceClientBuilder(primaryCredential, badURL.toString())
+        def client = getServiceClientBuilder(env.primaryAccount.credential, badURL.toString())
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100, 1000, null))
             .buildClient()
 
@@ -739,12 +846,13 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
@@ -752,9 +860,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def restoredContainerClient = primaryBlobServiceClient
@@ -765,12 +871,14 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @PlaybackOnly
     def "Restore Container into other container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
@@ -778,9 +886,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
@@ -793,12 +899,13 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container with response"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
@@ -806,9 +913,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
@@ -823,14 +928,15 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container async"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = playbackMode() ? 0L : 30000L
+        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-        .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+        .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
         .then(cc1.delete())
         .then(Mono.delay(Duration.ofMillis(delay)))
         .then(primaryBlobServiceAsyncClient.listBlobContainers(
@@ -853,14 +959,15 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container async with response"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = playbackMode() ? 0L : 30000L
+        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
-            .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
             .then(cc1.delete())
             .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryBlobServiceAsyncClient.listBlobContainers(
@@ -886,6 +993,7 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container error"() {
         when:
         primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
@@ -894,12 +1002,13 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException.class)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container into existing container error"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc1.create()
         def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
         cc1.delete()
         def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
             new ListBlobContainersOptions()
@@ -907,9 +1016,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
@@ -923,9 +1030,7 @@ class ServiceAPITest extends APISpec {
 
     def "OAuth on secondary"() {
         setup:
-        def secondaryEndpoint = String.format(defaultEndpointTemplate,
-            primaryCredential.getAccountName() + "-secondary")
-        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, secondaryEndpoint)).buildClient()
+        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, env.primaryAccount.blobEndpointSecondary)).buildClient()
 
         when:
         serviceClient.getProperties()
@@ -959,9 +1064,10 @@ class ServiceAPITest extends APISpec {
         /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
     }
 
+    @IgnoreIf( { getEnv().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def sc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
+        def sc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
 
         when:
         def response = sc.getPropertiesWithResponse(null, null)
@@ -970,4 +1076,109 @@ class ServiceAPITest extends APISpec {
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
+//    def "Rename blob container"() {
+//        setup:
+//        def oldName = generateContainerName()
+//        def newName = generateContainerName()
+//        primaryBlobServiceClient.createBlobContainer(oldName)
+//
+//        when:
+//        def renamedContainer = primaryBlobServiceClient.renameBlobContainer(oldName, newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    def "Rename blob container sas"() {
+//        setup:
+//        def oldName = generateContainerName()
+//        def newName = generateContainerName()
+//        primaryBlobServiceClient.createBlobContainer(oldName)
+//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(namer.getUtcNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def serviceClient = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
+//
+//        when:
+//        def renamedContainer = serviceClient.renameBlobContainer(oldName, newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    @Unroll
+//    def "Rename blob container AC"() {
+//        setup:
+//        leaseID = setupContainerLeaseCondition(cc, leaseID)
+//        def cac = new BlobRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        expect:
+//        primaryBlobServiceClient.renameBlobContainerWithResponse(cc.getBlobContainerName(),
+//            new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+//            null, null).getStatusCode() == 200
+//
+//        where:
+//        leaseID         || _
+//        null            || _
+//        receivedLeaseID || _
+//    }
+//
+//    @Unroll
+//    def "Rename blob container AC fail"() {
+//        setup:
+//        def cac = new BlobRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        primaryBlobServiceClient.renameBlobContainerWithResponse(cc.getBlobContainerName(),
+//            new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+//            null, null)
+//
+//        then:
+//        thrown(BlobStorageException)
+//
+//        where:
+//        leaseID         || _
+//        garbageLeaseID  || _
+//    }
+//
+//    @Unroll
+//    def "Rename blob container AC illegal"() {
+//        setup:
+//        def ac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified).setTagsConditions(tags)
+//
+//        when:
+//        primaryBlobServiceClient.renameBlobContainerWithResponse(cc.getBlobContainerName(),
+//            new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(ac),
+//            null, null)
+//
+//        then:
+//        thrown(UnsupportedOperationException)
+//
+//        where:
+//        modified | unmodified | match        | noneMatch    | tags
+//        oldDate  | null       | null         | null         | null
+//        null     | newDate    | null         | null         | null
+//        null     | null       | receivedEtag | null         | null
+//        null     | null       | null         | garbageEtag  | null
+//        null     | null       | null         | null         | "tags"
+//    }
+//
+//    def "Rename blob container error"() {
+//        setup:
+//        def oldName = generateContainerName()
+//        def newName = generateContainerName()
+//
+//        when:
+//        primaryBlobServiceClient.renameBlobContainer(oldName, newName)
+//
+//        then:
+//        thrown(BlobStorageException)
+//    }
 }

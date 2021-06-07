@@ -10,8 +10,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
 @Immutable
-public final class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
+public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMReimageParameters.class);
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetVMReimageParameters withTempDisk(Boolean tempDisk) {
+        super.withTempDisk(tempDisk);
+        return this;
+    }
 
     /**
      * Validates the instance.

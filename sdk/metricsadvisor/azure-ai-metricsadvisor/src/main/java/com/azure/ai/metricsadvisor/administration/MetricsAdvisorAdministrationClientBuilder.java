@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAd
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -15,6 +16,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -88,7 +90,8 @@ public final class MetricsAdvisorAdministrationClientBuilder {
     private final String clientVersion;
 
     private String endpoint;
-    private MetricsAdvisorKeyCredential credential;
+    private TokenCredential tokenCredential;
+    private MetricsAdvisorKeyCredential metricsAdvisorKeyCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -190,11 +193,14 @@ public final class MetricsAdvisorAdministrationClientBuilder {
         policies.add(new AddDatePolicy());
 
         // Authentications
-        if (credential.getSubscriptionKey() != null || credential.getApiKey() != null) {
-            headers.put(OCP_APIM_SUBSCRIPTION_KEY, credential.getSubscriptionKey());
-            headers.put(API_KEY, credential.getApiKey());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+        } else if (!CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getSubscriptionKey())
+            || !CoreUtils.isNullOrEmpty(metricsAdvisorKeyCredential.getApiKey())) {
+            headers.put(OCP_APIM_SUBSCRIPTION_KEY, metricsAdvisorKeyCredential.getSubscriptionKey());
+            headers.put(API_KEY, metricsAdvisorKeyCredential.getApiKey());
         } else {
-            // Throw exception that credential cannot be null
+            // Throw exception that credential and tokenCredential cannot be null
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
@@ -236,6 +242,18 @@ public final class MetricsAdvisorAdministrationClientBuilder {
     }
 
     /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated {@link MetricsAdvisorAdministrationClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+    public MetricsAdvisorAdministrationClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        return this;
+    }
+
+    /**
      * Sets the {@link MetricsAdvisorKeyCredential} to use when authenticating HTTP requests for this
      * MetricsAdvisorAdministrationClientBuilder.
      *
@@ -246,7 +264,7 @@ public final class MetricsAdvisorAdministrationClientBuilder {
      */
     public MetricsAdvisorAdministrationClientBuilder credential(
         MetricsAdvisorKeyCredential metricsAdvisorKeyCredential) {
-        this.credential = Objects.requireNonNull(metricsAdvisorKeyCredential,
+        this.metricsAdvisorKeyCredential = Objects.requireNonNull(metricsAdvisorKeyCredential,
             "'metricsAdvisorKeyCredential' cannot be null.");
         return this;
     }

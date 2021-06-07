@@ -191,8 +191,8 @@ public class SwaggerMethodParserTests {
             Arguments.of(clazz.getDeclaredMethod("noHeaders"), new HttpHeaders()),
             Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new HttpHeaders()),
             Arguments.of(clazz.getDeclaredMethod("headers"), new HttpHeaders()
-                .put("name1", "value1").put("name2", "value2").put("name3", "value3")),
-            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new HttpHeaders().put("name", "value2"))
+                .set("name1", "value1").set("name2", "value2").set("name3", "value3")),
+            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new HttpHeaders().set("name", "value2"))
         );
     }
 
@@ -386,7 +386,7 @@ public class SwaggerMethodParserTests {
         Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
         Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
 
-        Map<String, String> complexHeaderMap = new HttpHeaders().put("key1", null).put("key2", "value2").toMap();
+        Map<String, String> complexHeaderMap = new HttpHeaders().set("key1", (String) null).set("key2", "value2").toMap();
         Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
 
         return Stream.of(

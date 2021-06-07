@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RedisPatchingCompletedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Cache.PatchingCompleted event. */
 @Fluent
 public final class RedisPatchingCompletedEventData {
     /*

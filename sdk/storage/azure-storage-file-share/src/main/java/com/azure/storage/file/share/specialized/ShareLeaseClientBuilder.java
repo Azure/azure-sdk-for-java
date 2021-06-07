@@ -42,6 +42,9 @@ import java.util.UUID;
  */
 @ServiceClientBuilder(serviceClients = { ShareLeaseClient.class, ShareLeaseAsyncClient.class })
 public final class ShareLeaseClientBuilder {
+    private String shareName;
+    private String resourcePath;
+    private String shareSnapshot;
     private HttpPipeline pipeline;
     private String url;
     private String leaseId;
@@ -65,7 +68,8 @@ public final class ShareLeaseClientBuilder {
      */
     public ShareLeaseAsyncClient buildAsyncClient() {
         ShareServiceVersion version = (serviceVersion == null) ? ShareServiceVersion.getLatest() : serviceVersion;
-        return new ShareLeaseAsyncClient(pipeline, url, getLeaseId(), isShareFile, accountName, version.getVersion());
+        return new ShareLeaseAsyncClient(pipeline, url, shareName, shareSnapshot, resourcePath, getLeaseId(),
+            isShareFile, accountName, version.getVersion());
     }
 
     /**
@@ -79,7 +83,9 @@ public final class ShareLeaseClientBuilder {
     public ShareLeaseClientBuilder fileClient(ShareFileClient fileClient) {
         Objects.requireNonNull(fileClient);
         this.pipeline = fileClient.getHttpPipeline();
-        this.url = fileClient.getFileUrl();
+        this.url = fileClient.getAccountUrl();
+        this.shareName = fileClient.getShareName();
+        this.resourcePath = fileClient.getFilePath();
         this.isShareFile = true;
         this.accountName = fileClient.getAccountName();
         this.serviceVersion = fileClient.getServiceVersion();
@@ -97,7 +103,9 @@ public final class ShareLeaseClientBuilder {
     public ShareLeaseClientBuilder fileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
         Objects.requireNonNull(fileAsyncClient);
         this.pipeline = fileAsyncClient.getHttpPipeline();
-        this.url = fileAsyncClient.getFileUrl();
+        this.url = fileAsyncClient.getAccountUrl();
+        this.shareName = fileAsyncClient.getShareName();
+        this.resourcePath = fileAsyncClient.getFilePath();
         this.isShareFile = true;
         this.accountName = fileAsyncClient.getAccountName();
         this.serviceVersion = fileAsyncClient.getServiceVersion();
@@ -112,10 +120,12 @@ public final class ShareLeaseClientBuilder {
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileClient} is {@code null}.
      */
-    ShareLeaseClientBuilder shareClient(ShareClient shareClient) {
+    public ShareLeaseClientBuilder shareClient(ShareClient shareClient) {
         Objects.requireNonNull(shareClient);
         this.pipeline = shareClient.getHttpPipeline();
-        this.url = shareClient.getShareUrl();
+        this.url = shareClient.getAccountUrl();
+        this.shareName = shareClient.getShareName();
+        this.shareSnapshot = shareClient.getSnapshotId();
         this.isShareFile = false;
         this.accountName = shareClient.getAccountName();
         this.serviceVersion = shareClient.getServiceVersion();
@@ -130,10 +140,12 @@ public final class ShareLeaseClientBuilder {
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileAsyncClient} is {@code null}.
      */
-    ShareLeaseClientBuilder shareAsyncClient(ShareAsyncClient shareAsyncClient) {
+    public ShareLeaseClientBuilder shareAsyncClient(ShareAsyncClient shareAsyncClient) {
         Objects.requireNonNull(shareAsyncClient);
         this.pipeline = shareAsyncClient.getHttpPipeline();
-        this.url = shareAsyncClient.getShareUrl();
+        this.url = shareAsyncClient.getAccountUrl();
+        this.shareName = shareAsyncClient.getShareName();
+        this.shareSnapshot = shareAsyncClient.getSnapshotId();
         this.isShareFile = false;
         this.accountName = shareAsyncClient.getAccountName();
         this.serviceVersion = shareAsyncClient.getServiceVersion();

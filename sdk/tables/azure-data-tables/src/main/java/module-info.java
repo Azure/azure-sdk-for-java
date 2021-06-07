@@ -3,7 +3,6 @@
 
 module com.azure.data.tables {
     requires transitive com.azure.core;
-    requires transitive com.azure.storage.common;
 
     // public API surface area
     exports com.azure.data.tables;

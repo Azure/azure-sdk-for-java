@@ -37,9 +37,9 @@ public final class WindowsConfiguration {
     /*
      * Specifies the time zone of the virtual machine. e.g. "Pacific Standard
      * Time". <br><br> Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
+     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
      * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
@@ -50,6 +50,13 @@ public final class WindowsConfiguration {
      */
     @JsonProperty(value = "additionalUnattendContent")
     private List<AdditionalUnattendContent> additionalUnattendContent;
+
+    /*
+     * [Preview Feature] Specifies settings related to VM Guest Patching on
+     * Windows.
+     */
+    @JsonProperty(value = "patchSettings")
+    private PatchSettings patchSettings;
 
     /*
      * Specifies the Windows Remote Management listeners. This enables remote
@@ -111,9 +118,9 @@ public final class WindowsConfiguration {
     /**
      * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      * &lt;br&gt;&lt;br&gt; Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
-     * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
+     * from time zones returned by
+     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      *
      * @return the timeZone value.
      */
@@ -124,9 +131,9 @@ public final class WindowsConfiguration {
     /**
      * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      * &lt;br&gt;&lt;br&gt; Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
-     * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
+     * from time zones returned by
+     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      *
      * @param timeZone the timeZone value to set.
      * @return the WindowsConfiguration object itself.
@@ -160,6 +167,26 @@ public final class WindowsConfiguration {
     }
 
     /**
+     * Get the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
+     *
+     * @return the patchSettings value.
+     */
+    public PatchSettings patchSettings() {
+        return this.patchSettings;
+    }
+
+    /**
+     * Set the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
+     *
+     * @param patchSettings the patchSettings value to set.
+     * @return the WindowsConfiguration object itself.
+     */
+    public WindowsConfiguration withPatchSettings(PatchSettings patchSettings) {
+        this.patchSettings = patchSettings;
+        return this;
+    }
+
+    /**
      * Get the winRM property: Specifies the Windows Remote Management listeners. This enables remote Windows
      * PowerShell.
      *
@@ -189,6 +216,9 @@ public final class WindowsConfiguration {
     public void validate() {
         if (additionalUnattendContent() != null) {
             additionalUnattendContent().forEach(e -> e.validate());
+        }
+        if (patchSettings() != null) {
+            patchSettings().validate();
         }
         if (winRM() != null) {
             winRM().validate();

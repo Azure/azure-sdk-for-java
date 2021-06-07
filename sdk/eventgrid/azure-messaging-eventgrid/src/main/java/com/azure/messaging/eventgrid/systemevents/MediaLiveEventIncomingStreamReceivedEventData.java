@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaLiveEventIncomingStreamReceivedEventData model. */
+/**
+ * Encoder connect event data. Schema of the data property of an EventGridEvent for a
+ * Microsoft.Media.LiveEventIncomingStreamReceived event.
+ */
 @Immutable
 public final class MediaLiveEventIncomingStreamReceivedEventData {
     /*

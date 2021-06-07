@@ -1,0 +1,39 @@
+{
+  "matrix": {
+    "Agent": {
+      "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" }
+    },
+    "JavaTestVersion": "1.8",
+    "EmulatorConfig": {
+      "Emulator Only Integration Tests Tcp": {
+          "ProfileFlag": "-Pemulator",
+          "PROTOCOLS": "[\"Tcp\"]",
+          "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+      },
+      "Emulator Only Integration Tests Https": {
+          "ProfileFlag": "-Pemulator",
+          "PROTOCOLS": "[\"Https\"]",
+          "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+      },
+      "Spring Emulator Only Integration Tests": {
+          "ProfileFlag": "-P integration-test-emulator",
+          "PROTOCOLS": "[\"Tcp\"]",
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -DACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DSECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_ACCOUNT_HOST=https://localhost:8081/ -DNEW_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_SECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==\""
+      },
+      "Encryption Emulator Only Integration Tests": {
+          "ProfileFlag": "-Pencryption-integration",
+          "PROTOCOLS": "[\"Tcp\"]",
+          "DESIRED_CONSISTENCIES": "[\"Session\"]",
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
+      },
+      "Spark Integration Tests targeting Cosmos Emulator'": {
+          "ProfileFlag": "-PsparkE2E",
+          "PROTOCOLS": "[\"Tcp\"]",
+          "DESIRED_CONSISTENCIES": "[\"Session\"]",
+          "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+      }
+    }
+  }
+}

@@ -79,7 +79,8 @@ public final class FormTrainingClient {
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a Shared Access
      * Signature Uri).
      * For instructions on setting up forms for training in an Azure Storage Blob Container, see
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     *
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
@@ -87,7 +88,7 @@ public final class FormTrainingClient {
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels) {
         return beginTraining(trainingFilesUrl, useTrainingLabels, null, Context.NONE);
@@ -107,7 +108,8 @@ public final class FormTrainingClient {
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
      * For instructions on setting up forms for training in an Azure Storage Blob Container, see
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     *
      * @param useTrainingLabels boolean to specify the use of labeled files for training the model.
      * @param trainingOptions The additional configurable {@link TrainingOptions options}
      * that may be passed when training a model.
@@ -118,7 +120,7 @@ public final class FormTrainingClient {
      * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
         boolean useTrainingLabels,
         TrainingOptions trainingOptions, Context context) {
@@ -269,7 +271,7 @@ public final class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target) {
         return beginCopyModel(modelId, target, null, Context.NONE);
@@ -299,7 +301,7 @@ public final class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
         CopyAuthorization target, Duration pollInterval, Context context) {
         return client.beginCopyModel(modelId, target, pollInterval, context).getSyncPoller();
@@ -368,7 +370,7 @@ public final class FormTrainingClient {
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIds} is null or empty.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds) {
         return beginCreateComposedModel(modelIds, null, null);
     }
@@ -397,7 +399,7 @@ public final class FormTrainingClient {
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIds} is null or empty.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds,
         CreateComposedModelOptions createComposedModelOptions, Context context) {
         return client.beginCreateComposedModel(modelIds, createComposedModelOptions, context).getSyncPoller();

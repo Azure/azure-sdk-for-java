@@ -13,10 +13,11 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
 
     /*
      * The boolean indicator to include opinion mining data in the returned result. If this
-     * flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment. It is provided by service
+     * flag is specified, you'll get a {@code opinions} property on SentenceSentiment. It is provided by service
      * v3.1-preview.1 and later.
      */
     private boolean includeOpinionMining;
+    private StringIndexType stringIndexType;
 
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -33,7 +34,9 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
-     * Set the value of {@code includeStatistics}.
+     * Set the value of {@code includeStatistics}. The default value is false by default.
+     * If set to true, indicates that the service should return document and document batch statistics
+     * with the results of the operation.
      *
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
@@ -47,8 +50,24 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs The default value of this property is 'false', except for methods like
+     * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
+     * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
+     * disables input logging and may limit our ability to investigate issues that occur.
+     *
+     * @return the {@link AnalyzeSentimentOptions} object itself.
+     */
+    @Override
+    public AnalyzeSentimentOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
-     * returned result. If this flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment.
+     * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1-preview.1 and later.
      *
      * @return the value of {@code includeOpinionMining}.
@@ -59,7 +78,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
 
     /**
      * Set the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
-     * returned result. If this flag is specified, you'll get a {@code minedOpinions} property on SentenceSentiment.
+     * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
      * It is provided by service v3.1-preview.1 and later.
      *
      * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
@@ -68,6 +87,28 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
      */
     public AnalyzeSentimentOptions setIncludeOpinionMining(boolean includeOpinionMining) {
         this.includeOpinionMining = includeOpinionMining;
+        return this;
+    }
+
+    /**
+     * Get the value of {@code stringIndexType}.
+     *
+     * @return The value of {@code stringIndexType}.
+     */
+    public StringIndexType getStringIndexType() {
+        return stringIndexType;
+    }
+
+    /**
+     * Set the value of {@code stringIndexType}.
+     * The {@link StringIndexType#UTF16CODE_UNIT} will be used as default type if there is no value assign to it.
+     *
+     * @param stringIndexType It used to set the value of string indexing type.
+     *
+     * @return the {@link AnalyzeSentimentOptions} object itself.
+     */
+    public AnalyzeSentimentOptions setStringIndexType(StringIndexType stringIndexType) {
+        this.stringIndexType = stringIndexType;
         return this;
     }
 }

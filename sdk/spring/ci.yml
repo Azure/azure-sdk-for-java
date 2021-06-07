@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -15,6 +16,7 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
@@ -27,48 +29,44 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
-      - name: azure-spring-data-gremlin
+      - name: azure-identity-spring
         groupId: com.azure.spring
-        safeName: azurespringdatagremlin
+        safeName: azureidentityspring
       - name: azure-spring-boot
         groupId: com.azure.spring
         safeName: azurespringboot
       - name: azure-spring-boot-starter
         groupId: com.azure.spring
         safeName: azurespringbootstarter
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-active-directory
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectory
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-active-directory-b2c
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectoryb2c
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure.spring
         safeName: azurespringbootstartercosmos
-        skipPublishDocMs: true
-      - name: azure-spring-boot-starter-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringbootstarterdatagremlin
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-keyvault-certificates
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultcertificates
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultsecrets
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-servicebus-jms
         groupId: com.azure.spring
         safeName: azurespringbootstarterservicebusjms
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-storage
         groupId: com.azure.spring
         safeName: azurespringbootstarterstorage
-        skipPublishDocMs: true
+        skipUpdatePackageJson: true
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext
@@ -102,18 +100,23 @@ extends:
       - name: azure-spring-cloud-starter-cache
         groupId: com.azure.spring
         safeName: azurespringcloudstartercache
+        skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-eventhubs
         groupId: com.azure.spring
         safeName: azurespringcloudstartereventhubs
+        skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-eventhubs-kafka
         groupId: com.azure.spring
         safeName: azurespringcloudstartereventhubskafka
+        skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-servicebus
         groupId: com.azure.spring
         safeName: azurespringcloudstarterservicebus
+        skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-storage-queue
         groupId: com.azure.spring
         safeName: azurespringcloudstarterstoragequeue
+        skipUpdatePackageJson: true
       - name: azure-spring-cloud-stream-binder-servicebus-core
         groupId: com.azure.spring
         safeName: azurespringcloudservicebusstreambindercore
@@ -132,17 +135,17 @@ extends:
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory-resource-server
         groupId: com.azure.spring
+      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter
+        groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-backend
+      - name: azure-spring-boot-sample-active-directory-webapp
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-backend-v2
+      - name: azure-spring-boot-sample-active-directory-resource-server-obo
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-stateless
+      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-data-gremlin
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-keyvault-secrets
         groupId: com.azure.spring
@@ -156,15 +159,11 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-storage-resource
         groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin
+      - name: spring-cloud-azure-appconfiguration-convert-sample-complete
         groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin-web-service
+      - name: azure-appconfiguration-convert-sample-initial
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-convert-complete
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-convert-initial
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration
+      - name: azure-appconfiguration-sample
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-cache
         groupId: com.azure.spring
@@ -178,11 +177,13 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-operation
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-feature-management
+      - name: feature-management-sample
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-feature-management-web
+      - name: feature-management-web-sample
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-messaging
+      - name: azure-spring-cloud-sample-messaging-eventhubs
+        groupId: com.azure.spring
+      - name: azure-spring-cloud-sample-messaging-servicebus
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-eventhubs-multibinders
         groupId: com.azure.spring

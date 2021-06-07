@@ -1,7 +1,26 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
+## 2.5.0 (2021-05-28)
+- Supported system-assigned managed identity and auto-scaler profile for `KubernetesCluster`.
+- Supported auto-scaling, availability zones, node labels and taints for agent pool of `KubernetesCluster`.
+
+## 2.4.0 (2021-04-28)
+
+- Updated `api-version` to `2021-03-01`
+- Supported Private Link in `KubernetesCluster`
+
+## 2.3.0 (2021-03-30)
+
+- Updated core dependency from resources
+
+## 2.2.0 (2021-02-24)
+
+- Updated `api-version` to `2020-11-01`
+- Removed `withNodeImageVersion` method in `ManagedClusterAgentPoolProfileProperties`
+- Removed unused class `Components1Q1Og48SchemasManagedclusterAllof1`
+- Removed unused class `ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIdentityprofileAdditionalproperties`, it is same as its superclass `UserAssignedIdentity`
 
 ## 2.1.0 (2020-11-24)
 

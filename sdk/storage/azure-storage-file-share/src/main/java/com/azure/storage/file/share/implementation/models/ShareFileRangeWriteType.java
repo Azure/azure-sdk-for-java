@@ -7,23 +7,15 @@ package com.azure.storage.file.share.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ShareFileRangeWriteType.
- */
+/** Defines values for ShareFileRangeWriteType. */
 public enum ShareFileRangeWriteType {
-    /**
-     * Enum value update.
-     */
+    /** Enum value update. */
     UPDATE("update"),
 
-    /**
-     * Enum value clear.
-     */
+    /** Enum value clear. */
     CLEAR("clear");
 
-    /**
-     * The actual serialized value for a ShareFileRangeWriteType instance.
-     */
+    /** The actual serialized value for a ShareFileRangeWriteType instance. */
     private final String value;
 
     ShareFileRangeWriteType(String value) {

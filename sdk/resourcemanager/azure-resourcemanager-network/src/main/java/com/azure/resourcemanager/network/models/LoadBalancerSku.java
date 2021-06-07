@@ -20,6 +20,12 @@ public final class LoadBalancerSku {
     @JsonProperty(value = "name")
     private LoadBalancerSkuName name;
 
+    /*
+     * Tier of a load balancer SKU.
+     */
+    @JsonProperty(value = "tier")
+    private LoadBalancerSkuTier tier;
+
     /**
      * Get the name property: Name of a load balancer SKU.
      *
@@ -37,6 +43,26 @@ public final class LoadBalancerSku {
      */
     public LoadBalancerSku withName(LoadBalancerSkuName name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Tier of a load balancer SKU.
+     *
+     * @return the tier value.
+     */
+    public LoadBalancerSkuTier tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Tier of a load balancer SKU.
+     *
+     * @param tier the tier value to set.
+     * @return the LoadBalancerSku object itself.
+     */
+    public LoadBalancerSku withTier(LoadBalancerSkuTier tier) {
+        this.tier = tier;
         return this;
     }
 

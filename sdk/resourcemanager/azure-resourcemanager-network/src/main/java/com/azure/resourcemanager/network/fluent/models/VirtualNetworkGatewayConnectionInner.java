@@ -13,12 +13,14 @@ import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A common class for general resource information. */
 @JsonFlatten
@@ -57,6 +59,18 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private LocalNetworkGatewayInner localNetworkGateway2;
 
     /*
+     * List of ingress NatRules.
+     */
+    @JsonProperty(value = "properties.ingressNatRules")
+    private List<SubResource> ingressNatRules;
+
+    /*
+     * List of egress NatRules.
+     */
+    @JsonProperty(value = "properties.egressNatRules")
+    private List<SubResource> egressNatRules;
+
+    /*
      * Gateway connection type.
      */
     @JsonProperty(value = "properties.connectionType", required = true)
@@ -79,6 +93,12 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     @JsonProperty(value = "properties.dpdTimeoutSeconds")
     private Integer dpdTimeoutSeconds;
+
+    /*
+     * The connection mode for this connection.
+     */
+    @JsonProperty(value = "properties.connectionMode")
+    private VirtualNetworkGatewayConnectionMode connectionMode;
 
     /*
      * The IPSec shared key.
@@ -265,6 +285,46 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
+     * Get the ingressNatRules property: List of ingress NatRules.
+     *
+     * @return the ingressNatRules value.
+     */
+    public List<SubResource> ingressNatRules() {
+        return this.ingressNatRules;
+    }
+
+    /**
+     * Set the ingressNatRules property: List of ingress NatRules.
+     *
+     * @param ingressNatRules the ingressNatRules value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withIngressNatRules(List<SubResource> ingressNatRules) {
+        this.ingressNatRules = ingressNatRules;
+        return this;
+    }
+
+    /**
+     * Get the egressNatRules property: List of egress NatRules.
+     *
+     * @return the egressNatRules value.
+     */
+    public List<SubResource> egressNatRules() {
+        return this.egressNatRules;
+    }
+
+    /**
+     * Set the egressNatRules property: List of egress NatRules.
+     *
+     * @param egressNatRules the egressNatRules value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withEgressNatRules(List<SubResource> egressNatRules) {
+        this.egressNatRules = egressNatRules;
+        return this;
+    }
+
+    /**
      * Get the connectionType property: Gateway connection type.
      *
      * @return the connectionType value.
@@ -342,6 +402,26 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     public VirtualNetworkGatewayConnectionInner withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
         this.dpdTimeoutSeconds = dpdTimeoutSeconds;
+        return this;
+    }
+
+    /**
+     * Get the connectionMode property: The connection mode for this connection.
+     *
+     * @return the connectionMode value.
+     */
+    public VirtualNetworkGatewayConnectionMode connectionMode() {
+        return this.connectionMode;
+    }
+
+    /**
+     * Set the connectionMode property: The connection mode for this connection.
+     *
+     * @param connectionMode the connectionMode value to set.
+     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionInner withConnectionMode(VirtualNetworkGatewayConnectionMode connectionMode) {
+        this.connectionMode = connectionMode;
         return this;
     }
 
@@ -578,6 +658,20 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     public VirtualNetworkGatewayConnectionInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayConnectionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayConnectionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

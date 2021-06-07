@@ -72,6 +72,8 @@ public final class Constants {
 
     public static final String STORAGE_SCOPE = "https://storage.azure.com/.default";
 
+    public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
+
     private Constants() {
     }
 
@@ -196,7 +198,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2020-04-08";
+        public static final String TARGET_STORAGE_VERSION = "2020-08-04";
 
         /**
          * Error code returned from the service.
@@ -207,6 +209,8 @@ public final class Constants {
          * Compression type used on the body.
          */
         public static final String CONTENT_ENCODING = "Content-Encoding";
+
+        public static final String CONTENT_TYPE = "Content-Type";
 
         public static final String CLIENT_REQUEST_ID = "x-ms-client-request-id";
 
@@ -249,6 +253,11 @@ public final class Constants {
          * The versionId parameters.
          */
         public static final String VERSIONID_QUERY_PARAMETER = "versionid";
+
+        /**
+         * The deletionId parameters.
+         */
+        public static final String DELETIONID_QUERY_PARAMETER = "deletionid";
 
         /**
          * The SAS service version parameter.

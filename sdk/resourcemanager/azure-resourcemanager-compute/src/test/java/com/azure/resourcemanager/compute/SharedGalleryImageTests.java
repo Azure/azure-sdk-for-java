@@ -38,7 +38,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -345,7 +345,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         //
-        deprovisionAgentInLinuxVM(virtualMachine.getPrimaryPublicIPAddress().fqdn(), 22, uname, password);
+        deprovisionAgentInLinuxVM(virtualMachine);
         virtualMachine.deallocate();
         virtualMachine.generalize();
         return virtualMachine;

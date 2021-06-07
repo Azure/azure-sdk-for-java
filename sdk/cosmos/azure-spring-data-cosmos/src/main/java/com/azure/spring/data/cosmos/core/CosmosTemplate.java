@@ -13,6 +13,7 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.spring.data.cosmos.Constants;
@@ -22,9 +23,11 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
+import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
 import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosSliceImpl;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
@@ -38,6 +41,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -180,9 +185,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
 
+        markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
 
         LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
             containerName);
@@ -262,14 +268,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
 
-        final String query = String.format("select * from root where root.id = '%s'",
-            CosmosUtils.getStringIDValue(id));
+        final String query = "select * from root where root.id = @ROOT_ID";
+        final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
+        final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, param);
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
         return cosmosAsyncClient
             .getDatabase(this.databaseName)
             .getContainer(containerName)
-            .queryItems(query, options, JsonNode.class)
+            .queryItems(sqlQuerySpec, options, JsonNode.class)
             .byPage()
             .publishOn(Schedulers.parallel())
             .flatMap(cosmosItemFeedResponse -> {
@@ -321,7 +328,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(object, "Upsert object should not be null");
 
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(object);
+        markAuditedIfConfigured(object);
+
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
 
         LOGGER.debug("execute upsert item in database {} container {}", this.databaseName,
             containerName);
@@ -451,6 +460,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .flatMap(cosmosDatabaseResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
+
                 final CosmosContainerProperties cosmosContainerProperties =
                     new CosmosContainerProperties(information.getContainerName(), information.getPartitionKeyPath());
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
@@ -479,6 +489,27 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                         CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                             cosmosContainerResponse.getDiagnostics(), null));
             })
+            .block();
+        assert response != null;
+        return response.getProperties();
+    }
+
+    @Override
+    public CosmosContainerProperties getContainerProperties(String containerName) {
+        final CosmosContainerResponse response = cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .read()
+            .block();
+        assert response != null;
+        return response.getProperties();
+    }
+
+    @Override
+    public CosmosContainerProperties replaceContainerProperties(String containerName,
+                                                                CosmosContainerProperties properties) {
+        CosmosContainerResponse response = this.cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .replace(properties)
             .block();
         assert response != null;
         return response.getProperties();
@@ -618,29 +649,56 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
-    public <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType,
-                                       String containerName) {
-        Assert.isTrue(query.getPageable().getPageSize() > 0,
+    public <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType) {
+        final String containerName = getContainerName(domainType);
+        final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, pageable.getSort());
+        final SqlQuerySpec countQuerySpec = NativeQueryGenerator.getInstance().generateCountQuery(querySpec);
+        return paginationQuery(sortedQuerySpec, countQuerySpec, pageable, pageable.getSort(), returnType, containerName);
+    }
+
+    @Override
+    public <T> Page<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName) {
+        final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        final SqlQuerySpec countQuerySpec = new CountQueryGenerator().generateCosmos(query);
+        return paginationQuery(querySpec, countQuerySpec, query.getPageable(), query.getSort(), domainType, containerName);
+    }
+
+    @Override
+    public <T> Slice<T> sliceQuery(CosmosQuery query, Class<T> domainType, String containerName) {
+        final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        return sliceQuery(querySpec, query.getPageable(), query.getSort(), domainType, containerName);
+    }
+
+    private <T> Page<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
+                                       Pageable pageable, Sort sort,
+                                       Class<T> returnType, String containerName) {
+        Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName);
+        final long total = getCountValue(countQuerySpec, containerName);
+        return new CosmosPageImpl<>(response.getContent(), response.getPageable(), total);
+    }
+
+    private <T> Slice<T> sliceQuery(SqlQuerySpec querySpec,
+                                   Pageable pageable, Sort sort,
+                                   Class<T> returnType, String containerName) {
+        Assert.isTrue(pageable.getPageSize() > 0,
             "pageable should have page size larger than 0");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
 
-        final Pageable pageable = query.getPageable();
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
         CosmosAsyncContainer container =
             cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName);
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
 
         Flux<FeedResponse<JsonNode>> feedResponseFlux;
         if (pageable instanceof CosmosPageRequest) {
             feedResponseFlux = container
-                .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
+                .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                 .byPage(((CosmosPageRequest) pageable).getRequestContinuation(),
                     pageable.getPageSize());
         } else {
             feedResponseFlux = container
-                .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
+                .queryItems(querySpec, cosmosQueryRequestOptions, JsonNode.class)
                 .byPage(pageable.getPageSize());
         }
 
@@ -666,11 +724,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 continue;
             }
 
-            final T entity = mappingCosmosConverter.read(domainType, jsonNode);
+            final T entity = mappingCosmosConverter.read(returnType, jsonNode);
             result.add(entity);
         }
 
-        final long total = count(query, containerName);
         final int contentSize = result.size();
 
         int pageSize;
@@ -691,9 +748,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             pageable.getPageNumber(),
             pageSize,
             feedResponse.getContinuationToken(),
-            query.getSort());
+            sort);
 
-        return new CosmosPageImpl<>(result, pageRequest, total);
+        return new CosmosSliceImpl<>(result, pageRequest, feedResponse.getContinuationToken() != null);
     }
 
     @Override
@@ -716,26 +773,45 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
+    public <T> long count(SqlQuerySpec querySpec, String containerName) {
+        Assert.hasText(containerName, "container name should not be empty");
+
+        final Long count = getCountValue(querySpec, containerName);
+        assert count != null;
+        return count;
+    }
+
+    @Override
     public MappingCosmosConverter getConverter() {
         return this.mappingCosmosConverter;
     }
 
     @Override
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
-        return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec, returnType)
+        return runQuery(querySpec, Sort.unsorted(), domainType, returnType);
+    }
+
+    @Override
+    public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
+        querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
+        return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
+                   .map(jsonNode -> toDomainObject(returnType, jsonNode))
                    .collectList()
                    .block();
     }
 
-    private JsonNode prepareToPersistAndConvertToItemProperties(Object object) {
+    private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {
             cosmosAuditingHandler.markAudited(object);
         }
-        return mappingCosmosConverter.writeJsonNode(object);
     }
 
     private Long getCountValue(CosmosQuery query, String containerName) {
         final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
+        return getCountValue(querySpec, containerName);
+    }
+
+    private Long getCountValue(SqlQuerySpec querySpec, String containerName) {
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
@@ -781,15 +857,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
     }
 
-    private <T> Flux<T> getJsonNodeFluxFromQuerySpec(
-        @NonNull String containerName, SqlQuerySpec sqlQuerySpec, Class<T> classType) {
+    private Flux<JsonNode> getJsonNodeFluxFromQuerySpec(
+        @NonNull String containerName, SqlQuerySpec sqlQuerySpec) {
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
         return cosmosAsyncClient
                    .getDatabase(this.databaseName)
                    .getContainer(containerName)
-                   .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, classType)
+                   .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
                    .byPage()
                    .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {

@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 
 /** IP security restriction on an app. */
 @Fluent
@@ -77,6 +79,34 @@ public final class IpSecurityRestriction {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /*
+     * IP restriction rule headers.
+     * X-Forwarded-Host
+     * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples).
+     * The matching logic is ..
+     * - If the property is null or empty (default), all hosts(or lack of) are
+     * allowed.
+     * - A value is compared using ordinal-ignore-case (excluding port number).
+     * - Subdomain wildcards are permitted but don't match the root domain. For
+     * example, *.contoso.com matches the subdomain foo.contoso.com
+     * but not the root domain contoso.com or multi-level foo.bar.contoso.com
+     * - Unicode host names are allowed but are converted to Punycode for
+     * matching.
+     *
+     * X-Forwarded-For
+     * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples).
+     * The matching logic is ..
+     * - If the property is null or empty (default), any forwarded-for chains
+     * (or lack of) are allowed.
+     * - If any address (excluding port number) in the chain (comma separated)
+     * matches the CIDR defined by the property.
+     *
+     * X-Azure-FDID and X-FD-HealthProbe.
+     * The matching logic is exact match.
+     */
+    @JsonProperty(value = "headers")
+    private Map<String, List<String>> headers;
 
     /**
      * Get the ipAddress property: IP address the security restriction is valid for. It can be in form of pure ipv4
@@ -279,6 +309,50 @@ public final class IpSecurityRestriction {
      */
     public IpSecurityRestriction withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the headers property: IP restriction rule headers. X-Forwarded-Host
+     * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples). The matching logic is .. -
+     * If the property is null or empty (default), all hosts(or lack of) are allowed. - A value is compared using
+     * ordinal-ignore-case (excluding port number). - Subdomain wildcards are permitted but don't match the root domain.
+     * For example, *.contoso.com matches the subdomain foo.contoso.com but not the root domain contoso.com or
+     * multi-level foo.bar.contoso.com - Unicode host names are allowed but are converted to Punycode for matching.
+     *
+     * <p>X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples). The
+     * matching logic is .. - If the property is null or empty (default), any forwarded-for chains (or lack of) are
+     * allowed. - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
+     * property.
+     *
+     * <p>X-Azure-FDID and X-FD-HealthProbe. The matching logic is exact match.
+     *
+     * @return the headers value.
+     */
+    public Map<String, List<String>> headers() {
+        return this.headers;
+    }
+
+    /**
+     * Set the headers property: IP restriction rule headers. X-Forwarded-Host
+     * (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples). The matching logic is .. -
+     * If the property is null or empty (default), all hosts(or lack of) are allowed. - A value is compared using
+     * ordinal-ignore-case (excluding port number). - Subdomain wildcards are permitted but don't match the root domain.
+     * For example, *.contoso.com matches the subdomain foo.contoso.com but not the root domain contoso.com or
+     * multi-level foo.bar.contoso.com - Unicode host names are allowed but are converted to Punycode for matching.
+     *
+     * <p>X-Forwarded-For (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#Examples). The
+     * matching logic is .. - If the property is null or empty (default), any forwarded-for chains (or lack of) are
+     * allowed. - If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the
+     * property.
+     *
+     * <p>X-Azure-FDID and X-FD-HealthProbe. The matching logic is exact match.
+     *
+     * @param headers the headers value to set.
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withHeaders(Map<String, List<String>> headers) {
+        this.headers = headers;
         return this;
     }
 

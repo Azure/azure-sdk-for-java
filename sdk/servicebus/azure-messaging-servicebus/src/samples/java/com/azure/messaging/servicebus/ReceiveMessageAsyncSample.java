@@ -22,21 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ReceiveMessageAsyncSample {
     private boolean sampleWorks = true;
 
-    /**
-     * Main method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} from an Azure
-     * Service Bus Queue.
-     *
-     * @param args Unused arguments to the program.
-     *
-     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
-     */
-    public static void main(String[] args) throws InterruptedException {
-        ReceiveMessageAndSettleAsyncSample sample = new ReceiveMessageAndSettleAsyncSample();
-        sample.run();
-    }
 
     /**
-     * Main method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} from an Azure
+     * The run method is to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} from an Azure
      * Service Bus Queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
@@ -80,7 +68,7 @@ public class ReceiveMessageAsyncSample {
             () -> System.out.println("Receiving complete."));
 
         // Receiving messages from the queue for a duration of 20 seconds.
-        // Subscribe is not a blocking call so we sleep here so the program does not end.
+        // Subscribe is not a blocking call so we wait here so the program does not end.
         TimeUnit.SECONDS.sleep(20);
 
         // Disposing of the subscription will cancel the receive() operation.

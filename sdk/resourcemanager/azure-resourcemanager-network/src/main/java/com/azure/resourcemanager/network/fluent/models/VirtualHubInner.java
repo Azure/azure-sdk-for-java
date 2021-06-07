@@ -9,12 +9,14 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** VirtualHub Resource. */
 @JsonFlatten
@@ -129,6 +131,18 @@ public class VirtualHubInner extends Resource {
      */
     @JsonProperty(value = "properties.virtualRouterIps")
     private List<String> virtualRouterIps;
+
+    /*
+     * Flag to control transit for VirtualRouter hub.
+     */
+    @JsonProperty(value = "properties.allowBranchToBranchTraffic")
+    private Boolean allowBranchToBranchTraffic;
+
+    /*
+     * The preferred gateway to route on-prem traffic
+     */
+    @JsonProperty(value = "properties.preferredRoutingGateway")
+    private PreferredRoutingGateway preferredRoutingGateway;
 
     /*
      * Resource ID.
@@ -444,6 +458,46 @@ public class VirtualHubInner extends Resource {
     }
 
     /**
+     * Get the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
+     *
+     * @return the allowBranchToBranchTraffic value.
+     */
+    public Boolean allowBranchToBranchTraffic() {
+        return this.allowBranchToBranchTraffic;
+    }
+
+    /**
+     * Set the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
+     *
+     * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
+        this.allowBranchToBranchTraffic = allowBranchToBranchTraffic;
+        return this;
+    }
+
+    /**
+     * Get the preferredRoutingGateway property: The preferred gateway to route on-prem traffic.
+     *
+     * @return the preferredRoutingGateway value.
+     */
+    public PreferredRoutingGateway preferredRoutingGateway() {
+        return this.preferredRoutingGateway;
+    }
+
+    /**
+     * Set the preferredRoutingGateway property: The preferred gateway to route on-prem traffic.
+     *
+     * @param preferredRoutingGateway the preferredRoutingGateway value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withPreferredRoutingGateway(PreferredRoutingGateway preferredRoutingGateway) {
+        this.preferredRoutingGateway = preferredRoutingGateway;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -460,6 +514,20 @@ public class VirtualHubInner extends Resource {
      */
     public VirtualHubInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualHubInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualHubInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

@@ -14,15 +14,16 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfil
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** Specifies information about the gallery Image Version that you want to create or update. */
+/** Specifies information about the gallery image version that you want to create or update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageVersionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
 
     /*
-     * Describes the basic gallery artifact publishing profile.
+     * The publishing profile of a gallery image Version.
      */
     @JsonProperty(value = "properties.publishingProfile")
     private GalleryImageVersionPublishingProfile publishingProfile;
@@ -40,27 +41,27 @@ public class GalleryImageVersionInner extends Resource {
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
-     * This is the replication status of the gallery Image Version.
+     * This is the replication status of the gallery image version.
      */
     @JsonProperty(value = "properties.replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
 
     /**
-     * Get the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Get the publishingProfile property: The publishing profile of a gallery image Version.
      *
      * @return the publishingProfile value.
      */
-    public GalleryImageVersionPublishingProfile  publishingProfile() {
+    public GalleryImageVersionPublishingProfile publishingProfile() {
         return this.publishingProfile;
     }
 
     /**
-     * Set the publishingProfile property: Describes the basic gallery artifact publishing profile.
+     * Set the publishingProfile property: The publishing profile of a gallery image Version.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.
      */
-    public GalleryImageVersionInner withPublishingProfile(GalleryImageVersionPublishingProfile  publishingProfile) {
+    public GalleryImageVersionInner withPublishingProfile(GalleryImageVersionPublishingProfile publishingProfile) {
         this.publishingProfile = publishingProfile;
         return this;
     }
@@ -95,12 +96,26 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery Image Version.
+     * Get the replicationStatus property: This is the replication status of the gallery image version.
      *
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

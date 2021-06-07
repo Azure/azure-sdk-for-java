@@ -14,47 +14,32 @@ import org.junit.jupiter.api.Test;
 
 public class ServiceBusSampleLiveOnlyTests extends SamplesTestBase {
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testServiceBusQueueBasic() {
-        if (skipInPlayback()) {
-            return;
-        }
         Assertions.assertTrue(ServiceBusQueueBasic.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testServiceBusPublishSubscribeBasic() {
-        if (skipInPlayback()) {
-            return;
-        }
         Assertions.assertTrue(ServiceBusPublishSubscribeBasic.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testServiceBusWithClaimBasedAuthorization() {
-        if (skipInPlayback()) {
-            return;
-        }
         Assertions.assertTrue(ServiceBusWithClaimBasedAuthorization.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testServiceBusQueueAdvanceFeatures() {
-        if (skipInPlayback()) {
-            return;
-        }
         Assertions.assertTrue(ServiceBusQueueAdvanceFeatures.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testServiceBusPublishSubscribeAdvanceFeatures() {
-        if (skipInPlayback()) {
-            return;
-        }
         Assertions.assertTrue(ServiceBusPublishSubscribeAdvanceFeatures.runSample(azureResourceManager));
     }
 }

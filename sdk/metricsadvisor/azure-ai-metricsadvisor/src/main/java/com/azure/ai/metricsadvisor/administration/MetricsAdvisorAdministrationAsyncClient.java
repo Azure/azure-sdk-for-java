@@ -4,20 +4,13 @@
 package com.azure.ai.metricsadvisor.administration;
 
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
 import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationList;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
 import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationList;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchFillMissingPointForAd;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchNeedRollup;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchRollUpMethod;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchStatus;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatchViewMode;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailRollUpMethod;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
 import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
 import com.azure.ai.metricsadvisor.implementation.models.FillMissingPointType;
@@ -35,9 +28,12 @@ import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.models.ListAnomalyAlertConfigsOptions;
+import com.azure.ai.metricsadvisor.models.ListMetricAnomalyDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
@@ -62,8 +58,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -185,43 +179,43 @@ public class MetricsAdvisorAdministrationAsyncClient {
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
         return service.createDataFeedWithResponseAsync(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
-            .setDataFeedName(dataFeed.getName())
-            .setDataFeedDescription(finalDataFeedOptions.getDescription())
-            .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
-                ? null : dataFeedGranularity.getGranularityType().toString()))
-            .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
-            .setDimension(dataFeedSchema.getDimensions())
-            .setMetrics(dataFeedSchema.getMetrics())
-            .setTimestampColumn(dataFeedSchema.getTimestampColumn())
-            .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
-            .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
-                ? null : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
-            .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
-            .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
-                ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
-            .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
-                ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
-            .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-            .setRollUpMethod(DataFeedDetailRollUpMethod.fromString(dataFeedRollupSettings
-                .getDataFeedAutoRollUpMethod() == null
-                ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
-            .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
-                ? null : dataFeedRollupSettings.getRollupType().toString()))
-            .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-            .setFillMissingPointType(FillMissingPointType.fromString(
-                dataFeedMissingDataPointFillSettings.getFillType() == null
-                    ? null : dataFeedMissingDataPointFillSettings.getFillType().toString()))
-            .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
-            .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
-                ? null : finalDataFeedOptions.getAccessMode().toString()))
-            .setViewers(finalDataFeedOptions.getViewerEmails())
-            .setAdmins(finalDataFeedOptions.getAdminEmails())
-            .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
-            .flatMap(createDataFeedResponse -> {
-                final String dataFeedId =
-                    parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
-                return getDataFeedWithResponse(dataFeedId);
-            });
+                .setDataFeedName(dataFeed.getName())
+                .setDataFeedDescription(finalDataFeedOptions.getDescription())
+                .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
+                    ? null : dataFeedGranularity.getGranularityType().toString()))
+                .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
+                .setDimension(dataFeedSchema.getDimensions())
+                .setMetrics(dataFeedSchema.getMetrics())
+                .setTimestampColumn(dataFeedSchema.getTimestampColumn())
+                .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
+                .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
+                    ? null : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
+                .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
+                .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
+                    ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
+                .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
+                    ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
+                .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
+                .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings
+                    .getDataFeedAutoRollUpMethod() == null
+                    ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
+                    ? null : dataFeedRollupSettings.getRollupType().toString()))
+                .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
+                .setFillMissingPointType(FillMissingPointType.fromString(
+                    dataFeedMissingDataPointFillSettings.getFillType() == null
+                        ? null : dataFeedMissingDataPointFillSettings.getFillType().toString()))
+                .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
+                .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
+                    ? null : finalDataFeedOptions.getAccessMode().toString()))
+                .setViewers(finalDataFeedOptions.getViewerEmails())
+                .setAdmins(finalDataFeedOptions.getAdminEmails())
+                .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), withTracing)
+                .flatMap(createDataFeedResponse -> {
+                    final String dataFeedId =
+                        parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
+                    return getDataFeedWithResponse(dataFeedId);
+                });
     }
 
     /**
@@ -329,21 +323,37 @@ public class MetricsAdvisorAdministrationAsyncClient {
                     ? null : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
                 .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
                     ? null : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
-                .setNeedRollup(DataFeedDetailPatchNeedRollup.fromString(
-                    dataFeedRollupSettings.getRollupType().toString()))
+                .setNeedRollup(
+                    dataFeedRollupSettings.getRollupType() != null
+                    ? NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType().toString())
+                    : null)
                 .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
-                .setRollUpMethod(DataFeedDetailPatchRollUpMethod.fromString(
-                    dataFeedRollupSettings.getDataFeedAutoRollUpMethod() == null
-                        ? null : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setRollUpMethod(
+                    dataFeedRollupSettings.getDataFeedAutoRollUpMethod() != null
+                    ? RollUpMethod.fromString(
+                        dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString())
+                        : null)
                 .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
-                .setFillMissingPointForAd(DataFeedDetailPatchFillMissingPointForAd.fromString(
-                    dataFeedMissingDataPointFillSettings.getFillType().toString()))
-                .setFillMissingPointForAdValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
-                .setViewMode(DataFeedDetailPatchViewMode.fromString(dataFeedOptions.getAccessMode() == null
-                    ? null : dataFeedOptions.getAccessMode().toString()))
+                .setFillMissingPointType(
+                    dataFeedMissingDataPointFillSettings.getFillType() != null
+                    ? FillMissingPointType.fromString(
+                        dataFeedMissingDataPointFillSettings.getFillType().toString())
+                        : null)
+                .setFillMissingPointValue(
+                    // For PATCH send 'fill-custom-value' over wire only for 'fill-custom-type'.
+                    dataFeedMissingDataPointFillSettings.getFillType() == DataFeedMissingDataPointFillType.CUSTOM_VALUE
+                    ? dataFeedMissingDataPointFillSettings.getCustomFillValue()
+                        : null)
+                .setViewMode(
+                    dataFeedOptions.getAccessMode() != null
+                    ? ViewMode.fromString(dataFeedOptions.getAccessMode().toString())
+                        : null)
                 .setViewers(dataFeedOptions.getViewerEmails())
                 .setAdmins(dataFeedOptions.getAdminEmails())
-                .setStatus(DataFeedDetailPatchStatus.fromString(dataFeed.getStatus().toString()))
+                .setStatus(
+                    dataFeed.getStatus() != null
+                        ? EntityStatus.fromString(dataFeed.getStatus().toString())
+                        : null)
                 .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()), withTracing)
             .flatMap(updatedDataFeedResponse -> getDataFeedWithResponse(dataFeed.getId()));
     }
@@ -450,7 +460,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             dataFeedFilter.getStatus() != null
                 ? EntityStatus.fromString(dataFeedFilter.getStatus().toString()) : null,
             dataFeedFilter.getCreator(),
-            options.getSkip(), options.getTop(), withTracing)
+            options.getSkip(), options.getMaxPageSize(), withTracing)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all data feeds"))
             .doOnSuccess(response -> logger.info("Listed data feeds {}", response))
             .doOnError(error -> logger.warning("Failed to list all data feeds information - {}", error))
@@ -540,7 +550,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
             UUID.fromString(dataFeedId),
             queryOptions,
             options.getSkip(),
-            options.getTop(),
+            options.getMaxPageSize(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing ingestion status for data feed"))
             .doOnSuccess(response -> logger.info("Listed ingestion status {}", response))
@@ -973,63 +983,71 @@ public class MetricsAdvisorAdministrationAsyncClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions}
      *
      * @param metricId The metric id.
+     * @param options th e additional configurable options to specify when querying the result.
      * @return The anomaly detection configurations.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId) {
-        try {
-            return new PagedFlux<>(() -> withContext(context -> listMetricAnomalyDetectionConfigsInternal(
-                metricId, context)),
-                null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId,
-                                                                                      Context context) {
-        return new PagedFlux<>(() -> listMetricAnomalyDetectionConfigsInternal(metricId, context),
-            null);
-    }
-
-    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsInternal(
+    public PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
         String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options) {
+        try {
+            return new PagedFlux<>(() ->
+                withContext(context ->
+                    listMetricAnomalyDetectionConfigsSinglePageAsync(metricId, options, context)),
+                continuationToken ->
+                    withContext(context -> listMetricAnomalyDetectionConfigsNextPageAsync(continuationToken,
+                        context)));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
+        }
+
+    }
+
+    PagedFlux<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options,
         Context context) {
-        Objects.requireNonNull(metricId, "metricId is required");
-        return service.getAnomalyDetectionConfigurationsByMetricWithResponseAsync(
-            UUID.fromString(metricId),
+        return new PagedFlux<>(() ->
+            listMetricAnomalyDetectionConfigsSinglePageAsync(metricId, options, context),
+            continuationToken ->
+                listMetricAnomalyDetectionConfigsNextPageAsync(continuationToken, context));
+    }
+
+    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsSinglePageAsync(
+        String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options,
+        Context context) {
+        if (options == null) {
+            options = new ListMetricAnomalyDetectionConfigsOptions();
+        }
+        return service.getAnomalyDetectionConfigurationsByMetricSinglePageAsync(
+            UUID.fromString(metricId), options.getSkip(), options.getMaxPageSize(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignoredValue -> logger.info("Listing all MetricAnomalyDetectionConfiguration for a metric"))
-            .doOnSuccess(response -> logger.info("Listed all MetricAnomalyDetectionConfiguration for a metric"))
-            .doOnError(error -> logger.warning(
-                "Failed to list MetricAnomalyDetectionConfiguration for a metric",
+            .doOnRequest(ignoredValue -> logger.info("Listing MetricAnomalyDetectionConfigs"))
+            .doOnSuccess(response -> logger.info("Listed MetricAnomalyDetectionConfigs {}", response))
+            .doOnError(error -> logger.warning("Failed to list the MetricAnomalyDetectionConfigs", error))
+            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
+    }
+
+    private Mono<PagedResponse<AnomalyDetectionConfiguration>> listMetricAnomalyDetectionConfigsNextPageAsync(
+        String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
+        return service.getAnomalyDetectionConfigurationsByMetricNextSinglePageAsync(nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
+                nextPageLink,
+                response))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .map(response -> {
-                final AnomalyDetectionConfigurationList innerConfigurationList = response.getValue();
-                List<AnomalyDetectionConfiguration> configurationList;
-                if (innerConfigurationList != null && innerConfigurationList.getValue() != null) {
-                    configurationList = innerConfigurationList.getValue()
-                        .stream()
-                        .map(innerConfiguration -> DetectionConfigurationTransforms.fromInner(innerConfiguration))
-                        .collect(Collectors.toList());
-                } else {
-                    configurationList = new ArrayList<>();
-                }
-
-                return new PagedResponseBase<Void, AnomalyDetectionConfiguration>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    configurationList,
-                    null,
-                    null);
-            });
-
+            .map(response -> DetectionConfigurationTransforms.fromInnerPagedResponse(response));
     }
 
     /**
@@ -1293,7 +1311,7 @@ public class MetricsAdvisorAdministrationAsyncClient {
         return service.listHooksSinglePageAsync(
             options != null ? options.getHookNameFilter() : null,
             options != null ? options.getSkip() : null,
-            options != null ? options.getTop() : null,
+            options != null ? options.getMaxPageSize() : null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Listing hooks"))
             .doOnSuccess(response -> logger.info("Listed hooks {}", response))
@@ -1573,9 +1591,10 @@ public class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions}
      *
      * @param detectionConfigurationId The id of the detection configuration.
+     * @param options th e additional configurable options to specify when querying the result.
      *
      * @return A {@link PagedFlux} containing information of all the
      * {@link AnomalyAlertConfiguration anomaly alert configurations} for the specified detection configuration.
@@ -1585,44 +1604,59 @@ public class MetricsAdvisorAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId) {
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listAnomalyAlertConfigsInternal(detectionConfigurationId, context)),
-                null);
+                withContext(context ->
+                    listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
+                        options,
+                        context)),
+                continuationToken ->
+                    withContext(context -> listAnomalyAlertConfigsNextPageAsync(continuationToken,
+                        context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
         }
     }
 
     PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId, Context context) {
-        return new PagedFlux<>(() -> listAnomalyAlertConfigsInternal(detectionConfigurationId, context), null);
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
+        return new PagedFlux<>(() ->
+            listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
+                options,
+                context),
+            continuationToken ->
+                listAnomalyAlertConfigsNextPageAsync(continuationToken, context));
     }
 
-    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsInternal(
-        String detectionConfigurationId, Context context) {
+    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsSinglePageAsync(
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
         Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
+        if (options == null) {
+            options = new ListAnomalyAlertConfigsOptions();
+        }
+        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePageAsync(
+            UUID.fromString(detectionConfigurationId), options.getSkip(), options.getMaxPageSize(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignoredValue -> logger.info("Listing AnomalyAlertConfigs"))
+            .doOnSuccess(response -> logger.info("Listed AnomalyAlertConfigs {}", response))
+            .doOnError(error -> logger.warning("Failed to list the AnomalyAlertConfigs", error))
+            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
+    }
 
-        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationWithResponseAsync(
-            UUID.fromString(detectionConfigurationId), withTracing)
-            .map(response -> {
-                List<AnomalyAlertConfiguration> configurationList;
-                final AnomalyAlertingConfigurationList innerConfigurationList = response.getValue();
-                if (innerConfigurationList == null || innerConfigurationList.getValue().isEmpty()) {
-                    configurationList = new ArrayList<>();
-                } else {
-                    configurationList = innerConfigurationList.getValue()
-                        .stream()
-                        .map(AlertConfigurationTransforms::fromInner)
-                        .collect(Collectors.toList());
-                }
-                return new PagedResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    configurationList,
-                    null, null);
-            });
+    private Mono<PagedResponse<AnomalyAlertConfiguration>> listAnomalyAlertConfigsNextPageAsync(
+        String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
+        return service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePageAsync(nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {} {}",
+                nextPageLink,
+                response))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error))
+            .map(response -> AlertConfigurationTransforms.fromInnerPagedResponse(response));
     }
 }

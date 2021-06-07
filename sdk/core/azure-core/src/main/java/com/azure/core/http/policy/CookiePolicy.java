@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
@@ -16,8 +17,6 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,23 +31,23 @@ public class CookiePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
-            final URI uri = context.getHttpRequest().getUrl().toURI();
+            final HttpRequest httpRequest = context.getHttpRequest();
+            final URI uri = httpRequest.getUrl().toURI();
 
             Map<String, List<String>> cookieHeaders = new HashMap<>();
-            for (HttpHeader header : context.getHttpRequest().getHeaders()) {
-                cookieHeaders.put(header.getName(), Arrays.asList(context.getHttpRequest().getHeaders()
-                    .getValues(header.getName())));
+            for (HttpHeader header : httpRequest.getHeaders()) {
+                cookieHeaders.put(header.getName(), header.getValuesList());
             }
 
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
-                context.getHttpRequest().getHeaders().put(entry.getKey(), String.join(",", entry.getValue()));
+                httpRequest.getHeaders().set(entry.getKey(), entry.getValue());
             }
 
             return next.process().map(httpResponse -> {
                 Map<String, List<String>> responseHeaders = new HashMap<>();
                 for (HttpHeader header : httpResponse.getHeaders()) {
-                    responseHeaders.put(header.getName(), Collections.singletonList(header.getValue()));
+                    responseHeaders.put(header.getName(), header.getValuesList());
                 }
 
                 try {

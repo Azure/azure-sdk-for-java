@@ -73,10 +73,12 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
 import com.azure.resourcemanager.network.models.LoadBalancers;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
+import com.azure.resourcemanager.network.models.NetworkProfiles;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
+import com.azure.resourcemanager.network.models.PrivateEndpoints;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
@@ -102,7 +104,10 @@ import com.azure.resourcemanager.resources.models.Providers;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
+import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
+import com.azure.resourcemanager.search.SearchServiceManager;
+import com.azure.resourcemanager.search.models.SearchServices;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 import com.azure.resourcemanager.sql.SqlServerManager;
@@ -126,7 +131,6 @@ public final class AzureResourceManager {
     private final ComputeManager computeManager;
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
-    //    private final BatchManager batchManager;
     private final TrafficManager trafficManager;
     private final RedisManager redisManager;
     private final CdnManager cdnManager;
@@ -137,9 +141,8 @@ public final class AzureResourceManager {
     private final ContainerInstanceManager containerInstanceManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
-    //    private final SearchServiceManager searchServiceManager;
+    private final SearchServiceManager searchServiceManager;
     private final CosmosManager cosmosManager;
-    //    private final AuthorizationManager authorizationManager;
     private final MsiManager msiManager;
     private final MonitorManager monitorManager;
     private final EventHubsManager eventHubsManager;
@@ -383,10 +386,8 @@ public final class AzureResourceManager {
             .authenticate(null, profile);
         this.cosmosManager = withHttpPipeline(httpPipeline, CosmosManager.configure())
             .authenticate(null, profile);
-        //        this.searchServiceManager = SearchServiceManager
-        //        .authenticate(restClient, subscriptionId, internalContext);
-        //        this.authorizationManager = AuthorizationManager
-        //        .authenticate(restClient, subscriptionId, internalContext);
+        this.searchServiceManager = withHttpPipeline(httpPipeline, SearchServiceManager.configure())
+            .authenticate(null, profile);
         this.msiManager = withHttpPipeline(httpPipeline, MsiManager.configure())
             .authenticate(null, profile);
         this.monitorManager = withHttpPipeline(httpPipeline, MonitorManager.configure())
@@ -446,13 +447,6 @@ public final class AzureResourceManager {
     public GenericResources genericResources() {
         return resourceManager.genericResources();
     }
-
-    //    /**
-    //     * @return entry point to managing management locks
-    //     */
-    //    public ManagementLocks managementLocks() {
-    //        return this.authorizationManager.managementLocks();
-    //    }
 
     /** @return entry point to managing features */
     public Features features() {
@@ -739,13 +733,12 @@ public final class AzureResourceManager {
         return cosmosManager.databaseAccounts();
     }
 
-    //    /**
-    //     * @return entry point to managing Search services.
-    //     */
-    //    @Beta(SinceVersion.V1_2_0)
-    //    public SearchServices searchServices() {
-    //        return searchServiceManager.searchServices();
-    //    }
+    /**
+     * @return entry point to managing Search services.
+     */
+    public SearchServices searchServices() {
+        return searchServiceManager.searchServices();
+    }
 
     /** @return entry point to managing Managed Service Identity (MSI) identities. */
     public Identities identities() {
@@ -846,5 +839,20 @@ public final class AzureResourceManager {
     /** @return the private DNS zone management API entry point */
     public PrivateDnsZones privateDnsZones() {
         return this.privateDnsZoneManager.privateZones();
+    }
+
+    /** @return entry point to private endpoints management */
+    public PrivateEndpoints privateEndpoints() {
+        return this.networkManager.privateEndpoints();
+    }
+
+    /** @return entry point to tag management management */
+    public TagOperations tagOperations() {
+        return this.resourceManager.tagOperations();
+    }
+
+    /** @return entry point to network profiles management */
+    public NetworkProfiles networkProfiles() {
+        return this.networkManager.networkProfiles();
     }
 }

@@ -114,6 +114,13 @@ public class ApplicationGatewayFrontendPort extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayFrontendPort withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

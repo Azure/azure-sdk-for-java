@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppEventTypeDetail model. */
+/** Detail of action on the app. */
 @Fluent
 public final class AppEventTypeDetail {
     /*

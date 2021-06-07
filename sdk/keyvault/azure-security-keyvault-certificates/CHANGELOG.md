@@ -1,7 +1,66 @@
 # Release History
 
-## 4.2.0-beta.3 (Unreleased)
+## 4.2.0-beta.7 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### Changes
+- Renamed `certificateId` to `sourceId` in `KeyVaultCertificateIdentifier`.
+- `KeyVaultCertificateIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `CertificateClient` and `CertificateAsyncClient`.
+
+## 4.2.0-beta.6 (2021-05-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
+
+## 4.2.0-beta.5 (2021-04-09)
+
+### New features
+- Added support for service version `7.2`.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+
+### Breaking Changes
+- Changed `KeyVaultCertificateIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
+
+## 4.2.0-beta.4 (2021-03-12)
+
+### Changed
+- Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.0`
+- Upgraded `azure-identity` dependency to `1.2.4`
+
+## 4.2.0-beta.3 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.1.5 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.1.4 (2021-01-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.12.0`
+- Upgraded `azure-core-http-netty` dependency to `1.7.1`
+- Upgraded `azure-core-http-okhttp` dependency to `1.4.1`
+- Upgraded `azure-identity` dependency to `1.2.2`
 
 ## 4.1.3 (2020-11-12)
 
@@ -71,11 +130,11 @@
 ## 4.0.3 (2020-05-06)
 - Update azure-core dependency to version 1.5.0.
 
-## 4.0.2 (2020-04-07)
-- Update azure-core dependency to version 1.4.0.
-
 ## 4.1.0-beta.2 (2020-04-09)
 - Added `retryPolicy` setter in `CertificateClientBuilder`
+- Update azure-core dependency to version 1.4.0.
+
+## 4.0.2 (2020-04-07)
 - Update azure-core dependency to version 1.4.0.
 
 ## 4.0.1 (2020-03-25)

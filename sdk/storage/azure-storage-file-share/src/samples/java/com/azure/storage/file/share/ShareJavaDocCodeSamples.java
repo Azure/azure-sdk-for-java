@@ -530,7 +530,7 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareClient#getAccessPolicy()}
      */
     public void getAccessPolicy() {
-        ShareClient shareClient = createClientWithSASToken();
+        ShareClient shareClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareClient.getAccessPolicy
         for (ShareSignedIdentifier result : shareClient.getAccessPolicy()) {
             System.out.printf("Access policy %s allows these permissions: %s",
@@ -543,7 +543,7 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareClient#getAccessPolicy(ShareGetAccessPolicyOptions)}
      */
     public void getAccessPolicy2() {
-        ShareClient shareClient = createClientWithSASToken();
+        ShareClient shareClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareClient.getAccessPolicy#ShareGetAccessPolicyOptions
         for (ShareSignedIdentifier result : shareClient
             .getAccessPolicy(new ShareGetAccessPolicyOptions()
@@ -558,7 +558,7 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareClient#setAccessPolicy(List)}
      */
     public void setAccessPolicy() {
-        ShareClient shareClient = createClientWithSASToken();
+        ShareClient shareClient = createClientWithConnectionString();
         // BEGIN: ShareClient.setAccessPolicy#List
         ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
@@ -575,7 +575,7 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareClient#setAccessPolicyWithResponse(List, Duration, Context)}
      */
     public void setAccessPolicyWithResponse() {
-        ShareClient shareClient = createClientWithSASToken();
+        ShareClient shareClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#list-duration-context
         ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
@@ -593,7 +593,7 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareClient#setAccessPolicyWithResponse(ShareSetAccessPolicyOptions, Duration, Context)}
      */
     public void setAccessPolicyWithResponse2() {
-        ShareClient shareClient = createClientWithSASToken();
+        ShareClient shareClient = createClientWithConnectionString();
         // BEGIN: com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions-Duration-Context
         ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
             .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
@@ -711,9 +711,9 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareClient#getShareName()}
      */
     public void getShareName() {
-        ShareClient shareAsyncClient = createClientWithSASToken();
+        ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.getShareName
-        String shareName = shareAsyncClient.getShareName();
+        String shareName = shareClient.getShareName();
         System.out.println("The name of the share is " + shareName);
         // END: com.azure.storage.file.share.ShareClient.getShareName
     }
@@ -732,5 +732,22 @@ public class ShareJavaDocCodeSamples {
 
         shareClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
         // END: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareClient#generateSas(ShareServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        ShareClient shareClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareSasPermission permission = new ShareSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        shareClient.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }

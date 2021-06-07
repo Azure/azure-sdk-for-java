@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** A copy activity ORC source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -19,6 +20,13 @@ public final class OrcSource extends CopySource {
      */
     @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
+
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
 
     /**
      * Get the storeSettings property: ORC store settings.
@@ -37,6 +45,28 @@ public final class OrcSource extends CopySource {
      */
     public OrcSource setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public List<AdditionalColumns> getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the OrcSource object itself.
+     */
+    public OrcSource setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.core.models.GeoPoint;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings({"UseOfObsoleteDateTimeApi", "unused"})
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoudHotel {
     @JsonProperty(value = "HotelId")
@@ -19,7 +20,6 @@ public class LoudHotel {
     private String HOTELNAME;
 
     @JsonProperty(value = "Description")
-    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String DESCRIPTION;
 
     @JsonProperty(value = "Description_fr")
@@ -43,9 +43,8 @@ public class LoudHotel {
     @JsonProperty(value = "Rating")
     private Integer RATING;
 
-//    @JsonProperty(value = "Location")
-//    @JsonInclude(JsonInclude.Include.ALWAYS)
-//    private PointGeometry LOCATION;
+    @JsonProperty(value = "Location")
+    private GeoPoint LOCATION;
 
     @JsonProperty(value = "Address")
     private HotelAddress ADDRESS;
@@ -149,14 +148,14 @@ public class LoudHotel {
         return this;
     }
 
-//    public PointGeometry LOCATION() {
-//        return this.LOCATION;
-//    }
-//
-//    public LoudHotel LOCATION(PointGeometry location) {
-//        this.LOCATION = location;
-//        return this;
-//    }
+    public GeoPoint LOCATION() {
+        return this.LOCATION;
+    }
+
+    public LoudHotel LOCATION(GeoPoint location) {
+        this.LOCATION = location;
+        return this;
+    }
 
     public HotelAddress ADDRESS() {
         return this.ADDRESS;

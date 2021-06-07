@@ -88,6 +88,12 @@ public class ClusterCreateProperties {
     private NetworkProperties networkProperties;
 
     /**
+     * The compute isolation properties.
+     */
+    @JsonProperty(value = "computeIsolationProperties")
+    private ComputeIsolationProperties computeIsolationProperties;
+
+    /**
      * Get the version of the cluster.
      *
      * @return the clusterVersion value
@@ -324,6 +330,26 @@ public class ClusterCreateProperties {
      */
     public ClusterCreateProperties withNetworkProperties(NetworkProperties networkProperties) {
         this.networkProperties = networkProperties;
+        return this;
+    }
+
+    /**
+     * Get the compute isolation properties.
+     *
+     * @return the computeIsolationProperties value
+     */
+    public ComputeIsolationProperties computeIsolationProperties() {
+        return this.computeIsolationProperties;
+    }
+
+    /**
+     * Set the compute isolation properties.
+     *
+     * @param computeIsolationProperties the computeIsolationProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withComputeIsolationProperties(ComputeIsolationProperties computeIsolationProperties) {
+        this.computeIsolationProperties = computeIsolationProperties;
         return this;
     }
 

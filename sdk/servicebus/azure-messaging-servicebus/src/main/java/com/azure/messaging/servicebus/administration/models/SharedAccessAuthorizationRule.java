@@ -16,6 +16,9 @@ import java.util.Objects;
 
 /**
  * A shared access key for accessing Service Bus entities.
+ *
+ * @see CreateQueueOptions#getAuthorizationRules()
+ * @see CreateTopicOptions#getAuthorizationRules()
  */
 @Fluent
 public final class SharedAccessAuthorizationRule implements AuthorizationRule {

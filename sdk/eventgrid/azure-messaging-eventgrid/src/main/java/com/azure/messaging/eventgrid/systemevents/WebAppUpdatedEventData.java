@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WebAppUpdatedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Web.AppUpdated event. */
 @Fluent
 public final class WebAppUpdatedEventData {
     /*

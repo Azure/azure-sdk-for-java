@@ -27,7 +27,7 @@ public class ListSeriesDefinitionsForMetricAsyncSample {
 
         final ListMetricSeriesDefinitionOptions options
             = new ListMetricSeriesDefinitionOptions()
-            .setTop(10)
+            .setMaxPageSize(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                     put("city", Collections.singletonList("Redmond"));
                 }});

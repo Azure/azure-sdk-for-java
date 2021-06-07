@@ -4,6 +4,8 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -59,6 +61,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
+    private String accountName = "accountName";
     private UserDelegationKey userDelegationKey = new BlobServiceClientBuilder().buildClient().getUserDelegationKey(null, null);
 
     /**
@@ -114,6 +117,24 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
             }
         });
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.download
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClientBase#downloadStream()}
+     *
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadStreamCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+        client.downloadStream().subscribe(piece -> {
+            try {
+                downloadData.write(piece.array());
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream
     }
 
     /**
@@ -432,6 +453,47 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobAsyncClientBase#downloadStreamWithResponse(BlobRange, DownloadRetryOptions,
+     * BlobRequestConditions, boolean)}
+     *
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadStreamWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean
+        BlobRange range = new BlobRange(1024, (long) 2048);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        client.downloadStreamWithResponse(range, options, null, false).subscribe(response -> {
+            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+            response.getValue().subscribe(piece -> {
+                try {
+                    downloadData.write(piece.array());
+                } catch (IOException ex) {
+                    throw new UncheckedIOException(ex);
+                }
+            });
+        });
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean
+    }
+
+    /**
+     * Code snippets for {@link BlobAsyncClientBase#downloadContentWithResponse(DownloadRetryOptions,
+     * BlobRequestConditions)}
+     *
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadContentWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        client.downloadContentWithResponse(options, null).subscribe(response -> {
+            BinaryData content = response.getValue();
+            System.out.println(content.toString());
+        });
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions
+    }
+
+    /**
      * Code snippets for {@link BlobAsyncClientBase#deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)}
      */
     public void deleteWithResponseCodeSnippets() {
@@ -588,6 +650,33 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey, String, Context)}
+     * and {@link BlobAsyncClientBase#generateSas(BlobServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission myPermission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
     /**

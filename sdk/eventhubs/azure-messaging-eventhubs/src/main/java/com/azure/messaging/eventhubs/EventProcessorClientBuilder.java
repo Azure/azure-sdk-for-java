@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -20,6 +21,8 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,19 +48,18 @@ import java.util.function.Supplier;
  * from the Event Hub.</li>
  * <li>{@link #processError(Consumer) processError} - A callback that handles errors that may occur while running the
  * EventProcessorClient.</li>
- * <li>Credentials -
- *  <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
- *  one of the following methods:
- *  <ul>
- *  <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.
- *  </li>
- *  <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the Event Hub
- *  name.</li>
- *  <li>{@link #credential(String, String, TokenCredential)} with the fully qualified namespace, Event Hub name, and a
- *  set of credentials authorized to use the Event Hub.
- *  </li>
- *  </ul>
- *  </li>
+ * <li>Credentials to perform operations against Azure Event Hubs. They can be set by using one of the following
+ * methods:
+ * <ul>
+ * <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
+ * </li>
+ * <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
+ * connection string and the Event Hub name.</li>
+ * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the fully
+ * qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
+ * </li>
+ * </ul>
+ * </li>
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessorClient}</strong></p>
@@ -178,6 +180,23 @@ public class EventProcessorClientBuilder {
     }
 
     /**
+     * Sets a custom endpoint address when connecting to the Event Hubs service. This can be useful when your network
+     * does not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through
+     * an intermediary. For example: {@literal https://my.custom.endpoint.com:55300}.
+     * <p>
+     * If no port is specified, the default port for the {@link #transportType(AmqpTransportType) transport type} is
+     * used.
+     *
+     * @param customEndpointAddress The custom endpoint address.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code customEndpointAddress} cannot be parsed into a valid {@link URL}.
+     */
+    public EventProcessorClientBuilder customEndpointAddress(String customEndpointAddress) {
+        eventHubClientBuilder.customEndpointAddress(customEndpointAddress);
+        return this;
+    }
+
+    /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
@@ -209,6 +228,19 @@ public class EventProcessorClientBuilder {
      */
     public EventProcessorClientBuilder retry(AmqpRetryOptions retryOptions) {
         eventHubClientBuilder.retry(retryOptions);
+        return this;
+    }
+
+    /**
+     * Sets the client options for the processor client. The application id set on the client options will be used
+     * for tracing. The headers set on {@code ClientOptions} are currently not used but can be used in later releases
+     * to add to AMQP message.
+     *
+     * @param clientOptions The client options.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     */
+    public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
+        eventHubClientBuilder.clientOptions(clientOptions);
         return this;
     }
 
@@ -488,7 +520,8 @@ public class EventProcessorClientBuilder {
             partitionOwnershipExpirationInterval = loadBalancingUpdateInterval.multipliedBy(
                 DEFAULT_OWNERSHIP_EXPIRATION_FACTOR);
         }
-        return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
+
+        return new EventProcessorClient(eventHubClientBuilder, consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
             processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
             loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);

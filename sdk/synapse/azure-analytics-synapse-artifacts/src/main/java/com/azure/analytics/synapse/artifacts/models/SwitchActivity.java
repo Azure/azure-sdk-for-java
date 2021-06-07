@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeName("Switch")
 @JsonFlatten
 @Fluent
-public class SwitchActivity extends Activity {
+public class SwitchActivity extends ControlActivity {
     /*
      * An expression that would evaluate to a string or integer. This is used
      * to determine the block of activities in cases that will be executed.

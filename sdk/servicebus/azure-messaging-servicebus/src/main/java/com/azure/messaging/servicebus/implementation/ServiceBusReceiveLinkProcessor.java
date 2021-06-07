@@ -6,8 +6,8 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
@@ -59,7 +59,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private final AtomicInteger wip = new AtomicInteger();
 
     private final AmqpRetryPolicy retryPolicy;
-    private final ServiceBusReceiveMode receiveMode;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -86,10 +85,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode
-        receiveMode) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.receiveMode = Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
 
         if (prefetch < 0) {
             throw logger.logExceptionAsError(
@@ -118,15 +115,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
 
-        return link.updateDisposition(lockToken, deliveryState)
-            .then(Mono.fromRunnable(() -> {
-                // Check if we should add more credits.
-                synchronized (queueLock) {
-                    pendingMessages.decrementAndGet();
-                }
-
-                checkAndAddCredits(link);
-            }));
+        return link.updateDisposition(lockToken, deliveryState);
     }
 
     /**
@@ -210,7 +199,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     drain();
                 }),
-                next.getEndpointStates().subscribe(
+                next.getEndpointStates().subscribeOn(Schedulers.boundedElastic()).subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
@@ -233,20 +222,15 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
-                            if (existing != null) {
-                                existing.dispose();
-                            }
 
+                            disposeReceiver(existing);
                             requestUpstream();
                         }
                     }));
         }
 
         checkAndAddCredits(next);
-
-        if (oldChannel != null) {
-            oldChannel.dispose();
-        }
+        disposeReceiver(oldChannel);
 
         if (oldSubscription != null) {
             oldSubscription.dispose();
@@ -424,9 +408,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             retrySubscription.dispose();
         }
 
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         currentLink = null;
 
@@ -436,17 +418,14 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     }
 
     private void drain() {
-        // If someone is already in this loop, then we are already clearing the queue.
-        if (!wip.compareAndSet(0, 1)) {
+        if (wip.getAndIncrement() != 0) {
             return;
         }
 
-        try {
+        int missed = 1;
+        while (missed != 0) {
             drainQueue();
-        } finally {
-            if (wip.decrementAndGet() != 0) {
-                logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
-            }
+            missed = wip.addAndGet(-missed);
         }
     }
 
@@ -488,11 +467,10 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 try {
                     subscriber.onNext(message);
 
-                    // These don't have to be settled because they're automatically settled by the link, so we
-                    // decrement the count.
-                    if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK) {
-                        pendingMessages.decrementAndGet();
-                    }
+                    // RECEIVE_DELETE Mode: No need to settle message because they're automatically settled by the link.
+                    // PEEK_LOCK Mode: Consider message processed, as `onNext` is complete, So decrement the count.
+                    pendingMessages.decrementAndGet();
+
                     if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
                         checkAndAddCredits(currentLink);
                     }
@@ -525,9 +503,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             subscriber.onComplete();
         }
 
-        if (currentLink != null) {
-            currentLink.dispose();
-        }
+        disposeReceiver(currentLink);
 
         synchronized (queueLock) {
             messageQueue.clear();
@@ -548,7 +524,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
-                link.addCredits(credits);
+                link.addCredits(credits).subscribe();
             }
         }
     }
@@ -601,5 +577,22 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         return creditsToAdd;
+    }
+
+    private void disposeReceiver(AmqpReceiveLink link) {
+        if (link == null) {
+            return;
+        }
+
+        try {
+            if (link instanceof AsyncCloseable) {
+                ((AsyncCloseable) link).closeAsync().subscribe();
+            } else {
+                link.dispose();
+            }
+        } catch (Exception error) {
+            logger.warning("linkName[{}] entityPath[{}] Unable to dispose of link.", link.getLinkName(),
+                link.getEntityPath(), error);
+        }
     }
 }

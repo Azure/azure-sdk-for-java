@@ -55,6 +55,7 @@ final class BulkExecutorUtil {
 
             BulkOperationRetryPolicy bulkRetryPolicy = new BulkOperationRetryPolicy(
                 docClientWrapper.getCollectionCache(),
+                docClientWrapper.getPartitionKeyRangeCache(),
                 BridgeInternal.getLink(container),
                 resourceThrottleRetryPolicy);
             itemBulkOperation.setRetryPolicy(bulkRetryPolicy);
@@ -156,6 +157,7 @@ final class BulkExecutorUtil {
         return cosmosItemOperationType == CosmosItemOperationType.CREATE ||
             cosmosItemOperationType == CosmosItemOperationType.REPLACE ||
             cosmosItemOperationType == CosmosItemOperationType.UPSERT ||
-            cosmosItemOperationType == CosmosItemOperationType.DELETE;
+            cosmosItemOperationType == CosmosItemOperationType.DELETE ||
+            cosmosItemOperationType == CosmosItemOperationType.PATCH;
     }
 }

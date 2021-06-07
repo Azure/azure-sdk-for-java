@@ -23,7 +23,7 @@ public class VmSizeCompatibilityFilterV2 {
     /**
      * The filtering mode. Effectively this can enabling or disabling the VM
      * sizes in a particular set. Possible values include: 'Exclude',
-     * 'Include'.
+     * 'Include', 'Recommend', 'Default'.
      */
     @JsonProperty(value = "filterMode")
     private FilterMode filterMode;
@@ -65,7 +65,7 @@ public class VmSizeCompatibilityFilterV2 {
     private List<String> vmSizes;
 
     /**
-     * Get the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include'.
+     * Get the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include', 'Recommend', 'Default'.
      *
      * @return the filterMode value
      */
@@ -74,7 +74,7 @@ public class VmSizeCompatibilityFilterV2 {
     }
 
     /**
-     * Set the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include'.
+     * Set the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include', 'Recommend', 'Default'.
      *
      * @param filterMode the filterMode value to set
      * @return the VmSizeCompatibilityFilterV2 object itself.

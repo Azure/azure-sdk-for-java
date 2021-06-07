@@ -5,19 +5,15 @@ package com.azure.security.keyvault.jca;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.azure.security.keyvault.jca.LegacyRestClient.DEFAULT_USER_AGENT_VALUE_PREFIX;
+import static com.azure.security.keyvault.jca.LegacyRestClient.DEFAULT_VERSION;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * The JUnit tests for the LegacyRestClient class.
- */
 public class LegacyRestClientTest {
 
-    /**
-     * Test constructor.
-     */
     @Test
-    public void testConstructor() {
-        LegacyRestClient client = new LegacyRestClient();
-        assertNotNull(client);
+    public void getUserAgentPrefixTest() {
+        assertEquals(DEFAULT_USER_AGENT_VALUE_PREFIX, LegacyRestClient.getUserAgentPrefix());
+        assertEquals(DEFAULT_USER_AGENT_VALUE_PREFIX + DEFAULT_VERSION, LegacyRestClient.USER_AGENT_VALUE);
     }
 }

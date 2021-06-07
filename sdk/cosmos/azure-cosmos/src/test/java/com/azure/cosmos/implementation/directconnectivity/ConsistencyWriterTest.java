@@ -3,15 +3,19 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
@@ -57,6 +61,17 @@ public class ConsistencyWriterTest {
                 { new PartitionKeyRangeGoneException(), PartitionKeyRangeGoneException.class, GONE, PARTITION_KEY_RANGE_GONE, },
                 { new PartitionKeyRangeIsSplittingException() , PartitionKeyRangeIsSplittingException.class, GONE, COMPLETING_SPLIT, },
                 { new PartitionIsMigratingException(), PartitionIsMigratingException.class, GONE, COMPLETING_PARTITION_MIGRATION, },
+        };
+    }
+
+    @DataProvider(name = "storeResponseArgProvider")
+    public Object[][] storeResponseArgProvider() {
+        return new Object[][]{
+            { new PartitionKeyRangeGoneException(), null, },
+            { new PartitionKeyRangeIsSplittingException() , null, },
+            { new PartitionIsMigratingException(), null, },
+            { new GoneException(), null, },
+            { null, Mockito.mock(StoreResponse.class), }
         };
     }
 
@@ -142,7 +157,7 @@ public class ConsistencyWriterTest {
         assertThat(b.getNumberWaiting()).isEqualTo(1);
         b.await(1000, TimeUnit.MILLISECONDS);
         assertThat(invocationOnMocks).hasSize(1);
-        assertThat(invocationOnMocks.get(0).getArgumentAt(1, Boolean.class)).isTrue();
+        assertThat(invocationOnMocks.get(0).getArgument(1, Boolean.class)).isTrue();
     }
 
     @Test(groups = "unit")
@@ -168,8 +183,13 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
+        RetryContext retryContext = Mockito.mock(RetryContext.class);
+        ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
+        Mockito.doReturn(2).when(retryContext).getRetryCount();
 
-        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
@@ -185,12 +205,64 @@ public class ConsistencyWriterTest {
         Mockito.doReturn(false).doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
+        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
+        RetryContext retryContext = Mockito.mock(RetryContext.class);
+        ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
+        Mockito.doReturn(2).when(retryContext).getRetryCount();
 
-        spyConsistencyWriter.writeAsync(mockDocumentServiceRequest(clientContext), timeoutHelper, false)
+        spyConsistencyWriter.writeAsync(request, timeoutHelper, false)
                 .subscribe(subscriber);
 
         subscriber.awaitTerminalEvent(10, TimeUnit.MILLISECONDS);
         subscriber.assertError(RequestTimeoutException.class);
+    }
+
+    @Test(groups = "unit", dataProvider = "storeResponseArgProvider")
+    public void storeResponseRecordedOnException(Exception ex, StoreResponse storeResponse) {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        TransportClientWrapper transportClientWrapper;
+
+        if (ex != null) {
+            transportClientWrapper = new TransportClientWrapper.Builder.ReplicaResponseBuilder
+                .SequentialBuilder()
+                .then(ex)
+                .build();
+        } else {
+            transportClientWrapper = new TransportClientWrapper.Builder.ReplicaResponseBuilder
+                .SequentialBuilder()
+                .then(storeResponse)
+                .build();
+        }
+
+        Uri primaryUri = Uri.create("primary");
+        Uri secondaryUri1 = Uri.create("secondary1");
+        Uri secondaryUri2 = Uri.create("secondary2");
+        Uri secondaryUri3 = Uri.create("secondary3");
+
+        AddressSelectorWrapper addressSelectorWrapper = AddressSelectorWrapper.Builder.Simple.create()
+            .withPrimary(primaryUri)
+            .withSecondary(ImmutableList.of(secondaryUri1, secondaryUri2, secondaryUri3))
+            .build();
+        sessionContainer = Mockito.mock(ISessionContainer.class);
+        IAuthorizationTokenProvider authorizationTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
+        serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
+
+        consistencyWriter = new ConsistencyWriter(clientContext,
+            addressSelectorWrapper.addressSelector,
+            sessionContainer,
+            transportClientWrapper.transportClient,
+            authorizationTokenProvider,
+            serviceConfigReader,
+            false);
+
+        TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        RxDocumentServiceRequest dsr = mockDocumentServiceRequest(clientContext);
+
+        consistencyWriter.writeAsync(dsr, timeoutHelper, false).subscribe();
+
+        String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
+        assertThat(cosmosDiagnostics).containsOnlyOnce("storeResult");
     }
 
     @DataProvider(name = "globalStrongArgProvider")

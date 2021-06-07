@@ -4,28 +4,28 @@ package com.microsoft.azure.spring.cloud.config.properties;
 
 import static com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties.LABEL_SEPARATOR;
 
-import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.Pattern;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.microsoft.azure.spring.cloud.config.resource.Connection;
+
 public class ConfigStore {
 
     private static final String EMPTY_LABEL = "\0";
-    private static final String[] EMPTY_LABEL_ARRAY = {EMPTY_LABEL};
-    private String endpoint; // Config store endpoint
 
-    @Nullable
-    @Pattern(regexp = "(/[a-zA-Z0-9.\\-_]+)*")
-    private String prefix;
+    private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
+
+    private String endpoint; // Config store endpoint
 
     private String connectionString;
 
@@ -34,6 +34,10 @@ public class ConfigStore {
     private String label;
 
     private boolean failFast = true;
+
+    private FeatureFlagStore featureFlags = new FeatureFlagStore();
+
+    private boolean enabled = true;
 
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
@@ -47,14 +51,6 @@ public class ConfigStore {
 
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
     }
 
     public String getConnectionString() {
@@ -81,6 +77,14 @@ public class ConfigStore {
         this.failFast = failFast;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     /**
      * @return the monitoring
      */
@@ -93,6 +97,14 @@ public class ConfigStore {
      */
     public void setMonitoring(AppConfigurationStoreMonitoring monitoring) {
         this.monitoring = monitoring;
+    }
+
+    public FeatureFlagStore getFeatureFlags() {
+        return featureFlags;
+    }
+
+    public void setFeatureFlags(FeatureFlagStore featureFlags) {
+        this.featureFlags = featureFlags;
     }
 
     @PostConstruct
@@ -116,10 +128,14 @@ public class ConfigStore {
     }
 
     /**
+     * @param profiles List of current Spring profiles to default to using is null label is set.
      * @return List of reversed label values, which are split by the separator, the latter label has higher priority
      */
-    public String[] getLabels() {
-        if (!StringUtils.hasText(this.getLabel())) {
+    public String[] getLabels(List<String> profiles) {
+        if (this.getLabel() == null && profiles.size() > 0) {
+            Collections.reverse(profiles);
+            return profiles.toArray(new String[profiles.size()]);
+        } else if (!StringUtils.hasText(this.getLabel())) {
             return EMPTY_LABEL_ARRAY;
         }
 

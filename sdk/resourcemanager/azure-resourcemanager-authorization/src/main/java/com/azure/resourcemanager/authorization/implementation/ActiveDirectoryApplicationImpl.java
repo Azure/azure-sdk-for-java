@@ -4,44 +4,52 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPasswordRequestBodyInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphWebApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
-import com.azure.resourcemanager.authorization.models.ApplicationCreateParameters;
-import com.azure.resourcemanager.authorization.models.ApplicationUpdateParameters;
+import com.azure.resourcemanager.authorization.models.ApplicationAccountType;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
-import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
-import reactor.core.publisher.Mono;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class ActiveDirectoryApplicationImpl
-    extends CreatableUpdatableImpl<ActiveDirectoryApplication, ApplicationInner, ActiveDirectoryApplicationImpl>
+    extends CreatableUpdatableImpl<
+        ActiveDirectoryApplication,
+        MicrosoftGraphApplicationInner,
+        ActiveDirectoryApplicationImpl>
     implements ActiveDirectoryApplication,
         ActiveDirectoryApplication.Definition,
         ActiveDirectoryApplication.Update,
         HasCredential<ActiveDirectoryApplicationImpl> {
     private AuthorizationManager manager;
-    private ApplicationCreateParameters createParameters;
-    private ApplicationUpdateParameters updateParameters;
-    private Map<String, PasswordCredential> cachedPasswordCredentials;
-    private Map<String, CertificateCredential> cachedCertificateCredentials;
+    private final Map<String, PasswordCredential> cachedPasswordCredentials;
+    private final Map<String, CertificateCredential> cachedCertificateCredentials;
 
-    ActiveDirectoryApplicationImpl(ApplicationInner innerObject, AuthorizationManager manager) {
+    private final List<PasswordCredentialImpl<?>> passwordCredentialToCreate;
+    private final List<CertificateCredentialImpl<?>> certificateCredentialToCreate;
+
+    ActiveDirectoryApplicationImpl(MicrosoftGraphApplicationInner innerObject, AuthorizationManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
-        this.createParameters = new ApplicationCreateParameters().withDisplayName(innerObject.displayName());
-        this.updateParameters = new ApplicationUpdateParameters().withDisplayName(innerObject.displayName());
+        this.cachedPasswordCredentials = new HashMap<>();
+        this.cachedCertificateCredentials = new HashMap<>();
+        this.passwordCredentialToCreate = new ArrayList<>();
+        this.certificateCredentialToCreate = new ArrayList<>();
+        refreshCredentials(innerObject);
     }
 
     @Override
@@ -51,63 +59,61 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> createResourceAsync() {
-        if (createParameters.identifierUris() == null) {
-            createParameters.withIdentifierUris(new ArrayList<String>());
-            createParameters.identifierUris().add(createParameters.homepage());
-        }
         return manager
             .serviceClient()
-            .getApplications()
-            .createAsync(createParameters)
+            .getApplicationsApplications()
+            .createApplicationAsync(innerModel())
             .map(innerToFluentMap(this))
-            .flatMap(application -> refreshCredentialsAsync());
+            .flatMap(app -> submitCredentialAsync().doOnComplete(this::postRequest).then(refreshAsync()));
     }
 
     @Override
     public Mono<ActiveDirectoryApplication> updateResourceAsync() {
-        return manager.serviceClient().getApplications().patchAsync(id(), updateParameters).then(Mono.just(this));
+        return manager.serviceClient().getApplicationsApplications().updateApplicationAsync(id(), innerModel())
+            .then(submitCredentialAsync().doOnComplete(this::postRequest).then(refreshAsync()));
     }
 
-    Mono<ActiveDirectoryApplication> refreshCredentialsAsync() {
-        final Mono<ActiveDirectoryApplication> keyCredentials =
-            manager
-                .serviceClient()
-                .getApplications()
-                .listKeyCredentialsAsync(id())
-                .map(
-                    (Function<KeyCredentialInner, CertificateCredential>)
-                    keyCredentialInner ->
-                        new CertificateCredentialImpl<ActiveDirectoryApplicationImpl>(keyCredentialInner))
-                .collectMap(certificateCredential -> certificateCredential.name())
-                .map(
-                    stringCertificateCredentialMap -> {
-                        ActiveDirectoryApplicationImpl.this.cachedCertificateCredentials =
-                            stringCertificateCredentialMap;
-                        return ActiveDirectoryApplicationImpl.this;
-                    });
+    void refreshCredentials(MicrosoftGraphApplicationInner inner) {
+        cachedCertificateCredentials.clear();
+        cachedPasswordCredentials.clear();
 
-        final Mono<ActiveDirectoryApplication> passwordCredentials =
-            manager
-                .serviceClient()
-                .getApplications()
-                .listPasswordCredentialsAsync(id())
-                .map(
-                    (Function<PasswordCredentialInner, PasswordCredential>)
-                    passwordCredentialInner ->
-                        new PasswordCredentialImpl<ActiveDirectoryApplicationImpl>(passwordCredentialInner))
-                .collectMap(passwordCredential -> passwordCredential.name())
-                .map(
-                    stringPasswordCredentialMap -> {
-                        ActiveDirectoryApplicationImpl.this.cachedPasswordCredentials = stringPasswordCredentialMap;
-                        return ActiveDirectoryApplicationImpl.this;
-                    });
+        if (inner.keyCredentials() != null) {
+            inner.keyCredentials().forEach(keyCredentialInner -> {
+                CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keyCredentialInner);
+                cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
+            });
+        }
 
-        return keyCredentials.mergeWith(passwordCredentials).last();
+        if (inner.passwordCredentials() != null) {
+            inner.passwordCredentials().forEach(passwordCredentialInner -> {
+                PasswordCredential passwordCredential = new PasswordCredentialImpl<>(passwordCredentialInner);
+                cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
+            });
+        }
+    }
+
+    Flux<?> submitCredentialAsync() {
+        return Flux.defer(() ->
+                Flux.fromIterable(passwordCredentialToCreate)
+                .flatMap(passwordCredential -> manager().serviceClient().getApplications()
+                    .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
+                        .withPasswordCredential(passwordCredential.innerModel()))
+                    .doOnNext(passwordCredential::setInner)
+                )
+            );
+    }
+
+    void postRequest() {
+        passwordCredentialToCreate.forEach(passwordCredential -> passwordCredential.exportAuthFile(this));
+        passwordCredentialToCreate.forEach(PasswordCredentialImpl::consumeSecret);
+        passwordCredentialToCreate.clear();
+        certificateCredentialToCreate.forEach(certificateCredential -> certificateCredential.exportAuthFile(this));
+        certificateCredentialToCreate.clear();
     }
 
     @Override
     public Mono<ActiveDirectoryApplication> refreshAsync() {
-        return getInnerAsync().map(innerToFluentMap(this)).flatMap(application -> refreshCredentialsAsync());
+        return getInnerAsync().map(innerToFluentMap(this));
     }
 
     @Override
@@ -116,16 +122,13 @@ class ActiveDirectoryApplicationImpl
     }
 
     @Override
-    public List<String> applicationPermissions() {
-        if (innerModel().appPermissions() == null) {
-            return null;
-        }
-        return Collections.unmodifiableList(innerModel().appPermissions());
+    public boolean availableToOtherTenants() {
+        return accountType() != ApplicationAccountType.AZURE_AD_MY_ORG;
     }
 
     @Override
-    public boolean availableToOtherTenants() {
-        return innerModel().availableToOtherTenants();
+    public ApplicationAccountType accountType() {
+        return ApplicationAccountType.fromString(innerModel().signInAudience());
     }
 
     @Override
@@ -133,21 +136,21 @@ class ActiveDirectoryApplicationImpl
         if (innerModel().identifierUris() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet<>(innerModel().identifierUris()));
+        return new HashSet<>(innerModel().identifierUris());
     }
 
     @Override
     public Set<String> replyUrls() {
-        if (innerModel().replyUrls() == null) {
+        if (innerModel().web() == null || innerModel().web().redirectUris() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet<>(innerModel().replyUrls()));
+        return new HashSet<>(innerModel().web().redirectUris());
     }
 
     @Override
     public URL signOnUrl() {
         try {
-            return new URL(innerModel().homepage());
+            return new URL(innerModel().web().homePageUrl());
         } catch (MalformedURLException e) {
             return null;
         }
@@ -170,64 +173,53 @@ class ActiveDirectoryApplicationImpl
     }
 
     @Override
-    protected Mono<ApplicationInner> getInnerAsync() {
-        return manager.serviceClient().getApplications().getAsync(id());
+    protected Mono<MicrosoftGraphApplicationInner> getInnerAsync() {
+        return manager.serviceClient().getApplicationsApplications().getApplicationAsync(id())
+            .doOnSuccess(this::refreshCredentials);
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withSignOnUrl(String signOnUrl) {
-        if (isInCreateMode()) {
-            createParameters.withHomepage(signOnUrl);
-        } else {
-            updateParameters.withHomepage(signOnUrl);
+        if (innerModel().web() == null) {
+            innerModel().withWeb(new MicrosoftGraphWebApplication());
         }
-        return withReplyUrl(signOnUrl);
+        innerModel().web().withHomePageUrl(signOnUrl);
+        return this;
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withReplyUrl(String replyUrl) {
-        if (isInCreateMode()) {
-            if (createParameters.replyUrls() == null) {
-                createParameters.withReplyUrls(new ArrayList<>());
-            }
-            createParameters.replyUrls().add(replyUrl);
-        } else {
-            if (updateParameters.replyUrls() == null) {
-                updateParameters.withReplyUrls(new ArrayList<>(replyUrls()));
-            }
-            updateParameters.replyUrls().add(replyUrl);
+        if (innerModel().web() == null) {
+            innerModel().withWeb(new MicrosoftGraphWebApplication());
         }
+        if (innerModel().web().redirectUris() == null) {
+            innerModel().web().withRedirectUris(new ArrayList<>());
+        }
+        innerModel().web().redirectUris().add(replyUrl);
         return this;
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withoutReplyUrl(String replyUrl) {
-        if (updateParameters.replyUrls() != null) {
-            updateParameters.replyUrls().remove(replyUrl);
+        if (innerModel().web() != null && innerModel().web().redirectUris() != null) {
+            innerModel().web().redirectUris().remove(replyUrl);
         }
         return this;
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withIdentifierUrl(String identifierUrl) {
-        if (isInCreateMode()) {
-            if (createParameters.identifierUris() == null) {
-                createParameters.withIdentifierUris(new ArrayList<>());
-            }
-            createParameters.identifierUris().add(identifierUrl);
-        } else {
-            if (updateParameters.identifierUris() == null) {
-                updateParameters.withIdentifierUris(new ArrayList<>(identifierUris()));
-            }
-            updateParameters.identifierUris().add(identifierUrl);
+        if (innerModel().identifierUris() == null) {
+            innerModel().withIdentifierUris(new ArrayList<>());
         }
+        innerModel().identifierUris().add(identifierUrl);
         return this;
     }
 
     @Override
     public Update withoutIdentifierUrl(String identifierUrl) {
-        if (updateParameters.identifierUris() != null) {
-            updateParameters.identifierUris().remove(identifierUrl);
+        if (innerModel().identifierUris() != null) {
+            innerModel().identifierUris().remove(identifierUrl);
         }
         return this;
     }
@@ -244,69 +236,51 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public ActiveDirectoryApplicationImpl withoutCredential(final String name) {
-        if (cachedPasswordCredentials.containsKey(name)) {
-            cachedPasswordCredentials.remove(name);
-            List<PasswordCredentialInner> updatePasswordCredentials = new ArrayList<>();
-            for (PasswordCredential passwordCredential : cachedPasswordCredentials.values()) {
-                updatePasswordCredentials.add(passwordCredential.innerModel());
-            }
-            updateParameters.withPasswordCredentials(updatePasswordCredentials);
-        } else if (cachedCertificateCredentials.containsKey(name)) {
-            cachedCertificateCredentials.remove(name);
-            List<KeyCredentialInner> updateCertificateCredentials = new ArrayList<>();
-            for (CertificateCredential certificateCredential : cachedCertificateCredentials.values()) {
-                updateCertificateCredentials.add(certificateCredential.innerModel());
-            }
-            updateParameters.withKeyCredentials(updateCertificateCredentials);
+        if (cachedPasswordCredentials.containsKey(name) && innerModel().passwordCredentials() != null) {
+            innerModel().passwordCredentials().remove(cachedPasswordCredentials.get(name).innerModel());
+        } else if (cachedCertificateCredentials.containsKey(name) && innerModel().keyCredentials() != null) {
+            innerModel().keyCredentials().remove(cachedCertificateCredentials.get(name).innerModel());
         }
         return this;
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
-        if (isInCreateMode()) {
-            if (createParameters.keyCredentials() == null) {
-                createParameters.withKeyCredentials(new ArrayList<>());
-            }
-            createParameters.keyCredentials().add(credential.innerModel());
-        } else {
-            if (updateParameters.keyCredentials() == null) {
-                updateParameters.withKeyCredentials(new ArrayList<>());
-            }
-            updateParameters.keyCredentials().add(credential.innerModel());
+        this.certificateCredentialToCreate.add(credential);
+        if (innerModel().keyCredentials() == null) {
+            innerModel().withKeyCredentials(new ArrayList<>());
         }
+        innerModel().keyCredentials().add(credential.innerModel());
         return this;
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
-        if (isInCreateMode()) {
-            if (createParameters.passwordCredentials() == null) {
-                createParameters.withPasswordCredentials(new ArrayList<>());
-            }
-            createParameters.passwordCredentials().add(credential.innerModel());
-        } else {
-            if (updateParameters.passwordCredentials() == null) {
-                updateParameters.withPasswordCredentials(new ArrayList<>());
-            }
-            updateParameters.passwordCredentials().add(credential.innerModel());
-        }
+        this.passwordCredentialToCreate.add(credential);
         return this;
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withAvailableToOtherTenants(boolean availableToOtherTenants) {
-        if (isInCreateMode()) {
-            createParameters.withAvailableToOtherTenants(availableToOtherTenants);
-        } else {
-            updateParameters.withAvailableToOtherTenants(availableToOtherTenants);
-        }
+        return availableToOtherTenants
+            ? withAccountType(ApplicationAccountType.AZURE_AD_MULTIPLE_ORGS)
+            : withAccountType(ApplicationAccountType.AZURE_AD_MY_ORG);
+    }
+
+    @Override
+    public ActiveDirectoryApplicationImpl withAccountType(ApplicationAccountType accountType) {
+        return withAccountType(accountType.toString());
+    }
+
+    @Override
+    public ActiveDirectoryApplicationImpl withAccountType(String accountType) {
+        innerModel().withSignInAudience(accountType);
         return this;
     }
 
     @Override
     public String id() {
-        return innerModel().objectId();
+        return innerModel().id();
     }
 
     @Override

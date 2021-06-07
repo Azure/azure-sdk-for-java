@@ -8,11 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
-import com.azure.resourcemanager.compute.models.KeyVaultAndKeyReference;
+import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** disk encryption set resource. */
 @JsonFlatten
@@ -28,10 +31,16 @@ public class DiskEncryptionSetInner extends Resource {
     private EncryptionSetIdentity identity;
 
     /*
+     * The type of key used to encrypt the data of the disk.
+     */
+    @JsonProperty(value = "properties.encryptionType")
+    private DiskEncryptionSetType encryptionType;
+
+    /*
      * The key vault key which is currently used by this disk encryption set.
      */
     @JsonProperty(value = "properties.activeKey")
-    private KeyVaultAndKeyReference activeKey;
+    private KeyForDiskEncryptionSet activeKey;
 
     /*
      * A readonly collection of key vault keys previously used by this disk
@@ -39,13 +48,26 @@ public class DiskEncryptionSetInner extends Resource {
      * there is no ongoing key rotation.
      */
     @JsonProperty(value = "properties.previousKeys", access = JsonProperty.Access.WRITE_ONLY)
-    private List<KeyVaultAndKeyReference> previousKeys;
+    private List<KeyForDiskEncryptionSet> previousKeys;
 
     /*
      * The disk encryption set provisioning state.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Set this flag to true to enable auto-updating of this disk encryption
+     * set to the latest key version.
+     */
+    @JsonProperty(value = "properties.rotationToLatestKeyVersionEnabled")
+    private Boolean rotationToLatestKeyVersionEnabled;
+
+    /*
+     * The time when the active key of this disk encryption set was updated.
+     */
+    @JsonProperty(value = "properties.lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastKeyRotationTimestamp;
 
     /**
      * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
@@ -70,11 +92,31 @@ public class DiskEncryptionSetInner extends Resource {
     }
 
     /**
+     * Get the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @return the encryptionType value.
+     */
+    public DiskEncryptionSetType encryptionType() {
+        return this.encryptionType;
+    }
+
+    /**
+     * Set the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @param encryptionType the encryptionType value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withEncryptionType(DiskEncryptionSetType encryptionType) {
+        this.encryptionType = encryptionType;
+        return this;
+    }
+
+    /**
      * Get the activeKey property: The key vault key which is currently used by this disk encryption set.
      *
      * @return the activeKey value.
      */
-    public KeyVaultAndKeyReference activeKey() {
+    public KeyForDiskEncryptionSet activeKey() {
         return this.activeKey;
     }
 
@@ -84,7 +126,7 @@ public class DiskEncryptionSetInner extends Resource {
      * @param activeKey the activeKey value to set.
      * @return the DiskEncryptionSetInner object itself.
      */
-    public DiskEncryptionSetInner withActiveKey(KeyVaultAndKeyReference activeKey) {
+    public DiskEncryptionSetInner withActiveKey(KeyForDiskEncryptionSet activeKey) {
         this.activeKey = activeKey;
         return this;
     }
@@ -95,7 +137,7 @@ public class DiskEncryptionSetInner extends Resource {
      *
      * @return the previousKeys value.
      */
-    public List<KeyVaultAndKeyReference> previousKeys() {
+    public List<KeyForDiskEncryptionSet> previousKeys() {
         return this.previousKeys;
     }
 
@@ -106,6 +148,51 @@ public class DiskEncryptionSetInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @return the rotationToLatestKeyVersionEnabled value.
+     */
+    public Boolean rotationToLatestKeyVersionEnabled() {
+        return this.rotationToLatestKeyVersionEnabled;
+    }
+
+    /**
+     * Set the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
+        this.rotationToLatestKeyVersionEnabled = rotationToLatestKeyVersionEnabled;
+        return this;
+    }
+
+    /**
+     * Get the lastKeyRotationTimestamp property: The time when the active key of this disk encryption set was updated.
+     *
+     * @return the lastKeyRotationTimestamp value.
+     */
+    public OffsetDateTime lastKeyRotationTimestamp() {
+        return this.lastKeyRotationTimestamp;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DiskEncryptionSetInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DiskEncryptionSetInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

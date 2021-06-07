@@ -4,11 +4,16 @@
 package com.azure.resourcemanager.keyvault.implementation;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
+import com.azure.resourcemanager.keyvault.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.keyvault.fluent.models.VaultInner;
 import com.azure.resourcemanager.keyvault.models.AccessPolicy;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
@@ -18,6 +23,8 @@ import com.azure.resourcemanager.keyvault.models.Keys;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleAction;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleSet;
+import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.keyvault.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.keyvault.models.Secrets;
 import com.azure.resourcemanager.keyvault.models.Sku;
 import com.azure.resourcemanager.keyvault.models.SkuFamily;
@@ -26,7 +33,9 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
@@ -36,8 +45,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 /** Implementation for Vault and its parent interfaces. */
 class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyVaultManager>
@@ -151,6 +162,14 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     }
 
     @Override
+    public boolean roleBasedAccessControlEnabled() {
+        if (innerModel().properties() == null) {
+            return false;
+        }
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().properties().enableRbacAuthorization());
+    }
+
+    @Override
     public boolean enabledForDeployment() {
         if (innerModel().properties() == null) {
             return false;
@@ -216,6 +235,18 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     @Override
     public AccessPolicyImpl defineAccessPolicy() {
         return new AccessPolicyImpl(new AccessPolicyEntry(), this);
+    }
+
+    @Override
+    public VaultImpl withRoleBasedAccessControl() {
+        innerModel().properties().withEnableRbacAuthorization(true);
+        return this;
+    }
+
+    @Override
+    public VaultImpl withoutRoleBasedAccessControl() {
+        innerModel().properties().withEnableRbacAuthorization(false);
+        return this;
     }
 
     @Override
@@ -466,5 +497,72 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         }
         innerModel().properties().networkAcls().withVirtualNetworkRules(virtualNetworkRules);
         return this;
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        return new PagedIterable<>(listPrivateLinkResourcesAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+            .listByVaultWithResponseAsync(this.resourceGroupName(), this.name())
+            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
+                .map(PrivateLinkResourceImpl::new)
+                .collect(Collectors.toList())));
+
+        return PagedConverter.convertListToPagedFlux(retList);
+    }
+
+    @Override
+    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
+        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return manager().serviceClient().getPrivateEndpointConnections().putAsync(
+            this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
+            .then();
+    }
+
+    @Override
+    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
+        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return manager().serviceClient().getPrivateEndpointConnections().putAsync(
+            this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)))
+            .then();
+    }
+
+    private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final com.azure.resourcemanager.keyvault.models.PrivateLinkResource innerModel;
+
+        private PrivateLinkResourceImpl(com.azure.resourcemanager.keyvault.models.PrivateLinkResource innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.unmodifiableList(innerModel.requiredZoneNames());
+        }
     }
 }

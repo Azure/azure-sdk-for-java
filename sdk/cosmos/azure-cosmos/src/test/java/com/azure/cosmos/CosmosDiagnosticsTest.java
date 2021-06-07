@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -12,13 +13,17 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -28,19 +33,23 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,7 +72,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void beforeClass() {
         assertThat(this.gatewayClient).isNull();
         gatewayClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -150,7 +159,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             validateTransportRequestTimelineGateway(diagnostics);
-            validateJson(diagnostics);
+            isValidJSON(diagnostics);
         } finally {
             if (testGatewayClient != null) {
                 testGatewayClient.close();
@@ -172,6 +181,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
+            isValidJSON(exception.toString());
+            isValidJSON(exception.getMessage());
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
@@ -185,7 +196,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
-            validateJson(diagnostics);
+            isValidJSON(diagnostics);
         }
     }
 
@@ -226,16 +237,19 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
-            validateJson(diagnostics);
+            isValidJSON(diagnostics);
 
             // validate that on failed operation request timeline is populated
             try {
                 cosmosContainer.createItem(internalObjectNode);
                 fail("expected 409");
             } catch (CosmosException e) {
+                diagnostics = e.getDiagnostics().toString();
+                assertThat(diagnostics).contains("\"backendLatencyInMs\"");
                 validateTransportRequestTimelineDirect(e.getDiagnostics().toString());
             }
         } finally {
@@ -296,12 +310,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
     public void queryMetrics(String query, Boolean qmEnabled) {
+        CosmosContainer directContainer =
+            this.directClient.getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(this.cosmosAsyncContainer.getId());
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         if (qmEnabled != null) {
             options.setQueryMetricsEnabled(qmEnabled);
         }
         boolean qroupByFirstResponse = true; // TODO https://github.com/Azure/azure-sdk-for-java/issues/14142
-        Iterator<FeedResponse<InternalObjectNode>> iterator = this.container.queryItems(query, options,
+        Iterator<FeedResponse<InternalObjectNode>> iterator = directContainer.queryItems(query, options,
             InternalObjectNode.class).iterableByPage().iterator();
         assertThat(iterator.hasNext()).isTrue();
         while (iterator.hasNext()) {
@@ -310,7 +327,68 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
             if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
+                validateDirectModeQueryDiagnostics(queryDiagnostics);
+                if (query.contains("group by")) {
+                    qroupByFirstResponse = false;
+                }
+            }
+        }
+    }
 
+    private void validateDirectModeQueryDiagnostics(String diagnostics) {
+        assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+        assertThat(diagnostics).contains("supplementalResponseStatisticsList");
+        assertThat(diagnostics).contains("responseStatisticsList");
+        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("addressResolutionStatistics");
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+    }
+
+    private void validateGatewayModeQueryDiagnostics(String diagnostics) {
+        assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains("\"operationType\":\"Query\"");
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+        assertThat(diagnostics).contains("\"regionsContacted\"");
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT*2)
+    public void queryDiagnosticsGatewayMode(String query, Boolean qmEnabled) {
+        CosmosClient testDirectClient = new CosmosClientBuilder()
+                                            .endpoint(TestConfigurations.HOST)
+                                            .key(TestConfigurations.MASTER_KEY)
+                                            .contentResponseOnWriteEnabled(true)
+                                            .gatewayMode()
+                                            .buildClient();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosContainer cosmosContainer = testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                                              .getContainer(cosmosAsyncContainer.getId());
+        List<String> itemIdList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            if (i % 20 == 0) {
+                itemIdList.add(internalObjectNode.getId());
+            }
+        }
+        boolean qroupByFirstResponse = true;
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+        Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer
+                                                                  .queryItems(query, options, InternalObjectNode.class)
+                                                                  .iterableByPage()
+                                                                  .iterator();
+        assertThat(iterator.hasNext()).isTrue();
+
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+                validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
+                validateGatewayModeQueryDiagnostics(queryDiagnostics);
                 if (query.contains("group by")) {
                     qroupByFirstResponse = false;
                 }
@@ -341,7 +419,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String queryDiagnostics,
         Boolean qmEnabled,
         boolean expectQueryPlanDiagnostics) {
-        if (qmEnabled == null || qmEnabled == true) {
+        if (qmEnabled == null || qmEnabled) {
             assertThat(queryDiagnostics).contains("Retrieved Document Count");
             assertThat(queryDiagnostics).contains("Query Preparation Times");
             assertThat(queryDiagnostics).contains("Runtime Execution Times");
@@ -422,16 +500,54 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
+            isValidJSON(exception.toString());
+            isValidJSON(exception.getMessage());
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
-            validateJson(diagnostics);
-            // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
-            // uncomment below if above issue is fixed
-            //validateTransportRequestTimelineDirect(diagnostics);
+            assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+            isValidJSON(diagnostics);
+            validateTransportRequestTimelineDirect(diagnostics);
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void directDiagnosticsOnMetadataException() {
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            HttpClient mockHttpClient = Mockito.mock(HttpClient.class);
+            Mockito.when(mockHttpClient.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class)))
+                .thenReturn(Mono.error(new CosmosException(400, "TestBadRequest")));
+            RxStoreModel rxGatewayStoreModel = rxGatewayStoreModel = ReflectionUtils.getGatewayProxy((RxDocumentClientImpl) client.asyncClient().getDocClientWrapper());
+            ReflectionUtils.setGatewayHttpClient(rxGatewayStoreModel, mockHttpClient);
+            container.createItem(internalObjectNode);
+            fail("request should fail as bad request");
+        } catch (CosmosException exception) {
+            isValidJSON(exception.toString());
+            isValidJSON(exception.getMessage());
+            String diagnostics = exception.getDiagnostics().toString();
+            assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+            assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+            assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
+            assertThat(diagnostics).contains("\"resourceType\":\"DocumentCollection\"");
+            assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
+            assertThat(exception.getDiagnostics().getDuration()).isNotNull();
+            isValidJSON(diagnostics);
         } finally {
             if (client != null) {
                 client.close();
@@ -821,11 +937,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"durationInMicroSec\"");
     }
 
-    private void validateJson(String jsonInString) {
+    public void isValidJSON(final String json) {
         try {
-            OBJECT_MAPPER.readTree(jsonInString);
-        } catch(JsonProcessingException ex) {
-            fail("Diagnostic string is not in json format");
+            final JsonParser parser = new ObjectMapper().createParser(json);
+            while (parser.nextToken() != null) {
+            }
+        } catch (IOException ex) {
+            fail("Diagnostic string is not in json format ", ex);
         }
     }
 

@@ -41,8 +41,8 @@ public class RecognizeReceipts {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-            + "receipts/contoso-allinone.jpg");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
+            + "sample-forms/receipts/contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 

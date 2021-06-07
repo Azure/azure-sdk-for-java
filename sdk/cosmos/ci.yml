@@ -4,6 +4,7 @@ trigger:
   branches:
     include:
       - master
+      - main
       - hotfix/*
       - release/*
   paths:
@@ -20,7 +21,9 @@ pr:
   branches:
     include:
       - master
+      - main
       - feature/*
+      - feature/cosmos/spark30
       - hotfix/*
       - release/*
   paths:
@@ -48,6 +51,9 @@ extends:
       - name: azure-cosmos-encryption
         groupId: com.azure
         safeName: azurecosmosencryption
+      - name: azure-cosmos-spark_3-1_2-12
+        groupId: com.azure.cosmos.spark
+        safeName: azurecosmosspark3
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure

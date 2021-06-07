@@ -42,7 +42,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withNewDataDisk(100)
                 .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
                 .withNewDataDisk(100, 2, CachingTypes.READ_ONLY)
@@ -225,7 +225,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
         //
         ResourceManagerUtils.sleep(Duration.ofSeconds(40));
 
-        deprovisionAgentInLinuxVM(vm.getPrimaryPublicIPAddress().fqdn(), 22, userName, password);
+        deprovisionAgentInLinuxVM(vm);
         vm.deallocate();
         vm.generalize();
 

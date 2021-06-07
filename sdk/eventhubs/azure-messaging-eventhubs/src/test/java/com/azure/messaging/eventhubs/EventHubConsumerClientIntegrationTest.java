@@ -134,19 +134,14 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromSequenceNumber(
             testData.getPartitionProperties().getLastEnqueuedSequenceNumber());
 
-        try {
-            // Act
-            final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(testData.getPartitionId(),
-                numberOfEvents, position, Duration.ofSeconds(5));
+        // Act
+        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(testData.getPartitionId(),
+            numberOfEvents, position, Duration.ofSeconds(5));
 
-            // Assert
-            final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
-            assertTrue(!asList.isEmpty() && asList.size() <= numberOfEvents,
-                String.format("Expected: %s. Actual: %s", numberOfEvents, asList.size()));
-
-        } finally {
-            dispose(consumer);
-        }
+        // Assert
+        final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
+        assertTrue(!asList.isEmpty() && asList.size() <= numberOfEvents,
+            String.format("Expected: %s. Actual: %s", numberOfEvents, asList.size()));
     }
 
     /**

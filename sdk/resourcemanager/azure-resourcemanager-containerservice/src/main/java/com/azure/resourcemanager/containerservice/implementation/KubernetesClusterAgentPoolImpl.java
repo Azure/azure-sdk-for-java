@@ -10,8 +10,17 @@ import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OSType;
+import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterAgentPoolImpl
@@ -40,7 +49,7 @@ public class KubernetesClusterAgentPoolImpl
 
     @Override
     public ContainerServiceVMSizeTypes vmSize() {
-        return this.innerModel().vmSize();
+        return ContainerServiceVMSizeTypes.fromString(this.innerModel().vmSize());
     }
 
     @Override
@@ -79,8 +88,53 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
-    public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes param0) {
-        this.innerModel().withVmSize(param0);
+    public List<String> availabilityZones() {
+        return innerModel().availabilityZones();
+    }
+
+    @Override
+    public Map<String, String> nodeLabels() {
+        return innerModel().nodeLabels() == null ? null : Collections.unmodifiableMap(innerModel().nodeLabels());
+    }
+
+    @Override
+    public List<String> nodeTaints() {
+        return innerModel().nodeTaints() == null ? null : Collections.unmodifiableList(innerModel().nodeTaints());
+    }
+
+    @Override
+    public PowerState powerState() {
+        return innerModel().powerState();
+    }
+
+    @Override
+    public boolean isAutoScalingEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableAutoScaling());
+    }
+
+    @Override
+    public int nodeSize() {
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().count());
+    }
+
+    @Override
+    public int maximumPodsPerNode() {
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().maxPods());
+    }
+
+    @Override
+    public int minimumNodeSize() {
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().minCount());
+    }
+
+    @Override
+    public int maximumNodeSize() {
+        return ResourceManagerUtils.toPrimitiveInt(innerModel().maxCount());
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize) {
+        this.innerModel().withVmSize(vmSize.toString());
         return this;
     }
 
@@ -147,7 +201,8 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withTypePropertiesType(innerModel().type());
         agentPoolInner.withMode(innerModel().mode());
         agentPoolInner.withOrchestratorVersion(innerModel().orchestratorVersion());
-        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());
+        // nodeImageVersion is readOnly now
+//        agentPoolInner.withNodeImageVersion(innerModel().nodeImageVersion());
         agentPoolInner.withUpgradeSettings(innerModel().upgradeSettings());
         agentPoolInner.withAvailabilityZones(innerModel().availabilityZones());
         agentPoolInner.withEnableNodePublicIp(innerModel().enableNodePublicIp());
@@ -158,12 +213,51 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withNodeLabels(innerModel().nodeLabels());
         agentPoolInner.withNodeTaints(innerModel().nodeTaints());
         agentPoolInner.withProximityPlacementGroupId(innerModel().proximityPlacementGroupId());
+        agentPoolInner.withKubeletConfig(innerModel().kubeletConfig());
+        agentPoolInner.withLinuxOSConfig(innerModel().linuxOSConfig());
+        agentPoolInner.withEnableEncryptionAtHost(innerModel().enableEncryptionAtHost());
+        agentPoolInner.withEnableFips(innerModel().enableFips());
+        agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
         return agentPoolInner;
     }
 
     @Override
     public KubernetesClusterAgentPoolImpl withAgentPoolMode(AgentPoolMode agentPoolMode) {
         innerModel().withMode(agentPoolMode);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withAutoScaling(int minimumNodeSize, int maximumNodeSize) {
+        innerModel().withEnableAutoScaling(true);
+        innerModel().withMinCount(minimumNodeSize);
+        innerModel().withMaxCount(maximumNodeSize);
+        return this;
+    }
+
+    @Override
+    public Update<KubernetesClusterImpl> withoutAutoScaling() {
+        innerModel().withEnableAutoScaling(false);
+        innerModel().withMinCount(null);
+        innerModel().withMaxCount(null);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withAvailabilityZones(Integer... zones) {
+        innerModel().withAvailabilityZones(Arrays.stream(zones).map(String::valueOf).collect(Collectors.toList()));
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withNodeLabels(Map<String, String> nodeLabels) {
+        innerModel().withNodeLabels(nodeLabels == null ? null : new TreeMap<>(nodeLabels));
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withNodeTaints(List<String> nodeTaints) {
+        innerModel().withNodeTaints(nodeTaints);
         return this;
     }
 }

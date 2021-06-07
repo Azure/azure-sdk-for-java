@@ -14,6 +14,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 import java.util.Map;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for Vault and its parent interfaces. */
 class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, SecretImpl>
@@ -96,10 +97,10 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
 
     @Override
     public PagedFlux<Secret> listVersionsAsync() {
-        return vault
+        return PagedConverter.mapPage(vault
             .secretClient()
-            .listPropertiesOfSecretVersions(name())
-            .mapPage(this::wrapModel);
+            .listPropertiesOfSecretVersions(name()),
+            this::wrapModel);
     }
 
     @Override

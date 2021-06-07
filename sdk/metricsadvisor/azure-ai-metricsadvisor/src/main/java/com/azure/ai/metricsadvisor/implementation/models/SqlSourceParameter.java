@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SqlSourceParameter {
     /*
-     * Database connection string
+     * The connection string of this database
      */
-    @JsonProperty(value = "connectionString", required = true)
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
-     * Query script
+     * The script to query this database
      */
     @JsonProperty(value = "query", required = true)
     private String query;
 
     /**
-     * Get the connectionString property: Database connection string.
+     * Get the connectionString property: The connection string of this database.
      *
      * @return the connectionString value.
      */
@@ -32,7 +32,7 @@ public final class SqlSourceParameter {
     }
 
     /**
-     * Set the connectionString property: Database connection string.
+     * Set the connectionString property: The connection string of this database.
      *
      * @param connectionString the connectionString value to set.
      * @return the SqlSourceParameter object itself.
@@ -43,7 +43,7 @@ public final class SqlSourceParameter {
     }
 
     /**
-     * Get the query property: Query script.
+     * Get the query property: The script to query this database.
      *
      * @return the query value.
      */
@@ -52,7 +52,7 @@ public final class SqlSourceParameter {
     }
 
     /**
-     * Set the query property: Query script.
+     * Set the query property: The script to query this database.
      *
      * @param query the query value to set.
      * @return the SqlSourceParameter object itself.

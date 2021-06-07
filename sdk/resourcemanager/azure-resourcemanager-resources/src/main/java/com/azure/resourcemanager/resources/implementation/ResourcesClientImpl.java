@@ -9,6 +9,7 @@ import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -72,7 +73,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
     private interface ResourcesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -84,9 +85,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -96,9 +98,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ResourcesMoveInfo parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -108,9 +111,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ResourcesMoveInfo parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,9 +125,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Head(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}")
@@ -138,9 +143,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}")
@@ -155,9 +161,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}")
@@ -173,9 +180,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") GenericResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}")
@@ -191,9 +199,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") GenericResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}")
@@ -208,9 +217,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Head("/{resourceId}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -218,9 +228,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/{resourceId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -228,9 +239,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/{resourceId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -239,9 +251,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenericResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch("/{resourceId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -250,9 +263,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenericResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{resourceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -260,21 +274,28 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -321,6 +342,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -333,6 +355,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             top,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<GenericResourceExpandedInner>>map(
                 res ->
@@ -343,7 +366,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -391,6 +414,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -401,6 +425,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 top,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -503,6 +528,23 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * Get all the resources for a resource group.
      *
      * @param resourceGroupName The resource group with the resources to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(String resourceGroupName) {
+        final String filter = null;
+        final String expand = null;
+        final Integer top = null;
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top));
+    }
+
+    /**
+     * Get all the resources for a resource group.
+     *
+     * @param resourceGroupName The resource group with the resources to get.
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
      *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
      *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
@@ -532,29 +574,12 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     }
 
     /**
-     * Get all the resources for a resource group.
-     *
-     * @param resourceGroupName The resource group with the resources to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(String resourceGroupName) {
-        final String filter = null;
-        final String expand = null;
-        final Integer top = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top));
-    }
-
-    /**
      * The resources to move must be in the same source resource group. The target resource group may be in a different
      * subscription. When moving resources, both the source group and the target group are locked for the duration of
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -585,6 +610,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -595,8 +621,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -605,7 +632,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -637,6 +664,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .moveResources(
@@ -645,6 +673,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -654,7 +683,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -675,7 +704,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -699,7 +728,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -717,7 +746,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -736,7 +765,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -755,7 +784,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -776,7 +805,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -792,7 +821,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -811,7 +840,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -842,6 +871,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -852,8 +882,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -864,7 +895,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -896,6 +927,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .validateMoveResources(
@@ -904,6 +936,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -915,7 +948,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -939,7 +972,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -965,7 +998,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -985,7 +1018,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1006,7 +1039,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1027,7 +1060,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1050,7 +1083,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1068,7 +1101,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1118,6 +1151,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1129,6 +1163,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             top,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<GenericResourceExpandedInner>>map(
                 res ->
@@ -1139,7 +1174,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1182,6 +1217,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1191,6 +1227,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 top,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1285,6 +1322,21 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     /**
      * Get all the resources in a subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GenericResourceExpandedInner> list() {
+        final String filter = null;
+        final String expand = null;
+        final Integer top = null;
+        return new PagedIterable<>(listAsync(filter, expand, top));
+    }
+
+    /**
+     * Get all the resources in a subscription.
+     *
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
      *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
      *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
@@ -1311,21 +1363,6 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
     public PagedIterable<GenericResourceExpandedInner> list(
         String filter, String expand, Integer top, Context context) {
         return new PagedIterable<>(listAsync(filter, expand, top, context));
-    }
-
-    /**
-     * Get all the resources in a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GenericResourceExpandedInner> list() {
-        final String filter = null;
-        final String expand = null;
-        final Integer top = null;
-        return new PagedIterable<>(listAsync(filter, expand, top));
     }
 
     /**
@@ -1386,6 +1423,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1399,8 +1437,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             resourceName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1463,6 +1502,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .checkExistence(
@@ -1474,6 +1514,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 resourceName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1650,6 +1691,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1663,8 +1705,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             resourceName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1727,6 +1770,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1738,6 +1782,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 resourceName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -2033,7 +2078,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2088,6 +2133,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2102,8 +2148,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2115,7 +2162,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2172,6 +2219,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -2184,6 +2232,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -2196,7 +2245,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2239,7 +2288,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2282,7 +2331,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2317,7 +2366,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2355,7 +2404,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2391,7 +2440,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2430,7 +2479,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2465,7 +2514,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2503,7 +2552,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2558,6 +2607,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2572,8 +2622,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2585,7 +2636,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2642,6 +2693,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -2654,6 +2706,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -2666,7 +2719,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2709,7 +2762,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2752,7 +2805,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2787,7 +2840,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2825,7 +2878,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2861,7 +2914,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2900,7 +2953,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2935,7 +2988,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3022,6 +3075,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3035,8 +3089,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             resourceName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3099,6 +3154,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -3110,6 +3166,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 resourceName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -3248,10 +3305,12 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3282,8 +3341,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, context);
+        return service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, accept, context);
     }
 
     /**
@@ -3377,9 +3437,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(
+                context -> service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3410,8 +3472,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, context);
+        return service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, accept, context);
     }
 
     /**
@@ -3569,7 +3632,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3595,11 +3658,14 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.createOrUpdateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                    service
+                        .createOrUpdateById(
+                            this.client.getEndpoint(), resourceId, apiVersion, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3609,7 +3675,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3636,8 +3702,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
+        return service
+            .createOrUpdateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -3647,7 +3715,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3674,7 +3742,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3700,7 +3768,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3719,7 +3787,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3739,7 +3807,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3760,7 +3828,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3782,7 +3850,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3801,7 +3869,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3821,7 +3889,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3847,10 +3915,12 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3860,7 +3930,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3887,8 +3957,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
+        return service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -3898,7 +3969,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3925,7 +3996,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3951,7 +4022,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3970,7 +4041,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3990,7 +4061,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4011,7 +4082,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4033,7 +4104,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4051,7 +4122,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4090,9 +4161,10 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getById(this.client.getEndpoint(), resourceId, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(context -> service.getById(this.client.getEndpoint(), resourceId, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4123,8 +4195,9 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getById(this.client.getEndpoint(), resourceId, apiVersion, context);
+        return service.getById(this.client.getEndpoint(), resourceId, apiVersion, accept, context);
     }
 
     /**
@@ -4201,8 +4274,16 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GenericResourceExpandedInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -4212,7 +4293,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4231,9 +4312,16 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -4259,8 +4347,15 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GenericResourceExpandedInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -4270,7 +4365,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4289,9 +4384,16 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

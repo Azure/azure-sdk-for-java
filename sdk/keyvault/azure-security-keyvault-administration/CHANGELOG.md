@@ -1,7 +1,59 @@
 # Release History
 
-## 4.0.0-beta.4 (Unreleased)
+## 4.0.0-beta.8 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### Breaking Changes 
+- Renamed `beginSelectiveRestore()` to `beginSelectiveKeyRestore()` in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. Made the aforementioned operation return the new `KeyVaultSelectiveKeyRestoreOperation` instead of a `KeyVaultRestoreOperation`.
+- Made `KeyVaultRoleDefinition` flat, as opposed to it having a `KeyVaultRoleDefinitionProperties` member with more properties inside of it.
+- Moved `roleScope` from `KeyVaultRoleAssignment` to `KeyVaultRoleAssignmentProperties` and renamed it to `scope`.
+- Moved `SetRoleDefinitionOptions` from the `options` package to the `models` package.
+- Removed `roleType` from `SetRoleDefinitionOptions`.
+
+## 4.0.0-beta.7 (2021-05-15)
+
+### New features
+
+- Added support for creating, retrieving, updating and deleting custom role definitions.
+
+### Breaking Changes
+
+- Added the public `KeyVaultAdministrationException`, which will be thrown in place of an exception with the same name in the `implementation` package.
+
+#### Behavioral Changes
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
+
+## 4.0.0-beta.6 (2021-04-09)
+
+### New features
+- Added support for service version `7.2`.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+
+## 4.0.0-beta.5 (2021-03-12)
+
+### Changed
+- Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.0`
+- Upgraded `azure-identity` dependency to `1.2.4`
+
+## 4.0.0-beta.4 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
 
 ## 4.0.0-beta.3 (2020-11-12)
 

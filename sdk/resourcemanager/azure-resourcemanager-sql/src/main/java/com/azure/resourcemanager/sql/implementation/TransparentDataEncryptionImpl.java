@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for TransparentDataEncryption. */
 class TransparentDataEncryptionImpl
@@ -136,13 +137,13 @@ class TransparentDataEncryptionImpl
 
     @Override
     public PagedFlux<TransparentDataEncryptionActivity> listActivitiesAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getTransparentDataEncryptionActivities()
             .listByConfigurationAsync(
-                this.resourceGroupName, this.sqlServerName, this.databaseName(), TransparentDataEncryptionName.CURRENT)
-            .mapPage(TransparentDataEncryptionActivityImpl::new);
+                this.resourceGroupName, this.sqlServerName, this.databaseName(), TransparentDataEncryptionName.CURRENT),
+            TransparentDataEncryptionActivityImpl::new);
     }
 
     @Override

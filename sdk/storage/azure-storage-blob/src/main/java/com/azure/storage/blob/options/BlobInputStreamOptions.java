@@ -6,6 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.ConsistentReadControl;
 
 /**
  * Extended options that may be passed when opening a blob input stream.
@@ -16,6 +17,7 @@ public class BlobInputStreamOptions {
     private BlobRange range;
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
+    private ConsistentReadControl consistentReadControl;
 
     /**
      * @return {@link BlobRange}
@@ -66,6 +68,22 @@ public class BlobInputStreamOptions {
      */
     public BlobInputStreamOptions setBlockSize(Integer blockSize) {
         this.blockSize = blockSize;
+        return this;
+    }
+
+    /**
+     * @return {@link ConsistentReadControl} Default is E-Tag.
+     */
+    public ConsistentReadControl getConsistentReadControl() {
+        return consistentReadControl;
+    }
+
+    /**
+     * @param consistentReadControl {@link ConsistentReadControl} Default is E-Tag.
+     * @return The updated options.
+     */
+    public BlobInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
+        this.consistentReadControl = consistentReadControl;
         return this;
     }
 }

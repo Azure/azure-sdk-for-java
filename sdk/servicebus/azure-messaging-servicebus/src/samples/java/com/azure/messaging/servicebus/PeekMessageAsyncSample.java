@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import org.junit.jupiter.api.Test;
-
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,23 +15,13 @@ public class PeekMessageAsyncSample {
     private boolean sampleWorks = false;
 
     /**
-     * Main method to invoke this demo on how to peek at a message within a Service Bus Queue.
-     *
-     * @param args Unused arguments to the program.
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
-     */
-    public static void main(String[] args) throws InterruptedException {
-        PeekMessageAsyncSample sample = new PeekMessageAsyncSample();
-        sample.run();
-    }
-
-    /**
-     * run method to invoke this demo on how to peek at a message within a Service Bus Queue.
+     * The run method is to invoke this demo on how to peek at a message within a Service Bus Queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     @Test
     public void run() throws InterruptedException {
+
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
@@ -66,7 +55,7 @@ public class PeekMessageAsyncSample {
                 sampleWorks = true;
             });
 
-        // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
+        // Subscribe is not a blocking call so we wait here so the program does not end while finishing
         // the peek operation.
         TimeUnit.SECONDS.sleep(10);
 
@@ -76,5 +65,6 @@ public class PeekMessageAsyncSample {
         // Following assert is for making sure this sample run properly in our automated system.
         // User do not need this assert, you can comment this line
         assertTrue(sampleWorks);
+
     }
 }

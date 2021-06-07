@@ -5,6 +5,9 @@ package com.azure.messaging.servicebus.administration.models;
 
 /**
  * Represents a rule action that does nothing.
+ *
+ * @see CreateRuleOptions#setAction(RuleAction)
+ * @see RuleProperties#setAction(RuleAction)
  */
 public class EmptyRuleAction extends RuleAction {
     private static final EmptyRuleAction INSTANCE = new EmptyRuleAction();

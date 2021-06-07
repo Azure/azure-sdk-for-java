@@ -116,6 +116,12 @@ public class Workspace extends TrackedResource {
     @JsonProperty(value = "properties.purviewConfiguration")
     private PurviewConfiguration purviewConfiguration;
 
+    /*
+     * The ADLA resource ID.
+     */
+    @JsonProperty(value = "properties.adlaResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String adlaResourceId;
+
     /**
      * Get the identity property: Identity of the workspace.
      *
@@ -410,5 +416,14 @@ public class Workspace extends TrackedResource {
     public Workspace setPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
         this.purviewConfiguration = purviewConfiguration;
         return this;
+    }
+
+    /**
+     * Get the adlaResourceId property: The ADLA resource ID.
+     *
+     * @return the adlaResourceId value.
+     */
+    public String getAdlaResourceId() {
+        return this.adlaResourceId;
     }
 }

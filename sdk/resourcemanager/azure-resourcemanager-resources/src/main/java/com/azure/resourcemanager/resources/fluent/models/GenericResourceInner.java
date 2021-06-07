@@ -7,11 +7,13 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.resources.models.ExtendedLocation;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Resource information. */
 @Fluent
@@ -53,6 +55,12 @@ public class GenericResourceInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private Identity identity;
+
+    /*
+     * Resource extended location.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /**
      * Get the plan property: The plan of the resource.
@@ -175,6 +183,40 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
+     * Get the extendedLocation property: Resource extended location.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Resource extended location.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the GenericResourceInner object itself.
+     */
+    public GenericResourceInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericResourceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -188,6 +230,9 @@ public class GenericResourceInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }

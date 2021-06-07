@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.core.models.GeoPoint;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
+@SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelWithPrimitiveCollections {
 
@@ -28,8 +31,8 @@ public class ModelWithPrimitiveCollections {
     @JsonProperty(value = "Longs")
     private Long[] longs;
 
-//    @JsonProperty(value = "Points")
-//    private PointGeometry[] points;
+    @JsonProperty(value = "Points")
+    private GeoPoint[] points;
 
     @JsonProperty(value = "Strings")
     private String[] strings;
@@ -44,65 +47,65 @@ public class ModelWithPrimitiveCollections {
     }
 
     public ModelWithPrimitiveCollections bools(Boolean[] bools) {
-        this.bools = bools;
+        this.bools = CoreUtils.clone(bools);
         return this;
     }
 
     public Boolean[] bools() {
-        return  bools;
+        return CoreUtils.clone(bools);
     }
 
     public ModelWithPrimitiveCollections dates(OffsetDateTime[] dates) {
-        this.dates = dates;
+        this.dates = CoreUtils.clone(dates);
         return this;
     }
 
     public OffsetDateTime[] dates() {
-        return dates;
+        return CoreUtils.clone(dates);
     }
 
     public ModelWithPrimitiveCollections doubles(Double[] doubles) {
-        this.doubles = doubles;
+        this.doubles = CoreUtils.clone(doubles);
         return this;
     }
 
     public Double[] doubles() {
-        return doubles;
+        return CoreUtils.clone(doubles);
     }
 
     public ModelWithPrimitiveCollections ints(int[] ints) {
-        this.ints = ints;
+        this.ints = CoreUtils.clone(ints);
         return this;
     }
 
     public int[] ints() {
-        return ints;
+        return CoreUtils.clone(ints);
     }
 
     public ModelWithPrimitiveCollections longs(Long[] longs) {
-        this.longs = longs;
+        this.longs = CoreUtils.clone(longs);
         return this;
     }
 
     public Long[] longs() {
-        return longs;
+        return CoreUtils.clone(longs);
     }
 
-//    public ModelWithPrimitiveCollections points(PointGeometry[] points) {
-//        this.points = points;
-//        return this;
-//    }
-//
-//    public PointGeometry[] points() {
-//        return points;
-//    }
+    public ModelWithPrimitiveCollections points(GeoPoint[] points) {
+        this.points = CoreUtils.clone(points);
+        return this;
+    }
+
+    public GeoPoint[] points() {
+        return CoreUtils.clone(points);
+    }
 
     public ModelWithPrimitiveCollections strings(String[] strings) {
-        this.strings = strings;
+        this.strings = CoreUtils.clone(strings);
         return this;
     }
 
     public String[] strings() {
-        return strings;
+        return CoreUtils.clone(strings);
     }
 }

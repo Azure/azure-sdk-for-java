@@ -1,0 +1,29 @@
+jobs:
+  - template: ./smoke-test-job.yml
+    parameters:
+      Timeout: 30
+      MaxParallel: 2
+
+      TestTask:
+        task: Maven@3
+        displayName: 'Run Smoke Test Samples'
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'test'
+          options: '$(DefaultOptions) -Dtest=**/*Example.java,**/*Sample.java'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+        env:
+          AZURE_LOG_LEVEL: 2
+
+      Matrix:
+        Service Bus:
+          JavaTestVersion: '1.8'
+          Pool: "azsdk-pool-mms-win-2019-general"
+          OSVmImage: "MMS2019"
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          PomFile: sdk/servicebus/azure-messaging-servicebus/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/sdk/servicebus/'

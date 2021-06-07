@@ -17,13 +17,13 @@ import java.util.UUID;
 @Fluent
 public final class AnomalyFeedback extends MetricFeedback {
     /*
-     * the start timestamp of feedback timerange
+     * the start timestamp of feedback time range
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * the end timestamp of feedback timerange, when equals to startTime means
+     * the end timestamp of feedback time range, when equals to startTime means
      * only one timestamp
      */
     @JsonProperty(value = "endTime", required = true)
@@ -48,7 +48,7 @@ public final class AnomalyFeedback extends MetricFeedback {
     private AnomalyDetectionConfiguration anomalyDetectionConfigurationSnapshot;
 
     /**
-     * Get the startTime property: the start timestamp of feedback timerange.
+     * Get the startTime property: the start timestamp of feedback time range.
      *
      * @return the startTime value.
      */
@@ -57,7 +57,7 @@ public final class AnomalyFeedback extends MetricFeedback {
     }
 
     /**
-     * Set the startTime property: the start timestamp of feedback timerange.
+     * Set the startTime property: the start timestamp of feedback time range.
      *
      * @param startTime the startTime value to set.
      * @return the AnomalyFeedback object itself.
@@ -68,7 +68,7 @@ public final class AnomalyFeedback extends MetricFeedback {
     }
 
     /**
-     * Get the endTime property: the end timestamp of feedback timerange, when equals to startTime means only one
+     * Get the endTime property: the end timestamp of feedback time range, when equals to startTime means only one
      * timestamp.
      *
      * @return the endTime value.
@@ -78,7 +78,7 @@ public final class AnomalyFeedback extends MetricFeedback {
     }
 
     /**
-     * Set the endTime property: the end timestamp of feedback timerange, when equals to startTime means only one
+     * Set the endTime property: the end timestamp of feedback time range, when equals to startTime means only one
      * timestamp.
      *
      * @param endTime the endTime value to set.

@@ -14,7 +14,7 @@ public final class DecryptResult {
     /**
      * The decrypted content.
      */
-    private final byte[] plainText;
+    private final byte[] plaintext;
 
     /**
      * The encrypyion algorithm used for the encryption operation.
@@ -28,12 +28,12 @@ public final class DecryptResult {
 
     /**
      * Creates the instance of Decrypt Result holding decrypted content.
-     * @param plainText The decrypted content.
+     * @param plaintext The decrypted content.
      * @param algorithm The algorithm used to decrypt the content.
      * @param keyId The identifier of the key usd for the decryption operation.
      */
-    public DecryptResult(byte[] plainText, EncryptionAlgorithm algorithm, String keyId) {
-        this.plainText = CoreUtils.clone(plainText);
+    public DecryptResult(byte[] plaintext, EncryptionAlgorithm algorithm, String keyId) {
+        this.plaintext = CoreUtils.clone(plaintext);
         this.algorithm = algorithm;
         this.keyId = keyId;
     }
@@ -51,7 +51,7 @@ public final class DecryptResult {
      * @return The decrypted content.
      */
     public byte[] getPlainText() {
-        return CoreUtils.clone(plainText);
+        return CoreUtils.clone(plaintext);
     }
 
     /**

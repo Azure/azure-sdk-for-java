@@ -3,76 +3,31 @@
 
 package com.azure.spring.integration.test.support.reactor;
 
-import com.google.common.collect.ImmutableMap;
 import com.azure.spring.integration.core.api.reactor.SendOperation;
-import org.junit.Test;
+import com.google.common.collect.ImmutableMap;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
+import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SendOperationTest<O extends SendOperation> {
 
-    protected O sendOperation;
-    protected String payload = "payload";
-    protected Mono<Void> mono = Mono.empty();
-    protected String destination = "event-hub";
     protected String consumerGroup = "consumer-group";
-    protected Message<?> message =
-        new GenericMessage<>("testPayload", ImmutableMap.of("key1", "value1", "key2", "value2"));
+    protected String destination = "event-hub";
+    protected Message<?> message = new GenericMessage<>("testPayload",
+        ImmutableMap.of("key1", "value1", "key2", "value2"));
+    protected Mono<Void> mono = Mono.empty();
+    protected String payload = "payload";
+    protected O sendOperation;
 
-    public O getSendOperation() {
-        return sendOperation;
-    }
+    protected abstract void setupError(String errorMessage);
 
-    public void setSendOperation(O sendOperation) {
-        this.sendOperation = sendOperation;
-    }
-
-    public String getPayload() {
-        return payload;
-    }
-
-    public void setPayload(String payload) {
-        this.payload = payload;
-    }
-
-    public Mono<Void> getMono() {
-        return mono;
-    }
-
-    public void setMono(Mono<Void> mono) {
-        this.mono = mono;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public String getConsumerGroup() {
-        return consumerGroup;
-    }
-
-    public void setConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-    }
-
-    public Message<?> getMessage() {
-        return message;
-    }
-
-    public void setMessage(Message<?> message) {
-        this.message = message;
-    }
 
     @Test
     public void testSend() {
@@ -82,11 +37,12 @@ public abstract class SendOperationTest<O extends SendOperation> {
         verifySendCalled(1);
     }
 
-    @Test(expected = NestedRuntimeException.class)
+    @Test
     public void testSendCreateSenderFailure() {
         whenSendWithException();
 
-        this.sendOperation.sendAsync(destination, this.message, null).block();
+        assertThrows(NestedRuntimeException.class, () -> this.sendOperation.sendAsync(destination, this.message,
+            null).block());
     }
 
     @Test
@@ -103,12 +59,41 @@ public abstract class SendOperationTest<O extends SendOperation> {
         }
     }
 
-    protected abstract void setupError(String errorMessage);
+    protected abstract void verifyGetClientCreator(int times);
 
     protected abstract void verifySendCalled(int times);
 
     protected abstract void whenSendWithException();
 
-    protected abstract void verifyGetClientCreator(int times);
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
 
+    public void setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+    }
+
+    public Mono<Void> getMono() {
+        return mono;
+    }
+
+    public void setMono(Mono<Void> mono) {
+        this.mono = mono;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
+
+    public O getSendOperation() {
+        return sendOperation;
+    }
+
+    public void setSendOperation(O sendOperation) {
+        this.sendOperation = sendOperation;
+    }
 }

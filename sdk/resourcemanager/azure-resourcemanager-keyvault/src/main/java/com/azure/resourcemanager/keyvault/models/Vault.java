@@ -8,6 +8,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.models.VaultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
@@ -19,7 +21,10 @@ import java.util.List;
 /** An immutable client-side representation of an Azure Key Vault. */
 @Fluent
 public interface Vault
-    extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>, Updatable<Vault.Update> {
+    extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>, Updatable<Vault.Update>,
+    SupportsListingPrivateLinkResource,
+    SupportsUpdatingPrivateEndpointConnection {
+
     /** @return an authenticated Key Vault secret client */
     SecretAsyncClient secretClient();
 
@@ -51,6 +56,11 @@ public interface Vault
      *     the same tenant ID as the key vault's tenant ID.
      */
     List<AccessPolicy> accessPolicies();
+
+    /**
+     * @return whether role based access control (RBAC) for authorization of data access is enabled.
+     */
+    boolean roleBasedAccessControlEnabled();
 
     /**
      * @return whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key
@@ -143,6 +153,15 @@ public interface Vault
              * @return the first stage of the access policy definition
              */
             AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy();
+
+            /**
+             * Enables role based access control (RBAC) for authorization of data access.
+             *
+             * It overrides access policies configure.
+             *
+             * @return the next stage of key vault definition
+             */
+            WithCreate withRoleBasedAccessControl();
         }
 
         /** A key vault definition allowing the networkAcl to be set. */
@@ -238,8 +257,12 @@ public interface Vault
             /**
              * Enable soft delete for the key vault.
              *
+             * @deprecated soft-delete protection is enabled by default.
+             * Users will no longer be able to opt out of or turn off soft-delete.
+             *
              * @return the next stage of key vault definition
              */
+            @Deprecated
             WithCreate withSoftDeleteEnabled();
 
             /**
@@ -319,6 +342,22 @@ public interface Vault
              * @return the update stage of the access policy definition
              */
             AccessPolicy.Update updateAccessPolicy(String objectId);
+
+            /**
+             * Enables role based access control (RBAC) for authorization of data access.
+             *
+             * It overrides access policies configure.
+             *
+             * @return the update stage of the access policy definition
+             */
+            Update withRoleBasedAccessControl();
+
+            /**
+             * Disables role based access control (RBAC) for authorization of data access.
+             *
+             * @return the update stage of the access policy definition
+             */
+            Update withoutRoleBasedAccessControl();
         }
 
         /** A key vault update allowing the NetworkRuleSet to be set. */
@@ -414,8 +453,12 @@ public interface Vault
             /**
              * Enable soft delete for the key vault.
              *
+             * @deprecated soft-delete protection is enabled by default.
+             * Users will no longer be able to opt out of or turn off soft-delete.
+             *
              * @return the next stage of key vault definition
              */
+            @Deprecated
             Update withSoftDeleteEnabled();
 
             /**

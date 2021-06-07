@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,7 +35,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
     }
 
     @AfterAll
@@ -51,7 +52,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<String> actualDimensionValues = client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME,
-            new ListMetricDimensionValuesOptions().setTop(20).setSkip(20), Context.NONE)
+            new ListMetricDimensionValuesOptions().setMaxPageSize(20).setSkip(20), Context.NONE)
             .stream().sorted().collect(Collectors.toList());
 
         Assertions.assertIterableEquals(EXPECTED_DIMENSION_VALUES, actualDimensionValues);
@@ -95,6 +96,8 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         client.listMetricSeriesDefinitions(METRIC_ID,
                 TIME_SERIES_START_TIME)
+            .stream()
+            .limit(LISTING_SERIES_DEFINITIONS_LIMIT)
             .forEach(metricSeriesDefinition -> {
                 assertNotNull(metricSeriesDefinition.getMetricId());
                 assertNotNull(metricSeriesDefinition.getSeriesKey());
@@ -111,7 +114,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions
             = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
-            new ListMetricSeriesDefinitionOptions()
+                new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
                     }}), Context.NONE)
