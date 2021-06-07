@@ -54,6 +54,7 @@ public interface AmqpConnection extends Disposable, AsyncCloseable {
      * Creates a new session with the given session name.
      *
      * @param sessionName Name of the session.
+     *
      * @return The AMQP session that was created.
      */
     Mono<AmqpSession> createSession(String sessionName);
@@ -62,6 +63,7 @@ public interface AmqpConnection extends Disposable, AsyncCloseable {
      * Removes a session with the {@code sessionName} from the AMQP connection.
      *
      * @param sessionName Name of the session to remove.
+     *
      * @return {@code true} if a session with the name was removed; {@code false} otherwise.
      */
     boolean removeSession(String sessionName);
@@ -85,7 +87,10 @@ public interface AmqpConnection extends Disposable, AsyncCloseable {
      * Gets or creates the management node.
      *
      * @param entityPath Entity for which to get the management node of.
+     *
      * @return A Mono that completes with the management node.
+     *
+     * @throws UnsupportedOperationException if there is no implementation of fetching a management node.
      */
     default Mono<AmqpManagementNode> getManagementNode(String entityPath) {
         return Mono.error(new UnsupportedOperationException("This has not been implemented."));
