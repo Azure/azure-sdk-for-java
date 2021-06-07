@@ -10,7 +10,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The call state change event. */
 @Fluent
-public final class CallLegStateChangedEvent {
+public final class CallLegStateChangedEvent extends CallingServerEventBase {
+    /**
+     * The event type.
+     */
+    public static final String EVENT_TYPE = "Microsoft.Communication.CallLegStateChanged";
+
     /*
      * The conversation.id.
      */
@@ -96,9 +101,6 @@ public final class CallLegStateChangedEvent {
      * @return {@link CallLegStateChangedEvent} event.
      */
     public static CallLegStateChangedEvent deserialize(BinaryData eventData) {
-        if (eventData == null) {
-            return null;
-        }
-        return eventData.toObject(CallLegStateChangedEvent.class);
+        return eventData == null ? null : eventData.toObject(CallLegStateChangedEvent.class);
     }
 }

@@ -10,7 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The subscribe to tone event. */
 @Fluent
-public final class ToneReceivedEvent {
+public final class ToneReceivedEvent extends CallingServerEventBase {
+    /**
+     * The event type.
+     */
+    public static final String EVENT_TYPE = "Microsoft.Communication.DtmfReceived";
     /*
      * The tone info.
      */
@@ -70,9 +74,6 @@ public final class ToneReceivedEvent {
      * @return {@link ToneReceivedEvent} event.
      */
     public static ToneReceivedEvent deserialize(BinaryData eventData) {
-        if (eventData == null) {
-            return null;
-        }
-        return eventData.toObject(ToneReceivedEvent.class);
+        return eventData == null ? null : eventData.toObject(ToneReceivedEvent.class);
     }
 }

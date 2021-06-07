@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -21,9 +20,9 @@ import com.azure.communication.common.UnknownIdentifier;
 
 public class CommunicationIdentifierConverter {
     /**
-     * Convert CommunicationIdentifierModel into CommunicationIdentifier
-     * @param identifier CommunicationIdentifierModel to be converted
-     * @return CommunicationIdentifier
+     * Convert {@link CommunicationIdentifierModel}  into CommunicationIdentifier
+     * @param identifier {@link CommunicationIdentifierModel} to be converted
+     * @return {@link CommunicationIdentifier}
      */
     public static CommunicationIdentifier convert(CommunicationIdentifierModel identifier) {
         assertSingleType(identifier);
@@ -72,17 +71,19 @@ public class CommunicationIdentifierConverter {
         }
 
         if (presentProperties.size() > 1) {
-            throw new IllegalArgumentException(String.format("Only one of the identifier models in %s should be present.",
-                String.join(", ", presentProperties)));
+            throw new IllegalArgumentException(
+                String.format(
+                    "Only one of the identifier models in %s should be present.",
+                    String.join(", ", presentProperties)));
         }
     }
 
     /**
-     * Convert CommunicationIdentifier into CommunicationIdentifierModel
-     * @param identifier CommunicationIdentifier object to be converted
-     * @return CommunicationIdentifierModel
+     * Convert {@link CommunicationIdentifier} into {@link CommunicationIdentifierModel}
+     * @param identifier {@link CommunicationIdentifier} object to be converted
+     * @return {@link CommunicationIdentifierModel}
      * @throws IllegalArgumentException when identifier is an unknown class derived from
-     *          CommunicationIdentifier
+     *          {@link CommunicationIdentifier}
      */
     public static CommunicationIdentifierModel convert(CommunicationIdentifier identifier)
         throws IllegalArgumentException {
