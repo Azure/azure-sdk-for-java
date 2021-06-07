@@ -934,5 +934,5 @@ public final class SystemEventMappingNames {
         return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);
     }
 
-    private SystemEventMappingNames() {}
+    private SystemEventMappingNames() { }
 }

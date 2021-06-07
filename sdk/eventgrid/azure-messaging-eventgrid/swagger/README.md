@@ -134,7 +134,7 @@ public class EventGridCustomization extends Customization {
         "        return Collections.unmodifiableMap(SYSTEM_EVENT_MAPPINGS);\n" +
         "    }\n" +
         "\n" +
-        "    private SystemEventMappingNames() {\n" +
+        "    private SystemEventMappingNames() { \n" +
         "    }";
 
     @Override
