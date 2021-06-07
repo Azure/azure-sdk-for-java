@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.azure.data.tables.implementation.TableUtils.computeHMac256;
+import static com.azure.data.tables.implementation.TableSasUtils.computeHmac256;
 import static com.azure.data.tables.implementation.TableUtils.parseQueryStringSplitValues;
 
 /**
@@ -41,24 +41,27 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      *
      * @param context The context of the request.
      * @param next The next policy in the pipeline.
+     *
      * @return A reactive result containing the HTTP response.
      */
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String authorizationValue = generateAuthorizationHeader(context.getHttpRequest().getUrl(),
             context.getHttpRequest().getHeaders().toMap());
         context.getHttpRequest().setHeader("Authorization", authorizationValue);
+
         return next.process();
     }
 
     /**
      * Generates the Auth Headers
      *
-     * @param requestUrl the URL which the request is going to
-     * @param headers the headers of the request
-     * @return the auth header
+     * @param requestUrl The URL which the request is going to.
+     * @param headers The headers of the request.
+     *
+     * @return The auth header
      */
     String generateAuthorizationHeader(URL requestUrl, Map<String, String> headers) {
-        String signature = computeHMac256(credential.getAzureNamedKey().getKey(), buildStringToSign(requestUrl,
+        String signature = computeHmac256(credential.getAzureNamedKey().getKey(), buildStringToSign(requestUrl,
             headers));
         return String.format(AUTHORIZATION_HEADER_FORMAT, credential.getAzureNamedKey().getName(), signature);
     }
@@ -68,6 +71,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      *
      * @param requestUrl The Url which the request is going to.
      * @param headers The headers of the request.
+     *
      * @return A string to sign for the request.
      */
     private String buildStringToSign(URL requestUrl, Map<String, String> headers) {
@@ -87,6 +91,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      *
      * @param headers A map of the headers which the request has.
      * @param headerName The name of the header to get the standard header for.
+     *
      * @return The standard header for the given name.
      */
     private String getStandardHeaderValue(Map<String, String> headers, String headerName) {
@@ -100,6 +105,7 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
      * Returns the canonicalized resource needed for a request.
      *
      * @param requestUrl The url of the request.
+     *
      * @return The string that is the canonicalized resource.
      */
     private String getCanonicalizedResource(URL requestUrl) {
@@ -132,5 +138,14 @@ public final class TableAzureNamedKeyCredentialPolicy implements HttpPipelinePol
         }
 
         return canonicalizedResource.toString();
+    }
+
+    /**
+     * Get the {@link AzureNamedKeyCredential} linked to the policy.
+     *
+     * @return The {@link AzureNamedKeyCredential}.
+     */
+    public AzureNamedKeyCredential getCredential() {
+        return credential;
     }
 }

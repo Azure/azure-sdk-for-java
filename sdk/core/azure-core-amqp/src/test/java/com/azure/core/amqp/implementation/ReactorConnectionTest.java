@@ -680,12 +680,12 @@ class ReactorConnectionTest {
         connection2.getReactorConnection().subscribe();
 
         // Act and Assert
-        StepVerifier.create(connection2.dispose(signal))
+        StepVerifier.create(connection2.closeAsync(signal))
             .verifyComplete();
 
         assertTrue(connection2.isDisposed());
 
-        StepVerifier.create(connection2.dispose(signal))
+        StepVerifier.create(connection2.closeAsync(signal))
             .verifyComplete();
     }
 

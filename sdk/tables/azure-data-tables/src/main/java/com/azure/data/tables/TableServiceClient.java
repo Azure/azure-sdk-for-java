@@ -5,6 +5,7 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -18,6 +19,7 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableServiceProperties;
 import com.azure.data.tables.models.TableServiceStatistics;
+import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -69,6 +71,24 @@ public final class TableServiceClient {
      */
     public TableServiceVersion getServiceVersion() {
         return client.getServiceVersion();
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified
+     * {@link TableAccountSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}.
+     * <p>See {@link TableAccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
+     *
+     * @return A {@link String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
+     */
+    public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues) {
+        return client.generateAccountSas(tableAccountSasSignatureValues);
     }
 
     /**

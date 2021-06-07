@@ -5,6 +5,20 @@
 ### New Features
 
 - Introduced the `TableTransactionAction` class and the `TableTransactionActionType` enum.
+- Added support for generating SAS tokens at the Account and Table Service level in all clients.
+- Added the following methods to `TableClient`, `TableAsyncClient`:
+    - `listAccessPolicies()`
+    - `setAccessPolicies()`
+    - `setAccessPoliciesWithResponse()`
+    - `generateSasToken()`
+- Added the following methods to `TableServiceClient`, `TableServiceAsyncClient`:
+    - `getProperties()`
+    - `getPropertiesWithResponse()`
+    - `setProperties()`
+    - `setPropertiesWithResponse()`
+    - `getStatistics()`
+    - `getStatisticsWithResponse()`
+    - `generateAccountSasToken()`
 
 ### Breaking Changes
 
@@ -22,6 +36,7 @@
     - `updateEntity(TableEntity entity, TableEntityUpdateMode updateMode,
       boolean ifUnchanged)`
     - `getEntity(String partitionKey, String rowKey, List<String> select)`
+- Client builders now also throw an `IllegalStateException` when calling `buildClient()` and `buildAsyncClient()` if multiple forms of authentication are provided, with the exception of `sasToken` + `connectionString`; or if `endpoint` and/or `sasToken` are set alongside a `connectionString` and the endpoint and/or SAS token in the latter are different than the former, respectively.
 
 ## 12.0.0-beta.7 (2021-05-15)
 
