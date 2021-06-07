@@ -42,6 +42,8 @@ public class AccountSasImplUtil {
 
     private String resourceTypes;
 
+    private String encryptionScope;
+
     /**
      * Creates a new {@link AccountSasImplUtil} with the specified parameters
      *
@@ -56,6 +58,7 @@ public class AccountSasImplUtil {
         this.sasIpRange = sasValues.getSasIpRange();
         this.services = sasValues.getServices();
         this.resourceTypes = sasValues.getResourceTypes();
+        this.encryptionScope = sasValues.getEncryptionScope();
     }
 
     /**
@@ -95,6 +98,7 @@ public class AccountSasImplUtil {
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             this.version,
+            this.encryptionScope == null ? "" : this.encryptionScope,
             "" // Account SAS requires an additional newline character
         );
     }
@@ -115,6 +119,7 @@ public class AccountSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
     }

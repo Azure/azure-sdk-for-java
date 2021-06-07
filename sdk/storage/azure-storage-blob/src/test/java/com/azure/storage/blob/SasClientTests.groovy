@@ -328,6 +328,49 @@ class SasClientTests extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "account sas encryption scope"() {
+        setup:
+        def scope = "scope-1"
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setDeleteVersionPermission(true)
+            .setListPermission(true)
+            .setUpdatePermission(true)
+            .setProcessMessages(true)
+            .setFilterTagsPermission(true)
+            .setAddPermission(true)
+            .setTagsPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        sasValues.setEncryptionScope(scope)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        when:
+        client.upload(data.defaultInputStream, data.defaultDataSize, true)
+
+        then:
+        notThrown(BlobStorageException)
+
+        when:
+        def os = new ByteArrayOutputStream()
+        def resp = client.downloadWithResponse(os, null, null, null, false, null, null)
+
+        then:
+        os.toByteArray() == data.defaultBytes
+        resp.getDeserializedHeaders().getEncryptionScope() == scope
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Ignore // TODO (gapra): Record and undo ignore when there is an account in prod
     def "blob sas encryption scope user delegation"() {
         setup:

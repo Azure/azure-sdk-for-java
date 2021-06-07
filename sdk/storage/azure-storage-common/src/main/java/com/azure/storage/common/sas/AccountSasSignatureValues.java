@@ -35,6 +35,8 @@ public final class AccountSasSignatureValues {
 
     private String resourceTypes;
 
+    private String encryptionScope;
+
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
      * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
@@ -230,6 +232,24 @@ public final class AccountSasSignatureValues {
     @Deprecated
     public AccountSasSignatureValues setResourceTypes(String resourceTypes) {
         this.resourceTypes = resourceTypes;
+        return this;
+    }
+
+    /**
+     * @return the encryption scope value for the SAS. This is only applicable to the blob service.
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
+     * Sets the encryption scope value for the SAS. This is only applicable to the blob service.
+     *
+     * @param encryptionScope The encryption scope to use when sending requests authorized with this SAS.
+     * @return the updated AccountSasSignatureValues object
+     */
+    public AccountSasSignatureValues setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 
