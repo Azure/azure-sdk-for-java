@@ -158,6 +158,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.linguafranca.pwdb</groupId>
+          <artifactId>KeePassJava2</artifactId>
+        </exclusion>
+      </exclusions>
       <optional>true</optional>
     </dependency>
 
