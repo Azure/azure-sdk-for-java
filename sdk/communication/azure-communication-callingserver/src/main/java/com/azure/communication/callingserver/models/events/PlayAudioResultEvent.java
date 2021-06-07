@@ -11,7 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The play audio result event. */
 @Fluent
-public final class PlayAudioResultEvent {
+public final class PlayAudioResultEvent extends CallingServerEventBase {
+    /**
+     * The event type.
+     */
+    public static final String EVENT_TYPE = "Microsoft.Communication.PlayAudioResult";
     /*
      * The result details.
      */
@@ -97,9 +101,6 @@ public final class PlayAudioResultEvent {
      * @return {@link PlayAudioResultEvent} event.
      */
     public static PlayAudioResultEvent deserialize(BinaryData eventData) {
-        if (eventData == null) {
-            return null;
-        }
-        return eventData.toObject(PlayAudioResultEvent.class);
+        return eventData == null ? null : eventData.toObject(PlayAudioResultEvent.class);
     }
 }
