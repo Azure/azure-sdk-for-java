@@ -162,6 +162,7 @@ public class ManagementChannel implements EventHubManagementNode {
                 .handle((message, sink) -> {
                     if (RequestResponseUtils.isSuccessful(message)) {
                         sink.next(messageSerializer.deserialize(message, responseType));
+                        return;
                     }
 
                     final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
