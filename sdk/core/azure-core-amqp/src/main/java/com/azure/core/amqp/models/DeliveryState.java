@@ -13,7 +13,7 @@ import com.azure.core.util.ExpandableStringEnum;
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-txn-work">Transactional
  *     work</a>
  */
-public class DeliveryState extends ExpandableStringEnum<DeliveryState> {
+public final class DeliveryState extends ExpandableStringEnum<DeliveryState> {
     /**
      * Indicates successful processing at the receiver.
      */
