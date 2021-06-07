@@ -9,8 +9,6 @@ import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.CreateCallResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -51,23 +49,21 @@ public class ReadmeSamples {
 
         CommunicationIdentifier source = new CommunicationUserIdentifier("<acs-user-identity>");
 
-        List<CommunicationIdentifier> targets = new ArrayList<>();
+
 
         CommunicationIdentifier firstCallee = new CommunicationUserIdentifier("<acs-user-identity-1>");
         CommunicationIdentifier secondCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
 
-        targets.add(firstCallee);
-        targets.add(secondCallee);
+        CommunicationIdentifier[] targets = new CommunicationIdentifier[] { firstCallee, secondCallee };
 
         String callbackUri = "<callback-uri-for-notification>";
 
-        List<CallModality> requestedModalities = new ArrayList<>();
-        requestedModalities.add(CallModality.AUDIO);
-        requestedModalities.add(CallModality.VIDEO);
+        CallModality[] requestedModalities = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
 
-        List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
-        requestedCallEvents.add(EventSubscriptionType.DTMF_RECEIVED);
-        requestedCallEvents.add(EventSubscriptionType.PARTICIPANTS_UPDATED);
+        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
+            EventSubscriptionType.DTMF_RECEIVED,
+            EventSubscriptionType.PARTICIPANTS_UPDATED
+        };
 
         CreateCallOptions createCallOptions = new CreateCallOptions(
             callbackUri,

@@ -12,7 +12,12 @@ import java.time.OffsetDateTime;
 
 /** The call recording state change event. */
 @Fluent
-public final class CallRecordingStateChangeEvent {
+public final class CallRecordingStateChangeEvent extends CallingServerEventBase {
+    /**
+     * The event type.
+     */
+    public static final String EVENT_TYPE = "Microsoft.Communication.CallRecordingStateChange";
+
     /*
      * The call recording id
      */
@@ -124,9 +129,6 @@ public final class CallRecordingStateChangeEvent {
      * @return {@link CallRecordingStateChangeEvent} event.
      */
     public static CallRecordingStateChangeEvent deserialize(BinaryData eventData) {
-        if (eventData == null) {
-            return null;
-        }
-        return eventData.toObject(CallRecordingStateChangeEvent.class);
+        return eventData == null ? null : eventData.toObject(CallRecordingStateChangeEvent.class);
     }
 }

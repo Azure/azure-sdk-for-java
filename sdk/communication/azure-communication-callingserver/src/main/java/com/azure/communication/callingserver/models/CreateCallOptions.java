@@ -3,13 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.azure.communication.common.PhoneNumberIdentifier;
 
 /**
- * The request payload for creating a call.
+ * The options for creating a call.
  */
 public final class CreateCallOptions {
 
@@ -28,10 +25,10 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Set the alternate caller id of the source to be used for pstn target.
+     * Set the alternate caller id of the source to be used when target is phone number.
      *
      * @param alternateCallerId the alternate caller id value to set.
-     * @return the alternate caller id object itself.
+     * @return the CreateCallOptions object itself.
      */
     public CreateCallOptions setAlternateCallerId(PhoneNumberIdentifier alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
@@ -80,41 +77,46 @@ public final class CreateCallOptions {
     /**
      * The requested modalities.
      */
-    private final List<CallModality> requestedModalities;
+    private final CallModality[] requestedModalities;
 
     /**
      * Get the requested modalities.
      *
      * @return the requested modalities object itself.
      */
-    public List<CallModality> getRequestedModalities() {
-        return this.requestedModalities;
+    public CallModality[] getRequestedModalities() {
+        CallModality[] requestedModalities = new CallModality[this.requestedModalities.length];
+        System.arraycopy(this.requestedModalities, 0, requestedModalities, 0, this.requestedModalities.length);
+        return requestedModalities;
     }
 
     /**
      * The requested call events to subscribe to.
      */
-    private final List<EventSubscriptionType> requestedCallEvents;
+    private final EventSubscriptionType[] requestedCallEvents;
 
     /**
      * Get the requested call events to subscribe to.
      *
      * @return the requested call events to subscribe to object itself.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
-        return this.requestedCallEvents;
+    public EventSubscriptionType[] getRequestedCallEvents() {
+        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[this.requestedCallEvents.length];
+        System.arraycopy(this.requestedCallEvents, 0, requestedCallEvents, 0, this.requestedCallEvents.length);
+        return requestedCallEvents;
     }
 
     /**
      * Initializes a new instance of CreateCallResult.
-     * 
+     *
      * @param callbackUri the callback URI.
      * @param requestedModalities the requested modalities.
      * @param requestedCallEvents the requested call events to subscribe to.
      * @throws IllegalArgumentException if any parameters are null.
      */
-    public CreateCallOptions(String callbackUri, Iterable<CallModality> requestedModalities,
-            Iterable<EventSubscriptionType> requestedCallEvents) {
+    public CreateCallOptions(String callbackUri,
+                             CallModality[] requestedModalities,
+                             EventSubscriptionType[] requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }
@@ -128,10 +130,10 @@ public final class CreateCallOptions {
 
         this.callbackUri = callbackUri;
 
-        this.requestedModalities = new ArrayList<>();
-        requestedModalities.forEach(this.requestedModalities::add);
+        this.requestedModalities = new CallModality[requestedModalities.length];
+        System.arraycopy(requestedModalities, 0, this.requestedModalities, 0, requestedModalities.length);
 
-        this.requestedCallEvents = new ArrayList<>();
-        requestedCallEvents.forEach(this.requestedCallEvents::add);
+        this.requestedCallEvents = new EventSubscriptionType[requestedCallEvents.length];
+        System.arraycopy(requestedCallEvents, 0, this.requestedCallEvents, 0, requestedCallEvents.length);
     }
 }

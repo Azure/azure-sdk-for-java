@@ -11,7 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InviteParticipantsResultEvent model. */
 @Fluent
-public final class InviteParticipantsResultEvent {
+public final class InviteParticipantsResultEvent extends CallingServerEventBase {
+    /**
+     * The event type.
+     */
+    public static final String EVENT_TYPE = "Microsoft.Communication.InviteParticipantResult";
     /*
      * The result details.
      */
@@ -97,9 +101,6 @@ public final class InviteParticipantsResultEvent {
      * @return {@link InviteParticipantsResultEvent} event.
      */
     public static InviteParticipantsResultEvent deserialize(BinaryData eventData) {
-        if (eventData == null) {
-            return null;
-        }
-        return eventData.toObject(InviteParticipantsResultEvent.class);
+        return eventData == null ? null : eventData.toObject(InviteParticipantsResultEvent.class);
     }
 }
