@@ -107,14 +107,10 @@ public final class ContainerRegistryClientBuilder {
     /**
      * Sets the authentication scope to be used for getting AAD credentials.
      *
-     * <p>NOTE - This is a temporary property that is added into the system until the service
-     * exposes this directly via the challenge based auth scheme.
-     * If this property is not provided then by default Azure public scope is used for authentication.
-     *</p>
-     *
-     * <p>
-     * Example:- For Azure public cloud this value is same as AzureEnvironment.Azure.managementEndpoint().
-     * For more information - https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities#azure-resource-manager
+     * <p> To connect to a different cloud, set this value to "&lt;resource-id&gt;/.default",
+     * where &lt;resource-id&gt; is one of the Resource IDs listed at
+     * https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities#azure-resource-manager.
+     * For example, to connect to the Azure Germany cloud, {@code authenticationScope} is set to "https://management.microsoftazure.de/.default".
      * </p>
      *
      * @param authenticationScope ARM management scope associated with the given registry.

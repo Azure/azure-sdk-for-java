@@ -59,6 +59,8 @@ public class TestUtils {
     public static final String QUARANTINE_STATE;
     public static final String QUARANTINE_DETAILS;
     public static final int HTTP_STATUS_CODE_202;
+    public static final String AZURE_GLOBAL_AUTHENTICATION_SCOPE;
+    public static final String AZURE_GOV_AUTHENTICATION_SCOPE;
 
     static {
         CONFIGURATION = Configuration.getGlobalConfiguration().clone();
@@ -95,6 +97,8 @@ public class TestUtils {
         QUARANTINE_STATE = "quarantine_state";
         QUARANTINE_DETAILS = "quaratine_details";
         HTTP_STATUS_CODE_202 = 202;
+        AZURE_GLOBAL_AUTHENTICATION_SCOPE = "https://management.azure.com/.default";
+        AZURE_GOV_AUTHENTICATION_SCOPE = "https://management.usgovcloudapi.net/.default";
     }
 
     static class FakeCredentials implements TokenCredential {
