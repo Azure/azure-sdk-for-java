@@ -78,6 +78,9 @@
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
 
+# PRLabel: %Mixed Reality Authentication
+/sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
+
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                               @MalcolmTyrrell
 
