@@ -460,6 +460,57 @@ class SparkE2EQueryITest
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
   }
 
+  "spark query" can "when forceNullableProperties is false and rows have different schema" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val samplingSize = 100
+    val expectedResults = samplingSize * 2
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // Inserting documents with slightly different schema
+    for( _ <- 1 to expectedResults) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      val arr = objectNode.putArray("object_array")
+      val nested = Utils.getSimpleObjectMapper.createObjectNode()
+      nested.put("A", "test")
+      nested.put("B", "test")
+      arr.add(nested)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    for( _ <- 1 to samplingSize) {
+      val objectNode2 = Utils.getSimpleObjectMapper.createObjectNode()
+      val arr = objectNode2.putArray("object_array")
+      val nested = Utils.getSimpleObjectMapper.createObjectNode()
+      nested.put("A", "test")
+      arr.add(nested)
+      objectNode2.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode2).block()
+    }
+
+    val cfgWithInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.forceNullableProperties" -> "false",
+      "spark.cosmos.read.inferSchema.samplingSize" -> samplingSize.toString,
+      "spark.cosmos.read.inferSchema.query" -> "SELECT * FROM c ORDER BY c._ts",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
+    try {
+      dfWithInference.collect()
+      fail("Should have thrown an exception")
+    }
+    catch {
+      case inner: Exception =>
+        inner.toString.contains("The 1th field 'B' of input row cannot be null") shouldBe true
+    }
+  }
+
   "spark query" can "use custom sampling size" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
@@ -580,6 +631,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.forceNullableProperties" -> "false",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
@@ -650,6 +702,62 @@ class SparkE2EQueryITest
     fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe false
     fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe false
     fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe false
+  }
+
+  "spark query" can "return proper Cosmos specific query plan on explain with nullable properties" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+
+    val rawItem = s"""
+                     | {
+                     |   "id" : "${id}",
+                     |   "nestedObject" : {
+                     |     "prop1" : 5,
+                     |     "prop2" : "6"
+                     |   }
+                     | }
+                     |""".stripMargin
+
+    val objectNode = objectMapper.readValue(rawItem, classOf[ObjectNode])
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    container.createItem(objectNode).block()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.forceNullableProperties" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
+    val rowsArray = df.where("nestedObject.prop2 = '6'").collect()
+    rowsArray should have size 1
+
+    var output = new java.io.ByteArrayOutputStream()
+    Console.withOut(output) {
+      df.explain()
+    }
+    var queryPlan = output.toString.replaceAll("#\\d+", "#x")
+    logInfo(s"Query Plan: $queryPlan")
+    queryPlan.contains("Cosmos Query: SELECT * FROM r") shouldEqual true
+
+    output = new java.io.ByteArrayOutputStream()
+    Console.withOut(output) {
+      df.where("nestedObject.prop2 = '6'").explain()
+    }
+    queryPlan = output.toString.replaceAll("#\\d+", "#x")
+    logInfo(s"Query Plan: $queryPlan")
+    val expected = s"Cosmos Query: SELECT * FROM r WHERE NOT(IS_NULL(r['nestedObject'])) " +
+      s"AND r['nestedObject']['prop2']=" +
+      s"@param0${System.getProperty("line.separator")} > param: @param0 = 6"
+    queryPlan.contains(expected) shouldEqual true
+
+    val item = rowsArray(0)
+    item.getAs[String]("id") shouldEqual id
   }
 
   //scalastyle:on magic.number

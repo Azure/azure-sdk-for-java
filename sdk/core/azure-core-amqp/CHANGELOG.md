@@ -4,6 +4,9 @@
 
 ### New Features
 - Exposing CbsAuthorizationType.
+- Exposing ManagementNode that can perform management and metadata operations on an AMQP message broker.
+- AmqpConnection, AmqpSession, AmqpSendLink, and AmqpReceiveLink extend from AsyncCloseable.
+- Delivery outcomes and delivery states are added.
 
 ### Bug Fixes
 - Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
