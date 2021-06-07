@@ -222,7 +222,7 @@ class CosmosConfigSpec extends UnitSpec {
       "spark.cosmos.read.inferSchema.query" -> customQuery
     )
 
-    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
     config.inferSchemaSamplingSize shouldEqual 50
     config.inferSchemaEnabled shouldBe false
     config.includeSystemProperties shouldBe true
@@ -233,7 +233,7 @@ class CosmosConfigSpec extends UnitSpec {
   it should "provide default schema inference config" in {
     val userConfig = Map[String, String]()
 
-    val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+    val config = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
 
     config.inferSchemaSamplingSize shouldEqual 1000
     config.inferSchemaEnabled shouldBe true
