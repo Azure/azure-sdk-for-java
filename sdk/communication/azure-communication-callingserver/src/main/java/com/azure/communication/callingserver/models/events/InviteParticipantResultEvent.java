@@ -12,10 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The InviteParticipantsResultEvent model. */
 @Fluent
 public final class InviteParticipantsResultEvent extends CallingServerEventBase {
-    /**
-     * The event type.
-     */
-    public static final String EVENT_TYPE = "Microsoft.Communication.InviteParticipantResult";
     /*
      * The result details.
      */
