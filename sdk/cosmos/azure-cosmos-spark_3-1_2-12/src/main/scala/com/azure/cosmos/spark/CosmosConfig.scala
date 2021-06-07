@@ -140,13 +140,13 @@ private object CosmosConfig {
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
     val iterator = serviceLoader.iterator()
     if (iterator.hasNext()) {
-        accountDataResolverCls = serviceLoader.iterator().next()
+        accountDataResolverCls = iterator.next()
     }
 
     var accountDataConfig : Map[String, String] = null
     if (accountDataResolverCls != null) {
         val linkedServiceNameOpt = tryGet(userProvidedOptions, SynapseLinkedService)
-        if (linkedServiceNameOpt != null) {
+        if (linkedServiceNameOpt.isDefined) {
             accountDataConfig = accountDataResolverCls.getAccountDataConfig(linkedServiceNameOpt)
         }
     }
