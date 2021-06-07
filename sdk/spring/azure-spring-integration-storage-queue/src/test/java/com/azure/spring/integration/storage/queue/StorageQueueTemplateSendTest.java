@@ -3,20 +3,24 @@
 
 package com.azure.spring.integration.storage.queue;
 
-import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
 import com.azure.spring.integration.test.support.reactor.SendOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.models.SendMessageResult;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueueOperation> {
 
     @Mock
@@ -25,7 +29,19 @@ public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueue
     @Mock
     private QueueAsyncClient mockClient;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
+    public void init() {
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        this.closeable.close();
+    }
+
+    @BeforeEach
     public void setup() {
         when(this.mockClientFactory.getOrCreateQueueClient(eq(destination))).thenReturn(mockClient);
         when(this.mockClient.sendMessage(anyString())).thenReturn(Mono.just(new SendMessageResult()));

@@ -1,5 +1,17 @@
 # Release History
 
+## 2.1.0-beta.1 (Unreleased)
+
+### New Features
+- Exposing CbsAuthorizationType.
+
+### Bug Fixes
+- Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
+
+## 2.0.6 (2021-05-24)
+### Bug Fixes
+- Fixed a bug that caused amqp connection not to retry when network error happened.
+
 ## 2.0.5 (2021-05-07)
 
 ### Dependency Updates

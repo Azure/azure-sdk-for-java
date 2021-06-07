@@ -4,7 +4,6 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.MetricEnrichedSeriesData;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestBase;
@@ -40,8 +39,9 @@ public class MetricEnrichedSeriesDataAsyncTest extends MetricEnrichedSeriesDataT
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
         PagedFlux<MetricEnrichedSeriesData> enrichedDataFlux
-            = client.listMetricEnrichedSeriesData(GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
+            = client.listMetricEnrichedSeriesData(
             GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
+            GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
             GetEnrichedSeriesDataInput.INSTANCE.startTime,
             GetEnrichedSeriesDataInput.INSTANCE.endTime);
 

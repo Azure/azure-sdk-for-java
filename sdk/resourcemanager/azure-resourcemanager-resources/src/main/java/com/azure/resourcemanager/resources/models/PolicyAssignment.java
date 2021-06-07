@@ -12,6 +12,9 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * An immutable client-side representation of an Azure policy assignment.
  */
@@ -42,6 +45,21 @@ public interface PolicyAssignment extends
      * @return the type of the policy assignment
      */
     String type();
+
+    /**
+     * @return the excluded scopes of the policy assignment
+     */
+    List<String> excludedScopes();
+
+    /**
+     * @return the enforcement mode of the policy assignment
+     */
+    EnforcementMode enforcementMode();
+
+    /**
+     * @return the parameters of the policy assignment
+     */
+    Map<String, ParameterValuesValue> parameters();
 
     /**
      * Container interface for all the definitions that need to be implemented.
@@ -126,13 +144,56 @@ public interface PolicyAssignment extends
         }
 
         /**
+         * A policy assignment allowing the excluded scopes to be set.
+         */
+        interface WithExcludedScopes {
+            /**
+             * Specifies the excluded scope of the policy assignment.
+             *
+             * @param scope the scope to be excluded from the policy assignment
+             * @return the next stage of policy assignment
+             */
+            WithCreate withExcludedScope(String scope);
+        }
+
+        /**
+         * A policy assignment allowing the parameters to be set.
+         */
+        interface WithParameters {
+            /**
+             * Specifies the parameter of the policy assignment.
+             *
+             * @param name the name of the parameter
+             * @param value the value of the parameter
+             * @return the next stage of policy assignment
+             */
+            WithCreate withParameter(String name, Object value);
+        }
+
+        /**
+         * A policy assignment allowing the enforcement mode to be set.
+         */
+        interface WithEnforcementMode {
+            /**
+             * Specifies the enforcement mode of the policy assignment.
+             *
+             * @param mode the enforcement mode of the policy assignment
+             * @return the next stage of policy assignment
+             */
+            WithCreate withEnforcementMode(EnforcementMode mode);
+        }
+
+        /**
          * A policy assignment with sufficient inputs to create a new policy
          * assignment in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
                 Creatable<PolicyAssignment>,
-                DefinitionStages.WithDisplayName {
+                DefinitionStages.WithDisplayName,
+                DefinitionStages.WithExcludedScopes,
+                DefinitionStages.WithParameters,
+                DefinitionStages.WithEnforcementMode {
         }
     }
 }

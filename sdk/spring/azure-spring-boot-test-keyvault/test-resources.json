@@ -334,7 +334,7 @@
       "type": "string",
       "value": "[parameters('testApplicationSecret')]"
     },
-    "SPRING_RESOURCE_GROUP": {
+    "KEY_VAULT_SPRING_RESOURCE_GROUP": {
       "type": "string",
       "value": "[resourceGroup().name]"
     },

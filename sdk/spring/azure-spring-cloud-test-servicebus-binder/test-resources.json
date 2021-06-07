@@ -8,14 +8,42 @@
     }
   },
   "variables": {
-    "namespaces_name_standard": "[concat(parameters('baseName'), '-Standard')]",
+    "namespaces_name_standard_1": "[concat(parameters('baseName'), '-Standard-1')]",
+    "namespaces_name_standard_2": "[concat(parameters('baseName'), '-Standard-2')]",
+    "namespaces_name_standard_3": "[concat(parameters('baseName'), '-Standard-3')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "type": "Microsoft.ServiceBus/namespaces",
       "apiVersion": "2018-01-01-preview",
-      "name": "[variables('namespaces_name_standard')]",
+      "name": "[variables('namespaces_name_standard_1')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "properties": {
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[variables('namespaces_name_standard_2')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard"
+      },
+      "properties": {
+        "zoneRedundant": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[variables('namespaces_name_standard_3')]",
       "location": "[variables('location')]",
       "sku": {
         "name": "Standard",
@@ -28,10 +56,42 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaces_name_standard'), '/RootManageSharedAccessKey')]",
+      "name": "[concat(variables('namespaces_name_standard_1'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaces_name_standard_2'), '/RootManageSharedAccessKey')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_2'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaces_name_standard_3'), '/RootManageSharedAccessKey')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_3'))]"
       ],
       "properties": {
         "rights": [
@@ -44,10 +104,34 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaces_name_standard'), '/queue1')]",
+      "name": "[concat(variables('namespaces_name_standard_1'), '/queue1')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaces_name_standard_3'), '/queue1')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_3'))]"
       ],
       "properties": {
         "lockDuration": "PT30S",
@@ -68,10 +152,31 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaces_name_standard'), '/topic1')]",
+      "name": "[concat(variables('namespaces_name_standard_1'), '/topic1')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
+      ],
+      "properties": {
+        "defaultMessageTimeToLive": "P14D",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "enableBatchedOperations": true,
+        "status": "Active",
+        "supportOrdering": true,
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaces_name_standard_2'), '/topic1')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_2'))]"
       ],
       "properties": {
         "defaultMessageTimeToLive": "P14D",
@@ -89,11 +194,32 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('namespaces_name_standard'), '/topic1/topicSub')]",
+      "name": "[concat(variables('namespaces_name_standard_1'), '/topic1/topicSub')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('namespaces_name_standard'), 'topic1')]",
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('namespaces_name_standard_1'), 'topic1')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_1'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "deadLetteringOnFilterEvaluationExceptions": false,
+        "maxDeliveryCount": 1,
+        "status": "Active",
+        "enableBatchedOperations": true,
+        "autoDeleteOnIdle": "P14D"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[concat(variables('namespaces_name_standard_2'), '/topic1/topicSub')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('namespaces_name_standard_2'), 'topic1')]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard_2'))]"
       ],
       "properties": {
         "lockDuration": "PT30S",
@@ -109,9 +235,17 @@
     }
   ],
   "outputs": {
-    "SERVICEBUS_BINDER_TEST_CONNECTION_STRING": {
+    "SERVICEBUS1_BINDER_TEST_CONNECTION_STRING": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard_1'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+    },
+    "SERVICEBUS2_BINDER_TEST_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard_2'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+    },
+    "SERVICEBUS3_BINDER_TEST_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard_3'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
     }
   }
 }

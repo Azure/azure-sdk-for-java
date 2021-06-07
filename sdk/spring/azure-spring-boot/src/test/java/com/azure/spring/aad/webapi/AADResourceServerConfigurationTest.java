@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
