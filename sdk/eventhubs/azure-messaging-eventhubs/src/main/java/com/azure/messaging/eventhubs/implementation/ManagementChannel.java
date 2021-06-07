@@ -162,15 +162,14 @@ public class ManagementChannel implements EventHubManagementNode {
                 .handle((message, sink) -> {
                     if (RequestResponseUtils.isSuccessful(message)) {
                         sink.next(messageSerializer.deserialize(message, responseType));
-                        return;
+                    } else {
+                        final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+                        final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+                        final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                            statusDescription, channel.getErrorContext());
+
+                        sink.error(logger.logExceptionAsWarning(Exceptions.propagate(error)));
                     }
-
-                    final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
-                    final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
-                        statusDescription, channel.getErrorContext());
-
-                    sink.error(logger.logExceptionAsWarning(Exceptions.propagate(error)));
                 }));
         });
     }
