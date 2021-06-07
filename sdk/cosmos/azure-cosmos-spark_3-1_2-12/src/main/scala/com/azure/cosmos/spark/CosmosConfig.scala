@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
+import com.azure.cosmos.spark.CosmosConfigNames.SynapseLinkedService
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
@@ -15,11 +16,12 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
+import com.azure.cosmos.spark.AccountDataResolver;
 
 import java.net.{URI, URISyntaxException, URL}
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
-import java.util.Locale
+import java.util.{Locale, ServiceLoader}
 import scala.collection.immutable.{HashSet, Map}
 
 // scalastyle:off underscore.import
@@ -68,6 +70,7 @@ private object CosmosConfigNames {
     "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
   val ThroughputControlGlobalControlExpireIntervalInMS =
     "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
+  val SynapseLinkedService = "spark.synapse.linkedService"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -107,7 +110,8 @@ private object CosmosConfigNames {
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
-    ThroughputControlGlobalControlExpireIntervalInMS
+    ThroughputControlGlobalControlExpireIntervalInMS,
+    SynapseLinkedService
   )
 
   def validateConfigName(name: String): Unit = {
@@ -133,7 +137,26 @@ private object CosmosConfig {
     userProvidedOptions: Map[String, String] // user provided config
   ) : Map[String, String] = {
 
+    var accountDataResolverCls: AccountDataResolver = null
+    val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
+    val iterator = serviceLoader.iterator()
+    if (iterator.hasNext()) {
+        accountDataResolverCls = serviceLoader.iterator().next()
+    }
+
+    var accountDataConfig : Map[String, String] = null
+    if (accountDataResolverCls != null) {
+        val linkedServiceNameOpt = tryGet(userProvidedOptions, SynapseLinkedService)
+        if (linkedServiceNameOpt != null) {
+            accountDataConfig = accountDataResolverCls.getAccountDataConfig(linkedServiceNameOpt)
+        }
+    }
+
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
+
+    effectiveUserConfig += (CosmosConfigNames.AccountEndpoint -> accountDataConfig.get(CosmosConfigNames.AccountEndpoint))
+    effectiveUserConfig += (CosmosConfigNames.AccountKey -> accountDataConfig.get(CosmosConfigNames.AccountKey))
+    effectiveUserConfig += (CosmosConfigNames.Database -> accountDataConfig.get(CosmosConfigNames.Database))
 
     if (databaseName.isDefined) {
       effectiveUserConfig += (CosmosContainerConfig.DATABASE_NAME_KEY -> databaseName.get)
@@ -149,6 +172,10 @@ private object CosmosConfig {
     returnValue.foreach((configProperty) => CosmosConfigNames.validateConfigName(configProperty._1))
 
     returnValue
+  }
+
+  private def tryGet(userProvidedOptions: Map[String, String], key: String): Option[String] = {
+      userProvidedOptions.get(key.toLowerCase(Locale.ROOT))
   }
 
   @throws[IllegalStateException] // if there is no active spark session
