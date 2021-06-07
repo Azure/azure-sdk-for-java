@@ -16,7 +16,6 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
-import com.azure.cosmos.spark.AccountDataResolver;
 
 import java.net.{URI, URISyntaxException, URL}
 import java.time.format.DateTimeFormatter
