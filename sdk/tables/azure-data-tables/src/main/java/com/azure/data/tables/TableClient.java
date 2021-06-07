@@ -5,10 +5,10 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
@@ -16,8 +16,10 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import com.azure.data.tables.models.TableTransactionResult;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 
 import java.time.Duration;
 import java.util.List;
@@ -78,6 +80,23 @@ public final class TableClient {
      */
     public TableServiceVersion getServiceVersion() {
         return this.client.getServiceVersion();
+    }
+
+    /**
+     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
+     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param tableSasSignatureValues {@link TableSasSignatureValues}
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
+     */
+    public String generateSas(TableSasSignatureValues tableSasSignatureValues) {
+        return client.generateSas(tableSasSignatureValues);
     }
 
     /**
@@ -396,8 +415,8 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> getAccessPolicy() {
-        return new PagedIterable<>(client.getAccessPolicy());
+    public PagedIterable<TableSignedIdentifier> listAccessPolicies() {
+        return new PagedIterable<>(client.listAccessPolicies());
     }
 
     /**
@@ -411,8 +430,8 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> getAccessPolicy(Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.getAccessPolicy(context), timeout));
+    public PagedIterable<TableSignedIdentifier> listAccessPolicies(Duration timeout, Context context) {
+        return new PagedIterable<>(applyOptionalTimeout(client.listAccessPolicies(context), timeout));
     }
 
     /**
@@ -421,8 +440,8 @@ public final class TableClient {
      * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setAccessPolicy(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        client.setAccessPolicy(tableSignedIdentifiers).block();
+    public void setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        client.setAccessPolicies(tableSignedIdentifiers).block();
     }
 
     /**
@@ -436,9 +455,9 @@ public final class TableClient {
      * @return The HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
-                                                      Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.setAccessPolicyWithResponse(tableSignedIdentifiers, context), timeout);
+    public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                        Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setAccessPoliciesWithResponse(tableSignedIdentifiers, context), timeout);
     }
 
     /**
