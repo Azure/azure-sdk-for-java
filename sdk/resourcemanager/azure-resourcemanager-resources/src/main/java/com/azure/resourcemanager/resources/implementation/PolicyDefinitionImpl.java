@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Creat
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -57,7 +58,9 @@ final class PolicyDefinitionImpl extends
 
     @Override
     public Map<String, ParameterDefinitionsValue> parameters() {
-        return innerModel().parameters();
+        return innerModel().parameters() == null
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(innerModel().parameters());
     }
 
     @Override

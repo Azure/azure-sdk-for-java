@@ -98,13 +98,18 @@ public class PolicyTests extends ResourceManagementTest {
             Assertions.assertNotNull(assignment1);
             Assertions.assertEquals("My Assignment", assignment1.displayName());
 
+            Assertions.assertEquals(group.id(), assignment1.scope());
+            Assertions.assertEquals(0, assignment1.excludedScopes().size());
+            Assertions.assertEquals(EnforcementMode.DEFAULT, assignment1.enforcementMode());
+            Assertions.assertEquals(0, assignment1.parameters().size());
+
             GenericResource resource = resourceClient.genericResources().define(resourceName)
                     .withRegion(Region.US_SOUTH_CENTRAL)
                     .withExistingResourceGroup(group)
                     .withResourceType("sites")
                     .withProviderNamespace("Microsoft.Web")
                     .withoutPlan()
-                    .withApiVersion("2015-08-01")
+                    .withApiVersion("2020-12-01")
                     .withParentResourcePath("")
                     .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
                     .create();

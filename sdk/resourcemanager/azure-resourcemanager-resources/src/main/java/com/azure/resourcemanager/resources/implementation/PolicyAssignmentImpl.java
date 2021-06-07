@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -64,7 +65,9 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public List<String> excludedScopes() {
-        return innerModel().notScopes();
+        return innerModel().notScopes() == null
+            ? Collections.emptyList()
+            : Collections.unmodifiableList(innerModel().notScopes());
     }
 
     @Override
@@ -74,7 +77,9 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public Map<String, ParameterValuesValue> parameters() {
-        return innerModel().parameters();
+        return innerModel().parameters() == null
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(innerModel().parameters());
     }
 
     @Override
