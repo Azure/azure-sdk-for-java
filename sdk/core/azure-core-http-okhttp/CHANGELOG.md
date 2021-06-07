@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0 (2021-06-04)
+## 1.7.0 (2021-06-07)
 
 ### Dependency Updates
 
