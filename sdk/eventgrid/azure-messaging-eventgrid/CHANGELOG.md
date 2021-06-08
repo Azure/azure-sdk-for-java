@@ -3,7 +3,7 @@
 ## 4.4.0 (2021-06-09)
 ### New Features
 - Added new Storage system event `StorageBlobInventoryPolicyCompletedEventData`.
-- Added new attribute `contentLocation` to `AcsRecordingChunkInfoProperties`.
+- Added new attributes `contentLocation` and `metadataLocation` to `AcsRecordingChunkInfoProperties`.
 
 ### Dependency Updates
 - Update `azure-core` dependency to `1.17.0`.
