@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-hdinsight</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -73,6 +73,96 @@ See [Authentication][authenticate] for more options.
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
 ## Examples
+
+```java
+// network
+Network network = networkManager.networks().define("vn1")
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withAddressSpace("10.0.0.0/24")
+    .withSubnet("default", "10.0.0.0/24")
+    .create();
+Subnet subnet = network.subnets().values().iterator().next();
+
+// storage account
+com.azure.resourcemanager.storage.models.StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .create();
+final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
+
+// container
+final String containerName = "hdinsight";
+storageManager.blobContainers().defineContainer(containerName)
+    .withExistingBlobService(resourceGroupName, storageAccountName)
+    .withPublicAccess(PublicAccess.NONE)
+    .create();
+
+// cluster
+manager.clusters().define("cluster" + randomPadding())
+    .withExistingResourceGroup(resourceGroupName)
+    .withRegion(REGION)
+    .withProperties(new ClusterCreateProperties()
+        .withClusterVersion("3.6")
+        .withOsType(OSType.LINUX)
+        .withTier(Tier.STANDARD)
+        .withClusterDefinition(new ClusterDefinition()
+            .withKind("Spark")
+            .withConfigurations(ImmutableMap.of(
+                "gateway", ImmutableMap.of(
+                    "restAuthCredential.isEnabled", "true",
+                    "restAuthCredential.username", "admin",
+                    "restAuthCredential.password", "Pa$s" + randomPadding()
+                )))
+        )
+        .withComputeProfile(new ComputeProfile()
+            .withRoles(ImmutableList.of(
+                new Role().withName("headnode")
+                    .withTargetInstanceCount(2)
+                    .withHardwareProfile(new HardwareProfile()
+                        .withVmSize("Large")
+                    )
+                    .withOsProfile(new OsProfile()
+                        .withLinuxOperatingSystemProfile(
+                            new LinuxOperatingSystemProfile()
+                                .withUsername("sshuser")
+                                .withPassword("Pa$s" + randomPadding())
+                        )
+                    )
+                    .withVirtualNetworkProfile(new VirtualNetworkProfile()
+                        .withId(network.id())
+                        .withSubnet(subnet.id())
+                    ),
+                new Role().withName("workernode")
+                    .withTargetInstanceCount(3)
+                    .withHardwareProfile(new HardwareProfile()
+                        .withVmSize("Large")
+                    )
+                    .withOsProfile(new OsProfile()
+                        .withLinuxOperatingSystemProfile(
+                            new LinuxOperatingSystemProfile()
+                                .withUsername("sshuser")
+                                .withPassword("Pa$s" + randomPadding())
+                        )
+                    )
+                    .withVirtualNetworkProfile(new VirtualNetworkProfile()
+                        .withId(network.id())
+                        .withSubnet(subnet.id())
+                    )
+            ))
+        )
+        .withStorageProfile(new StorageProfile()
+            .withStorageaccounts(ImmutableList.of(
+                new StorageAccount()
+                    .withName(new URL(storageAccount.endPoints().primary().blob()).getHost())
+                    .withKey(storageAccountKey)
+                    .withContainer(containerName)
+                    .withIsDefault(true)
+            ))
+        ))
+    .create();
+```
+
 
 ## Troubleshooting
 

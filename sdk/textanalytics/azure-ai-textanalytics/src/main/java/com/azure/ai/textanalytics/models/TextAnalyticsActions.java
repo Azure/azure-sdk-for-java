@@ -17,6 +17,7 @@ public final class TextAnalyticsActions {
     private Iterable<RecognizeLinkedEntitiesOptions> recognizeLinkedEntitiesOptions;
     private Iterable<RecognizePiiEntitiesOptions> recognizePiiEntitiesOptions;
     private Iterable<ExtractKeyPhrasesOptions> extractKeyPhrasesOptions;
+    private Iterable<AnalyzeSentimentOptions> analyzeSentimentOptions;
 
     /**
      * Get the custom name for the actions.
@@ -56,7 +57,8 @@ public final class TextAnalyticsActions {
      * @return the {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizeEntitiesOptions(RecognizeEntitiesOptions... recognizeEntitiesOptions) {
-        this.recognizeEntitiesOptions = Arrays.asList(recognizeEntitiesOptions);
+        this.recognizeEntitiesOptions = recognizeEntitiesOptions == null ? null
+            : Arrays.asList(recognizeEntitiesOptions);
         return this;
     }
 
@@ -78,7 +80,8 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setRecognizeLinkedEntitiesOptions(
         RecognizeLinkedEntitiesOptions... recognizeLinkedEntitiesOptions) {
-        this.recognizeLinkedEntitiesOptions = Arrays.asList(recognizeLinkedEntitiesOptions);
+        this.recognizeLinkedEntitiesOptions = recognizeLinkedEntitiesOptions == null ? null
+            : Arrays.asList(recognizeLinkedEntitiesOptions);
         return this;
     }
 
@@ -98,8 +101,10 @@ public final class TextAnalyticsActions {
      *
      * @return the {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setRecognizePiiEntitiesOptions(RecognizePiiEntitiesOptions... recognizePiiEntitiesOptions) {
-        this.recognizePiiEntitiesOptions = Arrays.asList(recognizePiiEntitiesOptions);
+    public TextAnalyticsActions setRecognizePiiEntitiesOptions(
+        RecognizePiiEntitiesOptions... recognizePiiEntitiesOptions) {
+        this.recognizePiiEntitiesOptions = recognizePiiEntitiesOptions == null ? null
+            : Arrays.asList(recognizePiiEntitiesOptions);
         return this;
     }
 
@@ -120,7 +125,29 @@ public final class TextAnalyticsActions {
      * @return the {@link TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setExtractKeyPhrasesOptions(ExtractKeyPhrasesOptions... extractKeyPhrasesOptions) {
-        this.extractKeyPhrasesOptions = Arrays.asList(extractKeyPhrasesOptions);
+        this.extractKeyPhrasesOptions = extractKeyPhrasesOptions == null ? null
+            : Arrays.asList(extractKeyPhrasesOptions);
+        return this;
+    }
+
+    /**
+     * Get the list of {@link AnalyzeSentimentOptions} to be executed.
+     *
+     * @return the list of {@link AnalyzeSentimentOptions} to be executed.
+     */
+    public Iterable<AnalyzeSentimentOptions> getAnalyzeSentimentOptions() {
+        return this.analyzeSentimentOptions;
+    }
+
+    /**
+     * Set the list of {@link AnalyzeSentimentOptions} to be executed.
+     *
+     * @param analyzeSentimentOptions the list of {@link AnalyzeSentimentOptions} to be executed.
+     *
+     * @return the {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setAnalyzeSentimentOptions(AnalyzeSentimentOptions... analyzeSentimentOptions) {
+        this.analyzeSentimentOptions = analyzeSentimentOptions == null ? null : Arrays.asList(analyzeSentimentOptions);
         return this;
     }
 }

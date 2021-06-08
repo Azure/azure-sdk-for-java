@@ -16,6 +16,12 @@ public final class KeyPhrasesTaskParameters {
     @JsonProperty(value = "model-version")
     private String modelVersion;
 
+    /*
+     * The loggingOptOut property.
+     */
+    @JsonProperty(value = "loggingOptOut")
+    private Boolean loggingOptOut;
+
     /**
      * Get the modelVersion property: The model-version property.
      *
@@ -33,6 +39,26 @@ public final class KeyPhrasesTaskParameters {
      */
     public KeyPhrasesTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /**
+     * Get the loggingOptOut property: The loggingOptOut property.
+     *
+     * @return the loggingOptOut value.
+     */
+    public Boolean isLoggingOptOut() {
+        return this.loggingOptOut;
+    }
+
+    /**
+     * Set the loggingOptOut property: The loggingOptOut property.
+     *
+     * @param loggingOptOut the loggingOptOut value to set.
+     * @return the KeyPhrasesTaskParameters object itself.
+     */
+    public KeyPhrasesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        this.loggingOptOut = loggingOptOut;
         return this;
     }
 }

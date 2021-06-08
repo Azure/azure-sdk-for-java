@@ -2,6 +2,9 @@
 
 ## 1.17.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Added `AsyncCloseable`
 
 ## 1.16.0 (2021-05-07)
 

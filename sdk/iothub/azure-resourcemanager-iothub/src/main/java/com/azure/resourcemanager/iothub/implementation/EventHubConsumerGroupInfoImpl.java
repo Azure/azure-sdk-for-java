@@ -4,12 +4,16 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.EventHubConsumerGroupInfoInner;
+import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupBodyDescription;
 import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupInfo;
+import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupName;
 import java.util.Collections;
 import java.util.Map;
 
-public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGroupInfo {
+public final class EventHubConsumerGroupInfoImpl
+    implements EventHubConsumerGroupInfo, EventHubConsumerGroupInfo.Definition {
     private EventHubConsumerGroupInfoInner innerObject;
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
@@ -32,8 +36,8 @@ public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGrou
         return this.innerModel().type();
     }
 
-    public Map<String, String> properties() {
-        Map<String, String> inner = this.innerModel().properties();
+    public Map<String, Object> properties() {
+        Map<String, Object> inner = this.innerModel().properties();
         if (inner != null) {
             return Collections.unmodifiableMap(inner);
         } else {
@@ -51,5 +55,79 @@ public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGrou
 
     private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String resourceName;
+
+    private String eventHubEndpointName;
+
+    private String name;
+
+    private EventHubConsumerGroupBodyDescription createConsumerGroupBody;
+
+    public EventHubConsumerGroupInfoImpl withExistingEventHubEndpoint(
+        String resourceGroupName, String resourceName, String eventHubEndpointName) {
+        this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
+        this.eventHubEndpointName = eventHubEndpointName;
+        return this;
+    }
+
+    public EventHubConsumerGroupInfo create() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .createEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, createConsumerGroupBody, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public EventHubConsumerGroupInfo create(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .createEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, createConsumerGroupBody, context)
+                .getValue();
+        return this;
+    }
+
+    EventHubConsumerGroupInfoImpl(String name, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+        this.innerObject = new EventHubConsumerGroupInfoInner();
+        this.serviceManager = serviceManager;
+        this.name = name;
+        this.createConsumerGroupBody = new EventHubConsumerGroupBodyDescription();
+    }
+
+    public EventHubConsumerGroupInfo refresh() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .getEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, Context.NONE)
+                .getValue();
+        return this;
+    }
+
+    public EventHubConsumerGroupInfo refresh(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .getEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, context)
+                .getValue();
+        return this;
+    }
+
+    public EventHubConsumerGroupInfoImpl withProperties(EventHubConsumerGroupName properties) {
+        this.createConsumerGroupBody.withProperties(properties);
+        return this;
     }
 }

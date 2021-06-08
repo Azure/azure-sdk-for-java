@@ -8,11 +8,11 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -33,13 +33,13 @@ import static com.azure.spring.integration.servicebus.converter.ServiceBusMessag
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
 import static java.time.ZoneId.systemDefault;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusMessageConverterTest {
 
     private static final String PAYLOAD = "payload";
@@ -59,16 +59,24 @@ public class ServiceBusMessageConverterTest {
 
     @Mock
     private ServiceBusReceivedMessage receivedMessage;
+    private AutoCloseable closeable;
 
-    @Before
+    @BeforeEach
     public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         when(this.receivedMessage.getBody()).thenReturn(BinaryData.fromString(PAYLOAD));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
+
+    @Test
     public void shouldRaiseIllegalArgExceptionIfPayloadNull() {
         when(this.receivedMessage.getBody()).thenReturn(null);
-        this.messageConverter.toMessage(this.receivedMessage, byte[].class);
+        assertThrows(IllegalArgumentException.class,
+            () -> this.messageConverter.toMessage(this.receivedMessage, byte[].class));
     }
 
     @Test
@@ -168,8 +176,8 @@ public class ServiceBusMessageConverterTest {
     @Test
     public void testAzureMessageHeader() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
-                                      .setHeader(AzureHeaders.RAW_ID, AZURE_MESSAGE_RAW_ID)
-                                      .build();
+                                                      .setHeader(AzureHeaders.RAW_ID, AZURE_MESSAGE_RAW_ID)
+                                                      .build();
 
         ServiceBusMessage serviceBusMessage = this.messageConverter.fromMessage(springMessage, ServiceBusMessage.class);
 
@@ -188,21 +196,22 @@ public class ServiceBusMessageConverterTest {
     public void testServiceBusMessageHeadersSet() {
         Instant scheduledEnqueueInstant = Instant.now().plusSeconds(5);
         final OffsetDateTime scheduledEnqueueOffsetDateTime = OffsetDateTime
-                                                                  .ofInstant(scheduledEnqueueInstant, systemDefault())
-                                                                  .toInstant()
-                                                                  .atOffset(ZoneOffset.UTC);
+            .ofInstant(scheduledEnqueueInstant, systemDefault())
+            .toInstant()
+            .atOffset(ZoneOffset.UTC);
 
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
-                                      .setHeader(AzureHeaders.RAW_ID, AZURE_MESSAGE_RAW_ID)
-                                      .setHeader(MESSAGE_ID, SERVICE_BUS_MESSAGE_ID)
-                                      .setHeader(TIME_TO_LIVE, SERVICE_BUS_TTL)
-                                      .setHeader(SCHEDULED_ENQUEUE_TIME, scheduledEnqueueInstant)
-                                      .setHeader(SESSION_ID, SERVICE_BUS_SESSION_ID)
-                                      .setHeader(CORRELATION_ID, SERVICE_BUS_CORRELATION_ID)
-                                      .setHeader(TO, SERVICE_BUS_TO)
-                                      .setHeader(REPLY_TO_SESSION_ID, SERVICE_BUS_REPLY_TO_SESSION_ID)
-                                      .setHeader(PARTITION_KEY, SERVICE_BUS_SESSION_ID) // when session id set, the partition key equals to session id
-                                      .build();
+                                                      .setHeader(AzureHeaders.RAW_ID, AZURE_MESSAGE_RAW_ID)
+                                                      .setHeader(MESSAGE_ID, SERVICE_BUS_MESSAGE_ID)
+                                                      .setHeader(TIME_TO_LIVE, SERVICE_BUS_TTL)
+                                                      .setHeader(SCHEDULED_ENQUEUE_TIME, scheduledEnqueueInstant)
+                                                      .setHeader(SESSION_ID, SERVICE_BUS_SESSION_ID)
+                                                      .setHeader(CORRELATION_ID, SERVICE_BUS_CORRELATION_ID)
+                                                      .setHeader(TO, SERVICE_BUS_TO)
+                                                      .setHeader(REPLY_TO_SESSION_ID, SERVICE_BUS_REPLY_TO_SESSION_ID)
+                                                      .setHeader(PARTITION_KEY, SERVICE_BUS_SESSION_ID) // when
+                                                      // session id set, the partition key equals to session id
+                                                      .build();
 
         ServiceBusMessage serviceBusMessage = this.messageConverter.fromMessage(springMessage, ServiceBusMessage.class);
 

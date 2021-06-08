@@ -45,16 +45,16 @@ public final class BlobSasPermission {
      * Creates a {@code BlobSasPermission} from the specified permissions string. This method will throw an
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@code BlobSasPermission}.
+     * @param permissionString A {@code String} which represents the {@code BlobSasPermission}.
      * @return A {@code BlobSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x, l, t,
+     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, a, c, w, d, x, l, t,
      * m, or e.
      */
-    public static BlobSasPermission parse(String permString) {
+    public static BlobSasPermission parse(String permissionString) {
         BlobSasPermission permissions = new BlobSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -89,7 +89,7 @@ public final class BlobSasPermission {
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;

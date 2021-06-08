@@ -5,11 +5,9 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.google.common.collect.ImmutableSet;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -19,7 +17,6 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AzureADGraphClientTest {
 
     private AzureADGraphClient client;
@@ -27,7 +24,7 @@ public class AzureADGraphClientTest {
     @Mock
     private AADAuthorizationServerEndpoints endpoints;
 
-    @Before
+    @BeforeEach
     public void setup() {
         final List<String> activeDirectoryGroups = new ArrayList<>();
         activeDirectoryGroups.add("Test_Group");

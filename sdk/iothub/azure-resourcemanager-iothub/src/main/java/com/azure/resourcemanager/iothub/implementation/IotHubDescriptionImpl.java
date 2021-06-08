@@ -9,6 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubDescriptionInner;
+import com.azure.resourcemanager.iothub.models.ArmIdentity;
 import com.azure.resourcemanager.iothub.models.ExportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.ImportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.IotHubDescription;
@@ -61,6 +62,10 @@ public final class IotHubDescriptionImpl
 
     public IotHubSkuInfo sku() {
         return this.innerModel().sku();
+    }
+
+    public ArmIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public Region region() {
@@ -230,6 +235,11 @@ public final class IotHubDescriptionImpl
 
     public IotHubDescriptionImpl withProperties(IotHubProperties properties) {
         this.innerModel().withProperties(properties);
+        return this;
+    }
+
+    public IotHubDescriptionImpl withIdentity(ArmIdentity identity) {
+        this.innerModel().withIdentity(identity);
         return this;
     }
 

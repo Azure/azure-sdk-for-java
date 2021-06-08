@@ -27,8 +27,9 @@ public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>
      * <p>
      * Continuation completes when the last returned continuation token is null.
      */
-    // This is public as previously there was no empty constructor, so there was an implicit public empty constructor.
     public ContinuablePagedFlux() {
+        // This is public as previously there was no empty constructor, so there was an implicit public empty
+        // constructor.
         this(Objects::nonNull);
     }
 

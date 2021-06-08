@@ -41,6 +41,26 @@ public final class ExportDevicesRequest {
     @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
 
+    /*
+     * Managed identity properties of storage endpoint for export devices.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedIdentity identity;
+
+    /*
+     * The value indicating whether configurations should be exported.
+     */
+    @JsonProperty(value = "includeConfigurations")
+    private Boolean includeConfigurations;
+
+    /*
+     * The name of the blob that will be created in the provided output blob
+     * container. This blob will contain the exported configurations for the
+     * Iot Hub.
+     */
+    @JsonProperty(value = "configurationsBlobName")
+    private String configurationsBlobName;
+
     /**
      * Get the exportBlobContainerUri property: The export blob container URI.
      *
@@ -126,6 +146,68 @@ public final class ExportDevicesRequest {
     }
 
     /**
+     * Get the identity property: Managed identity properties of storage endpoint for export devices.
+     *
+     * @return the identity value.
+     */
+    public ManagedIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity properties of storage endpoint for export devices.
+     *
+     * @param identity the identity value to set.
+     * @return the ExportDevicesRequest object itself.
+     */
+    public ExportDevicesRequest withIdentity(ManagedIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the includeConfigurations property: The value indicating whether configurations should be exported.
+     *
+     * @return the includeConfigurations value.
+     */
+    public Boolean includeConfigurations() {
+        return this.includeConfigurations;
+    }
+
+    /**
+     * Set the includeConfigurations property: The value indicating whether configurations should be exported.
+     *
+     * @param includeConfigurations the includeConfigurations value to set.
+     * @return the ExportDevicesRequest object itself.
+     */
+    public ExportDevicesRequest withIncludeConfigurations(Boolean includeConfigurations) {
+        this.includeConfigurations = includeConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the configurationsBlobName property: The name of the blob that will be created in the provided output blob
+     * container. This blob will contain the exported configurations for the Iot Hub.
+     *
+     * @return the configurationsBlobName value.
+     */
+    public String configurationsBlobName() {
+        return this.configurationsBlobName;
+    }
+
+    /**
+     * Set the configurationsBlobName property: The name of the blob that will be created in the provided output blob
+     * container. This blob will contain the exported configurations for the Iot Hub.
+     *
+     * @param configurationsBlobName the configurationsBlobName value to set.
+     * @return the ExportDevicesRequest object itself.
+     */
+    public ExportDevicesRequest withConfigurationsBlobName(String configurationsBlobName) {
+        this.configurationsBlobName = configurationsBlobName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -136,6 +218,9 @@ public final class ExportDevicesRequest {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property exportBlobContainerUri in model ExportDevicesRequest"));
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

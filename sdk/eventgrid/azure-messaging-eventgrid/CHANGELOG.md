@@ -1,5 +1,8 @@
 # Release History
 
+## 4.4.0-beta.1 (Unreleased)
+
+
 ## 4.3.0 (2021-05-12)
 ### New Features
 - Added new Storage system events `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
