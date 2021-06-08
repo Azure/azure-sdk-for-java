@@ -55,11 +55,11 @@ public class ReceiveMessageAsyncSample {
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages().subscribe(message -> {
-                // Process message. If an exception is thrown from this consumer, the message is abandoned.
-                // Otherwise, it is completed.
-                // Automatic message settlement can be disabled via disableAutoComplete() when creating the receiver
-                // client. Consequently, messages have to be manually settled.
-                System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(), message.getBody());
+            // Process message. If an exception is thrown from this consumer, the message is abandoned.
+            // Otherwise, it is completed.
+            // Automatic message settlement can be disabled via disableAutoComplete() when creating the receiver
+            // client. Consequently, messages have to be manually settled.
+            System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(), message.getBody());
             },
             error -> {
                 System.err.println("Error occurred while receiving message: " + error);
