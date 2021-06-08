@@ -120,30 +120,12 @@ public final class LogsQueryAsyncClient {
                     QueryBody body = new QueryBody(query.getQuery())
                             .setWorkspaces(getAllWorkspaces(query));
 
-                    StringBuilder sb = new StringBuilder();
-                    if (query.isIncludeRendering()) {
-                        sb.append("include-render=true");
-                    }
-
-                    if (query.isIncludeStatistics()) {
-                        if (sb.length() > 0) {
-                            sb.append(",");
-                        }
-                        sb.append("include-statistics=true");
-                    }
-
-                    if (query.getServerTimeout() != null) {
-                        if (sb.length() > 0) {
-                            sb.append(",");
-                        }
-                        sb.append("wait=");
-                        sb.append(query.getServerTimeout().getSeconds());
-                    }
-
-                    String preferHeader = sb.toString().isEmpty() ? null : sb.toString();
+                    String preferHeader = buildPreferHeaderString(query);
 
                     Map<String, String> headers = new HashMap<>();
-                    headers.put("Prefer", preferHeader);
+                    if (!CoreUtils.isNullOrEmpty(preferHeader)) {
+                        headers.put("Prefer", preferHeader);
+                    }
                     return new BatchQueryRequest(String.valueOf(id.incrementAndGet()), body, query.getWorkspaceId())
                             .setHeaders(headers)
                             .setPath("/query")
@@ -162,6 +144,30 @@ public final class LogsQueryAsyncClient {
                     return ex;
                 })
                 .map(this::convertToLogQueryBatchResult);
+    }
+
+    private String buildPreferHeaderString(LogsQueryOptions query) {
+        StringBuilder sb = new StringBuilder();
+        if (query.isIncludeRendering()) {
+            sb.append("include-render=true");
+        }
+
+        if (query.isIncludeStatistics()) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append("include-statistics=true");
+        }
+
+        if (query.getServerTimeout() != null) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append("wait=");
+            sb.append(query.getServerTimeout().getSeconds());
+        }
+
+        return sb.toString().isEmpty() ? null : sb.toString();
     }
 
     private Response<LogsBatchQueryResultCollection> convertToLogQueryBatchResult(Response<BatchResponse> response) {
@@ -211,27 +217,7 @@ public final class LogsQueryAsyncClient {
     }
 
     Mono<Response<LogsQueryResult>> queryLogsWithResponse(LogsQueryOptions options, Context context) {
-        StringBuilder sb = new StringBuilder();
-        if (options.isIncludeRendering()) {
-            sb.append("include-render=true");
-        }
-
-        if (options.isIncludeStatistics()) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append("include-statistics=true");
-        }
-
-        if (options.getServerTimeout() != null) {
-            if (sb.length() > 0) {
-                sb.append(",");
-            }
-            sb.append("wait=");
-            sb.append(options.getServerTimeout().getSeconds());
-        }
-
-        String preferHeader = sb.toString().isEmpty() ? null : sb.toString();
+        String preferHeader = buildPreferHeaderString(options);
         QueryBody queryBody = new QueryBody(options.getQuery());
         if (options.getTimeSpan() != null) {
             queryBody.setTimespan(options.getTimeSpan().toString());
