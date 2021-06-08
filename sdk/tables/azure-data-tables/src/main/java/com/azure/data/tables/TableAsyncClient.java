@@ -11,7 +11,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -57,17 +56,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
-import static com.azure.core.util.FluxUtil.fluxContext;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
@@ -845,41 +842,47 @@ public final class TableAsyncClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return A paged reactive result containing the HTTP response and the table's
+     * @return A reactive result containing the table's {@link TableSignedIdentifier access policies}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<List<TableSignedIdentifier>> listAccessPolicies() {
+        return withContext(context -> listAccessPoliciesWithResponse(context)
+            .flatMap(response -> Mono.justOrEmpty(response.getValue())));
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @return A reactive result containing the HTTP response and the table's
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TableSignedIdentifier> listAccessPolicies() {
-        return (PagedFlux<TableSignedIdentifier>) fluxContext(this::listAccessPolicies);
+    public Mono<Response<List<TableSignedIdentifier>>> listAccessPoliciesWithResponse() {
+        return withContext(this::listAccessPoliciesWithResponse);
     }
 
-    PagedFlux<TableSignedIdentifier> listAccessPolicies(Context context) {
+    Mono<Response<List<TableSignedIdentifier>>> listAccessPoliciesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {
-            Context finalContext = context;
-            Function<String, Mono<PagedResponse<TableSignedIdentifier>>> retriever =
-                marker ->
-                    tablesImplementation.getTables()
-                        .getAccessPolicyWithResponseAsync(tableName, null, null, finalContext)
-                        .map(response -> new PagedResponseBase<>(response.getRequest(),
-                            response.getStatusCode(),
-                            response.getHeaders(),
-                            response.getValue().stream()
-                                .map(this::toTableSignedIdentifier)
-                                .collect(Collectors.toList()),
-                            null,
-                            response.getDeserializedHeaders()));
+            return tablesImplementation.getTables()
+                .getAccessPolicyWithResponseAsync(tableName, null, null, context)
+                .map(response -> {
+                    List<SignedIdentifier> signedIdentifiers = response.getValue();
 
-            return new PagedFlux<>(() -> retriever.apply(null), retriever);
+                    return new SimpleResponse<>(response,
+                        signedIdentifiers == null ? null : signedIdentifiers.stream()
+                            .map(this::toTableSignedIdentifier)
+                            .collect(Collectors.toList()));
+                });
         } catch (RuntimeException e) {
-            return pagedFluxError(logger, e);
+            return monoError(logger, e);
         }
     }
 
     private TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
-        return new TableSignedIdentifier()
-            .setId(signedIdentifier.getId())
+        return new TableSignedIdentifier(signedIdentifier.getId())
             .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
     }
 
@@ -918,11 +921,34 @@ public final class TableAsyncClient {
     Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                        Context context) {
         context = context == null ? Context.NONE : context;
+        List<SignedIdentifier> signedIdentifiers = null;
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (tableSignedIdentifiers != null) {
+             signedIdentifiers = tableSignedIdentifiers.stream()
+                .map(this::toSignedIdentifier)
+                .collect(Collectors.toList());
+
+            for (SignedIdentifier identifier : signedIdentifiers) {
+                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStart() != null) {
+                    identifier.getAccessPolicy().setStart(
+                        identifier.getAccessPolicy().getStart().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiry() != null) {
+                    identifier.getAccessPolicy().setExpiry(
+                        identifier.getAccessPolicy().getExpiry().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
 
         try {
             return tablesImplementation.getTables()
-                .setAccessPolicyWithResponseAsync(tableName, null, null,
-                    tableSignedIdentifiers.stream().map(this::toSignedIdentifier).collect(Collectors.toList()), context)
+                .setAccessPolicyWithResponseAsync(tableName, null, null, signedIdentifiers, context)
                 .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
             return monoError(logger, e);

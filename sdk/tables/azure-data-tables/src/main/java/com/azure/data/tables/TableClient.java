@@ -415,8 +415,8 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> listAccessPolicies() {
-        return new PagedIterable<>(client.listAccessPolicies());
+    public List<TableSignedIdentifier> listAccessPolicies() {
+        return client.listAccessPolicies().block();
     }
 
     /**
@@ -430,8 +430,8 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> listAccessPolicies(Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listAccessPolicies(context), timeout));
+    public Response<List<TableSignedIdentifier>> listAccessPoliciesWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.listAccessPoliciesWithResponse(context), timeout);
     }
 
     /**
