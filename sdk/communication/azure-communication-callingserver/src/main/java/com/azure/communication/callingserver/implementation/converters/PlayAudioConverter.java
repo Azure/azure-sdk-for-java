@@ -22,27 +22,4 @@ public class PlayAudioConverter {
         playAudioRequest.setCallbackUri(playAudioOptions.getCallbackUri());
         return playAudioRequest;
     }
-
-    /**
-     * Convert Play audio options into PlayAudioRequest
-     * @param audioFileUri The media resource uri of the play audio request.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The value to identify context of the operation.
-     * @return PlayAudioRequest
-     */
-    public static PlayAudioRequest convert(String audioFileUri,
-                                           boolean loop,
-                                           String audioFileId,
-                                           String operationContext,
-                                           String callbackUri) {
-        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-        playAudioRequest.setAudioFileUri(audioFileUri);
-        playAudioRequest.setLoop(loop);
-        playAudioRequest.setAudioFileId(audioFileId);
-        playAudioRequest.setOperationContext(operationContext);
-        playAudioRequest.setCallbackUri(callbackUri);
-        return playAudioRequest;
-    }
 }

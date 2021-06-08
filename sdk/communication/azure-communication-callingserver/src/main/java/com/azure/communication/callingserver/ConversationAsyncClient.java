@@ -514,8 +514,12 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
 
             //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-            PlayAudioRequest playAudioRequest =
-                PlayAudioConverter.convert(audioFileUri, false, audioFileId, callbackUri, operationContext);
+            PlayAudioRequest playAudioRequest = new PlayAudioRequest();
+            playAudioRequest.setAudioFileUri(audioFileUri);
+            playAudioRequest.setLoop(false);
+            playAudioRequest.setAudioFileId(audioFileId);
+            playAudioRequest.setOperationContext(operationContext);
+            playAudioRequest.setCallbackUri(callbackUri);
             return playAudio(conversationId, playAudioRequest);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -570,8 +574,12 @@ public final class ConversationAsyncClient {
                                                                    String callbackUri,
                                                                    String operationContext) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest =
-            PlayAudioConverter.convert(audioFileUri, false, audioFileId, callbackUri, operationContext);
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
+        playAudioRequest.setAudioFileUri(audioFileUri);
+        playAudioRequest.setLoop(false);
+        playAudioRequest.setAudioFileId(audioFileId);
+        playAudioRequest.setOperationContext(operationContext);
+        playAudioRequest.setCallbackUri(callbackUri);
         return playAudioWithResponse(conversationId, playAudioRequest, Context.NONE);
     }
 

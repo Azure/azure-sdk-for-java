@@ -273,8 +273,12 @@ public final class ConversationClient {
                                        String callbackUri,
                                        String operationContext) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest =
-            PlayAudioConverter.convert(audioFileUri, false, audioFileId, callbackUri, operationContext);
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
+        playAudioRequest.setAudioFileUri(audioFileUri);
+        playAudioRequest.setLoop(false);
+        playAudioRequest.setAudioFileId(audioFileId);
+        playAudioRequest.setOperationContext(operationContext);
+        playAudioRequest.setCallbackUri(callbackUri);
         return conversationAsyncClient.playAudio(conversationId, playAudioRequest).block();
     }
 
@@ -299,8 +303,12 @@ public final class ConversationClient {
                                                              String operationContext,
                                                              Context context) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest =
-            PlayAudioConverter.convert(audioFileUri, false, audioFileId, callbackUri, operationContext);
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
+        playAudioRequest.setAudioFileUri(audioFileUri);
+        playAudioRequest.setLoop(false);
+        playAudioRequest.setAudioFileId(audioFileId);
+        playAudioRequest.setOperationContext(operationContext);
+        playAudioRequest.setCallbackUri(callbackUri);
         return conversationAsyncClient.playAudioWithResponse(conversationId, playAudioRequest, context).block();
     }
 
