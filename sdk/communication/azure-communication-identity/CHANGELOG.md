@@ -1,6 +1,7 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.1.1 (2021-06-08)
+- Updated 'azure-communication-identity' version
 
 ## 1.1.0 (2021-05-27)
 ### Added
