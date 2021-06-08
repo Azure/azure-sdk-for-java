@@ -4,11 +4,11 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
-import com.azure.containers.containerregistry.models.ArtifactManifestReference;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.RepositoryProperties;
+import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -71,14 +71,14 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         .setWriteEnabled(true);
 
 
-    protected static RepositoryProperties repoWriteableProperties = new RepositoryProperties()
+    protected static ContainerRepositoryProperties repoWriteableProperties = new ContainerRepositoryProperties()
         .setDeleteEnabled(false)
         .setListEnabled(true)
         .setReadEnabled(true)
         .setWriteEnabled(true)
         .setTeleportEnabled(false);
 
-    protected static RepositoryProperties defaultRepoWriteableProperties = new RepositoryProperties()
+    protected static ContainerRepositoryProperties defaultRepoWriteableProperties = new ContainerRepositoryProperties()
         .setDeleteEnabled(true)
         .setListEnabled(true)
         .setReadEnabled(true)
@@ -109,17 +109,17 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         return getContainerRegistryBuilder(httpClient, credential, REGISTRY_ENDPOINT);
     }
 
-    List<String> getChildArtifacts(Collection<ArtifactManifestReference> artifacts) {
+    List<String> getChildArtifacts(Collection<ArtifactManifestPlatform> artifacts) {
         return artifacts.stream()
             .filter(artifact -> artifact.getArchitecture() != null)
             .map(s -> s.getDigest()).collect(Collectors.toList());
     }
 
-    String getChildArtifactDigest(Collection<ArtifactManifestReference> artifacts) {
+    String getChildArtifactDigest(Collection<ArtifactManifestPlatform> artifacts) {
         return getChildArtifacts(artifacts).get(0);
     }
 
-    void validateProperties(RepositoryProperties properties) {
+    void validateProperties(ContainerRepositoryProperties properties) {
         assertNotNull(properties);
         assertEquals(HELLO_WORLD_REPOSITORY_NAME, properties.getName());
         assertNotNull(properties.getCreatedOn());
@@ -134,7 +134,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(properties.getRegistryLoginServer());
     }
 
-    void validateProperties(Response<RepositoryProperties> response) {
+    void validateProperties(Response<ContainerRepositoryProperties> response) {
         validateResponse(response);
         validateProperties(response.getValue());
     }
@@ -218,8 +218,8 @@ public class ContainerRegistryClientsTestBase extends TestBase {
             assertNotNull(props.getOperatingSystem());
         } else {
             assertNotNull(props.getTags());
-            assertNotNull(props.getManifestReferences());
-            props.getManifestReferences().stream().forEach(prop -> {
+            assertNotNull(props.getRelatedArtifacts());
+            props.getRelatedArtifacts().stream().forEach(prop -> {
                 assertNotNull(prop.getDigest());
                 assertNotNull(prop.getArchitecture());
                 assertNotNull(prop.getOperatingSystem());
@@ -272,7 +272,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         validateTagProperties(response.getValue(), tagName);
     }
 
-    void validateRepoContentProperties(RepositoryProperties properties) {
+    void validateRepoContentProperties(ContainerRepositoryProperties properties) {
         assertNotNull(properties);
         assertEquals(false, properties.isDeleteEnabled(), "isDelete incorrect");
         assertEquals(true, properties.isListEnabled(), "isList incorrect");

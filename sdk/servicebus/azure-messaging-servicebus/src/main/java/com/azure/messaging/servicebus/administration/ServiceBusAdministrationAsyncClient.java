@@ -2229,6 +2229,12 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (entry.getContent() == null) {
             logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent().getQueueDescription() == null) {
+            final TopicDescriptionEntry entryTopic = deserialize(response.getValue(), TopicDescriptionEntry.class);
+            if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getTopicDescription() != null) {
+                logger.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+            }
         }
 
         final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
@@ -2308,6 +2314,12 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (entry.getContent() == null) {
             logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent().getTopicDescription() == null) {
+            final QueueDescriptionEntry entryQueue = deserialize(response.getValue(), QueueDescriptionEntry.class);
+            if (entryQueue != null && entryQueue.getContent() != null && entryQueue.getContent().getQueueDescription() != null) {
+                logger.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+            }
         }
 
         final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());

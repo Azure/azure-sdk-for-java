@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * Defines an action to be included as part of a transactional batch operation.
  */
-public class TableTransactionAction {
+@Immutable
+public final class TableTransactionAction {
     private final TableTransactionActionType actionType;
     private final TableEntity entity;
     private final boolean ifUnchanged;

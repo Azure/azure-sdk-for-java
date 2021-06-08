@@ -72,7 +72,7 @@ public final class ArtifactManifestProperties {
      * if this manifest is not a manifest list.
      */
     @JsonProperty(value = "manifest.references", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ArtifactManifestReference> manifestReferences;
+    private List<ArtifactManifestPlatform> relatedArtifacts;
 
     /*
      * List of tags
@@ -115,8 +115,8 @@ public final class ArtifactManifestProperties {
             }
 
             @Override
-            public void setManifestReferences(ArtifactManifestProperties manifestProperties, List<ArtifactManifestReference> manifestReferences) {
-                manifestProperties.setManifestReferences(manifestReferences);
+            public void setRelatedArtifacts(ArtifactManifestProperties manifestProperties, List<ArtifactManifestPlatform> relatedArtifacts) {
+                manifestProperties.setRelatedArtifacts(relatedArtifacts);
             }
 
             @Override
@@ -156,8 +156,8 @@ public final class ArtifactManifestProperties {
         return this;
     }
 
-    private ArtifactManifestProperties setManifestReferences(List<ArtifactManifestReference> manifestReferences) {
-        this.manifestReferences = manifestReferences;
+    private ArtifactManifestProperties setRelatedArtifacts(List<ArtifactManifestPlatform> relatedArtifacts) {
+        this.relatedArtifacts = relatedArtifacts;
         return this;
     }
 
@@ -206,11 +206,6 @@ public final class ArtifactManifestProperties {
      */
     @JsonProperty(value = "manifest.changeableAttributes.readEnabled")
     private Boolean readEnabled;
-
-    /**
-     * Initializes an instance of {@link ArtifactManifestProperties}.
-     */
-    public ArtifactManifestProperties() { }
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
@@ -286,13 +281,14 @@ public final class ArtifactManifestProperties {
     }
 
     /**
-     * Get the manifestReferences property: List of manifests referenced by this manifest list. List will be empty if
-     * this manifest is not a manifest list.
+     * List of artifacts that are referenced by this manifest list, with
+     * information about the platform each of them supports. This list will be empty
+     * if this is a leaf manifest and not a manifest list.
      *
-     * @return the manifestReferences value.
+     * @return the relatedArtifacts value.
      */
-    public List<ArtifactManifestReference> getManifestReferences() {
-        return this.manifestReferences;
+    public List<ArtifactManifestPlatform> getRelatedArtifacts() {
+        return this.relatedArtifacts;
     }
 
     /**

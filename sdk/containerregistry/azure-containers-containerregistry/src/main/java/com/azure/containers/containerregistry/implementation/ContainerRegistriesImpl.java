@@ -14,13 +14,13 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetRepositoriesResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsNextResponse;
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistriesGetTagsResponse;
+import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.containers.containerregistry.implementation.models.Manifest;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
-import com.azure.containers.containerregistry.models.RepositoryProperties;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -123,7 +123,7 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<RepositoryProperties>> getProperties(
+        Mono<Response<ContainerRepositoryProperties>> getProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @HeaderParam("Accept") String accept,
@@ -141,7 +141,7 @@ public final class ContainerRegistriesImpl {
         @Patch("/acr/v1/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
-        Mono<Response<RepositoryProperties>> setProperties(
+        Mono<Response<ContainerRepositoryProperties>> updateProperties(
                 @HostParam("url") String url,
                 @PathParam("name") String name,
                 @BodyParam("application/json") RepositoryWriteableProperties value,
@@ -649,7 +649,7 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> getPropertiesWithResponseAsync(String name) {
+    public Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponseAsync(String name) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getProperties(this.client.getUrl(), name, accept, context));
     }
@@ -665,7 +665,7 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> getPropertiesWithResponseAsync(String name, Context context) {
+    public Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponseAsync(String name, Context context) {
         final String accept = "application/json";
         return service.getProperties(this.client.getUrl(), name, accept, context);
     }
@@ -680,10 +680,10 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> getPropertiesAsync(String name) {
+    public Mono<ContainerRepositoryProperties> getPropertiesAsync(String name) {
         return getPropertiesWithResponseAsync(name)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -703,10 +703,10 @@ public final class ContainerRegistriesImpl {
      * @return repository attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> getPropertiesAsync(String name, Context context) {
+    public Mono<ContainerRepositoryProperties> getPropertiesAsync(String name, Context context) {
         return getPropertiesWithResponseAsync(name, context)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -783,14 +783,14 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> setPropertiesWithResponseAsync(
+    public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponseAsync(
             String name, RepositoryWriteableProperties value) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.setProperties(this.client.getUrl(), name, value, accept, context));
+                context -> service.updateProperties(this.client.getUrl(), name, value, accept, context));
     }
 
     /**
@@ -802,13 +802,13 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RepositoryProperties>> setPropertiesWithResponseAsync(
+    public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponseAsync(
             String name, RepositoryWriteableProperties value, Context context) {
         final String accept = "application/json";
-        return service.setProperties(this.client.getUrl(), name, value, accept, context);
+        return service.updateProperties(this.client.getUrl(), name, value, accept, context);
     }
 
     /**
@@ -819,13 +819,13 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> setPropertiesAsync(String name, RepositoryWriteableProperties value) {
-        return setPropertiesWithResponseAsync(name, value)
+    public Mono<ContainerRepositoryProperties> updatePropertiesAsync(String name, RepositoryWriteableProperties value) {
+        return updatePropertiesWithResponseAsync(name, value)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -843,14 +843,14 @@ public final class ContainerRegistriesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return repository attributes.
+     * @return properties of this repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RepositoryProperties> setPropertiesAsync(
+    public Mono<ContainerRepositoryProperties> updatePropertiesAsync(
             String name, RepositoryWriteableProperties value, Context context) {
-        return setPropertiesWithResponseAsync(name, value, context)
+        return updatePropertiesWithResponseAsync(name, value, context)
                 .flatMap(
-                        (Response<RepositoryProperties> res) -> {
+                        (Response<ContainerRepositoryProperties> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {

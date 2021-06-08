@@ -24,7 +24,7 @@ public class ListIncidentsAlertedAsyncSample {
         final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions()
             .setMaxPageSize(10);
 
-        PagedFlux<AnomalyIncident> incidentsPagedFlux = advisorAsyncClient.listIncidentsForAlert(
+        PagedFlux<AnomalyIncident> incidentsPagedFlux = advisorAsyncClient.listIncidents(
             alertConfigurationId,
             alertId,
             options);
