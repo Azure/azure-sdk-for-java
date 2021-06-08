@@ -4,9 +4,9 @@
 
 ### Bug Fixes
 
-- Handles invoices and other recognition operations to avoid NPE when data returned that 
-  do not have sub-line item fields detected.
-- Handles invoices and other recognition operations that return a `FormField` with `text` 
+- Fixed invoices and other recognition operations to avoid Null Pointer Exception when data returned with none
+  sub-line item fields detected.
+- Fixed invoices and other recognition operations that return a `FormField` with `text`
   and no `boundingBox` or `page` information.
 
 ## 3.1.0 (2021-05-26)
