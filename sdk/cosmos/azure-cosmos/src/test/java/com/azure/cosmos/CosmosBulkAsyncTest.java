@@ -51,7 +51,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void createItem_withBulk() throws InterruptedException {
+    public void createItem_withBulkAndThroughputControl() throws InterruptedException {
         int totalRequest = getTotalRequest(180, 200);
 
         PartitionKeyDefinition pkDefinition = new PartitionKeyDefinition();
@@ -117,6 +117,56 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         } finally {
             bulkAsyncContainerWithThroughputControl.delete().block();
         }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createItem_withBulk() {
+        int totalRequest = getTotalRequest();
+
+        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+            Flux.range(0, totalRequest).map(i -> {
+                String partitionKey = UUID.randomUUID().toString();
+                TestDoc testDoc = this.populateTestDoc(partitionKey);
+
+                return BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+            }),
+            Flux.range(0, totalRequest).map(i -> {
+                String partitionKey = UUID.randomUUID().toString();
+                EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
+
+                return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+            }));
+
+        BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();
+        bulkProcessingOptions.setMaxMicroBatchSize(100);
+        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+
+        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+            .processBulkOperations(cosmosItemOperationFlux, bulkProcessingOptions);
+
+        AtomicInteger processedDoc = new AtomicInteger(0);
+        responseFlux
+            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+
+                processedDoc.incrementAndGet();
+
+                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                return Mono.just(cosmosBulkItemResponse);
+            }).blockLast();
+
+        assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
