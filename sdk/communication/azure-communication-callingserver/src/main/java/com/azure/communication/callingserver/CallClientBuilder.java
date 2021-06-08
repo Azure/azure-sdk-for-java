@@ -251,7 +251,7 @@ public final class CallClientBuilder {
 
         Objects.requireNonNull(endpoint);
         if (this.pipeline == null) {
-            Objects.requireNonNull(httpClient);
+            Objects.requireNonNull(httpClient, "no endpoint provided");
         }
 
         HttpPipeline builderPipeline = this.pipeline;
@@ -278,10 +278,6 @@ public final class CallClientBuilder {
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.tokenCredential != null && this.azureKeyCredential != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Both 'credential' and 'keyCredential' are set. Just one may be used."));
-        }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(this.tokenCredential,
                     "https://communication.azure.com//.default");
@@ -294,10 +290,6 @@ public final class CallClientBuilder {
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient) {
-        if (this.pipeline != null) {
-            return this.pipeline;
-        }
-
         List<HttpPipelinePolicy> policyList = new ArrayList<>();
 
         ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
