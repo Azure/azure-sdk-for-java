@@ -90,13 +90,13 @@ LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
                         + "; value = " + logsTableCell.getValueAsString()));
         }
     }
-
+}
 ```
 ### Get logs for a query and read the response as a model type
 
 ```java
 
-    LogsQueryResult queryResults = logsClient
+    LogsQueryResult queryResults = logsQueryClient
         .queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests", null);
     
     // Sample to use a model type to read the results
