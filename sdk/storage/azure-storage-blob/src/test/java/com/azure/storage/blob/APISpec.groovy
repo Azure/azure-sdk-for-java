@@ -793,6 +793,9 @@ class APISpec extends StorageSpec {
     }
 
     static Mono<String> getAuthToken() {
+        if (env.testMode == TestMode.PLAYBACK) {
+            return Mono.just("recordingBearerToken")
+        }
         new EnvironmentCredentialBuilder().build()
             .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
             .map { it.getToken() }
