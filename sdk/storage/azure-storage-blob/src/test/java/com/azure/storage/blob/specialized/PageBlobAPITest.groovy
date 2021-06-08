@@ -602,7 +602,7 @@ class PageBlobAPITest extends APISpec {
         null                  | null                    | null          | receivedEtag
     }
 
-    def "Stage block from URL source oauth"() {
+    def "Upload pages from URL source oauth"() {
         setup:
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         def sourceBlob = cc.getBlobClient(generateBlobName())
@@ -622,7 +622,7 @@ class PageBlobAPITest extends APISpec {
         os.toByteArray() == data
     }
 
-    def "Stage block from URL source oauth fail"() {
+    def "Upload pages from URL source oauth fail"() {
         setup:
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)
         def sourceBlob = cc.getBlobClient(generateBlobName())
