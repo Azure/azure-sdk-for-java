@@ -2,7 +2,7 @@
 
 ## 4.4.0 (2021-06-09)
 ### New Features
-- Added new Storage system events `StorageBlobInventoryPolicyCompletedEventData`.
+- Added new Storage system event `StorageBlobInventoryPolicyCompletedEventData`.
 - Added new attribute `contentLocation` to `AcsRecordingChunkInfoProperties`.
 
 ### Dependency Updates
