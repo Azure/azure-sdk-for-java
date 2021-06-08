@@ -2,8 +2,8 @@
 # <groupId>:<artifactId>;dependency-version;current-version
 #
 # The dependency-version is used by other Azure SDKs outside of the release group when listing the library as a Maven
-# dependency in its POM. The current-version is used by the library to denote its version and as the Maven dependency
-# version for other Azure SDKs inside the same release group.
+# dependency in its POM. The current-version is used by the library to denote its in-development version and as the
+# Maven dependency version for other Azure SDKs inside the same release group.
 #
 # Given com.azure:azure-example;1.1.0;1.2.0-beta.1 in the release group /sdk/example
 # - com.azure:azure-example2 in release group /sdk/example will use the current-version (1.2.0-beta.1) when using
