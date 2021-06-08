@@ -23,6 +23,9 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
         super(options);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<Void> setupAsync() {
         if (options.isSync() && client == null) {
@@ -34,6 +37,9 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
         return super.setupAsync();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void run() {
         for (int i = 0; i < events.size(); i++) {
@@ -47,6 +53,9 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromCompletionStage(clientFuture.thenComposeAsync(client -> {

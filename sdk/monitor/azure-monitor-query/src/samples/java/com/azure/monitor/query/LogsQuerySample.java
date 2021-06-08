@@ -29,11 +29,11 @@ public class LogsQuerySample {
                 .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
                 .build();
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(tokenCredential)
                 .buildClient();
 
-        LogsQueryResult queryResults = logsClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
+        LogsQueryResult queryResults = logsQueryClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
                 null);
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 

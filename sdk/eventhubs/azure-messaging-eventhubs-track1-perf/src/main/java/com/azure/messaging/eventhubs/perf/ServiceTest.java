@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
@@ -80,6 +81,11 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         this.scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 4);
     }
 
+    /**
+     * Gets a new instance of the connection string builder.
+     *
+     * @return A new instance the connection string builder.
+     */
     ConnectionStringBuilder getConnectionStringBuilder() {
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
             .setEventHubName(options.getEventHubName());
@@ -91,10 +97,22 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         return builder;
     }
 
+    /**
+     * Gets the scheduler that the EventHubClient uses.
+     *
+     * @return The scheduler.
+     */
     ScheduledExecutorService getScheduler() {
         return scheduler;
     }
 
+    /**
+     * Adds the number of messages to the batch. The size of the message is set using {@link
+     * PerfStressOptions#getSize()}.
+     *
+     * @param batch The batch to add messages to.
+     * @param numberOfMessages Number of messages to add.
+     */
     void addEvents(EventDataBatch batch, int numberOfMessages) {
         for (int i = 0; i < numberOfMessages; i++) {
             final int index = numberOfMessages % events.size();
@@ -152,6 +170,17 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         }
     }
 
+    /**
+     * Creates a new {@link EventDataBatch} using the given client and adds the number of messages to it.
+     *
+     * @param client Client used to create batch.
+     * @param numberOfMessages Number of messages to add.
+     *
+     * @return The filled {@link EventDataBatch}.
+     *
+     * @throws RuntimeException if an {@link EventHubException} was encountered when creating batch. Or, if a {@link
+     *     PayloadSizeExceededException} was thrown when adding the event.
+     */
     EventDataBatch createEventDataBatch(EventHubClient client, int numberOfMessages) {
         final EventDataBatch batch;
         try {
@@ -165,6 +194,18 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         return batch;
     }
 
+    /**
+     * Sends the number of messages to {@code partitionId}.
+     *
+     * @param client Client used to send message.
+     * @param partitionId Destination partition id.
+     * @param totalMessagesToSend Number of messages to send.
+     *
+     * @return A Mono that completes when all messages are sent.
+     *
+     * @throws RuntimeException if the partition sender could not be created. Or an exception occurred while sending
+     *     the messages.
+     */
     Mono<Void> sendMessages(EventHubClient client, String partitionId, int totalMessagesToSend) {
         CompletableFuture<PartitionSender> createSenderFuture;
         try {
@@ -198,27 +239,36 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
             sender -> Mono.fromCompletionStage(sender.close()));
     }
 
+    /**
+     * Closes the client or clientFuture if they are set.
+     */
     @Override
     public Mono<Void> cleanupAsync() {
-        if (options.isSync()) {
+        if (client != null) {
             try {
                 client.closeSync();
                 return Mono.empty();
             } catch (EventHubException e) {
                 return Mono.error(new RuntimeException("Unable to close synchronous client.", e));
             }
-        } else if (clientFuture != null) {
-            final CompletableFuture<Void> future = clientFuture
-                .thenComposeAsync(client -> client.close());
-            return Mono.fromCompletionStage(future);
-        } else {
-            return Mono.empty();
         }
+
+        if (clientFuture != null) {
+            final CompletableFuture<Void> future = clientFuture.thenComposeAsync(client -> client.close());
+            return Mono.fromCompletionStage(future);
+        }
+
+        return Mono.empty();
     }
 
+    /**
+     * Shutdown the scheduler.
+     *
+     * @return A Mono that completes.
+     */
     @Override
     public Mono<Void> globalCleanupAsync() {
         scheduler.shutdown();
-        return super.globalCleanupAsync();
+        return Mono.empty();
     }
 }

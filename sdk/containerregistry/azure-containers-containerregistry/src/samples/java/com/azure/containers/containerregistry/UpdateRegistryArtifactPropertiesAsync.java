@@ -7,6 +7,9 @@ import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+/**
+ * This is a sample for updating registry artifact properties asynchronously.
+ */
 public class UpdateRegistryArtifactPropertiesAsync {
     static final String ENDPOINT = "https://registryName.azure.io";
     static final String REPOSITORY_NAME = "library/hello-world";

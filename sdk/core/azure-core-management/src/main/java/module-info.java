@@ -10,6 +10,7 @@ module com.azure.core.management {
     exports com.azure.core.management.exception;
     exports com.azure.core.management.profile;
     exports com.azure.core.management.provider;
+    exports com.azure.core.management.http.policy;
 
     opens com.azure.core.management to
         com.fasterxml.jackson.databind,

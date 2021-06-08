@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.2 (2021-06-08)
+- Updated 'azure-communication-common' version
+
 ## 1.0.1 (2021-05-27)
 - Dependency versions updated.
 

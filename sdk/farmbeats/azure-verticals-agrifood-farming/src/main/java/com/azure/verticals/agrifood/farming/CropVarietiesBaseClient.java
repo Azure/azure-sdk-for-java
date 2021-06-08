@@ -91,7 +91,7 @@ public final class CropVarietiesBaseClient {
      * }
      * }</pre>
      *
-     * @param cropId Id of the associated crop.
+     * @param cropId ID of the associated crop.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -193,8 +193,8 @@ public final class CropVarietiesBaseClient {
      * }
      * }</pre>
      *
-     * @param cropId Id of the associated crop.
-     * @param cropVarietyId Id of the crop variety.
+     * @param cropId ID of the associated crop.
+     * @param cropVarietyId ID of the crop variety.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -239,8 +239,8 @@ public final class CropVarietiesBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param cropId Id of the crop resource.
-     * @param cropVarietyId Id of the crop variety resource.
+     * @param cropId ID of the crop resource.
+     * @param cropVarietyId ID of the crop variety resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -259,8 +259,8 @@ public final class CropVarietiesBaseClient {
     /**
      * Deletes a specified crop variety resource under a particular crop.
      *
-     * @param cropId Id of the crop.
-     * @param cropVarietyId Id of the crop variety.
+     * @param cropId ID of the crop.
+     * @param cropVarietyId ID of the crop variety.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

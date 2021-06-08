@@ -11,23 +11,34 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Processes a single partition.
  */
-public class SamplePartitionProcessor {
+class SamplePartitionProcessor {
     private final Logger logger = LoggerFactory.getLogger(SamplePartitionProcessor.class);
     private final ConcurrentLinkedQueue<EventsCounter> currentCounters = new ConcurrentLinkedQueue<>();
     private final ArrayList<EventsCounter> allCounters = new ArrayList<>();
     private final AtomicBoolean isStopped = new AtomicBoolean();
 
-    public List<EventsCounter> getCounters() {
+    /**
+     * Gets the event counters opened while processing this partition.
+     *
+     * @return the event counters opened while processing this partition.
+     */
+    List<EventsCounter> getCounters() {
         return allCounters;
     }
 
-    public void onOpen(PartitionContext context) {
+    /**
+     * Invoked when partition is claimed.
+     *
+     * @param context Context associated with partition.
+     */
+    void onOpen(PartitionContext context) {
         if (isStopped.get()) {
             System.out.printf("OnOpen: Already stopped partition %s%n", context.getPartitionId());
             return;
@@ -40,7 +51,15 @@ public class SamplePartitionProcessor {
         currentCounters.add(counter);
     }
 
-    public void onClose(PartitionContext context, CloseReason reason) {
+    /**
+     * Invoked when partition is closed.
+     *
+     * @param context Context associated with partition.
+     * @param reason Reason for losing partition.
+     *
+     * @throws RuntimeException if a counter that is started could not be found.
+     */
+    void onClose(PartitionContext context, CloseReason reason) {
         if (isStopped.get()) {
             System.out.printf("OnClose: Already stopped partition %s%n", context.getPartitionId());
             return;
@@ -57,7 +76,15 @@ public class SamplePartitionProcessor {
         allCounters.add(lastCounter);
     }
 
-    public void onEvents(PartitionContext context, EventData event) {
+    /**
+     * Invoked when partition event is received.
+     *
+     * @param context Context associated with partition.
+     * @param event Event received.
+     *
+     * @throws RuntimeException if a counter that is started could not be found.
+     */
+    void onEvents(PartitionContext context, EventData event) {
         if (isStopped.get()) {
             System.out.printf("OnEvents: Already stopped partition %s%n", context.getPartitionId());
             return;
@@ -71,7 +98,15 @@ public class SamplePartitionProcessor {
         eventsCounter.increment();
     }
 
-    public void onEvents(PartitionContext context, Iterable<EventData> events) {
+    /**
+     * Invoked when partition events are received.
+     *
+     * @param context Context associated with partition.
+     * @param events Events received.
+     *
+     * @throws RuntimeException if a counter that is started could not be found.
+     */
+    void onEvents(PartitionContext context, Iterable<EventData> events) {
         if (isStopped.get()) {
             System.out.printf("OnEvents: Already stopped partition %s%n", context.getPartitionId());
             return;
@@ -83,15 +118,25 @@ public class SamplePartitionProcessor {
         }
 
         for (EventData event : events) {
+            Objects.requireNonNull(event, "'event' can't be null.");
             eventsCounter.increment();
         }
     }
 
-    public void onError(PartitionContext context, Throwable error) {
+    /**
+     * Invoked when an error occurs.
+     *
+     * @param context Context associated with partition.
+     * @param error Error received.
+     */
+    void onError(PartitionContext context, Throwable error) {
         logger.warn("PartitionId[{}] onError", context.getPartitionId(), error);
     }
 
-    public void onStop() {
+    /**
+     * Stops the partition processor entirely and closes any open EventCounters.
+     */
+    void onStop() {
         if (isStopped.getAndSet(true)) {
             return;
         }

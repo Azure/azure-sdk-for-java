@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0457a96f-5436-4a56-8a1a-a8e85a3b7407"
+      "x-ms-client-request-id" : "e313704f-1bb3-4c8d-bd30-ff9ba40bb3c8"
     },
     "Response" : {
       "retry-after" : "0",
@@ -18,7 +18,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f56786df-d2f4-453c-a1b6-674791268359"
+      "x-ms-client-request-id" : "f52ae57b-8773-428a-b2b8-760525cc6eb7"
     },
     "Response" : {
       "retry-after" : "0",
@@ -32,7 +32,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f514bb71-62f7-4ba1-90bc-b5a335c2392e"
+      "x-ms-client-request-id" : "03243bc3-52d4-4f02-b287-9fb83fecb07c"
     },
     "Response" : {
       "retry-after" : "0",
@@ -46,7 +46,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d81cdc2d-887d-4ec3-b253-d019525110f0"
+      "x-ms-client-request-id" : "9c7470c3-fce4-442a-ada7-e76d25f1d86e"
     },
     "Response" : {
       "retry-after" : "0",
@@ -60,7 +60,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "785f25d6-22fd-47ff-98b7-ddc9e6db3431"
+      "x-ms-client-request-id" : "326bb6f0-2271-49f3-8b47-97857b7852f1"
     },
     "Response" : {
       "retry-after" : "0",
@@ -74,7 +74,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6934bd59-50a5-45c8-8a33-173907cffd78"
+      "x-ms-client-request-id" : "fc1ceb31-58f0-45e5-bca7-4b0cbcefba8b"
     },
     "Response" : {
       "retry-after" : "0",
@@ -88,7 +88,7 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-seattle",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f0866356-fcf9-456e-9bc3-78c8c0530650"
+      "x-ms-client-request-id" : "bb4ff59b-8681-41a6-8cad-cdc6af8ae958"
     },
     "Response" : {
       "retry-after" : "0",
