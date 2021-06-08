@@ -139,10 +139,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public Enumeration<String> engineAliases() {
         List<String> aliasList = allCertificates.stream()
-            .map(AzureCertificates::getAliases)
-            .flatMap(Collection::stream)
-            .distinct()
-            .collect(Collectors.toList());
+                     .map(AzureCertificates::getAliases)
+                     .flatMap(Collection::stream)
+                     .distinct()
+                     .collect(Collectors.toList());
 
         return Collections.enumeration(aliasList);
     }
