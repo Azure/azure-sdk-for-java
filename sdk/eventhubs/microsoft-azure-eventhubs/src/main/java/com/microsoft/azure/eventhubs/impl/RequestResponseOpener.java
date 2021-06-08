@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 
 import com.microsoft.azure.eventhubs.impl.IOObject.IOObjectState;
@@ -24,10 +23,9 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     private final AmqpConnection eventDispatcher;
     private final ScheduledExecutorService executor;
 
-    private RequestResponseChannel previousChannel;
+    private RequestResponseChannel currentChannel = null;
     private final Object isOpenedSynchronizer = new Object();
-    private volatile boolean isOpened;
-    private CompletableFuture<Void> closeWaiter;
+    private volatile boolean isOpening = false;
 
     public RequestResponseOpener(final SessionProvider sessionProvider, final String clientId, final String sessionName, final String linkName,
                                  final String endpointAddress, final AmqpConnection eventDispatcher, final ScheduledExecutorService executor) {
@@ -42,48 +40,27 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
     @Override
     public synchronized void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
-        boolean capturedIsOpened;
         synchronized (this.isOpenedSynchronizer) {
-            // Capture so that we don't have to synchronize a bunch of code
-            capturedIsOpened = this.isOpened;
-        }
-        if (capturedIsOpened) {
-            // this.previousChannel cannot be null if this.isOpened was ever true
-            if ((this.previousChannel.getState() == IOObjectState.OPENED) || (this.previousChannel.getState() == IOObjectState.OPENING)) {
-                if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info("skipping run because inner channel currently open");
-                }
-                return;
-            }
-
-            // The inner channel is closing but hasn't called the callback below which does some cleanup before setting this.isOpened
-            // back to false. We want to wait for that cleanup to happen, then relaunch the run operation to open a new inner channel.
-            if (this.closeWaiter != null) {
-                if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info("close pending, open already queued");
-                }
-                return;
-            }
-
-            CompletableFuture<Void> tempWaiter = new CompletableFuture<Void>();
-            tempWaiter.thenRunAsync(() -> {
-                if (RequestResponseOpener.TRACE_LOGGER.isInfoEnabled()) {
-                    RequestResponseOpener.TRACE_LOGGER.info("pending close finished, starting queued open");
-                }
-                RequestResponseOpener.this.run(operationCallback);
-            }, this.executor);
-
-            synchronized (this.isOpenedSynchronizer) {
-                if (this.isOpened) {
-                    // The close callback was not called while we were setting up
+            if (this.currentChannel != null) {
+                if ((this.currentChannel.getState() == IOObjectState.OPENED) || (this.currentChannel.getState() == IOObjectState.OPENING)) {
                     if (TRACE_LOGGER.isInfoEnabled()) {
-                        TRACE_LOGGER.info("close pending, will do open when it finishes");
+                        TRACE_LOGGER.info("inner channel currently open, no need to recreate");
                     }
-                    this.closeWaiter = tempWaiter; // set closeWaiter only after the continuation is set up
                     return;
                 }
-                // else the close callback has been called and the open can just proceed normally!
             }
+
+            // Inner channel doesn't exist or it is closing/closed. Do we need to start creation of a new one,
+            // or is that already in progress?
+            if (this.isOpening) {
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info("inner channel creation already in progress");
+                }
+                return;
+            }
+
+            // Need to start creating an inner channel.
+            this.isOpening = true;
         }
 
         final Session session = this.sessionProvider.getSession(
@@ -98,6 +75,9 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             });
 
         if (session == null) {
+            if (TRACE_LOGGER.isErrorEnabled()) {
+                TRACE_LOGGER.error("got a null session, inner channel recreation cannot continue");
+            }
             return;
         }
         final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
@@ -105,7 +85,7 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                 this.endpointAddress,
                 session,
                 this.executor);
-        this.previousChannel = requestResponseChannel;
+        this.currentChannel = requestResponseChannel;
         requestResponseChannel.open(
                 new OperationResult<Void, Exception>() {
                     @Override
@@ -116,7 +96,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         operationCallback.onComplete(requestResponseChannel);
 
                         synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
-                            isOpened = true;
+                            // Inner channel creation complete.
+                            isOpening = false;
                         }
 
                         if (TRACE_LOGGER.isInfoEnabled()) {
@@ -128,6 +109,12 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                     @Override
                     public void onError(Exception error) {
                         operationCallback.onError(error);
+
+                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                            // Inner channel creation failed.
+                            // The next time run() is called should try again.
+                            isOpening = false;
+                        }
 
                         if (TRACE_LOGGER.isWarnEnabled()) {
                             TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onOpen error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
@@ -141,13 +128,6 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
-                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
-                            isOpened = false;
-                            if (closeWaiter != null) {
-                                closeWaiter.complete(null);
-                            }
-                        }
-
                         if (TRACE_LOGGER.isInfoEnabled()) {
                             TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onClose complete clientId[%s], session[%s], link[%s], endpoint[%s]",
                                     clientId, sessionName, linkName, endpointAddress));
@@ -158,13 +138,6 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                     public void onError(Exception error) {
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
-
-                        synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
-                            isOpened = false;
-                            if (closeWaiter != null) {
-                                closeWaiter.complete(null);
-                            }
-                        }
 
                         if (TRACE_LOGGER.isWarnEnabled()) {
                             TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
