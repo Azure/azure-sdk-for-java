@@ -257,6 +257,13 @@ public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfi
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withEnableUltraSsd(Boolean enableUltraSsd) {
+        super.withEnableUltraSsd(enableUltraSsd);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withEnableFips(Boolean enableFips) {
         super.withEnableFips(enableFips);
         return this;
