@@ -24,7 +24,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BatchTestBase extends TestSuiteBase {
+public abstract class BatchTestBase extends TestSuiteBase {
 
     private Random random = new Random();
     String partitionKey1 = "TBD1";
