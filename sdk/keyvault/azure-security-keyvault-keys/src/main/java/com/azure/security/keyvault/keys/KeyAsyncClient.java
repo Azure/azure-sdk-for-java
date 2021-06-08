@@ -86,8 +86,7 @@ public final class KeyAsyncClient {
      * @param version {@link KeyServiceVersion} of the service to be used when making requests.
      */
     KeyAsyncClient(URL vaultUrl, HttpPipeline pipeline, KeyServiceVersion version) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(KeyService.class, pipeline);
         this.pipeline = pipeline;

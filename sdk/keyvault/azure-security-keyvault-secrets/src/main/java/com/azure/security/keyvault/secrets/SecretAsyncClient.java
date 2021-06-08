@@ -78,8 +78,7 @@ public final class SecretAsyncClient {
      * @param version {@link SecretServiceVersion} of the service to be used when making requests.
      */
     SecretAsyncClient(URL vaultUrl, HttpPipeline pipeline, SecretServiceVersion version) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(SecretService.class, pipeline);
         this.pipeline = pipeline;
