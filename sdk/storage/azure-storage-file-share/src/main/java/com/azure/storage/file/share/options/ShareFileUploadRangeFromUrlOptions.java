@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
@@ -16,6 +19,10 @@ public class ShareFileUploadRangeFromUrlOptions {
     private String sourceBearerToken;
     private ShareRequestConditions destinationRequestConditions;
 
+    /**
+     * @param length data length to upload for this operation.
+     * @param sourceUrl source URL for this operation.
+     */
     public ShareFileUploadRangeFromUrlOptions(
         long length, String sourceUrl) {
         StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);

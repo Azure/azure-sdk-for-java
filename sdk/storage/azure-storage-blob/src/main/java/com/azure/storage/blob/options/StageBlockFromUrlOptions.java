@@ -1,10 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.common.implementation.StorageImplUtils;
 
+/**
+ * Extended options that may be passed when staging a block from a source URL.
+ */
 @Fluent
 public class StageBlockFromUrlOptions {
     private final String base64BlockId;
@@ -58,7 +64,7 @@ public class StageBlockFromUrlOptions {
      * @return MD5 of the source content.
      */
     public byte[] getSourceContentMd5() {
-        return sourceContentMd5;
+        return CoreUtils.clone(sourceContentMd5);
     }
 
     /**
@@ -66,7 +72,7 @@ public class StageBlockFromUrlOptions {
      * @return The updated options.
      */
     public StageBlockFromUrlOptions setSourceContentMd5(byte[] sourceContentMd5) {
-        this.sourceContentMd5 = sourceContentMd5;
+        this.sourceContentMd5 = CoreUtils.clone(sourceContentMd5);
         return this;
     }
 

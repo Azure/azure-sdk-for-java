@@ -1,11 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.common.implementation.StorageImplUtils;
 
+/**
+ * Extended options that may be passed when appending a block from a source URL.
+ */
 @Fluent
 public class AppendBlockFromUrlOptions {
     private final String sourceUrl;
@@ -49,7 +55,7 @@ public class AppendBlockFromUrlOptions {
      * @return MD5 of the source content to be appended.
      */
     public byte[] getSourceContentMD5() {
-        return sourceContentMD5;
+        return CoreUtils.clone(sourceContentMD5);
     }
 
     /**
@@ -57,7 +63,7 @@ public class AppendBlockFromUrlOptions {
      * @return The updated options.
      */
     public AppendBlockFromUrlOptions setSourceContentMD5(byte[] sourceContentMD5) {
-        this.sourceContentMD5 = sourceContentMD5;
+        this.sourceContentMD5 = CoreUtils.clone(sourceContentMD5);
         return this;
     }
 

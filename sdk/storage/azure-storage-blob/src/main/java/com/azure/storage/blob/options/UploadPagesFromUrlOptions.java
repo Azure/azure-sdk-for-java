@@ -1,11 +1,17 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.common.implementation.StorageImplUtils;
 
+/**
+ * Extended options that may be passed when uploading a page range from a source URL.
+ */
 @Fluent
 public class UploadPagesFromUrlOptions {
     private final PageRange range;
@@ -17,7 +23,7 @@ public class UploadPagesFromUrlOptions {
     private String sourceBearerToken;
 
     /**
-     * @param range  The destination page range. Pages must be aligned to 512 byte blocks.
+     * @param range The destination page range. Pages must be aligned to 512 byte blocks.
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public UploadPagesFromUrlOptions(PageRange range, String sourceUrl) {
@@ -59,7 +65,7 @@ public class UploadPagesFromUrlOptions {
      * @return Content MD5 of source content to copy.
      */
     public byte[] getSourceContentMd5() {
-        return sourceContentMd5;
+        return CoreUtils.clone(sourceContentMd5);
     }
 
     /**
@@ -67,7 +73,7 @@ public class UploadPagesFromUrlOptions {
      * @return The updated options.
      */
     public UploadPagesFromUrlOptions setSourceContentMd5(byte[] sourceContentMd5) {
-        this.sourceContentMd5 = sourceContentMd5;
+        this.sourceContentMd5 = CoreUtils.clone(sourceContentMd5);
         return this;
     }
 

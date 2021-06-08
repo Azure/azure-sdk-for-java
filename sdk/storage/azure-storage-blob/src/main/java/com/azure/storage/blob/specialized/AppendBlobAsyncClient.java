@@ -347,6 +347,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
+    /**
+     * Commits a new block of data from another blob to the end of this append blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlockFromUrlOptions}
+     *
+     * @param options Parameters for the operation.
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
+     * blob operation.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlockFromUrlOptions options) {
         try {

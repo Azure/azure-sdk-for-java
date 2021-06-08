@@ -335,7 +335,7 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#UploadPagesFromUrlOptions-Duration-Context}
      *
      * @param options Parameters for the operation.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

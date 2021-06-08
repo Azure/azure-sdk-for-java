@@ -14,6 +14,7 @@ import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.options.UploadPagesFromUrlOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
@@ -172,6 +173,28 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions
+    }
+
+    /**
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrlWithResponse(com.azure.storage.blob.options.UploadPagesFromUrlOptions)}
+     */
+    public void uploadPagesFromUrlWithResponseOptionsBagCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#UploadPagesFromUrlOptions
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        byte[] sourceContentMD5 = new byte[512];
+        PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions().setLeaseId(leaseId);
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.uploadPagesFromUrlWithResponse(new UploadPagesFromUrlOptions(pageRange, url).setSourceOffset(sourceOffset)
+            .setSourceContentMd5(sourceContentMD5).setDestinationRequestConditions(pageBlobRequestConditions)
+            .setSourceRequestConditions(sourceRequestConditions))
+            .subscribe(response -> System.out.printf(
+                "Uploaded page blob from URL with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#UploadPagesFromUrlOptions
     }
 
     /**
