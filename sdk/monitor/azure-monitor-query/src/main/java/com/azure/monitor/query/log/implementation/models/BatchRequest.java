@@ -5,6 +5,7 @@
 package com.azure.monitor.query.log.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,27 +15,26 @@ public final class BatchRequest {
     /*
      * An single request in a batch.
      */
-    @JsonProperty(value = "requests")
-    private List<LogQueryRequest> requests;
+    @JsonProperty(value = "requests", required = true)
+    private List<BatchQueryRequest> requests;
+
+    /**
+     * Creates an instance of BatchRequest class.
+     *
+     * @param requests the requests value to set.
+     */
+    @JsonCreator
+    public BatchRequest(@JsonProperty(value = "requests", required = true) List<BatchQueryRequest> requests) {
+        this.requests = requests;
+    }
 
     /**
      * Get the requests property: An single request in a batch.
      *
      * @return the requests value.
      */
-    public List<LogQueryRequest> getRequests() {
+    public List<BatchQueryRequest> getRequests() {
         return this.requests;
-    }
-
-    /**
-     * Set the requests property: An single request in a batch.
-     *
-     * @param requests the requests value to set.
-     * @return the BatchRequest object itself.
-     */
-    public BatchRequest setRequests(List<LogQueryRequest> requests) {
-        this.requests = requests;
-        return this;
     }
 
     /**
@@ -43,7 +43,9 @@ public final class BatchRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getRequests() != null) {
+        if (getRequests() == null) {
+            throw new IllegalArgumentException("Missing required property requests in model BatchRequest");
+        } else {
             getRequests().forEach(e -> e.validate());
         }
     }
