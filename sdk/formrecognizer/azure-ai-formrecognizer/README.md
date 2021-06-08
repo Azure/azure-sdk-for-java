@@ -34,9 +34,8 @@ This table shows the relationship between SDK versions and supported API version
 
 |SDK version|Supported API version of service
 |-|-
-|3.0.0 | 2.0
-|3.0.1 | 2.0
-|3.1.0 | 2.1
+|3.0.x | 2.0
+|3.1.X - Latest GA release| 2.0, 2.1 (default)
 
 #### Create a Form Recognizer resource
 Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's

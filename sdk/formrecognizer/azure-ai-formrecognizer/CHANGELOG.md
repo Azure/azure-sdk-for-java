@@ -1,5 +1,14 @@
 # Release History
 
+## 3.1.1 (2021-06-09)
+
+### Bug Fixes
+
+- Handles invoices and other recognition operations to avoid NPE when data returned that 
+  do not have sub-line item fields detected.
+- Handles invoices and other recognition operations that return a `FormField` with `text` 
+  and no `boundingBox` or `page` information.
+
 ## 3.1.0 (2021-05-26)
 ### Features Added
 - This General Availability (GA) release marks the stability of the changes introduced in package versions `3.1.0-beta.1` through `3.1.0-beta.3`.
