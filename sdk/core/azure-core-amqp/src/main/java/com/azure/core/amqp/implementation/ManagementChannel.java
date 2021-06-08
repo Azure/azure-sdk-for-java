@@ -116,14 +116,13 @@ public class ManagementChannel implements AmqpManagementNode {
             .next()
             .switchIfEmpty(Mono.error(new AmqpException(false, "Did not get response from tokenManager: " + entityPath, getErrorContext())))
             .handle((response, sink) -> {
-                if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
+                if (RequestResponseUtils.isSuccessful(response)) {
+                    sink.complete();
+                } else {
                     final String message = String.format("User does not have authorization to perform operation "
                         + "on entity [%s]. Response: [%s]", entityPath, response);
                     sink.error(ExceptionUtil.amqpResponseCodeToException(response.getValue(), message,
                         getErrorContext()));
-
-                } else {
-                    sink.complete();
                 }
             });
     }
