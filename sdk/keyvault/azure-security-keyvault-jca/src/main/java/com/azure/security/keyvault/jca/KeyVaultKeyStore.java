@@ -84,8 +84,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
+    /**
+     * Store the path where the well know certificate is placed
+     */
     private final String customPath = Optional.ofNullable(System.getProperty("azure.cert-path.well-known"))
         .orElse("/etc/certs/well-known/");
+
+    /**
+     * Store the path where the custom certificate is placed
+     */
     private final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.cert-path.custom"))
         .orElse("/etc/certs/custom/");
 

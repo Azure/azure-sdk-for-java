@@ -77,12 +77,16 @@ public final class FileSystemCertificates implements AzureCertificates {
         certificateKeys.remove(alias);
     }
 
+    /**
+     * Constructor.
+     * @param certificatePath Store the file path where certificates are placed
+     */
     FileSystemCertificates(String certificatePath) {
         this.certificatePath = certificatePath;
     }
 
     /**
-     * Add alias
+     * Add alias and certificate
      * @param alias certificate alias
      * @param certificate certificate value
      */
@@ -93,6 +97,12 @@ public final class FileSystemCertificates implements AzureCertificates {
         }
     }
 
+    /**
+     * If the file can be parsed into a certificate, add it to the list
+     * @param alias certificate alias
+     * @param file file which try to parsed into a certificate
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
+     */
     private void setCertificateByAliasAndFile(String alias, File file) throws IOException {
         X509Certificate certificate = null;
         try (InputStream inputStream = new FileInputStream(file)) {
@@ -112,6 +122,9 @@ public final class FileSystemCertificates implements AzureCertificates {
         }
     }
 
+    /**
+     * Load certificates in the file directory
+     */
     void loadCertificatesFromFileSystem() {
         try {
             List<File> files = getFiles();
@@ -129,20 +142,20 @@ public final class FileSystemCertificates implements AzureCertificates {
     }
 
     /**
-     * Load all certificates in the folder
+     * Load all certificates in the folder, to avoid alias duplication, do not read files in subdirectories.
      */
     private List<File> getFiles() {
         List<File> files = new ArrayList<>();
         File filePackage = new File(certificatePath);
         File[] array = filePackage.listFiles();
         Optional.ofNullable(array)
-            .map(Arrays::stream)
-            .orElseGet(Stream::empty)
-            .filter(Objects::nonNull)
-            .filter(File::isFile)
-            .filter(File::exists)
-            .filter(File::canRead)
-            .forEach(a -> files.add(a));
+                .map(Arrays::stream)
+                .orElseGet(Stream::empty)
+                .filter(Objects::nonNull)
+                .filter(File::isFile)
+                .filter(File::exists)
+                .filter(File::canRead)
+                .forEach(a -> files.add(a));
         return files;
     }
 }
