@@ -46,6 +46,7 @@ generate-client-as-impl: true
 sync-methods: none
 add-context-parameter: true
 context-client-method-parameter: true
+service-interface-as-public: true
 ```
 
 ### Tag: rbac

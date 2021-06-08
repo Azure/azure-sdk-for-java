@@ -39,8 +39,7 @@ import reactor.core.publisher.Mono;
  */
 @Host("{url}")
 @ServiceInterface(name = "KeyVaultSecrets")
-interface SecretService {
-
+public interface SecretService {
     @Put("secrets/{secret-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
