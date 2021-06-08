@@ -8,7 +8,10 @@ import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
-import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext, UpsertOperation}
+import com.azure.cosmos.spark.diagnostics.{
+  CosmosItemIdentifier,
+  CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext, UpsertOperation
+}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext

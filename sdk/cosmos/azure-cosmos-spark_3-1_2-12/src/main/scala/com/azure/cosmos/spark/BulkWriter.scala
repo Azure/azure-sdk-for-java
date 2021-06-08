@@ -8,7 +8,10 @@ import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, 
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.BulkWriter.{DefaultMaxPendingOperationPerCore, emitFailureHandler}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
-import com.azure.cosmos.{BulkItemRequestOptions, BulkOperations, BulkProcessingOptions, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.{
+  BulkItemRequestOptions,
+  BulkOperations, BulkProcessingOptions, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation
+}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import reactor.core.Disposable

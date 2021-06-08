@@ -6,6 +6,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal
 import com.azure.cosmos.implementation.spark.OperationContext
 import com.azure.cosmos.implementation.{HttpConstants, OperationType, RxDocumentServiceRequest, RxDocumentServiceResponse}
 
+// scalastyle:off multiple.string.literals
+
 private[spark] final class SimpleDiagnosticsSlf4jLogger(classType: Class[_])
   extends DefaultMinimalSlf4jLogger(classType: Class[_]) {
 
@@ -97,3 +99,4 @@ private[spark] final class SimpleDiagnosticsSlf4jLogger(classType: Class[_])
     sb.append("}")
   }
 }
+// // scalastyle:on multiple.string.literals
