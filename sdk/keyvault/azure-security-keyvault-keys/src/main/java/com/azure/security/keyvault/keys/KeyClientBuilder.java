@@ -136,7 +136,8 @@ public final class KeyClientBuilder {
 
         if (buildEndpoint == null) {
             throw logger
-                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings
+                    .getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
@@ -147,7 +148,8 @@ public final class KeyClientBuilder {
 
         if (credential == null) {
             throw logger.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
+                new IllegalStateException(KeyVaultErrorCodeStrings
+                    .getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
         }
 
         // Closest to API goes first, closest to wire goes last.

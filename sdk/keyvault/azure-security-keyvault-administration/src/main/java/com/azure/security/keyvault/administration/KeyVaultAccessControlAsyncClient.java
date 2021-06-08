@@ -95,7 +95,8 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     KeyVaultAccessControlAsyncClient(URL vaultUrl, HttpPipeline httpPipeline,
                                      KeyVaultAdministrationServiceVersion serviceVersion) {
-        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
+        Objects.requireNonNull(vaultUrl,
+            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
@@ -182,7 +183,8 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
 
             return clientImpl.getRoleDefinitions()
                 .listSinglePageAsync(vaultUrl, roleScope.toString(), null,
@@ -301,11 +303,15 @@ public final class KeyVaultAccessControlAsyncClient {
     Mono<Response<KeyVaultRoleDefinition>> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
                                                                          Context context) {
         try {
-            Objects.requireNonNull(options, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options'"));
+            Objects.requireNonNull(options,
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'options'"));
             Objects.requireNonNull(options.getRoleScope(),
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleScope()'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'options.getRoleScope()'"));
             Objects.requireNonNull(options.getRoleDefinitionName(),
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleDefinitionName()'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'options.getRoleDefinitionName()'"));
 
             List<RoleScope> assignableScopes = null;
 
@@ -414,9 +420,11 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                          String roleDefinitionName, Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
             Objects.requireNonNull(roleDefinitionName,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionName'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleDefinitionName'"));
 
             return clientImpl.getRoleDefinitions()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
@@ -492,9 +500,11 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                             Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
             Objects.requireNonNull(roleDefinitionName,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionName'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleDefinitionName'"));
 
             return clientImpl.getRoleDefinitions()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
@@ -566,7 +576,8 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
 
             return clientImpl.getRoleAssignments()
                 .listForScopeSinglePageAsync(vaultUrl, roleScope.toString(), null,
@@ -704,13 +715,17 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                             Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
             Objects.requireNonNull(roleAssignmentName,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleAssignmentName'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleAssignmentName'"));
             Objects.requireNonNull(principalId,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'principalId'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'principalId'"));
             Objects.requireNonNull(roleDefinitionId,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionId'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleDefinitionId'"));
 
             RoleAssignmentProperties roleAssignmentProperties =
                 new RoleAssignmentProperties()
@@ -790,9 +805,11 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                          String roleAssignmentName, Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
             Objects.requireNonNull(roleAssignmentName,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleAssignmentName'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleAssignmentName'"));
 
             return clientImpl.getRoleAssignments()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName,
@@ -867,9 +884,11 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                             Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
             Objects.requireNonNull(roleAssignmentName,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleAssignmentName'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleAssignmentName'"));
 
             return clientImpl.getRoleAssignments()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), roleAssignmentName,

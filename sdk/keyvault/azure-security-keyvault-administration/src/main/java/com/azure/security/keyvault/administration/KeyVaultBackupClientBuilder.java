@@ -115,14 +115,8 @@ public final class KeyVaultBackupClientBuilder {
      * @return A {@link KeyVaultBackupAsyncClient} with the options set from the builder.
      *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
-     * @throws IllegalStateException If {@link KeyVaultAccessControlClientBuilder#credential(TokenCredential)} or
-     * {@link KeyVaultAccessControlClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyVaultBackupAsyncClient buildAsyncClient() {
-        if (credential == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
-        }
-
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone()
             : configuration;
@@ -131,7 +125,8 @@ public final class KeyVaultBackupClientBuilder {
 
         if (buildEndpoint == null) {
             throw logger.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+                new IllegalStateException(
+                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
         serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();

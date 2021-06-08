@@ -39,7 +39,8 @@ import reactor.core.publisher.Mono;
  */
 @Host("{url}")
 @ServiceInterface(name = "KeyVault")
-public interface KeyService {
+interface KeyService {
+
     @Post("keys/{key-name}/create")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)

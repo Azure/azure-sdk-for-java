@@ -54,7 +54,7 @@ public final class RoleDefinitionsImpl {
      */
     @Host("{vaultBaseUrl}")
     @ServiceInterface(name = "KeyVaultAccessContro")
-    public interface RoleDefinitionsService {
+    private interface RoleDefinitionsService {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)

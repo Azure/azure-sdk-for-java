@@ -31,7 +31,8 @@ import reactor.core.publisher.Mono;
  */
 @Host("{url}")
 @ServiceInterface(name = "KeyVault")
-public interface CryptographyService {
+interface CryptographyService {
+
     @Post("keys/{key-name}/{key-version}/encrypt")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
