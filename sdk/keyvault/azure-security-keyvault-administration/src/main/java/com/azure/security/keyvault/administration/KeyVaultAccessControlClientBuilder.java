@@ -116,8 +116,14 @@ public final class KeyVaultAccessControlClientBuilder {
      * @return An {@link KeyVaultAccessControlAsyncClient} with the options set from the builder.
      *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
+     * @throws IllegalStateException If {@link KeyVaultAccessControlClientBuilder#credential(TokenCredential)} or
+     * {@link KeyVaultAccessControlClientBuilder#vaultUrl(String)} have not been set.
      */
     public KeyVaultAccessControlAsyncClient buildAsyncClient() {
+        if (credential == null) {
+            throw logger.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
+        }
+
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone()
             : configuration;
