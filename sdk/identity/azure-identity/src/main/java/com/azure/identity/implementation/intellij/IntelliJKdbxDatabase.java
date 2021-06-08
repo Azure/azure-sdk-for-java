@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
-import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.zip.GZIPInputStream;
@@ -36,17 +35,15 @@ public class IntelliJKdbxDatabase {
 
         IntelliJKdbxMetadata kdbxMetadata = new IntelliJKdbxMetadata();
         InputStream decryptedInputStream = decryptInputStream(key, kdbxMetadata, encryptedDatabaseStream);
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] protectedStreamKey = secureRandom.generateSeed(32);
 
-        Salsa20 salsa20 = IntelliJCryptoUtil.createSalsa20(protectedStreamKey);
+        Salsa20 salsa20 = IntelliJCryptoUtil.createSalsa20CryptoEngine(kdbxMetadata.getEncryptionKey());
         Document document = loadDatabase(decryptedInputStream, salsa20);
 
         return new IntelliJKdbxDatabase(document);
     }
 
     private static byte[] getDatabaseKey(String databasePassword) {
-        MessageDigest md = IntelliJCryptoUtil.getMessageDigestInstance();
+        MessageDigest md = IntelliJCryptoUtil.getMessageDigestSHA256();
         byte[] digest = md.digest(databasePassword.getBytes());
         return md.digest(digest);
     }
@@ -61,7 +58,7 @@ public class IntelliJKdbxDatabase {
     }
 
     static IntelliJKdbxMetadata parseDatabaseMetadata(IntelliJKdbxMetadata kdbxMetadata, InputStream inputStream) throws IOException {
-        MessageDigest digest = IntelliJCryptoUtil.getMessageDigestInstance();
+        MessageDigest digest = IntelliJCryptoUtil.getMessageDigestSHA256();
         DigestInputStream digestInputStream = new DigestInputStream(inputStream, digest);
         LittleEndianDataInputStream littleEndianDataInputStream = new LittleEndianDataInputStream(digestInputStream);
 

@@ -33,7 +33,7 @@ public class IntelliJKdbxMetadata {
     }
 
     public InputStream createDecryptedStream(byte[] digest, InputStream inputStream) throws IOException {
-        byte[] finalKeyDigest = IntelliJCryptoUtil.getFinalKeyDigest(digest, this.getBaseSeed(), this.getTransformSeed(), this.getTransformRounds());
+        byte[] finalKeyDigest = IntelliJCryptoUtil.createKey(digest, this.getBaseSeed(), this.getTransformSeed(), this.getTransformRounds());
         return IntelliJCryptoUtil.getDecryptedInputStream(inputStream, finalKeyDigest, this.getEncryptionIv());
     }
 
@@ -56,6 +56,8 @@ public class IntelliJKdbxMetadata {
     public byte[] getEncryptionIv() {
         return this.encryptionIv;
     }
+
+    public byte[] getEncryptionKey() { return this.encryptionKey; }
 
     public byte[] getInitBytes() {
         return this.initBytes;

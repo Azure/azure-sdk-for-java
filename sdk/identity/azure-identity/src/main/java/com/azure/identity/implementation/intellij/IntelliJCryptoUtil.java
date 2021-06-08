@@ -1,6 +1,6 @@
 package com.azure.identity.implementation.intellij;
 
-// use spongycastle repackaging of bouncycastle in deference to Android needs
+import com.azure.identity.CredentialUnavailableException;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -9,7 +9,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -18,20 +17,21 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Encryption and decryption utilities..
  *
- * @author jo
  */
 public class IntelliJCryptoUtil {
 
-    /**
-     * Gets a digest for a UTF-8 encoded string
-     *
-     * @param string the string
-     * @return a digest as a byte array
-     */
+    private static final byte[] SALSA20_IV = Hex.decode("E830094B97205D2A".getBytes());
+
+//    /**
+//     * Gets a digest for a UTF-8 encoded string
+//     *
+//     * @param string the string
+//     * @return a digest as a byte array
+//     */
     @SuppressWarnings("unused")
-    public static byte[] getDigest(String string) {
-        return getDigest(string, "UTF-8");
-    }
+//    public static byte[] getDigest(String string) {
+//        return getDigest(string, "UTF-8");
+//    }
 
     /**
      * Gets a digest for a string
@@ -40,48 +40,49 @@ public class IntelliJCryptoUtil {
      * @param encoding the encoding of the String
      * @return a digest as a byte array
      */
-    public static byte[] getDigest(String string, String encoding) {
-        if (string == null || string.length() == 0)
-            throw new IllegalArgumentException("String cannot be null or empty");
-
-        if (encoding == null || encoding.length() == 0)
-            throw new IllegalArgumentException("Encoding cannot be null or empty");
-
-        MessageDigest md = getMessageDigestInstance();
-
-        try {
-            byte[] bytes = string.getBytes(encoding);
-            md.update(bytes, 0, bytes.length);
-            return md.digest();
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException(encoding + " is not supported");
-        }
-    }
+//    public static byte[] getDigest(String string, String encoding) {
+//        if (string == null || string.length() == 0)
+//            throw new IllegalArgumentException("String cannot be null or empty");
+//
+//        if (encoding == null || encoding.length() == 0)
+//            throw new IllegalArgumentException("Encoding cannot be null or empty");
+//
+//        MessageDigest md = getMessageDigestSHA256();
+//
+//        try {
+//            byte[] bytes = string.getBytes(encoding);
+//            md.update(bytes, 0, bytes.length);
+//            return md.digest();
+//        } catch (UnsupportedEncodingException e) {
+//            throw new IllegalStateException(encoding + " is not supported");
+//        }
+//    }
 
     /**
-     * Gets a SHA-256 message digest instance
+     * Gets SHA-256 message digest
      *
-     * @return A MessageDigest
+     * @return The MessageDigest with SHA-256 algorithm.
      */
-    public static MessageDigest getMessageDigestInstance() {
+    public static MessageDigest getMessageDigestSHA256() {
         try {
             return MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("SHA-256 is not supported");
+            throw new CredentialUnavailableException("Algorithm SHA-256 is not supported."
+                + " Decryption of IntelliJ Token data is not possible.", e);
         }
     }
 
     /**
-     * Create a final key from the parameters passed
+     * Create a key from the parameters passed
      */
-    public static byte[] getFinalKeyDigest(byte[] key, byte[] masterSeed, byte[] transformSeed, long transformRounds) {
+    public static byte[] createKey(byte[] key, byte[] baseSeed, byte[] transformSeed, long rounds) {
 
-        final byte[] transformedKey = Aes.transformKey(transformSeed, key, transformRounds);
+        final byte[] transformedKey = Aes.transformKey(transformSeed, key, rounds);
 
-        final MessageDigest md = getMessageDigestInstance();
+        final MessageDigest md = getMessageDigestSHA256();
         final byte[] transformedKeyDigest = md.digest(transformedKey);
 
-        md.update(masterSeed);
+        md.update(baseSeed);
         return md.digest(transformedKeyDigest);
     }
 
@@ -97,26 +98,23 @@ public class IntelliJCryptoUtil {
 
             cipher.init(Cipher.DECRYPT_MODE, key, iv);
             return new CipherInputStream(encryptedInputStream, cipher);
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException
+            | InvalidAlgorithmParameterException e) {
+            throw new CredentialUnavailableException("Error Decrypting the IntelliJ cache database.", e);
         }
-        return null;
     }
 
 
-    private static byte[] key;
-
-    public static Salsa20 createSalsa20(byte[] key) {
+    public static Salsa20 createSalsa20CryptoEngine(byte[] key) {
         Salsa20 salsa20Decrypt;
         try {
-            MessageDigest md = getMessageDigestInstance();
+            MessageDigest md = getMessageDigestSHA256();
             byte[] mdKey = md.digest(key);
-            byte[] iv = new IvParameterSpec(mdKey, 0, 8).getIV();
 
             salsa20Decrypt = new Salsa20();
-            salsa20Decrypt.engineInitDecrypt(mdKey, iv);
+            salsa20Decrypt.engineInitDecrypt(mdKey, SALSA20_IV);
         } catch (Exception e) {
-            throw new IllegalStateException("Error when creating Salsa 20 Decryptor", e);
+            throw new CredentialUnavailableException("Error creating the Salsa 20 Decryption Engine.", e);
         }
         return salsa20Decrypt;
     }
