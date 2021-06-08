@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-ad-spring-boot-starter
+- azure-active-directory-spring-boot-starter
 description: "OAuth 2.0 Sample project for Azure AD Spring Boot Starter client library"
-urlFragment: "azure-ad-resource-server-obo-sample"
+urlFragment: "azure-active-directory-resource-server-obo-sample"
 ---
 
 # OAuth 2.0 Sample for Azure AD Spring Boot Starter client library for Java

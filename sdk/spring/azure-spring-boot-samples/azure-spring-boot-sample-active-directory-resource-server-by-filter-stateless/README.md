@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-ad-spring-boot-starter
+- azure-active-directory-spring-boot-starter
 description: "Stateless authentication filter Sample project for Azure AD Spring Boot Starter client library"
-urlFragment: "azure-ad-spring-boot-starter-sample"
+urlFragment: "azure-active-directory-spring-boot-starter-sample"
 ---
 
 # Stateless authentication filter sample for Azure AD Spring Boot Starter client library for Java
