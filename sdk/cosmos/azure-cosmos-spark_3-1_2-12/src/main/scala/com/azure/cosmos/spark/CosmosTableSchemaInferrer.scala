@@ -42,6 +42,7 @@ private object CosmosTableSchemaInferrer
     ETagAttributeName,
     SelfAttributeName,
     ResourceIdAttributeName,
+    TimestampAttributeName,
     AttachmentsAttributeName)
 
   private[spark] def inferSchema(
