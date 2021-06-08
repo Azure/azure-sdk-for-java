@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud-event-hubs-operation
+- azure-spring-cloud-eventhubs-operation
 description: "Azure Spring Cloud Sample project for Event Hub Operation client library"
-urlFragment: "azure-spring-cloud-event-hubs-operation-sample"
+urlFragment: "azure-spring-cloud-eventhubs-operation-sample"
 ---
 
 # Spring Cloud Azure Event Hub Operation Sample shared library for Java

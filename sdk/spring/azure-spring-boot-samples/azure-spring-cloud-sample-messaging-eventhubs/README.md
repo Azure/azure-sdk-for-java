@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud-messaging-event-hubs
+- azure-spring-cloud-messaging-eventhubs
 description: "Azure Spring Cloud Sample project for Messaging Event Hubs client library"
-urlFragment: "azure-spring-cloud-messaging-event-hubs-sample"
+urlFragment: "azure-spring-cloud-messaging-eventhubs-sample"
 ---
 
 # Spring Cloud Azure Messaging Event Hubs Sample shared library for Java

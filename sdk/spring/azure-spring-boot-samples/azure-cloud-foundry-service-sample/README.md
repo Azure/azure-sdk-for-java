@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud-Foundry
+- azure-cloud-foundry-service
 description: "Cloud Foundry Sample project for Azure Spring Boot client library"
-urlFragment: "azure-spring-cloud-foundry-sample"
+urlFragment: "azure-cloud-foundry-service-sample"
 ---
 
 # Cloud Foundry Sample for Azure Spring Boot client library for Java

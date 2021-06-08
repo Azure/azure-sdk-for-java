@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-active-directory-b2c-spring-boot
+- azure-spring-boot-active-directory-b2c-oidc
 description: "Sample project for Azure AD B2C Spring Boot client library"
-urlFragment: "azure-active-directory-b2c-spring-boot-sample"
+urlFragment: "azure-spring-boot-active-directory-b2c-oidc-sample"
 ---
 
 # Sample for Azure AD B2C Spring Boot client library for Java

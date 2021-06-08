@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud-service-bus-queue-multiple-binders
+- azure-spring-cloud-servicebus-queue-multibinders
 description: "Azure Spring Cloud Stream Binder Sample project for Multiple Service Bus Namespaces client library"
-urlFragment: "azure-spring-cloud-service-bus-queue-multiple-binders-sample"
+urlFragment: "azure-spring-cloud-servicebus-queue-multibinders-sample"
 ---
 
 # Spring Cloud Azure Stream Binder for Multiple Service Bus Namespaces Code Sample shared library for Java
