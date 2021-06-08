@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud-for-service-bus-integration
+- azure-spring-integration-service-bus-
 description: "Azure Spring Cloud Sample project for Service Bus Integration client library"
-urlFragment: "azure-spring-cloud-for-service-bus-integration-sample"
+urlFragment: "azure-spring-integration-service-bus-sample"
 ---
 
 # Spring Cloud Azure Service Bus Integration Code Sample shared library for Java
