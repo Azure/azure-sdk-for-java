@@ -2,6 +2,9 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 
+- Added support for Challenge Based Authentication in `AuthenticationPolicy`.
+- Added support for `parameters` in `PolicyDefinition` and `PolicyAssignment`.
+
 ## 2.5.0 (2021-05-28)
 - Updated `api-version` of resources to `2021-01-01`
 - Updated `api-version` of subscriptions to `2021-01-01`

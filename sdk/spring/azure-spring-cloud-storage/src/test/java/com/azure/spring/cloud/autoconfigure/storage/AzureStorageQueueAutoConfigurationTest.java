@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
 import com.azure.storage.queue.QueueServiceClient;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureStorageQueueAutoConfigurationTest {
 
@@ -25,19 +26,20 @@ public class AzureStorageQueueAutoConfigurationTest {
     @Test
     public void testAzureStorageDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.queue.enabled=false")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+                          .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Test
     public void testWithoutCloudQueueClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClient.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+                          .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureStoragePropertiesIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=a")
-            .run(context -> context.getBean(AzureStorageProperties.class));
+                          .run(context -> assertThrows(IllegalStateException.class,
+                              () -> context.getBean(AzureStorageProperties.class)));
     }
 
     @Test

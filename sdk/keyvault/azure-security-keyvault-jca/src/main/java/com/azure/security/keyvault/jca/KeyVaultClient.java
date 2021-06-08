@@ -41,7 +41,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The REST client specific to Azure Key Vault.
  */
-class KeyVaultClient extends DelegateRestClient {
+public class KeyVaultClient extends DelegateRestClient {
 
     /**
      * Stores the logger.
@@ -118,7 +118,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+    public KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
         this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
@@ -186,7 +186,7 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @return the list of aliases.
      */
-    List<String> getAliases() {
+    public List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
@@ -239,7 +239,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param alias the alias.
      * @return the certificate, or null if not found.
      */
-    Certificate getCertificate(String alias) {
+    public Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
@@ -268,7 +268,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param password the password.
      * @return the key.
      */
-    Key getKey(String alias, char[] password) {
+    public Key getKey(String alias, char[] password) {
         LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;

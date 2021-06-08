@@ -2,6 +2,9 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2021-02-01`
+- Supported multiple `ApplicationSecurityGroup` in rules of `NetworkSecurityGroup`.
+
 ## 2.5.0 (2021-05-28)
 - Updated `api-version` to `2020-11-01`
 - Supported `NetworkProfile`

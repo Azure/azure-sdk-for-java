@@ -17,6 +17,7 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
      * Creates an instance of performance test.
      *
      * @param options the options configured for the test.
+     * @throws RuntimeException If {@link EventHubsOptions#getPartitionId()} is not set.
      */
     public GetPartitionInformationTest(EventHubsOptions options) {
         super(options);
@@ -61,11 +62,6 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsOptions> {
     }
 
     private static void printRuntimeInformation(PartitionRuntimeInformation information) {
-        // System.out.printf("Id: %s. Last Seq: %s. Last Offset: %s. Last Enqueued: %s%n",
-        //     information.getPartitionId(),
-        //     information.getLastEnqueuedSequenceNumber(),
-        //     information.getLastEnqueuedOffset(),
-        //     information.getLastEnqueuedTimeUtc());
         Objects.requireNonNull(information, "'PartitionRuntimeInformation' cannot be null.");
     }
 }

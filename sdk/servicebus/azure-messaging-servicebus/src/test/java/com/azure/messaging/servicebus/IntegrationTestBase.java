@@ -6,9 +6,9 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.AsyncAutoCloseable;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -335,8 +335,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 continue;
             }
 
-            if (closeable instanceof AsyncAutoCloseable) {
-                final Mono<Void> voidMono = ((AsyncAutoCloseable) closeable).closeAsync();
+            if (closeable instanceof AsyncCloseable) {
+                final Mono<Void> voidMono = ((AsyncCloseable) closeable).closeAsync();
                 closeableMonos.add(voidMono);
 
                 voidMono.subscribe();

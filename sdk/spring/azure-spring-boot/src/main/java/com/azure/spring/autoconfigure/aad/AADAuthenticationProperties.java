@@ -65,6 +65,11 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String appIdUri;
 
     /**
+     * Add additional parameters to the Authorization URL.
+     */
+    private Map<String, Object> authenticateAdditionalParameters;
+
+    /**
      * Connection Timeout for the JWKSet Remote URL call.
      */
     private int jwtConnectTimeout = RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT; /* milliseconds */
@@ -246,6 +251,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setAppIdUri(String appIdUri) {
         this.appIdUri = appIdUri;
+    }
+
+    public Map<String, Object> getAuthenticateAdditionalParameters() {
+        return authenticateAdditionalParameters;
+    }
+
+    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
+        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
     public int getJwtConnectTimeout() {

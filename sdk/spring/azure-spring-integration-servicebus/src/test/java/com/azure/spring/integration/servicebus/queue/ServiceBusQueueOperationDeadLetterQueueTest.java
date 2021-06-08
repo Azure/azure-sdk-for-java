@@ -6,12 +6,24 @@ package com.azure.spring.integration.servicebus.queue;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusQueueOperationDeadLetterQueueTest extends ServiceBusQueueOperationSendSubscribeTest {
+
+    private AutoCloseable closeable;
+
+    @BeforeEach
+    public void setup() {
+        this.closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
 
     @Test
     public void testSendDeadLetterQueueWithoutManualCheckpointModel() {

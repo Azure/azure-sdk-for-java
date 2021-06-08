@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
@@ -298,8 +299,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     private void close(T channel) {
-        if (channel instanceof AsyncAutoCloseable) {
-            ((AsyncAutoCloseable) channel).closeAsync().subscribe();
+        if (channel instanceof AsyncCloseable) {
+            ((AsyncCloseable) channel).closeAsync().subscribe();
         } else if (channel instanceof AutoCloseable) {
             try {
                 ((AutoCloseable) channel).close();

@@ -109,39 +109,34 @@ public interface TransactionalBatchAction {
     }
 
     class DeleteEntity implements TransactionalBatchAction {
-        private final String partitionKey;
-        private final String rowKey;
-        private final String eTag;
+        private final TableEntity entity;
+        private final boolean ifUnchanged;
 
-        public DeleteEntity(String partitionKey, String rowKey, String eTag) {
-            this.partitionKey = partitionKey;
-            this.rowKey = rowKey;
-            this.eTag = eTag;
+        public DeleteEntity(TableEntity entity, boolean ifUnchanged) {
+            this.entity = entity;
+            this.ifUnchanged = ifUnchanged;
         }
 
-        public String getPartitionKey() {
-            return partitionKey;
+        public TableEntity getEntity() {
+            return entity;
         }
 
-        public String getRowKey() {
-            return rowKey;
-        }
-
-        public String getETag() {
-            return eTag;
+        public boolean getIfUnchanged() {
+            return ifUnchanged;
         }
 
         @Override
         public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
-            return preparer.deleteEntityWithResponse(partitionKey, rowKey, eTag).map(Response::getRequest);
+            return preparer.deleteEntityWithResponse(entity, ifUnchanged).map(Response::getRequest);
         }
 
         @Override
         public String toString() {
             return "DeleteEntity{"
-                + "partitionKey='" + partitionKey + '\''
-                + ", rowKey='" + rowKey + '\''
-                + ", eTag='" + eTag + '\''
+                + "partitionKey='" + entity.getPartitionKey() + '\''
+                + ", rowKey='" + entity.getRowKey() + '\''
+                + ", eTag='" + entity.getETag() + '\''
+                + ", ifUnchanged=" + ifUnchanged
                 + '}';
         }
     }
