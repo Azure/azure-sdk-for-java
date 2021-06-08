@@ -52,9 +52,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      * @return the result info value.
      */
     public CommunicationParticipant[] getParticipants() {
-        CommunicationParticipant[] participants = new CommunicationParticipant[this.participants.length];
-        System.arraycopy(this.participants, 0, participants, 0, this.participants.length);
-        return participants;
+        return this.participants == null ? new CommunicationParticipant[0] : this.participants.clone();
     }
 
     /**
@@ -64,8 +62,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      * @return the ParticipantsUpdatedEvent object itself.
      */
     public ParticipantsUpdatedEvent setParticipants(CommunicationParticipant[] participants) {
-        this.participants = new CommunicationParticipant[participants.length];
-        System.arraycopy(participants, 0, this.participants, 0, participants.length);
+        this.participants = participants == null ? new CommunicationParticipant[0] : participants.clone();
         return this;
     }
 
@@ -90,11 +87,8 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
         if (participants == null) {
             throw new IllegalArgumentException("object participants cannot be null");
         }
-
         this.callLegId = callLegId;
-
-        this.participants = new CommunicationParticipant[participants.length];
-        System.arraycopy(participants, 0, this.participants, 0, participants.length);
+        this.participants = participants.clone();
     }
 
     /**
