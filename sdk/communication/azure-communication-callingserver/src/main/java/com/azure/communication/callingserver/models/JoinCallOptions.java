@@ -79,12 +79,7 @@ public final class JoinCallOptions {
      * @return the requestedModalities value.
      */
     public CallModality[] getRequestedModalities() {
-        if (this.requestedModalities == null) {
-            return new CallModality[0];
-        }
-        CallModality[] requestedModalities = new CallModality[this.requestedModalities.length];
-        System.arraycopy(this.requestedModalities, 0, requestedModalities, 0, this.requestedModalities.length);
-        return requestedModalities;
+        return this.requestedModalities == null ? new CallModality[0] : this.requestedModalities.clone();
     }
 
     /**
@@ -94,8 +89,7 @@ public final class JoinCallOptions {
      * @return the JoinCallOptions object itself.
      */
     public JoinCallOptions setRequestedModalities(CallModality[] requestedModalities) {
-        this.requestedModalities = new CallModality[requestedModalities.length];
-        System.arraycopy(requestedModalities, 0, this.requestedModalities, 0, requestedModalities.length);
+        this.requestedModalities = requestedModalities == null ? new CallModality[0] : requestedModalities.clone();
         return this;
     }
 
@@ -106,12 +100,7 @@ public final class JoinCallOptions {
      * @return the requestedCallEvents value.
      */
     public EventSubscriptionType[] getRequestedCallEvents() {
-        if (this.requestedCallEvents == null) {
-            return new EventSubscriptionType[0];
-        }
-        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[this.requestedCallEvents.length];
-        System.arraycopy(this.requestedCallEvents, 0, requestedCallEvents, 0, this.requestedCallEvents.length);
-        return requestedCallEvents;
+        return this.requestedCallEvents == null ? new EventSubscriptionType[0] : this.requestedCallEvents.clone();
     }
 
     /**
@@ -122,8 +111,7 @@ public final class JoinCallOptions {
      * @return the JoinCallOptions object itself.
      */
     public JoinCallOptions setRequestedCallEvents(EventSubscriptionType[] requestedCallEvents) {
-        this.requestedCallEvents = new EventSubscriptionType[requestedCallEvents.length];
-        System.arraycopy(requestedCallEvents, 0, this.requestedCallEvents, 0, requestedCallEvents.length);
+        this.requestedCallEvents = requestedCallEvents == null ? new EventSubscriptionType[0] : requestedCallEvents.clone();
         return this;
     }
 }

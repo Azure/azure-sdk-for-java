@@ -71,8 +71,6 @@ public class ReadmeSamples {
             requestedCallEvents);
 
         CreateCallResponse createCallResult =  callClient.createCall(source, targets, createCallOptions);
-
-        String callId = createCallResult.getCallLegId();
     }
 
     /**
