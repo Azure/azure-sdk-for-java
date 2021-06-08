@@ -1,7 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.8 (Unreleased)
-
+### New Features
+- Support the local JRE key store certificates. [#21845](https://github.com/Azure/azure-sdk-for-java/pull/21845)
 
 ## 1.0.0-beta.7 (2021-05-24)
 ### New Features
