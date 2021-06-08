@@ -80,8 +80,12 @@ public final class CallClient {
                                        String audioFileId,
                                        String callbackUri,
                                        String operationContext) {
-        PlayAudioRequest playAudioRequest =
-            PlayAudioConverter.convert(audioFileUri, loop, audioFileId, callbackUri, operationContext);
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
+        playAudioRequest.setAudioFileUri(audioFileUri);
+        playAudioRequest.setLoop(loop);
+        playAudioRequest.setAudioFileId(audioFileId);
+        playAudioRequest.setOperationContext(operationContext);
+        playAudioRequest.setCallbackUri(callbackUri);
         return callAsyncClient.playAudio(callId, playAudioRequest).block();
     }
 
@@ -107,8 +111,12 @@ public final class CallClient {
                                                              String callbackUri,
                                                              String operationContext,
                                                              Context context) {
-        PlayAudioRequest playAudioRequest =
-            PlayAudioConverter.convert(audioFileUri, loop, audioFileId, callbackUri, operationContext);
+        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
+        playAudioRequest.setAudioFileUri(audioFileUri);
+        playAudioRequest.setLoop(loop);
+        playAudioRequest.setAudioFileId(audioFileId);
+        playAudioRequest.setOperationContext(operationContext);
+        playAudioRequest.setCallbackUri(callbackUri);
         return callAsyncClient.playAudioWithResponse(callId, playAudioRequest, context).block();
     }
 
