@@ -347,10 +347,9 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static HttpClient nettyHttpClientWithProxyValidation(boolean shouldHaveProxy, ProxyOptions.Type proxyType,
         boolean isAuthenticated) {
-        TestProxyValidator validator = new TestProxyValidator(shouldHaveProxy, proxyType, isAuthenticated);
-
         return HttpClient.create().doOnChannelInit((connectionObserver, channel, socketAddress) ->
-            channel.pipeline().addFirst("TestProxyHandler", validator));
+            channel.pipeline().addFirst("TestProxyHandler",
+                new TestProxyValidator(shouldHaveProxy, proxyType, isAuthenticated)));
     }
 
     private static final class TestProxyValidator extends ChannelDuplexHandler {

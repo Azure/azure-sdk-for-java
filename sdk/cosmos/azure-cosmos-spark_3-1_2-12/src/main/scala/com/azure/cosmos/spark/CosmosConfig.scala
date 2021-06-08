@@ -533,7 +533,7 @@ private object CosmosSchemaInferenceConfig {
   private val inferSchemaForceNullableProperties = CosmosConfigEntry[Boolean](
     key = CosmosConfigNames.ReadInferSchemaForceNullableProperties,
     mandatory = false,
-    defaultValue = Some(false),
+    defaultValue = Some(true),
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should enforce inferred properties to be nullable - even when no null-values are contained in the sample set")
 
@@ -549,7 +549,7 @@ private object CosmosSchemaInferenceConfig {
     parseFromStringFunction = query => query,
     helpMessage = "When schema inference is enabled, used as custom query to infer it")
 
-  def parseCosmosReadConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
+  def parseCosmosInferenceConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
     val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
     val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
     val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)

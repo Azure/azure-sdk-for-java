@@ -3,12 +3,12 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertSnoozeCondition;
-import com.azure.ai.metricsadvisor.models.MetricBoundaryCondition;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
+import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
 import com.azure.core.util.Configuration;
 
 import java.util.Collections;

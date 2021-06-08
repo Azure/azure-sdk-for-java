@@ -985,7 +985,7 @@
       </build>
     </profile>
 
-    <!-- Verify that there are no changes to readme file. Build fails if the there's a difference in README after running the embedme tool. -->
+    <!-- Verify that there are no changes to README file. Build fails if the there's a difference in README after running the embedme tool. -->
     <profile>
       <id>verify-readme</id>
       <activation>
@@ -1022,6 +1022,44 @@
       </build>
     </profile>
 
+    <!-- Verify that the CHANGELOG is formatted correctly. -->
+    <profile>
+      <id>verify-changelog</id>
+      <activation>
+        <property>
+          <name>verify-changelog</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>verify-readme-codesnippet</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>pwsh</executable>
+                  <arguments>
+                    <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/common/scripts/Verify-Changelog.ps1</argument>
+                    <argument>-ChangeLogLocation</argument>
+                    <argument>${project.basedir}/CHANGELOG.md</argument>
+                    <argument>-VersionString</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- Runs the dependency checker. -->
     <profile>
       <id>dependency-checker</id>
@@ -1035,7 +1073,7 @@
           <plugin>
             <groupId>net.jonathangiles.tools</groupId>
             <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.5</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <version>1.0.6</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
             <inherited>false</inherited>
             <executions>
               <execution>
