@@ -24,6 +24,21 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEv
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingApplicationDataChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingBoundaryChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingCropChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingCropVarietyChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingFarmChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingFarmOperationDataIngestionJobStatusChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingFarmerChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingFieldChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingHarvestDataChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingPlantingDataChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingSatelliteDataIngestionJobStatusChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingSeasonChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingSeasonalFieldChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingTillageDataChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.AgriFoodFarmingWeatherDataIngestionJobStatusChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
@@ -103,6 +118,7 @@ import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnection
 import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobInventoryPolicyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
@@ -406,6 +422,11 @@ public final class SystemEventNames {
      */
     public static final String STORAGE_BLOB_DELETED = "Microsoft.Storage.BlobDeleted";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted event. */
+    public static final String STORAGE_BLOB_INVENTORY_POLICY_COMPLETED =
+        "Microsoft.Storage.BlobInventoryPolicyCompleted";
+
+
     /**
      * indicates an event of blob renaming.
      */
@@ -532,6 +553,67 @@ public final class SystemEventNames {
     public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
     public static final String POLICY_INSIGHTS_POLICY_STATE_DELETED = "Microsoft.PolicyInsights.PolicyStateDeleted";
 
+    // Agriculture Food Farming
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.ApplicationDataChanged event. */
+    public static final String AGRI_FOOD_FARMING_APPLICATION_DATA_CHANGED =
+        "Microsoft.AgFoodPlatform.ApplicationDataChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.BoundaryChanged event. */
+    public static final String AGRI_FOOD_FARMING_BOUNDARY_CHANGED = "Microsoft.AgFoodPlatform.BoundaryChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.CropChanged event. */
+    public static final String AGRI_FOOD_FARMING_CROP_CHANGED = "Microsoft.AgFoodPlatform.CropChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.CropVarietyChanged event. */
+    public static final String AGRI_FOOD_FARMING_CROP_VARIETY_CHANGED = "Microsoft.AgFoodPlatform.CropVarietyChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.FarmChanged event. */
+    public static final String AGRI_FOOD_FARMING_FARM_CHANGED = "Microsoft.AgFoodPlatform.FarmChanged";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.FarmOperationDataIngestionJobStatusChanged event.
+     */
+    public static final String AGRI_FOOD_FARMING_FARM_OPERATION_DATA_INGESTION_JOB_STATUS_CHANGED =
+        "Microsoft.AgFoodPlatform.FarmOperationDataIngestionJobStatusChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.FarmerChanged event. */
+    public static final String AGRI_FOOD_FARMING_FARMER_CHANGED = "Microsoft.AgFoodPlatform.FarmerChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.FieldChanged event. */
+    public static final String AGRI_FOOD_FARMING_FIELD_CHANGED = "Microsoft.AgFoodPlatform.FieldChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.HarvestDataChanged event. */
+    public static final String AGRI_FOOD_FARMING_HARVEST_DATA_CHANGED = "Microsoft.AgFoodPlatform.HarvestDataChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.PlantingDataChanged event. */
+    public static final String AGRI_FOOD_FARMING_PLANTING_DATA_CHANGED = "Microsoft.AgFoodPlatform.PlantingDataChanged";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.SatelliteDataIngestionJobStatusChanged event.
+     */
+    public static final String AGRI_FOOD_FARMING_SATELLITE_DATA_INGESTION_JOB_STATUS_CHANGED =
+        "Microsoft.AgFoodPlatform.SatelliteDataIngestionJobStatusChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.SeasonChanged event. */
+    public static final String AGRI_FOOD_FARMING_SEASON_CHANGED = "Microsoft.AgFoodPlatform.SeasonChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.SeasonalFieldChanged event. */
+    public static final String AGRI_FOOD_FARMING_SEASONAL_FIELD_CHANGED =
+        "Microsoft.AgFoodPlatform.SeasonalFieldChanged";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AgFoodPlatform.TillageDataChanged event. */
+    public static final String AGRI_FOOD_FARMING_TILLAGE_DATA_CHANGED = "Microsoft.AgFoodPlatform.TillageDataChanged";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.AgFoodPlatform.WeatherDataIngestionJobStatusChanged event.
+     */
+    public static final String AGRI_FOOD_FARMING_WEATHER_DATA_INGESTION_JOB_STATUS_CHANGED =
+        "Microsoft.AgFoodPlatform.WeatherDataIngestionJobStatusChanged";
+
+
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
             // AppConfiguration events.
@@ -608,6 +690,7 @@ public final class SystemEventNames {
             // Storage events.
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
             put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
+            put(STORAGE_BLOB_INVENTORY_POLICY_COMPLETED, StorageBlobInventoryPolicyCompletedEventData.class);
             put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
             put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
             put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
@@ -689,6 +772,31 @@ public final class SystemEventNames {
             put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
+
+            // Agriculture Food Farming
+            put(
+                AGRI_FOOD_FARMING_APPLICATION_DATA_CHANGED,
+                AgriFoodFarmingApplicationDataChangedEventData.class);
+            put(AGRI_FOOD_FARMING_BOUNDARY_CHANGED, AgriFoodFarmingBoundaryChangedEventData.class);
+            put(AGRI_FOOD_FARMING_CROP_CHANGED, AgriFoodFarmingCropChangedEventData.class);
+            put(AGRI_FOOD_FARMING_CROP_VARIETY_CHANGED, AgriFoodFarmingCropVarietyChangedEventData.class);
+            put(AGRI_FOOD_FARMING_FARM_CHANGED, AgriFoodFarmingFarmChangedEventData.class);
+            put(
+                AGRI_FOOD_FARMING_FARM_OPERATION_DATA_INGESTION_JOB_STATUS_CHANGED,
+                AgriFoodFarmingFarmOperationDataIngestionJobStatusChangedEventData.class);
+            put(AGRI_FOOD_FARMING_FARMER_CHANGED, AgriFoodFarmingFarmerChangedEventData.class);
+            put(AGRI_FOOD_FARMING_FIELD_CHANGED, AgriFoodFarmingFieldChangedEventData.class);
+            put(AGRI_FOOD_FARMING_HARVEST_DATA_CHANGED, AgriFoodFarmingHarvestDataChangedEventData.class);
+            put(AGRI_FOOD_FARMING_PLANTING_DATA_CHANGED, AgriFoodFarmingPlantingDataChangedEventData.class);
+            put(
+                AGRI_FOOD_FARMING_SATELLITE_DATA_INGESTION_JOB_STATUS_CHANGED,
+                AgriFoodFarmingSatelliteDataIngestionJobStatusChangedEventData.class);
+            put(AGRI_FOOD_FARMING_SEASON_CHANGED, AgriFoodFarmingSeasonChangedEventData.class);
+            put(AGRI_FOOD_FARMING_SEASONAL_FIELD_CHANGED, AgriFoodFarmingSeasonalFieldChangedEventData.class);
+            put(AGRI_FOOD_FARMING_TILLAGE_DATA_CHANGED, AgriFoodFarmingTillageDataChangedEventData.class);
+            put(
+                AGRI_FOOD_FARMING_WEATHER_DATA_INGESTION_JOB_STATUS_CHANGED,
+                AgriFoodFarmingWeatherDataIngestionJobStatusChangedEventData.class);
         }
     };
 

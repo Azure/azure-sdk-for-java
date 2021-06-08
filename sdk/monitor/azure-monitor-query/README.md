@@ -39,7 +39,7 @@ This client library provides access to query metrics and logs collected by Azure
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L41-L43 -->
 ```java
-LogsClient logsClient = new LogsClientBuilder()
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(tokenCredential)
     .buildClient();
 ```
@@ -49,7 +49,7 @@ LogsClient logsClient = new LogsClientBuilder()
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L45-L47 -->
 ```java
-LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
+LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
     .credential(tokenCredential)
     .buildAsyncClient();
 ```
@@ -58,7 +58,7 @@ LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L201-L233 -->
 ```java
-    LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
+    LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
         new QueryTimeSpan(Duration.ofDays(2)));
     System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
@@ -90,13 +90,13 @@ LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
                         + "; value = " + logsTableCell.getValueAsString()));
         }
     }
-
+}
 ```
 ### Get logs for a query and read the response as a model type
 
 ```java
 
-    LogsQueryResult queryResults = logsClient
+    LogsQueryResult queryResults = logsQueryClient
         .queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests", null);
     
     // Sample to use a model type to read the results
@@ -217,16 +217,16 @@ LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L117 -->
 ```java
-LogsQueryBatch logsQueryBatch = new LogsQueryBatch()
+LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
     .addQuery("{workspace-id}", "{query-1}", new QueryTimeSpan(Duration.ofDays(2)))
     .addQuery("{workspace-id}", "{query-2}", new QueryTimeSpan(Duration.ofDays(30)));
 
-LogsQueryBatchResultCollection batchResultCollection = logsClient
-    .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
+LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
+    .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();
+List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
-for (LogsQueryBatchResult response : responses) {
+for (LogsBatchQueryResult response : responses) {
     LogsQueryResult queryResult = response.getQueryResult();
 
     // Sample to iterate by row
@@ -250,7 +250,7 @@ LogsQueryOptions options = new LogsQueryOptions("{workspace-id}",
     .setServerTimeout(Duration.ofMinutes(10));
 
 // make service call with these request options set as filter header
-Response<LogsQueryResult> response = logsClient.queryLogsWithResponse(options, Context.NONE);
+Response<LogsQueryResult> response = logsQueryClient.queryLogsWithResponse(options, Context.NONE);
 LogsQueryResult logsQueryResult = response.getValue();
 
 // Sample to iterate by row
@@ -267,7 +267,7 @@ for (LogsTable table : logsQueryResult.getLogsTables()) {
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
 ```java
-MetricsClient metricsClient = new MetricsClientBuilder()
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(tokenCredential)
     .buildClient();
 ```
@@ -276,7 +276,7 @@ MetricsClient metricsClient = new MetricsClientBuilder()
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L60-L62 -->
 ```java
-MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
+MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
     .credential(tokenCredential)
     .buildAsyncClient();
 ```
@@ -285,20 +285,20 @@ MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L161-L188 -->
 ```java
-Response<MetricsQueryResult> metricsResponse = metricsClient
+Response<MetricsQueryResult> metricsResponse = metricsQueryClient
     .queryMetricsWithResponse(
         "{resource-id}",
         Arrays.asList("SuccessfulCalls"),
         new MetricsQueryOptions()
             .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-            .setTimespan(Duration.ofDays(30).toString())
+            .setTimeSpan(new QueryTimeSpan(Duration.ofDays(30)))
             .setInterval(Duration.ofHours(1))
             .setTop(100)
             .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
         Context.NONE);
 
 MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-List<Metrics> metrics = metricsQueryResult.getMetrics();
+List<Metric> metrics = metricsQueryResult.getMetrics();
 metrics.stream()
     .forEach(metric -> {
         System.out.println(metric.getMetricsName());
