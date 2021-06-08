@@ -61,19 +61,18 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
                         return claims;
                     })
                     .orElse(null);
-        if (conditionalAccessPolicyClaims == null) {
-            return OAuth2AuthorizationRequest.from(oAuth2AuthorizationRequest)
-                                             .additionalParameters(properties.getAuthenticateAdditionalParameters())
-                                             .build();
-        }
         final Map<String, Object> additionalParameters = new HashMap<>();
-        additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
+        if (conditionalAccessPolicyClaims != null) {
+            additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
+        }
+        Optional.ofNullable(properties)
+                .map(AADAuthenticationProperties::getAuthenticateAdditionalParameters)
+                .ifPresent(additionalParameters::putAll);
         Optional.of(oAuth2AuthorizationRequest)
                 .map(OAuth2AuthorizationRequest::getAdditionalParameters)
                 .ifPresent(additionalParameters::putAll);
         return OAuth2AuthorizationRequest.from(oAuth2AuthorizationRequest)
                                          .additionalParameters(additionalParameters)
-                                         .additionalParameters(properties.getAuthenticateAdditionalParameters())
                                          .build();
     }
 }
