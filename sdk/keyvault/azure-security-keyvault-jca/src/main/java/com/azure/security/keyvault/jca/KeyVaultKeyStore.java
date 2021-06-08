@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -17,10 +11,6 @@ import java.security.KeyStoreSpi;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Objects;
@@ -31,9 +21,6 @@ import java.util.Optional;
 import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import static java.util.logging.Level.INFO;
-import static java.util.logging.Level.WARNING;
 
 /**
  * The Azure Key Vault implementation of the KeyStoreSpi.
@@ -242,10 +229,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         return allCertificates.stream()
-                     .map(AzureCertificates::getAliases)
-                     .flatMap(Collection::stream)
-                     .distinct()
-                     .anyMatch(a -> Objects.equals(a, alias));
+            .map(AzureCertificates::getAliases)
+            .flatMap(Collection::stream)
+            .distinct()
+            .anyMatch(a -> Objects.equals(a, alias));
     }
 
     @Override
@@ -273,14 +260,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             }
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
-        loadCertificatesFromClasspath();
+        classpathCertificates.loadCertificatesFromClasspath();
         wellKnowCertificates.loadCertificatesFromFileSystem();
         customCertificates.loadCertificatesFromFileSystem();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
-        loadCertificatesFromClasspath();
+        classpathCertificates.loadCertificatesFromClasspath();
         wellKnowCertificates.loadCertificatesFromFileSystem();
         customCertificates.loadCertificatesFromFileSystem();
     }
@@ -290,15 +277,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (keyVaultCertificates.getAliases().contains(alias)) {
             return;
         }
-        engineSetClasspathCertificateEntry(alias, certificate);
-    }
-
-    /**
-     * Store alias and certificates to Classpath
-     * @param alias Classpath certificate's alias
-     * @param certificate Classpath certificate
-     */
-    public void engineSetClasspathCertificateEntry(String alias, Certificate certificate) {
         classpathCertificates.setCertificateEntry(alias, certificate);
     }
 
@@ -333,82 +311,5 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineStore(KeyStore.LoadStoreParameter param) {
     }
 
-    /**
-     * Get the filenames.
-     *
-     * @param path the path.
-     * @return the filenames.
-     * @throws IOException when an I/O error occurs.
-     */
-    private String[] getFilenames(String path) throws IOException {
-        List<String> filenames = new ArrayList<>();
-        try (InputStream in = getClass().getResourceAsStream(path)) {
-            if (in != null) {
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-                    String resource;
-                    while ((resource = br.readLine()) != null) {
-                        filenames.add(resource);
-                    }
-                }
-            }
-        }
-        return filenames.toArray(new String[0]);
-    }
 
-    /**
-     * Read all the bytes for a given input stream.
-     *
-     * @param inputStream the input stream.
-     * @return the byte-array.
-     * @throws IOException when an I/O error occurs.
-     */
-    static byte[] readAllBytes(InputStream inputStream) throws IOException {
-        byte[] bytes;
-        try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream()) {
-            byte[] buffer = new byte[1024];
-            while (true) {
-                int r = inputStream.read(buffer);
-                if (r == -1) {
-                    break;
-                }
-                byteOutput.write(buffer, 0, r);
-            }
-            bytes = byteOutput.toByteArray();
-        }
-        return bytes;
-    }
-
-    /**
-     * Side-load certificate from classpath.
-     */
-    private void loadCertificatesFromClasspath() {
-        try {
-            String[] filenames = getFilenames("/keyvault");
-            if (filenames.length > 0) {
-                for (String filename : filenames) {
-                    try (InputStream inputStream = getClass().getResourceAsStream("/keyvault/" + filename)) {
-                        String alias = filename;
-                        if (alias != null) {
-                            if (alias.lastIndexOf('.') != -1) {
-                                alias = alias.substring(0, alias.lastIndexOf('.'));
-                            }
-                            byte[] bytes = readAllBytes(inputStream);
-                            try {
-                                CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                                X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                        new ByteArrayInputStream(bytes));
-                                engineSetClasspathCertificateEntry(alias, certificate);
-                                LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                        new Object[]{alias, filename});
-                            } catch (CertificateException e) {
-                                LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
-        }
-    }
 }
