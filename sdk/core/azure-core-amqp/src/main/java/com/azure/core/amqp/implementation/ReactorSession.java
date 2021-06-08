@@ -152,8 +152,7 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public void dispose() {
-        closeAsync("Dispose called.", null, true)
-            .block(retryOptions.getTryTimeout());
+        closeAsync().block(retryOptions.getTryTimeout());
     }
 
     /**
@@ -240,6 +239,11 @@ public class ReactorSession implements AmqpSession {
         return isClosedMono.asMono();
     }
 
+    @Override
+    public Mono<Void> closeAsync() {
+        return closeAsync(null, null, true);
+    }
+
     Mono<Void> closeAsync(String message, ErrorCondition errorCondition, boolean disposeLinks) {
         if (isDisposed.getAndSet(true)) {
             return isClosedMono.asMono();
@@ -248,7 +252,7 @@ public class ReactorSession implements AmqpSession {
         final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
         logger.verbose("connectionId[{}], sessionName[{}], errorCondition[{}]. Setting error condition and "
                 + "disposing session. {}",
-            sessionHandler.getConnectionId(), sessionName, condition, message);
+            sessionHandler.getConnectionId(), sessionName, condition, message != null ? message : "");
 
         return Mono.fromRunnable(() -> {
             try {
@@ -596,7 +600,7 @@ public class ReactorSession implements AmqpSession {
             "connectionId[{}] sessionName[{}] Disposing of active send and receive links due to session close.",
             sessionHandler.getConnectionId(), sessionName);
 
-        closeAsync("", null, true).subscribe();
+        closeAsync().subscribe();
     }
 
     private void handleError(Throwable error) {
