@@ -3,7 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,14 +16,12 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.time.Duration;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosBulkAsyncTest extends BatchTestBase {
 
@@ -38,7 +38,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
-        this.bulkClient = getClientBuilder().buildAsyncClient();
+        ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
+            .setMaxRetryAttemptsOnThrottledRequests(1000000)
+            .setMaxRetryWaitTime(Duration.ofDays(1));
+        this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
         bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
     }
 
@@ -48,14 +51,22 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void createItem_withBulk() {
-        int totalRequest = 1000;
+    public void createItem_withBulk() throws InterruptedException {
+        int totalRequest = getTotalRequest(180, 200);
+
+        PartitionKeyDefinition pkDefinition = new PartitionKeyDefinition();
+        pkDefinition.setPaths(Collections.singletonList("/mypk"));
+        CosmosAsyncContainer bulkAsyncContainerWithThroughputControl = createCollection(
+            this.bulkClient,
+            bulkAsyncContainer.getDatabase().getId(),
+            new CosmosContainerProperties(UUID.randomUUID().toString(), pkDefinition));
+
         ThroughputControlGroupConfig groupConfig = new ThroughputControlGroupConfigBuilder()
             .setGroupName("test-group")
-            .setTargetThroughputThreshold(0.001)
+            .setTargetThroughputThreshold(0.2)
             .setDefault(true)
             .build();
-        bulkAsyncContainer.enableLocalThroughputControlGroup(groupConfig);
+        bulkAsyncContainerWithThroughputControl.enableLocalThroughputControlGroup(groupConfig);
 
         Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
             Flux.range(0, totalRequest).map(i -> {
@@ -75,27 +86,37 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         bulkProcessingOptions.setMaxMicroBatchSize(100);
         bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
 
-        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
-            .processBulkOperations(cosmosItemOperationFlux, bulkProcessingOptions);
+        try {
+            Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainerWithThroughputControl
+                .processBulkOperations(cosmosItemOperationFlux, bulkProcessingOptions);
 
-        AtomicInteger processedDoc = new AtomicInteger(0);
-        responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            Thread.sleep(1000);
 
-                processedDoc.incrementAndGet();
+            AtomicInteger processedDoc = new AtomicInteger(0);
+            responseFlux
+                .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
-                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
-                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
-                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+                    processedDoc.incrementAndGet();
 
-                return Mono.just(cosmosBulkItemResponse);
-            }).blockLast();
+                    CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                    if (cosmosBulkOperationResponse.getException() != null) {
+                        logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                        fail(cosmosBulkOperationResponse.getException().toString());
+                    }
+                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                    assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
 
-        assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+                    return Mono.just(cosmosBulkItemResponse);
+                }).blockLast();
+
+            assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+        } finally {
+            bulkAsyncContainerWithThroughputControl.delete().block();
+        }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -133,6 +154,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -156,6 +181,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -205,6 +234,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -230,6 +263,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CONFLICT.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -329,6 +366,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -350,7 +391,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void deleteItem_withBulk() {
-        int totalRequest = getTotalRequest();
+        int totalRequest = Math.min(getTotalRequest(), 20);
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
@@ -382,6 +423,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -430,6 +475,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -483,6 +532,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -545,6 +598,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 processedDoc.incrementAndGet();
 
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -578,6 +635,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
                 processedDoc.incrementAndGet();
                 CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
                 assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
                 assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -601,10 +662,14 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(distinctIndex.size()).isEqualTo(cosmosItemOperations.size());
     }
 
-    private int getTotalRequest() {
-        int countRequest = new Random().nextInt(100) + 200;
+    private int getTotalRequest(int min, int max) {
+        int countRequest = new Random().nextInt(max - min) + min;
         logger.info("Total count of request for this test case: " + countRequest);
 
         return countRequest;
+    }
+
+    private int getTotalRequest() {
+        return getTotalRequest(200, 300);
     }
 }
