@@ -22,7 +22,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -32,14 +34,20 @@ import java.util.Set;
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 
+    public final static String GROUP_ID = "GROUP_ID";
+
+    public final static String GROUP_NAME = "GROUP_NAME";
+
     private final AADAuthenticationProperties properties;
 
     public GraphClient(AADAuthenticationProperties properties) {
         this.properties = properties;
     }
 
-    public Set<String> getGroupsFromGraph(String accessToken) {
-        final Set<String> groups = new LinkedHashSet<>();
+    public Map<String, Set<String>> getGroupsFromGraph(String accessToken) {
+        final Map<String, Set<String>> groups = new HashMap<>();
+        final Set<String> groupsId = new HashSet<>();
+        final Set<String> groupsName = new HashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
         String aadMembershipRestUri = properties.getGraphMembershipUri();
         while (aadMembershipRestUri != null) {
@@ -54,17 +62,20 @@ public class GraphClient {
             memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
-                       .map(membership -> {
-                           if (properties.getUserGroup().getEnableFullList()) {
-                               return Arrays.asList(membership.getObjectID());
-                           } else {
-                               return Arrays.asList(membership.getDisplayName(), membership.getObjectID());
-                           }
-                       }).forEach(groups::addAll);
+                       .map(membership -> Arrays.asList(membership.getObjectID()))
+                       .forEach(groupsId::addAll);
+            memberships.getValue()
+                       .stream()
+                       .filter(this::isGroupObject)
+                       .map(membership -> Arrays.asList(membership.getDisplayName()))
+                       .forEach(groupsName::addAll);
+
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
                                            .orElse(null);
         }
+        groups.put(GROUP_ID, groupsId);
+        groups.put(GROUP_NAME, groupsName);
         return groups;
     }
 

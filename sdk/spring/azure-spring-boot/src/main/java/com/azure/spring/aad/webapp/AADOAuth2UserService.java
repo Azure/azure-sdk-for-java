@@ -30,11 +30,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.spring.aad.webapp.GraphClient.GROUP_ID;
+import static com.azure.spring.aad.webapp.GraphClient.GROUP_NAME;
 import static com.azure.spring.autoconfigure.aad.Constants.APPROLE_PREFIX;
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
@@ -115,20 +118,39 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         if (!properties.allowedGroupIdsConfigured() && !properties.allowedGroupNamesConfigured()) {
             return Collections.emptySet();
         }
-        Set<String> groups = Optional.of(accessToken)
-                                     .map(AbstractOAuth2Token::getTokenValue)
-                                     .map(graphClient::getGroupsFromGraph)
-                                     .orElseGet(Collections::emptySet);
-        if (properties.getUserGroup().getEnableFullList()) {
-            return groups;
+        Map<String, Set<String>> groups = getGroups(accessToken);
+
+        if (properties.getUserGroup().getEnableFullList() || isAllGroupId()) {
+            Set<String> allowedGroupsName = Arrays
+                .asList(properties.getUserGroup().getAllowedGroupNames())
+                .stream()
+                .flatMap(Collection::stream)
+                .filter(groups.get(GROUP_NAME)::contains)
+                .collect(Collectors.toSet());
+            return Arrays.asList(groups.get(GROUP_ID), allowedGroupsName)
+                         .stream()
+                         .flatMap(Collection::stream)
+                         .map(group -> ROLE_PREFIX + group)
+                         .collect(Collectors.toSet());
         }
-        Set<String> roles = Arrays
+        return Arrays
             .asList(properties.getUserGroup().getAllowedGroupIds(), properties.getUserGroup().getAllowedGroupNames())
             .stream()
             .flatMap(Collection::stream)
-            .filter(groups::contains)
+            .filter(group -> groups.get(GROUP_ID).contains(group) || groups.get(GROUP_NAME).contains(group))
             .map(group -> ROLE_PREFIX + group)
             .collect(Collectors.toSet());
-        return roles;
+    }
+
+    private boolean isAllGroupId() {
+        return properties.getUserGroup().getAllowedGroupIds().contains("all")
+            && properties.getUserGroup().getAllowedGroupIds().size() == 1;
+    }
+
+    private Map<String, Set<String>> getGroups(OAuth2AccessToken accessToken) {
+        return Optional.of(accessToken)
+                       .map(AbstractOAuth2Token::getTokenValue)
+                       .map(graphClient::getGroupsFromGraph)
+                       .orElseGet(Collections::emptyMap);
     }
 }

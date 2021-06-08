@@ -157,6 +157,11 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
+        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "The name of enable-full-list may be confused for users, since if the value is true, it will "
+                + "ignore allowed-group-names.",
+            replacement = "allowed-group-ids: all")
         public Boolean getEnableFullList() {
             return enableFullList;
         }
