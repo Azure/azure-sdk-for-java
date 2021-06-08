@@ -5,10 +5,12 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
@@ -40,7 +42,8 @@ public class SearchServiceCustomizations extends Customization {
         // Change class modifiers to 'public abstract'.
         bulkChangeClassModifiers(publicCustomization, PUBLIC_ABSTRACT, "ScoringFunction", "DataChangeDetectionPolicy",
             "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount", "SearchIndexerSkill",
-            "LexicalAnalyzer");
+            "LexicalAnalyzer", "SearchIndexerKnowledgeStoreProjectionSelector",
+            "SearchIndexerKnowledgeStoreBlobProjectionSelector");
 
         // Change class modifiers to 'public final'.
         bulkChangeClassModifiers(publicCustomization, PUBLIC_FINAL, "BM25SimilarityAlgorithm",
