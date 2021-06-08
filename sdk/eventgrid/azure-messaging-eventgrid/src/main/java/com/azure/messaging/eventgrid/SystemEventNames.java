@@ -426,7 +426,6 @@ public final class SystemEventNames {
     public static final String STORAGE_BLOB_INVENTORY_POLICY_COMPLETED =
         "Microsoft.Storage.BlobInventoryPolicyCompleted";
 
-
     /**
      * indicates an event of blob renaming.
      */

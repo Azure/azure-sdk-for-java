@@ -728,7 +728,6 @@ public class DataFeedClientTest extends DataFeedTestBase {
             MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class, () ->
                 client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
             final MetricsAdvisorError errorCode = exception.getValue();
-            assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
     }
