@@ -68,18 +68,21 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
             assertEquals(response.getStatusCode(), 200);
             StartCallRecordingResponse startCallRecordingResponse = response.getValue();
             recordingId = startCallRecordingResponse.getRecordingId();
-            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingStateWithResponse(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
 
-            conversationAsyncClient.pauseRecording(conversationId, recordingId).block();
-            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
+            var pauseRecordingResponse = conversationAsyncClient.pauseRecordingWithResponse(conversationId, recordingId).block();
+            assertEquals(pauseRecordingResponse.getStatusCode(), 200);
+            validateCallRecordingStateWithResponse(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
 
-            conversationAsyncClient.resumeRecording(conversationId, recordingId).block();
-            validateCallRecordingState(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
+            var resumeRecordingResponse = conversationAsyncClient.resumeRecordingWithResponse(conversationId, recordingId).block();
+            assertEquals(resumeRecordingResponse.getStatusCode(), 200);
+            validateCallRecordingStateWithResponse(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         } finally {
-            conversationAsyncClient.stopRecording(conversationId, recordingId).block();
+            var stopRecordingResponse = conversationAsyncClient.stopRecordingWithResponse(conversationId, recordingId).block();
+            assertEquals(stopRecordingResponse.getStatusCode(), 200);
         }
     }
 
@@ -207,6 +210,23 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
         sleepIfRunningAgainstService(6000);
 
         CallRecordingStateResponse callRecordingStateResult = conversationAsyncClient.getRecordingState(conversationId, recordingId).block();
+        assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
+    }
+
+    private void validateCallRecordingStateWithResponse(ConversationAsyncClient conversationAsyncClient, String conversationId, String recordingId, CallRecordingState expectedCallRecordingState) throws InterruptedException {
+        assertNotNull(recordingId);
+        assertNotNull(conversationId);
+
+        /**
+         * There is a delay bewteen the action and when the state is available.
+         * Waiting to make sure we get the updated state, when we are running
+         * against a live service.
+         */
+        sleepIfRunningAgainstService(6000);
+
+        var callRecordingStateResultResponse = conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId).block();
+        var callRecordingStateResult = callRecordingStateResultResponse.getValue();
+        assertEquals(callRecordingStateResultResponse.getStatusCode(), 200);        
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
 }
