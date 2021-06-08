@@ -12,6 +12,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.HttpGetterInfo
+import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DownloadRetryOptions
 import reactor.core.Exceptions
@@ -73,15 +75,15 @@ class DownloadResponseTest extends APISpec {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
 
-        HttpGetterInfo info = new HttpGetterInfo()
-            .setOffset(0)
-            .setCount(setCount ? flux.getScenarioData().remaining() : null)
-            .setETag("etag")
-
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
 
+        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
+        def cc = bsc.getBlobContainerAsyncClient(containerName)
+        def bu = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient()
+        BlobRange range = setCount ? new BlobRange(0, flux.getScenarioData().remaining()) : new BlobRange(0);
+
         when:
-        ReliableDownload response = flux.setOptions(options).getter(info).block()
+        def response = bu.downloadStreamWithResponse(range, options, null, false).block()
 
         then:
         FluxUtil.collectBytesInByteBufferStream(response.getValue()).block() == flux.getScenarioData().array()
@@ -103,10 +105,13 @@ class DownloadResponseTest extends APISpec {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
-        HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
+
+        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
+        def cc = bsc.getBlobContainerAsyncClient(containerName)
+        def bu = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient()
 
         when:
-        ReliableDownload response = flux.setOptions(options).getter(info).block()
+        def response = bu.downloadStreamWithResponse(null, options, null, false).block()
         response.getValue().blockFirst()
 
         then:
@@ -125,70 +130,18 @@ class DownloadResponseTest extends APISpec {
     }
 
     @Unroll
-    def "Info null IA"() {
-        setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK, this)
-        def info = null
-
-        when:
-        new ReliableDownload(null, null, info, { HttpGetterInfo newInfo -> flux.getter(newInfo) })
-
-        then:
-        thrown(NullPointerException)
-    }
-
-    def "Options IA"() {
-        when:
-        new DownloadRetryOptions().setMaxRetryRequests(-1)
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
-    def "Getter IA"() {
-        when:
-        new ReliableDownload(null, null, new HttpGetterInfo().setETag("etag"), null)
-
-        then:
-        thrown(NullPointerException)
-    }
-
-    def "Info"() {
-        setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_INFO_TEST, this)
-        HttpGetterInfo info = new HttpGetterInfo()
-            .setOffset(20)
-            .setCount(10)
-            .setETag("etag")
-
-        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
-
-        when:
-        ReliableDownload response = flux.setOptions(options).getter(info).block()
-        response.getValue().blockFirst()
-
-        then:
-        flux.getTryNumber() == 3
-    }
-
-    def "Info count IA"() {
-        when:
-        new HttpGetterInfo().setCount(-1)
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
-    @Unroll
     def "Timeout"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT,
             this)
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
-        HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
+
+        def bsc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
+        def cc = bsc.getBlobContainerAsyncClient(containerName)
+        def bu = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient()
 
         when:
-        def bufferMono = flux.setOptions(options).getter(info)
+        def bufferMono = bu.downloadStreamWithResponse(null, options, null, false)
             .flatMapMany({ it.getValue() })
 
         then:

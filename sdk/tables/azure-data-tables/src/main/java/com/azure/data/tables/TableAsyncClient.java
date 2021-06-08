@@ -5,6 +5,7 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -21,15 +22,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableSasGenerator;
+import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.AccessPolicy;
-import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
-import com.azure.data.tables.implementation.models.TransactionalBatchAction;
-import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
-import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
-import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -38,7 +36,11 @@ import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceError;
-import com.azure.data.tables.models.TableTransactionActionResponse;
+import com.azure.data.tables.implementation.models.TransactionalBatchAction;
+import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
+import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
+import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
+import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
@@ -47,8 +49,10 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import com.azure.data.tables.models.TableTransactionResult;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -193,6 +197,30 @@ public final class TableAsyncClient {
      */
     public TableServiceVersion getServiceVersion() {
         return TableServiceVersion.fromString(tablesImplementation.getVersion());
+    }
+
+    /**
+     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
+     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param tableSasSignatureValues {@link TableSasSignatureValues}
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableAsyncClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
+     */
+    public String generateSas(TableSasSignatureValues tableSasSignatureValues) {
+        AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
+
+        if (azureNamedKeyCredential == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Cannot generate a SAS token with a client that"
+                + " is not authenticated with an AzureNamedKeyCredential."));
+        }
+
+        return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential).getSas();
     }
 
     /**
@@ -821,11 +849,11 @@ public final class TableAsyncClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TableSignedIdentifier> getAccessPolicy() {
-        return (PagedFlux<TableSignedIdentifier>) fluxContext(this::getAccessPolicy);
+    public PagedFlux<TableSignedIdentifier> listAccessPolicies() {
+        return (PagedFlux<TableSignedIdentifier>) fluxContext(this::listAccessPolicies);
     }
 
-    PagedFlux<TableSignedIdentifier> getAccessPolicy(Context context) {
+    PagedFlux<TableSignedIdentifier> listAccessPolicies(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {
@@ -870,8 +898,8 @@ public final class TableAsyncClient {
      * @return An empty reactive result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setAccessPolicy(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        return this.setAccessPolicyWithResponse(tableSignedIdentifiers).flatMap(FluxUtil::toMono);
+    public Mono<Void> setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return this.setAccessPoliciesWithResponse(tableSignedIdentifiers).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -883,12 +911,12 @@ public final class TableAsyncClient {
      * @return A reactive result containing the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        return withContext(context -> this.setAccessPolicyWithResponse(tableSignedIdentifiers, context));
+    public Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return withContext(context -> this.setAccessPoliciesWithResponse(tableSignedIdentifiers, context));
     }
 
-    Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
-                                                     Context context) {
+    Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                       Context context) {
         context = context == null ? Context.NONE : context;
 
         try {

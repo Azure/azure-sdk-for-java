@@ -880,6 +880,31 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canListReadReceiptsWithOptions(HttpClient httpClient) {
+        HttpClient mockHttpClient = new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(ChatResponseMocker.createReadReceiptsResponse(request));
+            }
+        };
+        setupUnitTest(mockHttpClient);
+        PagedFlux<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts(
+            new ListReadReceiptOptions().setMaxPageSize(1));
+
+        // // process the iterableByPage
+        List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
+        readReceipts.toIterable().forEach(receipt -> {
+            readReceiptList.add(receipt);
+        });
+
+        assertEquals(readReceiptList.size(), 2);
+        assertNotNull(readReceiptList.get(0).getChatMessageId());
+        assertNotNull(readReceiptList.get(0).getReadOn());
+        assertNotNull(readReceiptList.get(0).getSender());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canListReadReceiptsWithContext(HttpClient httpClient) {
         HttpClient mockHttpClient = new NoOpHttpClient() {
             @Override

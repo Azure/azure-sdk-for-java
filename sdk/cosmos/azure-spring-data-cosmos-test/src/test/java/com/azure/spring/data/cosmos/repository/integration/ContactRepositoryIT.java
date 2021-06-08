@@ -34,11 +34,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ContactRepositoryIT {
 
-    private static final Contact TEST_CONTACT1 = new Contact("testId", "faketitle", 25, true);
-    private static final Contact TEST_CONTACT2 = new Contact("testId2", "faketitle2", 32, false);
-    private static final Contact TEST_CONTACT3 = new Contact("testId3", "faketitle3", 25, false);
-    private static final Contact TEST_CONTACT4 = new Contact("testId4", "faketitle4", 43, true);
-    private static final Contact TEST_CONTACT5 = new Contact("testId5", "faketitle3", 43, true);
+    private static final Integer INT_VALUE_1 = 25;
+    private static final Integer INT_VALUE_2 = 32;
+    private static final Integer INT_VALUE_3 = 43;
+    private static final Contact TEST_CONTACT1 = new Contact("testId", "faketitle", INT_VALUE_1, true);
+    private static final Contact TEST_CONTACT2 = new Contact("testId2", "faketitle2", INT_VALUE_2, false);
+    private static final Contact TEST_CONTACT3 = new Contact("testId3", "faketitle3", INT_VALUE_1, false);
+    private static final Contact TEST_CONTACT4 = new Contact("testId4", "faketitle4", INT_VALUE_3, true);
+    private static final Contact TEST_CONTACT5 = new Contact("testId5", "faketitle3", INT_VALUE_3, true);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -244,5 +247,17 @@ public class ContactRepositoryIT {
 
         List<ObjectNode> groupByContacts = repository.selectGroupBy();
         Assert.assertEquals(3, groupByContacts.size());
+    }
+
+    @Test
+    public void testAnnotatedQueriesDistinctIntValue() {
+        List<Integer> valueContacts = repository.findDistinctIntValueValues();
+        assertThat(valueContacts).isEqualTo(Arrays.asList(INT_VALUE_1, INT_VALUE_2, INT_VALUE_3));
+    }
+
+    @Test
+    public void testAnnotatedQueriesDistinctStatus() {
+        List<Boolean> statusContacts = repository.findDistinctStatusValues();
+        assertThat(statusContacts).isEqualTo(Arrays.asList(Boolean.TRUE, Boolean.FALSE));
     }
 }

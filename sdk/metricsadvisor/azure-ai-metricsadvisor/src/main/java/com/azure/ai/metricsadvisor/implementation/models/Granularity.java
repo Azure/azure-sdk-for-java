@@ -28,9 +28,6 @@ public final class Granularity extends ExpandableStringEnum<Granularity> {
     /** Static value Minutely for Granularity. */
     public static final Granularity MINUTELY = fromString("Minutely");
 
-    /** Static value Secondly for Granularity. */
-    public static final Granularity SECONDLY = fromString("Secondly");
-
     /** Static value Custom for Granularity. */
     public static final Granularity CUSTOM = fromString("Custom");
 

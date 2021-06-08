@@ -20,6 +20,15 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
