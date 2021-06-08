@@ -2,16 +2,16 @@ spring:
   cloud:
     azure:
       servicebus:
-        connection-string: Endpoint=sb://service-0524-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=v6u0FDlOkiIW08to5jOFG4leOurkvBwUT1NWU38PMLA=
+        connection-string: [servicebus-namespace-connection-string]
     stream:
       function:
-        definition: supply;consume
+        definition: consume;supply
       bindings:
         consume-in-0:
-          destination: topic
-          group: sub
+          destination: [servicebus-topic-name]
+          group: [topic-subscription-name]
         supply-out-0:
-          destination: topic
+          destination: [servicebus-topic-name-same-as-above]
       servicebus:
         topic:
           bindings:
