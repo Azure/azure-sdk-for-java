@@ -8,14 +8,14 @@ package com.azure.monitor.query.models;
  */
 public final class LogsTableColumn {
     private final String columnName;
-    private final ColumnDataType columnType;
+    private final LogsColumnType columnType;
 
     /**
      * Creates a column in {@link LogsTable}.
      * @param columnName The name of the column.
      * @param columnType The data type of the value in this column.
      */
-    public LogsTableColumn(String columnName, ColumnDataType columnType) {
+    public LogsTableColumn(String columnName, LogsColumnType columnType) {
         this.columnName = columnName;
         this.columnType = columnType;
     }
@@ -32,7 +32,7 @@ public final class LogsTableColumn {
      * Returns the data type of the value in this column.
      * @return the data type of the value in this column.
      */
-    public ColumnDataType getColumnType() {
+    public LogsColumnType getColumnType() {
         return columnType;
     }
 }

@@ -31,6 +31,15 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
     /** Static value string for MetadataColumnDataType. */
     public static final MetadataColumnDataType STRING = fromString("string");
 
+    /** Static value guid for MetadataColumnDataType. */
+    public static final MetadataColumnDataType GUID = fromString("guid");
+
+    /** Static value decimal for MetadataColumnDataType. */
+    public static final MetadataColumnDataType DECIMAL = fromString("decimal");
+
+    /** Static value timespan for MetadataColumnDataType. */
+    public static final MetadataColumnDataType TIMESPAN = fromString("timespan");
+
     /**
      * Creates or finds a MetadataColumnDataType from its string representation.
      *

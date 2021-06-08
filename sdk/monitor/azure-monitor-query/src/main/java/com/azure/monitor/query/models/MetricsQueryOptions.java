@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Fluent
 public final class MetricsQueryOptions {
-    private String timespan;
+    private QueryTimeSpan timeSpan;
     private Duration interval;
     private List<AggregationType> aggregation;
     private Integer top;
@@ -22,21 +22,21 @@ public final class MetricsQueryOptions {
     private String metricsNamespace;
 
     /**
-     * Returns the timespan for which the metrics data is queried.
-     * @return the timespan for which the metrics data is queried.
+     * Returns the timeSpan for which the metrics data is queried.
+     * @return the timeSpan for which the metrics data is queried.
      */
-    public String getTimespan() {
-        return timespan;
+    public QueryTimeSpan getTimeSpan() {
+        return timeSpan;
     }
 
     /**
-     * Sets the timespan for which the metrics data is queried.
-     * @param timespan the timespan for which the metrics data is queried.
+     * Sets the timeSpan for which the metrics data is queried.
+     * @param timeSpan the timeSpan for which the metrics data is queried.
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setTimespan(String timespan) {
-        this.timespan = timespan;
+    public MetricsQueryOptions setTimeSpan(QueryTimeSpan timeSpan) {
+        this.timeSpan = timeSpan;
         return this;
     }
 

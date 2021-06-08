@@ -15,7 +15,7 @@ public final class QueryResults {
     /*
      * The list of tables, columns and rows.
      */
-    @JsonProperty(value = "tables", required = true)
+    @JsonProperty(value = "tables")
     private List<Table> tables;
 
     /*
@@ -24,13 +24,19 @@ public final class QueryResults {
     @JsonProperty(value = "statistics")
     private Object statistics;
 
+    /*
+     * The code and message for an error.
+     */
+    @JsonProperty(value = "error")
+    private ErrorInfo error;
+
     /**
      * Creates an instance of QueryResults class.
      *
      * @param tables the tables value to set.
      */
     @JsonCreator
-    public QueryResults(@JsonProperty(value = "tables", required = true) List<Table> tables) {
+    public QueryResults(@JsonProperty(value = "tables") List<Table> tables) {
         this.tables = tables;
     }
 
@@ -64,6 +70,26 @@ public final class QueryResults {
     }
 
     /**
+     * Get the error property: The code and message for an error.
+     *
+     * @return the error value.
+     */
+    public ErrorInfo getError() {
+        return this.error;
+    }
+
+    /**
+     * Set the error property: The code and message for an error.
+     *
+     * @param error the error value to set.
+     * @return the QueryResults object itself.
+     */
+    public QueryResults setError(ErrorInfo error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -73,6 +99,9 @@ public final class QueryResults {
             throw new IllegalArgumentException("Missing required property tables in model QueryResults");
         } else {
             getTables().forEach(e -> e.validate());
+        }
+        if (getError() != null) {
+            getError().validate();
         }
     }
 }
