@@ -2,7 +2,6 @@ package com.microsoft.azure.spring.cloud.config.app;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.EnvironmentCredentialBuilder;
-//import com.azure.identity.AzureCliCredentialBuilder;
 import com.microsoft.azure.spring.cloud.config.AppConfigurationCredentialProvider;
 import com.microsoft.azure.spring.cloud.config.KeyVaultCredentialProvider;
 
