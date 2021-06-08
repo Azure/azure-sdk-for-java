@@ -85,9 +85,7 @@ public final class CreateCallOptions {
      * @return the requested modalities object itself.
      */
     public CallModality[] getRequestedModalities() {
-        CallModality[] requestedModalities = new CallModality[this.requestedModalities.length];
-        System.arraycopy(this.requestedModalities, 0, requestedModalities, 0, this.requestedModalities.length);
-        return requestedModalities;
+        return this.requestedModalities == null ? new CallModality[0] : this.requestedModalities.clone();
     }
 
     /**
@@ -101,9 +99,7 @@ public final class CreateCallOptions {
      * @return the requested call events to subscribe to object itself.
      */
     public EventSubscriptionType[] getRequestedCallEvents() {
-        EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[this.requestedCallEvents.length];
-        System.arraycopy(this.requestedCallEvents, 0, requestedCallEvents, 0, this.requestedCallEvents.length);
-        return requestedCallEvents;
+        return this.requestedCallEvents.clone();
     }
 
     /**
@@ -130,10 +126,7 @@ public final class CreateCallOptions {
 
         this.callbackUri = callbackUri;
 
-        this.requestedModalities = new CallModality[requestedModalities.length];
-        System.arraycopy(requestedModalities, 0, this.requestedModalities, 0, requestedModalities.length);
-
-        this.requestedCallEvents = new EventSubscriptionType[requestedCallEvents.length];
-        System.arraycopy(requestedCallEvents, 0, this.requestedCallEvents, 0, requestedCallEvents.length);
+        this.requestedModalities = requestedModalities.clone();
+        this.requestedCallEvents = requestedCallEvents.clone();
     }
 }

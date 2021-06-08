@@ -218,9 +218,7 @@ public final class CallClient {
     public Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsWithResponse(String callId,
                                                                                            String operationContext,
                                                                                            Context context) {
-        return callAsyncClient.cancelAllMediaOperationsWithResponse(callId,
-            operationContext,
-            context).block();
+        return callAsyncClient.cancelAllMediaOperationsWithResponse(callId, operationContext, context).block();
     }
 
     /**
