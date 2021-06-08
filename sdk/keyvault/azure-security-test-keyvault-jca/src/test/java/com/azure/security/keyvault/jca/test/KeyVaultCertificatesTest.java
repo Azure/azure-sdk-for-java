@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca;
+package com.azure.security.keyvault.jca.test;
 
+import com.azure.security.keyvault.jca.KeyVaultCertificates;
+import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -16,7 +18,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
 
-import static com.azure.security.keyvault.jca.PropertyConvertorUtils.SYSTEM_PROPERTIES;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,7 +56,7 @@ public class KeyVaultCertificatesTest {
 
     @BeforeAll
     public static void setEnvironmentProperty() {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(PropertyConvertorUtils.SYSTEM_PROPERTIES);
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");

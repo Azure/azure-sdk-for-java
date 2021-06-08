@@ -1,15 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca;
+package com.azure.security.keyvault.jca.test;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.security.KeyStore;
 import java.security.Security;
 
-import static com.azure.security.keyvault.jca.PropertyConvertorUtils.SYSTEM_PROPERTIES;
+import static com.azure.security.keyvault.jca.test.PropertyConvertorUtils.SYSTEM_PROPERTIES;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
