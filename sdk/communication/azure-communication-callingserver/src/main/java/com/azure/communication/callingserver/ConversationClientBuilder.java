@@ -41,6 +41,7 @@ public final class ConversationClientBuilder {
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-callingserver.properties";
 
     private final ClientLogger logger = new ClientLogger(ConversationClientBuilder.class);
+    private String connectionString;
     private String endpoint;
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
@@ -103,18 +104,14 @@ public final class ConversationClientBuilder {
     }
 
     /**
-     * Set endpoint and credential to use
+     * Set connectionString to use
      *
-     * @param connectionString connection string for setting endpoint and
-     * initalizing AzureKeyCredential
+     * @param connectionString connection string to set endpoint and initialize AzureKeyCredential
      * @return CallClientBuilder
      */
     public ConversationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
-        String endpoint = connectionStringObject.getEndpoint();
-        String accessKey = connectionStringObject.getAccessKey();
-        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
+        this.connectionString = connectionString;
         return this;
     }
 
@@ -222,6 +219,38 @@ public final class ConversationClientBuilder {
     }
 
     private AzureCommunicationCallingServerServiceImpl createServiceImpl() {
+        boolean isConnectionStringSet = connectionString != null && !connectionString.trim().isEmpty();
+        boolean isEndpointSet = endpoint != null && !endpoint.trim().isEmpty();
+        boolean isAzureKeyCredentialSet = azureKeyCredential != null;
+        boolean isTokenCredentialSet = tokenCredential != null;
+
+        if (isConnectionStringSet && isEndpointSet) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
+        }
+
+        if (isConnectionStringSet && isAzureKeyCredentialSet) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Both 'connectionString' and 'keyCredential' are set. Just one may be used."));
+        }
+
+        if (isConnectionStringSet && isTokenCredentialSet) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Both 'connectionString' and 'tokenCredential' are set. Just one may be used."));
+        }
+
+        if (isAzureKeyCredentialSet && isTokenCredentialSet) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Both 'tokenCredential' and 'keyCredential' are set. Just one may be used."));
+        }
+
+        if (isConnectionStringSet) {
+            CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
+            String endpoint = connectionStringObject.getEndpoint();
+            String accessKey = connectionStringObject.getAccessKey();
+            this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
+        }
+
         Objects.requireNonNull(endpoint);
         if (this.pipeline == null) {
             Objects.requireNonNull(httpClient);

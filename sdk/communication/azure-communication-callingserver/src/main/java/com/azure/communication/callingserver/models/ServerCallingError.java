@@ -4,7 +4,6 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
@@ -14,27 +13,27 @@ public final class ServerCallingError {
     /*
      * The error code.
      */
-    private String code;
+    private final String code;
 
     /*
      * The error message.
      */
-    private String message;
+    private final String message;
 
     /*
      * The error target.
      */
-    private String target;
+    private final String target;
 
     /*
      * Further details about specific errors that led to this error.
      */
-    private List<ServerCallingError> details;
+    private final List<ServerCallingError> details;
 
     /*
      * The inner error if any.
      */
-    private ServerCallingError innerError;
+    private final ServerCallingError innerError;
 
     /**
      * Get the code property: The error code.
@@ -80,5 +79,21 @@ public final class ServerCallingError {
      */
     public ServerCallingError getInnerError() {
         return this.innerError;
+    }
+
+    /**
+     * Constructs a new ServerCallingError
+     * @param message The message of the original error
+     * @param code The error code
+     * @param target The target of the error
+     * @param details Additional details
+     * @param innerError The inner error
+     */
+    public ServerCallingError(String message, String code, String target, List<ServerCallingError> details, ServerCallingError innerError) {
+        this.message = message;
+        this.code = code;
+        this.target = target;
+        this.details = details;
+        this.innerError = innerError;
     }
 }

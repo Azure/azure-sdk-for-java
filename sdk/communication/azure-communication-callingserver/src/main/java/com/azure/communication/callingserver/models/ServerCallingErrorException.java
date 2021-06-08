@@ -7,11 +7,11 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
- * Exception thrown for an invalid response with CommunicationError information.
+ * Exception thrown on server calling specific errors.
  */
 public final class ServerCallingErrorException extends HttpResponseException {
     /**
-     * Initializes a new instance of the CommunicationErrorException class.
+     * Initializes a new instance of the ServerCallingErrorException class.
      *
      * @param message the exception message or the response content if a message is
      * not available.
@@ -22,7 +22,7 @@ public final class ServerCallingErrorException extends HttpResponseException {
     }
 
     /**
-     * Initializes a new instance of the CommunicationErrorException class.
+     * Initializes a new instance of the ServerCallingErrorException class.
      *
      * @param message the exception message or the response content if a message is
      * not available.

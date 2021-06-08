@@ -47,16 +47,12 @@ Based on if the Contoso app join a call or not, APIs can be divided into two cat
 Once you initialized a `CallClient` class, you can do the following chat operations:
 <!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L31-L40 -->
 ```java
-// You can find your endpoint and access key from your resource in the Azure Portal
-String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
-
 // Your connectionString retrieved from your Azure Communication Service
 String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
 
 // Initialize the call client
 final CallClientBuilder builder = new CallClientBuilder();
-builder.endpoint(endpoint)
-    .connectionString(connectionString);
+builder.connectionString(connectionString);
 CallClient callClient = builder.buildClient();
 ```
 
@@ -117,15 +113,12 @@ callClient.deleteCall(callId);
 Create a ConverationClient: 
 <!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L27-L36 -->
 ```java
-String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
-
 // Your connectionString retrieved from your Azure Communication Service
 String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
 // Initialize the call client
 final ConversationClientBuilder builder = new ConversationClientBuilder();
-builder.endpoint(endpoint)
-    .connectionString(connectionString);
+builder.connectionString(connectionString);
 ConversationClient conversationClient = builder.buildClient();
 ```
 
