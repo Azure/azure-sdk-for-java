@@ -16,7 +16,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -98,8 +97,7 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
-                options,
-                Context.NONE).block();
+                options).block();
 
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
             String callId = createCallResponse.getValue().getCallLegId();
@@ -117,11 +115,11 @@ public class CallAsyncClientTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
-            Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse = callAsyncClient.cancelAllMediaOperationsWithResponse(callId, cancelMediaOperationContext, Context.NONE).block();
+            Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse = callAsyncClient.cancelAllMediaOperationsWithResponse(callId, cancelMediaOperationContext).block();
             CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
 
             // Hang up
-            Response<Void> hangupResponse = callAsyncClient.hangupCallWithResponse(callId, Context.NONE).block();
+            Response<Void> hangupResponse = callAsyncClient.hangupCallWithResponse(callId).block();
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -186,24 +184,23 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
-                options,
-                Context.NONE).block();
+                options).block();
 
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
             String callId = createCallResponse.getValue().getCallLegId();
 
             // Invite User
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            Response<Void> inviteParticipantResponse = callAsyncClient.addParticipantWithResponse(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext, Context.NONE).block();
+            Response<Void> inviteParticipantResponse = callAsyncClient.addParticipantWithResponse(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
             String participantId = "4c100bf4-304c-48e0-87a8-03597ec75464";
-            Response<Void> removeParticipantResponse = callAsyncClient.removeParticipantWithResponse(callId, participantId, Context.NONE).block();
+            Response<Void> removeParticipantResponse = callAsyncClient.removeParticipantWithResponse(callId, participantId).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
-            Response<Void> hangupResponse = callAsyncClient.hangupCallWithResponse(callId, Context.NONE).block();
+            Response<Void> hangupResponse = callAsyncClient.hangupCallWithResponse(callId).block();
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -260,14 +257,13 @@ public class CallAsyncClientTests extends CallingServerTestBase {
             Response<CreateCallResponse> createCallResponse = callAsyncClient.createCallWithResponse(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
-                options,
-                Context.NONE).block();
+                options).block();
 
             CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
             String callId = createCallResponse.getValue().getCallLegId();
 
             // Delete Call
-            Response<Void> hangupResponse = callAsyncClient.deleteCallWithResponse(callId, Context.NONE).block();
+            Response<Void> hangupResponse = callAsyncClient.deleteCallWithResponse(callId).block();
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

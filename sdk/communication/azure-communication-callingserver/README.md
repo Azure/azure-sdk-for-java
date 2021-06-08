@@ -21,7 +21,7 @@ This package contains a Java SDK for Azure Communication CallingServer Service.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callingserver</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -91,8 +91,6 @@ CreateCallOptions createCallOptions = new CreateCallOptions(
     requestedCallEvents);
 
 CreateCallResponse createCallResult =  callClient.createCall(source, targets, createCallOptions);
-
-String callId = createCallResult.getCallLegId();
 ```
 
 Add a participant to a Call:
@@ -137,7 +135,6 @@ Start a Recording:
 String conversationId = "<conversationId recieved from starting call>";
 String recordingStateCallbackUri = "<webhook endpoint to which calling service can report status>";
 StartCallRecordingResponse response = conversationClient.startRecording(conversationId, recordingStateCallbackUri);
-String recordingId = response.getRecordingId();
 ```
 
 Pause a Recording: 
@@ -180,8 +177,8 @@ Play Audio:
 String audioFileUri = "<uri of the file to play>";
 String audioFileId = "<a name to use for caching the audio file>";
 String callbackUri = "<webhook endpoint to which calling service can report status>";
-String context = "<Identifier for correlating responses>";
-PlayAudioResponse playAudioResponse = conversationClient.playAudio(conversationId, audioFileUri, audioFileId,   callbackUri, context);
+String context = "<identifier for correlating responses>";
+PlayAudioResponse playAudioResponse = conversationClient.playAudio(conversationId, audioFileUri, audioFileId, callbackUri, context);
 ```
 
 ## Troubleshooting
