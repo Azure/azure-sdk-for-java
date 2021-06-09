@@ -1,5 +1,8 @@
 # Release History
 
+## 4.5.0-beta.1 (Unreleased)
+
+
 ## 4.4.0 (2021-06-09)
 ### New Features
 - Added new Storage system event `StorageBlobInventoryPolicyCompletedEventData`.
