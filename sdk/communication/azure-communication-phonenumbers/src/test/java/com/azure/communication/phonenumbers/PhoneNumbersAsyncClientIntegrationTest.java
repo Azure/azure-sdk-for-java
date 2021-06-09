@@ -26,15 +26,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
-
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-        assumeTrue(shouldEnablePhoneNumbersTests());
-    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")

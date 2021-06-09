@@ -5,20 +5,20 @@ package com.azure.spring.autoconfigure.cosmos;
 
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Ignore
+@Disabled
 public class CosmosAutoConfigurationTest {
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         PropertySettingUtil.setProperties();
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         PropertySettingUtil.unsetProperties();
     }

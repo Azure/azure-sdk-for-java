@@ -282,6 +282,7 @@ public final class KeyClient {
      * @throws NullPointerException If {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException If {@code ecKeyCreateOptions} is malformed.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createOctKey(CreateOctKeyOptions createOctKeyOptions) {
         return createOctKeyWithResponse(createOctKeyOptions, Context.NONE).getValue();
     }
@@ -312,6 +313,7 @@ public final class KeyClient {
      * @throws NullPointerException If {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException If {@code ecKeyCreateOptions} is malformed.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
         return client.createOctKeyWithResponse(createOctKeyOptions, context).block();
     }
