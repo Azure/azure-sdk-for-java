@@ -16,7 +16,7 @@ import java.util.Map;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to dead letter within a Service Bus Queue.
+ * Sample demonstrates how to dead letter within an Azure Service Bus Queue.
  */
 public class DeadletterQueueSample {
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
@@ -25,7 +25,7 @@ public class DeadletterQueueSample {
     static final Gson GSON = new Gson();
 
     /**
-     * Main method to show how to dead letter within a Service Bus Queue.
+     * Main method to show how to dead letter within an Azure Service Bus Queue.
      *
      * @param args Unused arguments to the program.
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
@@ -36,7 +36,7 @@ public class DeadletterQueueSample {
     }
 
     /**
-     * Run method to invoke this demo on how to dead letter within a Service Bus Queue.
+     * Run method to invoke this demo on how to dead letter within an Azure Service Bus Queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
@@ -99,7 +99,7 @@ public class DeadletterQueueSample {
     }
 
     /**
-     * Receive {@link ServiceBusMessage messages} and dead letter within a Service Bus Queue
+     * Receive {@link ServiceBusMessage messages} and dead letter it within an Azure Service Bus Queue
      *
      * @Param connectionString Service Bus Connection String
      * @Param queueName Queue Name
@@ -139,7 +139,7 @@ public class DeadletterQueueSample {
     }
 
     /**
-     * Receive {@link ServiceBusMessage messages} and dead letter within a Service Bus Queue
+     * Receive {@link ServiceBusMessage messages} and dead letter its within an Azure Service Bus Queue
      *
      * @Param connectionString Service Bus Connection String
      * @Param queueName Queue Name
