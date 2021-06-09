@@ -1,13 +1,3 @@
----
-page_type: sample
-languages:
-- java
-products:
-- azure-cloud-foundry-service
-description: "Cloud Foundry Sample project for Azure Spring Boot client library"
-urlFragment: "azure-cloud-foundry-service-sample"
----
-
 # Cloud Foundry Sample for Azure Spring Boot client library for Java
 ## Key concepts
 This sample project demonstrates how to consume azure services exposed through the Microsoft Azure Service Broker for
