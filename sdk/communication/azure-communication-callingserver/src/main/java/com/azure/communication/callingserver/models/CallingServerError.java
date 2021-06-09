@@ -4,36 +4,42 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** The Server Calling Services error. */
+/** The Calling Server error. */
 @Fluent
-public final class ServerCallingError {
+public final class CallingServerError {
     /*
      * The error code.
      */
-    private final String code;
+    @JsonProperty(value = "code", required = true)
+    private String code;
 
     /*
      * The error message.
      */
-    private final String message;
+    @JsonProperty(value = "message", required = true)
+    private String message;
 
     /*
      * The error target.
      */
-    private final String target;
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
+    private String target;
 
     /*
      * Further details about specific errors that led to this error.
      */
-    private final List<ServerCallingError> details;
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CallingServerError> details;
 
     /*
      * The inner error if any.
      */
-    private final ServerCallingError innerError;
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
+    private CallingServerError innerError;
 
     /**
      * Get the code property: The error code.
@@ -45,12 +51,34 @@ public final class ServerCallingError {
     }
 
     /**
+     * Set the code property: The error code.
+     *
+     * @param code the code value to set.
+     * @return the CommunicationError object itself.
+     */
+    public CallingServerError setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
      * Get the message property: The error message.
      *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
+    }
+
+    /**
+     * Set the message property: The error message.
+     *
+     * @param message the message value to set.
+     * @return the CommunicationError object itself.
+     */
+    public CallingServerError setMessage(String message) {
+        this.message = message;
+        return this;
     }
 
     /**
@@ -68,7 +96,7 @@ public final class ServerCallingError {
      *
      * @return the details value.
      */
-    public List<ServerCallingError> getDetails() {
+    public List<CallingServerError> getDetails() {
         return this.details;
     }
 
@@ -77,19 +105,19 @@ public final class ServerCallingError {
      *
      * @return the innerError value.
      */
-    public ServerCallingError getInnerError() {
+    public CallingServerError getInnerError() {
         return this.innerError;
     }
 
     /**
-     * Constructs a new ServerCallingError
+     * Constructs a new CallingServerError
      * @param message The message of the original error
      * @param code The error code
      * @param target The target of the error
      * @param details Additional details
      * @param innerError The inner error
      */
-    public ServerCallingError(String message, String code, String target, List<ServerCallingError> details, ServerCallingError innerError) {
+    public CallingServerError(String message, String code, String target, List<CallingServerError> details, CallingServerError innerError) {
         this.message = message;
         this.code = code;
         this.target = target;

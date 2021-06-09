@@ -8,23 +8,36 @@ import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.JoinCallConverter;
-import com.azure.communication.callingserver.implementation.converters.ServerCallingErrorConverter;
+import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -37,10 +50,16 @@ public final class CallingServerAsyncClient {
     private final CallConnectionsImpl callConnectionInternal;
     private final ServerCallsImpl serverCallInternal;
     private final ClientLogger logger = new ClientLogger(CallingServerAsyncClient.class);
+    private final ContentDownloader contentDownloader;
 
     CallingServerAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
         callConnectionInternal = callServiceClient.getCallConnections();
         serverCallInternal = callServiceClient.getServerCalls();
+
+        contentDownloader = new ContentDownloader(
+            callServiceClient.getEndpoint(),
+            callServiceClient.getHttpPipeline(),
+            logger);
     }
 
     /**
@@ -61,7 +80,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(createCallOptions, "'createCallOptions' cannot be null.");
             CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return this.callConnectionInternal.createCallAsync(request)
-                .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                 .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -86,7 +105,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(createCallOptions, "'CreateCallOptions' cannot be null.");
             CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return this.callConnectionInternal.createCallWithResponseAsync(request)
-                .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                 .map(response -> new SimpleResponse<>(response,
                     new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
@@ -103,7 +122,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(createCallOptions, "'createCallOptions' cannot be null.");
             CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return this.callConnectionInternal.createCallAsync(request)
-                .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                 .flatMap(response -> Mono.just(new CallConnection(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal))));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -122,7 +141,7 @@ public final class CallingServerAsyncClient {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return this.callConnectionInternal.createCallWithResponseAsync(request, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                    .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                     .map(response -> new SimpleResponse<>(response,
                         new CallConnection(new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal))));
             });
@@ -149,7 +168,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return this.serverCallInternal
                 .joinCallAsync(serverCallId, JoinCallConverter.convert(source, joinCallOptions))
-                .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                 .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -174,7 +193,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return this.serverCallInternal.
                 joinCallWithResponseAsync(serverCallId, JoinCallConverter.convert(source, joinCallOptions))
-                .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                 .map(response -> new SimpleResponse<>(response,
                     new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
@@ -191,7 +210,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return this.serverCallInternal
                 .joinCallAsync(serverCallId, JoinCallConverter.convert(source, joinCallOptions))
-                .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                 .flatMap(response -> Mono.just(new CallConnection(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal))));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -213,7 +232,7 @@ public final class CallingServerAsyncClient {
                 return this.serverCallInternal.
                     joinCallWithResponseAsync(serverCallId,
                         JoinCallConverter.convert(source, joinCallOptions), contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> ServerCallingErrorConverter.translateException(e))
+                    .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e))
                     .map(response -> new SimpleResponse<>(response,
                         new CallConnection(new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal))));
             });
@@ -249,5 +268,151 @@ public final class CallingServerAsyncClient {
 
     ServerCall initializeServerCallInternal(String serverCallId) {
         return new ServerCall(serverCallId, new ServerCallAsync(serverCallId, serverCallInternal));
+    }
+
+
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, from the ACS endpoint
+     * passed as parameter.
+     * @param sourceEndpoint - URL where the content is located.
+     * @return A {@link Flux} object containing the byte stream of the content requested.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ByteBuffer> downloadStream(String sourceEndpoint) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            return downloadStream(sourceEndpoint, null);
+        } catch (RuntimeException ex) {
+            return fluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, from the ACS endpoint
+     * passed as parameter.
+     * @param sourceEndpoint - URL where the content is located.
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @return A {@link Flux} object containing the byte stream of the content requested.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ByteBuffer> downloadStream(String sourceEndpoint, HttpRange httpRange) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            return contentDownloader.downloadStream(sourceEndpoint, httpRange);
+        } catch (RuntimeException ex) {
+            return fluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the recording content, (e.g. Recording's metadata, Recording video, etc.) from the {@code endpoint}.
+     * @param sourceEndpoint - URL where the content is located.
+     * @param range - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
+     * @return A {@link Mono} object containing a {@link Response} with the byte stream of the content requested.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange range) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     * @return response for a successful downloadTo request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> downloadTo(
+        String sourceEndpoint,
+        Path destinationPath,
+        ParallelDownloadOptions parallelDownloadOptions,
+        boolean overwrite) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+            return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null)
+                .then();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> downloadToWithResponse(
+        String sourceEndpoint,
+        Path destinationPath,
+        ParallelDownloadOptions parallelDownloadOptions,
+        boolean overwrite) {
+        try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+            return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> downloadToWithResponse(
+        String sourceEndpoint,
+        OutputStream destinationStream,
+        ParallelDownloadOptions parallelDownloadOptions,
+        Context context) {
+        ParallelDownloadOptions finalParallelDownloadOptions =
+            parallelDownloadOptions == null
+                ? new ParallelDownloadOptions()
+                : parallelDownloadOptions;
+
+        return contentDownloader.downloadToStream(sourceEndpoint, destinationStream, finalParallelDownloadOptions, context);
+    }
+
+    Mono<Response<Void>> downloadToWithResponse(
+        String sourceEndpoint,
+        Path destinationPath,
+        ParallelDownloadOptions parallelDownloadOptions,
+        boolean overwrite,
+        Context context) {
+        ParallelDownloadOptions finalParallelDownloadOptions =
+            parallelDownloadOptions == null
+                ? new ParallelDownloadOptions()
+                : parallelDownloadOptions;
+        Set<OpenOption> openOptions = new HashSet<>();
+
+        if (overwrite) {
+            openOptions.add(StandardOpenOption.CREATE);
+        } else {
+            openOptions.add(StandardOpenOption.CREATE_NEW);
+        }
+        openOptions.add(StandardOpenOption.WRITE);
+
+        try {
+            AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
+            return Mono.just(file).flatMap(
+                c -> contentDownloader.downloadToFile(sourceEndpoint, c, finalParallelDownloadOptions, context))
+                .doFinally(signalType -> contentDownloader.downloadToFileCleanup(file, destinationPath, signalType));
+        } catch (IOException ex) {
+            return monoError(logger, new RuntimeException(ex));
+        }
     }
 }

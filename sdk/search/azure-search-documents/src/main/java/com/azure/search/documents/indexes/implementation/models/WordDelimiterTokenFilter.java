@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,11 +17,10 @@ import java.util.List;
  * Splits words into subwords and performs optional transformations on subword groups. This token filter is implemented
  * using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.WordDelimiterTokenFilter")
-@JsonFlatten
 @Fluent
-public class WordDelimiterTokenFilter extends TokenFilter {
+public final class WordDelimiterTokenFilter extends TokenFilter {
     /*
      * A value indicating whether to generate part words. If set, causes parts
      * of words to be generated; for example "AzureSearch" becomes "Azure"

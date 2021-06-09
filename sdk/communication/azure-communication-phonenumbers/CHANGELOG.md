@@ -3,6 +3,10 @@
 ## 1.0.3 (2021-06-08)
 - Updated 'azure-communication-phonenumbers' version
 
+
+## 1.0.3 (2021-06-09)
+Updated `azure-communication-phonenumbers` version
+
 ## 1.0.2 (2021-05-27)
 - Dependency versions updated.
 

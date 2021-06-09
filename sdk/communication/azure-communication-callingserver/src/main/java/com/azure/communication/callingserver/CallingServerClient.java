@@ -5,12 +5,17 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * Sync Client that supports server calling operations.
@@ -102,6 +107,80 @@ public final class CallingServerClient {
      */
     public ServerCall initializeServerCall(String serverCallId) {
         return callingServerAsyncClient.initializeServerCallInternal(serverCallId);
+    }
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
+     * {@code endpoint} and write it into the {@link OutputStream} passed as parameter.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationStream - A stream where to write the downloaded content.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadTo(String sourceEndpoint, OutputStream destinationStream,
+                           ParallelDownloadOptions parallelDownloadOptions) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
+        downloadToWithResponse(sourceEndpoint, destinationStream, parallelDownloadOptions, null);
+    }
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
+     * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationStream - A stream where to write the downloaded content.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param context A {@link Context} representing the request context.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadToWithResponse(String sourceEndpoint, OutputStream destinationStream,
+                                                 ParallelDownloadOptions parallelDownloadOptions, Context context) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
+        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationStream, parallelDownloadOptions, context)
+            .block();
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadTo(String sourceEndpoint, Path destinationPath,
+                           ParallelDownloadOptions parallelDownloadOptions, boolean overwrite) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+        downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
+    }
+
+    /**
+     * Download the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationPath - File location.
+     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     *                               download will work.
+     * @param overwrite - True to overwrite the file if it exists.
+     * @param context A {@link Context} representing the request context.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> downloadToWithResponse(String sourceEndpoint,
+                                                 Path destinationPath,
+                                                 ParallelDownloadOptions parallelDownloadOptions,
+                                                 boolean overwrite,
+                                                 Context context) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,
+            parallelDownloadOptions, overwrite, context).block();
     }
 }
 
