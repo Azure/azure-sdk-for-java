@@ -25,7 +25,7 @@ public class AzureEnvironmentAutoConfiguration {
         DefaultEnvironmentProvider defaultEnvironmentProvider = new DefaultEnvironmentProvider();
 
         if (azureProperties != null) {
-            defaultEnvironmentProvider.setEnvironment(azureProperties.getEnvironment().getAzureEnvironment());
+            defaultEnvironmentProvider.setEnvironment(azureProperties.getCloud());
         }
 
         return defaultEnvironmentProvider;

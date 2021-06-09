@@ -8,6 +8,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
+import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.core.AzureProperties;
 import com.azure.spring.core.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -18,7 +19,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-
+import org.springframework.context.annotation.Import;
 /**
  * Auto-config to provide default {@link CredentialsProvider} for all Azure services
  *
@@ -28,6 +29,7 @@ import org.springframework.core.env.Environment;
 @EnableConfigurationProperties(AzureProperties.class)
 @ConditionalOnClass(AzureResourceManager.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
+@Import(AzureEnvironmentAutoConfiguration.class)
 public class AzureContextAutoConfiguration {
 
     private static final String PROJECT_VERSION = AzureContextAutoConfiguration.class.getPackage()
@@ -53,9 +55,9 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AzureProfile azureProfile(AzureProperties azureProperties) {
+    public AzureProfile azureProfile(AzureProperties azureProperties, EnvironmentProvider environmentProvider) {
         return new AzureProfile(azureProperties.getTenantId(), azureProperties.getSubscriptionId(),
-            azureProperties.getEnvironment().getAzureEnvironment());
+            environmentProvider.getEnvironment());
     }
 
     @Bean

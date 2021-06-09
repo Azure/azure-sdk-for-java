@@ -7,6 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
+import com.azure.spring.core.AzureCloud;
 import com.azure.spring.core.AzureProperties;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -61,8 +62,8 @@ public class AzureContextAutoConfigurationTest {
                 assertThat(context.getBean(AzureProperties.class).getResourceGroup()).isEqualTo("rg1");
                 assertThat(context.getBean(AzureProperties.class).getRegion()).isEqualTo("region1");
                 assertThat(context.getBean(AzureProperties.class).getSubscriptionId()).isEqualTo("sub1");
-                assertThat(context.getBean(AzureProperties.class).getEnvironment().getAzureEnvironment())
-                    .isEqualTo(AzureEnvironment.AZURE);
+                assertThat(context.getBean(AzureProperties.class).getCloud())
+                    .isEqualTo(AzureCloud.Azure);
             });
     }
 
