@@ -6,6 +6,12 @@
 - Upgraded `azure-core` dependency to 1.17.0
 
 
+## 1.3.1 (2021-06-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.17.0
+
+
 ## 1.3.0 (2021-05-11)
 
 ### Features Added
