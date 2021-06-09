@@ -1,6 +1,34 @@
 # Release History
 
-## 11.4.0-beta.3 (Unreleased)
+## 11.4.0 (2021-06-08)
+
+### Features Added
+
+- Added the ability to configure Knowledge Store in skillsets.
+- Added factory method to `SynonymMap` to enable creation from a file.
+- Added support for `Edm.GeographyPoint` in `FieldBuilder` when property has type `GeoPoint`.
+- Added support for geography based filtering in `SearchFilter` when `GeoPosition`, `GeoPoint`, `GeoLineString`, or
+  `GeoPolygon` are used as formatting arguments.
+- Added new skills `CustomEntityLookupSkill` and `DocumentExtractionSkill` and new skill versions for
+  `KeyPhraseExtractionSkill` and `LanguageDetectionSkill`.
+- Added support for the ADLS Gen 2 Indexer data source type.
+- Added skillset counts to `SearchServiceCounters`.
+- Added additional log messages to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
+
+### Breaking Changes
+
+- Removed support for service version `2020-06-30-Preview`. Default version is now `2020-06-30`.
+- Removed Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Removed support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.16.0` to `1.17.0`.
+- Updated `azure-core-http-netty` from `1.9.2` to `1.10.0`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.3` to `1.2.4`.
+- Updated Jackson from `2.12.2` to `2.12.3`.
+- Updated Reactor from `3.4.5` to `3.4.6`.
+- Updated Reactor Netty from `1.0.6` to `1.0.7`.
 
 ## 11.3.2 (2021-05-11)
 
