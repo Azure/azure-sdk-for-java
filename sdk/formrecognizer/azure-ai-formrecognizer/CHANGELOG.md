@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-- Fixed invoices and other recognition operations to avoid Null Pointer Exception when data returned with none
+- Fixed invoices and other recognition operations to avoid Null Pointer Exception when data returned with no
   sub-line item fields detected.
 - Fixed invoices and other recognition operations that return a `FormField` with `text`
   and no `boundingBox` or `page` information.
