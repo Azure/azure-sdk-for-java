@@ -36,6 +36,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -155,7 +156,7 @@ public final class IoTHubConnectionSample {
         try {
             accessToken = generateSharedAccessSignature(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), resource, Duration.ofMinutes(10));
-        } catch (UnsupportedOperationException | IllegalArgumentException error) {
+        } catch (UnsupportedOperationException | IllegalArgumentException | UnsupportedEncodingException error) {
             return Mono.error(error);
         }
 
@@ -403,12 +404,13 @@ public final class IoTHubConnectionSample {
      * @return An access token.
      */
     private static AccessToken generateSharedAccessSignature(String policyName, String sharedAccessKey,
-        String resourceUri, Duration tokenDuration) {
+        String resourceUri, Duration tokenDuration) throws UnsupportedEncodingException {
 
         final OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(tokenDuration);
 
+        final String utf8Encoding = UTF_8.name();
         final String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
-        final String stringToSign = URLEncoder.encode(resourceUri, UTF_8) + "\n" + expiresOnEpochSeconds;
+        final String stringToSign = URLEncoder.encode(resourceUri, utf8Encoding) + "\n" + expiresOnEpochSeconds;
         final byte[] decodedKey = Base64.getDecoder().decode(sharedAccessKey);
 
         final Mac sha256HMAC;
@@ -428,8 +430,8 @@ public final class IoTHubConnectionSample {
         final byte[] bytes = sha256HMAC.doFinal(stringToSign.getBytes(UTF_8));
         final String signature = new String(Base64.getEncoder().encode(bytes), UTF_8);
         final String token = String.format(Locale.ROOT, "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s",
-            URLEncoder.encode(resourceUri, UTF_8),
-            URLEncoder.encode(signature, UTF_8),
+            URLEncoder.encode(resourceUri, utf8Encoding),
+            URLEncoder.encode(signature, utf8Encoding),
             expiresOnEpochSeconds, policyName);
 
         return new AccessToken(token, expiresOn);
