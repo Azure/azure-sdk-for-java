@@ -7,6 +7,7 @@ import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -16,6 +17,7 @@ import java.security.Security;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
 
+@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class FileSystemCertificatesTest {
 
     private static String certificateName;
