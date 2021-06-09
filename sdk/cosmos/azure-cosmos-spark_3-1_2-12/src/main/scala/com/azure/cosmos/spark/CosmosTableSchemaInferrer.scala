@@ -37,6 +37,14 @@ private object CosmosTableSchemaInferrer
     ResourceIdAttributeName,
     AttachmentsAttributeName)
 
+  private val notNullableProperties = List(
+    IdAttributeName,
+    ETagAttributeName,
+    SelfAttributeName,
+    ResourceIdAttributeName,
+    TimestampAttributeName,
+    AttachmentsAttributeName)
+
   private[spark] def inferSchema(
                                   inferredItems: Seq[ObjectNode],
                                   includeSystemProperties: Boolean,
@@ -125,7 +133,7 @@ private object CosmosTableSchemaInferrer
               case anyType: DataType => field.getKey -> StructField(
                 field.getKey,
                 anyType,
-                nullable= !systemProperties.contains(field.getKey) && allowNullForInferredProperties)
+                nullable= !notNullableProperties.contains(field.getKey) && allowNullForInferredProperties)
             })
         .toSeq)
   }
