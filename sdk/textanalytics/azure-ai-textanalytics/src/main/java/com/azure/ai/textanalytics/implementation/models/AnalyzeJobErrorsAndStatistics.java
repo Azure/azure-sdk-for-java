@@ -8,15 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AnalyzeJobState model. */
+/** The AnalyzeJobErrorsAndStatistics model. */
 @Fluent
-public final class AnalyzeJobState extends AnalyzeJobMetadata {
-    /*
-     * The tasks property.
-     */
-    @JsonProperty(value = "tasks", required = true)
-    private TasksStateTasks tasks;
-
+public class AnalyzeJobErrorsAndStatistics {
     /*
      * The errors property.
      */
@@ -29,32 +23,6 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      */
     @JsonProperty(value = "statistics")
     private RequestStatistics statistics;
-
-    /*
-     * The @nextLink property.
-     */
-    @JsonProperty(value = "@nextLink")
-    private String nextLink;
-
-    /**
-     * Get the tasks property: The tasks property.
-     *
-     * @return the tasks value.
-     */
-    public TasksStateTasks getTasks() {
-        return this.tasks;
-    }
-
-    /**
-     * Set the tasks property: The tasks property.
-     *
-     * @param tasks the tasks value to set.
-     * @return the AnalyzeJobState object itself.
-     */
-    public AnalyzeJobState setTasks(TasksStateTasks tasks) {
-        this.tasks = tasks;
-        return this;
-    }
 
     /**
      * Get the errors property: The errors property.
@@ -69,9 +37,9 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * Set the errors property: The errors property.
      *
      * @param errors the errors value to set.
-     * @return the AnalyzeJobState object itself.
+     * @return the AnalyzeJobErrorsAndStatistics object itself.
      */
-    public AnalyzeJobState setErrors(List<TextAnalyticsError> errors) {
+    public AnalyzeJobErrorsAndStatistics setErrors(List<TextAnalyticsError> errors) {
         this.errors = errors;
         return this;
     }
@@ -91,30 +59,10 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * about the request payload.
      *
      * @param statistics the statistics value to set.
-     * @return the AnalyzeJobState object itself.
+     * @return the AnalyzeJobErrorsAndStatistics object itself.
      */
-    public AnalyzeJobState setStatistics(RequestStatistics statistics) {
+    public AnalyzeJobErrorsAndStatistics setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The @nextLink property.
-     *
-     * @return the nextLink value.
-     */
-    public String getNextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The @nextLink property.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the AnalyzeJobState object itself.
-     */
-    public AnalyzeJobState setNextLink(String nextLink) {
-        this.nextLink = nextLink;
         return this;
     }
 }

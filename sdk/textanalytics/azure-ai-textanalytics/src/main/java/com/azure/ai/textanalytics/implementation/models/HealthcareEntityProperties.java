@@ -7,9 +7,9 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Entity model. */
+/** The HealthcareEntityProperties model. */
 @Fluent
-public final class Entity {
+public class HealthcareEntityProperties {
     /*
      * Entity text as appears in the request.
      */
@@ -17,10 +17,10 @@ public final class Entity {
     private String text;
 
     /*
-     * Entity type.
+     * Healthcare Entity Category.
      */
     @JsonProperty(value = "category", required = true)
-    private String category;
+    private HealthcareEntityCategory category;
 
     /*
      * (Optional) Entity sub type.
@@ -61,29 +61,29 @@ public final class Entity {
      * Set the text property: Entity text as appears in the request.
      *
      * @param text the text value to set.
-     * @return the Entity object itself.
+     * @return the HealthcareEntityProperties object itself.
      */
-    public Entity setText(String text) {
+    public HealthcareEntityProperties setText(String text) {
         this.text = text;
         return this;
     }
 
     /**
-     * Get the category property: Entity type.
+     * Get the category property: Healthcare Entity Category.
      *
      * @return the category value.
      */
-    public String getCategory() {
+    public HealthcareEntityCategory getCategory() {
         return this.category;
     }
 
     /**
-     * Set the category property: Entity type.
+     * Set the category property: Healthcare Entity Category.
      *
      * @param category the category value to set.
-     * @return the Entity object itself.
+     * @return the HealthcareEntityProperties object itself.
      */
-    public Entity setCategory(String category) {
+    public HealthcareEntityProperties setCategory(HealthcareEntityCategory category) {
         this.category = category;
         return this;
     }
@@ -101,9 +101,9 @@ public final class Entity {
      * Set the subcategory property: (Optional) Entity sub type.
      *
      * @param subcategory the subcategory value to set.
-     * @return the Entity object itself.
+     * @return the HealthcareEntityProperties object itself.
      */
-    public Entity setSubcategory(String subcategory) {
+    public HealthcareEntityProperties setSubcategory(String subcategory) {
         this.subcategory = subcategory;
         return this;
     }
@@ -123,9 +123,9 @@ public final class Entity {
      * the offset returned.
      *
      * @param offset the offset value to set.
-     * @return the Entity object itself.
+     * @return the HealthcareEntityProperties object itself.
      */
-    public Entity setOffset(int offset) {
+    public HealthcareEntityProperties setOffset(int offset) {
         this.offset = offset;
         return this;
     }
@@ -145,9 +145,9 @@ public final class Entity {
      * length returned.
      *
      * @param length the length value to set.
-     * @return the Entity object itself.
+     * @return the HealthcareEntityProperties object itself.
      */
-    public Entity setLength(int length) {
+    public HealthcareEntityProperties setLength(int length) {
         this.length = length;
         return this;
     }
@@ -165,9 +165,9 @@ public final class Entity {
      * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
      *
      * @param confidenceScore the confidenceScore value to set.
-     * @return the Entity object itself.
+     * @return the HealthcareEntityProperties object itself.
      */
-    public Entity setConfidenceScore(double confidenceScore) {
+    public HealthcareEntityProperties setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
     }

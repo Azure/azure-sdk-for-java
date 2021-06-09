@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HealthcareEntity model. */
+/** The HealthcareLinkingProperties model. */
 @Fluent
-public final class HealthcareEntity extends HealthcareEntityProperties {
+public class HealthcareLinkingProperties {
     /*
      * The assertion property.
      */
@@ -43,9 +43,9 @@ public final class HealthcareEntity extends HealthcareEntityProperties {
      * Set the assertion property: The assertion property.
      *
      * @param assertion the assertion value to set.
-     * @return the HealthcareEntity object itself.
+     * @return the HealthcareLinkingProperties object itself.
      */
-    public HealthcareEntity setAssertion(HealthcareAssertion assertion) {
+    public HealthcareLinkingProperties setAssertion(HealthcareAssertion assertion) {
         this.assertion = assertion;
         return this;
     }
@@ -65,9 +65,9 @@ public final class HealthcareEntity extends HealthcareEntityProperties {
      * 'histologic'.
      *
      * @param name the name value to set.
-     * @return the HealthcareEntity object itself.
+     * @return the HealthcareLinkingProperties object itself.
      */
-    public HealthcareEntity setName(String name) {
+    public HealthcareLinkingProperties setName(String name) {
         this.name = name;
         return this;
     }
@@ -85,9 +85,9 @@ public final class HealthcareEntity extends HealthcareEntityProperties {
      * Set the links property: Entity references in known data sources.
      *
      * @param links the links value to set.
-     * @return the HealthcareEntity object itself.
+     * @return the HealthcareLinkingProperties object itself.
      */
-    public HealthcareEntity setLinks(List<HealthcareEntityLink> links) {
+    public HealthcareLinkingProperties setLinks(List<HealthcareEntityLink> links) {
         this.links = links;
         return this;
     }
