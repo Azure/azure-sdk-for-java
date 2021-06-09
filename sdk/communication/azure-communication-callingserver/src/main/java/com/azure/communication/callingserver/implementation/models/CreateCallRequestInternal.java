@@ -17,8 +17,8 @@ public final class CreateCallRequestInternal {
      * The alternate identity of the source of the call if dialing out to a
      * pstn number
      */
-    @JsonProperty(value = "sourceAlternateIdentity")
-    private PhoneNumberIdentifierModel sourceAlternateIdentity;
+    @JsonProperty(value = "alternateCallerId")
+    private PhoneNumberIdentifierModel alternateCallerId;
 
     /*
      * The targets of the call.
@@ -47,34 +47,34 @@ public final class CreateCallRequestInternal {
     /*
      * The requested modalities.
      */
-    @JsonProperty(value = "requestedModalities", required = true)
-    private List<CallModality> requestedModalities;
+    @JsonProperty(value = "requestedMediaTypes")
+    private List<CallModality> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
-    @JsonProperty(value = "requestedCallEvents", required = true)
+    @JsonProperty(value = "requestedCallEvents")
     private List<EventSubscriptionType> requestedCallEvents;
 
     /**
-     * Get the sourceAlternateIdentity property: The alternate identity of the source of the call if dialing out to a
-     * pstn number.
+     * Get the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
+     * number.
      *
-     * @return the sourceAlternateIdentity value.
+     * @return the alternateCallerId value.
      */
-    public PhoneNumberIdentifierModel getSourceAlternateIdentity() {
-        return this.sourceAlternateIdentity;
+    public PhoneNumberIdentifierModel getAlternateCallerId() {
+        return this.alternateCallerId;
     }
 
     /**
-     * Set the sourceAlternateIdentity property: The alternate identity of the source of the call if dialing out to a
-     * pstn number.
+     * Set the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
+     * number.
      *
-     * @param sourceAlternateIdentity the sourceAlternateIdentity value to set.
+     * @param alternateCallerId the alternateCallerId value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSourceAlternateIdentity(PhoneNumberIdentifierModel sourceAlternateIdentity) {
-        this.sourceAlternateIdentity = sourceAlternateIdentity;
+    public CreateCallRequestInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+        this.alternateCallerId = alternateCallerId;
         return this;
     }
 
@@ -159,22 +159,22 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the requestedModalities property: The requested modalities.
+     * Get the requestedMediaTypes property: The requested modalities.
      *
-     * @return the requestedModalities value.
+     * @return the requestedMediaTypes value.
      */
-    public List<CallModality> getRequestedModalities() {
-        return this.requestedModalities;
+    public List<CallModality> getRequestedMediaTypes() {
+        return this.requestedMediaTypes;
     }
 
     /**
-     * Set the requestedModalities property: The requested modalities.
+     * Set the requestedMediaTypes property: The requested modalities.
      *
-     * @param requestedModalities the requestedModalities value to set.
+     * @param requestedMediaTypes the requestedMediaTypes value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setRequestedModalities(List<CallModality> requestedModalities) {
-        this.requestedModalities = requestedModalities;
+    public CreateCallRequestInternal setRequestedMediaTypes(List<CallModality> requestedMediaTypes) {
+        this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
 

@@ -19,88 +19,92 @@ import com.azure.communication.callingserver.models.StartCallRecordingResponse;
 public class ConversationClientReadmeSamples {
 
     /**
-     * Sample code for creating a sync convesation client.
+     * Sample code for creating a sync calling server client.
      *
-     * @return the call client.
+     * @return the calling server client.
      */
-    public ConversationClient createConversationClient() {
+    public CallingServerClient createCallingServerClient() {
         String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 
         // Your connectionString retrieved from your Azure Communication Service
-        String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+        String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
 
-        // Initialize the call client
-        final ConversationClientBuilder builder = new ConversationClientBuilder();
-        builder.endpoint(endpoint)
-            .connectionString(connectionString);
-        ConversationClient conversationClient = builder.buildClient();
+        // Initialize the calling server client
+        final CallingServerClientBuilder builder = new CallingServerClientBuilder();
+        builder.endpoint(endpoint).connectionString(connectionString);
+        CallingServerClient callingServerClient = builder.buildClient();
 
-        return conversationClient;
+        return callingServerClient;
     }
 
     /**
      * Sample code for starting a recording.
-     * 
-     * @param conversationClient {@link ConversationClient} to use for recording.
+     *
+     * @param callingServerClient {@link CallingServerClient} to use for recording.
      * @return recordingId to use with other recording operations.
      */
-    public String startRecording(ConversationClient conversationClient) {
-        String conversationId = "<conversationId recieved from starting call>";
+    public String startRecording(CallingServerClient callingServerClient) {
+        String serverCallId = "<serverCallId received from starting call>";
         String recordingStateCallbackUri = "<webhook endpoint to which calling service can report status>";
-        StartCallRecordingResponse response = conversationClient.startRecording(conversationId, recordingStateCallbackUri);
+        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+        StartCallRecordingResponse response = serverCall.startRecording(recordingStateCallbackUri);
         String recordingId = response.getRecordingId();
         return recordingId;
     }
 
     /**
      * Sample code for pausing a recording.
-     * 
-     * @param conversationClient {@link ConversationClient} to use for recording.
-     * @param conversationId Identifier of the current conversation (call).
+     *
+     * @param callingServerClient {@link CallingServerClient} to use for recording.
+     * @param serverCallId Identifier of the current server call.
      * @param recordingId Identifier of the recording to pause.
      */
-    public void pauseRecording(ConversationClient conversationClient,
-            String conversationId, String recordingId) {
-        conversationClient.pauseRecording(conversationId, recordingId);
+    public void pauseRecording(CallingServerClient callingServerClient,
+                               String serverCallId, String recordingId) {
+        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+        serverCall.pauseRecording(recordingId);
     }
 
     /**
      * Sample code for resuming a recording.
-     * 
-     * @param conversationClient {@link ConversationClient} to use for recording.
-     * @param conversationId Identifier of the current conversation (call).
+     *
+     * @param callingServerClient {@link CallingServerClient} to use for recording.
+     * @param serverCallId Identifier of the current server call.
      * @param recordingId Identifier of the recording to resume.
      */
-    public void resumeRecording(ConversationClient conversationClient,
-            String conversationId, String recordingId) {
-        conversationClient.resumeRecording(conversationId, recordingId);
+    public void resumeRecording(CallingServerClient callingServerClient,
+                                String serverCallId, String recordingId) {
+        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+        serverCall.resumeRecording(recordingId);
     }
 
     /**
      * Sample code for stoping a recording.
-     * 
-     * @param conversationClient {@link ConversationClient} to use for recording.
-     * @param conversationId Identifier of the current conversation (call).
+     *
+     * @param callingServerClient {@link CallingServerClient} to use for recording.
+     * @param serverCallId Identifier of the current server call.
      * @param recordingId Identifier of the recording to stop.
      */
-    public void stopRecording(ConversationClient conversationClient,
-            String conversationId, String recordingId) {
-        conversationClient.stopRecording(conversationId, recordingId);
+    public void stopRecording(CallingServerClient callingServerClient,
+                              String serverCallId, String recordingId) {
+        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+        serverCall.stopRecording(recordingId);
     }
 
     /**
      * Sample code for requesting the state of a recording.
-     * 
-     * @param conversationClient {@link ConversationClient} to use for recording.
-     * @param conversationId Identifier of the current conversation (call).
+     *
+     * @param callingServerClient {@link CallingServerClient} to use for recording.
+     * @param serverCallId Identifier of the current server call.
      * @param recordingId Identifier of the recording from which to request state.
      * @return state of the recording, {@link CallRecordingState}.
      */
-    public CallRecordingState getRecordingState(ConversationClient conversationClient,
-            String conversationId, String recordingId) {
+    public CallRecordingState getRecordingState(CallingServerClient callingServerClient,
+                                                String serverCallId, String recordingId) {
+        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
         CallRecordingStateResponse callRecordingStateResponse =
-            conversationClient.getRecordingState(conversationId, recordingId);
-        
+            serverCall.getRecordingState(recordingId);
+
         /**
          * CallRecordingState: Active, Inactive
          * If the call has ended, CommunicationErrorException will be thrown. Inactive is
@@ -112,17 +116,18 @@ public class ConversationClientReadmeSamples {
 
     /**
      * Sample code for playing an audio notification in a call.
-     * 
-     * @param conversationClient {@link ConversationClient} to use for recording.
-     * @param conversationId Identifier of the current conversation (call).
+     *
+     * @param callingServerClient {@link CallingServerClient} to use for recording.
+     * @param serverCallId Identifier of the current server call.
      * @return information about the play audio request, {@link PlayAudioResponse}.
      */
-    public PlayAudioResponse playAudio(ConversationClient conversationClient, String conversationId) {
+    public PlayAudioResponse playAudio(CallingServerClient callingServerClient, String serverCallId) {
         String audioFileUri = "<uri of the file to play>";
         String audioFileId = "<a name to use for caching the audio file>";
         String callbackUri = "<webhook endpoint to which calling service can report status>";
         String context = "<Identifier for correlating responses>";
-        PlayAudioResponse playAudioResponse = conversationClient.playAudio(conversationId, audioFileUri, audioFileId, callbackUri, context);
+        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+        PlayAudioResponse playAudioResponse = serverCall.playAudio(audioFileUri, audioFileId, callbackUri, context);
         return playAudioResponse;
     }
 }

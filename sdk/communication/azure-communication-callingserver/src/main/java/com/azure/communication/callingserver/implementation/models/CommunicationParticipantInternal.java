@@ -7,17 +7,17 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class to represent entry in roster. */
+/** A participant in a call. */
 @Fluent
 public final class CommunicationParticipantInternal {
     /*
-     * ACS communication identifier
+     * Communication identifier of the participant
      */
     @JsonProperty(value = "identifier")
     private CommunicationIdentifierModel identifier;
 
     /*
-     * Participant Id
+     * Participant id
      */
     @JsonProperty(value = "participantId")
     private String participantId;
@@ -29,7 +29,7 @@ public final class CommunicationParticipantInternal {
     private Boolean isMuted;
 
     /**
-     * Get the identifier property: ACS communication identifier.
+     * Get the identifier property: Communication identifier of the participant.
      *
      * @return the identifier value.
      */
@@ -38,7 +38,7 @@ public final class CommunicationParticipantInternal {
     }
 
     /**
-     * Set the identifier property: ACS communication identifier.
+     * Set the identifier property: Communication identifier of the participant.
      *
      * @param identifier the identifier value to set.
      * @return the CommunicationParticipantInternal object itself.
@@ -49,7 +49,7 @@ public final class CommunicationParticipantInternal {
     }
 
     /**
-     * Get the participantId property: Participant Id.
+     * Get the participantId property: Participant id.
      *
      * @return the participantId value.
      */
@@ -58,7 +58,7 @@ public final class CommunicationParticipantInternal {
     }
 
     /**
-     * Set the participantId property: Participant Id.
+     * Set the participantId property: Participant id.
      *
      * @param participantId the participantId value to set.
      * @return the CommunicationParticipantInternal object itself.

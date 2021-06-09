@@ -32,10 +32,10 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
     private OffsetDateTime startDateTime;
 
     /*
-     * The conversation id from a out call start recording request
+     * The server call.id.
      */
-    @JsonProperty(value = "conversationId")
-    private String conversationId;
+    @JsonProperty(value = "serverCallId")
+    private String serverCallId;
 
     /**
      * Get the recordingId property: The call recording id.
@@ -98,32 +98,32 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
     }
 
     /**
-     * Get the conversationId property: The conversation id from a out call start recording request.
+     * Get the serverCallId property: The server call.id.
      *
-     * @return the conversationId value.
+     * @return the serverCallId value.
      */
-    public String getConversationId() {
-        return this.conversationId;
+    public String getServerCallId() {
+        return this.serverCallId;
     }
 
     /**
-     * Set the conversationId property: The conversation id from a out call start recording request.
+     * Set the serverCallId property: The server call.id.
      *
-     * @param conversationId the conversationId value to set.
+     * @param serverCallId the serverCallId value to set.
      * @return the CallRecordingStateChangeEvent object itself.
      */
-    public CallRecordingStateChangeEvent setConversationId(String conversationId) {
-        this.conversationId = conversationId;
+    public CallRecordingStateChangeEvent setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
         return this;
     }
-
     /**
-     * Deserialize {@link CallRecordingStateChangeEvent} event.
+     * Deserialize {@link com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent} event.
      *
      * @param eventData binary data for event
-     * @return {@link CallRecordingStateChangeEvent} event.
+     * @return {@link com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent} event.
      */
-    public static CallRecordingStateChangeEvent deserialize(BinaryData eventData) {
-        return eventData == null ? null : eventData.toObject(CallRecordingStateChangeEvent.class);
+    public static com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent deserialize(BinaryData eventData) {
+        return eventData == null ? null : eventData.toObject(com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent.class);
     }
+
 }

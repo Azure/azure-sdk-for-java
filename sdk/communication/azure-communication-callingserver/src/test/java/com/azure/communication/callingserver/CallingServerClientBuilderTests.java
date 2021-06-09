@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Mono;
 
-public class CallClientBuilderTests {
+public class CallingServerClientBuilderTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
     static final String MOCK_ACCESS_KEY = "eyKfcHciOiJIUzI1NiIsInR5cCI6IkqXVCJ9eyJzdWIiOiIxMjM0NTY5ODkwIiwibmFtZSI7IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadUs4s5d";
     static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
@@ -37,7 +37,7 @@ public class CallClientBuilderTests {
         }
     }
 
-    private final CallClientBuilder builder = new CallClientBuilder();
+    private final CallingServerClientBuilder builder = new CallingServerClientBuilder();
 
     @Test
     public void missingTokenCredentialTest()
@@ -113,12 +113,12 @@ public class CallClientBuilderTests {
 
     @Test
     public void buildPiplineForClient() {
-        CallAsyncClient callAsyncClient = builder
+        CallingServerAsyncClient callingServerAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
             .pipeline(new HttpPipelineBuilder().build())
             .buildAsyncClient();
-        assertNotNull(callAsyncClient);
+        assertNotNull(callingServerAsyncClient);
     }
 
     @Test

@@ -11,28 +11,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class JoinCallResponse {
     /*
-     * Call leg id of the call.
+     * The call connection id.
      */
-    @JsonProperty(value = "callLegId")
-    private String callLegId;
+    @JsonProperty(value = "callConnectionId")
+    private String callConnectionId;
 
     /**
-     * Get the callLegId property: Call leg id of the call.
+     * Get the callConnectionId property: The call connection id.
      *
-     * @return the callLegId value.
+     * @return the callConnectionId value.
      */
-    public String getCallLegId() {
-        return this.callLegId;
+    public String getCallConnectionId() {
+        return this.callConnectionId;
     }
 
     /**
-     * Set the callLegId property: Call leg id of the call.
+     * Set the callConnectionId property: The call connection id.
      *
-     * @param callLegId the callLegId value to set.
+     * @param callConnectionId the callConnectionId value to set.
      * @return the JoinCallResponse object itself.
      */
-    public JoinCallResponse setCallLegId(String callLegId) {
-        this.callLegId = callLegId;
+    public JoinCallResponse setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
         return this;
     }
 }

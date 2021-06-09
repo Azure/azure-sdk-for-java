@@ -6,33 +6,45 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
-import com.azure.communication.callingserver.models.CreateCallResponse;
 import com.azure.communication.callingserver.models.JoinCallResponse;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.core.http.rest.Response;
 
 public class CallingServerTestUtils {
-    protected static void validateCreateCallResponse(Response<CreateCallResponse> createCallResponse) {
-        assertNotNull(createCallResponse);
-        assertTrue(createCallResponse.getStatusCode() == 201);
-        assertNotNull(createCallResponse.getValue());
-        validateCreateCallResult(createCallResponse.getValue());
+    protected static void validateCallConnectionResponse(Response<CallConnection> callConnectionResponse) {
+        assertNotNull(callConnectionResponse);
+        assertTrue(callConnectionResponse.getStatusCode() == 201);
+        assertNotNull(callConnectionResponse.getValue());
+        validateCallConnection(callConnectionResponse.getValue());
     }
 
-    protected static void validateCreateCallResult(CreateCallResponse createCallResult) {
-        assertNotNull(createCallResult);
-        assertNotNull(createCallResult.getCallLegId());
-        assertTrue(!createCallResult.getCallLegId().isEmpty());
+    protected static void validateCallConnection(CallConnection callConnection) {
+        assertNotNull(callConnection);
+        assertNotNull(callConnection.getCallConnectionId());
+        assertTrue(!callConnection.getCallConnectionId().isEmpty());
+    }
+
+    protected static void validateCallConnectionAsyncResponse(Response<CallConnectionAsync> callConnectionResponseAsync) {
+        assertNotNull(callConnectionResponseAsync);
+        assertTrue(callConnectionResponseAsync.getStatusCode() == 201);
+        assertNotNull(callConnectionResponseAsync.getValue());
+        validateCallConnectionAsync(callConnectionResponseAsync.getValue());
+    }
+
+    protected static void validateCallConnectionAsync(CallConnectionAsync callConnectionAsync) {
+        assertNotNull(callConnectionAsync);
+        assertNotNull(callConnectionAsync.getCallConnectionId());
+        assertTrue(!callConnectionAsync.getCallConnectionId().isEmpty());
     }
 
     protected static void validateJoinCall(JoinCallResponse joinCallResponse) {
         assertNotNull(joinCallResponse);
-        assertNotNull(joinCallResponse.getCallLegId());
-        assertTrue(!joinCallResponse.getCallLegId().isEmpty());
+        assertNotNull(joinCallResponse.getCallConnectionId());
+        assertTrue(!joinCallResponse.getCallConnectionId().isEmpty());
     }
 
-    protected static void validatePlayAudioResponse(Response<PlayAudioResponse> playAudioResponse, String operationContext) {   
+    protected static void validatePlayAudioResponse(Response<PlayAudioResponse> playAudioResponse, String operationContext) {
         assertNotNull(playAudioResponse);
         assertTrue(playAudioResponse.getStatusCode() == 202);
         assertNotNull(playAudioResponse.getValue());
@@ -49,7 +61,7 @@ public class CallingServerTestUtils {
         assertTrue(playAudioResponse.getStatus() == OperationStatus.RUNNING);
     }
 
-    protected static void validateCancelAllMediaOperationsResponse(Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse, String cancelMediaOperationContext) {   
+    protected static void validateCancelAllMediaOperationsResponse(Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse, String cancelMediaOperationContext) {
         assertNotNull(cancelAllMediaOperationsResponse);
         assertTrue(cancelAllMediaOperationsResponse.getStatusCode() == 200);
         assertNotNull(cancelAllMediaOperationsResponse.getValue());

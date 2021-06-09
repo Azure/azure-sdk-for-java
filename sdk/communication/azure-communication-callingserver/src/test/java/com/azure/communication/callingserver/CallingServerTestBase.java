@@ -38,8 +38,8 @@ public class CallingServerTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
 
-    protected CallClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
-        CallClientBuilder builder = new CallClientBuilder()
+    protected CallingServerClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
             .connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
@@ -51,8 +51,8 @@ public class CallingServerTestBase extends TestBase {
         return builder;
     }
 
-    protected ConversationClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
-        ConversationClientBuilder builder = new ConversationClientBuilder()
+    protected CallingServerClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
             .connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
@@ -61,7 +61,7 @@ public class CallingServerTestBase extends TestBase {
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
-        return builder;        
+        return builder;
     }
 
     private static TestMode initializeTestMode() {

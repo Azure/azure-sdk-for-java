@@ -3,7 +3,7 @@
 > see https://aka.ms/autorest
 ## Getting Started
 
-To build the SDK for Chat Client, simply Install AutoRest and in this folder, run:
+To build the SDK for Server Calling Client, simply Install AutoRest and in this folder, run:
 
 ### Setup
 ```ps
@@ -24,7 +24,7 @@ cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.22
 ```
 
-## Update generated files for chat service
+## Update generated files for server calling service
 To update generated files for calling service, run the following command
 
 > autorest README.md --java --v4 --use=@autorest/java@4.0.22
@@ -32,24 +32,24 @@ To update generated files for calling service, run the following command
 ### Code generation settings
 ``` yaml
 tag: package-callingserver-2021-05-18
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/9550e58c98dc0af9474d896493335bf0543b2b4d/specification/communication/data-plane/CallingServer/preview/2021-04-15-preview1/communicationservicescallingserver.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/37acfb43a99ac90f6cb986f227a34bcfbccd6c5b/specification/communication/data-plane/CallingServer/preview/2021-06-15-preview/communicationservicescallingserver.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse,OperationStatus,StartCallRecordingResponse,CallRecordingStateResponse,CallRecordingState,CallState,CreateCallResponse,EventSubscriptionType,CallModality
+custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResponse,CancelAllMediaOperationsResponse,PlayAudioResponse,OperationStatus,StartCallRecordingResponse,CallRecordingStateResponse,CallRecordingState,CallConnectionState,CreateCallResponse,EventSubscriptionType,CallModality
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
-title: Azure Communication CallingServer Service
-directive:       
+title: Azure Communication CallingServer Service 
+directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    delete  $["CallLegStateChangedEvent"];
+    delete  $["CallConnectionStateChangedEvent"];
     delete  $["CallRecordingStateChangeEvent"];
     delete  $["InviteParticipantsResultEvent"];
     delete  $["PlayAudioResultEvent"];

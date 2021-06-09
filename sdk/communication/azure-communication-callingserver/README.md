@@ -44,134 +44,117 @@ Based on if the Contoso app join a call or not, APIs can be divided into two cat
 
 ### Create CallClient
 
-Once you initialized a `CallClient` class, you can do the following chat operations:
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L31-L40 -->
+Once you initialized a `CallClient` class, you can do the following server calling operations:
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L28-L34 -->
 ```java
 // Your connectionString retrieved from your Azure Communication Service
 String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
 
-// Initialize the call client
-final CallClientBuilder builder = new CallClientBuilder();
+// Initialize the calling server client
+final CallingServerClientBuilder builder = new CallingServerClientBuilder();
 builder.connectionString(connectionString);
-CallClient callClient = builder.buildClient();
+CallingServerClient callingServerClient = builder.buildClient();
 ```
 
 ### Create, AddParticipant, Hangup and Delete a call
 
 Create a Call: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L52-L79 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L46-L66 -->
 ```java
 CommunicationIdentifier source = new CommunicationUserIdentifier("<acs-user-identity>");
-
-List<CommunicationIdentifier> targets = new ArrayList<>();
-
 CommunicationIdentifier firstCallee = new CommunicationUserIdentifier("<acs-user-identity-1>");
 CommunicationIdentifier secondCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
 
-targets.add(firstCallee);
-targets.add(secondCallee);
+CommunicationIdentifier[] targets = new CommunicationIdentifier[] { firstCallee, secondCallee };
 
 String callbackUri = "<callback-uri-for-notification>";
 
-List<CallModality> requestedModalities = new ArrayList<>();
-requestedModalities.add(CallModality.AUDIO);
-requestedModalities.add(CallModality.VIDEO);
+CallModality[] requestedMediaTypes = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
 
-List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
-requestedCallEvents.add(EventSubscriptionType.DTMF_RECEIVED);
-requestedCallEvents.add(EventSubscriptionType.PARTICIPANTS_UPDATED);
+EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
+        EventSubscriptionType.DTMF_RECEIVED,
+        EventSubscriptionType.PARTICIPANTS_UPDATED };
 
 CreateCallOptions createCallOptions = new CreateCallOptions(
     callbackUri,
-    requestedModalities,
+    requestedMediaTypes,
     requestedCallEvents);
 
-CreateCallResponse createCallResult =  callClient.createCall(source, targets, createCallOptions);
+CallConnection callConnection = callingServerClient.createCallConnection(source, targets, createCallOptions);
 ```
 
 Add a participant to a Call:
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L109-L110 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L86-L87 -->
 ```java
 CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
-callClient.addParticipant(callId, thirdCallee, "ACS User 2", "<string-for-tracing-responses>");
+callConnection.addParticipant(thirdCallee, "ACS User 2", "<string-for-tracing-responses>");
 ```
 
 Hangup a Call:
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L89-L89 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L76-L76 -->
 ```java
-callClient.hangupCall(callId);
-```
-
-Delete a Call:
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L99-L99 -->
-```java
-callClient.deleteCall(callId);
+callConnection.hangup();
 ```
 
 ### Start, Stop, Pause, Resume, and Get a recording
 
 Create a ConverationClient: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L27-L36 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L29-L35 -->
 ```java
 // Your connectionString retrieved from your Azure Communication Service
-String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
 
-// Initialize the call client
-final ConversationClientBuilder builder = new ConversationClientBuilder();
-builder.connectionString(connectionString);
-ConversationClient conversationClient = builder.buildClient();
+// Initialize the calling server client
+final CallingServerClientBuilder builder = new CallingServerClientBuilder();
+builder.endpoint(endpoint).connectionString(connectionString);
+CallingServerClient callingServerClient = builder.buildClient();
 ```
 
 Start a Recording: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L48-L51 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L47-L51 -->
 ```java
-String conversationId = "<conversationId recieved from starting call>";
+String serverCallId = "<serverCallId received from starting call>";
 String recordingStateCallbackUri = "<webhook endpoint to which calling service can report status>";
-StartCallRecordingResponse response = conversationClient.startRecording(conversationId, recordingStateCallbackUri);
+ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+StartCallRecordingResponse response = serverCall.startRecording(recordingStateCallbackUri);
+String recordingId = response.getRecordingId();
 ```
 
 Pause a Recording: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L64-L64 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L65-L65 -->
 ```java
-conversationClient.pauseRecording(conversationId, recordingId);
+serverCall.pauseRecording(recordingId);
 ```
 
 Resume a Recording: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L76-L76 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L78-L78 -->
 ```java
-conversationClient.resumeRecording(conversationId, recordingId);
+serverCall.resumeRecording(recordingId);
 ```
 
 Stop a Recording: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L88-L88 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L91-L91 -->
 ```java
-conversationClient.stopRecording(conversationId, recordingId);
+serverCall.stopRecording(recordingId);
 ```
 
 Get the Recording State: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L101-L109 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L105-L106 -->
 ```java
 CallRecordingStateResponse callRecordingStateResponse =
     conversationClient.getRecordingState(conversationId, recordingId);
-
-/**
- * CallRecordingState: Active, Inactive
- * If the call has ended, CommunicationErrorException will be thrown. Inactive is
- * only returned when the recording is paused.
- */
-CallRecordingState callRecordingState = callRecordingStateResponse.getRecordingState();
 ```
 
 ### Play Audio Notification in Call
 
 Play Audio: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L121-L105 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L125-L130 -->
 ```java
 String audioFileUri = "<uri of the file to play>";
 String audioFileId = "<a name to use for caching the audio file>";
 String callbackUri = "<webhook endpoint to which calling service can report status>";
-String context = "<identifier for correlating responses>";
-PlayAudioResponse playAudioResponse = conversationClient.playAudio(conversationId, audioFileUri, audioFileId, callbackUri, context);
+String context = "<Identifier for correlating responses>";
+PlayAudioResponse playAudioResponse = serverCall.playAudio(audioFileUri, audioFileId, callbackUri, context);
 ```
 
 ## Troubleshooting
