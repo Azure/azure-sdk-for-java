@@ -17,6 +17,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,13 +25,14 @@ import org.junit.jupiter.params.provider.MethodSource;
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to setup if tests are playback or
  * live. By default, tests are run in playback mode.
  */
+@Disabled("need to re-record")
 public class CallClientTests extends CallingServerTestBase {
-    private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
+    private String from = "8:acs:631fa8d8-aab5-4ac5-8e15-261aa2590750_0000000a-92a6-f177-28c5-593a0d001285";
     private String alternateId =   "+11111111111";
     private String to =   "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
     private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
-    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
+    private String invitedUser = "8:acs:631fa8d8-aab5-4ac5-8e15-261aa2590750_0000000a-92a7-1f41-28c5-593a0d00128a";
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
