@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.models.CallRecordingStateResponse;
-import com.azure.communication.callingserver.models.CallingServerResponseException;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResponse;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -25,7 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * live. By default, tests are run in playback mode. The runAllClientFunctions and runAllClientFunctionsWithResponse
  * test will not run in LIVE or RECORD as they cannot get their own conversationId.
  */
-public class ConversationAsyncClientTests extends CallingServerTestBase {
+public class ServerCallAsyncTests extends CallingServerTestBase {
     private String serverCallId = "aHR0cHM6Ly9jb252LXVzZWEtMDcuY29udi5za3lwZS5jb20vY29udi85M0FnUnVMbGdVdUU2MWdxa1pnaHVBP2k9NTEmZT02Mzc1NzY1NzUwOTIzMTQ3OTU";
 
     @ParameterizedTest
@@ -142,7 +142,7 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResponse> response = serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri).block();
-        } catch (CallingServerResponseException e) {
+        } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
         }
     }

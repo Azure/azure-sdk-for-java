@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
@@ -197,7 +198,8 @@ public final class CallConnection {
                                                      String alternateCallerId,
                                                      String operationContext,
                                                      Context context) {
-        return callConnectionAsync.addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
+        return callConnectionAsync
+            .addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
     }
 
     /**

@@ -9,25 +9,25 @@ import com.azure.core.http.HttpResponse;
 /**
  * Exception thrown for an invalid response with {@link CallingServerError} information.
  **/
-public class CallingServerResponseException extends HttpResponseException {
+public class CallingServerErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the CallingServerResponseException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
-    public CallingServerResponseException(String message, HttpResponse response) {
+    public CallingServerErrorException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the CallingServerResponseException class.
+     * Initializes a new instance of the CallingServerErrorException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public CallingServerResponseException(
+    public CallingServerErrorException(
         String message, HttpResponse response, CallingServerError value) {
         super(message, response, value);
     }
