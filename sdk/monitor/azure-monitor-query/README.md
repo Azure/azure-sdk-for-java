@@ -415,6 +415,10 @@ comments.
 
 <!-- LINKS -->
 
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/monitor/azure-monitor-query/src
+
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query/src/samples/java/README.md
+
 [azure_subscription]: https://azure.microsoft.com/free
 
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
