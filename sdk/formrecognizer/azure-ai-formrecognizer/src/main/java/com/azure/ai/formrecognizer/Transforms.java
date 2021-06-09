@@ -354,9 +354,9 @@ final class Transforms {
                 break;
             case TIME:
                 if (fieldValue.getValueTime() != null) {
-                LocalTime fieldTime = LocalTime.parse(fieldValue.getValueTime(),
-                    DateTimeFormatter.ofPattern("HH:mm:ss"));
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
+                    LocalTime fieldTime = LocalTime.parse(fieldValue.getValueTime(),
+                        DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
                         fieldValue.getType())));
@@ -364,8 +364,8 @@ final class Transforms {
                 break;
             case DATE:
                 if (fieldValue.getValueDate() != null) {
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
-                    FieldValueType.DATE);
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
+                        FieldValueType.DATE);
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
                         fieldValue.getType())));
@@ -373,9 +373,8 @@ final class Transforms {
                 break;
             case INTEGER:
                 if (fieldValue.getValueInteger() != null) {
-                    value =
-                        new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueInteger().longValue(),
-                            FieldValueType.LONG);
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueInteger().longValue(),
+                        FieldValueType.LONG);
                 } else {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LONG);
                 }
