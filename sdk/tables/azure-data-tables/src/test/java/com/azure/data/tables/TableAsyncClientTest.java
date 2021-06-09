@@ -1080,7 +1080,7 @@ public class TableAsyncClientTest extends TestBase {
                 assertEquals(id1, tableAccessPolicies.getIdentifiers().get(0).getId());
                 assertEquals(id2, tableAccessPolicies.getIdentifiers().get(1).getId());
 
-                for (TableSignedIdentifier signedIdentifier : tableAccessPolicies.getIdentifiers()){
+                for (TableSignedIdentifier signedIdentifier : tableAccessPolicies.getIdentifiers()) {
                     assertNotNull(signedIdentifier);
 
                     TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
