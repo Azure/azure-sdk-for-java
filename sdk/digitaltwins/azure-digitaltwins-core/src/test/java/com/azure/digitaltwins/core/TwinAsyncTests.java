@@ -474,4 +474,59 @@ public class TwinAsyncTests extends TwinTestBase {
             }
         }
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void digitalTwinWithNumericStringProperty(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
+
+        String floorTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, asyncClient, randomIntegerStringGenerator);
+        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, asyncClient, randomIntegerStringGenerator);
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, asyncClient, randomIntegerStringGenerator);
+
+        String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
+        String floorModel = TestAssetsHelper.getFloorModelPayload(floorModelId, roomModelId, hvacModelId);
+        String floorTwin = TestAssetsHelper.getFloorTwinPayload(floorModelId);
+
+        List<String> modelsList = new ArrayList<>(Arrays.asList(roomModel, floorModel));
+
+        try {
+            // Create models to test the Twin lifecycle.
+            StepVerifier
+                .create(asyncClient.createModels(modelsList))
+                .assertNext(createResponseList -> logger.info("Created models successfully"))
+                .verifyComplete();
+
+            // Create a Twin
+            BasicDigitalTwin floorTwinToCreate = deserializeJsonString(floorTwin, BasicDigitalTwin.class);
+            floorTwinToCreate.addToContents("name", "1234");
+            floorTwinToCreate.addToContents("roomType", "1234 spacious");
+
+            StepVerifier.create(asyncClient.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate, BasicDigitalTwin.class))
+                .assertNext(createdTwin -> {
+                    assertEquals(createdTwin.getId(), floorTwinId);
+                    logger.info("Created {} twin successfully", createdTwin.getId());
+                })
+                .verifyComplete();
+        }
+        // clean up
+        finally {
+            try {
+                if (roomModelId != null) {
+                    asyncClient.deleteModel(roomModelId).block();
+                }
+                if (floorTwinId != null) {
+                    asyncClient.deleteDigitalTwin(floorTwinId).block();
+                }
+                if (floorModelId != null) {
+                    asyncClient.deleteModel(floorModelId).block();
+                }
+            } catch (Exception ex) {
+                throw new AssertionFailedError("Test cleanup failed", ex);
+            }
+        }
+    }
 }

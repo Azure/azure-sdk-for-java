@@ -1,7 +1,23 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.4.0 (2021-06-09)
+### New Features
+- Added new Storage system event `StorageBlobInventoryPolicyCompletedEventData`.
+- Added new attributes `contentLocation` and `metadataLocation` to `AcsRecordingChunkInfoProperties`.
 
+### Dependency Updates
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-http-netty` dependency to `1.10.0`.
+
+
+## 4.3.0 (2021-05-12)
+### New Features
+- Added new Storage system events `StorageAsyncOperationInitiatedEventData` and `StorageBlobTierChangedEventData`.
+- Added new Policy Insights system events `PolicyInsightsPolicyStateCreatedEventData`, `PolicyInsightsPolicyStateChangedEventData`, and `PolicyInsightsPolicyStateDeletedEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.16.0`.
+- Update `azure-core-http-netty` dependency to `1.9.2`.
 
 ## 4.2.0 (2021-04-07)
 
@@ -76,4 +92,3 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
-

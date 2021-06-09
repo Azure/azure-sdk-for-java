@@ -60,7 +60,7 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.IDENTITY;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
@@ -129,13 +129,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final List<String> INVOICE_FIELDS = Arrays.asList("CustomerAddressRecipient", "InvoiceId", "VendorName",
         "VendorAddress", "CustomerAddress", "CustomerName", "InvoiceTotal", "DueDate", "InvoiceDate");
 
-    // ID Document fields
+    // Identity Document fields
     static final List<String> ID_DOCUMENT_FIELDS = Arrays.asList("Country", "DateOfBirth", "DateOfExpiration",
         "DocumentNumber", "FirstName", "LastName", "Nationality", "Sex", "MachineReadableZone", "DocumentType",
         "Address", "Region");
 
     enum PrebuiltType {
-        RECEIPT, BUSINESS_CARD, INVOICE, ID
+        RECEIPT, BUSINESS_CARD, INVOICE, IDENTITY
     }
 
     Duration durationTestMode;
@@ -231,7 +231,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(expectedTable.getColumns(), actualTable.getColumnCount());
             validateCellData(expectedTable.getCells(), actualTable.getCells(), readResults, includeFieldElements);
             assertEquals(expectedTable.getRows(), actualTable.getRowCount());
-            validateBoundingBoxData(expectedTable.getBoundingBox(), actualTable.getFieldBoundingBox());
+            validateBoundingBoxData(expectedTable.getBoundingBox(), actualTable.getBoundingBox());
         }
     }
 
@@ -463,6 +463,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void recognizeContentWithSelectionMarks(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeContentAppearance(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     // Content - URL
 
@@ -728,7 +731,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         rawReadResults,
                         includeFieldElements);
                 });
-            } else if (ID.equals(prebuiltType)) {
+            } else if (IDENTITY.equals(prebuiltType)) {
                 assertTrue(actualForm.getFormType().startsWith("prebuilt:idDocument"));
                 ID_DOCUMENT_FIELDS.forEach(identityDocumentField -> {
                     final Map<String, FormField> actualRecognizedDocumentFields = actualForm.getFields();

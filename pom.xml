@@ -27,6 +27,9 @@
         <module>sdk/communication/azure-communication-phonenumbers</module>
         <module>sdk/communication/azure-communication-sms</module>
 
+        <!-- Azure Confidential Ledger -->
+        <module>sdk/confidentialledger/azure-security-confidentialledger</module>
+
         <!-- Azure Container Registry -->
         <module>sdk/containerregistry/azure-containers-containerregistry</module>
 
@@ -80,6 +83,10 @@
 
         <!-- Models Repository -->
         <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
+
+        <!-- Purview -->
+        <module>sdk/purview/azure-analytics-purview-catalog</module>
+        <module>sdk/purview/azure-analytics-purview-scanning</module>
 
         <!-- Quantum Jobs -->
         <module>sdk/quantum/azure-quantum-jobs</module>
@@ -259,6 +266,10 @@
                     <packages>com.azure.iot.modelsrepository*</packages>
                   </group>
                   <group>
+                    <title>Azure FarmBeats</title>
+                    <packages>com.azure.verticals.agrifood.farming*</packages>
+                  </group>
+                  <group>
                     <title>Azure Form Recognizer</title>
                     <packages>com.azure.ai.formrecognizer*</packages>
                   </group>
@@ -277,6 +288,14 @@
                   <group>
                     <title>Azure Container Registry</title>
                     <packages>com.azure.containers.containerregistry*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Purview Catalog</title>
+                    <packages>com.azure.analytics.purview.catalog*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Purview Scanning</title>
+                    <packages>com.azure.analytics.purview.scanning*</packages>
                   </group>
                   <group>
                     <title>Azure Quantum Jobs</title>
@@ -345,6 +364,10 @@
                   <group>
                     <title>Azure Communication</title>
                     <packages>com.azure.communication.*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Confidential Ledger</title>
+                    <packages>com.azure.security.confidentialledger.*</packages>
                   </group>
                 </groups>
                 <links combine.children="append">
@@ -449,7 +472,7 @@
         <!--          <plugin>-->
         <!--            <groupId>net.jonathangiles.tools</groupId>-->
         <!--            <artifactId>dependencyChecker-maven-plugin</artifactId>-->
-        <!--            <version>1.0.5</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
+        <!--            <version>1.0.6</version> &lt;!&ndash; {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} &ndash;&gt;-->
         <!--            <inherited>false</inherited>-->
         <!--            <executions>-->
         <!--              <execution>-->
@@ -566,6 +589,7 @@
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
@@ -578,10 +602,13 @@
                     -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                     -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/java
                     <!-- -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                     -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
@@ -682,10 +709,12 @@
         <module>sdk/batchai</module>
         <module>sdk/billing</module>
         <module>sdk/boms</module>
+        <module>sdk/botservice</module>
         <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/commerce</module>
         <module>sdk/communication</module>
+        <module>sdk/confidentialledger</module>
         <module>sdk/confluent</module>
         <module>sdk/consumption</module>
         <module>sdk/containerregistry</module>
@@ -703,12 +732,14 @@
         <module>sdk/datamigration</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
+        <module>sdk/farmbeats</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -718,6 +749,7 @@
         <module>sdk/hybridcompute</module>
         <module>sdk/hybridkubernetes</module>
         <module>sdk/identity</module>
+        <module>sdk/imagebuilder</module>
         <module>sdk/iotcentral</module>
         <module>sdk/iothub</module>
         <module>sdk/keyvault</module>
@@ -729,6 +761,7 @@
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
+        <module>sdk/maps</module>
         <module>sdk/mariadb</module>
         <module>sdk/marketplaceordering</module>
         <module>sdk/mediaservices</module>
@@ -744,8 +777,10 @@
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/powerbidedicated</module>
+        <module>sdk/purview</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>
         <module>sdk/relay</module>
         <module>sdk/remoterendering</module>

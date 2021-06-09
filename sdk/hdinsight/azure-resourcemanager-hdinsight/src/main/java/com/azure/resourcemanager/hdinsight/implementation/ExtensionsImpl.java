@@ -10,8 +10,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.ExtensionsClient;
 import com.azure.resourcemanager.hdinsight.fluent.models.AsyncOperationResultInner;
+import com.azure.resourcemanager.hdinsight.fluent.models.AzureMonitorResponseInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterMonitoringResponseInner;
 import com.azure.resourcemanager.hdinsight.models.AsyncOperationResult;
+import com.azure.resourcemanager.hdinsight.models.AzureMonitorRequest;
+import com.azure.resourcemanager.hdinsight.models.AzureMonitorResponse;
 import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringRequest;
 import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringResponse;
 import com.azure.resourcemanager.hdinsight.models.Extension;
@@ -70,6 +73,47 @@ public final class ExtensionsImpl implements Extensions {
 
     public void disableMonitoring(String resourceGroupName, String clusterName, Context context) {
         this.serviceClient().disableMonitoring(resourceGroupName, clusterName, context);
+    }
+
+    public void enableAzureMonitor(String resourceGroupName, String clusterName, AzureMonitorRequest parameters) {
+        this.serviceClient().enableAzureMonitor(resourceGroupName, clusterName, parameters);
+    }
+
+    public void enableAzureMonitor(
+        String resourceGroupName, String clusterName, AzureMonitorRequest parameters, Context context) {
+        this.serviceClient().enableAzureMonitor(resourceGroupName, clusterName, parameters, context);
+    }
+
+    public AzureMonitorResponse getAzureMonitorStatus(String resourceGroupName, String clusterName) {
+        AzureMonitorResponseInner inner = this.serviceClient().getAzureMonitorStatus(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new AzureMonitorResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<AzureMonitorResponse> getAzureMonitorStatusWithResponse(
+        String resourceGroupName, String clusterName, Context context) {
+        Response<AzureMonitorResponseInner> inner =
+            this.serviceClient().getAzureMonitorStatusWithResponse(resourceGroupName, clusterName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new AzureMonitorResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public void disableAzureMonitor(String resourceGroupName, String clusterName) {
+        this.serviceClient().disableAzureMonitor(resourceGroupName, clusterName);
+    }
+
+    public void disableAzureMonitor(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().disableAzureMonitor(resourceGroupName, clusterName, context);
     }
 
     public void create(String resourceGroupName, String clusterName, String extensionName, Extension parameters) {

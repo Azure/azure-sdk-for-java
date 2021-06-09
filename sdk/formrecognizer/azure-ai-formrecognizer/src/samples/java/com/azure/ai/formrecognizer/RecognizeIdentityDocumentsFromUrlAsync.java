@@ -35,8 +35,9 @@ public class RecognizeIdentityDocumentsFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String licenseDocumentUrl = "https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/"
-            + "azure-ai-formrecognizer/src/test/resources/sample_files/Test/license.jpg";
+        String licenseDocumentUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/"
+                + "azure-ai-formrecognizer/src/samples/resources/sample-forms/IdentityDocuments/license.jpg";
         PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeIdentityDocumentPoller =
             client.beginRecognizeIdentityDocumentsFromUrl(licenseDocumentUrl);
 
@@ -44,7 +45,6 @@ public class RecognizeIdentityDocumentsFromUrlAsync {
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
                     return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
@@ -66,12 +66,12 @@ public class RecognizeIdentityDocumentsFromUrlAsync {
                     }
                 }
 
-                FormField countryFormField = recognizedFields.get("Country");
-                if (countryFormField != null) {
-                    if (FieldValueType.STRING == countryFormField.getValue().getValueType()) {
-                        String country = countryFormField.getValue().asCountry();
-                        System.out.printf("Country: %s, confidence: %.2f%n",
-                            country, countryFormField.getConfidence());
+                FormField countryRegionFormField = recognizedFields.get("CountryRegion");
+                if (countryRegionFormField != null) {
+                    if (FieldValueType.STRING == countryRegionFormField.getValue().getValueType()) {
+                        String countryRegion = countryRegionFormField.getValue().asCountryRegion();
+                        System.out.printf("Country or region: %s, confidence: %.2f%n",
+                            countryRegion, countryRegionFormField.getConfidence());
                     }
                 }
 

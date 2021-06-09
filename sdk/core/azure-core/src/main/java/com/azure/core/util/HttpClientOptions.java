@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 
@@ -11,6 +12,7 @@ import java.time.Duration;
 /**
  * General configuration options for {@link HttpClient HttpClients}.
  */
+@Fluent
 public final class HttpClientOptions extends ClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
@@ -123,6 +125,24 @@ public final class HttpClientOptions extends ClientOptions {
     }
 
     /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is {@code null} a 60 second timeout will be used, if it is a {@link Duration} less
+     * than or equal to zero then no timeout will be applied to the response. When applying the timeout the greater of
+     * one millisecond and the value of {@code responseTimeout} will be used.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated HttpClientOptions object.
+     */
+    public HttpClientOptions setResponseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    /**
      * Gets the response timeout duration used when waiting for a server to reply.
      *
      * @return The response timeout duration.
@@ -146,6 +166,25 @@ public final class HttpClientOptions extends ClientOptions {
      * @return The updated HttpClientOptions object.
      */
     public HttpClientOptions readTimeout(Duration readTimeout) {
+        this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is {@code null} a 60 second timeout will be used, if it is a {@link Duration} less than or
+     * equal to zero then no timeout period will be applied to response read. When applying the timeout the greater of
+     * one millisecond and the value of {@code readTimeout} will be used.
+     *
+     * @param readTimeout Read timeout duration.
+     * @return The updated HttpClientOptions object.
+     */
+    public HttpClientOptions setReadTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }

@@ -66,7 +66,7 @@ class SparkE2EStructuredStreamingITest
 
     val changeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 
@@ -107,7 +107,7 @@ class SparkE2EStructuredStreamingITest
 
     val secondChangeFeedDF = spark
       .readStream
-      .format("cosmos.changeFeed")
+      .format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)
       .load()
 

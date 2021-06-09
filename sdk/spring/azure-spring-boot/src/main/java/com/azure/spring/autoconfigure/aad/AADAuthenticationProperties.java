@@ -54,24 +54,20 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String userNameAttribute;
 
     /**
-     * @deprecated Now the redirect-url-template is not configurable.
-     * <p>
-     * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
-     * </p>
-     * <p>
-     * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
-     * </p>
-     *
-     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
-     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
+     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
+     * to the client via the resource owner user-agent.
      */
-    @Deprecated
     private String redirectUriTemplate;
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
      */
     private String appIdUri;
+
+    /**
+     * Add additional parameters to the Authorization URL.
+     */
+    private Map<String, Object> authenticateAdditionalParameters;
 
     /**
      * Connection Timeout for the JWKSet Remote URL call.
@@ -236,12 +232,10 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.userNameAttribute = userNameAttribute;
     }
 
-    @Deprecated
     public String getRedirectUriTemplate() {
         return redirectUriTemplate;
     }
 
-    @Deprecated
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
     }
@@ -257,6 +251,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setAppIdUri(String appIdUri) {
         this.appIdUri = appIdUri;
+    }
+
+    public Map<String, Object> getAuthenticateAdditionalParameters() {
+        return authenticateAdditionalParameters;
+    }
+
+    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
+        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
     public int getJwtConnectTimeout() {
@@ -381,6 +383,10 @@ public class AADAuthenticationProperties implements InitializingBean {
             baseUri = "https://login.microsoftonline.com/";
         } else {
             baseUri = addSlash(baseUri);
+        }
+
+        if (!StringUtils.hasText(redirectUriTemplate)) {
+            redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
         }
 
         if (!StringUtils.hasText(graphBaseUri)) {

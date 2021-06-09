@@ -241,7 +241,7 @@ public class MyClient implements ConfigurationClientBuilderSetup, SecretClientBu
 [azure_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [enable_managed_identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources
 [support_azure_services]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities
-[spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration
+[spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.typesafe-configuration-properties.conversion.durations
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/

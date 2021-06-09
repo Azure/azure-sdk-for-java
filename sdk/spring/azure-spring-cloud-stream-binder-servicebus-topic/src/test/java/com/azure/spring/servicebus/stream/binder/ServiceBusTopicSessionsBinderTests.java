@@ -15,8 +15,7 @@ import org.springframework.cloud.stream.binder.HeaderMode;
  * @author Eduardo Sciullo
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ServiceBusTopicSessionsBinderTests extends
-        ServiceBusTopicPartitionBinderTests {
+public class ServiceBusTopicSessionsBinderTests extends ServiceBusTopicPartitionBinderTests {
 
     @Override
     protected ExtendedConsumerProperties<ServiceBusConsumerProperties> createConsumerProperties() {
@@ -25,7 +24,7 @@ public class ServiceBusTopicSessionsBinderTests extends
         serviceBusConsumerProperties.setSessionsEnabled(true);
 
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties = new ExtendedConsumerProperties<>(
-                serviceBusConsumerProperties);
+            serviceBusConsumerProperties);
         properties.setHeaderMode(HeaderMode.embeddedHeaders);
         return properties;
     }

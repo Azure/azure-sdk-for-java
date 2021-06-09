@@ -555,9 +555,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel =
                 client.beginCreateComposedModel(
                     modelIdList,
-                    new CreateComposedModelOptions().setPollInterval(durationTestMode),
+                    new CreateComposedModelOptions(),
                     Context.NONE)
-                    .getFinalResult();
+                    .setPollInterval(durationTestMode).getFinalResult();
 
             assertNotNull(composedModel.getModelId());
             assertNotNull(composedModel.getCustomModelProperties());
@@ -604,10 +604,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             CustomFormModel composedModel =
                 client.beginCreateComposedModel(
                     modelIdList,
-                    new CreateComposedModelOptions()
-                        .setModelName("composedModelDisplayName")
-                        .setPollInterval(durationTestMode),
+                    new CreateComposedModelOptions().setModelName("composedModelDisplayName"),
                     Context.NONE)
+                    .setPollInterval(durationTestMode)
                     .getFinalResult();
 
             client.deleteModel(model1.getModelId());
@@ -655,8 +654,8 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 = assertThrows(HttpResponseException.class, () ->
                 client.beginCreateComposedModel(
                     modelIdList,
-                    new CreateComposedModelOptions()
-                        .setPollInterval(durationTestMode), Context.NONE));
+                    new CreateComposedModelOptions(),
+                    Context.NONE).setPollInterval(durationTestMode));
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId());
@@ -683,11 +682,9 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             final List<String> modelIdList = Arrays.asList(model1.getModelId(), model1.getModelId());
             HttpResponseException httpResponseException =
                 assertThrows(HttpResponseException.class,
-                    () -> client.beginCreateComposedModel(
-                        modelIdList,
-                        new CreateComposedModelOptions().setPollInterval(durationTestMode),
-                        Context.NONE)
-                        .getFinalResult());
+                    () -> client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions(), Context.NONE)
+                              .setPollInterval(durationTestMode)
+                              .getFinalResult());
             assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId());

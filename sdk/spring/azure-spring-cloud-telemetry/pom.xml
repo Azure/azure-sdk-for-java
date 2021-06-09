@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-telemetry</artifactId>
-  <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
+  <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
 
   <name>Azure Spring Cloud Telemetry</name>
 
@@ -31,39 +31,33 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.7</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+      <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.3.6</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.7</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.12.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
+      <version>2.12.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.4.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.5.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -78,12 +72,12 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-aop:[2.4.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
-                <include>org.springframework:spring-context:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework:spring-web:[5.3.6]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-aop:[2.5.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.7]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.7]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

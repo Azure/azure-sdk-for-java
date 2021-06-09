@@ -165,7 +165,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new ShareServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -221,7 +221,7 @@ class FileSASTests extends APISpec {
         def contentType = "type"
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new ShareServiceSasSignatureValues()
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
@@ -274,7 +274,7 @@ class FileSASTests extends APISpec {
         OffsetDateTime expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sasWithId = new ShareServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setShareName(primaryShareClient.getShareName())
@@ -325,7 +325,7 @@ class FileSASTests extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
-        def credential = StorageSharedKeyCredential.fromConnectionString(connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
         def sas = new AccountSasSignatureValues()
             .setServices(service.toString())
             .setResourceTypes(resourceType.toString())
@@ -368,7 +368,7 @@ class FileSASTests extends APISpec {
             .setResourceTypes(resourceType.toString())
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         def shareName = namer.getRandomName(60)
         def pathName = namer.getRandomName(60)
@@ -392,15 +392,14 @@ class FileSASTests extends APISpec {
         primaryShareClient.create()
         primaryFileClient.create(100)
         def sas = primaryFileServiceClient.generateAccountSas(new AccountSasSignatureValues(
-            OffsetDateTime.now().plusDays(1),
+            namer.getUtcNow().plusDays(1),
             AccountSasPermission.parse("r"), new AccountSasService().setFileAccess(true),
             new AccountSasResourceType().setService(true).setContainer(true).setObject(true))
             .setProtocol(SasProtocol.HTTPS_HTTP))
 
         when:
-        def sasClient = new ShareFileClientBuilder()
-            .endpoint(primaryFileClient.getFileUrl() + "?" + sas)
-            .pipeline(primaryFileClient.getHttpPipeline())
+        def sasClient = instrument(new ShareFileClientBuilder()
+            .endpoint(primaryFileClient.getFileUrl() + "?" + sas))
             .buildFileClient()
 
         and:
@@ -411,9 +410,8 @@ class FileSASTests extends APISpec {
 
 
         when:
-        def sasShareClient = new ShareClientBuilder()
-            .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
-            .pipeline(primaryShareClient.getHttpPipeline())
+        def sasShareClient = instrument(new ShareClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl() + "?" + sas))
             .buildClient()
 
         and:
@@ -424,9 +422,8 @@ class FileSASTests extends APISpec {
 
 
         when:
-        def sasServiceClient = new ShareServiceClientBuilder()
-            .endpoint(primaryFileServiceClient.getFileServiceUrl() + "?" + sas)
-            .pipeline(primaryFileServiceClient.getHttpPipeline())
+        def sasServiceClient = instrument(new ShareServiceClientBuilder()
+            .endpoint(primaryFileServiceClient.getFileServiceUrl() + "?" + sas))
             .buildClient()
 
         and:
@@ -454,11 +451,9 @@ class FileSASTests extends APISpec {
         primaryShareClient.createDirectory(pathName)
 
         when:
-        new ShareClientBuilder()
+        instrument(new ShareClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
-            .sasToken(sas)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -466,11 +461,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareClientBuilder()
+        instrument(new ShareClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -478,10 +471,8 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareClientBuilder()
-            .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new ShareClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -489,12 +480,10 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareFileClientBuilder()
+        instrument(new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .resourcePath(pathName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildDirectoryClient()
             .getProperties()
 
@@ -502,12 +491,10 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareFileClientBuilder()
+        instrument(new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .resourcePath(pathName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildDirectoryClient()
             .getProperties()
 
@@ -515,11 +502,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareFileClientBuilder()
+        instrument(new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
-            .resourcePath(pathName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .resourcePath(pathName))
             .buildDirectoryClient()
             .getProperties()
 
@@ -527,11 +512,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareServiceClientBuilder()
+        instrument(new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -539,11 +522,9 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareServiceClientBuilder()
+        instrument(new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -551,10 +532,8 @@ class FileSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new ShareServiceClientBuilder()
-            .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new ShareServiceClientBuilder()
+            .endpoint(primaryShareClient.getShareUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 

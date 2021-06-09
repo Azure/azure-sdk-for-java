@@ -12,9 +12,9 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
  * Code snippets for {@link BlobBatchClientBuilder}
  */
 public class BlobBatchClientBuilderJavaDocCodeSnippets {
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_BLOB_ENDPOINT");
     private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
-    
+
     private BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT).sasToken(SASTOKEN).buildClient();
     private BlobServiceAsyncClient blobServiceAsyncClient = new BlobServiceClientBuilder().endpoint(ENDPOINT).sasToken(SASTOKEN).buildAsyncClient();
 

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -86,7 +87,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withNewPrimaryPublicIPAddress(primaryPipName)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("testuser")
-                .withRootPassword("12NewPA$$w0rd!")
+                .withRootPassword(ResourceManagerTestBase.password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D8a_v4"))
                 .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
                 .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable2)

@@ -127,13 +127,13 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                 SettingSelector settingSelector = new SettingSelector().setKeyFilter(watchKey.getKey())
                     .setLabelFilter(watchKey.getLabel());
 
-                ConfigurationSetting revision = clientStore.getRevison(settingSelector, endpoint);
+                ConfigurationSetting watchedKey = clientStore.getWatchKey(settingSelector, endpoint);
 
                 String etag = null;
                 // If there is no result, etag will be considered empty.
                 // A refresh will trigger once the selector returns a value.
-                if (revision != null) {
-                    etag = revision.getETag();
+                if (watchedKey != null) {
+                    etag = watchedKey.getETag();
                 }
 
                 LOGGER.debug(etag + " - " + watchKey.getETag());
@@ -143,7 +143,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                             + "will send refresh event.",
                         endpoint, watchKey.getKey(), watchKey.getLabel());
 
-                    this.eventDataInfo = watchKey.toString();
+                    this.eventDataInfo = watchKey.getKey();
 
                     // Only one refresh Event needs to be call to update all of the
                     // stores, not one for each.

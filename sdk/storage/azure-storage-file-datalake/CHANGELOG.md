@@ -1,7 +1,19 @@
 # Release History
 
-## 12.6.0-beta.1 (Unreleased)
+## 12.6.0 (2021-06-09)
+- GA release
 
+## 12.6.0-beta.1 (2021-05-13)
+- Added support for the 2020-08-04 service version.
+- Added support to undelete a file or directory
+- Added support to list deletedPaths
+- Added support to get/set service properties
+- Deprecated support to undelete a file system to a new name. 
+
+## 12.5.1 (2021-05-13)
+### Dependency Updates
+- Updated `azure-storage-blob` to version `12.11.1`
+- Updated `azure-core` to version `1.16.0`
 
 ## 12.5.0 (2021-04-29)
 - Fixed a bug where large files would hang when the upload method was called. 

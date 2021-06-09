@@ -102,13 +102,14 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-03 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-05 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue",
+    "note": "Remove 'final' from 'ManagedClusterAgentPoolProfile'"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--payload-flattening-threshold=0 --tag=package-2021-03"
+    "args": "--payload-flattening-threshold=0 --tag=package-2021-05"
   },
   "customerinsights": {
     "dir": "azure-resourcemanager-customerinsights",
@@ -215,7 +216,7 @@
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--payload-flattening-threshold=1 --tag=package-2020-08 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-02 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
   },
   "notificationhubs": {
     "dir": "azure-resourcemanager-notificationhubs",
@@ -227,7 +228,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-policy-2019-09"
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2020-09"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",
@@ -275,7 +276,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2020-06 --payload-flattening-threshold=1 --add-inner=Deployment"
+    "args": "--tag=package-resources-2021-01 --payload-flattening-threshold=1 --add-inner=Deployment"
   },
   "scheduler": {
     "dir": "azure-resourcemanager-scheduler",
@@ -336,7 +337,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2020-01 --name-for-ungrouped-operations=ResourceName"
+    "args": "--tag=package-subscriptions-2021-01 --name-for-ungrouped-operations=ResourceName"
   },
   "trafficmanager": {
     "dir": "azure-resourcemanager-trafficmanager",

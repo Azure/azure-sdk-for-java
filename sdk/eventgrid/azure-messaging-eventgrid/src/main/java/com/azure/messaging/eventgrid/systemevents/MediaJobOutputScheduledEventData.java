@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import java.util.Map;
 
-/** Job output scheduled event data. */
+/**
+ * Job output scheduled event data. Schema of the data property of an EventGridEvent for a
+ * Microsoft.Media.JobOutputScheduled event.
+ */
 @Immutable
 public final class MediaJobOutputScheduledEventData extends MediaJobOutputStateChangeEventData {
     /** {@inheritDoc} */

@@ -38,6 +38,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile PartitionKeyInternal effectivePartitionKey;
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
+    public volatile String throughputControlCycleId;
 
     public DocumentServiceRequestContext() {
     }
@@ -99,7 +100,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
         context.cosmosDiagnostics = this.cosmosDiagnostics;
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
-
+        context.throughputControlCycleId = this.throughputControlCycleId;
         return context;
     }
 }

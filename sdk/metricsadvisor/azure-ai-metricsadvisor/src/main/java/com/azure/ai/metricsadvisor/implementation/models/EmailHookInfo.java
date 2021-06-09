@@ -17,7 +17,7 @@ public final class EmailHookInfo extends HookInfo {
     /*
      * The hookParameter property.
      */
-    @JsonProperty(value = "hookParameter")
+    @JsonProperty(value = "hookParameter", required = true)
     private EmailHookParameter hookParameter;
 
     /**

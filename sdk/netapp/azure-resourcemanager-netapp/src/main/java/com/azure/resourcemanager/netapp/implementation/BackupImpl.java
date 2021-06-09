@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.models.Backup;
 import com.azure.resourcemanager.netapp.models.BackupPatch;
+import com.azure.resourcemanager.netapp.models.BackupType;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this.innerModel().label();
     }
 
-    public String backupType() {
+    public BackupType backupType() {
         return this.innerModel().backupType();
     }
 
@@ -63,6 +64,10 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
 
     public String volumeName() {
         return this.innerModel().volumeName();
+    }
+
+    public Boolean useExistingSnapshot() {
+        return this.innerModel().useExistingSnapshot();
     }
 
     public Region region() {
@@ -196,6 +201,16 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
             return this;
         } else {
             this.updateBody.withLabel(label);
+            return this;
+        }
+    }
+
+    public BackupImpl withUseExistingSnapshot(Boolean useExistingSnapshot) {
+        if (isInCreateMode()) {
+            this.innerModel().withUseExistingSnapshot(useExistingSnapshot);
+            return this;
+        } else {
+            this.updateBody.withUseExistingSnapshot(useExistingSnapshot);
             return this;
         }
     }

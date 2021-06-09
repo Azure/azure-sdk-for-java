@@ -11,15 +11,17 @@ import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.Direction;
 import com.azure.ai.metricsadvisor.implementation.models.MetricAlertingConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.ValueCondition;
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.BoundaryDirection;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.BoundaryDirection;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertConfigurationsOperator;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScope;
-import com.azure.ai.metricsadvisor.models.MetricAnomalyAlertScopeType;
-import com.azure.ai.metricsadvisor.models.MetricBoundaryCondition;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
+import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScopeType;
+import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -121,7 +123,7 @@ public final class AlertConfigurationTransforms {
                             .getSeriesGroupInScope()
                             .asMap());
                 innerMetricAlertConfiguration.setDimensionAnomalyScope(innerId);
-            } else if (alertScope.getScopeType() == MetricAnomalyAlertScopeType.TOPN) {
+            } else if (alertScope.getScopeType() == MetricAnomalyAlertScopeType.TOP_N) {
                 innerMetricAlertConfiguration.setAnomalyScopeType(AnomalyScope.TOPN);
                 innerMetricAlertConfiguration.setTopNAnomalyScope(alertScope.getTopNGroupInScope());
             }
@@ -134,19 +136,15 @@ public final class AlertConfigurationTransforms {
                 ValueCondition innerValueCondition = new ValueCondition();
                 if (boundaryConditions != null) {
                     BoundaryDirection direction = boundaryConditions.getDirection();
-                    switch (direction) {
-                        case LOWER:
-                            innerValueCondition.setDirection(Direction.DOWN);
-                            break;
-                        case UPPER:
-                            innerValueCondition.setDirection(Direction.UP);
-                            break;
-                        case BOTH:
-                            innerValueCondition.setDirection(Direction.BOTH);
-                            break;
-                        default:
-                            throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: "
-                                + direction));
+                    if (direction == BoundaryDirection.LOWER) {
+                        innerValueCondition.setDirection(Direction.DOWN);
+                    } else if (direction == BoundaryDirection.UPPER) {
+                        innerValueCondition.setDirection(Direction.UP);
+                    } else if (direction == BoundaryDirection.BOTH) {
+                        innerValueCondition.setDirection(Direction.BOTH);
+                    } else {
+                        throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: "
+                            + direction));
                     }
                     innerValueCondition.setLower(boundaryConditions.getLowerBoundary());
                     innerValueCondition.setUpper(boundaryConditions.getUpperBoundary());
@@ -164,6 +162,28 @@ public final class AlertConfigurationTransforms {
             innerMetricAlertConfigurations.add(innerMetricAlertConfiguration);
         }
         return innerMetricAlertConfigurations;
+    }
+
+    public static PagedResponse<AnomalyAlertConfiguration> fromInnerPagedResponse(
+        PagedResponse<AnomalyAlertingConfiguration> innerResponse) {
+        final List<AnomalyAlertingConfiguration>
+            innerConfigurationList = innerResponse.getValue();
+        List<AnomalyAlertConfiguration> configurationList;
+        if (innerConfigurationList != null) {
+            configurationList = innerConfigurationList
+                .stream()
+                .map(innerConfiguration -> fromInner(innerConfiguration))
+                .collect(Collectors.toList());
+        } else {
+            configurationList = new ArrayList<>();
+        }
+        return new PagedResponseBase<Void, AnomalyAlertConfiguration>(
+            innerResponse.getRequest(),
+            innerResponse.getStatusCode(),
+            innerResponse.getHeaders(),
+            configurationList,
+            innerResponse.getContinuationToken(),
+            null);
     }
 
     /**

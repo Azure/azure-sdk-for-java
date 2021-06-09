@@ -126,10 +126,10 @@ public class ClientStoreTest {
         when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builderMock);
         when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
-        when(clientMock.listRevisions(Mockito.any(SettingSelector.class)))
+        when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class)))
             .thenReturn(getConfigurationPagedFlux(1));
 
-        assertTrue(test.getRevison(selector, TEST_ENDPOINT) != null);
+        assertTrue(test.getWatchKey(selector, TEST_ENDPOINT) != null);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -145,7 +145,7 @@ public class ClientStoreTest {
         when(builderMock.addPolicy(Mockito.any(BaseAppConfigurationPolicy.class))).thenReturn(builderMock);
         when(builderMock.retryPolicy(Mockito.any(RetryPolicy.class))).thenReturn(builderMock);
 
-        test.getRevison(selector, TEST_ENDPOINT);
+        test.getWatchKey(selector, TEST_ENDPOINT);
     }
 
     @Test

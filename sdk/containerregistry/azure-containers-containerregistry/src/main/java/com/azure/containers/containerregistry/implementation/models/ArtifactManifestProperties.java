@@ -5,9 +5,9 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.ArtifactArchitecture;
+import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -15,8 +15,15 @@ import java.util.List;
 
 /** Manifest attributes details. */
 @JsonFlatten
-@Immutable
+@Fluent
 public class ArtifactManifestProperties {
+    /*
+     * Registry login server name.  This is likely to be similar to
+     * {registry-name}.azurecr.io
+     */
+    @JsonProperty(value = "registry", access = JsonProperty.Access.WRITE_ONLY)
+    private String registryLoginServer;
+
     /*
      * Repository name
      */
@@ -26,7 +33,7 @@ public class ArtifactManifestProperties {
     /*
      * Manifest
      */
-    @JsonProperty(value = "manifest.digest", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "manifest.digest", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String digest;
 
     /*
@@ -38,13 +45,13 @@ public class ArtifactManifestProperties {
     /*
      * Created time
      */
-    @JsonProperty(value = "manifest.createdTime", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "manifest.createdTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Last update time
      */
-    @JsonProperty(value = "manifest.lastUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "manifest.lastUpdateTime", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
@@ -60,10 +67,12 @@ public class ArtifactManifestProperties {
     private ArtifactOperatingSystem operatingSystem;
 
     /*
-     * List of manifest attributes details
+     * List of artifacts that are referenced by this manifest list, with
+     * information about the platform each supports.  This list will be empty
+     * if this is a leaf manifest and not a manifest list.
      */
     @JsonProperty(value = "manifest.references", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ManifestAttributesManifestReferences> references;
+    private List<ArtifactManifestPlatform> relatedArtifacts;
 
     /*
      * List of tags
@@ -72,10 +81,38 @@ public class ArtifactManifestProperties {
     private List<String> tags;
 
     /*
-     * Writeable properties of the resource
+     * Delete enabled
      */
-    @JsonProperty(value = "manifest.changeableAttributes", access = JsonProperty.Access.WRITE_ONLY)
-    private ContentProperties writeableProperties;
+    @JsonProperty(value = "manifest.changeableAttributes.deleteEnabled")
+    private Boolean deleteEnabled;
+
+    /*
+     * Write enabled
+     */
+    @JsonProperty(value = "manifest.changeableAttributes.writeEnabled")
+    private Boolean writeEnabled;
+
+    /*
+     * List enabled
+     */
+    @JsonProperty(value = "manifest.changeableAttributes.listEnabled")
+    private Boolean listEnabled;
+
+    /*
+     * Read enabled
+     */
+    @JsonProperty(value = "manifest.changeableAttributes.readEnabled")
+    private Boolean readEnabled;
+
+    /**
+     * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
+     *
+     * @return the registryLoginServer value.
+     */
+    public String getRegistryLoginServer() {
+        return this.registryLoginServer;
+    }
 
     /**
      * Get the repositoryName property: Repository name.
@@ -141,12 +178,13 @@ public class ArtifactManifestProperties {
     }
 
     /**
-     * Get the references property: List of manifest attributes details.
+     * Get the relatedArtifacts property: List of artifacts that are referenced by this manifest list, with information
+     * about the platform each supports. This list will be empty if this is a leaf manifest and not a manifest list.
      *
-     * @return the references value.
+     * @return the relatedArtifacts value.
      */
-    public List<ManifestAttributesManifestReferences> getReferences() {
-        return this.references;
+    public List<ArtifactManifestPlatform> getRelatedArtifacts() {
+        return this.relatedArtifacts;
     }
 
     /**
@@ -159,11 +197,82 @@ public class ArtifactManifestProperties {
     }
 
     /**
-     * Get the writeableProperties property: Writeable properties of the resource.
+     * Get the deleteEnabled property: Delete enabled.
      *
-     * @return the writeableProperties value.
+     * @return the deleteEnabled value.
      */
-    public ContentProperties getWriteableProperties() {
-        return this.writeableProperties;
+    public Boolean isDeleteEnabled() {
+        return this.deleteEnabled;
+    }
+
+    /**
+     * Set the deleteEnabled property: Delete enabled.
+     *
+     * @param deleteEnabled the deleteEnabled value to set.
+     * @return the ArtifactManifestProperties object itself.
+     */
+    public ArtifactManifestProperties setDeleteEnabled(Boolean deleteEnabled) {
+        this.deleteEnabled = deleteEnabled;
+        return this;
+    }
+
+    /**
+     * Get the writeEnabled property: Write enabled.
+     *
+     * @return the writeEnabled value.
+     */
+    public Boolean isWriteEnabled() {
+        return this.writeEnabled;
+    }
+
+    /**
+     * Set the writeEnabled property: Write enabled.
+     *
+     * @param writeEnabled the writeEnabled value to set.
+     * @return the ArtifactManifestProperties object itself.
+     */
+    public ArtifactManifestProperties setWriteEnabled(Boolean writeEnabled) {
+        this.writeEnabled = writeEnabled;
+        return this;
+    }
+
+    /**
+     * Get the listEnabled property: List enabled.
+     *
+     * @return the listEnabled value.
+     */
+    public Boolean isListEnabled() {
+        return this.listEnabled;
+    }
+
+    /**
+     * Set the listEnabled property: List enabled.
+     *
+     * @param listEnabled the listEnabled value to set.
+     * @return the ArtifactManifestProperties object itself.
+     */
+    public ArtifactManifestProperties setListEnabled(Boolean listEnabled) {
+        this.listEnabled = listEnabled;
+        return this;
+    }
+
+    /**
+     * Get the readEnabled property: Read enabled.
+     *
+     * @return the readEnabled value.
+     */
+    public Boolean isReadEnabled() {
+        return this.readEnabled;
+    }
+
+    /**
+     * Set the readEnabled property: Read enabled.
+     *
+     * @param readEnabled the readEnabled value to set.
+     * @return the ArtifactManifestProperties object itself.
+     */
+    public ArtifactManifestProperties setReadEnabled(Boolean readEnabled) {
+        this.readEnabled = readEnabled;
+        return this;
     }
 }

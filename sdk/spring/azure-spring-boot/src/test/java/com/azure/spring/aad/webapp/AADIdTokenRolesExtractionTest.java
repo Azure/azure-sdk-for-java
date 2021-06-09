@@ -4,7 +4,7 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import net.minidev.json.JSONArray;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 
 import java.util.Arrays;

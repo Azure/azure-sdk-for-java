@@ -1040,6 +1040,18 @@ public interface ContainerGroup
             DnsConfigFork withNewNetworkProfileOnExistingVirtualNetwork(String virtualNetworkId, String subnetName);
 
             /**
+             * Specifies the virtual network in network profile for a container group.
+             *
+             * @param networkProfileName the name of the network profile.
+             * @param virtualNetworkId the ID of the virtual network
+             * @param subnetName the name of the subnet within the virtual network.;
+             *                   the subnet must have delegation for 'Microsoft.ContainerInstance/containerGroups'.
+             * @return the next stage of the definition
+             */
+            DnsConfigFork withNewNetworkProfileOnExistingVirtualNetwork(String networkProfileName,
+                                                                        String virtualNetworkId, String subnetName);
+
+            /**
              * Creates a new virtual network to associate with network profile in a container group.
              *
              * @param addressSpace the address space for the virtual network

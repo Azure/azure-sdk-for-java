@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
  */
 @Configuration
+@ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.ClientRegistrationCondition.class })
 @EnableConfigurationProperties(AADB2CProperties.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })

@@ -48,7 +48,7 @@ public class HmacAuthenticationPolicyTests {
     private final String key = "68810419818922fb0263dd6ee4b9c56537dbad914aa7324a119fce26778a286e";
     private final HttpPipelinePolicy verifyHeadersPolicy = (context, next) -> {
         HttpRequest request = context.getHttpRequest();
-        String dateHeaderValue = request.getHeaders().getValue("date");
+        String dateHeaderValue = request.getHeaders().getValue("x-ms-date");
         LocalDateTime headerDate = LocalDateTime.parse(dateHeaderValue, DateTimeFormatter.RFC_1123_DATE_TIME);
         LocalDateTime current = LocalDateTime.now(ZoneOffset.UTC);
         assertTrue(Duration.between(headerDate, current).toMillis() < 5 * 1000,
@@ -61,7 +61,7 @@ public class HmacAuthenticationPolicyTests {
         assertNotNull("Must contain hash header", hashHeaderValue);
 
         String authHeaderValue = request.getHeaders().getValue("Authorization");
-        assertTrue(authHeaderValue.startsWith("HMAC-SHA256 SignedHeaders=date;host;x-ms-content-sha256&Signature="));
+        assertTrue(authHeaderValue.startsWith("HMAC-SHA256 SignedHeaders=x-ms-date;host;x-ms-content-sha256&Signature="));
         return next.process();
     };
 
@@ -245,7 +245,6 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         StepVerifier.create(pipeline.send(request))
-            .expectError(RuntimeException.class);
+            .verifyError(RuntimeException.class);
     }
-
 }

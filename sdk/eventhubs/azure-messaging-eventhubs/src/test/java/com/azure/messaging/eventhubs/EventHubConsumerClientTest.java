@@ -8,12 +8,13 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.IterableStream;
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -110,9 +111,10 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.addCredits(anyInt())).thenReturn(Mono.empty());
 
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER,
-            "test-product", "test-client-version");
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
+            Schedulers.parallel(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER, "test-product", "test-client-version");
+
         connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 "event-hub-path", connectionOptions.getRetry()));
@@ -129,6 +131,8 @@ public class EventHubConsumerClientTest {
                 System.out.println("Returning second link");
                 return amqpReceiveLink2;
             }));
+
+        when(connection.closeAsync()).thenReturn(Mono.empty());
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
             connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed);
@@ -325,7 +329,7 @@ public class EventHubConsumerClientTest {
     public void setsCorrectProperties() {
         // Act
         EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=dummy-event-hub")
+            .connectionString("Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=fakekey;EntityPath=dummy-event-hub")
             .consumerGroup(CONSUMER_GROUP)
             .prefetchCount(100)
             .buildConsumerClient();

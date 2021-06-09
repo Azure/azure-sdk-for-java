@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The publishing profile of a gallery Image Version. */
+/** The publishing profile of a gallery image Version. */
 @Immutable
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
