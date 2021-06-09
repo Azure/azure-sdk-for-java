@@ -1062,10 +1062,9 @@ public class TableAsyncClientTest extends TestBase {
             .setPermissions(permissions);
         String id1 = "testPolicy1";
         String id2 = "testPolicy2";
-        List<TableSignedIdentifier> tableSignedIdentifiers = List.of(
-            new TableSignedIdentifier(id1).setAccessPolicy(tableAccessPolicy),
-            new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy)
-        );
+        List<TableSignedIdentifier> tableSignedIdentifiers = new ArrayList<>();
+        tableSignedIdentifiers.add(new TableSignedIdentifier(id1).setAccessPolicy(tableAccessPolicy));
+        tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
 
         StepVerifier.create(tableClient.setAccessPoliciesWithResponse(tableSignedIdentifiers))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
