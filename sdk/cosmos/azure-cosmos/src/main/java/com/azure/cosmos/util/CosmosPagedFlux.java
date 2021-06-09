@@ -165,8 +165,15 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                     ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                     try {
-                        addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
-                            cosmosException.getDiagnostics());
+                        int threshold = pagedFluxOptions.getThreshHoldForDiagnosticsOnTracerInMS();
+                        if(threshold < 0) {
+                            threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
+                        }
+
+                        if (Duration.between(startTime.get(), Instant.now()).toMillis() >= threshold) {
+                            addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
+                                cosmosException.getDiagnostics());
+                        }
                     } catch (JsonProcessingException ex) {
                         LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                     }
@@ -187,8 +194,15 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                 try {
-                    addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
-                        feedResponse.getCosmosDiagnostics());
+                    int threshold = pagedFluxOptions.getThreshHoldForDiagnosticsOnTracerInMS();
+                    if(threshold < 0) {
+                        threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
+                    }
+
+                    if (Duration.between(startTime.get(), Instant.now()).toMillis() >= threshold) {
+                        addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
+                            feedResponse.getCosmosDiagnostics());
+                    }
                 } catch (JsonProcessingException ex) {
                     LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                 }

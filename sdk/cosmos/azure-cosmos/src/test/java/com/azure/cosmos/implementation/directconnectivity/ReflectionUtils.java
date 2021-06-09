@@ -29,7 +29,6 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlTests;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
@@ -166,6 +165,14 @@ public class ReflectionUtils {
 
     public static void setTracerProvider(CosmosAsyncClient cosmosAsyncClient, TracerProvider tracerProvider){
         set(cosmosAsyncClient, tracerProvider, "tracerProvider");
+    }
+
+    public static void setThresholdForCrud(TracerProvider tracerProvider, int thresholdForCrud) {
+        set(tracerProvider, thresholdForCrud, "CRUD_THRESHOLD_FOR_DIAGNOSTICS_IN_MS");
+    }
+
+    public static void setThresholdForQuery(TracerProvider tracerProvider, int thresholdForQuery) {
+        set(tracerProvider, thresholdForQuery, "QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS");
     }
 
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){

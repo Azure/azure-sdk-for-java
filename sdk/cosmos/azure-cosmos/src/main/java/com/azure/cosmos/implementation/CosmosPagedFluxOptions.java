@@ -23,6 +23,7 @@ public class CosmosPagedFluxOptions {
     private ResourceType resourceType;
     private String serviceEndpoint;
     private CosmosAsyncClient cosmosAsyncClient;
+    private int thresholdForDiagnosticsOnTracerInMS;
 
     public CosmosPagedFluxOptions() {}
 
@@ -130,6 +131,26 @@ public class CosmosPagedFluxOptions {
      */
     public String getServiceEndpoint() {
         return serviceEndpoint;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     */
+    public int getThreshHoldForDiagnosticsOnTracerInMS() {
+        return thresholdForDiagnosticsOnTracerInMS;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     */
+    public void setThreshHoldForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
+        this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
     }
 
     public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceEndpoint, String databaseId) {

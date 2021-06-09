@@ -24,6 +24,7 @@ public class CosmosItemRequestOptions {
     private Boolean contentResponseOnWriteEnabled;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private int thresholdForDiagnosticsOnTracerInMS;
 
     /**
      * copy constructor
@@ -40,6 +41,7 @@ public class CosmosItemRequestOptions {
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
         throughputControlGroupName = options.throughputControlGroupName;
         dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
+        thresholdForDiagnosticsOnTracerInMS = options.thresholdForDiagnosticsOnTracerInMS;
     }
 
 
@@ -307,6 +309,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
+        requestOptions.setThreshHoldForDiagnosticsOnTracerInMS(thresholdForDiagnosticsOnTracerInMS);
         return requestOptions;
     }
 
@@ -318,5 +321,25 @@ public class CosmosItemRequestOptions {
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     */
+    public int getThreshHoldForDiagnosticsOnTracerInMS() {
+        return thresholdForDiagnosticsOnTracerInMS;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     */
+    public void setThreshHoldForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
+        this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
     }
 }

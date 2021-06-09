@@ -36,7 +36,7 @@ public class CosmosQueryRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-
+    private int thresholdForDiagnosticsOnTracerInMS;
     /**
      * Instantiates a new query request options.
      */
@@ -453,6 +453,26 @@ public class CosmosQueryRequestOptions {
     public CosmosQueryRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
         return this;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     */
+    public int getThreshHoldForDiagnosticsOnTracerInMS() {
+        return thresholdForDiagnosticsOnTracerInMS;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     */
+    public void setThreshHoldForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
+        this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
