@@ -107,7 +107,7 @@ public class CallClientBuilderTests {
 
     @Test
     public void buildPiplineForClient() {
-        CallAsyncClient callAsyncClient = builder
+        CallConnectionAsync callAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
             .pipeline(new HttpPipelineBuilder().build())

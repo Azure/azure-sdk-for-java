@@ -180,29 +180,6 @@ public final class CallClient {
     }
 
     /**
-     * Deletes a call.
-     *
-     * @param callId Call id to delete.
-     * @return response for a successful DeleteCall request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteCall(String callId) {
-        return callAsyncClient.deleteCall(callId).block();
-    }
-
-    /**
-     * Deletes a call.
-     *
-     * @param callId Call id to delete.
-     * @param context A {@link Context} representing the request context.
-     * @return response for a successful DeleteCall request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCallWithResponse(String callId, Context context) {
-        return callAsyncClient.deleteCallWithResponse(callId, context).block();
-    }
-
-    /**
      * Cancel all media operations in the call.
      *
      * @param callId Call id to to cancel media Operations.

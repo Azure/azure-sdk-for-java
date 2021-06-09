@@ -4,7 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
-import com.azure.communication.callingserver.implementation.ConversationsImpl;
+import com.azure.communication.callingserver.implementation.ServerCallsImpl;
 import com.azure.communication.callingserver.implementation.converters.AddParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.JoinCallConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
@@ -43,11 +43,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = ConversationClientBuilder.class, isAsync = true)
 public final class ConversationAsyncClient {
-    private final ConversationsImpl conversationsClient;
+    private final ServerCallsImpl serverCallsClient;
     private final ClientLogger logger = new ClientLogger(ConversationAsyncClient.class);
 
     ConversationAsyncClient(AzureCommunicationCallingServerServiceImpl conversationServiceClient) {
-        conversationsClient = conversationServiceClient.getConversations();
+        serverCallsClient = conversationServiceClient.getServerCalls();
     }
 
     /**
@@ -66,7 +66,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
-            return this.conversationsClient
+            return this.serverCallsClient
                 .joinCallAsync(conversationId, JoinCallConverter.convert(source, joinCallOptions))
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
@@ -99,7 +99,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient.
+                return this.serverCallsClient.
                     joinCallWithResponseAsync(conversationId,
                     JoinCallConverter.convert(source, joinCallOptions),
                     contextValue)
@@ -134,7 +134,7 @@ public final class ConversationAsyncClient {
                     alternateCallerId,
                     operationContext,
                     callBackUri);
-            return this.conversationsClient.inviteParticipantsAsync(conversationId, request)
+            return this.serverCallsClient.inviteParticipantsAsync(conversationId, request)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -181,7 +181,7 @@ public final class ConversationAsyncClient {
                     callBackUri);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .inviteParticipantsWithResponseAsync(conversationId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
@@ -202,7 +202,7 @@ public final class ConversationAsyncClient {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
-            return this.conversationsClient.removeParticipantAsync(conversationId, participantId)
+            return this.serverCallsClient.removeParticipantAsync(conversationId, participantId)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -230,7 +230,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .removeParticipantWithResponseAsync(conversationId, participantId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
@@ -257,7 +257,7 @@ public final class ConversationAsyncClient {
             }
             StartCallRecordingRequest request = new StartCallRecordingRequest();
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
-            return this.conversationsClient.startRecordingAsync(conversationId, request)
+            return this.serverCallsClient.startRecordingAsync(conversationId, request)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -293,7 +293,7 @@ public final class ConversationAsyncClient {
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .startRecordingWithResponseAsync(conversationId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
@@ -316,7 +316,7 @@ public final class ConversationAsyncClient {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.conversationsClient.stopRecordingAsync(conversationId, recordingId)
+            return this.serverCallsClient.stopRecordingAsync(conversationId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -341,7 +341,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .stopRecordingWithResponseAsync(conversationId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
@@ -362,7 +362,7 @@ public final class ConversationAsyncClient {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.conversationsClient.pauseRecordingAsync(conversationId, recordingId)
+            return this.serverCallsClient.pauseRecordingAsync(conversationId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -387,7 +387,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .pauseRecordingWithResponseAsync(conversationId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
@@ -408,7 +408,7 @@ public final class ConversationAsyncClient {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.conversationsClient.resumeRecordingAsync(conversationId, recordingId)
+            return this.serverCallsClient.resumeRecordingAsync(conversationId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -433,7 +433,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .resumeRecordingWithResponseAsync(conversationId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
@@ -454,7 +454,7 @@ public final class ConversationAsyncClient {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.conversationsClient.recordingStateAsync(conversationId, recordingId)
+            return this.serverCallsClient.recordingStateAsync(conversationId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -482,7 +482,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .recordingStateWithResponseAsync(conversationId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
@@ -548,7 +548,7 @@ public final class ConversationAsyncClient {
         try {
             Objects.requireNonNull(conversationId, "'conversationId' cannot be null.");
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
-            return this.conversationsClient.playAudioAsync(conversationId, playAudioRequest)
+            return this.serverCallsClient.playAudioAsync(conversationId, playAudioRequest)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -609,7 +609,7 @@ public final class ConversationAsyncClient {
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.conversationsClient
+                return this.serverCallsClient
                     .playAudioWithResponseAsync(conversationId, playAudioRequest, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });

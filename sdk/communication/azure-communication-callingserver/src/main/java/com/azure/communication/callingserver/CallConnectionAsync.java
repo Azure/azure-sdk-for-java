@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
-import com.azure.communication.callingserver.implementation.CallsImpl;
+import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.AddParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
@@ -48,11 +48,11 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = CallClientBuilder.class, isAsync = true)
 public final class CallAsyncClient {
-    private final CallsImpl callClient;
+    private final CallConnectionsImpl callConnectionClient;
     private final ClientLogger logger = new ClientLogger(CallAsyncClient.class);
 
     CallAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
-        callClient = callServiceClient.getCalls();
+        callConnectionClient = callServiceClient.getCallConnections();
     }
 
     /**
@@ -72,7 +72,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(targets, "'targets' cannot be null.");
             Objects.requireNonNull(createCallOptions, "'createCallOptions' cannot be null.");
             CreateCallRequestInternal request = createCreateCallRequest(source, targets, createCallOptions);
-            return this.callClient.createCallAsync(request)
+            return this.callConnectionClient.createCallAsync(request)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -105,7 +105,7 @@ public final class CallAsyncClient {
             CreateCallRequestInternal request = createCreateCallRequest(source, targets, createCallOptions);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callClient.createCallWithResponseAsync(request, contextValue)
+                return this.callConnectionClient.createCallWithResponseAsync(request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
         } catch (RuntimeException ex) {
@@ -165,7 +165,7 @@ public final class CallAsyncClient {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
-            return this.callClient.playAudioAsync(callId, playAudioRequest)
+            return this.callConnectionClient.playAudioAsync(callId, playAudioRequest)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -227,7 +227,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callClient.playAudioWithResponseAsync(callId, playAudioRequest, contextValue)
+                return this.callConnectionClient.playAudioWithResponseAsync(callId, playAudioRequest, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
         } catch (RuntimeException ex) {
@@ -245,7 +245,7 @@ public final class CallAsyncClient {
     public Mono<Void> hangupCall(String callId) {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
-            return this.callClient.hangupCallAsync(callId)
+            return this.callConnectionClient.hangupCallAsync(callId)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -268,48 +268,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callClient.hangupCallWithResponseAsync(callId, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
-            });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Delete a call.
-     *
-     * @param callId Call id.
-     * @return response for a successful DeleteCall request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteCall(String callId) {
-        try {
-            Objects.requireNonNull(callId, "'callId' cannot be null.");
-            return this.callClient.deleteCallAsync(callId)
-                .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Delete a call.
-     *
-     * @param callId Call id.
-     * @return response for a successful DeleteCall request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCallWithResponse(String callId) {
-        return deleteCallWithResponse(callId, Context.NONE);
-    }
-
-    Mono<Response<Void>> deleteCallWithResponse(String callId, Context context) {
-        try {
-            Objects.requireNonNull(callId, "'callId' cannot be null.");
-            return withContext(contextValue -> {
-                contextValue = context == null ? contextValue : context;
-                return this.callClient.deleteCallWithResponseAsync(callId, contextValue)
+                return this.callConnectionClient.hangupCallWithResponseAsync(callId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
         } catch (RuntimeException ex) {
@@ -330,7 +289,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
             request.setOperationContext(operationContext);
-            return this.callClient.cancelAllMediaOperationsAsync(callId, request)
+            return this.callConnectionClient.cancelAllMediaOperationsAsync(callId, request)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -359,7 +318,7 @@ public final class CallAsyncClient {
             request.setOperationContext(operationContext);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callClient.cancelAllMediaOperationsWithResponseAsync(callId, request, contextValue)
+                return this.callConnectionClient.cancelAllMediaOperationsWithResponseAsync(callId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
         } catch (RuntimeException ex) {
@@ -388,7 +347,7 @@ public final class CallAsyncClient {
                 alternateCallerId,
                 operationContext,
                 null);
-            return this.callClient.inviteParticipantsAsync(callId, request)
+            return this.callConnectionClient.inviteParticipantsAsync(callId, request)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -427,7 +386,7 @@ public final class CallAsyncClient {
             InviteParticipantsRequest request = AddParticipantConverter.convert(participant, alternateCallerId, operationContext, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callClient.inviteParticipantsWithResponseAsync(callId, request, contextValue)
+                return this.callConnectionClient.inviteParticipantsWithResponseAsync(callId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
         } catch (RuntimeException ex) {
@@ -447,7 +406,7 @@ public final class CallAsyncClient {
         try {
             Objects.requireNonNull(callId, "'callId' cannot be null.");
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
-            return this.callClient.removeParticipantAsync(callId, participantId)
+            return this.callConnectionClient.removeParticipantAsync(callId, participantId)
                 .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -475,7 +434,7 @@ public final class CallAsyncClient {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callClient.removeParticipantWithResponseAsync(callId, participantId, contextValue)
+                return this.callConnectionClient.removeParticipantWithResponseAsync(callId, participantId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, e -> translateException(e));
             });
         } catch (RuntimeException ex) {
@@ -514,8 +473,8 @@ public final class CallAsyncClient {
             .map(target -> CommunicationIdentifierConverter.convert(target))
             .collect(Collectors.toList()));
         request.setCallbackUri(createCallOptions.getCallbackUri());
-        request.setRequestedModalities(requestedModalities);
-        request.setRequestedCallEvents(requestedCallEvents).setSourceAlternateIdentity(sourceAlternateIdentity);
+        request.setRequestedMediaTypes(requestedModalities);
+        request.setRequestedCallEvents(requestedCallEvents).setAlternateCallerId(sourceAlternateIdentity);
 
         return request;
     }
