@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.communication.callingserver.models;
 
 import com.azure.core.annotation.Fluent;
@@ -106,5 +107,21 @@ public final class CallingServerError {
      */
     public CallingServerError getInnerError() {
         return this.innerError;
+    }
+
+    /**
+     * Constructs a new CallingServerError
+     * @param message The message of the original error
+     * @param code The error code
+     * @param target The target of the error
+     * @param details Additional details
+     * @param innerError The inner error
+     */
+    public CallingServerError(String message, String code, String target, List<CallingServerError> details, CallingServerError innerError) {
+        this.message = message;
+        this.code = code;
+        this.target = target;
+        this.details = details;
+        this.innerError = innerError;
     }
 }

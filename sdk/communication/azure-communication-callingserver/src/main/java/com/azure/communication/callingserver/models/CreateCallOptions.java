@@ -84,7 +84,7 @@ public final class CreateCallOptions {
      *
      * @return the requested modalities object itself.
      */
-    public CallModality[] getRequestedModalities() {
+    public CallModality[] getRequestedMediaTypes() {
         return this.requestedMediaTypes == null ? new CallModality[0] : this.requestedMediaTypes.clone();
     }
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallingServerResponseException;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -71,7 +71,7 @@ public class DownloadContentTests extends CallingServerTestBase {
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        CallingServerResponseException ex = assertThrows(CallingServerResponseException.class,
+        CallingServerErrorException ex = assertThrows(CallingServerErrorException.class,
             () -> conversationClient
                 .downloadTo(CONTENT_URL_404, baos, null));
         assertThat(ex.getResponse().getStatusCode(), is(equalTo(404)));
