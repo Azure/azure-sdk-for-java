@@ -24,7 +24,8 @@ import org.junit.jupiter.params.provider.MethodSource;
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
  * live. By default, tests are run in playback mode.
  */
-public class CallConnectionAsyncTests extends CallingServerTestBase {
+@Disabled("Need to re-record")
+public class CallAsyncClientTests extends CallingServerTestBase {
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
     private String alternateId =   "+11111111111";
     private String to =   "+11111111111";

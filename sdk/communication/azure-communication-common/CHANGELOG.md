@@ -1,9 +1,5 @@
 # Release History
 
-## 1.0.2 (2021-06-08)
-- Updated 'azure-communication-common' version
-
-
 ## 1.0.2 (2021-06-09)
 Updated `azure-communication-common` version
 
