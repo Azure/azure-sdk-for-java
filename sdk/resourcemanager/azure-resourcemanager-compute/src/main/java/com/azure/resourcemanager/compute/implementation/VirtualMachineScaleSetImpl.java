@@ -2861,8 +2861,9 @@ public class VirtualMachineScaleSetImpl
 
         BootDiagnosticsHandler(VirtualMachineScaleSetImpl vmssImpl) {
             this.vmssImpl = vmssImpl;
-            if (isBootDiagnosticsEnabled() &&
-                this.vmssInner().virtualMachineProfile().diagnosticsProfile().bootDiagnostics().storageUri() == null) {
+            if (isBootDiagnosticsEnabled()
+                && this.vmssInner().virtualMachineProfile()
+                .diagnosticsProfile().bootDiagnostics().storageUri() == null) {
                 this.useManagedStorageAccount = true;
             }
         }
