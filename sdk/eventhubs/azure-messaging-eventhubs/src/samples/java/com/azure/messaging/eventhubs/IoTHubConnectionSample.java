@@ -35,6 +35,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -81,45 +82,34 @@ public final class IoTHubConnectionSample {
         final String iotHubConnectionString =
             "HostName=<your-iot-hub>.azure-devices.net;SharedAccessKeyName=<KeyName>;SharedAccessKey=<Key>";
 
-        final IoTConnectionStringProperties properties = new IoTConnectionStringProperties(iotHubConnectionString);
-        final String entityPath = "messages/events";
-        final String resource = properties.getHostname() + "/" + entityPath;
-        final String username = properties.getSharedAccessKeyName() + "@sas.root." + properties.getIoTHubName();
-
-        final AccessToken accessToken = generateSharedAccessSignature(properties.getSharedAccessKeyName(),
-            properties.getSharedAccessKey(), resource, Duration.ofMinutes(10));
-
-        final ProtonJHandler handler = new ProtonJHandler("iot-connection-id", properties.getHostname(),
-            username, accessToken);
-        final Reactor reactor = Proton.reactor(handler);
-
-        // reactor.run() is a blocking call, so we'll run it and then stop it when we are completed.
-        Schedulers.boundedElastic().schedule(() -> reactor.run());
-
-        // Cache the result of this connection string so we can use it again without doing all the work again.
-        final Mono<String> eventHubsConnectionString =
-            getConnectionString(handler, properties, entityPath + "/$management")
-                .cache()
-                .doFinally(signal -> {
-                    // After we're done fetching a compatible Event Hubs connection string, stop the reactor.
-                    handler.closeAsync().block(Duration.ofSeconds(10));
-                    reactor.stop();
-                });
-
-        final Mono<EventHubProducerAsyncClient> producerClientMono = eventHubsConnectionString
-            .map(connectionString -> {
-                return new EventHubClientBuilder()
-                    .connectionString(connectionString)
-                    .buildAsyncProducerClient();
-            });
+        // Gets the Event Hubs connection string for this IoT hub.
+        // Cache the result of this operation so additional downstream subscribers can make use of the value
+        // instead of us having to create another reactor.
+        final Mono<String> connectionStringMono = getConnectionString(iotHubConnectionString)
+            .cache();
 
         // Leverage Mono.usingWhen so the producer client is disposed of after we finish using it.
         // In production, users would probably cache the Mono's result, reusing the EventHubProducerAsyncClient and
         // finally closing it.
-        final Mono<EventHubProperties> runOperation = Mono.usingWhen(producerClientMono,
-            producer -> producer.getEventHubProperties(),
-            producer -> Mono.fromRunnable(() -> producer.close()));
+        final Mono<EventHubProperties> runOperation = Mono.usingWhen(
+            connectionStringMono.map(connectionString -> {
+                System.out.println("Acquired Event Hubs compatible connection string.");
 
+                return new EventHubClientBuilder()
+                    .connectionString(connectionString)
+                    .buildAsyncProducerClient();
+            }),
+            producer -> {
+                System.out.println("Created producer client.");
+
+                return producer.getEventHubProperties();
+            },
+            producer -> Mono.fromRunnable(() -> {
+                System.out.println("Disposing of producer client.");
+                producer.close();
+            }));
+
+        // Blocking here to turn this into a synchronous operation because we no longer need asynchronous operations.
         final EventHubProperties eventHubProperties = runOperation.block();
         if (eventHubProperties == null) {
             System.err.println("No properties were retrieved.");
@@ -137,40 +127,94 @@ public final class IoTHubConnectionSample {
     /**
      * Mono that completes with the corresponding Event Hubs connection string.
      *
-     * @param handler Proton-J handler.
-     * @param properties Connection string properties.
-     * @param entityPath Entity to connect to.
+     * @param iotHubConnectionString The IoT Hub connection string. In the format: "{@code
+     *     HostName=<your-iot-hub>.azure-devices.net;SharedAccessKeyName=<KeyName>;SharedAccessKey=<Key>}".
      *
      * @return A Mono that completes when the connection string is retrieved. Or errors if the transport, connection, or
      *     link could not be opened.
+     *
+     * @throws IllegalArgumentException If the connection string could not be parsed or the shared access key is
+     *     invalid.
+     * @throws NullPointerException if the connection string was null or one of the IoT connection string components
+     *     is null.
+     * @throws UnsupportedOperationException if the hashing algorithm could not be instantiated.
+     * @throws UncheckedIOException if proton-j could not be started.
      */
-    private static Mono<String> getConnectionString(ProtonJHandler handler, IoTConnectionStringProperties properties,
-        String entityPath) {
+    private static Mono<String> getConnectionString(String iotHubConnectionString) {
+        final IoTConnectionStringProperties properties;
+        try {
+            properties = new IoTConnectionStringProperties(iotHubConnectionString);
+        } catch (IllegalArgumentException | NullPointerException error) {
+            return Mono.error(error);
+        }
 
-        return handler.getReceiver(entityPath)
-            .map(receiver -> {
-                System.out.println("IoTHub string was compatible with Event Hubs. Did not redirect.");
-                return properties.getRawConnectionString();
-            })
-            .onErrorResume(error -> {
-                return error instanceof AmqpException
-                    && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_REDIRECT;
-            }, error -> {
-                final AmqpException amqpException = (AmqpException) error;
-                final Map<String, Object> errorInfo = amqpException.getContext().getErrorInfo();
-                final String eventHubsHostname = (String) errorInfo.get("hostname");
+        final String entityPath = "messages/events";
+        final String username = properties.getSharedAccessKeyName() + "@sas.root." + properties.getIoTHubName();
+        final String resource = properties.getHostname() + "/" + entityPath;
+        final AccessToken accessToken;
+        try {
+            accessToken = generateSharedAccessSignature(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), resource, Duration.ofMinutes(10));
+        } catch (UnsupportedOperationException | IllegalArgumentException error) {
+            return Mono.error(error);
+        }
 
-                if (eventHubsHostname == null) {
-                    return Mono.error(new UnsupportedOperationException(
-                        "Could not get Event Hubs connection string from error info.", error));
-                }
+        final Reactor reactor;
+        try {
+            reactor = Proton.reactor();
+        } catch (IOException e) {
+            return Mono.error(new UncheckedIOException("Unable to create IO pipe for proton-j reactor.", e));
+        }
 
-                final String eventHubsConnection = String.format(Locale.ROOT,
-                    "Endpoint=sb://%s/;EntityPath=%s;SharedAccessKeyName=%s;SharedAccessKey=%s",
-                    eventHubsHostname, properties.getIoTHubName(), properties.getSharedAccessKeyName(),
-                    properties.getSharedAccessKey());
+        // Leverage Mono.usingWhen to dispose of the resources after we finish using them.
+        return Mono.usingWhen(
+            Mono.fromCallable(() -> {
+                final ProtonJHandler handler = new ProtonJHandler("iot-connection-id", properties.getHostname(),
+                    username, accessToken);
 
-                return Mono.just(eventHubsConnection);
+                reactor.setHandler(handler);
+
+                // reactor.run() is a blocking call, so we schedule this on another thread. It'll stop processing items
+                // when we call reactor.stop() later on.
+                Schedulers.boundedElastic().schedule(() -> reactor.run());
+
+                return handler;
+            }),
+            handler -> {
+                // Creating a receiver will trigger the amqp:link:redirect error containing the Event Hubs connection
+                // string in its error properties.
+                return handler.getReceiver(entityPath + "/$management")
+                    .map(receiver -> {
+                        System.out.println("IoTHub string was compatible with Event Hubs. Did not redirect.");
+                        return properties.getRawConnectionString();
+                    })
+                    // Only recover on AMQP Exceptions that have the amqp:link:redirect error.
+                    // Other errors are propagated downstream.
+                    .onErrorResume(error -> {
+                        return error instanceof AmqpException
+                            && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_REDIRECT;
+                    }, error -> {
+                        final AmqpException amqpException = (AmqpException) error;
+                        final Map<String, Object> errorInfo = amqpException.getContext().getErrorInfo();
+                        final String eventHubsHostname = (String) errorInfo.get("hostname");
+
+                        if (eventHubsHostname == null) {
+                            return Mono.error(new UnsupportedOperationException(
+                                "Could not get Event Hubs connection string from error info.", error));
+                        }
+
+                        final String eventHubsConnection = String.format(Locale.ROOT,
+                            "Endpoint=sb://%s/;EntityPath=%s;SharedAccessKeyName=%s;SharedAccessKey=%s",
+                            eventHubsHostname, properties.getIoTHubName(), properties.getSharedAccessKeyName(),
+                            properties.getSharedAccessKey());
+
+                        return Mono.just(eventHubsConnection);
+                    });
+            },
+            handler -> {
+                // After we're done fetching a compatible Event Hubs connection string, stop the reactor.
+                reactor.stop();
+                return handler.closeAsync();
             });
     }
 
@@ -234,9 +278,10 @@ public final class IoTHubConnectionSample {
             }
 
             if (link.getCondition() != null) {
-                System.out.println("There will be an error soon. Not completing receiver. Error: " + link.getCondition());
+                // There will be an error soon. Not completing receiver.
                 return;
             } else if (link.getRemoteState() != EndpointState.ACTIVE) {
+                // The link isn't active, don't complete sink yet.
                 System.out.println(link.getRemoteState() + ": Remote state is not open. " + link.getCondition());
                 return;
             }
@@ -418,7 +463,7 @@ public final class IoTHubConnectionSample {
          *     sharedAccessKeyName} in the input string.
          */
         private IoTConnectionStringProperties(String connectionString) {
-            this.connectionString = connectionString;
+            this.connectionString = Objects.requireNonNull(connectionString, "'connectionString' is null.");
             URI endpointUri = null;
             String sharedAccessKeyName = null;
             String sharedAccessKeyValue = null;
