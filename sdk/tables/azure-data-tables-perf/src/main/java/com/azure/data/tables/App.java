@@ -3,6 +3,8 @@
 
 package com.azure.data.tables;
 
+import com.azure.perf.test.core.PerfStressProgram;
+
 /**
  * Runs the Azure Data Tables performance test.
  *
