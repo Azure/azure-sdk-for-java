@@ -3,24 +3,26 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAccessTokenGroupRolesExtractionTest {
 
     @Mock
@@ -34,36 +36,47 @@ public class AADAccessTokenGroupRolesExtractionTest {
     private AADOAuth2UserService userService;
     private AutoCloseable autoCloseable;
     private GroupInformation groupInformationFromGraph;
-    private Set<String> allowedGroupNames;
-    private Set<String> allowedGroupIds;
+    private Set<String> groupNamesFromGraph;
+    private Set<String> groupIdsFromGraph;
 
-    @BeforeEach
+    @BeforeAll
     public void setup() {
-        groupInformationFromGraph = new GroupInformation();
-        allowedGroupIds = groupInformationFromGraph.getGroupsId();
-        allowedGroupNames = groupInformationFromGraph.getGroupsName();
         this.autoCloseable = MockitoAnnotations.openMocks(this);
+        groupInformationFromGraph = new GroupInformation();
+        groupNamesFromGraph = new HashSet<>();
+        groupIdsFromGraph = new HashSet<>();
+        groupNamesFromGraph.add("group1");
+        groupNamesFromGraph.add("group2");
+        groupIdsFromGraph.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        groupIdsFromGraph.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
+        groupInformationFromGraph.setGroupsIds(groupIdsFromGraph);
+        groupInformationFromGraph.setGroupsNames(groupNamesFromGraph);
         properties.setUserGroup(userGroup);
         properties.setGraphMembershipUri("https://graph.microsoft.com/v1.0/me/memberOf");
         Mockito.lenient().when(accessToken.getTokenValue()).thenReturn("fake-access-token");
         userService = new AADOAuth2UserService(properties, graphClient);
+        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
+               .thenReturn(groupInformationFromGraph);
     }
 
-    @AfterEach
+    @BeforeEach
+    public void init() {
+        userGroup.setAllowedGroupNames(Collections.emptyList());
+        userGroup.setAllowedGroupIds(Collections.emptySet());
+        userGroup.setEnableFullList(false);
+    }
+
+    @AfterAll
     public void close() throws Exception {
         this.autoCloseable.close();
     }
 
     @Test
     public void testGroupsName() {
-        allowedGroupNames.add("group1");
-        allowedGroupNames.add("group2");
         List<String> customizeGroupName = new ArrayList<>();
         customizeGroupName.add("group1");
-
-        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-               .thenReturn(groupInformationFromGraph);
         userGroup.setAllowedGroupNames(customizeGroupName);
+
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
 
         assertThat(groupRoles).contains("ROLE_group1");
@@ -73,13 +86,10 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
     @Test
     public void testGroupsId() {
-        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        List<String> customizeGroupId = new ArrayList<>();
+        Set<String> customizeGroupId = new HashSet<>();
         customizeGroupId.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        userGroup.setAllowedGroupIds(customizeGroupId);
 
-        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-               .thenReturn(groupInformationFromGraph);
-        userGroup.setAllowedGroupIds(allowedGroupIds);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
 
         assertThat(groupRoles).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
@@ -89,9 +99,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
     @Test
     public void testGroupsNameAndGroupsId() {
-        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        allowedGroupNames.add("group1");
-
         Set<String> customizeGroupIds = new HashSet<>();
         customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
         List<String> customizeGroupName = new ArrayList<>();
@@ -99,9 +106,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
         userGroup.setAllowedGroupIds(customizeGroupIds);
         userGroup.setAllowedGroupNames(customizeGroupName);
-
-        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-               .thenReturn(groupInformationFromGraph);
 
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).contains("ROLE_group1");
@@ -113,10 +117,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
     @Test
     public void testWithEnableFullList() {
-        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        allowedGroupIds.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
-        allowedGroupNames.add("group1");
-
         Set<String> customizeGroupIds = new HashSet<>();
         customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
         List<String> customizeGroupName = new ArrayList<>();
@@ -126,8 +126,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
         userGroup.setAllowedGroupNames(customizeGroupName);
         userGroup.setEnableFullList(true);
 
-        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-               .thenReturn(groupInformationFromGraph);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(3);
         assertThat(groupRoles).contains("ROLE_group1");
@@ -135,11 +133,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
     @Test
     public void testWithoutEnableFullList() {
-        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        allowedGroupIds.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
-        allowedGroupNames.add("group1");
-        allowedGroupNames.add("group2");
-
         List<String> customizeGroupNames = new ArrayList<>();
         Set<String> customizeGroupIds = new HashSet<>();
         customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
@@ -149,8 +142,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
         userGroup.setAllowedGroupIds(customizeGroupIds);
         userGroup.setAllowedGroupNames(customizeGroupNames);
 
-        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-               .thenReturn(groupInformationFromGraph);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
 
         assertThat(groupRoles).contains("ROLE_group1");
@@ -162,11 +153,6 @@ public class AADAccessTokenGroupRolesExtractionTest {
 
     @Test
     public void testAllGroupIds() {
-        allowedGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        allowedGroupIds.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
-        allowedGroupNames.add("group1");
-        allowedGroupNames.add("group2");
-
         Set<String> customizeGroupIds = new HashSet<>();
         customizeGroupIds.add("all");
         List<String> customizeGroupName = new ArrayList<>();
@@ -176,11 +162,25 @@ public class AADAccessTokenGroupRolesExtractionTest {
         userGroup.setAllowedGroupNames(customizeGroupName);
         userGroup.setEnableFullList(true);
 
-        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-               .thenReturn(groupInformationFromGraph);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(3);
         assertThat(groupRoles).contains("ROLE_group1");
         assertThat(groupRoles).doesNotContain("ROLE_group2");
+    }
+
+    @Test
+    public void testIllegalGroupIdParam() {
+        Set<String> customizeGroupIds = new HashSet<>();
+        customizeGroupIds.add("all");
+        customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
+        customizeGroupIds.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
+        List<String> customizeGroupName = new ArrayList<>();
+        customizeGroupName.add("group1");
+
+        userGroup.setAllowedGroupNames(customizeGroupName);
+
+        assertThrows(IllegalStateException.class, () ->
+            userGroup.setAllowedGroupIds(customizeGroupIds), "When 'all' is used, there is no need to configure"
+            + " additional group id.");
     }
 }

@@ -115,29 +115,28 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         if (!properties.allowedGroupIdsConfigured() && !properties.allowedGroupNamesConfigured()) {
             return Collections.emptySet();
         }
-        GroupInformation groupInformation = GroupInformation(accessToken);
+        Set<String> roleStrings = new HashSet<>();
+        GroupInformation groupInformation = groupInformation(accessToken);
 
         if (allGroupIdShouldMapToRole()) {
-            Set<String> allowedGroupsName = Arrays
-                .asList(properties.getUserGroup().getAllowedGroupNames())
-                .stream()
-                .flatMap(Collection::stream)
-                .filter(groupInformation.getGroupsName()::contains)
-                .collect(Collectors.toSet());
-            return Arrays.asList(groupInformation.getGroupsId(), allowedGroupsName)
-                         .stream()
-                         .flatMap(Collection::stream)
-                         .map(group -> ROLE_PREFIX + group)
-                         .collect(Collectors.toSet());
+            Arrays.asList(properties.getUserGroup().getAllowedGroupNames())
+                  .stream()
+                  .flatMap(Collection::stream)
+                  .filter(groupInformation.getGroupsNames()::contains)
+                  .forEach(roleStrings::add);
+            roleStrings.addAll(groupInformation.getGroupsIds());
+        } else {
+            Arrays.asList(properties.getUserGroup().getAllowedGroupIds(),
+                properties.getUserGroup().getAllowedGroupNames())
+                  .stream()
+                  .flatMap(Collection::stream)
+                  .filter(roleStr -> groupInformation.getGroupsIds().contains(roleStr)
+                      || groupInformation.getGroupsNames().contains(roleStr))
+                  .forEach(roleStrings::add);
         }
-
-        return Arrays
-            .asList(properties.getUserGroup().getAllowedGroupIds(), properties.getUserGroup().getAllowedGroupNames())
-            .stream()
-            .flatMap(Collection::stream)
-            .filter(group -> groupInformation.getGroupsId().contains(group) || groupInformation.getGroupsName().contains(group))
-            .map(group -> ROLE_PREFIX + group)
-            .collect(Collectors.toSet());
+        return roleStrings.stream()
+                          .map(roleStr -> ROLE_PREFIX + roleStr)
+                          .collect(Collectors.toSet());
     }
 
     private boolean allGroupIdShouldMapToRole() {
@@ -146,7 +145,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             && allowedGroupIds.stream().findFirst().get().equalsIgnoreCase("all"));
     }
 
-    private GroupInformation GroupInformation(OAuth2AccessToken accessToken) {
+    private GroupInformation groupInformation(OAuth2AccessToken accessToken) {
         return Optional.of(accessToken)
                        .map(AbstractOAuth2Token::getTokenValue)
                        .map(graphClient::getGroupInformation)

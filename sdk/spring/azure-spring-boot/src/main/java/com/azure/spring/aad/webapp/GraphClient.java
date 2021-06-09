@@ -50,8 +50,8 @@ public class GraphClient {
             }
             for (Membership membership : memberships.getValue()) {
                 if (isGroupObject(membership)) {
-                    groupInformation.getGroupsId().add(membership.getObjectID());
-                    groupInformation.getGroupsName().add(membership.getDisplayName());
+                    groupInformation.getGroupsIds().add(membership.getObjectID());
+                    groupInformation.getGroupsNames().add(membership.getDisplayName());
                 }
             }
             aadMembershipRestUri = Optional.of(memberships)

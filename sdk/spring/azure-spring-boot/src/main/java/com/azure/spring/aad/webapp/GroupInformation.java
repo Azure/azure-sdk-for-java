@@ -11,23 +11,23 @@ import java.util.Set;
  */
 public class GroupInformation {
 
-    private Set<String> groupsId = new HashSet<>();
+    private Set<String> groupsIds = new HashSet<>();
 
-    private Set<String> groupsName = new HashSet<>();
+    private Set<String> groupsNames = new HashSet<>();
 
-    public Set<String> getGroupsId() {
-        return groupsId;
+    public Set<String> getGroupsIds() {
+        return groupsIds;
     }
 
-    public void setGroupsId(Set<String> groupsId) {
-        this.groupsId = groupsId;
+    public void setGroupsIds(Set<String> groupsIds) {
+        this.groupsIds = groupsIds;
     }
 
-    public Set<String> getGroupsName() {
-        return groupsName;
+    public Set<String> getGroupsNames() {
+        return groupsNames;
     }
 
-    public void setGroupsName(Set<String> groupsName) {
-        this.groupsName = groupsName;
+    public void setGroupsNames(Set<String> groupsNames) {
+        this.groupsNames = groupsNames;
     }
 }

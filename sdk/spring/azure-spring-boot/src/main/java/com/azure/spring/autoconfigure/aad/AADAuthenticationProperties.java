@@ -151,6 +151,12 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
+            for (String allowedGroupId : allowedGroupIds) {
+                if (allowedGroupIds.size() > 1 && allowedGroupId.equalsIgnoreCase("all")) {
+                    throw new IllegalStateException("When 'all' is used, there is no need to configure additional group"
+                        + " id.");
+                }
+            }
             this.allowedGroupIds = allowedGroupIds;
         }
 
