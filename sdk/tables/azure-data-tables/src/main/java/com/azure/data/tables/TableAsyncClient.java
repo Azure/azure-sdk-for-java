@@ -930,7 +930,7 @@ public final class TableAsyncClient {
         signed identifiers is not really necessary.
          */
         if (tableSignedIdentifiers != null) {
-             signedIdentifiers = tableSignedIdentifiers.stream()
+            signedIdentifiers = tableSignedIdentifiers.stream()
                 .map(this::toSignedIdentifier)
                 .collect(Collectors.toList());
 

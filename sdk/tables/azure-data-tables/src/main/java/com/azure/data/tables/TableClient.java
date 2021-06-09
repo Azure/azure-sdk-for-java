@@ -414,7 +414,7 @@ public final class TableClient {
      * @return A reactive result containing the HTTP response and the table's
      * {@link TableSignedIdentifier access policies}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<TableSignedIdentifier> listAccessPolicies() {
         return client.listAccessPolicies().block();
     }
@@ -429,7 +429,7 @@ public final class TableClient {
      * @return A reactive result containing the HTTP response and the table's
      * {@link TableSignedIdentifier access policies}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<TableSignedIdentifier>> listAccessPoliciesWithResponse(Duration timeout, Context context) {
         return blockWithOptionalTimeout(client.listAccessPoliciesWithResponse(context), timeout);
     }
