@@ -8,6 +8,10 @@
   sub-line item fields detected.
 - Fixed invoices and other recognition operations that return a `FormField` with `text`
   and no `boundingBox` or `page` information.
+  
+### Dependency updates
+- Updated azure-core to 1.17.0.
+- Updated azure-core-http-netty to 1.10.0.
 
 ## 3.1.0 (2021-05-26)
 ### Features Added
