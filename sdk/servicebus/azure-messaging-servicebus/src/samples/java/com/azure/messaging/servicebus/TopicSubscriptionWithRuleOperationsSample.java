@@ -182,7 +182,7 @@ public class TopicSubscriptionWithRuleOperationsSample {
     }
 
     /**
-     * Send an {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
+     * Send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
      */
     static void sendMessagesAsync() {
         List<HashMap<String, String>> messageDataList =
