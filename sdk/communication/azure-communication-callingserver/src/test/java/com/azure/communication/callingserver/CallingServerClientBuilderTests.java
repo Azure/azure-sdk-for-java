@@ -124,7 +124,7 @@ public class CallingServerClientBuilderTests {
     @Test
     public void setHttpLogOptions() {
         HttpLogOptions options = new HttpLogOptions().setApplicationId(APPLICATION_ID);
-        CallAsyncClient callAsyncClient = builder
+        CallingServerAsyncClient callAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .httpLogOptions(options)
             .httpClient(new NoOpHttpClient())
@@ -135,27 +135,27 @@ public class CallingServerClientBuilderTests {
     @Test
     public void setClientOptions() {
         ClientOptions options = new ClientOptions().setApplicationId(APPLICATION_ID);
-        CallAsyncClient callAsyncClient = builder
+        CallingServerAsyncClient callAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .clientOptions(options)
             .httpClient(new NoOpHttpClient())
             .buildAsyncClient();
         assertNotNull(callAsyncClient);
-    }    
+    }
 
     @Test
     public void noClientOptionsNoPipeline() {
-        CallAsyncClient callAsyncClient = builder
+        CallingServerAsyncClient callAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
             .buildAsyncClient();
         assertNotNull(callAsyncClient);
-    }    
+    }
 
     @Test
     public void addPolicy() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
-        CallAsyncClient callAsyncClient = builder
+        CallingServerAsyncClient callAsyncClient = builder
             .connectionString(MOCK_CONNECTION_STRING)
             .addPolicy(new HmacAuthenticationPolicy(credential))
             .httpClient(new NoOpHttpClient())
@@ -166,7 +166,7 @@ public class CallingServerClientBuilderTests {
 
     @Test
     public void argumentExceptionOnConnectionStringAndEndpoint() {
-        assertThrows(IllegalArgumentException.class, () -> { 
+        assertThrows(IllegalArgumentException.class, () -> {
             builder
                 .connectionString(MOCK_CONNECTION_STRING)
                 .endpoint(MOCK_URL)
@@ -174,11 +174,11 @@ public class CallingServerClientBuilderTests {
                 .buildAsyncClient();
         });
     }
-    
+
     @Test
     public void argumentExceptionOnConnectionStringAndAzureKeyCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
-        assertThrows(IllegalArgumentException.class, () -> { 
+        assertThrows(IllegalArgumentException.class, () -> {
             builder
                 .connectionString(MOCK_CONNECTION_STRING)
                 .credential(credential)
@@ -190,7 +190,7 @@ public class CallingServerClientBuilderTests {
     @Test
     public void argumentExceptionOnConnectionStringAndTokenCredential() {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-        assertThrows(IllegalArgumentException.class, () -> { 
+        assertThrows(IllegalArgumentException.class, () -> {
             builder
                 .connectionString(MOCK_CONNECTION_STRING)
                 .credential(tokenCredential)
@@ -203,19 +203,19 @@ public class CallingServerClientBuilderTests {
     public void argumentExceptionOnAzureKeyCredentialAndTokenCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-        assertThrows(IllegalArgumentException.class, () -> { 
+        assertThrows(IllegalArgumentException.class, () -> {
             builder
                 .credential(credential)
                 .credential(tokenCredential)
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient();
-        });      
+        });
     }
 
     @Test
     public void noPipelineWithToken() {
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();         
-        CallAsyncClient callAsyncClient = builder
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        CallingServerAsyncClient callAsyncClient = builder
             .endpoint(MOCK_URL)
             .credential(tokenCredential)
             .httpClient(new NoOpHttpClient())
@@ -226,7 +226,7 @@ public class CallingServerClientBuilderTests {
 
     @Test
     public void noCredential() {
-        assertThrows(IllegalArgumentException.class, () -> { 
+        assertThrows(IllegalArgumentException.class, () -> {
             builder
                 .endpoint(MOCK_URL)
                 .httpClient(new NoOpHttpClient())
@@ -236,11 +236,11 @@ public class CallingServerClientBuilderTests {
 
     @Test
     public void noEndpoint() {
-        assertThrows(NullPointerException.class, () -> { 
+        assertThrows(NullPointerException.class, () -> {
             builder
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient();
         });
-    }       
+    }
 }
 
