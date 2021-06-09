@@ -10,7 +10,7 @@ import java.util.List;
  * This class contains values which correlate to the access polices set for a specific table.
  */
 @Immutable
-public class TableAccessPolicies {
+public final class TableAccessPolicies {
     private final List<TableSignedIdentifier> identifiers;
 
     /**
