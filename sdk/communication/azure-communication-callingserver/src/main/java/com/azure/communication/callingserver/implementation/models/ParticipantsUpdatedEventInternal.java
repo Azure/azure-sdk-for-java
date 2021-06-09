@@ -8,38 +8,38 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Class to represent roster update. */
+/** The participant update event. */
 @Fluent
 public final class ParticipantsUpdatedEventInternal {
     /*
-     * The call leg.id.
+     * The call connection id.
      */
-    @JsonProperty(value = "callLegId")
-    private String callLegId;
+    @JsonProperty(value = "callConnectionId")
+    private String callConnectionId;
 
     /*
-     * The list of participants
+     * The list of participants.
      */
     @JsonProperty(value = "participants")
     private List<CommunicationParticipantInternal> participants;
 
     /**
-     * Get the callLegId property: The call leg.id.
+     * Get the callConnectionId property: The call connection id.
      *
-     * @return the callLegId value.
+     * @return the callConnectionId value.
      */
-    public String getCallLegId() {
-        return this.callLegId;
+    public String getCallConnectionId() {
+        return this.callConnectionId;
     }
 
     /**
-     * Set the callLegId property: The call leg.id.
+     * Set the callConnectionId property: The call connection id.
      *
-     * @param callLegId the callLegId value to set.
+     * @param callConnectionId the callConnectionId value to set.
      * @return the ParticipantsUpdatedEventInternal object itself.
      */
-    public ParticipantsUpdatedEventInternal setCallLegId(String callLegId) {
-        this.callLegId = callLegId;
+    public ParticipantsUpdatedEventInternal setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
         return this;
     }
 

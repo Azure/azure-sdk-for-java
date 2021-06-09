@@ -75,9 +75,9 @@ public final class CreateCallOptions {
     }
 
     /**
-     * The requested modalities.
+     * The requested media types.
      */
-    private final CallModality[] requestedModalities;
+    private final CallModality[] requestedMediaTypes;
 
     /**
      * Get the requested modalities.
@@ -85,7 +85,7 @@ public final class CreateCallOptions {
      * @return the requested modalities object itself.
      */
     public CallModality[] getRequestedModalities() {
-        return this.requestedModalities == null ? new CallModality[0] : this.requestedModalities.clone();
+        return this.requestedMediaTypes == null ? new CallModality[0] : this.requestedMediaTypes.clone();
     }
 
     /**
@@ -106,19 +106,19 @@ public final class CreateCallOptions {
      * Initializes a new instance of CreateCallResult.
      *
      * @param callbackUri the callback URI.
-     * @param requestedModalities the requested modalities.
+     * @param requestedMediaTypes the requested media types.
      * @param requestedCallEvents the requested call events to subscribe to.
      * @throws IllegalArgumentException if any parameters are null.
      */
     public CreateCallOptions(String callbackUri,
-                             CallModality[] requestedModalities,
+                             CallModality[] requestedMediaTypes,
                              EventSubscriptionType[] requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }
 
-        if (requestedModalities == null) {
-            throw new IllegalArgumentException("object requestedModalities cannot be null");
+        if (requestedMediaTypes == null) {
+            throw new IllegalArgumentException("object requestedMediaTypes cannot be null");
         }
         if (requestedCallEvents == null) {
             throw new IllegalArgumentException("object requestedCallEvents cannot be null");
@@ -126,7 +126,7 @@ public final class CreateCallOptions {
 
         this.callbackUri = callbackUri;
 
-        this.requestedModalities = requestedModalities.clone();
+        this.requestedMediaTypes = requestedMediaTypes.clone();
         this.requestedCallEvents = requestedCallEvents.clone();
     }
 }

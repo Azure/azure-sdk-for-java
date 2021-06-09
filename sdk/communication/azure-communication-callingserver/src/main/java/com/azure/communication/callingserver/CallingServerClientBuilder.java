@@ -31,15 +31,15 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * CallClientBuilder that creates CallAsyncClient and CallClient.
+ * CallingServerClientBuilder that creates CallingServerAsyncClient and CallingServerClient.
  */
-@ServiceClientBuilder(serviceClients = { CallClient.class, CallAsyncClient.class })
-public final class CallClientBuilder {
+@ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
+public final class CallingServerClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-callingserver.properties";
 
-    private final ClientLogger logger = new ClientLogger(CallClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(CallingServerClientBuilder.class);
     private String connectionString;
     private String endpoint;
     private AzureKeyCredential azureKeyCredential;
@@ -57,9 +57,9 @@ public final class CallClientBuilder {
      * Set endpoint of the service
      *
      * @param endpoint url of the service
-     * @return CallClientBuilder
+     * @return CallingServerClientBuilder
      */
-    public CallClientBuilder endpoint(String endpoint) {
+    public CallingServerClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
@@ -69,9 +69,9 @@ public final class CallClientBuilder {
      *
      * @param pipeline HttpPipeline to use, if a pipeline is not supplied, the
      * credential and httpClient fields must be set
-     * @return CallClientBuilder
+     * @return CallingServerClientBuilder
      */
-    public CallClientBuilder pipeline(HttpPipeline pipeline) {
+    public CallingServerClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
     }
@@ -81,10 +81,10 @@ public final class CallClientBuilder {
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP
      * requests.
-     * @return The updated {@link CallClientBuilder} object.
+     * @return The updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    public CallClientBuilder credential(TokenCredential tokenCredential) {
+    public CallingServerClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
@@ -94,10 +94,10 @@ public final class CallClientBuilder {
      *
      * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP
      *                      requests.
-     * @return The updated {@link CallClientBuilder} object.
+     * @return The updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public CallClientBuilder credential(AzureKeyCredential keyCredential) {
+    public CallingServerClientBuilder credential(AzureKeyCredential keyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -106,9 +106,9 @@ public final class CallClientBuilder {
      * Set connectionString to use
      *
      * @param connectionString connection string to set endpoint and initialize AzureKeyCredential
-     * @return CallClientBuilder
+     * @return CallingServerClientBuilder
      */
-    public CallClientBuilder connectionString(String connectionString) {
+    public CallingServerClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         this.connectionString = connectionString;
         return this;
@@ -118,9 +118,9 @@ public final class CallClientBuilder {
      * Sets the retry policy to use (using the RetryPolicy type).
      *
      * @param retryPolicy object to be applied
-     * @return CallClientBuilder
+     * @return CallingServerClientBuilder
      */
-    public CallClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public CallingServerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         return this;
     }
@@ -131,9 +131,9 @@ public final class CallClientBuilder {
      *
      * @param configuration Configuration store used to retrieve environment
      * configurations.
-     * @return the updated CallClientBuilder object
+     * @return the updated CallingServerClientBuilder object
      */
-    public CallClientBuilder configuration(Configuration configuration) {
+    public CallingServerClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
     }
@@ -143,15 +143,15 @@ public final class CallClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving
      * HTTP requests/responses.
-     * @return the updated CallClientBuilder object
+     * @return the updated CallingServerClientBuilder object
      */
-    public CallClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public CallingServerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the {@link CallClientBuilder} that is used when making API requests.
+     * Sets the {@link CallingServerClientBuilder} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used
      * will be the latest known service version based on the version of the client
@@ -162,11 +162,11 @@ public final class CallClientBuilder {
      * Targeting a specific service version may also mean that the service will
      * return an error for newer APIs.
      *
-     * @param version {@link CallClientBuilder} of the service to be used when
+     * @param version {@link CallingServerClientBuilder} of the service to be used when
      * making requests.
-     * @return the updated CallClientBuilder object
+     * @return the updated CallingServerClientBuilder object
      */
-    public CallClientBuilder serviceVersion(CallClientBuilder version) {
+    public CallingServerClientBuilder serviceVersion(CallingServerClientBuilder version) {
         return this;
     }
 
@@ -174,9 +174,9 @@ public final class CallClientBuilder {
      * Set httpClient to use
      *
      * @param httpClient httpClient to use, overridden by the pipeline field.
-     * @return CallClientBuilder
+     * @return CallingServerClientBuilder
      */
-    public CallClientBuilder httpClient(HttpClient httpClient) {
+    public CallingServerClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
     }
@@ -187,9 +187,9 @@ public final class CallClientBuilder {
      * @param customPolicy HttpPipelinePolicy object to be applied after
      * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy,
      * and CookiePolicy
-     * @return CallClientBuilder
+     * @return CallingServerClientBuilder
      */
-    public CallClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public CallingServerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
@@ -199,10 +199,10 @@ public final class CallClientBuilder {
      * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
      * specified by additionalPolicies will be applied after them
      *
-     * @return CallAsyncClient instance
+     * @return CallingServerAsyncClient instance
      */
-    public CallAsyncClient buildAsyncClient() {
-        return new CallAsyncClient(createServiceImpl());
+    public CallingServerAsyncClient buildAsyncClient() {
+        return new CallingServerAsyncClient(createServiceImpl());
     }
 
     /**
@@ -210,10 +210,10 @@ public final class CallClientBuilder {
      * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
      * additionalPolicies will be applied after them
      *
-     * @return CallClient instance
+     * @return CallingServerClient instance
      */
-    public CallClient buildClient() {
-        return new CallClient(buildAsyncClient());
+    public CallingServerClient buildClient() {
+        return new CallingServerClient(buildAsyncClient());
     }
 
     private AzureCommunicationCallingServerServiceImpl createServiceImpl() {
@@ -251,7 +251,7 @@ public final class CallClientBuilder {
 
         Objects.requireNonNull(endpoint);
         if (this.pipeline == null) {
-            Objects.requireNonNull(httpClient, "no endpoint provided");
+            Objects.requireNonNull(httpClient);
         }
 
         HttpPipeline builderPipeline = this.pipeline;
@@ -270,26 +270,34 @@ public final class CallClientBuilder {
      * user-agent string, headers, etc.
      *
      * @param clientOptions object to be applied
-     * @return CallClientBuilder
+     * @return CallingServerClientBuilder
      */
-    public CallClientBuilder clientOptions(ClientOptions clientOptions) {
+    public CallingServerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        if (this.tokenCredential != null && this.azureKeyCredential != null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Both 'credential' and 'keyCredential' are set. Just one may be used."));
+        }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                    "https://communication.azure.com//.default");
+                "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing credential information while building a client."));
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient) {
+        if (this.pipeline != null) {
+            return this.pipeline;
+        }
+
         List<HttpPipelinePolicy> policyList = new ArrayList<>();
 
         ClientOptions buildClientOptions = (clientOptions == null) ? new ClientOptions() : clientOptions;
@@ -319,7 +327,7 @@ public final class CallClientBuilder {
         policyList.add(new HttpLoggingPolicy(this.getHttpLogOptions()));
 
         return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient)
-                .build();
+            .build();
     }
 
     private HttpLogOptions getHttpLogOptions() {

@@ -34,13 +34,13 @@ public final class JoinCallRequest {
     /*
      * The requested modalities.
      */
-    @JsonProperty(value = "requestedModalities", required = true)
-    private List<CallModality> requestedModalities;
+    @JsonProperty(value = "requestedMediaTypes")
+    private List<CallModality> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
-    @JsonProperty(value = "requestedCallEvents", required = true)
+    @JsonProperty(value = "requestedCallEvents")
     private List<EventSubscriptionType> requestedCallEvents;
 
     /**
@@ -104,22 +104,22 @@ public final class JoinCallRequest {
     }
 
     /**
-     * Get the requestedModalities property: The requested modalities.
+     * Get the requestedMediaTypes property: The requested modalities.
      *
-     * @return the requestedModalities value.
+     * @return the requestedMediaTypes value.
      */
-    public List<CallModality> getRequestedModalities() {
-        return this.requestedModalities;
+    public List<CallModality> getRequestedMediaTypes() {
+        return this.requestedMediaTypes;
     }
 
     /**
-     * Set the requestedModalities property: The requested modalities.
+     * Set the requestedMediaTypes property: The requested modalities.
      *
-     * @param requestedModalities the requestedModalities value to set.
+     * @param requestedMediaTypes the requestedMediaTypes value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setRequestedModalities(List<CallModality> requestedModalities) {
-        this.requestedModalities = requestedModalities;
+    public JoinCallRequest setRequestedMediaTypes(List<CallModality> requestedMediaTypes) {
+        this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
 

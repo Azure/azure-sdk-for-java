@@ -11,8 +11,8 @@ import java.util.Collection;
 /** Defines values for CallingServerEventType. */
 public final class CallingServerEventType extends ExpandableStringEnum<CallingServerEventType> {
 
-    /** The call leg state change event type. */
-    public static final CallingServerEventType CALL_LEG_STATE_CHANGED_EVENT = fromString("Microsoft.Communication.CallLegStateChanged");
+    /** The call connection state change event type. */
+    public static final CallingServerEventType CALL_CONNECTION_STATE_CHANGED_EVENT = fromString("Microsoft.Communication.CallConnectionStateChanged");
 
     /** The invited participants result event type. */
     public static final CallingServerEventType INVITE_PARTICIPANT_RESULT_EVENT = fromString("Microsoft.Communication.InviteParticipantResult");
