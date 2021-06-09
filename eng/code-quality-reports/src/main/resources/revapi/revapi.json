@@ -522,6 +522,11 @@
           "code": "java.method.added",
           "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
           "justification": "New Setter method."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.time.Duration com.azure.core.util.polling.PollerFlux<T, U>::getPollInterval()",
+        "justification": "An additive method would be considered as a minor version bump. Monthly patch release needs to suppress it"
       }
     ]
   }
