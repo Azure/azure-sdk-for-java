@@ -13,7 +13,7 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-identity-spring</module>
+        <module>azure-core-spring</module>
         <module>azure-spring-boot</module>
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-context</module>
@@ -32,8 +32,8 @@
       <dependencies>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-identity-spring</artifactId>
-          <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
+          <artifactId>azure-core-spring</artifactId>
+          <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-core-spring;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -135,7 +135,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-identity-spring</module>
+        <module>azure-core-spring</module>
         <module>azure-spring-boot-samples/azure-cloud-foundry-service-sample</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless</module>

@@ -4,4 +4,4 @@
 /**
  * Package com.azure.identity.spring;
  */
-package com.azure.spring.identity;
+package com.azure.spring.core;

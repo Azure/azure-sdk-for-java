@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.identity;
+package com.azure.spring.core.identity;
 
 import com.azure.core.credential.TokenCredential;
 import org.springframework.util.StringUtils;

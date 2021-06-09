@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfigur
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;

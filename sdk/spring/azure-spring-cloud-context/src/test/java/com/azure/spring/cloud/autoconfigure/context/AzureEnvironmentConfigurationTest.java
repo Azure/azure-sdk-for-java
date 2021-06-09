@@ -9,7 +9,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.DefaultEnvironmentProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

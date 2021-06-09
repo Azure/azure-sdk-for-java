@@ -5,7 +5,7 @@ package com.azure.spring.cloud.context.core.impl;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.spring.cloud.context.core.api.ResourceManager;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

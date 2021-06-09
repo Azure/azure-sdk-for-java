@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.cache;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.RedisCacheManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

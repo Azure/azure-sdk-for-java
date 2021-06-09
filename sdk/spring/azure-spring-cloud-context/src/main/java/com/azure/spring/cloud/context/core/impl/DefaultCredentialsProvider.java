@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

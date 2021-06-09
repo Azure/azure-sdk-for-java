@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.context.core.config;
+package com.azure.spring.core;
 
 
-import com.azure.spring.cloud.context.core.api.CredentialSupplier;
-import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
 import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
@@ -18,7 +16,7 @@ import javax.annotation.PostConstruct;
  */
 @Validated
 @ConfigurationProperties(AzureProperties.PREFIX)
-public class AzureProperties implements CredentialSupplier {
+public class AzureProperties {
 
     public static final String PREFIX = "spring.cloud.azure";
 

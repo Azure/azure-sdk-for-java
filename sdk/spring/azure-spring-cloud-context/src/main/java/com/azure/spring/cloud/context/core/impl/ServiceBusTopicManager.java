@@ -6,7 +6,7 @@ package com.azure.spring.cloud.context.core.impl;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.core.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
 /**
