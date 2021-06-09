@@ -308,5 +308,13 @@ public class VirtualMachineBootDiagnosticsTests extends ComputeManagementTest {
         Assertions.assertNotNull(virtualMachine);
         Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
         Assertions.assertNull(virtualMachine.bootDiagnosticsStorageUri());
+
+        virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
+        virtualMachine.update()
+            .withNewDataDisk(10)
+            .apply();
+
+        Assertions.assertTrue(virtualMachine.isBootDiagnosticsEnabled());
+        Assertions.assertNull(virtualMachine.bootDiagnosticsStorageUri());
     }
 }

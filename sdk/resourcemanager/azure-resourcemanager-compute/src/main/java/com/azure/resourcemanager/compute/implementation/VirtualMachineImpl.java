@@ -2637,6 +2637,10 @@ class VirtualMachineImpl
 
         BootDiagnosticsHandler(VirtualMachineImpl vmImpl) {
             this.vmImpl = vmImpl;
+            if (isBootDiagnosticsEnabled()
+                && this.vmInner().diagnosticsProfile().bootDiagnostics().storageUri() == null) {
+                this.useManagedStorageAccount = true;
+            }
         }
 
         public boolean isBootDiagnosticsEnabled() {
