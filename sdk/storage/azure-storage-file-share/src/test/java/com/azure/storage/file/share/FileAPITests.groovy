@@ -794,9 +794,9 @@ class FileAPITests extends APISpec {
         primaryFileClient.create(data.defaultDataSize)
 
         when:
-        primaryFileClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions()
-            .setSourceUrl(blob.getBlobUrl()).setSourceBearerToken(oauthHeader)
-            .setLength(data.defaultDataSize), null, Context.NONE)
+        primaryFileClient.uploadRangeFromUrlWithResponse(
+            new ShareFileUploadRangeFromUrlOptions(data.defaultDataSize, blob.getBlobUrl())
+                .setSourceBearerToken(oauthHeader), null, Context.NONE)
 
         then:
         thrown(ShareStorageException)
