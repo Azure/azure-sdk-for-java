@@ -70,18 +70,18 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
             recordingId = startCallRecordingResponse.getRecordingId();
             validateCallRecordingStateWithResponse(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
 
-            var pauseRecordingResponse = conversationAsyncClient.pauseRecordingWithResponse(conversationId, recordingId).block();
+            Response<Void> pauseRecordingResponse = conversationAsyncClient.pauseRecordingWithResponse(conversationId, recordingId).block();
             assertEquals(pauseRecordingResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(conversationAsyncClient, conversationId, recordingId, CallRecordingState.INACTIVE);
 
-            var resumeRecordingResponse = conversationAsyncClient.resumeRecordingWithResponse(conversationId, recordingId).block();
+            Response<Void> resumeRecordingResponse = conversationAsyncClient.resumeRecordingWithResponse(conversationId, recordingId).block();
             assertEquals(resumeRecordingResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(conversationAsyncClient, conversationId, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         } finally {
-            var stopRecordingResponse = conversationAsyncClient.stopRecordingWithResponse(conversationId, recordingId).block();
+            Response<Void> stopRecordingResponse = conversationAsyncClient.stopRecordingWithResponse(conversationId, recordingId).block();
             assertEquals(stopRecordingResponse.getStatusCode(), 200);
         }
     }
@@ -224,8 +224,8 @@ public class ConversationAsyncClientTests extends CallingServerTestBase {
          */
         sleepIfRunningAgainstService(6000);
 
-        var callRecordingStateResultResponse = conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId).block();
-        var callRecordingStateResult = callRecordingStateResultResponse.getValue();
+        Response<CallRecordingStateResponse> callRecordingStateResultResponse = conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId).block();
+        CallRecordingStateResponse callRecordingStateResult = callRecordingStateResultResponse.getValue();
         assertEquals(callRecordingStateResultResponse.getStatusCode(), 200);        
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
