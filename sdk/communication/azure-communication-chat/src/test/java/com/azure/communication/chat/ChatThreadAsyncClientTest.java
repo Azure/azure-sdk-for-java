@@ -375,10 +375,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     public void canSendThenGetHtmlMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canSendThenGetHtmlMessage");
-        SendChatMessageOptions messageRequest = new SendChatMessageOptions()
-            .setType(ChatMessageType.HTML)
-            .setSenderDisplayName("John")
-            .setContent("<div>test</div>");
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions(ChatMessageType.HTML, "<div>test</div>");
 
         // Action & Assert
         StepVerifier
@@ -457,6 +454,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
                 assertEquals(message.getType(), messageRequest.getType());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+                assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
             })
             .verifyComplete();
     }
@@ -480,6 +478,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 ChatMessage message = getResponse.getValue();
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+                assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
             })
             .verifyComplete();
     }
@@ -609,6 +608,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         )
             .assertNext(message -> {
                 assertEquals(message.getContent(), updateMessageRequest.getContent());
+                assertTrue(message.getMetadata().equals(updateMessageRequest.getMetadata()));
             });
 
     }
@@ -659,6 +659,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         )
             .assertNext(message -> {
                 assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
+                assertTrue(message.getMetadata().equals(updateMessageRequest.getMetadata()));
             })
             .verifyComplete();
     }

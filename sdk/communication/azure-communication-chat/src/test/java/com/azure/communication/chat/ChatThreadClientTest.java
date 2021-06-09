@@ -286,6 +286,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+        assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
     }
 
     @ParameterizedTest
@@ -301,6 +302,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         ChatMessage message = chatThreadClient.getMessageWithResponse(response.getId(), Context.NONE).getValue();
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+        assertTrue(message.getMetadata().equals(messageRequest.getMetadata()));
     }
 
     @ParameterizedTest
@@ -344,6 +346,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
+        assertTrue(message.getMetadata().equals(updateMessageRequest.getMetadata()));
     }
 
     @ParameterizedTest
@@ -361,6 +364,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         ChatMessage message = chatThreadClient.getMessage(response.getId());
         assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
+        assertTrue(message.getMetadata().equals(updateMessageRequest.getMetadata()));
     }
 
     @ParameterizedTest
