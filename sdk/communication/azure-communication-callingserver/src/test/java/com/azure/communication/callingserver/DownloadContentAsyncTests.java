@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallingServerResponseException;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
@@ -94,7 +94,7 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
                 .downloadStreamWithResponse(CONTENT_URL_404, null).block();
         assertThat(response, is(notNullValue()));
         assertThat(response.getStatusCode(), is(equalTo(404)));
-        assertThrows(CallingServerResponseException.class,
+        assertThrows(CallingServerErrorException.class,
             () -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).block());
     }
 

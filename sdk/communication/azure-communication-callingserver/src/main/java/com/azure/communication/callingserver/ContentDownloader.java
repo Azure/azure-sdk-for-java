@@ -3,7 +3,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.Constants;
-import com.azure.communication.callingserver.models.CallingServerResponseException;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.ProgressReporter;
 import com.azure.core.http.HttpMethod;
@@ -136,7 +136,7 @@ class ContentDownloader {
                 return response.getBody();
             default:
                 throw logger.logExceptionAsError(
-                    new CallingServerResponseException(formatExceptionMessage(response), response)
+                    new CallingServerErrorException(formatExceptionMessage(response), response)
                 );
         }
     }
@@ -199,7 +199,7 @@ class ContentDownloader {
 
                 return Mono.zip(Mono.just(totalLength), Mono.just(response));
             })
-            .onErrorResume(CallingServerResponseException.class, exception -> {
+            .onErrorResume(CallingServerErrorException.class, exception -> {
                 if (exception.getResponse().getStatusCode() == 416
                     && extractTotalBlobLength(
                         exception.getResponse().getHeaderValue(Constants.HeaderNames.CONTENT_RANGE)) == 0) {

@@ -5,8 +5,8 @@ package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CommunicationError;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
-import com.azure.communication.callingserver.models.ServerCallingError;
-import com.azure.communication.callingserver.models.ServerCallingErrorException;
+import com.azure.communication.callingserver.models.CallingServerError;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,18 +14,18 @@ import java.util.stream.Collectors;
 
 /**
  * A converter between {@link CommunicationError} and
- * {@link ServerCallingError}.
+ * {@link CallingServerError}.
  */
-public final class ServerCallingErrorConverter {
+public final class CallingServerErrorConverter {
     /**
-     * Maps from {@Link CommunicationError} to {@link ServerCallingError}.
+     * Maps from {@Link CommunicationError} to {@link CallingServerError}.
      */
-    public static ServerCallingError convert(CommunicationError obj) {
+    public static CallingServerError convert(CommunicationError obj) {
         if (obj == null) {
             return null;
         }
 
-        List<ServerCallingError> details = new ArrayList<ServerCallingError>();
+        List<CallingServerError> details = new ArrayList<CallingServerError>();
 
         if (obj.getDetails() != null) {
             details = obj.getDetails()
@@ -34,7 +34,7 @@ public final class ServerCallingErrorConverter {
                 .collect(Collectors.toList());
         }
 
-        ServerCallingError serverCallingError = new ServerCallingError(
+        CallingServerError serverCallingError = new CallingServerError(
             obj.getMessage(),
             obj.getCode(),
             obj.getTarget(),
@@ -45,15 +45,15 @@ public final class ServerCallingErrorConverter {
         return serverCallingError;
     }
 
-    public static ServerCallingErrorException translateException(CommunicationErrorException exception) {
-        ServerCallingError error = null;
+    public static CallingServerErrorException translateException(CommunicationErrorException exception) {
+        CallingServerError error = null;
         if (exception.getValue() != null) {
-            error = ServerCallingErrorConverter.convert(exception.getValue());
+            error = CallingServerErrorConverter.convert(exception.getValue());
         }
-        return new ServerCallingErrorException(exception.getMessage(), exception.getResponse(), error);
+        return new CallingServerErrorException(exception.getMessage(), exception.getResponse(), error);
     }
 
-    private ServerCallingErrorConverter() {
+    private CallingServerErrorConverter() {
     }
 }
 
