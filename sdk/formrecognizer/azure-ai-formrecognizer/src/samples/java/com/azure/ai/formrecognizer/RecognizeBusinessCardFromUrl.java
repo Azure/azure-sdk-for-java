@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sample for recognizing business card information from an URL.
+ * Sample for recognizing business card information from a URL.
  */
 public class RecognizeBusinessCardFromUrl {
     /**

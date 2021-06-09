@@ -64,7 +64,7 @@
     },
     "subjectName": {
       "type": "string",
-      "defaultValue": "CN=contoso.com"
+      "defaultValue": "CN=mydomain.com"
     },
     "utcValue": {
       "type": "string",
@@ -259,7 +259,7 @@
 
     $policy = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -Verbose
 
-      Add-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName -CertificatePolicy $policy -Verbose
+    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName -CertificatePolicy $policy -Verbose
 
     $newCert = Get-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName
 

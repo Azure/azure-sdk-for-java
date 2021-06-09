@@ -6,7 +6,9 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.ai.formrecognizer.implementation.TextAppearanceHelper;
 import com.azure.core.annotation.Immutable;
 
-/** The TextAppearance model representing the appearance of the text line. */
+/**
+ * The TextAppearance model representing the appearance of the text line.
+ */
 @Immutable
 public final class TextAppearance {
     /*

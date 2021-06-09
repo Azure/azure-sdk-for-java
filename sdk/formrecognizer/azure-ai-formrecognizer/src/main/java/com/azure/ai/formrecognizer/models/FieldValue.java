@@ -23,7 +23,8 @@ import static com.azure.ai.formrecognizer.models.FieldValueType.STRING;
 import static com.azure.ai.formrecognizer.models.FieldValueType.TIME;
 
 /**
- * The FieldValue model.
+ * Represents the strongly-typed value of a field recognized from the input document and provides
+ * methods for converting it to the appropriate type.
  */
 @Fluent
 public final class FieldValue {

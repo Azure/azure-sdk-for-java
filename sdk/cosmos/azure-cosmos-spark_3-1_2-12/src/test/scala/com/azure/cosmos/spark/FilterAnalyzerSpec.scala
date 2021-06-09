@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.CosmosParameterizedQuery
-import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In}
+import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, StringEndsWith, StringStartsWith, StringContains}
 import org.assertj.core.api.Assertions.assertThat
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -15,7 +15,7 @@ class FilterAnalyzerSpec extends UnitSpec {
 
   private[this] val readConfigWithoutCustomQuery = new CosmosReadConfig(true, SchemaConversionModes.Relaxed, None)
   private[this] val queryText = "SELECT * FROM c WHERE c.abc='Hello World'"
-  private[this] val query = Some(new CosmosParameterizedQuery(
+  private[this] val query = Some(CosmosParameterizedQuery(
     queryText,
     List.empty[String],
     List.empty[Any]))
@@ -104,6 +104,52 @@ class FilterAnalyzerSpec extends UnitSpec {
       "Algorithmo de Numero Indorum",
       "Algebra",
       "Algorithm")
+  }
+
+  "StringStartsWith on utf8" should "be translated to cosmos startswith predicate" in {
+    val filterProcessor = FilterAnalyzer()
+
+    val filters = Array[Filter](StringStartsWith("mathematician.book", "Algorithmo"))
+
+    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
+    analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
+
+    val query = analyzedQuery.cosmosParametrizedQuery
+    query.queryText shouldEqual "SELECT * FROM r WHERE STARTSWITH(r['mathematician']['book'],@param0)"
+    query.parameterNames should contain theSameElementsInOrderAs List("@param0")
+    query.parameterValues should contain theSameElementsInOrderAs List("Algorithmo")
+  }
+
+  "StringEndsWith on utf8" should "be translated to cosmos endswith predicate" in {
+    val filterProcessor = FilterAnalyzer()
+
+    val filters = Array[Filter](StringEndsWith("mathematician.book", "Numero Indorum"))
+
+    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
+    analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
+
+    val query = analyzedQuery.cosmosParametrizedQuery
+    query.queryText shouldEqual "SELECT * FROM r WHERE ENDSWITH(r['mathematician']['book'],@param0)"
+    query.parameterNames should contain theSameElementsInOrderAs List("@param0")
+    query.parameterValues should contain theSameElementsInOrderAs List("Numero Indorum")
+  }
+
+  "StringContains on utf8" should "be translated to cosmos contains predicate" in {
+    val filterProcessor = FilterAnalyzer()
+
+    // algebra
+    val filters = Array[Filter](StringContains("mathematician.work", "gebr"))
+
+    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
+    analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
+
+    val query = analyzedQuery.cosmosParametrizedQuery
+    query.queryText shouldEqual "SELECT * FROM r WHERE CONTAINS(r['mathematician']['work'],@param0)"
+    query.parameterNames should contain theSameElementsInOrderAs List("@param0")
+    query.parameterValues should contain theSameElementsInOrderAs List("gebr")
   }
 
   "no filter" should "be translated to cosmos query with no where clause" in {

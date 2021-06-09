@@ -5,6 +5,7 @@
 package com.azure.monitor.query.log.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,22 +18,27 @@ public final class QueryResults {
     @JsonProperty(value = "tables")
     private List<Table> tables;
 
+    /*
+     * Statistics represented in JSON format.
+     */
+    @JsonProperty(value = "statistics")
+    private Object statistics;
+
+    /*
+     * The code and message for an error.
+     */
     @JsonProperty(value = "error")
     private ErrorInfo error;
 
-    public ErrorInfo getError() {
-        return error;
-    }
-
-    public void setError(ErrorInfo error) {
-        this.error = error;
-    }
-
-    /*
-     * The errors property.
+    /**
+     * Creates an instance of QueryResults class.
+     *
+     * @param tables the tables value to set.
      */
-    @JsonProperty(value = "errors")
-    private ErrorDetails errors;
+    @JsonCreator
+    public QueryResults(@JsonProperty(value = "tables") List<Table> tables) {
+        this.tables = tables;
+    }
 
     /**
      * Get the tables property: The list of tables, columns and rows.
@@ -44,33 +50,42 @@ public final class QueryResults {
     }
 
     /**
-     * Set the tables property: The list of tables, columns and rows.
+     * Get the statistics property: Statistics represented in JSON format.
      *
-     * @param tables the tables value to set.
+     * @return the statistics value.
+     */
+    public Object getStatistics() {
+        return this.statistics;
+    }
+
+    /**
+     * Set the statistics property: Statistics represented in JSON format.
+     *
+     * @param statistics the statistics value to set.
      * @return the QueryResults object itself.
      */
-    public QueryResults setTables(List<Table> tables) {
-        this.tables = tables;
+    public QueryResults setStatistics(Object statistics) {
+        this.statistics = statistics;
         return this;
     }
 
     /**
-     * Get the errors property: The errors property.
+     * Get the error property: The code and message for an error.
      *
-     * @return the errors value.
+     * @return the error value.
      */
-    public ErrorDetails getErrors() {
-        return this.errors;
+    public ErrorInfo getError() {
+        return this.error;
     }
 
     /**
-     * Set the errors property: The errors property.
+     * Set the error property: The code and message for an error.
      *
-     * @param errors the errors value to set.
+     * @param error the error value to set.
      * @return the QueryResults object itself.
      */
-    public QueryResults setErrors(ErrorDetails errors) {
-        this.errors = errors;
+    public QueryResults setError(ErrorInfo error) {
+        this.error = error;
         return this;
     }
 
@@ -80,11 +95,13 @@ public final class QueryResults {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getTables() != null) {
+        if (getTables() == null) {
+            throw new IllegalArgumentException("Missing required property tables in model QueryResults");
+        } else {
             getTables().forEach(e -> e.validate());
         }
-        if (getErrors() != null) {
-            getErrors().validate();
+        if (getError() != null) {
+            getError().validate();
         }
     }
 }

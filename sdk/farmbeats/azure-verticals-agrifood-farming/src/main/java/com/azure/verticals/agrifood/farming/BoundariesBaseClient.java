@@ -96,7 +96,7 @@ public final class BoundariesBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param farmerId ID of the associated farmer.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -177,7 +177,7 @@ public final class BoundariesBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer.
+     * @param farmerId ID of the farmer.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -353,7 +353,7 @@ public final class BoundariesBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -367,7 +367,7 @@ public final class BoundariesBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -394,7 +394,7 @@ public final class BoundariesBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -454,8 +454,8 @@ public final class BoundariesBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
-     * @param boundaryId Id of the boundary.
+     * @param farmerId ID of the associated farmer.
+     * @param boundaryId ID of the boundary.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -504,8 +504,8 @@ public final class BoundariesBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param farmerId Id of the farmer resource.
-     * @param boundaryId Id of the boundary resource.
+     * @param farmerId ID of the farmer resource.
+     * @param boundaryId ID of the boundary resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -524,8 +524,8 @@ public final class BoundariesBaseClient {
     /**
      * Deletes a specified boundary resource under a particular farmer.
      *
-     * @param farmerId Id of the farmer.
-     * @param boundaryId Id of the boundary.
+     * @param farmerId ID of the farmer.
+     * @param boundaryId ID of the boundary.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -554,10 +554,10 @@ public final class BoundariesBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the farmer.
-     * @param boundaryId Id of the boundary.
+     * @param farmerId ID of the farmer.
+     * @param boundaryId ID of the boundary.
      * @param otherFarmerId FarmerId of the other field.
-     * @param otherBoundaryId Id of the other boundary.
+     * @param otherBoundaryId ID of the other boundary.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response to a batch. */
+/** Response to a batch query. */
 @Fluent
 public final class BatchResponse {
     /*
@@ -16,20 +16,14 @@ public final class BatchResponse {
      * batch.
      */
     @JsonProperty(value = "responses")
-    private List<LogQueryResponse> responses;
-
-    /*
-     * Error response for a batch request
-     */
-    @JsonProperty(value = "error")
-    private BatchResponseError error;
+    private List<BatchQueryResponse> responses;
 
     /**
      * Get the responses property: An array of responses corresponding to each individual request in a batch.
      *
      * @return the responses value.
      */
-    public List<LogQueryResponse> getResponses() {
+    public List<BatchQueryResponse> getResponses() {
         return this.responses;
     }
 
@@ -39,28 +33,8 @@ public final class BatchResponse {
      * @param responses the responses value to set.
      * @return the BatchResponse object itself.
      */
-    public BatchResponse setResponses(List<LogQueryResponse> responses) {
+    public BatchResponse setResponses(List<BatchQueryResponse> responses) {
         this.responses = responses;
-        return this;
-    }
-
-    /**
-     * Get the error property: Error response for a batch request.
-     *
-     * @return the error value.
-     */
-    public BatchResponseError getError() {
-        return this.error;
-    }
-
-    /**
-     * Set the error property: Error response for a batch request.
-     *
-     * @param error the error value to set.
-     * @return the BatchResponse object itself.
-     */
-    public BatchResponse setError(BatchResponseError error) {
-        this.error = error;
         return this;
     }
 
@@ -72,9 +46,6 @@ public final class BatchResponse {
     public void validate() {
         if (getResponses() != null) {
             getResponses().forEach(e -> e.validate());
-        }
-        if (getError() != null) {
-            getError().validate();
         }
     }
 }

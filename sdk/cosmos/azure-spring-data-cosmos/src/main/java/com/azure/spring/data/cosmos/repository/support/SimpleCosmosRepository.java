@@ -212,6 +212,12 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         operation.deleteEntity(information.getContainerName(), entity);
     }
 
+    @Override
+    public void deleteAllById(Iterable<? extends ID> ids) {
+        Assert.notNull(ids, "Iterable entities should not be null");
+        StreamSupport.stream(ids.spliterator(), true).forEach(this::deleteById);
+    }
+
     /**
      * delete all the domains of a container
      */

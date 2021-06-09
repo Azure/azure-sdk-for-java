@@ -18,7 +18,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

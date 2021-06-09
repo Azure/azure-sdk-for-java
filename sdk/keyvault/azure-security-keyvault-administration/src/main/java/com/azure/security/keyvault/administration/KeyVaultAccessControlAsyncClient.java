@@ -30,18 +30,16 @@ import com.azure.security.keyvault.administration.implementation.models.RoleDefi
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties;
 import com.azure.security.keyvault.administration.implementation.models.RoleScope;
-import com.azure.security.keyvault.administration.implementation.models.RoleType;
 import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
-import com.azure.security.keyvault.administration.options.SetRoleDefinitionOptions;
+import com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -342,7 +340,6 @@ public final class KeyVaultAccessControlAsyncClient {
             RoleDefinitionProperties roleDefinitionProperties =
                 new RoleDefinitionProperties()
                     .setRoleName(options.getRoleDefinitionName())
-                    .setRoleType(RoleType.fromString(options.getRoleType().toString()))
                     .setAssignableScopes(assignableScopes)
                     .setDescription(options.getDescription())
                     .setPermissions(permissions);
@@ -940,12 +937,11 @@ public final class KeyVaultAccessControlAsyncClient {
         }
 
         return new KeyVaultRoleDefinition(roleDefinition.getId(), roleDefinition.getName(),
-            KeyVaultRoleDefinitionType.fromString(roleDefinition.getType().toString()),
-            new KeyVaultRoleDefinitionProperties(roleDefinition.getRoleName(), roleDefinition.getDescription(),
-                KeyVaultRoleType.fromString(roleDefinition.getRoleType().toString()), keyVaultPermissions,
-                roleDefinition.getAssignableScopes().stream()
-                    .map(roleScope -> KeyVaultRoleScope.fromString(roleScope.toString()))
-                    .collect(Collectors.toList())));
+            KeyVaultRoleDefinitionType.fromString(roleDefinition.getType().toString()), roleDefinition.getRoleName(),
+            roleDefinition.getDescription(), KeyVaultRoleType.fromString(roleDefinition.getRoleType().toString()),
+            keyVaultPermissions, roleDefinition.getAssignableScopes().stream()
+                .map(roleScope -> KeyVaultRoleScope.fromString(roleScope.toString()))
+                .collect(Collectors.toList()));
     }
 
     private static PagedResponse<KeyVaultRoleAssignment> transformRoleAssignmentsPagedResponse(
@@ -971,8 +967,8 @@ public final class KeyVaultAccessControlAsyncClient {
 
         return new KeyVaultRoleAssignment(roleAssignment.getId(), roleAssignment.getName(), roleAssignment.getType(),
             new KeyVaultRoleAssignmentProperties(propertiesWithScope.getRoleDefinitionId(),
-                propertiesWithScope.getPrincipalId()),
-            KeyVaultRoleScope.fromString(propertiesWithScope.getScope().toString()));
+                propertiesWithScope.getPrincipalId(),
+                KeyVaultRoleScope.fromString(propertiesWithScope.getScope().toString())));
     }
 
     private static final class TransformedPagedResponse<L extends List<T>, T, U> implements PagedResponse<T> {
