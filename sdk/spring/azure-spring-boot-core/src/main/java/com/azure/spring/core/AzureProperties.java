@@ -118,7 +118,7 @@ public class AzureProperties {
     /**
      * Path of a PEM certificate file to use when performing service principal authentication with Azure.
      */
-    private String certificatePath;
+    private String clientCertificatePath;
 
     /**
      * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
@@ -311,12 +311,12 @@ public class AzureProperties {
         this.password = password;
     }
 
-    public String getCertificatePath() {
-        return certificatePath;
+    public String getClientCertificatePath() {
+        return clientCertificatePath;
     }
 
-    public void setCertificatePath(String certificatePath) {
-        this.certificatePath = certificatePath;
+    public void setClientCertificatePath(String clientCertificatePath) {
+        this.clientCertificatePath = clientCertificatePath;
     }
 
     public boolean isIdentityDisableCP1() {

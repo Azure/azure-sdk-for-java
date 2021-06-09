@@ -29,7 +29,7 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
-      - name: azure-core-spring
+      - name: azure-spring-boot-core
         groupId: com.azure.spring
         safeName: azurecorespring
       - name: azure-spring-boot

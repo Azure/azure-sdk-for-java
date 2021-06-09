@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.core.AzureProperties;
-import com.azure.spring.core.identity.DefaultSpringCredentialBuilder;
+import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
