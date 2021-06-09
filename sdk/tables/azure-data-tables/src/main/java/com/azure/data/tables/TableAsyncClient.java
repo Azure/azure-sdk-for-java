@@ -41,6 +41,7 @@ import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody
 import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
 import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
@@ -844,8 +845,8 @@ public final class TableAsyncClient {
      *
      * @return A reactive result containing the table's {@link TableSignedIdentifier access policies}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<TableSignedIdentifier>> listAccessPolicies() {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableAccessPolicies> listAccessPolicies() {
         return withContext(context -> listAccessPoliciesWithResponse(context)
             .flatMap(response -> Mono.justOrEmpty(response.getValue())));
     }
@@ -857,36 +858,40 @@ public final class TableAsyncClient {
      * @return A reactive result containing the HTTP response and the table's
      * {@link TableSignedIdentifier access policies}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<TableSignedIdentifier>>> listAccessPoliciesWithResponse() {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableAccessPolicies>> listAccessPoliciesWithResponse() {
         return withContext(this::listAccessPoliciesWithResponse);
     }
 
-    Mono<Response<List<TableSignedIdentifier>>> listAccessPoliciesWithResponse(Context context) {
+    Mono<Response<TableAccessPolicies>> listAccessPoliciesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {
             return tablesImplementation.getTables()
                 .getAccessPolicyWithResponseAsync(tableName, null, null, context)
-                .map(response -> {
-                    List<SignedIdentifier> signedIdentifiers = response.getValue();
-
-                    return new SimpleResponse<>(response,
-                        signedIdentifiers == null ? null : signedIdentifiers.stream()
-                            .map(this::toTableSignedIdentifier)
-                            .collect(Collectors.toList()));
-                });
+                .map(response -> new SimpleResponse<>(response,
+                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
+                        .map(this::toTableSignedIdentifier)
+                        .collect(Collectors.toList()))));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
     private TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
+        if (signedIdentifier == null) {
+            return null;
+        }
+
         return new TableSignedIdentifier(signedIdentifier.getId())
             .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
     }
 
     private TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+
         return new TableAccessPolicy()
             .setExpiresOn(accessPolicy.getExpiry())
             .setStartsOn(accessPolicy.getStart())
@@ -931,19 +936,30 @@ public final class TableAsyncClient {
          */
         if (tableSignedIdentifiers != null) {
             signedIdentifiers = tableSignedIdentifiers.stream()
-                .map(this::toSignedIdentifier)
-                .collect(Collectors.toList());
+                .map(tableSignedIdentifier -> {
+                    SignedIdentifier signedIdentifier = toSignedIdentifier(tableSignedIdentifier);
 
-            for (SignedIdentifier identifier : signedIdentifiers) {
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStart() != null) {
-                    identifier.getAccessPolicy().setStart(
-                        identifier.getAccessPolicy().getStart().truncatedTo(ChronoUnit.SECONDS));
-                }
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiry() != null) {
-                    identifier.getAccessPolicy().setExpiry(
-                        identifier.getAccessPolicy().getExpiry().truncatedTo(ChronoUnit.SECONDS));
-                }
-            }
+                    if (signedIdentifier != null) {
+                        if (signedIdentifier.getAccessPolicy() != null
+                            && signedIdentifier.getAccessPolicy().getStart() != null) {
+
+                            signedIdentifier.getAccessPolicy()
+                                .setStart(signedIdentifier.getAccessPolicy()
+                                    .getStart().truncatedTo(ChronoUnit.SECONDS));
+                        }
+
+                        if (signedIdentifier.getAccessPolicy() != null
+                            && signedIdentifier.getAccessPolicy().getExpiry() != null) {
+
+                            signedIdentifier.getAccessPolicy()
+                                .setExpiry(signedIdentifier.getAccessPolicy()
+                                    .getExpiry().truncatedTo(ChronoUnit.SECONDS));
+                        }
+                    }
+
+                    return signedIdentifier;
+                })
+                .collect(Collectors.toList());
         }
 
         try {
@@ -956,12 +972,20 @@ public final class TableAsyncClient {
     }
 
     private SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
+        if (tableSignedIdentifier == null) {
+            return null;
+        }
+
         return new SignedIdentifier()
             .setId(tableSignedIdentifier.getId())
             .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
     }
 
     private AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
+        if (tableAccessPolicy == null) {
+            return null;
+        }
+
         return new AccessPolicy()
             .setExpiry(tableAccessPolicy.getExpiresOn())
             .setStart(tableAccessPolicy.getStartsOn())

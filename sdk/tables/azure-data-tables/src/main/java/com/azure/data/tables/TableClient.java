@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableItem;
@@ -415,7 +416,7 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<TableSignedIdentifier> listAccessPolicies() {
+    public TableAccessPolicies listAccessPolicies() {
         return client.listAccessPolicies().block();
     }
 
@@ -430,7 +431,7 @@ public final class TableClient {
      * {@link TableSignedIdentifier access policies}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<TableSignedIdentifier>> listAccessPoliciesWithResponse(Duration timeout, Context context) {
+    public Response<TableAccessPolicies> listAccessPoliciesWithResponse(Duration timeout, Context context) {
         return blockWithOptionalTimeout(client.listAccessPoliciesWithResponse(context), timeout);
     }
 
