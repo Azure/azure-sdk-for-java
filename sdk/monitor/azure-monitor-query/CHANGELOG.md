@@ -6,5 +6,5 @@ metrics that is developer-friendly, idiomatic to the Java ecosystem, and as cons
 and platforms as possible. The principles that guide our efforts can be found in the
 [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
-## New features
+## Features Added
 - Initial release. Please see the README and wiki for information on using the new library.
