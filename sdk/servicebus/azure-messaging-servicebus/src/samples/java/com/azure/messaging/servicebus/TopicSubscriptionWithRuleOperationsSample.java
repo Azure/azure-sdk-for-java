@@ -149,7 +149,7 @@ public class TopicSubscriptionWithRuleOperationsSample {
     }
 
     /**
-     * Receive {@link ServiceBusReceivedMessage messages} by topic subscriptions from a Service Bus Topic.
+     * Receive {@link ServiceBusReceivedMessage messages} by topic subscriptions from an Azure Service Bus Topic.
      *
      * @param subscriptionName Subscription Name.
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
