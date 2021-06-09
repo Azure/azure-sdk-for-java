@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
@@ -12,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class CreateCallRequestConverter {
+public final class CallConnectionRequestConverter {
 
     public static CreateCallRequestInternal convert(CommunicationIdentifier source,
                                                               CommunicationIdentifier[] targets,

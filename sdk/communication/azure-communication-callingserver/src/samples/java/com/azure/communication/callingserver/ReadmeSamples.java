@@ -6,7 +6,6 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.CreateCallResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 
@@ -21,36 +20,30 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 public class ReadmeSamples {
 
     /**
-     * Sample code for creating a sync call client.
+     * Sample code for creating a sync calling server client.
      *
-     * @return the call client.
+     * @return the calling server client.
      */
-    public CallClient createCallClient() {
-        String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
-
+    public CallingServerClient createCallingServerClient() {
         // Your connectionString retrieved from your Azure Communication Service
-        String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+        String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
 
-        // Initialize the call client
-        final CallClientBuilder builder = new CallClientBuilder();
-        builder.endpoint(endpoint)
-            .connectionString(connectionString);
-        CallClient callClient = builder.buildClient();
+        // Initialize the calling server client
+        final CallingServerClientBuilder builder = new CallingServerClientBuilder();
+        builder.connectionString(connectionString);
+        CallingServerClient callingServerClient = builder.buildClient();
 
-        return callClient;
+        return callingServerClient;
     }
 
     /**
-     * Sample code for creating a call using the sync call client.
+     * Sample code for creating a call connection using the sync call client.
      */
-    public void createCall() {
+    public void createCallConnection() {
 
-        CallClient callClient = createCallClient();
+        CallingServerClient callingServerClient = createCallingServerClient();
 
         CommunicationIdentifier source = new CommunicationUserIdentifier("<acs-user-identity>");
-
-
-
         CommunicationIdentifier firstCallee = new CommunicationUserIdentifier("<acs-user-identity-1>");
         CommunicationIdentifier secondCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
 
@@ -58,7 +51,7 @@ public class ReadmeSamples {
 
         String callbackUri = "<callback-uri-for-notification>";
 
-        CallModality[] requestedModalities = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
+        CallModality[] requestedMediaTypes = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
 
         EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
             EventSubscriptionType.DTMF_RECEIVED,
@@ -67,40 +60,30 @@ public class ReadmeSamples {
 
         CreateCallOptions createCallOptions = new CreateCallOptions(
             callbackUri,
-            requestedModalities,
+            requestedMediaTypes,
             requestedCallEvents);
 
-        CreateCallResponse createCallResult =  callClient.createCall(source, targets, createCallOptions);
+        CallConnection callConnection = callingServerClient.createCallConnection(source, targets, createCallOptions);
     }
 
     /**
-     * Sample code for hanging up a call using the sync call client.
+     * Sample code for hanging up a call connection using the sync call client.
      */
-    public void hangupCall() {
-        CallClient callClient = createCallClient();
-
-        String callId = "callId";
-        callClient.hangupCall(callId);
-    }
-
-    /**
-     * Sample code for deleting a call using the sync call client.
-     */
-    public void deleteCall() {
-        CallClient callClient = createCallClient();
-
-        String callId = "callId";
-        callClient.deleteCall(callId);
+    public void hangupCallConnection() {
+        String callConnectionId = "callId";
+        CallingServerClient callingServerClient = createCallingServerClient();
+        CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
+        callConnection.hangup();
     }
 
     /**
      * Sample code for deleting a call using the sync call client.
      */
     public void addParticipant() {
-        CallClient callClient = createCallClient();
-
-        String callId = "callId";
+        String callConnectionId = "callId";
+        CallingServerClient callingServerClient = createCallingServerClient();
+        CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
         CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
-        callClient.addParticipant(callId, thirdCallee, "ACS User 2", "<string-for-tracing-responses>");
+        callConnection.addParticipant(thirdCallee, "ACS User 2", "<string-for-tracing-responses>");
     }
 }

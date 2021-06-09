@@ -5,65 +5,38 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.CreateCallResponse;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
- * Sync Client that supports server call operations.
+ * Sync Client that supports call connection operations.
  */
-@ServiceClient(builder = CallClientBuilder.class)
-public final class CallClient {
+public final class CallConnection {
+    private final CallConnectionAsync callConnectionAsync;
+    private final ClientLogger logger = new ClientLogger(CallConnection.class);
 
-    private final CallAsyncClient callAsyncClient;
-
-    CallClient(CallAsyncClient callAsyncClient) {
-        this.callAsyncClient = callAsyncClient;
+    CallConnection(CallConnectionAsync callConnectionAsync) {
+        this.callConnectionAsync = callConnectionAsync;
     }
 
     /**
-     * Create a Call Request from source identity to targets identity.
+     * Get the call connection id property
      *
-     * @param source The source of the call.
-     * @param targets The targets of the call.
-     * @param createCallOptions The call Options.
-     * @return response for a successful CreateCall request.
+     * @return the id value.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResponse createCall(CommunicationIdentifier source,
-                                         CommunicationIdentifier[] targets,
-                                         CreateCallOptions createCallOptions) {
-        return callAsyncClient.createCall(source, targets, createCallOptions).block();
-    }
-
-    /**
-     * Create a Call Request from source identity to targets identity.
-     *
-     * @param source The source of the call.
-     * @param targets The targets of the call.
-     * @param createCallOptions The call Options.
-     * @param context A {@link Context} representing the request context.
-     * @return response for a successful CreateCall request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResponse> createCallWithResponse(CommunicationIdentifier source,
-                                                               CommunicationIdentifier[] targets,
-                                                               CreateCallOptions createCallOptions,
-                                                               Context context) {
-        return callAsyncClient.createCallWithResponse(source, targets, createCallOptions, context).block();
+    public String getCallConnectionId() {
+        return this.callConnectionAsync.getCallConnectionId();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param callId The call id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -74,8 +47,7 @@ public final class CallClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String callId,
-                                       String audioFileUri,
+    public PlayAudioResponse playAudio(String audioFileUri,
                                        boolean loop,
                                        String audioFileId,
                                        String callbackUri,
@@ -86,13 +58,12 @@ public final class CallClient {
         playAudioRequest.setAudioFileId(audioFileId);
         playAudioRequest.setOperationContext(operationContext);
         playAudioRequest.setCallbackUri(callbackUri);
-        return callAsyncClient.playAudio(callId, playAudioRequest).block();
+        return callConnectionAsync.playAudio(playAudioRequest).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param callId The call id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -104,8 +75,7 @@ public final class CallClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String callId,
-                                                             String audioFileUri,
+    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
                                                              boolean loop,
                                                              String audioFileId,
                                                              String callbackUri,
@@ -117,13 +87,12 @@ public final class CallClient {
         playAudioRequest.setAudioFileId(audioFileId);
         playAudioRequest.setOperationContext(operationContext);
         playAudioRequest.setCallbackUri(callbackUri);
-        return callAsyncClient.playAudioWithResponse(callId, playAudioRequest, context).block();
+        return callConnectionAsync.playAudioWithResponse(playAudioRequest, context).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param callId The call id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -131,15 +100,14 @@ public final class CallClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String callId, String audioFileUri, PlayAudioOptions playAudioOptions) {
+    public PlayAudioResponse playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return callAsyncClient.playAudio(callId, playAudioRequest).block();
+        return callConnectionAsync.playAudio(playAudioRequest).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param callId The call id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -148,88 +116,76 @@ public final class CallClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String callId,
-                                                             String audioFileUri,
+    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
                                                              PlayAudioOptions playAudioOptions,
                                                              Context context) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return callAsyncClient.playAudioWithResponse(callId, playAudioRequest, context).block();
+        return callConnectionAsync.playAudioWithResponse(playAudioRequest, context).block();
     }
 
     /**
      * Disconnect the current caller in a Group-call or end a p2p-call.
      *
-     * @param callId Call id to hang up.
-     * @return response for a successful HangupCall request.
+     * @return response for a successful Hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void hangupCall(String callId) {
-        return callAsyncClient.hangupCall(callId).block();
+    public Void hangup() {
+        return callConnectionAsync.hangup().block();
     }
 
     /**
      * Disconnect the current caller in a Group-call or end a p2p-call.
      *
-     * @param callId Call id to hang up.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful HangupCall request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> hangupCallWithResponse(String callId, Context context) {
-        return callAsyncClient.hangupCallWithResponse(callId, context).block();
+    public Response<Void> hangupWithResponse(Context context) {
+        return callConnectionAsync.hangupWithResponse(context).block();
     }
 
     /**
      * Cancel all media operations in the call.
      *
-     * @param callId Call id to to cancel media Operations.
      * @param operationContext operationContext.
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelAllMediaOperationsResponse cancelAllMediaOperations(String callId, String operationContext) {
-        return callAsyncClient.cancelAllMediaOperations(callId, operationContext).block();
+    public CancelAllMediaOperationsResponse cancelAllMediaOperations(String operationContext) {
+        return callConnectionAsync.cancelAllMediaOperations(operationContext).block();
     }
 
     /**
      * Cancel all media operations in the call.
      *
-     * @param callId Call id to to cancel media Operations.
      * @param operationContext operationContext.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsWithResponse(String callId,
-                                                                                           String operationContext,
+    public Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsWithResponse(String operationContext,
                                                                                            Context context) {
-        return callAsyncClient.cancelAllMediaOperationsWithResponse(callId, operationContext, context).block();
+        return callConnectionAsync.cancelAllMediaOperationsWithResponse(operationContext, context).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param callId Call id.
      * @param participant Invited participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void addParticipant(String callId,
-                               CommunicationIdentifier participant,
+    public Void addParticipant(CommunicationIdentifier participant,
                                String alternateCallerId,
                                String operationContext) {
-        return callAsyncClient.addParticipant(callId,
-            participant,
-            alternateCallerId,
-            operationContext).block();
+        return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param callId Call id.
      * @param participant Invited participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext operationContext.
@@ -237,40 +193,33 @@ public final class CallClient {
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(String callId,
-                                                     CommunicationIdentifier participant,
+    public Response<Void> addParticipantWithResponse(CommunicationIdentifier participant,
                                                      String alternateCallerId,
                                                      String operationContext,
                                                      Context context) {
-        return callAsyncClient.addParticipantWithResponse(callId,
-            participant,
-            alternateCallerId,
-            operationContext,
-            context).block();
+        return callConnectionAsync.addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
     }
 
     /**
      * Remove a participant from the call.
      *
-     * @param callId Call id.
      * @param participantId Participant id.
      * @return response for a successful removeParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void removeParticipant(String callId, String participantId) {
-        return callAsyncClient.removeParticipant(callId, participantId).block();
+    public Void removeParticipant(String participantId) {
+        return callConnectionAsync.removeParticipant(participantId).block();
     }
 
     /**
      * Remove a participant from the call.
      *
-     * @param callId Call id.
      * @param participantId Participant id.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful removeParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String callId, String participantId, Context context) {
-        return callAsyncClient.removeParticipantWithResponse(callId, participantId, context).block();
+    public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
+        return callConnectionAsync.removeParticipantWithResponse(participantId, context).block();
     }
 }

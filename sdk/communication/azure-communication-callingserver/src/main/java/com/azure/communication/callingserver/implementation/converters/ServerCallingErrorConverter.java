@@ -4,7 +4,9 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CommunicationError;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.models.ServerCallingError;
+import com.azure.communication.callingserver.models.ServerCallingErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
  */
 public final class ServerCallingErrorConverter {
     /**
-     * Maps from {com.azure.communication.chat.implementation.models.CommunicationError} to {@link ServerCallingError}.
+     * Maps from {@Link CommunicationError} to {@link ServerCallingError}.
      */
     public static ServerCallingError convert(CommunicationError obj) {
         if (obj == null) {
@@ -41,6 +43,14 @@ public final class ServerCallingErrorConverter {
         );
 
         return serverCallingError;
+    }
+
+    public static ServerCallingErrorException translateException(CommunicationErrorException exception) {
+        ServerCallingError error = null;
+        if (exception.getValue() != null) {
+            error = ServerCallingErrorConverter.convert(exception.getValue());
+        }
+        return new ServerCallingErrorException(exception.getMessage(), exception.getResponse(), error);
     }
 
     private ServerCallingErrorConverter() {
