@@ -4,6 +4,7 @@
 package com.azure.communication.chat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -608,7 +609,12 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         )
             .assertNext(message -> {
                 assertEquals(message.getContent(), updateMessageRequest.getContent());
-                assertTrue(message.getMetadata().equals(updateMessageRequest.getMetadata()));
+
+                assertFalse(message.getMetadata().containsKey("tags"));
+                assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
+                assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
+                assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
+                assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
             });
 
     }
@@ -659,7 +665,12 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         )
             .assertNext(message -> {
                 assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
-                assertTrue(message.getMetadata().equals(updateMessageRequest.getMetadata()));
+
+                assertFalse(message.getMetadata().containsKey("tags"));
+                assertEquals(message.getMetadata().get("deliveryMode"), updateMessageRequest.getMetadata().get("deliveryMode"));
+                assertEquals(message.getMetadata().get("onedriveReferences"), updateMessageRequest.getMetadata().get("onedriveReferences"));
+                assertEquals(message.getMetadata().get("amsreferences"), messageRequest.getMetadata().get("amsreferences"));
+                assertEquals(message.getMetadata().get("key"), messageRequest.getMetadata().get("key"));
             })
             .verifyComplete();
     }

@@ -72,20 +72,25 @@ public class ChatOptionsProvider {
     }
 
     private static Map<String, String> generateMessageMetadata() {
-        return new HashMap<String, String>() {{
-            put("deliveryMode", "deliveryMode value");
-            put("onedriveReferences", "onedriveReferences");
-            put("amsreferences", "[\\\"test url file 3\\\"]");
-            put("key", "value key");
-        }};
+        return new HashMap<String, String>() {
+            {
+                put("tags", "tags value");
+                put("deliveryMode", "deliveryMode value");
+                put("onedriveReferences", "onedriveReferences");
+                put("amsreferences", "[\\\"test url file 3\\\"]");
+                put("key", "value key");
+            }
+        };
     }
 
     private static Map<String, String> generateUpdatedMessageMetadata() {
-        return new HashMap<String, String>() {{
-            put("deliveryMode", "deliveryMode value - updated");
-            put("onedriveReferences", "onedriveReferences - updated");
-            put("amsreferences", "[\\\"test url file 3\\\"]");
-            put("key", "value key");
-        }};
+        return new HashMap<String, String>() {
+            {
+                put("tags", "");
+                put("deliveryMode", "deliveryMode value - updated");
+                put("onedriveReferences", "onedriveReferences - updated");
+                put("amsreferences", "[\\\"test url file 3\\\"]");
+            }
+        };
     }
 }
