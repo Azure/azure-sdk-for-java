@@ -34,9 +34,9 @@ import java.util.Set;
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 
-    public final static String GROUP_ID = "GROUP_ID";
+    public static final String GROUP_ID = "GROUP_ID";
 
-    public final static String GROUP_NAME = "GROUP_NAME";
+    public static final String GROUP_NAME = "GROUP_NAME";
 
     private final AADAuthenticationProperties properties;
 
