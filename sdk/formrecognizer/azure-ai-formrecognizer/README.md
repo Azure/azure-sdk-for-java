@@ -28,6 +28,14 @@ from form documents. It includes the following main functionalities:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+> Note: This version of the client library defaults to the `v2.1` version of the service.
+
+This table shows the relationship between SDK versions and supported API versions of the service:
+
+|SDK version|Supported API version of service
+|-|-
+|3.0.x | 2.0
+|3.1.X - Latest GA release| 2.0, 2.1 (default)
 
 #### Create a Form Recognizer resource
 Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
@@ -478,7 +486,7 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 
 ### Additional documentation
 
-For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc].
+For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][github_io_docs].
 
 ## Contributing
 
