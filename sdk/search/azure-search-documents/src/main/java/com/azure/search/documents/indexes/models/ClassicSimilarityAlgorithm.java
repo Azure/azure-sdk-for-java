@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * introduces static document length normalization as well as coordinating factors that penalize documents that only
  * partially match the searched queries.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.ClassicSimilarity")
-@JsonFlatten
 @Immutable
 public final class ClassicSimilarityAlgorithm extends SimilarityAlgorithm { }
