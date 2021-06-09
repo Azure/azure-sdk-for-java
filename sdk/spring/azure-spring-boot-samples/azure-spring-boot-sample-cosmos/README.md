@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-cosmos-db-spring-boot
+- azure-spring-boot
 description: "Sample project for Azure Cosmos DB Spring Boot client library"
-urlFragment: "azure-cosmos-db-spring-boot-sample"
+urlFragment: "azure-spring-boot-sample-cosmos"
 ---
 
 # Sample for Azure Cosmos DB Spring Boot client library for Java

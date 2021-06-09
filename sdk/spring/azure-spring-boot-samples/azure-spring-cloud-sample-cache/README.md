@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud-cache
+- azure-spring-cloud
 description: "Azure Spring Cloud Starter Sample project for redis cache client library"
-urlFragment: "azure-spring-cloud-cache-sample"
+urlFragment: "azure-spring-cloud-sample-cache"
 ---
 
 # Azure redis cache spring cloud starter shared library for Java

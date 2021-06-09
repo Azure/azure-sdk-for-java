@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-key-vault-secrets-spring-boot-starter
+- azure-spring-boot
 description: "Azure Spring Boot Starter Sample project for Key Vault Secrets client library"
-urlFragment: "azure-key-vault-secrets-spring-boot-starter-sample"
+urlFragment: "azure-spring-boot-sample-keyvault-secrets"
 ---
 
 # Sample for Azure Key Vault Secrets Spring Boot Starter client library for Java

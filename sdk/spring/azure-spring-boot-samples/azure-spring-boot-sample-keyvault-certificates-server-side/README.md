@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-key-vault-certificates-server-side-spring-boot
+- azure-spring-boot
 description: "Azure Spring Boot Sample project for Key Vault Certificates client library server side"
-urlFragment: "azure-key-vault-certificates-server-side-spring-boot-sample"
+urlFragment: "azure-spring-boot-sample-keyvault-certificates-server-side"
 ---
 
 # Azure Spring Boot Key Vault Certificates client library for Java

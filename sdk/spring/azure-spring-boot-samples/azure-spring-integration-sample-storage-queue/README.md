@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-integration-storage-queue
+- azure-spring-integration
 description: "Azure Spring Cloud Sample project for Storage Queue Integration client library"
 urlFragment: "azure-spring-integration-storage-queue-sample"
 ---

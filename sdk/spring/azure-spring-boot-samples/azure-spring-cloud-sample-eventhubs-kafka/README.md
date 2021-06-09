@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud-eventhubs-kafka
+- azure-spring-cloud
 description: "Azure Spring Cloud Stream Binder Sample project for Event Hub client library"
-urlFragment: "azure-spring-cloud-eventhubs-kafka-sample"
+urlFragment: "azure-spring-cloud-sample-eventhubs-kafka"
 ---
 
 # Spring Cloud Azure Stream Kafka Binder for Event Hub Code Sample shared library for Java
