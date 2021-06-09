@@ -306,7 +306,7 @@ public final class IoTHubConnectionSample {
             @SuppressWarnings("unchecked") final Map<Symbol, Object> errorInfo = remoteCondition.getInfo();
             final Map<String, Object> errorInfoMap = errorInfo != null
                 ? errorInfo.entrySet().stream().collect(HashMap::new,
-                (existing, entry) -> existing.put(entry.getKey().toString(), entry.getValue()), (HashMap::putAll))
+                    (existing, entry) -> existing.put(entry.getKey().toString(), entry.getValue()), (HashMap::putAll))
                 : Collections.emptyMap();
 
             final AmqpErrorContext context = new AmqpErrorContext(hostname, errorInfoMap);
@@ -438,7 +438,7 @@ public final class IoTHubConnectionSample {
     /**
      * Contains properties from parsing an IoT connection string.
      */
-    private static class IoTConnectionStringProperties {
+    private static final class IoTConnectionStringProperties {
         private static final String TOKEN_VALUE_SEPARATOR = "=";
         private static final String TOKEN_VALUE_PAIR_DELIMITER = ";";
         private static final String HOST_NAME = "HostName";
