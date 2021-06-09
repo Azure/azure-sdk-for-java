@@ -18,10 +18,10 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
     private ToneInfo toneInfo;
 
     /*
-     * The call leg.id.
+     * The call connection id.
      */
-    @JsonProperty(value = "callLegId")
-    private String callLegId;
+    @JsonProperty(value = "callConnectionId")
+    private String callConnectionId;
 
     /**
      * Get the toneInfo property: The tone info.
@@ -44,32 +44,32 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Get the callLegId property: The call leg.id.
+     * Get the callConnectionId property: The call connection id.
      *
-     * @return the callLegId value.
+     * @return the callConnectionId value.
      */
-    public String getCallLegId() {
-        return this.callLegId;
+    public String getCallConnectionId() {
+        return this.callConnectionId;
     }
 
     /**
-     * Set the callLegId property: The call leg.id.
+     * Set the callConnectionId property: The call connection id.
      *
-     * @param callLegId the callLegId value to set.
+     * @param callConnectionId the callConnectionId value to set.
      * @return the ToneReceivedEvent object itself.
      */
-    public ToneReceivedEvent setCallLegId(String callLegId) {
-        this.callLegId = callLegId;
+    public ToneReceivedEvent setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
         return this;
     }
 
     /**
-     * Deserialize {@link ToneReceivedEvent} event.
+     * Deserialize {@link com.azure.communication.callingserver.models.events.ToneReceivedEvent} event.
      *
      * @param eventData binary data for event
-     * @return {@link ToneReceivedEvent} event.
+     * @return {@link com.azure.communication.callingserver.models.events.ToneReceivedEvent} event.
      */
-    public static ToneReceivedEvent deserialize(BinaryData eventData) {
-        return eventData == null ? null : eventData.toObject(ToneReceivedEvent.class);
+    public static com.azure.communication.callingserver.models.events.ToneReceivedEvent deserialize(BinaryData eventData) {
+        return eventData == null ? null : eventData.toObject(com.azure.communication.callingserver.models.events.ToneReceivedEvent.class);
     }
 }

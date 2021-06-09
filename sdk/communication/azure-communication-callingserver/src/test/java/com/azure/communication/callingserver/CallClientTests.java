@@ -9,7 +9,6 @@ import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.CreateCallResponse;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -36,8 +35,8 @@ public class CallClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallClient callClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
 
         try {
             // Establish a call
@@ -48,18 +47,16 @@ public class CallClientTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
-            CreateCallResponse createCallResult = callClient.createCall(
+            CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
                 options);
 
-            CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            String callId = createCallResult.getCallLegId();
+            CallingServerTestUtils.validateCallConnection(callConnection);
 
             // Play Audio
             String playAudioOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            PlayAudioResponse playAudioResult = callClient.playAudio(
-                callId,
+            PlayAudioResponse playAudioResult = callConnection.playAudio(
                 audioFileUri,
                 false,
                 UUID.randomUUID().toString(),
@@ -69,11 +66,11 @@ public class CallClientTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
-            CancelAllMediaOperationsResponse cancelAllMediaOperationsResponse = callClient.cancelAllMediaOperations(callId, cancelMediaOperationContext);
+            CancelAllMediaOperationsResponse cancelAllMediaOperationsResponse = callConnection.cancelAllMediaOperations(cancelMediaOperationContext);
             CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
 
             // Hang up
-            callClient.hangupCall(callId);
+            callConnection.hangup();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -83,8 +80,8 @@ public class CallClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallClient callClient = setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
 
         try {
             // Establish a call
@@ -95,34 +92,34 @@ public class CallClientTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
-            Response<CreateCallResponse> createCallResponse = callClient.createCallWithResponse(
+            Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
                 options,
                 Context.NONE);
 
-            CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            String callId = createCallResponse.getValue().getCallLegId();
+            CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
+            CallConnection callConnection = callConnectionResponse.getValue();
 
             // Play Audio
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            Response<PlayAudioResponse> playAudioResponse = callClient.playAudioWithResponse(
-                callId,
-                audioFileUri,
-                false,
-                UUID.randomUUID().toString(),
-                null,
-                operationContext,
-                Context.NONE);
+            Response<PlayAudioResponse> playAudioResponse =
+                callConnection.playAudioWithResponse(
+                    audioFileUri,
+                    false,
+                    UUID.randomUUID().toString(),
+                    null,
+                    operationContext,
+                    Context.NONE);
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
-            Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse = callClient.cancelAllMediaOperationsWithResponse(callId, cancelMediaOperationContext, Context.NONE);
+            Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse = callConnection.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext, Context.NONE);
             CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
 
             // Hang up
-            Response<Void> hangupResponse = callClient.hangupCallWithResponse(callId, Context.NONE);
+            Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -133,8 +130,8 @@ public class CallClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallClient callClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
 
         try {
             // Establish a call
@@ -145,24 +142,23 @@ public class CallClientTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
-            CreateCallResponse createCallResult = callClient.createCall(
+            CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
                 options);
 
-            CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            String callId = createCallResult.getCallLegId();
+            CallingServerTestUtils.validateCallConnection(callConnection);
 
             // Add User
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            callClient.addParticipant(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext);
+            callConnection.addParticipant(new CommunicationUserIdentifier(invitedUser), null, operationContext);
 
             // Remove Participant
             String participantId = "ec1f7dc0-9d1b-4598-9f88-51902818ed40";
-            callClient.removeParticipant(callId, participantId);
+            callConnection.removeParticipant(participantId);
 
             // Hang up
-            callClient.hangupCall(callId);
+            callConnection.hangup();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -172,8 +168,8 @@ public class CallClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallClient callClient = setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
 
         try {
             // Establish a call
@@ -184,27 +180,32 @@ public class CallClientTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
-            Response<CreateCallResponse> createCallResponse = callClient.createCallWithResponse(
+            Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
                 options,
                 Context.NONE);
 
-            CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            String callId = createCallResponse.getValue().getCallLegId();
+            CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
+            CallConnection callConnection = callConnectionResponse.getValue();
 
             // Add User
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            Response<Void> inviteParticipantResponse = callClient.addParticipantWithResponse(callId, new CommunicationUserIdentifier(invitedUser), null, operationContext, Context.NONE);
+            Response<Void> inviteParticipantResponse = callConnection
+                .addParticipantWithResponse(
+                    new CommunicationUserIdentifier(invitedUser),
+                    null,
+                    operationContext,
+                    Context.NONE);
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
             String participantId = "78a9ca1d-b0af-450c-82ed-07ce34e9275e";
-            Response<Void> removeParticipantResponse = callClient.removeParticipantWithResponse(callId, participantId, Context.NONE);
+            Response<Void> removeParticipantResponse = callConnection.removeParticipantWithResponse(participantId, Context.NONE);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
-            Response<Void> hangupResponse = callClient.hangupCallWithResponse(callId, Context.NONE);
+            Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -215,8 +216,8 @@ public class CallClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateDeleteScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallClient callClient = setupClient(builder, "runCreateDeleteScenario");
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateDeleteScenario");
 
         try {
             // Establish a call
@@ -227,16 +228,15 @@ public class CallClientTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
-            CreateCallResponse createCallResult = callClient.createCall(
+            CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
                 options);
 
-            CallingServerTestUtils.validateCreateCallResult(createCallResult);
-            String callId = createCallResult.getCallLegId();
+            CallingServerTestUtils.validateCallConnection(callConnection);
 
             // Delete call
-            callClient.deleteCall(callId);
+            callConnection.hangup();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -246,8 +246,8 @@ public class CallClientTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateDeleteScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
-        CallClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallClient callClient = setupClient(builder, "runCreateDeleteScenarioWithResponse");
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateDeleteScenarioWithResponse");
 
         try {
             // Establish a call
@@ -258,17 +258,17 @@ public class CallClientTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
-            Response<CreateCallResponse> createCallResponse = callClient.createCallWithResponse(
+            Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
                 options,
                 Context.NONE);
 
-            CallingServerTestUtils.validateCreateCallResponse(createCallResponse);
-            String callId = createCallResponse.getValue().getCallLegId();
+            CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
+            CallConnection callConnection = callConnectionResponse.getValue();
 
             // Delete Call
-            Response<Void> hangupResponse = callClient.deleteCallWithResponse(callId, Context.NONE);
+            Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -276,11 +276,11 @@ public class CallClientTests extends CallingServerTestBase {
         }
     }
 
-    private CallClient setupClient(CallClientBuilder builder, String testName) {
+    private CallingServerClient setupClient(CallingServerClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildClient();
     }
 
-    protected CallClientBuilder addLoggingPolicy(CallClientBuilder builder, String testName) {
+    protected CallingServerClientBuilder addLoggingPolicy(CallingServerClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 }

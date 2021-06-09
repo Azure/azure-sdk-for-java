@@ -6,14 +6,11 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.CallRecordingStateResponse;
-import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.JoinCallResponse;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResponse;
 import com.azure.communication.callingserver.models.StartCallRecordingResponse;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -21,45 +18,25 @@ import com.azure.core.util.Context;
 /**
  * Sync Client that supports server call operations.
  */
-@ServiceClient(builder = CallClientBuilder.class)
-public final class ConversationClient {
-    private final ConversationAsyncClient conversationAsyncClient;
+public final class ServerCall {
+    private final ServerCallAsync serverCallAsync;
 
-    ConversationClient(ConversationAsyncClient conversationAsyncClient) {
-        this.conversationAsyncClient = conversationAsyncClient;
+    ServerCall(String serverCallId, ServerCallAsync serverCallAsync) {
+        this.serverCallAsync = serverCallAsync;
     }
 
     /**
-     * Join a call
+     * Get the server call id property
      *
-     * @param conversationId The conversation id.
-     * @param source of Join Call request.
-     * @param joinCallOptions to Join Call.
-     * @return JoinCallResponse for a successful JoinCall request.
+     * @return the id value.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JoinCallResponse joinCall(String conversationId, CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
-        return conversationAsyncClient.joinCall(conversationId, source, joinCallOptions).block();
-    }
-
-    /**
-     * Join a call
-     *
-     * @param conversationId The conversation id.
-     * @param source of Join Call request.
-     * @param joinCallOptions to Join Call.
-     * @param context A {@link Context} representing the request context.
-     * @return response for a successful JoinCall request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JoinCallResponse> joinCallWithResponse(String conversationId, CommunicationIdentifier source, JoinCallOptions joinCallOptions, Context context) {
-        return conversationAsyncClient.joinCallWithResponse(conversationId, source, joinCallOptions, context).block();
+    public String getServerCallId() {
+        return this.serverCallAsync.getServerCallId();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param conversationId The conversation id.
      * @param participant Invited participant.
      * @param callBackUri callBackUri to get notifications.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
@@ -67,18 +44,16 @@ public final class ConversationClient {
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void addParticipant(String conversationId,
-                               CommunicationIdentifier participant,
+    public Void addParticipant(CommunicationIdentifier participant,
                                String callBackUri,
                                String alternateCallerId,
                                String operationContext) {
-        return conversationAsyncClient.addParticipant(conversationId, participant, alternateCallerId, operationContext, callBackUri).block();
+        return serverCallAsync.addParticipant(participant, alternateCallerId, operationContext, callBackUri).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param conversationId The conversation id.
      * @param participant Invited participant.
      * @param callBackUri callBackUri to get notifications.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
@@ -87,14 +62,12 @@ public final class ConversationClient {
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(String conversationId,
-                                                     CommunicationIdentifier participant,
+    public Response<Void> addParticipantWithResponse(CommunicationIdentifier participant,
                                                      String callBackUri,
                                                      String alternateCallerId,
                                                      String operationContext,
                                                      Context context) {
-        return conversationAsyncClient
-            .addParticipantWithResponse(conversationId,
+        return serverCallAsync.addParticipantWithResponse(
                 participant,
                 callBackUri,
                 alternateCallerId,
@@ -105,159 +78,145 @@ public final class ConversationClient {
     /**
      * Remove a participant from the call.
      *
-     * @param conversationId The conversation id.
      * @param participantId Participant id.
      * @return response for a successful removeParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void removeParticipant(String conversationId, String participantId) {
-        return conversationAsyncClient.removeParticipant(conversationId, participantId).block();
+    public Void removeParticipant(String participantId) {
+        return serverCallAsync.removeParticipant(participantId).block();
     }
 
     /**
      * Remove a participant from the call.
      *
-     * @param conversationId The conversation id.
      * @param participantId Participant id.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful removeParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String conversationId, String participantId, Context context) {
-        return conversationAsyncClient.removeParticipantWithResponse(conversationId, participantId, context).block();
+    public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
+        return serverCallAsync.removeParticipantWithResponse(participantId, context).block();
     }
 
     /**
      * Start recording
      *
-     * @param conversationId The conversation id.
      * @param recordingStateCallbackUri The uri to send state change callbacks.
      * @return response for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResponse startRecording(String conversationId, String recordingStateCallbackUri) {
-        return conversationAsyncClient.startRecording(conversationId, recordingStateCallbackUri).block();
+    public StartCallRecordingResponse startRecording(String recordingStateCallbackUri) {
+        return serverCallAsync.startRecording(recordingStateCallbackUri).block();
     }
 
     /**
      * Start recording
      *
-     * @param conversationId The conversation id.
      * @param recordingStateCallbackUri The uri to send state change callbacks.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartCallRecordingResponse> startRecordingWithResponse(String conversationId,
+    public Response<StartCallRecordingResponse> startRecordingWithResponse(
             String recordingStateCallbackUri, Context context) {
-        return conversationAsyncClient.startRecordingWithResponse(conversationId, recordingStateCallbackUri, context).block();
+        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context).block();
     }
 
     /**
      * Stop recording
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @return response for a successful stopRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void stopRecording(String conversationId, String recordingId) {
-        return conversationAsyncClient.stopRecording(conversationId, recordingId).block();
+    public Void stopRecording(String recordingId) {
+        return serverCallAsync.stopRecording(recordingId).block();
     }
 
     /**
      * Stop recording
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful stopRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String conversationId, String recordingId, Context context) {
-        return conversationAsyncClient.stopRecordingWithResponse(conversationId, recordingId, context).block();
+    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
+        return serverCallAsync.stopRecordingWithResponse(recordingId, context).block();
     }
 
     /**
      * Pause recording
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @return response for a successful pauseRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void pauseRecording(String conversationId, String recordingId) {
-        return conversationAsyncClient.pauseRecording(conversationId, recordingId).block();
+    public Void pauseRecording(String recordingId) {
+        return serverCallAsync.pauseRecording(recordingId).block();
     }
 
     /**
      * Pause recording
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful pauseRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String conversationId, String recordingId, Context context) {
-        return conversationAsyncClient.pauseRecordingWithResponse(conversationId, recordingId, context).block();
+    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
+        return serverCallAsync.pauseRecordingWithResponse(recordingId, context).block();
     }
 
     /**
      * Resume recording
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @return response for a successful resumeRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void resumeRecording(String conversationId, String recordingId) {
-        return conversationAsyncClient.resumeRecording(conversationId, recordingId).block();
+    public Void resumeRecording(String recordingId) {
+        return serverCallAsync.resumeRecording(recordingId).block();
     }
 
     /**
      * Resume recording
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful resumeRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resumeRecordingWithResponse(String conversationId, String recordingId, Context context) {
-        return conversationAsyncClient.resumeRecordingWithResponse(conversationId, recordingId, context).block();
+    public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
+        return serverCallAsync.resumeRecordingWithResponse(recordingId, context).block();
     }
 
     /**
      * Get recording state
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingStateResponse getRecordingState(String conversationId, String recordingId) {
-        return conversationAsyncClient.getRecordingState(conversationId, recordingId).block();
+    public CallRecordingStateResponse getRecordingState(String recordingId) {
+        return serverCallAsync.getRecordingState(recordingId).block();
     }
 
     /**
      * Get recording state
      *
-     * @param conversationId The conversation id.
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallRecordingStateResponse> getRecordingStateWithResponse(String conversationId,
-            String recordingId, Context context) {
-        return conversationAsyncClient.getRecordingStateWithResponse(conversationId, recordingId, context).block();
+    public Response<CallRecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
+        return serverCallAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param conversationId The conversation id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -267,8 +226,7 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String conversationId,
-                                       String audioFileUri,
+    public PlayAudioResponse playAudio(String audioFileUri,
                                        String audioFileId,
                                        String callbackUri,
                                        String operationContext) {
@@ -279,13 +237,12 @@ public final class ConversationClient {
         playAudioRequest.setAudioFileId(audioFileId);
         playAudioRequest.setOperationContext(operationContext);
         playAudioRequest.setCallbackUri(callbackUri);
-        return conversationAsyncClient.playAudio(conversationId, playAudioRequest).block();
+        return serverCallAsync.playAudio(playAudioRequest).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param conversationId The conversation id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -296,8 +253,7 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String conversationId,
-                                                             String audioFileUri,
+    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
                                                              String audioFileId,
                                                              String callbackUri,
                                                              String operationContext,
@@ -309,13 +265,12 @@ public final class ConversationClient {
         playAudioRequest.setAudioFileId(audioFileId);
         playAudioRequest.setOperationContext(operationContext);
         playAudioRequest.setCallbackUri(callbackUri);
-        return conversationAsyncClient.playAudioWithResponse(conversationId, playAudioRequest, context).block();
+        return serverCallAsync.playAudioWithResponse(playAudioRequest, context).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param conversationId The conversation id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -323,18 +278,16 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String conversationId,
-                                       String audioFileUri,
+    public PlayAudioResponse playAudio(String audioFileUri,
                                        PlayAudioOptions playAudioOptions) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return conversationAsyncClient.playAudio(conversationId, playAudioRequest).block();
+        return serverCallAsync.playAudio(playAudioRequest).block();
     }
 
     /**
      * Play audio in a call.
      *
-     * @param conversationId The conversation id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -343,12 +296,11 @@ public final class ConversationClient {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String conversationId,
-                                                             String audioFileUri,
+    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
                                                              PlayAudioOptions playAudioOptions,
                                                              Context context) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return conversationAsyncClient.playAudioWithResponse(conversationId, playAudioRequest, context).block();
+        return serverCallAsync.playAudioWithResponse(playAudioRequest, context).block();
     }
 }

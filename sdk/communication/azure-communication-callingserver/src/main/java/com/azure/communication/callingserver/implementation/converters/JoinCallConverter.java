@@ -40,7 +40,7 @@ public final class JoinCallConverter {
         for (CallModality callModality : joinCallOptions.getRequestedModalities()) {
             requestedModalities.add(callModality);
         }
-        joinCallRequest.setRequestedModalities(requestedModalities);
+        joinCallRequest.setRequestedMediaTypes(requestedModalities);
 
 
         List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();

@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.implementation.models.Communication
 import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
 import com.azure.communication.callingserver.models.CommunicationParticipant;
 import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,9 +18,10 @@ import java.util.List;
  */
 public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
-     * The call leg Id.
+     * The call connection id.
      */
-    private String callLegId;
+    @JsonProperty(value = "callConnectionId")
+    private String callConnectionId;
 
     /**
      * The participants.
@@ -27,22 +29,22 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     private CommunicationParticipant[] participants;
 
     /**
-     * Get the call leg Id.
+     * Get the callConnectionId property: The call connection id.
      *
-     * @return the time of the recording started.
+     * @return the callConnectionId value.
      */
-    public String getCallLegId() {
-        return this.callLegId;
+    public String getCallConnectionId() {
+        return this.callConnectionId;
     }
 
     /**
-     * Set the call leg Id.
+     * Set the callConnectionId property: The call connection id.
      *
-     * @param callLegId the call leg id.
+     * @param callConnectionId the callConnectionId value to set.
      * @return the ParticipantsUpdatedEvent object itself.
      */
-    public ParticipantsUpdatedEvent setCallLegId(String callLegId) {
-        this.callLegId = callLegId;
+    public ParticipantsUpdatedEvent setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
         return this;
     }
 
@@ -76,18 +78,18 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
      * Initializes a new instance of ParticipantsUpdatedEvent.
      *
-     * @param callLegId The call leg id.
-     * @param participants The conversation id.
+     * @param callConnectionId The call connection id.
+     * @param participants The participants
      * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ParticipantsUpdatedEvent(String callLegId, CommunicationParticipant[] participants) {
-        if (callLegId == null || callLegId.isEmpty()) {
-            throw new IllegalArgumentException("object callLegId cannot be null or empty");
+    public ParticipantsUpdatedEvent(String callConnectionId, CommunicationParticipant[] participants) {
+        if (callConnectionId == null || callConnectionId.isEmpty()) {
+            throw new IllegalArgumentException("object callConnectionId cannot be null or empty");
         }
         if (participants == null) {
             throw new IllegalArgumentException("object participants cannot be null");
         }
-        this.callLegId = callLegId;
+        this.callConnectionId = callConnectionId;
         this.participants = participants.clone();
     }
 
@@ -110,7 +112,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
                     communicationParticipantInternal.getParticipantId(),
                     communicationParticipantInternal.isMuted()));
         }
-        return new ParticipantsUpdatedEvent(internalEvent.getCallLegId(),
+        return new ParticipantsUpdatedEvent(internalEvent.getCallConnectionId(),
             participants.toArray(new CommunicationParticipant[participants.size()]));
     }
 }

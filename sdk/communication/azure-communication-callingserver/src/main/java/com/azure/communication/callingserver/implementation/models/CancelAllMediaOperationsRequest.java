@@ -7,7 +7,7 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for cancel media processing. */
+/** The request payload for cancel all media operations. */
 @Fluent
 public final class CancelAllMediaOperationsRequest {
     /*
