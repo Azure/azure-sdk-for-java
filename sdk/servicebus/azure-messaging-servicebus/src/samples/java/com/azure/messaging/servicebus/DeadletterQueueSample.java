@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
-import reactor.core.Disposable;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -13,6 +15,9 @@ import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Sample demonstrates how to dead letter within a Service Bus Queue.
+ */
 public class DeadletterQueueSample {
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
@@ -20,9 +25,10 @@ public class DeadletterQueueSample {
     static final Gson GSON = new Gson();
 
     /**
-     * Main method to show how to update properties of Service Bus Queue.
+     * Main method to show how to dead letter within a Service Bus Queue.
      *
      * @param args Unused arguments to the program.
+     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     public static void main(String[] args) throws InterruptedException {
         DeadletterQueueSample sample = new DeadletterQueueSample();
@@ -30,7 +36,7 @@ public class DeadletterQueueSample {
     }
 
     /**
-     * run method to invoke this demo on how to dead letter within a Service Bus Queue.
+     * Run method to invoke this demo on how to dead letter within a Service Bus Queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
@@ -54,6 +60,12 @@ public class DeadletterQueueSample {
         senderAsyncClient.close();
     }
 
+    /**
+     * Send {@link ServiceBusMessage messages} to an Azure Service Bus Queue.
+     *
+     * @Param senderAsyncClient Service Bus Sender Async Client
+     * @Param maxMessages Maximum Number Of Messages
+     */
     void sendMessagesAsync(ServiceBusSenderAsyncClient senderAsyncClient, int maxMessages) {
         List<HashMap<String, String>> data =
             GSON.fromJson(
@@ -86,6 +98,13 @@ public class DeadletterQueueSample {
         }
     }
 
+    /**
+     * Receive {@link ServiceBusMessage messages} and dead letter within a Service Bus Queue
+     *
+     * @Param connectionString Service Bus Connection String
+     * @Param queueName Queue Name
+     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
+     */
     void exceedMaxDelivery(String connectionString, String queueName) throws InterruptedException {
         ServiceBusReceiverAsyncClient receiverAsyncClient
             = new ServiceBusClientBuilder()
@@ -94,12 +113,11 @@ public class DeadletterQueueSample {
             .queueName(queueName)
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .buildAsyncClient();
-        Disposable disposable = receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
+        receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
             System.out.printf("Picked up message; DeliveryCount %d\n", receiveMessage.getDeliveryCount());
             receiverAsyncClient.abandon(receiveMessage);
         });
         Thread.sleep(10000);
-        disposable.dispose();
         receiverAsyncClient.close();
 
         Thread.sleep(120000);
@@ -111,16 +129,21 @@ public class DeadletterQueueSample {
             .queueName(queueName.concat("/$deadletterqueue"))
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .buildAsyncClient();
-        disposable = deadletterReceiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
+        deadletterReceiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
             System.out.printf("\nDeadletter message:\n");
             receiveMessage.getApplicationProperties().keySet().forEach(key -> System.out.printf("\t%s=%s\n", key, receiveMessage.getApplicationProperties().get(key)));
             deadletterReceiverAsyncClient.complete(receiveMessage);
         });
         Thread.sleep(10000);
-        disposable.dispose();
         deadletterReceiverAsyncClient.close();
     }
 
+    /**
+     * Receive {@link ServiceBusMessage messages} and dead letter within a Service Bus Queue
+     *
+     * @Param connectionString Service Bus Connection String
+     * @Param queueName Queue Name
+     */
     void receiveMessagesAsync(String connectionString, String queueName) {
         ServiceBusReceiverAsyncClient receiverAsyncClient
             = new ServiceBusClientBuilder()
@@ -154,6 +177,13 @@ public class DeadletterQueueSample {
         });
     }
 
+    /**
+     * Receive dead letter {@link ServiceBusMessage messages} and resend its.
+     *
+     * @Param connectionString Service Bus Connection String
+     * @Param queueName Queue Name
+     * @Param resubmitSender Service Bus Send Async Client
+     */
     void PickUpAndFixDeadletters(String connectionString, String queueName, ServiceBusSenderAsyncClient resubmitSender) {
         ServiceBusReceiverAsyncClient receiverAsyncClient
             = new ServiceBusClientBuilder()
