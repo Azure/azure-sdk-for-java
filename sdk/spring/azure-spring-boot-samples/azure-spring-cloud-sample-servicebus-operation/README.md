@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud
+- azure-service-bus
 description: "Azure Spring Cloud Sample project for Service Bus Operation client library"
 urlFragment: "azure-spring-cloud-sample-service-bus-operation"
 ---

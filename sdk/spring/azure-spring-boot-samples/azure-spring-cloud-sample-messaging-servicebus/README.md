@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-cloud
+- azure-service-bus
 description: "Azure Spring Cloud Sample project for Messaging Service Bus client library"
 urlFragment: "azure-spring-cloud-sample-messaging-service-bus"
 ---

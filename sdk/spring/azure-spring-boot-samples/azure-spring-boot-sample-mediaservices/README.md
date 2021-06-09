@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-boot
+- azure-media-services
 description: "Azure Spring Boot Sample project for Media Services client library"
 urlFragment: "azure-spring-boot-sample-mediaservices"
 ---

@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- azure-appconfiguration
+- azure-app-configuration
 description: "Sample project for Azure Spring Cloud Config client library"
 urlFragment: "azure-appconfiguration-sample"
 ---

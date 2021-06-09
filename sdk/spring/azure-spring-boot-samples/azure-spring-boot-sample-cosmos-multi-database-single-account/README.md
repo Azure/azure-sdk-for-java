@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-boot
+- azure-cosmos-db
 description: "Azure Spring Boot Sample project for Cosmos Multi Database Single Account"
 urlFragment: "azure-spring-boot-sample-cosmos-multi-database-single-account"
 ---

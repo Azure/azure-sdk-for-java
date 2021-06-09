@@ -3,7 +3,7 @@ page_type: sample
 languages:
 - java
 products:
-- azure-spring-boot
+- azure-key-vault
 description: "Azure Spring Boot Sample project for Key Vault Certificates client library client side"
 urlFragment: "azure-spring-boot-sample-keyvault-certificates-client-side"
 ---

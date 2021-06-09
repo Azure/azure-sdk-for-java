@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-appconfiguration-conversion-initial
+- azure-app-configuration
 description: "Sample project for Azure Spring Cloud Config Conversion client library"
-urlFragment: "azure-appconfiguration-conversion-initial-sample"
+urlFragment: "azure-appconfiguration-conversion-sample-initial"
 ---
 
 # Spring Cloud Azure Config Conversion Sample client library for Java

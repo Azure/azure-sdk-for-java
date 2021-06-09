@@ -3,9 +3,9 @@ page_type: sample
 languages:
 - java
 products:
-- azure-active-directory
+- azure-cosmos-db
 description: "Azure Spring Boot Sample project for Cosmos Multi Database Multi Account"
-urlFragment: "azure-spring-boot-cosmos-multi-database-multi-account"
+urlFragment: "azure-spring-boot-sample-cosmos-multi-database-multi-account"
 ---
 
 # Azure Spring Boot Sample Cosmos Multi Database Multi Account for Java
