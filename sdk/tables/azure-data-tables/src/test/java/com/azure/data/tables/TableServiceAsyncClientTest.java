@@ -13,6 +13,8 @@ import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableServiceStatistics;
 import com.azure.data.tables.sas.TableAccountSasPermission;
 import com.azure.data.tables.sas.TableAccountSasResourceType;
 import com.azure.data.tables.sas.TableAccountSasService;
@@ -414,5 +416,28 @@ public class TableServiceAsyncClientTest extends TestBase {
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
+    }
+
+    @Test
+    public void getProperties() {
+        TableServiceProperties properties =  serviceClient.getProperties().block();
+
+        assertNotNull(properties);
+        assertNotNull(properties.getCorsRules());
+        assertEquals(1, properties.getCorsRules().size());
+        assertNotNull(properties.getCorsRules().get(0));
+        assertNotNull(properties.getHourMetrics());
+        assertNotNull(properties.getMinuteMetrics());
+        assertNotNull(properties.getLogging());
+    }
+
+    @Test
+    public void getStatistics() {
+        TableServiceStatistics statistics =  serviceClient.getStatistics().block();
+
+        assertNotNull(statistics);
+        assertNotNull(statistics.getGeoReplication());
+        assertNotNull(statistics.getGeoReplication().getStatus());
+        assertNotNull(statistics.getGeoReplication().getLastSyncTime());
     }
 }
