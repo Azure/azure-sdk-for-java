@@ -1,7 +1,11 @@
 # Release History
 
 ## 3.6.0-beta.1 (Unreleased)
+### Breaking Changes
+
+### New Features
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
+- Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.[#21983](https://github.com/Azure/azure-sdk-for-java/issues/21983)
 
 ## 3.5.0 (2021-05-24)
 ### New Features

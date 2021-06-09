@@ -21,12 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * GraphClient is used to access graph server. Mainly used to get groups information of a user.
@@ -34,20 +29,14 @@ import java.util.Set;
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 
-    public static final String GROUP_ID = "GROUP_ID";
-
-    public static final String GROUP_NAME = "GROUP_NAME";
-
     private final AADAuthenticationProperties properties;
 
     public GraphClient(AADAuthenticationProperties properties) {
         this.properties = properties;
     }
 
-    public Map<String, Set<String>> getGroupsFromGraph(String accessToken) {
-        final Map<String, Set<String>> groups = new HashMap<>();
-        final Set<String> groupsId = new HashSet<>();
-        final Set<String> groupsName = new HashSet<>();
+    public GroupInformation getGroupInformation(String accessToken) {
+        GroupInformation groupInformation = new GroupInformation();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
         String aadMembershipRestUri = properties.getGraphMembershipUri();
         while (aadMembershipRestUri != null) {
@@ -59,24 +48,17 @@ public class GraphClient {
                 LOGGER.error("Can not get group information from graph server.", ioException);
                 break;
             }
-            memberships.getValue()
-                       .stream()
-                       .filter(this::isGroupObject)
-                       .map(membership -> Arrays.asList(membership.getObjectID()))
-                       .forEach(groupsId::addAll);
-            memberships.getValue()
-                       .stream()
-                       .filter(this::isGroupObject)
-                       .map(membership -> Arrays.asList(membership.getDisplayName()))
-                       .forEach(groupsName::addAll);
-
+            for (Membership membership : memberships.getValue()) {
+                if (isGroupObject(membership)) {
+                    groupInformation.getGroupsId().add(membership.getObjectID());
+                    groupInformation.getGroupsName().add(membership.getDisplayName());
+                }
+            }
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
                                            .orElse(null);
         }
-        groups.put(GROUP_ID, groupsId);
-        groups.put(GROUP_NAME, groupsName);
-        return groups;
+        return groupInformation;
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
