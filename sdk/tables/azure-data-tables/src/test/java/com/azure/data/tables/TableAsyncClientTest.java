@@ -1030,7 +1030,7 @@ public class TableAsyncClientTest extends TestBase {
             .expectComplete()
             .verify();
 
-        StepVerifier.create(tableClient.listAccessPolicies())
+        StepVerifier.create(tableClient.getAccessPolicies())
             .assertNext(tableAccessPolicies -> {
                 assertNotNull(tableAccessPolicies);
                 assertNotNull(tableAccessPolicies.getIdentifiers());
@@ -1071,7 +1071,7 @@ public class TableAsyncClientTest extends TestBase {
             .expectComplete()
             .verify();
 
-        StepVerifier.create(tableClient.listAccessPolicies())
+        StepVerifier.create(tableClient.getAccessPolicies())
             .assertNext(tableAccessPolicies -> {
                 assertNotNull(tableAccessPolicies);
                 assertNotNull(tableAccessPolicies.getIdentifiers());

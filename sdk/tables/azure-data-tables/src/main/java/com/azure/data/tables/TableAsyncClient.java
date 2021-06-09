@@ -843,11 +843,11 @@ public final class TableAsyncClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return A reactive result containing the table's {@link TableSignedIdentifier access policies}.
+     * @return A reactive result containing the table's {@link TableAccessPolicies access policies}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableAccessPolicies> listAccessPolicies() {
-        return withContext(context -> listAccessPoliciesWithResponse(context)
+    public Mono<TableAccessPolicies> getAccessPolicies() {
+        return withContext(context -> getAccessPoliciesWithResponse(context)
             .flatMap(response -> Mono.justOrEmpty(response.getValue())));
     }
 
@@ -855,15 +855,15 @@ public final class TableAsyncClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return A reactive result containing the HTTP response and the table's
-     * {@link TableSignedIdentifier access policies}.
+     * @return A reactive result containing an HTTP response that contains the table's
+     * {@link TableAccessPolicies access policies}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TableAccessPolicies>> listAccessPoliciesWithResponse() {
-        return withContext(this::listAccessPoliciesWithResponse);
+    public Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse() {
+        return withContext(this::getAccessPoliciesWithResponse);
     }
 
-    Mono<Response<TableAccessPolicies>> listAccessPoliciesWithResponse(Context context) {
+    Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {

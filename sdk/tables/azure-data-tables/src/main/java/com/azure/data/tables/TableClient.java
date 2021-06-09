@@ -412,12 +412,11 @@ public final class TableClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return A reactive result containing the HTTP response and the table's
-     * {@link TableSignedIdentifier access policies}.
+     * @return The table's {@link TableAccessPolicies access policies}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableAccessPolicies listAccessPolicies() {
-        return client.listAccessPolicies().block();
+    public TableAccessPolicies getAccessPolicies() {
+        return client.getAccessPolicies().block();
     }
 
     /**
@@ -427,12 +426,11 @@ public final class TableClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A reactive result containing the HTTP response and the table's
-     * {@link TableSignedIdentifier access policies}.
+     * @return An HTTP response containing the table's {@link TableAccessPolicies access policies}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableAccessPolicies> listAccessPoliciesWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.listAccessPoliciesWithResponse(context), timeout);
+    public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.getAccessPoliciesWithResponse(context), timeout);
     }
 
     /**
