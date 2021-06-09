@@ -512,6 +512,16 @@
         "old": "field com.azure.core.amqp.exception.AmqpErrorContext.serialVersionUID",
         "new": "field com.azure.core.amqp.exception.AmqpErrorContext.serialVersionUID",
         "justification": "The field ErrorInfo was added to AmqpErrorContext, but no existing fields were removed or changed."
+      },
+      {
+          "code": "java.method.added",
+          "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setReadTimeout(java.time.Duration)",
+          "justification": "New Setter method."
+      },
+      {
+          "code": "java.method.added",
+          "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setResponseTimeout(java.time.Duration)",
+          "justification": "New Setter method."
       }
     ]
   }
