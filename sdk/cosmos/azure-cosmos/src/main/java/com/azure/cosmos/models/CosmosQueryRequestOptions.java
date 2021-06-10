@@ -461,7 +461,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
-    public int getThreshHoldForDiagnosticsOnTracerInMS() {
+    public int getThresholdForDiagnosticsOnTracerInMS() {
         return thresholdForDiagnosticsOnTracerInMS;
     }
 
@@ -471,7 +471,7 @@ public class CosmosQueryRequestOptions {
      *
      * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
-    public void setThreshHoldForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
+    public void setThresholdForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
         this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
     }
 

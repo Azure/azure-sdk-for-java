@@ -214,7 +214,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         ReflectionUtils.setThresholdForQuery(tracerProvider, 500);
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-        requestOptions.setThreshHoldForDiagnosticsOnTracerInMS(0);
+        requestOptions.setThresholdForDiagnosticsOnTracerInMS(0);
         InternalObjectNode item = new InternalObjectNode();
         item.setId(ITEM_ID);
         CosmosItemResponse<InternalObjectNode> cosmosItemResponse = cosmosAsyncContainer.createItem(item, requestOptions).block();
@@ -240,7 +240,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         traceApiCounter++;
 
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-        queryRequestOptions.setThreshHoldForDiagnosticsOnTracerInMS(0);
+        queryRequestOptions.setThresholdForDiagnosticsOnTracerInMS(0);
         FeedResponse<InternalObjectNode> feedItemResponse = cosmosAsyncContainer.readAllItems(queryRequestOptions, InternalObjectNode.class).byPage().single().block();
         Mockito.verify(tracerProvider, Mockito.times(traceApiCounter)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),

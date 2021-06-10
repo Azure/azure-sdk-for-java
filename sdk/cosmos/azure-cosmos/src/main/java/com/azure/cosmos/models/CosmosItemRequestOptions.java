@@ -309,7 +309,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
-        requestOptions.setThreshHoldForDiagnosticsOnTracerInMS(thresholdForDiagnosticsOnTracerInMS);
+        requestOptions.setThresholdForDiagnosticsOnTracerInMS(thresholdForDiagnosticsOnTracerInMS);
         return requestOptions;
     }
 
@@ -329,7 +329,7 @@ public class CosmosItemRequestOptions {
      *
      * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
-    public int getThreshHoldForDiagnosticsOnTracerInMS() {
+    public int getThresholdForDiagnosticsOnTracerInMS() {
         return thresholdForDiagnosticsOnTracerInMS;
     }
 
@@ -339,7 +339,7 @@ public class CosmosItemRequestOptions {
      *
      * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
-    public void setThreshHoldForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
+    public void setThresholdForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
         this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
     }
 }
