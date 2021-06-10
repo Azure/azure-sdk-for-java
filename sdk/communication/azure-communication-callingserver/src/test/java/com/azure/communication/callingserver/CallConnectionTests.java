@@ -239,7 +239,7 @@ public class CallConnectionTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCallConnection(callConnection);
 
             // Join
-            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },
@@ -276,13 +276,13 @@ public class CallConnectionTests extends CallingServerTestBase {
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
                 createCallOptions,
-                Context.NONE);
+                null);
 
             CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
             CallConnection callConnection = callConnectionResponse.getValue();
 
             // Join
-            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },
@@ -292,14 +292,14 @@ public class CallConnectionTests extends CallingServerTestBase {
                     serverCallId,
                     new CommunicationUserIdentifier(joinedUser),
                     joinCallOptions,
-                    Context.NONE);
+                    null);
             CallingServerTestUtils.validateJoinCallConnectionResponse(joinedCallConnectionResponse);
             CallConnection joinedCallConnection = joinedCallConnectionResponse.getValue();
 
             //Hangup
             Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
             CallingServerTestUtils.validateResponse(hangupResponse);
-            Response<Void> joinCallHangupResponse = joinedCallConnection.hangupWithResponse(Context.NONE);
+            Response<Void> joinCallHangupResponse = joinedCallConnection.hangupWithResponse(null);
             CallingServerTestUtils.validateResponse(joinCallHangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());

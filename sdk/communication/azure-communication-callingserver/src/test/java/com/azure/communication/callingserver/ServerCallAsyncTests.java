@@ -84,18 +84,21 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
             assertEquals(response.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResponse = response.getValue();
             recordingId = startCallRecordingResponse.getRecordingId();
-            validateCallRecordingState(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
 
-            serverCallAsync.pauseRecording(recordingId).block();
-            validateCallRecordingState(serverCallAsync, recordingId, CallRecordingState.INACTIVE);
+            Response<Void> pauseResponse = serverCallAsync.pauseRecordingWithResponse(recordingId).block();
+            assertEquals(pauseResponse.getStatusCode(), 200);
+            validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.INACTIVE);
 
-            serverCallAsync.resumeRecording(recordingId).block();
-            validateCallRecordingState(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
+            Response<Void> resumeResponse = serverCallAsync.resumeRecordingWithResponse(recordingId).block();
+            assertEquals(resumeResponse.getStatusCode(), 200);            
+            validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         } finally {
-            serverCallAsync.stopRecording(recordingId).block();
+            Response<Void> stopResponse = serverCallAsync.stopRecordingWithResponse(recordingId).block();
+            assertEquals(stopResponse.getStatusCode(), 200);
         }
     }
 
@@ -155,6 +158,7 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response = serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri).block();
+            assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
         }
@@ -256,8 +260,8 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
     }
 
     private void validateCallRecordingState(ServerCallAsync serverCallAsync,
-                                            String recordingId,
-                                            CallRecordingState expectedCallRecordingState) {
+            String recordingId,
+            CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCallAsync);
         assertNotNull(serverCallAsync.getServerCallId());
         assertNotNull(recordingId);
@@ -272,4 +276,24 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
         assert callRecordingStateResult != null;
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
+    
+    protected void validateCallRecordingStateWithResponse(ServerCallAsync serverCallAsync,
+            String recordingId,
+            CallRecordingState expectedCallRecordingState) {
+        assertNotNull(serverCallAsync);
+        assertNotNull(serverCallAsync.getServerCallId());
+        assertNotNull(recordingId);
+
+
+        // There is a delay between the action and when the state is available.
+        // Waiting to make sure we get the updated state, when we are running
+        // against a live service.
+        sleepIfRunningAgainstService(6000);
+
+        Response<CallRecordingStateResult> response = serverCallAsync.getRecordingStateWithResponse(recordingId).block();
+        assertNotNull(response);
+        assertEquals(response.getStatusCode(), 200);
+        assertNotNull(response.getValue());
+        assertEquals(response.getValue().getRecordingState(), expectedCallRecordingState);
+    }     
 }

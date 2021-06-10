@@ -233,7 +233,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
             // Join
-            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },
@@ -281,7 +281,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
             // Join
-            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3lKQXY0TnVlOEV5bUpYVm1IYklIeUE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3lKQXY0TnVlOEV5bUpYVm1IYklIeUE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },

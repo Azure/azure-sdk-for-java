@@ -85,18 +85,21 @@ public class ServerCallTests extends CallingServerTestBase {
             assertEquals(response.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResult = response.getValue();
             recordingId = startCallRecordingResult.getRecordingId();
-            validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
 
-            serverCall.pauseRecording(recordingId);
-            validateCallRecordingState(serverCall, recordingId, CallRecordingState.INACTIVE);
+            Response<Void> pauseResponse = serverCall.pauseRecordingWithResponse(recordingId, null);
+            assertEquals(pauseResponse.getStatusCode(), 200);
+            validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.INACTIVE);
 
-            serverCall.resumeRecording(recordingId);
-            validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
+            Response<Void> resumeResponse = serverCall.resumeRecordingWithResponse(recordingId, Context.NONE);
+            assertEquals(resumeResponse.getStatusCode(), 200);            
+            validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         } finally {
-            serverCall.stopRecording(recordingId);
+            Response<Void> stopResponse = serverCall.stopRecordingWithResponse(recordingId, Context.NONE);
+            assertEquals(stopResponse.getStatusCode(), 200);
         }
     }
 
@@ -133,7 +136,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
         System.out.println("serverCallId: " + serverCallId);
         try {
-            Response<PlayAudioResult> playAudioResult = serverCall.playAudioWithResponse(audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext, Context.NONE);
+            Response<PlayAudioResult> playAudioResult = serverCall.playAudioWithResponse(audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext, null);
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResult, operationContext);
 
         } catch (Exception e) {
@@ -253,10 +256,11 @@ public class ServerCallTests extends CallingServerTestBase {
     }
 
     private void validateCallRecordingState(ServerCall serverCall,
-                                            String recordingId,
-                                            CallRecordingState expectedCallRecordingState) {
+            String recordingId,
+            CallRecordingState expectedCallRecordingState) {
+        assertNotNull(serverCall);
+        assertNotNull(serverCall.getServerCallId());        
         assertNotNull(recordingId);
-        assertNotNull(serverCall.getServerCallId());
 
         // There is a delay between the action and when the state is available.
         // Waiting to make sure we get the updated state, when we are running
@@ -266,4 +270,24 @@ public class ServerCallTests extends CallingServerTestBase {
         CallRecordingStateResult callRecordingStateResult = serverCall.getRecordingState(recordingId);
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
+
+    protected void validateCallRecordingStateWithResponse(ServerCall serverCall,
+            String recordingId,
+            CallRecordingState expectedCallRecordingState) {
+        assertNotNull(serverCall);
+        assertNotNull(serverCall.getServerCallId());        
+        assertNotNull(recordingId);
+
+
+        // There is a delay between the action and when the state is available.
+        // Waiting to make sure we get the updated state, when we are running
+        // against a live service.
+        sleepIfRunningAgainstService(6000);
+
+        Response<CallRecordingStateResult> response = serverCall.getRecordingStateWithResponse(recordingId, Context.NONE);
+        assertNotNull(response);
+        assertEquals(response.getStatusCode(), 200);
+        assertNotNull(response.getValue());
+        assertEquals(response.getValue().getRecordingState(), expectedCallRecordingState);
+    } 
 }
