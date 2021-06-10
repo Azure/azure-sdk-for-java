@@ -12,7 +12,7 @@ import com.azure.core.util.IterableStream;
 public final class HealthcareEntity {
     private String text;
     private String normalizedText;
-    private String category;
+    private HealthcareEntityCategory category;
     private String subcategory;
     private double confidenceScore;
     private int offset;
@@ -33,7 +33,7 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setCategory(HealthcareEntity healthcareEntity, String category) {
+            public void setCategory(HealthcareEntity healthcareEntity, HealthcareEntityCategory category) {
                 healthcareEntity.setCategory(category);
             }
 
@@ -94,7 +94,7 @@ public final class HealthcareEntity {
      *
      * @return The category value.
      */
-    public String getCategory() {
+    public HealthcareEntityCategory getCategory() {
         return this.category;
     }
 
@@ -161,7 +161,7 @@ public final class HealthcareEntity {
         this.normalizedText = normalizedText;
     }
 
-    private void setCategory(String category) {
+    private void setCategory(HealthcareEntityCategory category) {
         this.category = category;
     }
 

@@ -1,7 +1,8 @@
 # Release History
 
-## 5.1.0-beta.8 (Unreleased)
-
+## 5.1.0 (Unreleased)
+#### Feature Added
+- Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
 
 ## 5.1.0-beta.7 (2021-05-19)
 ### Features Added
