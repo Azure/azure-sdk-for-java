@@ -4,14 +4,14 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.nimbusds.oauth2.sdk.ParseException;
+import com.nimbusds.oauth2.sdk.util.JSONObjectUtils;
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -21,8 +21,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class DeadletterQueueSample {
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
-
-    static final Gson GSON = new Gson();
 
     /**
      * Main method to show how to dead letter within an Azure Service Bus Queue.
@@ -42,70 +40,67 @@ public class DeadletterQueueSample {
      */
     @Test
     public void run() throws InterruptedException {
-        ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
             .queueName(queueName)
-            .buildAsyncClient();
+            .buildClient();
 
         // max delivery-count scenario
-        sendMessagesAsync(senderAsyncClient, 1);
-        exceedMaxDelivery(connectionString, queueName);
+        sendMessagesAsync(senderClient, 1);
+        deadLetterByExceedingMaxDelivery(connectionString, queueName);
 
         // fix-up scenario
-        sendMessagesAsync(senderAsyncClient, Integer.MAX_VALUE);
-        this.receiveMessagesAsync(connectionString, queueName);
-        this.PickUpAndFixDeadletters(connectionString, queueName, senderAsyncClient);
+        sendMessagesAsync(senderClient, Integer.MAX_VALUE);
+        this.receiveAndDeadletterMessagesAsync(connectionString, queueName);
+        this.pickUpAndFixDeadletters(connectionString, queueName, senderClient);
 
-        senderAsyncClient.close();
+        senderClient.close();
     }
 
     /**
      * Send {@link ServiceBusMessage messages} to an Azure Service Bus Queue.
      *
-     * @Param senderAsyncClient Service Bus Sender Async Client
+     * @Param senderAsyncClient Service Bus Sender Client
      * @Param maxMessages Maximum Number Of Messages
      */
-    void sendMessagesAsync(ServiceBusSenderAsyncClient senderAsyncClient, int maxMessages) {
-        List<HashMap<String, String>> data =
-            GSON.fromJson(
-                "[" +
-                    "{'name' = 'Einstein', 'firstName' = 'Albert'}," +
-                    "{'name' = 'Heisenberg', 'firstName' = 'Werner'}," +
-                    "{'name' = 'Curie', 'firstName' = 'Marie'}," +
-                    "{'name' = 'Hawking', 'firstName' = 'Steven'}," +
-                    "{'name' = 'Newton', 'firstName' = 'Isaac'}," +
-                    "{'name' = 'Bohr', 'firstName' = 'Niels'}," +
-                    "{'name' = 'Faraday', 'firstName' = 'Michael'}," +
-                    "{'name' = 'Galilei', 'firstName' = 'Galileo'}," +
-                    "{'name' = 'Kepler', 'firstName' = 'Johannes'}," +
-                    "{'name' = 'Kopernikus', 'firstName' = 'Nikolaus'}" +
-                    "]",
-                new TypeToken<List<HashMap<String, String>>>() {
-                }.getType());
-
-        for (int i = 0; i < Math.min(data.size(), maxMessages); i++) {
+    void sendMessagesAsync(ServiceBusSenderClient senderAsyncClient, int maxMessages) {
+        List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>(){{
+            add(createServiceBusMessage("{\"name\" : \"Einstein\", \"firstName\" : \"Albert\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Heisenberg\", \"firstName\" : \"Werner\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Curie\", \"firstName\" : \"Marie\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Hawking\", \"firstName\" : \"Steven\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Newton\", \"firstName\" : \"Isaac\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Bohr\", \"firstName\" : \"Niels\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Faraday\", \"firstName\" : \"Michael\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Galilei\", \"firstName\" : \"Galileo\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Kepler\", \"firstName\" : \"Johannes\"}"));
+            add(createServiceBusMessage("{\"name\" : \"Kopernikus\", \"firstName\" : \"Nikolaus\"}"));
+        }};
+        for (int i = 0; i < Math.min(messageList.size(), maxMessages); i++) {
             final String messageId = Integer.toString(i);
-            ServiceBusMessage message = new ServiceBusMessage(GSON.toJson(data.get(i), Map.class).getBytes(UTF_8));
+            ServiceBusMessage message = messageList.get(i);
             message.setContentType("application/json");
             message.setSubject(i % 2 == 0 ? "Scientist" : "Physicist");
             message.setMessageId(messageId);
             message.setTimeToLive(Duration.ofMinutes(2));
-            System.out.printf("Message sending: Id = %s\n", message.getMessageId());
-            senderAsyncClient.sendMessage(message)
-                .doOnSuccess(onSuccess -> System.out.printf("\tMessage acknowledged: Id = %s\n", message.getMessageId()))
-                .block();
+            System.out.printf("\tMessage sending: Id = %s\n", message.getMessageId());
+            senderAsyncClient.sendMessage(message);
+            System.out.printf("\tMessage acknowledged: Id = %s\n", message.getMessageId());
         }
     }
 
     /**
-     * Receive {@link ServiceBusMessage messages} and dead letter it within an Azure Service Bus Queue
+     * Receive {@link ServiceBusMessage messages} and return {@link ServiceBusMessage messages} back to the queue.
+     * When the time to life of the {@link ServiceBusMessage messages} expires,
+     * the {@link ServiceBusMessage messages} will be dumped as dead letters into the dead letter queue.
+     * We can receive these {@link ServiceBusMessage messages} from the dead letter queue.
      *
      * @Param connectionString Service Bus Connection String
      * @Param queueName Queue Name
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
-    void exceedMaxDelivery(String connectionString, String queueName) throws InterruptedException {
+    void deadLetterByExceedingMaxDelivery(String connectionString, String queueName) throws InterruptedException {
         ServiceBusReceiverAsyncClient receiverAsyncClient
             = new ServiceBusClientBuilder()
             .connectionString(connectionString)
@@ -115,6 +110,7 @@ public class DeadletterQueueSample {
             .buildAsyncClient();
         receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
             System.out.printf("Picked up message; DeliveryCount %d\n", receiveMessage.getDeliveryCount());
+            // return message back to the queue
             receiverAsyncClient.abandon(receiveMessage);
         });
         Thread.sleep(10000);
@@ -139,12 +135,12 @@ public class DeadletterQueueSample {
     }
 
     /**
-     * Receive {@link ServiceBusMessage messages} and dead letter its within an Azure Service Bus Queue
+     * Receive {@link ServiceBusMessage messages} and transfer to the dead letter queue as a dead letter.
      *
      * @Param connectionString Service Bus Connection String
      * @Param queueName Queue Name
      */
-    void receiveMessagesAsync(String connectionString, String queueName) {
+    void receiveAndDeadletterMessagesAsync(String connectionString, String queueName) {
         ServiceBusReceiverAsyncClient receiverAsyncClient
             = new ServiceBusClientBuilder()
             .connectionString(connectionString)
@@ -159,7 +155,12 @@ public class DeadletterQueueSample {
                 receiveMessage.getSubject().contentEquals("Scientist") &&
                 receiveMessage.getContentType().contentEquals("application/json")) {
                 byte[] body = receiveMessage.getBody().toBytes();
-                Map scientist = GSON.fromJson(new String(body, UTF_8), Map.class);
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = JSONObjectUtils.parse(new String(body, UTF_8));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 System.out.printf(
                     "\n\t\t\t\tMessage received: \n\t\t\t\t\t\tMessageId = %s, \n\t\t\t\t\t\tSequenceNumber = %s, \n\t\t\t\t\t\tEnqueuedTimeUtc = %s," +
                         "\n\t\t\t\t\t\tExpiresAtUtc = %s, \n\t\t\t\t\t\tContentType = \"%s\",  \n\t\t\t\t\t\tContent: [ firstName = %s, name = %s ]\n",
@@ -168,8 +169,8 @@ public class DeadletterQueueSample {
                     receiveMessage.getEnqueuedTime(),
                     receiveMessage.getExpiresAt(),
                     receiveMessage.getContentType(),
-                    scientist != null ? scientist.get("firstName") : "",
-                    scientist != null ? scientist.get("name") : "");
+                    jsonObject != null ? jsonObject.get("firstName") : "",
+                    jsonObject != null ? jsonObject.get("name") : "");
             } else {
                 receiverAsyncClient.deadLetter(receiveMessage);
             }
@@ -182,9 +183,9 @@ public class DeadletterQueueSample {
      *
      * @Param connectionString Service Bus Connection String
      * @Param queueName Queue Name
-     * @Param resubmitSender Service Bus Send Async Client
+     * @Param resubmitSender Service Bus Send Client
      */
-    void PickUpAndFixDeadletters(String connectionString, String queueName, ServiceBusSenderAsyncClient resubmitSender) {
+    void pickUpAndFixDeadletters(String connectionString, String queueName, ServiceBusSenderClient resubmitSender) {
         ServiceBusReceiverAsyncClient receiverAsyncClient
             = new ServiceBusClientBuilder()
             .connectionString(connectionString)
@@ -209,5 +210,13 @@ public class DeadletterQueueSample {
             }
             receiverAsyncClient.complete(receiveMessage);
         });
+    }
+
+    /**
+     * Create a {@link ServiceBusMessage} for add to a {@link ServiceBusMessageBatch}.
+     */
+    static ServiceBusMessage createServiceBusMessage(String label) {
+        ServiceBusMessage message = new ServiceBusMessage(label.getBytes(UTF_8));
+        return message;
     }
 }
