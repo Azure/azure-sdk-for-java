@@ -200,7 +200,6 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListTables")
     void serviceListTables() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
@@ -216,7 +215,6 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListTables")
     void serviceListTablesWithFilter() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
@@ -231,7 +229,6 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListTables")
     void serviceListTablesWithTop() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
@@ -262,7 +259,6 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("r");
@@ -291,7 +287,6 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("rdau");
@@ -327,7 +322,6 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("a");

@@ -552,7 +552,6 @@ public class TableClientTest extends TestBase {
     }*/
 
     @Test
-    @Tag("ListEntities")
     void listEntities() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -579,7 +578,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithFilter() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -597,7 +595,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithSelect() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -626,7 +623,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithTop() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -648,7 +644,6 @@ public class TableClientTest extends TestBase {
 
     // Will not be supporting subclasses of TableEntity for the time being.
     /*@Test
-    @Tag("ListEntities")
     void listEntitiesSubclass() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -675,7 +670,6 @@ public class TableClientTest extends TestBase {
     }*/
 
     @Test
-    @Tag("Batch")
     void submitTransaction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -716,7 +710,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncAllActions() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValueCreate = testResourceNamer.randomName("rowKey", 20);
@@ -777,7 +770,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithFailingAction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -793,7 +785,7 @@ public class TableClientTest extends TestBase {
         try {
             tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
         } catch (TableTransactionFailedException e) {
-            assertTrue(e.getMessage().contains("An operation within the batch failed"));
+            assertTrue(e.getMessage().contains("An action within the operation failed"));
             assertTrue(e.getMessage().contains("The failed operation was"));
             assertTrue(e.getMessage().contains("DeleteEntity"));
             assertTrue(e.getMessage().contains("partitionKey='" + partitionKeyValue));
@@ -807,7 +799,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithSameRowKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -822,7 +813,7 @@ public class TableClientTest extends TestBase {
         try {
             tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
         } catch (TableTransactionFailedException e) {
-            assertTrue(e.getMessage().contains("An operation within the batch failed"));
+            assertTrue(e.getMessage().contains("An action within the operation failed"));
             assertTrue(e.getMessage().contains("The failed operation was"));
             assertTrue(e.getMessage().contains("CreateEntity"));
             assertTrue(e.getMessage().contains("partitionKey='" + partitionKeyValue));
@@ -836,7 +827,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithDifferentPartitionKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
@@ -853,7 +843,7 @@ public class TableClientTest extends TestBase {
         try {
             tableClient.submitTransactionWithResponse(transactionalBatch, null, null);
         } catch (TableTransactionFailedException e) {
-            assertTrue(e.getMessage().contains("An operation within the batch failed"));
+            assertTrue(e.getMessage().contains("An action within the operation failed"));
             assertTrue(e.getMessage().contains("The failed operation was"));
             assertTrue(e.getMessage().contains("CreateEntity"));
             assertTrue(e.getMessage().contains("partitionKey='" + partitionKeyValue2));
@@ -867,7 +857,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("r");
@@ -893,7 +882,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("raud");
@@ -938,7 +926,6 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");

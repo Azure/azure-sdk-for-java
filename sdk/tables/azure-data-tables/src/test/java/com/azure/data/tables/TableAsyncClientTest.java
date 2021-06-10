@@ -615,7 +615,6 @@ public class TableAsyncClientTest extends TestBase {
     }*/
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -633,7 +632,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithFilterAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -656,7 +654,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithSelectAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -683,7 +680,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListEntities")
     void listEntitiesWithTopAsync() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -705,7 +701,6 @@ public class TableAsyncClientTest extends TestBase {
 
     // Will not be supporting subclasses of TableEntity for the time being.
     /*@Test
-    @Tag("ListEntities")
     void listEntitiesSubclassAsync() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -723,7 +718,6 @@ public class TableAsyncClientTest extends TestBase {
     }*/
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsync() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -765,7 +759,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncAllActions() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValueCreate = testResourceNamer.randomName("rowKey", 20);
@@ -825,7 +818,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithFailingAction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -840,7 +832,7 @@ public class TableAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
             .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("An action within the operation failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("DeleteEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue)
@@ -849,7 +841,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithSameRowKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -863,7 +854,7 @@ public class TableAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
             .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("An action within the operation failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("CreateEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue)
@@ -872,7 +863,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("Batch")
     void submitTransactionAsyncWithDifferentPartitionKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
@@ -888,7 +878,7 @@ public class TableAsyncClientTest extends TestBase {
         // Act & Assert
         StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
             .expectErrorMatches(e -> e instanceof TableTransactionFailedException
-                && e.getMessage().contains("An operation within the batch failed")
+                && e.getMessage().contains("An action within the operation failed")
                 && e.getMessage().contains("The failed operation was")
                 && e.getMessage().contains("CreateEntity")
                 && e.getMessage().contains("partitionKey='" + partitionKeyValue2)
@@ -897,7 +887,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("r");
@@ -923,7 +912,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("raud");
@@ -968,7 +956,6 @@ public class TableAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
