@@ -10,13 +10,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "83",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0BC/BYAAAAAB5JBPtt/ZuQ65/+DDbbQstV1NURURHRTA4MDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0vWTBYAAAAADMlXXCY1zgQ7FC7pKsmHxYV1NURURHRTA4MTcAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "400",
-      "X-Microsoft-Skype-Chain-ID" : "2873f57d-d945-4a30-9597-64a8f95ccd4a",
+      "X-Microsoft-Skype-Chain-ID" : "49a0919d-4f1c-4d9e-8a0c-fe2300f177a2",
       "Body" : "{\"code\":\"8501\",\"message\":\"Action is invalid when call is not in Established state\"}",
-      "Date" : "Wed, 09 Jun 2021 21:13:40 GMT",
+      "Date" : "Thu, 10 Jun 2021 01:02:52 GMT",
       "Content-Type" : "application/json; charset=utf-8",
-      "Client-Request-Id" : "7c42a055-39a4-4596-8504-b63917b063fa"
+      "Client-Request-Id" : "8775dceb-c265-4e3c-9700-df13bb9b22e4"
     },
     "Exception" : null
   } ],

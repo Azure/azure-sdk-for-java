@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly9jb252LXVzd2UtMDUuY29udi5za3lwZS5jb206NDQzL2NvbnYvOTVPcHpfdFhlMEswSXkzcmhKQndUdz9pPTY2JmU9NjM3NTg3ODcxMjUxODc0MTIz/participants?api-version=2021-06-15-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM/participants?api-version=2021-06-15-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (11.0.11; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -10,12 +10,12 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "95",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0Hy/BYAAAAACsTnI9w87pT7Y2KPuSabbZV1NURURHRTA4MDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "04GTBYAAAAADBOwg1JxVXR5Oxh49ZkEQLV1NURURHRTA4MTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "403",
       "Body" : "{\"code\":\"7504\",\"message\":\"Insufficient enterprise tenant permissions, cannot access this API.\"}",
-      "Date" : "Wed, 09 Jun 2021 21:14:06 GMT",
+      "Date" : "Thu, 10 Jun 2021 01:03:28 GMT",
       "Content-Type" : "application/json; charset=utf-8",
-      "Client-Request-Id" : "e4256ad4-8ea8-426c-8464-9a777bfea514"
+      "Client-Request-Id" : "07d921ca-8d4d-415f-8b12-4356c1a1faf5"
     },
     "Exception" : null
   } ],
