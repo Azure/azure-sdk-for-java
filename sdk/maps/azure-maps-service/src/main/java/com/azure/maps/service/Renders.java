@@ -75,9 +75,6 @@ public final class Renders {
     private interface RendersService {
         @Get("/map/static/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<StreamResponse> getMapStaticImage(
                 @HostParam("geography") Geography geography,
@@ -99,9 +96,6 @@ public final class Renders {
 
         @Get("/map/tile/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<StreamResponse> getMapTile(
                 @HostParam("geography") Geography geography,
@@ -120,9 +114,6 @@ public final class Renders {
 
         @Get("/map/statetile")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<StreamResponse> getMapStateTilePreview(
                 @HostParam("geography") Geography geography,
@@ -136,9 +127,6 @@ public final class Renders {
 
         @Get("/map/copyright/caption/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetCopyrightCaptionResult>> getCopyrightCaption(
                 @HostParam("geography") Geography geography,
@@ -149,9 +137,6 @@ public final class Renders {
 
         @Get("/map/imagery/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<StreamResponse> getMapImageryTile(
                 @HostParam("geography") Geography geography,
@@ -166,9 +151,6 @@ public final class Renders {
 
         @Get("/map/copyright/bounding/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetCopyrightFromBoundingBoxResult>> getCopyrightFromBoundingBox(
                 @HostParam("geography") Geography geography,
@@ -182,9 +164,6 @@ public final class Renders {
 
         @Get("/map/copyright/tile/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetCopyrightForTileResult>> getCopyrightForTile(
                 @HostParam("geography") Geography geography,
@@ -199,9 +178,6 @@ public final class Renders {
 
         @Get("/map/copyright/world/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetCopyrightForWorldResult>> getCopyrightForWorld(
                 @HostParam("geography") Geography geography,
@@ -422,8 +398,6 @@ public final class Renders {
      *     (opacity) | 0 to 1 lw | Line width | Greater than 0 ra | Circle radius (meters) | Greater than 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -676,8 +650,6 @@ public final class Renders {
      *     (opacity) | 0 to 1 lw | Line width | Greater than 0 ra | Circle radius (meters) | Greater than 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -738,8 +710,6 @@ public final class Renders {
      * @param format Desired format of the response. Possible value: png.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -971,8 +941,6 @@ public final class Renders {
      *     (opacity) | 0 to 1 lw | Line width | Greater than 0 ra | Circle radius (meters) | Greater than 0.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1049,8 +1017,6 @@ public final class Renders {
      * @param format Desired format of the response. Possible value: png.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1132,8 +1098,6 @@ public final class Renders {
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1210,8 +1174,6 @@ public final class Renders {
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1257,8 +1219,6 @@ public final class Renders {
      *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1316,8 +1276,6 @@ public final class Renders {
      *     available Views.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1379,8 +1337,6 @@ public final class Renders {
      *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1431,8 +1387,6 @@ public final class Renders {
      * @param statesetId The stateset id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1473,8 +1427,6 @@ public final class Renders {
      * @param statesetId The stateset id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1505,8 +1457,6 @@ public final class Renders {
      * @param statesetId The stateset id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1544,8 +1494,6 @@ public final class Renders {
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright Caption call.
      */
@@ -1569,8 +1517,6 @@ public final class Renders {
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright Caption call.
      */
@@ -1599,8 +1545,6 @@ public final class Renders {
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright Caption call.
      */
@@ -1633,8 +1577,6 @@ public final class Renders {
      *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1679,8 +1621,6 @@ public final class Renders {
      *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1715,8 +1655,6 @@ public final class Renders {
      *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1758,8 +1696,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright From Bounding Box call.
      */
@@ -1794,8 +1730,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright From Bounding Box call.
      */
@@ -1826,8 +1760,6 @@ public final class Renders {
      *     52.41064,4.84228.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright From Bounding Box call.
      */
@@ -1861,8 +1793,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright From Bounding Box call.
      */
@@ -1885,8 +1815,6 @@ public final class Renders {
      *     52.41064,4.84228.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright From Bounding Box call.
      */
@@ -1921,8 +1849,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For Tile call.
      */
@@ -1967,8 +1893,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For Tile call.
      */
@@ -2008,8 +1932,6 @@ public final class Renders {
      *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For Tile call.
      */
@@ -2052,8 +1974,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For Tile call.
      */
@@ -2085,8 +2005,6 @@ public final class Renders {
      *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For Tile call.
      */
@@ -2109,8 +2027,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For World call.
      */
@@ -2136,8 +2052,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For World call.
      */
@@ -2165,8 +2079,6 @@ public final class Renders {
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For World call.
      */
@@ -2197,8 +2109,6 @@ public final class Renders {
      *     response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For World call.
      */
@@ -2218,8 +2128,6 @@ public final class Renders {
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Copyright For World call.
      */

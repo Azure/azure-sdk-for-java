@@ -18,6 +18,12 @@ public final class ConversionsConvertHeaders {
     @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
+    /*
+     * The Resource-Location property.
+     */
+    @JsonProperty(value = "Resource-Location")
+    private String resourceLocation;
+
     /**
      * Get the operationLocation property: The Operation-Location property.
      *
@@ -35,6 +41,26 @@ public final class ConversionsConvertHeaders {
      */
     public ConversionsConvertHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
+        return this;
+    }
+
+    /**
+     * Get the resourceLocation property: The Resource-Location property.
+     *
+     * @return the resourceLocation value.
+     */
+    public String getResourceLocation() {
+        return this.resourceLocation;
+    }
+
+    /**
+     * Set the resourceLocation property: The Resource-Location property.
+     *
+     * @param resourceLocation the resourceLocation value to set.
+     * @return the ConversionsConvertHeaders object itself.
+     */
+    public ConversionsConvertHeaders setResourceLocation(String resourceLocation) {
+        this.resourceLocation = resourceLocation;
         return this;
     }
 }

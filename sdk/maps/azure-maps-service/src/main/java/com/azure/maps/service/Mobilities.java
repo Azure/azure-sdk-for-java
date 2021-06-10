@@ -78,9 +78,6 @@ public final class Mobilities {
     private interface MobilitiesService {
         @Get("/mobility/metroArea/id/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<MetroAreaResponse>> getMetroAreaPreview(
                 @HostParam("geography") Geography geography,
@@ -94,9 +91,6 @@ public final class Mobilities {
 
         @Get("/mobility/metroArea/info/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<MetroAreaInfoResponse>> getMetroAreaInfoPreview(
                 @HostParam("geography") Geography geography,
@@ -110,9 +104,6 @@ public final class Mobilities {
 
         @Get("/mobility/transit/nearby/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<NearbyTransitResponse>> getNearbyTransitPreview(
                 @HostParam("geography") Geography geography,
@@ -129,9 +120,6 @@ public final class Mobilities {
 
         @Get("/mobility/transit/line/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<TransitLineInfoResponse>> getTransitLineInfoPreview(
                 @HostParam("geography") Geography geography,
@@ -146,9 +134,6 @@ public final class Mobilities {
 
         @Get("/mobility/transit/stop/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<TransitStopInfoResponse>> getTransitStopInfoPreview(
                 @HostParam("geography") Geography geography,
@@ -164,9 +149,6 @@ public final class Mobilities {
 
         @Get("/mobility/transit/route/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<TransitRouteResponse>> getTransitRoutePreview(
                 @HostParam("geography") Geography geography,
@@ -191,9 +173,6 @@ public final class Mobilities {
 
         @Get("/mobility/transit/itinerary/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<TransitItineraryResponse>> getTransitItineraryPreview(
                 @HostParam("geography") Geography geography,
@@ -207,9 +186,6 @@ public final class Mobilities {
 
         @Get("/mobility/realtime/arrivals/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RealTimeArrivalsResponse>> getRealTimeArrivalsPreview(
                 @HostParam("geography") Geography geography,
@@ -248,8 +224,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Metro Area call.
      */
@@ -287,8 +261,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Metro Area call.
      */
@@ -320,8 +292,6 @@ public final class Mobilities {
      *     latitude followed by longitude e.g. "47.641268,-122.125679") or countryCode (2-character ISO country code).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Metro Area call.
      */
@@ -358,8 +328,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Metro Area call.
      */
@@ -383,8 +351,6 @@ public final class Mobilities {
      *     latitude followed by longitude e.g. "47.641268,-122.125679") or countryCode (2-character ISO country code).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Metro Area call.
      */
@@ -418,8 +384,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Metro Area Info call.
      */
@@ -464,8 +428,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Metro Area Info call.
      */
@@ -504,8 +466,6 @@ public final class Mobilities {
      *     metro area.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Metro Area Info call.
      */
@@ -547,8 +507,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Metro Area Info call.
      */
@@ -579,8 +537,6 @@ public final class Mobilities {
      *     metro area.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Metro Area Info call.
      */
@@ -618,8 +574,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Nearby Transit call.
      */
@@ -675,8 +629,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Nearby Transit call.
      */
@@ -718,8 +670,6 @@ public final class Mobilities {
      *     composed by latitude followed by longitude e.g. "47.641268,-122.125679".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Nearby Transit call.
      */
@@ -768,8 +718,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Nearby Transit call.
      */
@@ -803,8 +751,6 @@ public final class Mobilities {
      *     composed by latitude followed by longitude e.g. "47.641268,-122.125679".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Nearby Transit call.
      */
@@ -850,8 +796,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Transit Line Info call.
      */
@@ -910,8 +854,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Transit Line Info call.
      */
@@ -952,8 +894,6 @@ public final class Mobilities {
      *     going from A to B, and the other from B to A.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Transit Line Info call.
      */
@@ -1005,8 +945,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Transit Line Info call.
      */
@@ -1039,8 +977,6 @@ public final class Mobilities {
      *     going from A to B, and the other from B to A.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Transit Line Info call.
      */
@@ -1077,8 +1013,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1132,8 +1066,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1170,8 +1102,6 @@ public final class Mobilities {
      * @param query The stopId or stopKey for which the user is requesting transit stop details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1217,8 +1147,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1247,8 +1175,6 @@ public final class Mobilities {
      * @param query The stopId or stopKey for which the user is requesting transit stop details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1309,8 +1235,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1409,8 +1333,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1476,8 +1398,6 @@ public final class Mobilities {
      *     separated string composed by latitude followed by longitude, e.g. "47.641268,-122.125679”.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1570,8 +1490,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1630,8 +1548,6 @@ public final class Mobilities {
      *     separated string composed by latitude followed by longitude, e.g. "47.641268,-122.125679”.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Stop Info call.
      */
@@ -1692,8 +1608,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Itinerary call.
      */
@@ -1739,8 +1653,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Itinerary call.
      */
@@ -1775,8 +1687,6 @@ public final class Mobilities {
      *     API](https://aka.ms/AzureMapsMobilityTransitRoute).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Itinerary call.
      */
@@ -1819,8 +1729,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Itinerary call.
      */
@@ -1847,8 +1755,6 @@ public final class Mobilities {
      *     API](https://aka.ms/AzureMapsMobilityTransitRoute).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Transit Itinerary call.
      */
@@ -1901,8 +1807,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Real Time Arrival Info call.
      */
@@ -1987,8 +1891,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Real Time Arrival Info call.
      */
@@ -2046,8 +1948,6 @@ public final class Mobilities {
      * @param query Stop, line or location identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Real Time Arrival Info call.
      */
@@ -2128,8 +2028,6 @@ public final class Mobilities {
      *     [Supported languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Real Time Arrival Info call.
      */
@@ -2180,8 +2078,6 @@ public final class Mobilities {
      * @param query Stop, line or location identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Get Real Time Arrival Info call.
      */

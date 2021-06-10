@@ -64,9 +64,6 @@ public final class Spatials {
     private interface SpatialsService {
         @Get("/spatial/geofence/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SpatialsGetGeofenceResponse> getGeofence(
                 @HostParam("geography") Geography geography,
@@ -86,9 +83,6 @@ public final class Spatials {
 
         @Post("/spatial/geofence/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<SpatialsPostGeofenceResponse> postGeofence(
                 @HostParam("geography") Geography geography,
@@ -108,9 +102,6 @@ public final class Spatials {
 
         @Post("/spatial/buffer/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<BufferResponse>> postBuffer(
                 @HostParam("geography") Geography geography,
@@ -122,9 +113,6 @@ public final class Spatials {
 
         @Get("/spatial/buffer/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<BufferResponse>> getBuffer(
                 @HostParam("geography") Geography geography,
@@ -137,9 +125,6 @@ public final class Spatials {
 
         @Post("/spatial/closestPoint/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ClosestPointResponse>> postClosestPoint(
                 @HostParam("geography") Geography geography,
@@ -154,9 +139,6 @@ public final class Spatials {
 
         @Get("/spatial/closestPoint/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ClosestPointResponse>> getClosestPoint(
                 @HostParam("geography") Geography geography,
@@ -171,9 +153,6 @@ public final class Spatials {
 
         @Post("/spatial/pointInPolygon/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PointInPolygonResponse>> postPointInPolygon(
                 @HostParam("geography") Geography geography,
@@ -187,9 +166,6 @@ public final class Spatials {
 
         @Get("/spatial/pointInPolygon/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<PointInPolygonResponse>> getPointInPolygon(
                 @HostParam("geography") Geography geography,
@@ -203,9 +179,6 @@ public final class Spatials {
 
         @Get("/spatial/greatCircleDistance/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GreatCircleDistanceResponse>> getGreatCircleDistance(
                 @HostParam("geography") Geography geography,
@@ -275,8 +248,6 @@ public final class Spatials {
      * @param mode Mode of the geofencing async event mechanism.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -370,8 +341,6 @@ public final class Spatials {
      * @param mode Mode of the geofencing async event mechanism.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -449,8 +418,6 @@ public final class Spatials {
      * @param longitude The longitude of the location being passed. Example: -124.63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -533,8 +500,6 @@ public final class Spatials {
      * @param mode Mode of the geofencing async event mechanism.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -604,8 +569,6 @@ public final class Spatials {
      * @param longitude The longitude of the location being passed. Example: -124.63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -652,8 +615,6 @@ public final class Spatials {
      * @param mode Mode of the geofencing async event mechanism.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -719,8 +680,6 @@ public final class Spatials {
      * @param mode Mode of the geofencing async event mechanism.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -779,8 +738,6 @@ public final class Spatials {
      * @param searchGeofenceRequestBody The geofencing GeoJSON data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -848,8 +805,6 @@ public final class Spatials {
      * @param mode Mode of the geofencing async event mechanism.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -901,8 +856,6 @@ public final class Spatials {
      * @param searchGeofenceRequestBody The geofencing GeoJSON data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a geofence proximity call.
      */
@@ -950,8 +903,6 @@ public final class Spatials {
      *     features).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Buffer call.
      */
@@ -987,8 +938,6 @@ public final class Spatials {
      *     features).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Buffer call.
      */
@@ -1023,8 +972,6 @@ public final class Spatials {
      *     features).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Buffer call.
      */
@@ -1067,8 +1014,6 @@ public final class Spatials {
      *     itself, an empty polygon will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Buffer call.
      */
@@ -1115,8 +1060,6 @@ public final class Spatials {
      *     itself, an empty polygon will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Buffer call.
      */
@@ -1167,8 +1110,6 @@ public final class Spatials {
      *     itself, an empty polygon will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Buffer call.
      */
@@ -1196,8 +1137,6 @@ public final class Spatials {
      *     maximum: 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1241,8 +1180,6 @@ public final class Spatials {
      *     maximum: 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1282,8 +1219,6 @@ public final class Spatials {
      *     the geometry and is case-sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1322,8 +1257,6 @@ public final class Spatials {
      *     maximum: 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1355,8 +1288,6 @@ public final class Spatials {
      *     the geometry and is case-sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1397,8 +1328,6 @@ public final class Spatials {
      *     maximum: 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1448,8 +1377,6 @@ public final class Spatials {
      *     maximum: 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1494,8 +1421,6 @@ public final class Spatials {
      * @param longitude The longitude of the location being passed. Example: -124.63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1543,8 +1468,6 @@ public final class Spatials {
      *     maximum: 50.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1581,8 +1504,6 @@ public final class Spatials {
      * @param longitude The longitude of the location being passed. Example: -124.63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Spatial Closest Point call.
      */
@@ -1610,8 +1531,6 @@ public final class Spatials {
      *     `geometryId`, which is used for identifying the geometry and is case-sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns true if point is within the polygon, false otherwise.
      */
@@ -1652,8 +1571,6 @@ public final class Spatials {
      *     `geometryId`, which is used for identifying the geometry and is case-sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns true if point is within the polygon, false otherwise.
      */
@@ -1692,8 +1609,6 @@ public final class Spatials {
      *     `geometryId`, which is used for identifying the geometry and is case-sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns true if point is within the polygon, false otherwise.
      */
@@ -1735,8 +1650,6 @@ public final class Spatials {
      * @param longitude The longitude of the location being passed. Example: -124.63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns true if point is within the polygon, false otherwise.
      */
@@ -1785,8 +1698,6 @@ public final class Spatials {
      * @param longitude The longitude of the location being passed. Example: -124.63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns true if point is within the polygon, false otherwise.
      */
@@ -1833,8 +1744,6 @@ public final class Spatials {
      * @param longitude The longitude of the location being passed. Example: -124.63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return returns true if point is within the polygon, false otherwise.
      */
@@ -1858,8 +1767,6 @@ public final class Spatials {
      *     example, 47.622942,122.316456:57.673988,127.121513.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Great Circle Distance call.
      */
@@ -1886,8 +1793,6 @@ public final class Spatials {
      *     example, 47.622942,122.316456:57.673988,127.121513.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Great Circle Distance call.
      */
@@ -1918,8 +1823,6 @@ public final class Spatials {
      *     example, 47.622942,122.316456:57.673988,127.121513.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Great Circle Distance call.
      */

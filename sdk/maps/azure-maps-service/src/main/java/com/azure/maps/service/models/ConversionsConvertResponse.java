@@ -11,7 +11,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the convert operation. */
-public final class ConversionsConvertResponse extends ResponseBase<ConversionsConvertHeaders, Void> {
+public final class ConversionsConvertResponse
+        extends ResponseBase<ConversionsConvertHeaders, LongRunningOperationResult> {
     /**
      * Creates an instance of ConversionsConvertResponse.
      *
@@ -25,8 +26,14 @@ public final class ConversionsConvertResponse extends ResponseBase<ConversionsCo
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            Void value,
+            LongRunningOperationResult value,
             ConversionsConvertHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
+    }
+
+    /** @return the deserialized response body. */
+    @Override
+    public LongRunningOperationResult getValue() {
+        return super.getValue();
     }
 }

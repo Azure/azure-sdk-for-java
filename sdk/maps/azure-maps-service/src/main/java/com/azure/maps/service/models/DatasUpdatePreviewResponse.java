@@ -11,7 +11,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the updatePreview operation. */
-public final class DatasUpdatePreviewResponse extends ResponseBase<DatasUpdatePreviewHeaders, Void> {
+public final class DatasUpdatePreviewResponse
+        extends ResponseBase<DatasUpdatePreviewHeaders, LongRunningOperationResult> {
     /**
      * Creates an instance of DatasUpdatePreviewResponse.
      *
@@ -25,8 +26,14 @@ public final class DatasUpdatePreviewResponse extends ResponseBase<DatasUpdatePr
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            Void value,
+            LongRunningOperationResult value,
             DatasUpdatePreviewHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
+    }
+
+    /** @return the deserialized response body. */
+    @Override
+    public LongRunningOperationResult getValue() {
+        return super.getValue();
     }
 }

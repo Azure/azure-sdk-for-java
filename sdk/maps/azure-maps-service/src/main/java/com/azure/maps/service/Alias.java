@@ -27,9 +27,9 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.maps.service.models.AliasCreateResponse;
-import com.azure.maps.service.models.AliasCreateResponseV2;
 import com.azure.maps.service.models.AliasListItem;
 import com.azure.maps.service.models.AliasListResponse;
+import com.azure.maps.service.models.AliasesCreateResponse;
 import com.azure.maps.service.models.ErrorResponseException;
 import com.azure.maps.service.models.Geography;
 import reactor.core.publisher.Mono;
@@ -61,9 +61,6 @@ public final class Alias {
     private interface AliasService {
         @Post("/aliases")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AliasCreateResponse> create(
                 @HostParam("geography") Geography geography,
@@ -73,9 +70,6 @@ public final class Alias {
 
         @Get("/aliases")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AliasListResponse>> list(
                 @HostParam("geography") Geography geography,
@@ -84,9 +78,6 @@ public final class Alias {
 
         @Put("/aliases/{aliasId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AliasListItem>> assign(
                 @HostParam("geography") Geography geography,
@@ -97,9 +88,6 @@ public final class Alias {
 
         @Delete("/aliases/{aliasId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("geography") Geography geography,
@@ -109,9 +97,6 @@ public final class Alias {
 
         @Get("/aliases/{aliasId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AliasListItem>> getDetails(
                 @HostParam("geography") Geography geography,
@@ -121,9 +106,6 @@ public final class Alias {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AliasListResponse>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -159,8 +141,6 @@ public final class Alias {
      * @param creatorDataItemId The unique id that references a creator data item to be aliased.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Alias Create API for the case when the alias was successfully created.
      */
@@ -199,13 +179,11 @@ public final class Alias {
      * @param creatorDataItemId The unique id that references a creator data item to be aliased.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Alias Create API for the case when the alias was successfully created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AliasCreateResponseV2> createAsync(String creatorDataItemId) {
+    public Mono<AliasesCreateResponse> createAsync(String creatorDataItemId) {
         return createWithResponseAsync(creatorDataItemId)
                 .flatMap(
                         (AliasCreateResponse res) -> {
@@ -243,13 +221,11 @@ public final class Alias {
      * ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Alias Create API for the case when the alias was successfully created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AliasCreateResponseV2> createAsync() {
+    public Mono<AliasesCreateResponse> createAsync() {
         final String creatorDataItemId = null;
         return createWithResponseAsync(creatorDataItemId)
                 .flatMap(
@@ -290,13 +266,11 @@ public final class Alias {
      * @param creatorDataItemId The unique id that references a creator data item to be aliased.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Alias Create API for the case when the alias was successfully created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AliasCreateResponseV2 create(String creatorDataItemId) {
+    public AliasesCreateResponse create(String creatorDataItemId) {
         return createAsync(creatorDataItemId).block();
     }
 
@@ -326,13 +300,11 @@ public final class Alias {
      * ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Alias Create API for the case when the alias was successfully created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AliasCreateResponseV2 create() {
+    public AliasesCreateResponse create() {
         final String creatorDataItemId = null;
         return createAsync(creatorDataItemId).block();
     }
@@ -367,8 +339,6 @@ public final class Alias {
      * "2020-02-18T19:53:33.123Z" } ] } ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the List API.
      */
@@ -418,8 +388,6 @@ public final class Alias {
      * "2020-02-18T19:53:33.123Z" } ] } ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the List API.
      */
@@ -458,8 +426,6 @@ public final class Alias {
      * "2020-02-18T19:53:33.123Z" } ] } ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the List API.
      */
@@ -495,8 +461,6 @@ public final class Alias {
      * @param creatorDataItemId The unique id that references a creator data item to be aliased.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information for the alias.
      */
@@ -534,8 +498,6 @@ public final class Alias {
      * @param creatorDataItemId The unique id that references a creator data item to be aliased.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information for the alias.
      */
@@ -579,8 +541,6 @@ public final class Alias {
      * @param creatorDataItemId The unique id that references a creator data item to be aliased.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information for the alias.
      */
@@ -613,8 +573,6 @@ public final class Alias {
      * @param aliasId The unique id that references an existing alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -649,8 +607,6 @@ public final class Alias {
      * @param aliasId The unique id that references an existing alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -683,8 +639,6 @@ public final class Alias {
      * @param aliasId The unique id that references an existing alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -720,8 +674,6 @@ public final class Alias {
      * @param aliasId The unique id that references an existing alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information for the alias.
      */
@@ -760,8 +712,6 @@ public final class Alias {
      * @param aliasId The unique id that references an existing alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information for the alias.
      */
@@ -806,8 +756,6 @@ public final class Alias {
      * @param aliasId The unique id that references an existing alias.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information for the alias.
      */
@@ -822,8 +770,6 @@ public final class Alias {
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the List API.
      */

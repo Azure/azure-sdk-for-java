@@ -61,9 +61,6 @@ public final class Datasets {
     private interface DatasetsService {
         @Post("/datasets")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {200, 400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DatasetsCreateResponse> create(
                 @HostParam("geography") Geography geography,
@@ -75,9 +72,6 @@ public final class Datasets {
 
         @Get("/datasets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<DatasetListResponse>> list(
                 @HostParam("geography") Geography geography,
@@ -86,9 +80,6 @@ public final class Datasets {
 
         @Get("/datasets/{datasetId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<DatasetDetailInfo>> get(
                 @HostParam("geography") Geography geography,
@@ -98,9 +89,6 @@ public final class Datasets {
 
         @Delete("/datasets/{datasetId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("geography") Geography geography,
@@ -110,9 +98,6 @@ public final class Datasets {
 
         @Get("/datasets/operations/{operationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DatasetsGetOperationResponse> getOperation(
                 @HostParam("geography") Geography geography,
@@ -122,9 +107,6 @@ public final class Datasets {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<DatasetListResponse>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -159,14 +141,11 @@ public final class Datasets {
      * @param conversionId The unique ID used to create the dataset. The `conversionId` must have been obtained from a
      *     successful call to the Conversion Service Convert API and may be provided with multiple query parameters with
      *     same name (if more than one is provided).
-     * @param datasetId The ID for the dataset to append with. The dataset must originate from a conversion
-     *     [ontology](https://docs.microsoft.com/en-us/azure/azure-maps/creator-facility-ontology) that matches
-     *     conversionId.
+     * @param datasetId The ID for the dataset to append with. The dataset must originate from a previous dataset
+     *     creation call that matches the datasetId.
      * @param descriptionDataset The description to be given to the dataset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -206,14 +185,11 @@ public final class Datasets {
      * @param conversionId The unique ID used to create the dataset. The `conversionId` must have been obtained from a
      *     successful call to the Conversion Service Convert API and may be provided with multiple query parameters with
      *     same name (if more than one is provided).
-     * @param datasetId The ID for the dataset to append with. The dataset must originate from a conversion
-     *     [ontology](https://docs.microsoft.com/en-us/azure/azure-maps/creator-facility-ontology) that matches
-     *     conversionId.
+     * @param datasetId The ID for the dataset to append with. The dataset must originate from a previous dataset
+     *     creation call that matches the datasetId.
      * @param descriptionDataset The description to be given to the dataset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -252,8 +228,6 @@ public final class Datasets {
      *     same name (if more than one is provided).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -292,14 +266,11 @@ public final class Datasets {
      * @param conversionId The unique ID used to create the dataset. The `conversionId` must have been obtained from a
      *     successful call to the Conversion Service Convert API and may be provided with multiple query parameters with
      *     same name (if more than one is provided).
-     * @param datasetId The ID for the dataset to append with. The dataset must originate from a conversion
-     *     [ontology](https://docs.microsoft.com/en-us/azure/azure-maps/creator-facility-ontology) that matches
-     *     conversionId.
+     * @param datasetId The ID for the dataset to append with. The dataset must originate from a previous dataset
+     *     creation call that matches the datasetId.
      * @param descriptionDataset The description to be given to the dataset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -336,8 +307,6 @@ public final class Datasets {
      *     same name (if more than one is provided).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -391,8 +360,6 @@ public final class Datasets {
      * "unit": 183, "zone": 3, "verticalPenetration": 6, "opening": 48, "areaElement": 108 } } ] } ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Dataset List API.
      */
@@ -456,8 +423,6 @@ public final class Datasets {
      * "unit": 183, "zone": 3, "verticalPenetration": 6, "opening": 48, "areaElement": 108 } } ] } ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Dataset List API.
      */
@@ -510,8 +475,6 @@ public final class Datasets {
      * "unit": 183, "zone": 3, "verticalPenetration": 6, "opening": 48, "areaElement": 108 } } ] } ```.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Dataset List API.
      */
@@ -560,8 +523,6 @@ public final class Datasets {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the dataset.
      */
@@ -612,8 +573,6 @@ public final class Datasets {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the dataset.
      */
@@ -670,8 +629,6 @@ public final class Datasets {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the dataset.
      */
@@ -697,8 +654,6 @@ public final class Datasets {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -726,8 +681,6 @@ public final class Datasets {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -753,8 +706,6 @@ public final class Datasets {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -779,7 +730,6 @@ public final class Datasets {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -807,7 +757,6 @@ public final class Datasets {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -841,7 +790,6 @@ public final class Datasets {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -856,8 +804,6 @@ public final class Datasets {
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Dataset List API.
      */

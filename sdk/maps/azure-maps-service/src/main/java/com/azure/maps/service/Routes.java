@@ -40,7 +40,6 @@ import com.azure.maps.service.models.RouteInstructionsType;
 import com.azure.maps.service.models.RouteMatrixResponse;
 import com.azure.maps.service.models.RouteRepresentation;
 import com.azure.maps.service.models.RouteType;
-import com.azure.maps.service.models.RoutesPostRouteDirectionsBatchResponse;
 import com.azure.maps.service.models.RoutesPostRouteMatrixResponse;
 import com.azure.maps.service.models.SectionType;
 import com.azure.maps.service.models.TextFormat;
@@ -79,9 +78,6 @@ public final class Routes {
     private interface RoutesService {
         @Post("/route/matrix/{format}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<RoutesPostRouteMatrixResponse> postRouteMatrix(
                 @HostParam("geography") Geography geography,
@@ -111,9 +107,6 @@ public final class Routes {
 
         @Get("/route/matrix/{format}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RouteMatrixResponse>> getRouteMatrix(
                 @HostParam("geography") Geography geography,
@@ -124,9 +117,6 @@ public final class Routes {
 
         @Get("/route/directions/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RouteDirectionsResponse>> getRouteDirections(
                 @HostParam("geography") Geography geography,
@@ -181,9 +171,6 @@ public final class Routes {
 
         @Post("/route/directions/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RouteDirectionsResponse>> postRouteDirections(
                 @HostParam("geography") Geography geography,
@@ -239,9 +226,6 @@ public final class Routes {
 
         @Get("/route/range/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetRouteRangeResponse>> getRouteRange(
                 @HostParam("geography") Geography geography,
@@ -286,12 +270,9 @@ public final class Routes {
                 @HeaderParam("Accept") String accept);
 
         @Post("/route/directions/batch/{format}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RoutesPostRouteDirectionsBatchResponse> postRouteDirectionsBatch(
+        Mono<Response<Void>> postRouteDirectionsBatch(
                 @HostParam("geography") Geography geography,
                 @HeaderParam("x-ms-client-id") String xMsClientId,
                 @QueryParam("api-version") String apiVersion,
@@ -301,9 +282,6 @@ public final class Routes {
 
         @Get("/route/directions/batch/{format}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RouteDirectionsBatchResponse>> getRouteDirectionsBatch(
                 @HostParam("geography") Geography geography,
@@ -316,7 +294,7 @@ public final class Routes {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 408, 500})
+                code = {408})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<RouteDirectionsBatchResponse>> postRouteDirectionsBatchSync(
                 @HostParam("geography") Geography geography,
@@ -466,8 +444,6 @@ public final class Routes {
      *     considered for travelMode=truck.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -663,8 +639,6 @@ public final class Routes {
      *     considered for travelMode=truck.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -803,8 +777,6 @@ public final class Routes {
      *     can be 35 origins and 20 destinations or 25 origins and 25 destinations for async API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -999,8 +971,6 @@ public final class Routes {
      *     considered for travelMode=truck.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -1132,8 +1102,6 @@ public final class Routes {
      *     can be 35 origins and 20 destinations or 25 origins and 25 destinations for async API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -1210,8 +1178,6 @@ public final class Routes {
      * @param format Matrix id received after the Matrix Route request was accepted successfully.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -1251,8 +1217,6 @@ public final class Routes {
      * @param format Matrix id received after the Matrix Route request was accepted successfully.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -1297,8 +1261,6 @@ public final class Routes {
      * @param format Matrix id received after the Matrix Route request was accepted successfully.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
@@ -1519,8 +1481,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -1835,8 +1795,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -1960,8 +1918,6 @@ public final class Routes {
      *     coordinates in-between act as WayPoints in the route. You can pass up to 150 WayPoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -2274,8 +2230,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -2392,8 +2346,6 @@ public final class Routes {
      *     coordinates in-between act as WayPoints in the route. You can pass up to 150 WayPoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -2713,8 +2665,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -3045,8 +2995,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -3189,8 +3137,6 @@ public final class Routes {
      *     onwards. * The route must use departAt. * The vehicleHeading is ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -3519,8 +3465,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -3656,8 +3600,6 @@ public final class Routes {
      *     onwards. * The route must use departAt. * The vehicleHeading is ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
@@ -3922,8 +3864,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Reachable Range call.
      */
@@ -4177,8 +4117,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Reachable Range call.
      */
@@ -4280,8 +4218,6 @@ public final class Routes {
      * @param query The Coordinate from which the range calculation should start.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Reachable Range call.
      */
@@ -4533,8 +4469,6 @@ public final class Routes {
      *     <p>Sensible Values : 1.7.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Reachable Range call.
      */
@@ -4629,8 +4563,6 @@ public final class Routes {
      * @param query The Coordinate from which the range calculation should start.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Reachable Range call.
      */
@@ -4811,13 +4743,11 @@ public final class Routes {
      *     contain a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoutesPostRouteDirectionsBatchResponse> postRouteDirectionsBatchWithResponseAsync(
+    public Mono<Response<Void>> postRouteDirectionsBatchWithResponseAsync(
             ResponseFormat format, BatchRequestBody postRouteDirectionsBatchRequestBody) {
         final String apiVersion = "1.0";
         final String accept = "application/json";
@@ -4935,23 +4865,14 @@ public final class Routes {
      *     contain a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteDirectionsBatchResponse> postRouteDirectionsBatchAsync(
+    public Mono<Void> postRouteDirectionsBatchAsync(
             ResponseFormat format, BatchRequestBody postRouteDirectionsBatchRequestBody) {
         return postRouteDirectionsBatchWithResponseAsync(format, postRouteDirectionsBatchRequestBody)
-                .flatMap(
-                        (RoutesPostRouteDirectionsBatchResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -5059,15 +4980,11 @@ public final class Routes {
      *     contain a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this object is returned from a successful Route Directions Batch service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteDirectionsBatchResponse postRouteDirectionsBatch(
-            ResponseFormat format, BatchRequestBody postRouteDirectionsBatchRequestBody) {
-        return postRouteDirectionsBatchAsync(format, postRouteDirectionsBatchRequestBody).block();
+    public void postRouteDirectionsBatch(ResponseFormat format, BatchRequestBody postRouteDirectionsBatchRequestBody) {
+        postRouteDirectionsBatchAsync(format, postRouteDirectionsBatchRequestBody).block();
     }
 
     /**
@@ -5112,11 +5029,9 @@ public final class Routes {
      * "statusCode": 400, "response": { "error": { "code": "400 BadRequest", "message": "Bad request: one or more
      * parameters were incorrectly specified or are mutually exclusive." } } } ] } ```.
      *
-     * @param format Batch id received after using the Matrix Route request was accepted successfully.
+     * @param format Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions Batch service call.
      */
@@ -5170,11 +5085,9 @@ public final class Routes {
      * "statusCode": 400, "response": { "error": { "code": "400 BadRequest", "message": "Bad request: one or more
      * parameters were incorrectly specified or are mutually exclusive." } } } ] } ```.
      *
-     * @param format Batch id received after using the Matrix Route request was accepted successfully.
+     * @param format Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions Batch service call.
      */
@@ -5233,11 +5146,9 @@ public final class Routes {
      * "statusCode": 400, "response": { "error": { "code": "400 BadRequest", "message": "Bad request: one or more
      * parameters were incorrectly specified or are mutually exclusive." } } } ] } ```.
      *
-     * @param format Batch id received after using the Matrix Route request was accepted successfully.
+     * @param format Batch id for querying the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions Batch service call.
      */
@@ -5265,8 +5176,7 @@ public final class Routes {
      *     contain a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     408, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions Batch service call.
      */
@@ -5303,8 +5213,7 @@ public final class Routes {
      *     contain a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     408, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions Batch service call.
      */
@@ -5341,8 +5250,7 @@ public final class Routes {
      *     contain a max of 700 queries for async and 100 queries for sync version and must contain at least 1 query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     408, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 408.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions Batch service call.
      */

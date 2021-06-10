@@ -61,10 +61,7 @@ public final class Conversions {
     @ServiceInterface(name = "MapsClientConversion")
     private interface ConversionsService {
         @Post("/conversions")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {200, 400, 401, 403, 404, 500})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ConversionsConvertResponse> convert(
                 @HostParam("geography") Geography geography,
@@ -77,9 +74,6 @@ public final class Conversions {
 
         @Get("/conversions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ConversionListResponse>> list(
                 @HostParam("geography") Geography geography,
@@ -89,9 +83,6 @@ public final class Conversions {
 
         @Get("/conversions/{conversionId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ConversionListDetailInfo>> get(
                 @HostParam("geography") Geography geography,
@@ -102,9 +93,6 @@ public final class Conversions {
 
         @Delete("/conversions/{conversionId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("geography") Geography geography,
@@ -115,9 +103,6 @@ public final class Conversions {
 
         @Get("/conversions/operations/{operationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ConversionsGetOperationResponse> getOperation(
                 @HostParam("geography") Geography geography,
@@ -127,9 +112,6 @@ public final class Conversions {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ConversionListResponse>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -183,10 +165,8 @@ public final class Conversions {
      * @param description User provided description of the content being converted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConversionsConvertResponse> convertWithResponseAsync(
@@ -248,15 +228,20 @@ public final class Conversions {
      * @param description User provided description of the content being converted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> convertAsync(String udid, String outputOntology, String description) {
+    public Mono<LongRunningOperationResult> convertAsync(String udid, String outputOntology, String description) {
         return convertWithResponseAsync(udid, outputOntology, description)
-                .flatMap((ConversionsConvertResponse res) -> Mono.empty());
+                .flatMap(
+                        (ConversionsConvertResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -303,16 +288,21 @@ public final class Conversions {
      *     information about Azure Maps Creator ontologies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> convertAsync(String udid, String outputOntology) {
+    public Mono<LongRunningOperationResult> convertAsync(String udid, String outputOntology) {
         final String description = null;
         return convertWithResponseAsync(udid, outputOntology, description)
-                .flatMap((ConversionsConvertResponse res) -> Mono.empty());
+                .flatMap(
+                        (ConversionsConvertResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -360,13 +350,12 @@ public final class Conversions {
      * @param description User provided description of the content being converted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void convert(String udid, String outputOntology, String description) {
-        convertAsync(udid, outputOntology, description).block();
+    public LongRunningOperationResult convert(String udid, String outputOntology, String description) {
+        return convertAsync(udid, outputOntology, description).block();
     }
 
     /**
@@ -413,14 +402,13 @@ public final class Conversions {
      *     information about Azure Maps Creator ontologies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void convert(String udid, String outputOntology) {
+    public LongRunningOperationResult convert(String udid, String outputOntology) {
         final String description = null;
-        convertAsync(udid, outputOntology, description).block();
+        return convertAsync(udid, outputOntology, description).block();
     }
 
     /**
@@ -455,8 +443,6 @@ public final class Conversions {
      * <p>&lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Conversion List API.
      */
@@ -508,8 +494,6 @@ public final class Conversions {
      * <p>&lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Conversion List API.
      */
@@ -550,8 +534,6 @@ public final class Conversions {
      * <p>&lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Conversion List API.
      */
@@ -574,8 +556,6 @@ public final class Conversions {
      *     successful [Conversion API](https://docs.microsoft.com/en-us/rest/api/maps/v2/conversion/convert) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the conversion requests.
      */
@@ -600,8 +580,6 @@ public final class Conversions {
      *     successful [Conversion API](https://docs.microsoft.com/en-us/rest/api/maps/v2/conversion/convert) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the conversion requests.
      */
@@ -632,8 +610,6 @@ public final class Conversions {
      *     successful [Conversion API](https://docs.microsoft.com/en-us/rest/api/maps/v2/conversion/convert) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the conversion requests.
      */
@@ -667,8 +643,6 @@ public final class Conversions {
      *     successful [Conversion API](https://docs.microsoft.com/en-us/rest/api/maps/v2/conversion/convert) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -705,8 +679,6 @@ public final class Conversions {
      *     successful [Conversion API](https://docs.microsoft.com/en-us/rest/api/maps/v2/conversion/convert) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -740,8 +712,6 @@ public final class Conversions {
      *     successful [Conversion API](https://docs.microsoft.com/en-us/rest/api/maps/v2/conversion/convert) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -756,7 +726,6 @@ public final class Conversions {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -774,7 +743,6 @@ public final class Conversions {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -798,7 +766,6 @@ public final class Conversions {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -813,8 +780,6 @@ public final class Conversions {
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Conversion List API.
      */

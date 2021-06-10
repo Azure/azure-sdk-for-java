@@ -63,7 +63,7 @@ public final class Tilesets {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
                 value = ErrorResponseException.class,
-                code = {200, 400, 401, 403, 404, 500})
+                code = {200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<TilesetsCreateResponse> create(
                 @HostParam("geography") Geography geography,
@@ -75,9 +75,6 @@ public final class Tilesets {
 
         @Get("/tilesets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<TilesetListResponse>> list(
                 @HostParam("geography") Geography geography,
@@ -87,9 +84,6 @@ public final class Tilesets {
 
         @Get("/tilesets/{tilesetId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<TilesetDetailInfo>> get(
                 @HostParam("geography") Geography geography,
@@ -100,9 +94,6 @@ public final class Tilesets {
 
         @Delete("/tilesets/{tilesetId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("geography") Geography geography,
@@ -113,9 +104,6 @@ public final class Tilesets {
 
         @Get("/tilesets/operations/{operationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<TilesetsGetOperationResponse> getOperation(
                 @HostParam("geography") Geography geography,
@@ -125,9 +113,6 @@ public final class Tilesets {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<TilesetListResponse>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -163,8 +148,7 @@ public final class Tilesets {
      * @param description User provided description of the tileset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -203,8 +187,7 @@ public final class Tilesets {
      * @param description User provided description of the tileset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -239,8 +222,7 @@ public final class Tilesets {
      *     API](/en-us/rest/api/maps/dataset/createpreview) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -277,8 +259,7 @@ public final class Tilesets {
      * @param description User provided description of the tileset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -312,8 +293,7 @@ public final class Tilesets {
      *     API](/en-us/rest/api/maps/dataset/createpreview) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -332,8 +312,6 @@ public final class Tilesets {
      * <p>This API allows the caller to fetch a list of all tilesets created. &lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Tileset List API.
      */
@@ -363,8 +341,6 @@ public final class Tilesets {
      * <p>This API allows the caller to fetch a list of all tilesets created. &lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Tileset List API.
      */
@@ -383,8 +359,6 @@ public final class Tilesets {
      * <p>This API allows the caller to fetch a list of all tilesets created. &lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Tileset List API.
      */
@@ -405,8 +379,6 @@ public final class Tilesets {
      * @param tilesetId The Tileset Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the data.
      */
@@ -429,8 +401,6 @@ public final class Tilesets {
      * @param tilesetId The Tileset Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the data.
      */
@@ -459,8 +429,6 @@ public final class Tilesets {
      * @param tilesetId The Tileset Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detail information for the data.
      */
@@ -504,8 +472,6 @@ public final class Tilesets {
      * @param tilesetId The Tileset Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -551,8 +517,6 @@ public final class Tilesets {
      * @param tilesetId The Tileset Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -596,8 +560,6 @@ public final class Tilesets {
      * @param tilesetId The Tileset Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -612,7 +574,6 @@ public final class Tilesets {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -630,7 +591,6 @@ public final class Tilesets {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -654,7 +614,6 @@ public final class Tilesets {
      * @param operationId The ID to query the status for the dataset create/import request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -669,8 +628,6 @@ public final class Tilesets {
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Tileset List API.
      */

@@ -65,9 +65,6 @@ public final class FeatureStates {
     private interface FeatureStatesService {
         @Post("/featureStateSets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<StatesetCreatedResponse>> createStateset(
                 @HostParam("geography") Geography geography,
@@ -79,9 +76,6 @@ public final class FeatureStates {
 
         @Get("/featureStateSets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<StatesetListResponse>> listStateset(
                 @HostParam("geography") Geography geography,
@@ -90,9 +84,6 @@ public final class FeatureStates {
 
         @Put("/featureStateSets/{statesetId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> putStateset(
                 @HostParam("geography") Geography geography,
@@ -103,9 +94,6 @@ public final class FeatureStates {
 
         @Delete("/featureStateSets/{statesetId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deleteStateset(
                 @HostParam("geography") Geography geography,
@@ -115,9 +103,6 @@ public final class FeatureStates {
 
         @Get("/featureStateSets/{statesetId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<StatesetGetResponse>> getStateset(
                 @HostParam("geography") Geography geography,
@@ -127,9 +112,6 @@ public final class FeatureStates {
 
         @Put("/featureStateSets/{statesetId}/featureStates/{featureId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> updateStates(
                 @HostParam("geography") Geography geography,
@@ -141,9 +123,6 @@ public final class FeatureStates {
 
         @Delete("/featureStateSets/{statesetId}/featureStates/{featureId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 409, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deleteState(
                 @HostParam("geography") Geography geography,
@@ -155,9 +134,6 @@ public final class FeatureStates {
 
         @Get("/featureStateSets/{statesetId}/featureStates/{featureId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<FeatureStatesStructure>> getStates(
                 @HostParam("geography") Geography geography,
@@ -168,9 +144,6 @@ public final class FeatureStates {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<StatesetListResponse>> listStatesetNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -212,8 +185,6 @@ public final class FeatureStates {
      * @param description Description for the stateset. Max length allowed is 1000.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Create API.
      */
@@ -260,8 +231,6 @@ public final class FeatureStates {
      * @param description Description for the stateset. Max length allowed is 1000.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Create API.
      */
@@ -312,8 +281,6 @@ public final class FeatureStates {
      * @param statesetCreateRequestBody The stateset style JSON data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Create API.
      */
@@ -365,8 +332,6 @@ public final class FeatureStates {
      * @param description Description for the stateset. Max length allowed is 1000.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Create API.
      */
@@ -409,8 +374,6 @@ public final class FeatureStates {
      * @param statesetCreateRequestBody The stateset style JSON data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Create API.
      */
@@ -430,8 +393,6 @@ public final class FeatureStates {
      * <p>This API allows the caller to fetch a list of all previously successfully created statesets.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset List API.
      */
@@ -461,8 +422,6 @@ public final class FeatureStates {
      * <p>This API allows the caller to fetch a list of all previously successfully created statesets.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset List API.
      */
@@ -482,8 +441,6 @@ public final class FeatureStates {
      * <p>This API allows the caller to fetch a list of all previously successfully created statesets.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset List API.
      */
@@ -506,8 +463,6 @@ public final class FeatureStates {
      *     update on keyname and type is not allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -534,8 +489,6 @@ public final class FeatureStates {
      *     update on keyname and type is not allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -559,8 +512,6 @@ public final class FeatureStates {
      *     update on keyname and type is not allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -580,8 +531,6 @@ public final class FeatureStates {
      * @param statesetId The stateset id that was created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -604,8 +553,6 @@ public final class FeatureStates {
      * @param statesetId The stateset id that was created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -626,8 +573,6 @@ public final class FeatureStates {
      * @param statesetId The stateset id that was created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -649,8 +594,6 @@ public final class FeatureStates {
      * @param statesetId The stateset id that was created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Get API.
      */
@@ -675,8 +618,6 @@ public final class FeatureStates {
      * @param statesetId The stateset id that was created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Get API.
      */
@@ -707,8 +648,6 @@ public final class FeatureStates {
      * @param statesetId The stateset id that was created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset Get API.
      */
@@ -733,8 +672,6 @@ public final class FeatureStates {
      *     point in time. The specified state keyname must have been defined during the stateset creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -763,8 +700,6 @@ public final class FeatureStates {
      *     point in time. The specified state keyname must have been defined during the stateset creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -791,8 +726,6 @@ public final class FeatureStates {
      *     point in time. The specified state keyname must have been defined during the stateset creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -817,8 +750,6 @@ public final class FeatureStates {
      * @param stateKeyName The Name of the state to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     409, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -845,8 +776,6 @@ public final class FeatureStates {
      * @param stateKeyName The Name of the state to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     409, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -872,8 +801,6 @@ public final class FeatureStates {
      * @param stateKeyName The Name of the state to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     409, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -895,8 +822,6 @@ public final class FeatureStates {
      *     earlier, Bad Request response will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the feature states model for a feature.
      */
@@ -921,8 +846,6 @@ public final class FeatureStates {
      *     earlier, Bad Request response will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the feature states model for a feature.
      */
@@ -953,8 +876,6 @@ public final class FeatureStates {
      *     earlier, Bad Request response will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the feature states model for a feature.
      */
@@ -969,8 +890,6 @@ public final class FeatureStates {
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the successful Stateset List API.
      */

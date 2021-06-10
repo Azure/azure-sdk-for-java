@@ -53,9 +53,6 @@ public final class Geolocations {
     private interface GeolocationsService {
         @Get("/geolocation/ip/{format}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<IpAddressToLocationResult>> getIPToLocationPreview(
                 @HostParam("geography") Geography geography,
@@ -79,8 +76,6 @@ public final class Geolocations {
      * @param ip The IP address. Both IPv4 and IPv6 are allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
@@ -106,8 +101,6 @@ public final class Geolocations {
      * @param ip The IP address. Both IPv4 and IPv6 are allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
@@ -137,8 +130,6 @@ public final class Geolocations {
      * @param ip The IP address. Both IPv4 and IPv6 are allowed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful call to IP Address to country/region API.
      */

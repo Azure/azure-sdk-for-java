@@ -57,9 +57,6 @@ public final class WFS {
     private interface WFSService {
         @Get("/wfs/datasets/{datasetId}/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<LandingPageResponse>> getLandingPage(
                 @HostParam("geography") Geography geography,
@@ -70,9 +67,6 @@ public final class WFS {
 
         @Get("/wfs/datasets/{datasetId}/conformance")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ConformanceResponse>> getConformance(
                 @HostParam("geography") Geography geography,
@@ -83,9 +77,6 @@ public final class WFS {
 
         @Get("/wfs/datasets/{datasetId}/collections")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<CollectionsResponse>> getCollections(
                 @HostParam("geography") Geography geography,
@@ -96,9 +87,6 @@ public final class WFS {
 
         @Get("/wfs/datasets/{datasetId}/collections/{collectionId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<CollectionInfo>> getCollection(
                 @HostParam("geography") Geography geography,
@@ -110,9 +98,6 @@ public final class WFS {
 
         @Get("/wfs/datasets/{datasetId}/collections/{collectionId}/definition")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<CollectionDefinitionResponse>> getCollectionDefinition(
                 @HostParam("geography") Geography geography,
@@ -124,9 +109,6 @@ public final class WFS {
 
         @Get("/wfs/datasets/{datasetId}/collections/{collectionId}/items")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ExtendedGeoJsonFeatureCollection>> getFeatures(
                 @HostParam("geography") Geography geography,
@@ -141,9 +123,6 @@ public final class WFS {
 
         @Get("/wfs/datasets/{datasetId}/collections/{collectionId}/items/{featureId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<FeatureResponse>> getFeature(
                 @HostParam("geography") Geography geography,
@@ -155,9 +134,6 @@ public final class WFS {
 
         @Delete("/wfs/datasets/{datasetId}/collections/{collectionId}/items/{featureId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deleteFeature(
                 @HostParam("geography") Geography geography,
@@ -185,8 +161,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -215,8 +189,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -250,8 +222,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -277,8 +247,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -307,8 +275,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -342,8 +308,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -368,8 +332,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -397,8 +359,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -431,8 +391,6 @@ public final class WFS {
      * @param datasetId The identifier for the dataset to query from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -461,8 +419,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -494,8 +450,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -532,8 +486,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -562,8 +514,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of GeoJSON features.
      */
@@ -596,8 +546,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of GeoJSON features.
      */
@@ -634,8 +582,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of GeoJSON features.
      */
@@ -673,15 +619,13 @@ public final class WFS {
      *     value (east-most box edge).
      * @param filter Filter expression to search for features with specific property values in a given collection. Only
      *     feature properties of scalar type and equals operator are supported. This is a special parameter where the
-     *     parameter name is the property name. The scheme for this parameter is {property name}={property value}.
-     *     Unless "filter" is one of the property names in the collection, "filter" should not be used as a parameter
-     *     name. To search for features with "name" property value "21N13", use "name=21N13". Multiple filters are
-     *     supported and should be represented as multiple query parameters. E.g.,
+     *     parameter name is a case sensitive property name. The scheme for this parameter is {property name}={property
+     *     value}. Unless "filter" is one of the property names in the collection, "filter" should not be used as a
+     *     parameter name. To search for features with "name" property value "21N13", use "name=21N13". Multiple filters
+     *     are supported and should be represented as multiple query parameters. E.g.,
      *     &lt;property1&gt;=&lt;value1&gt;&amp;&lt;property2&gt;=&lt;value2&gt; String values are case sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a valid `GeoJSON FeatureCollection` object type extended with numberReturned and links array.
      */
@@ -731,15 +675,13 @@ public final class WFS {
      *     value (east-most box edge).
      * @param filter Filter expression to search for features with specific property values in a given collection. Only
      *     feature properties of scalar type and equals operator are supported. This is a special parameter where the
-     *     parameter name is the property name. The scheme for this parameter is {property name}={property value}.
-     *     Unless "filter" is one of the property names in the collection, "filter" should not be used as a parameter
-     *     name. To search for features with "name" property value "21N13", use "name=21N13". Multiple filters are
-     *     supported and should be represented as multiple query parameters. E.g.,
+     *     parameter name is a case sensitive property name. The scheme for this parameter is {property name}={property
+     *     value}. Unless "filter" is one of the property names in the collection, "filter" should not be used as a
+     *     parameter name. To search for features with "name" property value "21N13", use "name=21N13". Multiple filters
+     *     are supported and should be represented as multiple query parameters. E.g.,
      *     &lt;property1&gt;=&lt;value1&gt;&amp;&lt;property2&gt;=&lt;value2&gt; String values are case sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a valid `GeoJSON FeatureCollection` object type extended with numberReturned and links array.
      */
@@ -774,8 +716,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a valid `GeoJSON FeatureCollection` object type extended with numberReturned and links array.
      */
@@ -824,15 +764,13 @@ public final class WFS {
      *     value (east-most box edge).
      * @param filter Filter expression to search for features with specific property values in a given collection. Only
      *     feature properties of scalar type and equals operator are supported. This is a special parameter where the
-     *     parameter name is the property name. The scheme for this parameter is {property name}={property value}.
-     *     Unless "filter" is one of the property names in the collection, "filter" should not be used as a parameter
-     *     name. To search for features with "name" property value "21N13", use "name=21N13". Multiple filters are
-     *     supported and should be represented as multiple query parameters. E.g.,
+     *     parameter name is a case sensitive property name. The scheme for this parameter is {property name}={property
+     *     value}. Unless "filter" is one of the property names in the collection, "filter" should not be used as a
+     *     parameter name. To search for features with "name" property value "21N13", use "name=21N13". Multiple filters
+     *     are supported and should be represented as multiple query parameters. E.g.,
      *     &lt;property1&gt;=&lt;value1&gt;&amp;&lt;property2&gt;=&lt;value2&gt; String values are case sensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a valid `GeoJSON FeatureCollection` object type extended with numberReturned and links array.
      */
@@ -859,8 +797,6 @@ public final class WFS {
      * @param collectionId Identifier (name) of a specific collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a valid `GeoJSON FeatureCollection` object type extended with numberReturned and links array.
      */
@@ -890,8 +826,6 @@ public final class WFS {
      * @param featureId Local identifier of a specific feature.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -921,8 +855,6 @@ public final class WFS {
      * @param featureId Local identifier of a specific feature.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -957,8 +889,6 @@ public final class WFS {
      * @param featureId Local identifier of a specific feature.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -987,8 +917,6 @@ public final class WFS {
      * @param featureId Local identifier of a specific feature.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1021,8 +949,6 @@ public final class WFS {
      * @param featureId Local identifier of a specific feature.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1052,8 +978,6 @@ public final class WFS {
      * @param featureId Local identifier of a specific feature.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -67,10 +67,10 @@ public final class Datas {
     @ServiceInterface(name = "MapsClientDatas")
     private interface DatasService {
         @Post("/mapData")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(
                 value = ErrorResponseException.class,
-                code = {200, 400, 401, 403, 404, 409, 500})
+                code = {409})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DatasUploadPreviewResponse> uploadPreview(
                 @HostParam("geography") Geography geography,
@@ -83,9 +83,6 @@ public final class Datas {
 
         @Get("/mapData")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<MapDataListResponse>> listPreview(
                 @HostParam("geography") Geography geography,
@@ -94,10 +91,10 @@ public final class Datas {
                 @HeaderParam("Accept") String accept);
 
         @Put("/mapData/{udid}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(
                 value = ErrorResponseException.class,
-                code = {200, 400, 401, 403, 404, 409, 500})
+                code = {409})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DatasUpdatePreviewResponse> updatePreview(
                 @HostParam("geography") Geography geography,
@@ -120,9 +117,6 @@ public final class Datas {
 
         @Delete("/mapData/{udid}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400, 401, 403, 404, 500})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> deletePreview(
                 @HostParam("geography") Geography geography,
@@ -133,9 +127,6 @@ public final class Datas {
 
         @Get("/mapData/operations/{operationId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ErrorResponseException.class,
-                code = {400})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<DatasGetOperationPreviewResponse> getOperationPreview(
                 @HostParam("geography") Geography geography,
@@ -184,10 +175,9 @@ public final class Datas {
      * @param uploadDataDescription The description to be given to the upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasUploadPreviewResponse> uploadPreviewWithResponseAsync(
@@ -244,16 +234,22 @@ public final class Datas {
      * @param uploadDataDescription The description to be given to the upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> uploadPreviewAsync(
+    public Mono<LongRunningOperationResult> uploadPreviewAsync(
             UploadDataFormat uploadDataFormat, Object uploadContent, String uploadDataDescription) {
         return uploadPreviewWithResponseAsync(uploadDataFormat, uploadContent, uploadDataDescription)
-                .flatMap((DatasUploadPreviewResponse res) -> Mono.empty());
+                .flatMap(
+                        (DatasUploadPreviewResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -295,16 +291,23 @@ public final class Datas {
      * @param uploadContent The content to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> uploadPreviewAsync(UploadDataFormat uploadDataFormat, Object uploadContent) {
+    public Mono<LongRunningOperationResult> uploadPreviewAsync(
+            UploadDataFormat uploadDataFormat, Object uploadContent) {
         final String uploadDataDescription = null;
         return uploadPreviewWithResponseAsync(uploadDataFormat, uploadContent, uploadDataDescription)
-                .flatMap((DatasUploadPreviewResponse res) -> Mono.empty());
+                .flatMap(
+                        (DatasUploadPreviewResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -347,13 +350,14 @@ public final class Datas {
      * @param uploadDataDescription The description to be given to the upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void uploadPreview(UploadDataFormat uploadDataFormat, Object uploadContent, String uploadDataDescription) {
-        uploadPreviewAsync(uploadDataFormat, uploadContent, uploadDataDescription).block();
+    public LongRunningOperationResult uploadPreview(
+            UploadDataFormat uploadDataFormat, Object uploadContent, String uploadDataDescription) {
+        return uploadPreviewAsync(uploadDataFormat, uploadContent, uploadDataDescription).block();
     }
 
     /**
@@ -395,14 +399,14 @@ public final class Datas {
      * @param uploadContent The content to upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void uploadPreview(UploadDataFormat uploadDataFormat, Object uploadContent) {
+    public LongRunningOperationResult uploadPreview(UploadDataFormat uploadDataFormat, Object uploadContent) {
         final String uploadDataDescription = null;
-        uploadPreviewAsync(uploadDataFormat, uploadContent, uploadDataDescription).block();
+        return uploadPreviewAsync(uploadDataFormat, uploadContent, uploadDataDescription).block();
     }
 
     /**
@@ -439,8 +443,6 @@ public final class Datas {
      * <p>&lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Data List API.
      */
@@ -485,8 +487,6 @@ public final class Datas {
      * <p>&lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Data List API.
      */
@@ -537,8 +537,6 @@ public final class Datas {
      * <p>&lt;br&gt;.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the Data List API.
      */
@@ -595,10 +593,9 @@ public final class Datas {
      * @param uploadDataDescription The description to be given to the upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DatasUpdatePreviewResponse> updatePreviewWithResponseAsync(
@@ -663,15 +660,22 @@ public final class Datas {
      * @param uploadDataDescription The description to be given to the upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePreviewAsync(String uniqueDataId, Object updateContent, String uploadDataDescription) {
+    public Mono<LongRunningOperationResult> updatePreviewAsync(
+            String uniqueDataId, Object updateContent, String uploadDataDescription) {
         return updatePreviewWithResponseAsync(uniqueDataId, updateContent, uploadDataDescription)
-                .flatMap((DatasUpdatePreviewResponse res) -> Mono.empty());
+                .flatMap(
+                        (DatasUpdatePreviewResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -721,16 +725,22 @@ public final class Datas {
      * @param updateContent The new content that will update/replace the previously uploaded content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePreviewAsync(String uniqueDataId, Object updateContent) {
+    public Mono<LongRunningOperationResult> updatePreviewAsync(String uniqueDataId, Object updateContent) {
         final String uploadDataDescription = null;
         return updatePreviewWithResponseAsync(uniqueDataId, updateContent, uploadDataDescription)
-                .flatMap((DatasUpdatePreviewResponse res) -> Mono.empty());
+                .flatMap(
+                        (DatasUpdatePreviewResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -781,13 +791,14 @@ public final class Datas {
      * @param uploadDataDescription The description to be given to the upload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePreview(String uniqueDataId, Object updateContent, String uploadDataDescription) {
-        updatePreviewAsync(uniqueDataId, updateContent, uploadDataDescription).block();
+    public LongRunningOperationResult updatePreview(
+            String uniqueDataId, Object updateContent, String uploadDataDescription) {
+        return updatePreviewAsync(uniqueDataId, updateContent, uploadDataDescription).block();
     }
 
     /**
@@ -837,14 +848,14 @@ public final class Datas {
      * @param updateContent The new content that will update/replace the previously uploaded content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 200, 400, 401, 403,
-     *     404, 409, 500.
+     * @throws ErrorResponseException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for a Long-Running Operations API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePreview(String uniqueDataId, Object updateContent) {
+    public LongRunningOperationResult updatePreview(String uniqueDataId, Object updateContent) {
         final String uploadDataDescription = null;
-        updatePreviewAsync(uniqueDataId, updateContent, uploadDataDescription).block();
+        return updatePreviewAsync(uniqueDataId, updateContent, uploadDataDescription).block();
     }
 
     /**
@@ -1015,8 +1026,6 @@ public final class Datas {
      *     [Data Upload API](https://docs.microsoft.com/en-us/rest/api/maps/data%20v2/uploadpreview) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1053,8 +1062,6 @@ public final class Datas {
      *     [Data Upload API](https://docs.microsoft.com/en-us/rest/api/maps/data%20v2/uploadpreview) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1088,8 +1095,6 @@ public final class Datas {
      *     [Data Upload API](https://docs.microsoft.com/en-us/rest/api/maps/data%20v2/uploadpreview) call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400, 401, 403, 404,
-     *     500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1104,7 +1109,6 @@ public final class Datas {
      * @param operationId The ID to query the status for the data upload request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -1122,7 +1126,6 @@ public final class Datas {
      * @param operationId The ID to query the status for the data upload request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */
@@ -1146,7 +1149,6 @@ public final class Datas {
      * @param operationId The ID to query the status for the data upload request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws ErrorResponseException thrown if the request is rejected by server on status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for a Long-Running Operations API.
      */

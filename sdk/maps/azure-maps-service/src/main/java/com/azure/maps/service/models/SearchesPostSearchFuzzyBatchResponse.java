@@ -12,7 +12,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the postSearchFuzzyBatch operation. */
 public final class SearchesPostSearchFuzzyBatchResponse
-        extends ResponseBase<SearchesPostSearchFuzzyBatchHeaders, SearchFuzzyBatchResponse> {
+        extends ResponseBase<SearchesPostSearchFuzzyBatchHeaders, Void> {
     /**
      * Creates an instance of SearchesPostSearchFuzzyBatchResponse.
      *
@@ -26,14 +26,8 @@ public final class SearchesPostSearchFuzzyBatchResponse
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            SearchFuzzyBatchResponse value,
+            Void value,
             SearchesPostSearchFuzzyBatchHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
-    }
-
-    /** @return the deserialized response body. */
-    @Override
-    public SearchFuzzyBatchResponse getValue() {
-        return super.getValue();
     }
 }

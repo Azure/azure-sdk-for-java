@@ -9,9 +9,9 @@ package com.azure.maps.service.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoutesPostRouteDirectionsBatchHeaders model. */
+/** The SearchesGetSearchAddressReverseBatchHeaders model. */
 @Fluent
-public final class RoutesPostRouteDirectionsBatchHeaders {
+public final class SearchesGetSearchAddressReverseBatchHeaders {
     /*
      * The Location property.
      */
@@ -31,9 +31,9 @@ public final class RoutesPostRouteDirectionsBatchHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the RoutesPostRouteDirectionsBatchHeaders object itself.
+     * @return the SearchesGetSearchAddressReverseBatchHeaders object itself.
      */
-    public RoutesPostRouteDirectionsBatchHeaders setLocation(String location) {
+    public SearchesGetSearchAddressReverseBatchHeaders setLocation(String location) {
         this.location = location;
         return this;
     }

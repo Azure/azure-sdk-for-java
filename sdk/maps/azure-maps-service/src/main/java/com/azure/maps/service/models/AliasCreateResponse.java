@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the create operation. */
-public final class AliasCreateResponse extends ResponseBase<AliasCreateHeaders, AliasCreateResponseV2> {
+public final class AliasCreateResponse extends ResponseBase<AliasCreateHeaders, AliasesCreateResponse> {
     /**
      * Creates an instance of AliasCreateResponse.
      *
@@ -25,14 +25,14 @@ public final class AliasCreateResponse extends ResponseBase<AliasCreateHeaders, 
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            AliasCreateResponseV2 value,
+            AliasesCreateResponse value,
             AliasCreateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public AliasCreateResponseV2 getValue() {
+    public AliasesCreateResponse getValue() {
         return super.getValue();
     }
 }

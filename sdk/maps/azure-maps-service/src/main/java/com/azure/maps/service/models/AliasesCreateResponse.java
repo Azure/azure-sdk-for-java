@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response model for the Alias Create API for the case when the alias was successfully created. */
 @Immutable
-public final class AliasCreateResponseV2 {
+public final class AliasesCreateResponse {
     /*
      * The created timestamp for the alias.
      */
