@@ -48,13 +48,16 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
+    private KeyVaultKeyStore ks;
+
     void setKeyVaultClient(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;
     }
 
-    KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
+    KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient, KeyVaultKeyStore ks) {
         this.refreshInterval = refreshInterval;
         this.keyVaultClient = keyVaultClient;
+        this.ks = ks;
     }
 
     boolean certificatesNeedRefresh() {
@@ -120,6 +123,7 @@ public class KeyVaultCertificates implements AzureCertificates {
                 }
             });
         lastRefreshTime = new Date();
+        ks.loadAlias(true);
     }
 
     /**

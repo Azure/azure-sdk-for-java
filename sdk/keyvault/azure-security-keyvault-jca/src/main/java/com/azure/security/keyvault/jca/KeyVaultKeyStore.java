@@ -19,8 +19,13 @@ import java.util.List;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import static java.util.logging.Level.WARNING;
 
 /**
  * The Azure Key Vault implementation of the KeyStoreSpi.
@@ -73,6 +78,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final List<AzureCertificates> allCertificates;
 
     /**
+     * Stores all aliases
+     */
+    private final List<String> allAliases = new ArrayList<>();
+
+    /**
      * Stores the creation date.
      */
     private final Date creationDate;
@@ -88,13 +98,13 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * Store the path where the well know certificate is placed
      */
     final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.cert-path.well-known"))
-            .orElse("/etc/certs/well-known/");
+        .orElse("/etc/certs/well-known/");
 
     /**
      * Store the path where the custom certificate is placed
      */
     final String customPath = Optional.ofNullable(System.getProperty("azure.cert-path.custom"))
-            .orElse("/etc/certs/custom/");
+        .orElse("/etc/certs/custom/");
 
     /**
      * Constructor.
@@ -131,7 +141,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         jreCertificates = JreCertificates.getInstance();
         wellKnowCertificates = new FileSystemCertificates(wellKnowPath);
         customCertificates = new FileSystemCertificates(customPath);
-        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
+        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient, this);
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
     }
@@ -268,11 +278,24 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
         loadCertificates();
+        loadAlias(false);
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
         loadCertificates();
+        loadAlias(false);
+    }
+
+    void loadAlias(boolean loadKeyVault) {
+        Map<String, List<String>> aliasLists = new HashMap<>();
+        aliasLists.put("well known certificates", wellKnowCertificates.getAliases());
+        aliasLists.put("custom certificates", customCertificates.getAliases());
+        if (loadKeyVault) {
+            aliasLists.put("key vault certificates", keyVaultCertificates.getAliases());
+        }
+        aliasLists.put("class path certificates", classpathCertificates.getAliases());
+        loadAllAliases(aliasLists);
     }
 
     private void loadCertificates() {
@@ -281,9 +304,24 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         classpathCertificates.loadCertificatesFromClasspath();
     }
 
+    private void loadAllAliases(Map<String, List<String>> aliasLists) {
+        allAliases.clear();
+        allAliases.addAll(jreCertificates.getAliases());
+        aliasLists.forEach((key, value) -> {
+            value.forEach(a -> {
+                if (allAliases.contains(a)) {
+                    LOGGER.log(WARNING, String.format("The certificate with alias {} under {} already exists", new Object[]{key, a}));
+                } else {
+                    allAliases.add(a);
+                }
+            });
+        });
+    }
+
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
-        if (keyVaultCertificates.getAliases().contains(alias)) {
+        if (allAliases.contains(alias)) {
+            LOGGER.log(WARNING, "Cannot overwrite own certificate");
             return;
         }
         classpathCertificates.setCertificateEntry(alias, certificate);
