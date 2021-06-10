@@ -53,19 +53,28 @@ public class BlobParallelUploadOptions {
     /**
      * Constructs a new {@code BlobParalleUploadOptions}.
      *
-     * @param dataStream The data to write to the blob. The data must be markable. This is in order to support retries.
-     * If the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
-     * writing to the returned stream. Alternatively, consider wrapping your data source in a
-     * {@link java.io.BufferedInputStream} to add mark support.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
+     * Use {@link BlobParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
+     * length beforehand.
+     *
+     * @param dataStream The data to write to the blob.
+     * @param length The exact length of the data, or -1. It is important that a non-negative value match precisely the
+     * length of the data provided in the {@link InputStream}.
      */
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", dataStream);
-        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
+        StorageImplUtils.assertInBounds("length", length, -1, Long.MAX_VALUE);
         this.dataStream = dataStream;
         this.length = length;
         this.dataFlux = null;
+    }
+
+    /**
+     * Constructs a new {@code BlobParalleUploadOptions}.
+     *
+     * @param dataStream The data to write to the blob.
+     */
+    public BlobParallelUploadOptions(InputStream dataStream) {
+        this(dataStream, -1);
     }
 
     /**
