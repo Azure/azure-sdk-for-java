@@ -87,32 +87,34 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         String groupId = "7936319e-4317-475d-919d-ada32213b700"; // This needs to match the recording
         List<CallConnectionAsync> callConnections = new ArrayList<CallConnectionAsync>();
-        ServerCallAsync serverCall = null;
+        ServerCallAsync serverCallAsync = null;
 
         try {
             callConnections = createCall(callingServerAsyncClient, groupId, fromUser, toUser);
-            serverCall = callingServerAsyncClient.initializeServerCall(groupId);
+            serverCallAsync = callingServerAsyncClient.initializeServerCall(groupId);
 
-            Response<StartCallRecordingResult> startRecordingResponse = serverCall.startRecordingWithResponse(recordingStateCallbackUri).block();
+            Response<StartCallRecordingResult> startRecordingResponse = serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri).block();
             assertEquals(startRecordingResponse.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();     
             recordingId = startCallRecordingResult.getRecordingId();
-            validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
+            validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
 
-            Response<Void> pauseResponse = serverCall.pauseRecordingWithResponse(recordingId).block();
+            Response<Void> pauseResponse = serverCallAsync.pauseRecordingWithResponse(recordingId).block();
+            assert pauseResponse != null;
             assertEquals(pauseResponse.getStatusCode(), 200);
-            validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.INACTIVE);
+            validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.INACTIVE);
 
-            Response<Void> resumeResponse = serverCall.resumeRecordingWithResponse(recordingId).block();
-            assertEquals(resumeResponse.getStatusCode(), 200);                     
-            validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
+            Response<Void> resumeResponse = serverCallAsync.resumeRecordingWithResponse(recordingId).block();
+            assert resumeResponse != null;
+            assertEquals(resumeResponse.getStatusCode(), 200);
+            validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         } finally {
-            if (serverCall != null) {
+            if (serverCallAsync != null) {
                 try {
-                    Response<Void> stopResponse = serverCall.stopRecordingWithResponse(recordingId).block();
+                    Response<Void> stopResponse = serverCallAsync.stopRecordingWithResponse(recordingId).block();
                     assertEquals(stopResponse.getStatusCode(), 200);                     
                 } catch (Exception e) {
                     System.out.println("Error stopping recording: " + e.getMessage());
@@ -179,6 +181,7 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response = serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri).block();
+            assert response != null;
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
@@ -297,7 +300,7 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
         assert callRecordingStateResult != null;
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
-    
+
     protected void validateCallRecordingStateWithResponse(ServerCallAsync serverCallAsync,
             String recordingId,
             CallRecordingState expectedCallRecordingState) {

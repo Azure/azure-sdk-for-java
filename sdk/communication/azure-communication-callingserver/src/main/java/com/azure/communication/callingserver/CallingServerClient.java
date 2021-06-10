@@ -17,8 +17,17 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Objects;
 
+
 /**
- * Sync Client that supports server calling operations.
+ * A Sync Client that supports calling server operations.
+ *
+ * <p><strong>Instantiating a synchronous Calling Server Client</strong></p>
+ *
+ * {@codesnippet com.azure.communication.callingserver.CallingServerClient.pipeline.instantiation}
+ *
+ * <p>View {@link CallingServerClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see CallingServerClientBuilder
  */
 @ServiceClient(builder = CallingServerClientBuilder.class)
 public final class CallingServerClient {
@@ -35,6 +44,8 @@ public final class CallingServerClient {
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
      * @return response for a successful CreateCallConnection request.
+     *
+     * {@codesnippet com.azure.communication.callingserver.CallingServerClient.create.call.connection}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection createCallConnection(CommunicationIdentifier source,

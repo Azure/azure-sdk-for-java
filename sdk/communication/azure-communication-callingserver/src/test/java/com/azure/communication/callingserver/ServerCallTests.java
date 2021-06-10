@@ -280,7 +280,7 @@ public class ServerCallTests extends CallingServerTestBase {
             String recordingId,
             CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCall);
-        assertNotNull(serverCall.getServerCallId());        
+        assertNotNull(serverCall.getServerCallId());
         assertNotNull(recordingId);
 
         // There is a delay between the action and when the state is available.
@@ -296,7 +296,7 @@ public class ServerCallTests extends CallingServerTestBase {
             String recordingId,
             CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCall);
-        assertNotNull(serverCall.getServerCallId());        
+        assertNotNull(serverCall.getServerCallId());
         assertNotNull(recordingId);
 
 
