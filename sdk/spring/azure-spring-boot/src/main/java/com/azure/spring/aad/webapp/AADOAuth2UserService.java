@@ -127,7 +127,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             return Collections.emptySet();
         }
         Set<String> roles = new HashSet<>();
-        GroupInformation groupInformation = groupInformation(accessToken);
+        GroupInformation groupInformation = getGroupInformation(accessToken);
         if (!allowedGroupNames.isEmpty()) {
             Optional.of(groupInformation)
                     .map(GroupInformation::getGroupsNames)
@@ -159,10 +159,10 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         return allowedGroupIds.contains(groupId);
     }
 
-    private GroupInformation groupInformation(OAuth2AccessToken accessToken) {
+    private GroupInformation getGroupInformation(OAuth2AccessToken accessToken) {
         return Optional.of(accessToken)
                        .map(AbstractOAuth2Token::getTokenValue)
                        .map(graphClient::getGroupInformation)
-                       .orElse(new GroupInformation());
+                       .orElseGet(GroupInformation::new);
     }
 }

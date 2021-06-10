@@ -154,7 +154,6 @@ public class AADAuthenticationProperties implements InitializingBean {
          * Set the allowed group ids.
          *
          * @param allowedGroupIds Allowed group ids.
-         * @throws IllegalStateException If the user has configured all with other group ids will be thrown.
          */
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
             this.allowedGroupIds = allowedGroupIds;
