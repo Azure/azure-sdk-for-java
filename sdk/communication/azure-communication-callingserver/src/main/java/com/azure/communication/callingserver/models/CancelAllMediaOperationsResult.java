@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response payload for play audio operation. */
+/** The response payload of the cancel all media operations. */
 @Fluent
-public final class PlayAudioResponse {
+public final class CancelAllMediaOperationsResult {
     /*
      * Gets or sets the identifier.
      */
@@ -47,9 +47,9 @@ public final class PlayAudioResponse {
      * Set the id property: Gets or sets the identifier.
      *
      * @param id the id value to set.
-     * @return the PlayAudioResponse object itself.
+     * @return the CancelAllMediaOperationsResult object itself.
      */
-    public PlayAudioResponse setId(String id) {
+    public CancelAllMediaOperationsResult setId(String id) {
         this.id = id;
         return this;
     }
@@ -67,9 +67,9 @@ public final class PlayAudioResponse {
      * Set the status property: Gets or sets the status of the operation.
      *
      * @param status the status value to set.
-     * @return the PlayAudioResponse object itself.
+     * @return the CancelAllMediaOperationsResult object itself.
      */
-    public PlayAudioResponse setStatus(OperationStatus status) {
+    public CancelAllMediaOperationsResult setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }
@@ -87,9 +87,9 @@ public final class PlayAudioResponse {
      * Set the operationContext property: Gets or sets the operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the PlayAudioResponse object itself.
+     * @return the CancelAllMediaOperationsResult object itself.
      */
-    public PlayAudioResponse setOperationContext(String operationContext) {
+    public CancelAllMediaOperationsResult setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -107,9 +107,9 @@ public final class PlayAudioResponse {
      * Set the resultInfo property: Gets or sets the result info.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the PlayAudioResponse object itself.
+     * @return the CancelAllMediaOperationsResult object itself.
      */
-    public PlayAudioResponse setResultInfo(ResultInfo resultInfo) {
+    public CancelAllMediaOperationsResult setResultInfo(ResultInfo resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }

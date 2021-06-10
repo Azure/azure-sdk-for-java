@@ -5,14 +5,13 @@ package com.azure.communication.callingserver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.net.URISyntaxException;
 import java.util.UUID;
 
 import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.communication.callingserver.models.CallRecordingStateResponse;
+import com.azure.communication.callingserver.models.CallRecordingStateResult;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.PlayAudioResponse;
-import com.azure.communication.callingserver.models.StartCallRecordingResponse;
+import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -31,7 +30,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctions(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runAllClientFunctions(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctions");
         String recordingId = "";
@@ -40,8 +39,8 @@ public class ServerCallTests extends CallingServerTestBase {
 
         try {
 
-            StartCallRecordingResponse startCallRecordingResponse = serverCall.startRecording(recordingStateCallbackUri);
-            recordingId = startCallRecordingResponse.getRecordingId();
+            StartCallRecordingResult startCallRecordingResult = serverCall.startRecording(recordingStateCallbackUri);
+            recordingId = startCallRecordingResult.getRecordingId();
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
 
             serverCall.pauseRecording(recordingId);
@@ -59,7 +58,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctionsWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runAllClientFunctionsWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctionsWithResponse");
         String recordingId = "";
@@ -68,10 +67,10 @@ public class ServerCallTests extends CallingServerTestBase {
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
 
         try {
-            Response<StartCallRecordingResponse> response = serverCall.startRecordingWithResponse(recordingStateCallbackUri, Context.NONE);
+            Response<StartCallRecordingResult> response = serverCall.startRecordingWithResponse(recordingStateCallbackUri, Context.NONE);
             assertEquals(response.getStatusCode(), 200);
-            StartCallRecordingResponse startCallRecordingResponse = response.getValue();
-            recordingId = startCallRecordingResponse.getRecordingId();
+            StartCallRecordingResult startCallRecordingResult = response.getValue();
+            recordingId = startCallRecordingResult.getRecordingId();
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
 
             serverCall.pauseRecording(recordingId);
@@ -89,7 +88,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runPlayAudioFunction(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runPlayAudioFunction(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunction");
         String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
@@ -99,8 +98,8 @@ public class ServerCallTests extends CallingServerTestBase {
 
         System.out.println("serverCallId: " + serverCallId);
         try {
-            PlayAudioResponse playAudioResponse = serverCall.playAudio(audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext);
-            CallingServerTestUtils.validatePlayAudioResult(playAudioResponse, operationContext);
+            PlayAudioResult playAudioResult = serverCall.playAudio(audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext);
+            CallingServerTestUtils.validatePlayAudioResult(playAudioResult, operationContext);
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -110,7 +109,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runPlayAudioFunctionWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runPlayAudioFunctionWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunctionWithResponse");
         String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
@@ -120,8 +119,8 @@ public class ServerCallTests extends CallingServerTestBase {
 
         System.out.println("serverCallId: " + serverCallId);
         try {
-            Response<PlayAudioResponse> playAudioResponse = serverCall.playAudioWithResponse(audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext, Context.NONE);
-            CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
+            Response<PlayAudioResult> playAudioResult = serverCall.playAudioWithResponse(audioFileUri, UUID.randomUUID().toString(), callbackUri, operationContext, Context.NONE);
+            CallingServerTestUtils.validatePlayAudioResponse(playAudioResult, operationContext);
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -131,7 +130,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void startRecordingFails(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void startRecordingFails(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "startRecordingFails");
         String invalidServerCallId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";
@@ -140,7 +139,7 @@ public class ServerCallTests extends CallingServerTestBase {
         ServerCall serverCall = callingServerClient.initializeServerCall(invalidServerCallId);
 
         try {
-            Response<StartCallRecordingResponse> response = serverCall.startRecordingWithResponse(recordingStateCallbackUri, Context.NONE);
+            Response<StartCallRecordingResult> response = serverCall.startRecordingWithResponse(recordingStateCallbackUri, Context.NONE);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
         }
@@ -148,7 +147,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAddRemoveScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runAddRemoveScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddScenario");
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
@@ -171,7 +170,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAddRemoveScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runAddRemoveScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenarioWithResponse");
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
@@ -202,18 +201,18 @@ public class ServerCallTests extends CallingServerTestBase {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
-    private void validateCallRecordingState(ServerCall serverCall, String recordingId, CallRecordingState expectedCallRecordingState) throws InterruptedException {
+    private void validateCallRecordingState(ServerCall serverCall,
+                                            String recordingId,
+                                            CallRecordingState expectedCallRecordingState) {
         assertNotNull(recordingId);
         assertNotNull(serverCall.getServerCallId());
 
-        /**
-         * There is a delay bewteen the action and when the state is available.
-         * Waiting to make sure we get the updated state, when we are running
-         * against a live service.
-         */
+        // There is a delay between the action and when the state is available.
+        // Waiting to make sure we get the updated state, when we are running
+        // against a live service.
         sleepIfRunningAgainstService(6000);
 
-        CallRecordingStateResponse callRecordingStateResult = serverCall.getRecordingState(recordingId);
+        CallRecordingStateResult callRecordingStateResult = serverCall.getRecordingState(recordingId);
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
 }

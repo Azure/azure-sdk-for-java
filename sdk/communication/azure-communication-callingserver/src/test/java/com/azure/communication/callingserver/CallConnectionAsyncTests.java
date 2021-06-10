@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import java.net.URISyntaxException;
 import java.util.UUID;
 
 import com.azure.communication.callingserver.models.CallModality;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
+import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.PlayAudioResponse;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
@@ -29,11 +28,11 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
     private String to =   "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
     private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
-    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";;
+    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreatePlayCancelHangupScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreatePlayCancelHangupScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioAsync");
 
@@ -55,7 +54,8 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
             // Play Audio
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            PlayAudioResponse playAudioResult = callConnectionAsync.playAudio(
+            assert callConnectionAsync != null;
+            PlayAudioResult playAudioResult = callConnectionAsync.playAudio(
                 audioFileUri,
                 false,
                 UUID.randomUUID().toString(),
@@ -65,8 +65,8 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
-            CancelAllMediaOperationsResponse cancelAllMediaOperationsResponse = callConnectionAsync.cancelAllMediaOperations(cancelMediaOperationContext).block();
-            CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
+            CancelAllMediaOperationsResult cancelAllMediaOperationsResult = callConnectionAsync.cancelAllMediaOperations(cancelMediaOperationContext).block();
+            CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResult, cancelMediaOperationContext);
 
             // Hang up
             callConnectionAsync.hangup().block();
@@ -78,7 +78,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreatePlayCancelHangupScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreatePlayCancelHangupScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioWithResponseAsync");
 
@@ -97,11 +97,12 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
                 options).block();
 
             CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
+            assert callConnectionAsyncResponse != null;
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
             // Play Audio
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            Response<PlayAudioResponse> playAudioResponse =
+            Response<PlayAudioResult> playAudioResponse =
                 callConnectionAsync.playAudioWithResponse(
                     audioFileUri,
                     false,
@@ -112,8 +113,8 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
-            Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsResponse = callConnectionAsync.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext).block();
-            CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResponse, cancelMediaOperationContext);
+            Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult = callConnectionAsync.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext).block();
+            CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResult, cancelMediaOperationContext);
 
             // Hang up
             Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
@@ -126,7 +127,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateAddRemoveHangupScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreateAddRemoveHangupScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioAsync");
 
@@ -148,6 +149,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
             // Invite User
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            assert callConnectionAsync != null;
             callConnectionAsync.addParticipant(new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
 
             // Remove Participant
@@ -164,7 +166,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateAddRemoveHangupScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreateAddRemoveHangupScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioWithResponseAsync");
 
@@ -183,6 +185,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
                 options).block();
 
             CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
+            assert callConnectionAsyncResponse != null;
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
             // Invite User
@@ -206,7 +209,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateDeleteScenarioAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreateDeleteScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioAsync");
 
@@ -227,6 +230,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
             // Delete Call
+            assert callConnectionAsync != null;
             callConnectionAsync.hangup().block();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -236,7 +240,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateDeleteScenarioWithResponseAsync(HttpClient httpClient) throws URISyntaxException, InterruptedException {
+    public void runCreateDeleteScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioWithResponseAsync");
 
@@ -255,6 +259,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
                 options).block();
 
             CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
+            assert callConnectionAsyncResponse != null;
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
             // Delete Call

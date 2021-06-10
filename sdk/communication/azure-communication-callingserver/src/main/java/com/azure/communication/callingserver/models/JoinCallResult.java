@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response payload of the create call operation. */
+/** The response payload of the join call operation. */
 @Fluent
-public final class CreateCallResponse {
+public final class JoinCallResult {
     /*
      * The call connection id.
      */
@@ -29,9 +29,9 @@ public final class CreateCallResponse {
      * Set the callConnectionId property: The call connection id.
      *
      * @param callConnectionId the callConnectionId value to set.
-     * @return the CreateCallResponse object itself.
+     * @return the JoinCallResult object itself.
      */
-    public CreateCallResponse setCallConnectionId(String callConnectionId) {
+    public JoinCallResult setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
     }
