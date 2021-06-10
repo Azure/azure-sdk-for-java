@@ -7,17 +7,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.UUID;
 
+import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.models.CallRecordingStateResult;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -28,6 +32,15 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class ServerCallTests extends CallingServerTestBase {
     private String serverCallId = "aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM";
+
+    // Calling Tests
+    private String fromUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
+    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-93fa-bc5c-28c5-593a0d000f2c";
+    private String alternateId =   "+11111111111";
+    private String to =   "+11111111111";
+    private String callBackUri = "https://host.app/api/callback/calling";
+
+
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -146,50 +159,85 @@ public class ServerCallTests extends CallingServerTestBase {
         }
     }
 
-    @Disabled
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runAddScenario");
-        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+        CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenario");
         try {
+            // Establish a call
+            CreateCallOptions options = new CreateCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+
+            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+
+            CallConnection callConnection = callingServerClient.createCallConnection(
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                options);
+
+            CallingServerTestUtils.validateCallConnection(callConnection);
+
+            // Get Server Call
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L1ktWjZ5dzFzWVVTUUdWX2xPQWk1X2c_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3";
+            ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+
             // Add User
-            String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
-            String participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            String callBackUri = "https://host.app/api/callback/calling";
-            serverCall.addParticipant(new CommunicationUserIdentifier(participant), null, operationContext, callBackUri);
+            serverCall.addParticipant(new CommunicationUserIdentifier(invitedUser), null, operationContext, callBackUri);
 
             // Remove User
-            String participantId = "ebe62cd6-2085-4faf-8ceb-38a9a4482de8";
+            String participantId = "72647661-033a-4d1a-b858-465375977be0";
             serverCall.removeParticipant(participantId);
+
+            // Hangup
+            callConnection.hangup();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         }
     }
 
-    @Disabled
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenarioWithResponse");
-        ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+
         try {
+            // Establish a call
+            CreateCallOptions options = new CreateCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+
+            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+
+            CallConnection callConnection = callingServerClient.createCallConnection(
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                options);
+
+            CallingServerTestUtils.validateCallConnection(callConnection);
+
+            // Get Server Call
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L1lXS2R2TTNRc0Vpc0VNYVUtNlhvSlE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+
             // Add User
-            String conversationId = "aHR0cHM6Ly9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L3VEWHc4M1FsdUVtcG03TlVybElaTVE_aT0xMC02MC0zLTIwNyZlPTYzNzU4MjU1MTI1OTkzMzg5Ng";
-            String participant = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-756c-41ce-ac00-343a0d001b58";
             String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
-            String callBackUri = "https://host.app/api/callback/calling";
-            Response<Void> addResponse = serverCall.addParticipantWithResponse(new CommunicationUserIdentifier(participant), null, operationContext, callBackUri, Context.NONE);
+            Response<Void> addResponse = serverCall.addParticipantWithResponse(new CommunicationUserIdentifier(invitedUser), null, operationContext, callBackUri, Context.NONE);
             CallingServerTestUtils.validateResponse(addResponse);
 
             // Remove User
-            String participantId = "2a7155ef-a580-49cd-bcee-2ae4e8cdc602";
+            String participantId = "76b33acb-5097-4af0-a646-e07ccee48957";
             Response<Void> removeResponse = serverCall.removeParticipantWithResponse(participantId, Context.NONE);
             CallingServerTestUtils.validateResponse(removeResponse);
+
+            // Hangup
+            callConnection.hangup();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;

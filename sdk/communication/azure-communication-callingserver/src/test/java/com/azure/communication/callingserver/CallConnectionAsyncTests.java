@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -15,7 +16,6 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,14 +23,15 @@ import org.junit.jupiter.params.provider.MethodSource;
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
  * live. By default, tests are run in playback mode.
  */
-@Disabled
 public class CallConnectionAsyncTests extends CallingServerTestBase {
+
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
+    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
+    private String joinedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012cf";
     private String alternateId =   "+11111111111";
     private String to =   "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
     private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
-    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -155,7 +156,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             callConnectionAsync.addParticipant(new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
 
             // Remove Participant
-            String participantId = "9d265602-aee7-4553-ac75-a7e167e0b083";
+            String participantId = "e3560385-776f-41d1-bf04-07ef738f2fc1";
             callConnectionAsync.removeParticipant(participantId).block();
 
             // Hang up
@@ -196,7 +197,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
-            String participantId = "4c100bf4-304c-48e0-87a8-03597ec75464";
+            String participantId = "80238d5f-9eda-481a-b911-e2e12eba9eda";
             Response<Void> removeParticipantResponse = callConnectionAsync.removeParticipantWithResponse(participantId).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
@@ -211,9 +212,9 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateDeleteScenarioAsync(HttpClient httpClient) {
+    public void runCreateJoinHangupScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioAsync");
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateJoinHangupScenarioAsync");
 
         try {
             // Establish a call
@@ -231,9 +232,24 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
-            // Delete Call
+            // Join
+            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            JoinCallOptions joinCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+            CallConnectionAsync joinedCallConnectionAsync =
+                callingServerAsyncClient.join(
+                    serverCallId,
+                    new CommunicationUserIdentifier(joinedUser),
+                    joinCallOptions).block();
+            CallingServerTestUtils.validateCallConnectionAsync(joinedCallConnectionAsync);
+
+            //Hangup
             assert callConnectionAsync != null;
             callConnectionAsync.hangup().block();
+            assert joinedCallConnectionAsync != null;
+            joinedCallConnectionAsync.hangup().block();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -242,9 +258,9 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateDeleteScenarioWithResponseAsync(HttpClient httpClient) {
+    public void runCreateJoinHangupScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateDeleteScenarioWithResponseAsync");
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateJoinHangupScenarioWithResponseAsync");
 
         try {
             // Establish a call
@@ -264,8 +280,25 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             assert callConnectionAsyncResponse != null;
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
-            // Delete Call
+            // Join
+            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3lKQXY0TnVlOEV5bUpYVm1IYklIeUE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            JoinCallOptions joinCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+            Response<CallConnectionAsync> joinedCallConnectionAsyncResponse =
+                callingServerAsyncClient.joinWithResponse(
+                    serverCallId,
+                    new CommunicationUserIdentifier(joinedUser),
+                    joinCallOptions).block();
+            CallingServerTestUtils.validateJoinCallConnectionAsyncResponse(joinedCallConnectionAsyncResponse);
+            assert joinedCallConnectionAsyncResponse != null;
+            CallConnectionAsync joinedCallConnectionAsync = joinedCallConnectionAsyncResponse.getValue();
+
+            //Hangup
             Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
+            CallingServerTestUtils.validateResponse(hangupResponse);
+            hangupResponse = joinedCallConnectionAsync.hangupWithResponse().block();
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
