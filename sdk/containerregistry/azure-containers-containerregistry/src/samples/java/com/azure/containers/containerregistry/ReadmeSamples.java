@@ -185,19 +185,16 @@ public class ReadmeSamples {
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
 
+        final String authenticationScope = "https://management.usgovcloudapi.net/.default";
         ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint())
             .credential(credentials)
-            .authenticationScope(getAuthenticationScope())
+            .authenticationScope(authenticationScope)
             .buildClient();
 
         containerRegistryClient
             .listRepositoryNames()
             .forEach(name -> System.out.println(name));
-    }
-
-    private static String getAuthenticationScope() {
-        return null;
     }
 }
 

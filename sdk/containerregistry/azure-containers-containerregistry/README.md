@@ -62,17 +62,18 @@ To authenticate with a registry in a [National Cloud](https://docs.microsoft.com
 - Set the authorityHost in the credential builder.
 - Set the authenticationScope in ContainerRegistryClientBuilder.
 
-<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L183-L196 -->
+<!-- embedme ./src/samples/java/com/azure/containers/containerregistry/ReadmeSamples.java#L183-L197 -->
 ```Java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_US_GOVERNMENT);
 TokenCredential credentials = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
 
+final String authenticationScope = "https://management.usgovcloudapi.net/.default";
 ContainerRegistryClient containerRegistryClient = new ContainerRegistryClientBuilder()
     .endpoint(getEndpoint())
     .credential(credentials)
-    .authenticationScope(getAuthenticationScope())
+    .authenticationScope(authenticationScope)
     .buildClient();
 
 containerRegistryClient
