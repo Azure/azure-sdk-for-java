@@ -30,6 +30,7 @@ public class RequestOptionsJavaDocCodeSnippets {
 
     /**
      * Sample to demonstrate setting the JSON request body in a {@link RequestOptions}.
+     * @return An instance of {@link RequestOptions}.
      */
     public RequestOptions setJsonRequestBodyInRequestOptions() {
         // BEGIN: com.azure.core.experimental.http.requestoptions.createjsonrequest

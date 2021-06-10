@@ -73,7 +73,7 @@ import java.util.function.Consumer;
  */
 public class RequestOptions {
     private final ClientLogger logger = new ClientLogger(RequestOptions.class);
-    private Consumer<HttpRequest> requestCallback = request -> {};
+    private Consumer<HttpRequest> requestCallback = request -> { };
 
     /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.
