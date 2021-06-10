@@ -10,7 +10,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -60,25 +59,6 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
             byte[] contentBytes = FluxUtil.collectBytesInByteBufferStream(response.getValue()).block();
             assertThat(contentBytes, is(notNullValue()));
             assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")), is(equalTo(contentBytes.length)));
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void downloadMetadataToStreamAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadVideoAsync");
-
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Response<Void> response = conversationAsyncClient.downloadToWithResponse(METADATA_URL, baos, null, null).block();
-            assertThat(response, is(notNullValue()));
-            assertThat(response.getStatusCode(), is(equalTo(206)));
-            assertThat(baos, is(notNullValue()));
-            assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")), is(equalTo(baos.size())));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;

@@ -36,7 +36,7 @@ public class DownloadContentTests extends CallingServerTestBase {
 
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            conversationClient.downloadTo(METADATA_URL, baos, null);
+            conversationClient.downloadTo(METADATA_URL, baos);
             String metadata = new String(baos.toByteArray(), StandardCharsets.UTF_8);
             assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
         } catch (Exception e) {
@@ -73,7 +73,7 @@ public class DownloadContentTests extends CallingServerTestBase {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         CallingServerErrorException ex = assertThrows(CallingServerErrorException.class,
             () -> conversationClient
-                .downloadTo(CONTENT_URL_404, baos, null));
+                .downloadTo(CONTENT_URL_404, baos));
         assertThat(ex.getResponse().getStatusCode(), is(equalTo(404)));
     }
 

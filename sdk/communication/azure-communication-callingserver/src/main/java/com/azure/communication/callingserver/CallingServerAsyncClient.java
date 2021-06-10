@@ -66,8 +66,8 @@ public final class CallingServerAsyncClient {
 
         contentDownloader = new ContentDownloader(
             callServiceClient.getEndpoint(),
-            callServiceClient.getHttpPipeline()
-        );
+            callServiceClient.getHttpPipeline(),
+            logger);
     }
 
     /**
@@ -291,6 +291,7 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> downloadStream(String sourceEndpoint) {
         try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
             return downloadStream(sourceEndpoint, null);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
@@ -309,7 +310,10 @@ public final class CallingServerAsyncClient {
     public Flux<ByteBuffer> downloadStream(String sourceEndpoint, HttpRange httpRange) {
         try {
             Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-            return contentDownloader.downloadStream(sourceEndpoint, httpRange);
+            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, httpRange, null)
+                .map(Response::getValue)
+                .flux()
+                .flatMap(flux -> flux);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
         }
@@ -326,7 +330,7 @@ public final class CallingServerAsyncClient {
     public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange range) {
         try {
             Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range);
+            return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range, null);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -349,6 +353,8 @@ public final class CallingServerAsyncClient {
         ParallelDownloadOptions parallelDownloadOptions,
         boolean overwrite) {
         try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
             return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null)
                 .then();
         } catch (RuntimeException ex) {
@@ -373,6 +379,8 @@ public final class CallingServerAsyncClient {
         ParallelDownloadOptions parallelDownloadOptions,
         boolean overwrite) {
         try {
+            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+            Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
             return downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -382,17 +390,10 @@ public final class CallingServerAsyncClient {
     Mono<Response<Void>> downloadToWithResponse(
         String sourceEndpoint,
         OutputStream destinationStream,
-        ParallelDownloadOptions parallelDownloadOptions,
+        HttpRange httpRange,
         Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
 
-        ParallelDownloadOptions finalParallelDownloadOptions =
-            parallelDownloadOptions == null
-                ? new ParallelDownloadOptions()
-                : parallelDownloadOptions;
-
-        return contentDownloader.downloadToStream(sourceEndpoint, destinationStream, finalParallelDownloadOptions, context);
+        return contentDownloader.downloadToStreamWithResponse(sourceEndpoint, destinationStream, httpRange, context);
     }
 
     Mono<Response<Void>> downloadToWithResponse(
@@ -401,9 +402,6 @@ public final class CallingServerAsyncClient {
         ParallelDownloadOptions parallelDownloadOptions,
         boolean overwrite,
         Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-
         ParallelDownloadOptions finalParallelDownloadOptions =
             parallelDownloadOptions == null
                 ? new ParallelDownloadOptions()
@@ -420,7 +418,7 @@ public final class CallingServerAsyncClient {
         try {
             AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
             return Mono.just(file).flatMap(
-                c -> contentDownloader.downloadToFile(sourceEndpoint, c, finalParallelDownloadOptions, context))
+                c -> contentDownloader.downloadToFileWithResponse(sourceEndpoint, c, finalParallelDownloadOptions, context))
                 .doFinally(signalType -> contentDownloader.downloadToFileCleanup(file, destinationPath, signalType));
         } catch (IOException ex) {
             return monoError(logger, new RuntimeException(ex));

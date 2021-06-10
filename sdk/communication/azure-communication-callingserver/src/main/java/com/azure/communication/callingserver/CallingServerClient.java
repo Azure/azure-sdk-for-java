@@ -10,6 +10,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -125,14 +126,26 @@ public final class CallingServerClient {
      * {@code endpoint} and write it into the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint, OutputStream destinationStream,
-                           ParallelDownloadOptions parallelDownloadOptions) {
+    public void downloadTo(String sourceEndpoint, OutputStream destinationStream) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        downloadToWithResponse(sourceEndpoint, destinationStream, parallelDownloadOptions, null);
+        downloadToWithResponse(sourceEndpoint, destinationStream, null, null);
+    }
+
+    /**
+     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
+     * {@code endpoint} and write it into the {@link OutputStream} passed as parameter.
+     * @param sourceEndpoint - ACS URL where the content is located.
+     * @param destinationStream - A stream where to write the downloaded content.
+     * @param httpRange
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
+        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
+        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
+        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
     }
 
     /**
@@ -140,17 +153,16 @@ public final class CallingServerClient {
      * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
+     * @param httpRange
      * @param context A {@link Context} representing the request context.
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadToWithResponse(String sourceEndpoint, OutputStream destinationStream,
-                                                 ParallelDownloadOptions parallelDownloadOptions, Context context) {
+                                                 HttpRange httpRange, Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationStream, parallelDownloadOptions, context)
+        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
             .block();
     }
 
