@@ -712,7 +712,7 @@ public final class TableAsyncClient {
      * @param options The {@code filter}, {@code select}, and {@code top} OData query options to apply to this
      * operation.
      *
-     * @return A {@link PagedFlux containing matching {@link TableEntity entities} within the table.
+     * @return A {@link PagedFlux} containing matching {@link TableEntity entities} within the table.
      *
      * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
      * @throws TableServiceException If the request is rejected by the service.
