@@ -196,10 +196,10 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             for (int i = 0; i < docs.size(); i++) {
                 ObjectNode doc_current = docs.get(i);
                 PartitionKey partitionKey = new PartitionKeyBuilder()
-                    .add(doc_current.get("city").toString())
-                    .add(doc_current.get("zipcode").toString())
+                    .add(doc_current.get("city").asText())
+                    .add(doc_current.get("zipcode").asText())
                     .build();
-                CosmosItemResponse<ObjectNode> response = createdMultiHashContainer.readItem(doc_current.get("id").toString(), partitionKey, ObjectNode.class);
+                CosmosItemResponse<ObjectNode> response = createdMultiHashContainer.readItem(doc_current.get("id").asText(), partitionKey, ObjectNode.class);
             }
         }
 
@@ -209,8 +209,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             ObjectNode doc_current = docs.get(i);
             //Build the partition key
             PartitionKey partitionKey = new PartitionKeyBuilder()
-                .add(doc_current.get("city").toString())
-                .add(doc_current.get("zipcode").toString())
+                .add(doc_current.get("city").asText())
+                .add(doc_current.get("zipcode").asText())
                 .build();
 
             //Build the query request options
@@ -218,20 +218,20 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             queryRequestOptions.setPartitionKey(partitionKey);
 
             //Run the query.
-            String query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").toString());
+            String query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").asText());
 
             CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
                 createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
             assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
-            query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").toString());
+            query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").asText());
             queryRequestOptions = new CosmosQueryRequestOptions();
             feedResponseIterator1 =
                 createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
             assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
         }
 
-        String query = String.format("SELECT * from c where c.city = '%s'", docs.get(2).get("city").toString());
+        String query = String.format("SELECT * from c where c.city = '%s'", docs.get(2).get("city").asText());
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
         CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
             createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
