@@ -52,7 +52,7 @@ class ReactorExecutor implements AsyncCloseable {
 
     /**
      * Starts the reactor and will begin processing any reactor events until there are no longer any left or {@link
-     * #close()} is called.
+     * #closeAsync()} is called.
      */
     void start() {
         if (hasStarted.getAndSet(true)) {
@@ -63,18 +63,6 @@ class ReactorExecutor implements AsyncCloseable {
         logger.info(LOG_MESSAGE, connectionId, "Starting reactor.");
         reactor.start();
         scheduler.schedule(this::run);
-    }
-
-    /**
-     * Stops the reactor and schedules any pending tasks.
-     */
-    void stop() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        logger.info("Stop was called. Disposing of ReactorExecutor.");
-
     }
 
     /**

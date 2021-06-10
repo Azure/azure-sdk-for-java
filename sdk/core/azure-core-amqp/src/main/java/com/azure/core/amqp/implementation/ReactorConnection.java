@@ -464,6 +464,7 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         connection.close();
+        handler.close();
 
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
         sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
@@ -485,7 +486,6 @@ public class ReactorConnection implements AmqpConnection {
                     return false;
                 });
 
-                handler.close();
                 subscriptions.dispose();
             }));
 
