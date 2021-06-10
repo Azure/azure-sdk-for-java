@@ -11,7 +11,7 @@ import java.nio.ByteBuffer;
 /**
  * A {@link RequestContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
  */
-public class FluxByteBufferContent implements RequestContent {
+public class FluxByteBufferContent extends RequestContent {
     private final Flux<ByteBuffer> content;
     private final Long length;
 

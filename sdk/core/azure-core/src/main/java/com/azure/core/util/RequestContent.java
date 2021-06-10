@@ -24,13 +24,13 @@ import java.util.Objects;
 /**
  * Represents the content sent as part of a request.
  */
-public interface RequestContent {
+public abstract class RequestContent {
     /**
      * Converts the {@link RequestContent} into a {@code Flux<ByteBuffer>} for use in reactive streams.
      *
      * @return The {@link RequestContent} as a {@code Flux<ByteBuffer>}.
      */
-    Flux<ByteBuffer> asFluxByteBuffer();
+    public abstract Flux<ByteBuffer> asFluxByteBuffer();
 
     /**
      * Gets the length of the {@link RequestContent} if it is able to be calculated.
@@ -39,7 +39,7 @@ public interface RequestContent {
      *
      * @return The length of the {@link RequestContent} if it is able to be calculated, otherwise null.
      */
-    Long getLength();
+    public abstract Long getLength();
 
     /**
      * Creates a {@link RequestContent} that uses {@code byte[]} as its data.
@@ -48,7 +48,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code bytes} is null.
      */
-    static RequestContent fromBytes(byte[] bytes) {
+    public static RequestContent fromBytes(byte[] bytes) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
         return fromBytes(bytes, 0, bytes.length);
     }
@@ -64,7 +64,7 @@ public interface RequestContent {
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
      * length} is greater than {@code bytes.length}.
      */
-    static RequestContent fromBytes(byte[] bytes, int offset, int length) {
+    public static RequestContent fromBytes(byte[] bytes, int offset, int length) {
         Objects.requireNonNull(bytes, "'bytes' cannot be null.");
         if (offset < 0) {
             throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
@@ -92,7 +92,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code content} is null.
      */
-    static RequestContent fromString(String content) {
+    public static RequestContent fromString(String content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         return fromBytes(content.getBytes(StandardCharsets.UTF_8));
     }
@@ -104,7 +104,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code content} is null.
      */
-    static RequestContent fromBinaryData(BinaryData content) {
+    public static RequestContent fromBinaryData(BinaryData content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         return new ByteBufferContent(content.toByteBuffer());
     }
@@ -116,7 +116,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code file} is null.
      */
-    static RequestContent fromFile(Path file) {
+    public static RequestContent fromFile(Path file) {
         Objects.requireNonNull(file, "'file' cannot be null.");
         return fromFile(file, 0, file.toFile().length());
     }
@@ -132,7 +132,7 @@ public interface RequestContent {
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
      * length} is greater than the file size.
      */
-    static RequestContent fromFile(Path file, long offset, long length) {
+    public static RequestContent fromFile(Path file, long offset, long length) {
         Objects.requireNonNull(file, "'file' cannot be null.");
         if (offset < 0) {
             throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
@@ -158,7 +158,7 @@ public interface RequestContent {
      * @param serializable An {@link Object} that will be serialized to be the {@link RequestContent} data.
      * @return A new {@link RequestContent}.
      */
-    static RequestContent fromObject(Object serializable) {
+    public static RequestContent fromObject(Object serializable) {
         return fromObject(serializable, JsonSerializerProviders.createInstance(true));
     }
 
@@ -170,7 +170,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code serializer} is null.
      */
-    static RequestContent fromObject(Object serializable, ObjectSerializer serializer) {
+    public static RequestContent fromObject(Object serializable, ObjectSerializer serializer) {
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         return new SerializableContent(serializable, serializer);
     }
@@ -185,7 +185,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code content} is null.
      */
-    static RequestContent fromFlux(Flux<ByteBuffer> content) {
+    public static RequestContent fromFlux(Flux<ByteBuffer> content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         return new FluxByteBufferContent(content);
     }
@@ -199,7 +199,7 @@ public interface RequestContent {
      * @throws NullPointerException If {@code content} is null.
      * @throws IllegalStateException If {@code length} is less than 0.
      */
-    static RequestContent fromFlux(Flux<ByteBuffer> content, long length) {
+    public static RequestContent fromFlux(Flux<ByteBuffer> content, long length) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         if (length < 0) {
             throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
@@ -219,7 +219,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code content} is null.
      */
-    static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content) {
+    public static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         return new FluxByteBufferContent(content);
     }
@@ -233,7 +233,7 @@ public interface RequestContent {
      * @throws NullPointerException If {@code content} is null.
      * @throws IllegalStateException If {@code length} is less than 0.
      */
-    static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content, long length) {
+    public static RequestContent fromBufferedFlux(BufferedFluxByteBuffer content, long length) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         if (length < 0) {
             throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(
@@ -253,7 +253,7 @@ public interface RequestContent {
      * @return A new {@link RequestContent}.
      * @throws NullPointerException If {@code inputStream} is null.
      */
-    static RequestContent fromInputStream(InputStream content) {
+    public static RequestContent fromInputStream(InputStream content) {
         Objects.requireNonNull(content, "'content' cannot be null.");
 
         return new InputStreamContent(content);
@@ -268,7 +268,7 @@ public interface RequestContent {
      * @throws NullPointerException If {@code inputStream} is null.
      * @throws IllegalArgumentException If {@code length} is less than 0.
      */
-    static RequestContent fromInputStream(InputStream content, long length) {
+    public static RequestContent fromInputStream(InputStream content, long length) {
         Objects.requireNonNull(content, "'content' cannot be null.");
         if (length < 0) {
             throw new ClientLogger(RequestContent.class).logExceptionAsError(new IllegalArgumentException(

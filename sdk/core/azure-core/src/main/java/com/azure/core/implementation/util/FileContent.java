@@ -16,7 +16,7 @@ import java.nio.file.Path;
 /**
  * A {@link RequestContent} implementation which is backed by a file.
  */
-public final class FileContent implements RequestContent {
+public final class FileContent extends RequestContent {
     private final ClientLogger logger = new ClientLogger(FileContent.class);
 
     private final Path file;

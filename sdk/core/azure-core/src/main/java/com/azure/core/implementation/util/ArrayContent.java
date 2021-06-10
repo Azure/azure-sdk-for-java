@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 /**
  * A {@link RequestContent} implementation which is backed by a {@code byte[]}.
  */
-public final class ArrayContent implements RequestContent {
+public final class ArrayContent extends RequestContent {
     private final byte[] content;
     private final int offset;
     private final int length;

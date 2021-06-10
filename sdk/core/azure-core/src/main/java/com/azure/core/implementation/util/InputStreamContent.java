@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
 /**
  * A {@link RequestContent} implementation which is backed by an {@link InputStream}.
  */
-public class InputStreamContent implements RequestContent {
+public class InputStreamContent extends RequestContent {
     private final InputStream content;
     private final Long length;
 

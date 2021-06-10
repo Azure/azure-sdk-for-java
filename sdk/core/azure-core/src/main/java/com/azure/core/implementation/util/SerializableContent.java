@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
 /**
  * A {@link RequestContent} implementation which is backed by a serializable object.
  */
-public final class SerializableContent implements RequestContent {
+public final class SerializableContent extends RequestContent {
     private final Object serializable;
     private final ObjectSerializer objectSerializer;
 
