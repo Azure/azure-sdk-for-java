@@ -1,7 +1,11 @@
 # Release History
 
 ## 3.6.0-beta.1 (Unreleased)
+### New Features
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
+
+### Breaking Changes
+- Deprecated `allowTelemetry` configuration item.
 
 ## 3.5.0 (2021-05-24)
 ### New Features

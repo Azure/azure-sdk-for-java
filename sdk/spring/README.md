@@ -124,7 +124,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][codeofcondu
 
 ### Data/Telemetry
 
-This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy][privacy-statement] statement to learn more.
+This project collects usage data to help improve our products and services. Read our [privacy][privacy-statement] statement to learn more.
 
 
 [maven]: https://maven.apache.org/

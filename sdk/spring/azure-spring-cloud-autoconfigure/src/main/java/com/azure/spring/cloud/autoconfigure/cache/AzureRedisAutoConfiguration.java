@@ -8,7 +8,6 @@ import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.RedisCacheManager;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -34,12 +33,6 @@ import java.util.Arrays;
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(AzureRedisProperties.class)
 public class AzureRedisAutoConfiguration {
-    private static final String REDIS = "Redis";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(REDIS);
-    }
 
     @ConditionalOnMissingBean
     @Bean

@@ -249,6 +249,9 @@ public class AADB2CProperties implements InitializingBean {
         this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Remove data collection based on fixed endpoints, and support based on service endpoints.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }

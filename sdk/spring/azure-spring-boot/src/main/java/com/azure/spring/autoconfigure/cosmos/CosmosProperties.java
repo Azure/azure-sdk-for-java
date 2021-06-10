@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
@@ -102,6 +103,9 @@ public class CosmosProperties {
         this.consistencyLevel = consistencyLevel;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Remove data collection based on fixed endpoints, and support based on service endpoints.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }

@@ -8,7 +8,6 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
@@ -43,14 +42,6 @@ import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.ge
 public class AzureServiceBusTopicAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusTopicAutoConfiguration.class);
-
-    private static final String SERVICE_BUS_TOPIC = "ServiceBusTopic";
-    private static final String NAMESPACE = "Namespace";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(SERVICE_BUS_TOPIC);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -89,8 +80,6 @@ public class AzureServiceBusTopicAutoConfiguration {
         clientFactory.setServiceBusNamespaceManager(namespaceManager);
         clientFactory.setServiceBusTopicManager(topicManager);
         clientFactory.setServiceBusTopicSubscriptionManager(topicSubscriptionManager);
-
-        TelemetryCollector.getInstance().addProperty(SERVICE_BUS_TOPIC, NAMESPACE, getNamespace(connectionString));
 
         return clientFactory;
     }
