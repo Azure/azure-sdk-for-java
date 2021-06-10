@@ -28,18 +28,18 @@ public class TableServiceHelloWorldAsync {
         // directly on the table.
         tableServiceAsyncClient.createTable(tableName)
             .map(tableAsyncClient ->
-                System.out.printf("Created table with name '%s'.\n", tableAsyncClient.getTableName()))
+                System.out.printf("Created table with name '%s'.%n", tableAsyncClient.getTableName()))
             // We will then retrieve all tables for this account's Table service and print their names.
             .thenMany(tableServiceAsyncClient.listTables())
             .map(tableItem -> {
-                System.out.printf("Retrieved table with name '%s'.\n", tableItem.getName());
+                System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName());
                 return tableItem;
             })
             .filter(tableItem -> tableItem.getName().equals(tableName))
             // Finally, let's delete the table we created above.
             .flatMap(tableItem -> tableServiceAsyncClient.deleteTable(tableItem.getName()))
             .subscribe(
-                ignored -> System.out.printf("Deleted table with name '%s'.\n", tableName),
+                ignored -> System.out.printf("Deleted table with name '%s'.%n", tableName),
                 ex -> {
                     System.out.println("An error occurred running the sample: " + ex.getMessage());
                     latch.countDown();

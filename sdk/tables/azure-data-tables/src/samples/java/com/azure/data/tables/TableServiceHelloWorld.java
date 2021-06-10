@@ -28,16 +28,16 @@ public class TableServiceHelloWorld {
 
         TableClient tableClient = tableServiceClient.createTable(tableName);
 
-        System.out.printf("Created table with name '%s'.\n", tableClient.getTableName());
+        System.out.printf("Created table with name '%s'.%n", tableClient.getTableName());
 
         // We will then retrieve all tables for this account's Table service and print their names.
         PagedIterable<TableItem> tableItems = tableServiceClient.listTables();
 
-        tableItems.forEach(tableItem -> System.out.printf("Retrieved table with name '%s'.\n", tableItem.getName()));
+        tableItems.forEach(tableItem -> System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName()));
 
         // Finally, let's delete the table we created above.
         tableServiceClient.deleteTable(tableName);
 
-        System.out.printf("Deleted table with name '%s'.\n", tableName);
+        System.out.printf("Deleted table with name '%s'.%n", tableName);
     }
 }

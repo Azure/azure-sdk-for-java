@@ -121,7 +121,7 @@ public class TableServiceClientJavaDocCodeSnippets {
         PagedIterable<TableItem> tableItems = tableServiceClient.listTables();
 
         tableItems.forEach(tableItem ->
-            System.out.printf("Retrieved table with name '%s'.\n", tableItem.getName()));
+            System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName()));
         // END: com.azure.data.tables.tableServiceClient.listTables
 
         // BEGIN: com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context
@@ -131,7 +131,7 @@ public class TableServiceClientJavaDocCodeSnippets {
             new Context("key1", "value1"));
 
         retrievedTableItems.forEach(tableItem ->
-            System.out.printf("Retrieved table with name '%s'.\n", tableItem.getName()));
+            System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName()));
         // END: com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context
     }
 

@@ -263,7 +263,7 @@ public class TableClientJavaDocCodeSnippets {
         PagedIterable<TableEntity> tableEntities = tableClient.listEntities();
 
         tableEntities.forEach(tableEntity ->
-            System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.\n",
+            System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n",
                 tableEntity.getPartitionKey(), tableEntity.getRowKey()));
         // END: com.azure.data.tables.tableClient.listEntities
 
@@ -282,11 +282,11 @@ public class TableClientJavaDocCodeSnippets {
             Duration.ofSeconds(5), new Context("key1", "value1"));
 
         myTableEntities.forEach(tableEntity -> {
-            System.out.printf("Retrieved entity with partition key '%s', row key '%s' and properties:\n",
+            System.out.printf("Retrieved entity with partition key '%s', row key '%s' and properties:%n",
                 tableEntity.getPartitionKey(), tableEntity.getRowKey());
 
             tableEntity.getProperties().forEach((key, value) ->
-                System.out.printf("Name: '%s'. Value: '%s'.\n", key, value));
+                System.out.printf("Name: '%s'. Value: '%s'.%n", key, value));
         });
         // END: com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context
     }
@@ -327,7 +327,7 @@ public class TableClientJavaDocCodeSnippets {
             myTableEntity.getRowKey());
 
         myTableEntity.getProperties().forEach((key, value) ->
-            System.out.printf("\nName: '%s'. Value: '%s'.", key, value));
+            System.out.printf("%nName: '%s'. Value: '%s'.", key, value));
         // END: com.azure.data.tables.tableClient.getEntityWithResponse#String-String-ListEntitiesOptions-Duration-Context
     }
 
@@ -358,7 +358,7 @@ public class TableClientJavaDocCodeSnippets {
             + " IDs:", response.getStatusCode());
 
         response.getValue().getIdentifiers().forEach(signedIdentifier ->
-            System.out.printf("\n%s", signedIdentifier.getId()));
+            System.out.printf("%n%s", signedIdentifier.getId()));
         // END: com.azure.data.tables.tableClient.getAccessPoliciesWithResponse#Duration-Context
     }
 
@@ -429,7 +429,7 @@ public class TableClientJavaDocCodeSnippets {
 
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, firstEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", partitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", partitionKey,
             firstEntityRowKey);
 
         TableEntity secondEntity = new TableEntity(partitionKey, secondEntityRowKey)
@@ -438,7 +438,7 @@ public class TableClientJavaDocCodeSnippets {
 
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, secondEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", partitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", partitionKey,
             secondEntityRowKey);
 
         TableTransactionResult tableTransactionResult = tableClient.submitTransaction(transactionActions);
@@ -446,7 +446,7 @@ public class TableClientJavaDocCodeSnippets {
         System.out.print("Submitted transaction. The ordered response status codes for the actions are:");
 
         tableTransactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-            System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+            System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
         // END: com.azure.data.tables.tableClient.submitTransaction#List
 
         // BEGIN: com.azure.data.tables.tableClient.submitTransactionWithError#List
@@ -456,7 +456,7 @@ public class TableClientJavaDocCodeSnippets {
             System.out.print("Submitted transaction. The ordered response status codes for the actions are:");
 
             transactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-                System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+                System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
         } catch (TableTransactionFailedException e) {
             // If the transaction fails, the resulting exception contains the index of the first action that failed.
             int failedActionIndex = e.getFailedTransactionActionIndex();
@@ -480,7 +480,7 @@ public class TableClientJavaDocCodeSnippets {
 
         myTransactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, myFirstEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", myPartitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", myPartitionKey,
             myFirstEntityRowKey);
 
         TableEntity mySecondEntity = new TableEntity(myPartitionKey, mySecondEntityRowKey)
@@ -489,7 +489,7 @@ public class TableClientJavaDocCodeSnippets {
 
         myTransactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, mySecondEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", myPartitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", myPartitionKey,
             mySecondEntityRowKey);
 
         Response<TableTransactionResult> response = tableClient.submitTransactionWithResponse(myTransactionActions,
@@ -499,7 +499,7 @@ public class TableClientJavaDocCodeSnippets {
             + " actions are:", response.getStatusCode());
 
         response.getValue().getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-            System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+            System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
         // END: com.azure.data.tables.tableClient.submitTransactionWithResponse#List-Duration-Context
 
         // BEGIN: com.azure.data.tables.tableClient.submitTransactionWithResponseWithError#List-Duration-Context
@@ -513,7 +513,7 @@ public class TableClientJavaDocCodeSnippets {
 
             transactionResultResponse.getValue().getTransactionActionResponses()
                 .forEach(tableTransactionActionResponse ->
-                    System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+                    System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
         } catch (TableTransactionFailedException e) {
             // If the transaction fails, the resulting exception contains the index of the first action that failed.
             int failedActionIndex = e.getFailedTransactionActionIndex();

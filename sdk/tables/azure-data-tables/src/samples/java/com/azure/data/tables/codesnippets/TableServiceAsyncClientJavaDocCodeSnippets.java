@@ -114,14 +114,14 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.tables.tableServiceAsyncClient.listTables
         tableServiceAsyncClient.listTables().subscribe(tableItem ->
-            System.out.printf("Retrieved table with name '%s'.\n", tableItem.getName()));
+            System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName()));
         // END: com.azure.data.tables.tableServiceAsyncClient.listTables
 
         // BEGIN: com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions
         ListTablesOptions options = new ListTablesOptions().setFilter("TableName eq 'myTable'");
 
         tableServiceAsyncClient.listTables(options).subscribe(tableItem ->
-            System.out.printf("Retrieved table with name '%s'.\n", tableItem.getName()));
+            System.out.printf("Retrieved table with name '%s'.%n", tableItem.getName()));
         // END: com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions
     }
 

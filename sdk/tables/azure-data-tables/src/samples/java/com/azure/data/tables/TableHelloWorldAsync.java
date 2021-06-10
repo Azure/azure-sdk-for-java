@@ -46,30 +46,30 @@ public class TableHelloWorldAsync {
 
         // We'll first create the table this client will be associated with.
         tableAsyncClient.createTable()
-            .map(tableItem -> System.out.printf("Created table with name '%s'.\n", tableItem.getName()))
+            .map(tableItem -> System.out.printf("Created table with name '%s'.%n", tableItem.getName()))
             // We will then create an entity on the table.
             .then(tableAsyncClient.createEntity(entityToCreate))
             .map(unused ->
-                System.out.printf("Created entity with partition key '%s' and row key '%s'.\n", partitionKey, rowKey))
+                System.out.printf("Created entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey))
             // Let's now update said entity on the table. By default, the provided entity will be merged with the one on
             // the table.
             .then(tableAsyncClient.updateEntity(entityForUpdate))
             .map(unused ->
-                System.out.printf("Updated entity with partition key '%s' and row key '%s'.\n", partitionKey, rowKey))
+                System.out.printf("Updated entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey))
             // Let's retrieve our updated entity to see how it looks now.
             .then(tableAsyncClient.getEntity(partitionKey, rowKey))
             .map(retrievedEntity ->
-                System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.\n",
+                System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n",
                     retrievedEntity.getPartitionKey(), retrievedEntity.getRowKey()))
             // Let's now use the upsert command to update an entity (or insert it, if the entity does not exist on the
             // table already).
             .then(tableAsyncClient.upsertEntity(entityForUpsert))
             .map(unused ->
-                System.out.printf("Upserted entity with partition key '%s' and row key '%s'.\n", partitionKey, rowKey))
+                System.out.printf("Upserted entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey))
             // Let's now retrieve all the entities on the table and print their partition and row keys.
             .thenMany(tableAsyncClient.listEntities())
             .map(currentEntity -> {
-                System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.\n",
+                System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n",
                     currentEntity.getPartitionKey(), currentEntity.getRowKey());
                 return currentEntity;
             })
@@ -79,7 +79,7 @@ public class TableHelloWorldAsync {
             .flatMap(tableAsyncClient::deleteEntity)
             .subscribe(
                 ignored ->
-                    System.out.printf("Deleted entity with partition key '%s' and row key '%s'.\n", partitionKey,
+                    System.out.printf("Deleted entity with partition key '%s' and row key '%s'.%n", partitionKey,
                         anotherRowKey),
                 ex -> {
                     System.out.println("Got an error running the sample: " + ex.getMessage());

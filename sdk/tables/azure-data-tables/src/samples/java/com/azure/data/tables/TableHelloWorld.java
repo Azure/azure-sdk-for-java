@@ -28,7 +28,7 @@ public class TableHelloWorld {
         // We'll first create the table this client will be associated with.
         TableItem tableItem = tableClient.createTable();
 
-        System.out.printf("Created table with name '%s'.\n", tableItem.getName());
+        System.out.printf("Created table with name '%s'.%n", tableItem.getName());
 
         // We will then create an entity on the table.
         String partitionKey = "OfficeSupplies";
@@ -38,7 +38,7 @@ public class TableHelloWorld {
 
         tableClient.createEntity(entityToCreate);
 
-        System.out.printf("Created entity with partition key '%s' and row key '%s'.\n", partitionKey, rowKey);
+        System.out.printf("Created entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey);
 
         // Let's now update said entity on the table. By default, the provided entity will be merged with the one on
         // the table.
@@ -48,12 +48,12 @@ public class TableHelloWorld {
 
         tableClient.updateEntity(entityForUpdate);
 
-        System.out.printf("Updated entity with partition key '%s' and row key '%s'.\n", partitionKey, rowKey);
+        System.out.printf("Updated entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey);
 
         // Let's retrieve our updated entity to see how it looks now.
         TableEntity retrievedEntity = tableClient.getEntity(partitionKey, rowKey);
 
-        System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.\n",
+        System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n",
             retrievedEntity.getPartitionKey(), retrievedEntity.getRowKey());
 
         // Let's now use the upsert command to update an entity (or insert it, if the entity does not exist on the
@@ -66,18 +66,18 @@ public class TableHelloWorld {
 
         tableClient.updateEntity(entityForUpsert);
 
-        System.out.printf("Upserted entity with partition key '%s' and row key '%s'.\n", partitionKey, rowKey);
+        System.out.printf("Upserted entity with partition key '%s' and row key '%s'.%n", partitionKey, rowKey);
 
         // Let's now retrieve all the entities on the table and print their partition and row keys.
         PagedIterable<TableEntity> entities = tableClient.listEntities();
 
         entities.forEach(entity ->
-            System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.\n", entity.getPartitionKey(),
+            System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n", entity.getPartitionKey(),
                 entity.getRowKey()));
 
         // Finally, let's delete the entity we upserted above.
         tableClient.deleteEntity(partitionKey, anotherRowKey);
 
-        System.out.printf("Deleted entity with partition key '%s' and row key '%s'.\n", partitionKey, anotherRowKey);
+        System.out.printf("Deleted entity with partition key '%s' and row key '%s'.%n", partitionKey, anotherRowKey);
     }
 }

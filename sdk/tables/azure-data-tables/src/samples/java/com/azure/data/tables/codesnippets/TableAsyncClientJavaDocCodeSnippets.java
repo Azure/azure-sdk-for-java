@@ -268,7 +268,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
         tableAsyncClient.listEntities()
             .contextWrite(Context.of("key1", "value1", "key2", "value2"))
             .subscribe(tableEntity ->
-                System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.\n",
+                System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n",
                     tableEntity.getPartitionKey(), tableEntity.getRowKey()));
         // END: com.azure.data.tables.tableAsyncClient.listEntities
 
@@ -286,11 +286,11 @@ public class TableAsyncClientJavaDocCodeSnippets {
         tableAsyncClient.listEntities(listEntitiesOptions)
             .contextWrite(Context.of("key1", "value1", "key2", "value2"))
             .subscribe(tableEntity -> {
-                System.out.printf("Retrieved entity with partition key '%s', row key '%s' and properties:\n",
+                System.out.printf("Retrieved entity with partition key '%s', row key '%s' and properties:%n",
                     tableEntity.getPartitionKey(), tableEntity.getRowKey());
 
                 tableEntity.getProperties().forEach((key, value) ->
-                    System.out.printf("Name: '%s'. Value: '%s'.\n", key, value));
+                    System.out.printf("Name: '%s'. Value: '%s'.%n", key, value));
             });
         // END: com.azure.data.tables.tableAsyncClient.listEntities#ListEntitiesOptions
     }
@@ -332,7 +332,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
                     tableEntity.getRowKey());
 
                 tableEntity.getProperties().forEach((key, value) ->
-                    System.out.printf("\nName: '%s'. Value: '%s'.", key, value));
+                    System.out.printf("%nName: '%s'. Value: '%s'.", key, value));
             });
         // END: com.azure.data.tables.tableAsyncClient.getEntityWithResponse#String-String-ListEntitiesOptions
     }
@@ -365,7 +365,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
                     + " following IDs:", response.getStatusCode());
 
                 response.getValue().getIdentifiers().forEach(signedIdentifier ->
-                    System.out.printf("\n%s", signedIdentifier.getId()));
+                    System.out.printf("%n%s", signedIdentifier.getId()));
             });
         // END: com.azure.data.tables.tableAsyncClient.getAccessPoliciesWithResponse
     }
@@ -438,7 +438,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
 
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, firstEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", partitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", partitionKey,
             firstEntityRowKey);
 
         TableEntity secondEntity = new TableEntity(partitionKey, secondEntityRowKey)
@@ -447,7 +447,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
 
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, secondEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", partitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", partitionKey,
             secondEntityRowKey);
 
         tableAsyncClient.submitTransaction(transactionActions)
@@ -456,7 +456,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
                 System.out.print("Submitted transaction. The ordered response status codes for the actions are:");
 
                 tableTransactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-                    System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+                    System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
             });
         // END: com.azure.data.tables.tableAsyncClient.submitTransaction#List
 
@@ -476,7 +476,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
                 System.out.print("Submitted transaction. The ordered response status codes for the actions are:");
 
                 tableTransactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-                    System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+                    System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
             });
         // END: com.azure.data.tables.tableAsyncClient.submitTransactionWithError#List
 
@@ -493,7 +493,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
 
         myTransactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, myFirstEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", myPartitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", myPartitionKey,
             myFirstEntityRowKey);
 
         TableEntity mySecondEntity = new TableEntity(myPartitionKey, mySecondEntityRowKey)
@@ -502,7 +502,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
 
         myTransactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, mySecondEntity));
 
-        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", myPartitionKey,
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", myPartitionKey,
             mySecondEntityRowKey);
 
         tableAsyncClient.submitTransactionWithResponse(myTransactionActions)
@@ -512,7 +512,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
                     + " submitted actions are:", response.getStatusCode());
 
                 response.getValue().getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-                    System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+                    System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
             });
         // END: com.azure.data.tables.tableAsyncClient.submitTransactionWithResponse#List
 
@@ -532,7 +532,7 @@ public class TableAsyncClientJavaDocCodeSnippets {
                     + " submitted actions are:", response.getStatusCode());
 
                 response.getValue().getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-                    System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+                    System.out.printf("%n%d", tableTransactionActionResponse.getStatusCode()));
             });
         // END: com.azure.data.tables.tableAsyncClient.submitTransactionWithResponseWithError#List
     }
