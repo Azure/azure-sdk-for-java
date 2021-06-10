@@ -3,10 +3,6 @@
 package com.azure.data.tables.codesnippets;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.tables.TableServiceAsyncClient;
 import com.azure.data.tables.TableServiceClientBuilder;
 import com.azure.data.tables.models.ListTablesOptions;

@@ -3,10 +3,6 @@
 package com.azure.data.tables.codesnippets;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.tables.TableAsyncClient;
 import com.azure.data.tables.TableClientBuilder;
 import com.azure.data.tables.models.ListEntitiesOptions;
@@ -467,21 +463,21 @@ public class TableAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.tables.tableAsyncClient.submitTransactionWithError#List
 
         tableAsyncClient.submitTransaction(transactionActions)
-        .contextWrite(Context.of("key1", "value1", "key2", "value2"))
-        .doOnError(TableTransactionFailedException.class, e -> {
-            // If the transaction fails, the resulting exception contains the index of the first action that failed.
-            int failedActionIndex = e.getFailedTransactionActionIndex();
-            // You can use this index to modify the offending action or remove it from the list of actions to send
-            // in the transaction, for example.
-            transactionActions.remove(failedActionIndex);
-            // And then retry submitting the transaction.
-        })
-        .subscribe(tableTransactionResult -> {
-            System.out.print("Submitted transaction. The ordered response status codes for the actions are:");
+            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
+            .doOnError(TableTransactionFailedException.class, e -> {
+                // If the transaction fails, the resulting exception contains the index of the first action that failed.
+                int failedActionIndex = e.getFailedTransactionActionIndex();
+                // You can use this index to modify the offending action or remove it from the list of actions to send
+                // in the transaction, for example.
+                transactionActions.remove(failedActionIndex);
+                // And then retry submitting the transaction.
+            })
+            .subscribe(tableTransactionResult -> {
+                System.out.print("Submitted transaction. The ordered response status codes for the actions are:");
 
-            tableTransactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
-                System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
-        });
+                tableTransactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
+                    System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+            });
         // END: com.azure.data.tables.tableAsyncClient.submitTransactionWithError#List
 
         // BEGIN: com.azure.data.tables.tableAsyncClient.submitTransactionWithResponse#List
