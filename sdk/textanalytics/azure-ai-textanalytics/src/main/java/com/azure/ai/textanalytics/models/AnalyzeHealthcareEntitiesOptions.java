@@ -41,6 +41,21 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
     }
 
     /**
+     * Set the value of {@code disableServiceLogs}.
+     *
+     * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service
+     * does not log your input text. Setting this property to 'false', enables the service to log your text input for
+     * 48 hours, solely to allow for troubleshooting issues.
+     *
+     * @return the {@link AnalyzeHealthcareEntitiesOptions} object itself.
+     */
+    @Override
+    public AnalyzeHealthcareEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
+        return this;
+    }
+
+    /**
      * Get the value of {@code stringIndexType}.
      *
      * @return The value of {@code stringIndexType}.

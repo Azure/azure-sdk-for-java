@@ -14,6 +14,7 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -131,6 +132,17 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
                     keyResponse.getId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.createEcKey#EcKeyCreateOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKey#CreateOctKeyOptions
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createOctKey(createOctKeyOptions)
+            .contextWrite(Context.of(key1, value1, key2, value2))
+            .subscribe(keyResponse ->
+                System.out.printf("Key is created with name %s and id %s %n", keyResponse.getName(),
+                    keyResponse.getId()));
+        // END: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKey#CreateOctKeyOptions
     }
 
     /**
@@ -237,6 +249,17 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key is created with name %s and id %s %n", keyResponse.getValue().getName(),
                     keyResponse.getValue().getId()));
         // END: com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        keyAsyncClient.createOctKeyWithResponse(createOctKeyOptions)
+            .contextWrite(Context.of(key1, value1, key2, value2))
+            .subscribe(keyResponse ->
+                System.out.printf("Key is created with name %s and id %s %n", keyResponse.getValue().getName(),
+                    keyResponse.getValue().getId()));
+        // END: com.azure.security.keyvault.keys.async.keyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions
     }
 
     /**

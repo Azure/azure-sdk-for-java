@@ -6,6 +6,7 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
@@ -27,6 +28,7 @@ import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
+    private CosmosEncryptionAsyncContainer encryptionContainerWithIncompatiblePolicyVersion;
     private EncryptionKeyWrapMetadata metadata1;
     private EncryptionKeyWrapMetadata metadata2;
 
@@ -57,14 +60,15 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
+        EncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            new TestEncryptionKeyStoreProvider());
+            encryptionKeyStoreProvider);
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);
 
-        metadata1 = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
+        metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
@@ -76,6 +80,14 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         properties.setClientEncryptionPolicy(clientEncryptionPolicy);
         cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
         cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
+
+        ClientEncryptionPolicy clientEncryptionWithPolicyFormatVersion2 = new ClientEncryptionPolicy(getPaths());
+        ReflectionUtils.setPolicyFormatVersion(clientEncryptionWithPolicyFormatVersion2, 2);
+        containerId = UUID.randomUUID().toString();
+        properties = new CosmosContainerProperties(containerId, "/mypk");
+        properties.setClientEncryptionPolicy(clientEncryptionWithPolicyFormatVersion2);
+        cosmosEncryptionAsyncDatabase.getCosmosAsyncDatabase().createContainer(properties).block();
+        encryptionContainerWithIncompatiblePolicyVersion = cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -220,7 +232,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
-    public void queryItemsWithContinuationTokenAndPageSize() throws Exception {
+    public void queryItemsWithContinuationTokenAndPageSize() {
         List<String> actualIds = new ArrayList<>();
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
@@ -259,6 +271,22 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         } while (continuationToken != null);
 
         assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
+    }
+
+    @Ignore("Ignoring it temporarily because server always returning policyFormatVersion 0")
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void incompatiblePolicyFormatVersion() {
+        try {
+            EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+            encryptionContainerWithIncompatiblePolicyVersion.createItem(properties,
+                new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions()).block();
+            fail("encryptionContainerWithIncompatiblePolicyVersion crud operation should fail on client encryption " +
+                "policy " +
+                "fetch because of policy format version greater than 1");
+        } catch (UnsupportedOperationException ex) {
+            assertThat(ex.getMessage()).isEqualTo("This version of the Encryption library cannot be used with this " +
+                "container. Please upgrade to the latest version of the same.");
+        }
     }
 
     static void validateResponse(EncryptionPojo originalItem, EncryptionPojo result) {
@@ -368,6 +396,12 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
     public static class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
         Map<String, Integer> keyInfo = new HashMap<>();
+        String providerName = "TEST_KEY_STORE_PROVIDER";
+
+        @Override
+        public String getProviderName() {
+            return providerName;
+        }
 
         public TestEncryptionKeyStoreProvider() {
             keyInfo.put("tempmetadata1", 1);

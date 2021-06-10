@@ -86,11 +86,9 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         this.serviceClient().delete(resourceGroupName, accountName, privateEndpointConnectionName);
     }
 
-    public Response<Void> deleteWithResponse(
+    public void delete(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, context);
+        this.serviceClient().delete(resourceGroupName, accountName, privateEndpointConnectionName, context);
     }
 
     public PrivateEndpointConnection getById(String id) {
@@ -179,10 +177,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
                                 "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, Context.NONE).getValue();
+        this.delete(resourceGroupName, accountName, privateEndpointConnectionName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -208,7 +206,7 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
                                 "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.",
                                 id)));
         }
-        return this.deleteWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, context);
+        this.delete(resourceGroupName, accountName, privateEndpointConnectionName, context);
     }
 
     private PrivateEndpointConnectionsClient serviceClient() {

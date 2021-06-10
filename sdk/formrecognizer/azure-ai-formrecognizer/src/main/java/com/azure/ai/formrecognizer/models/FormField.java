@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormField model.
+ * Represents a field recognized in an input document.
  */
 @Immutable
 public final class FormField {

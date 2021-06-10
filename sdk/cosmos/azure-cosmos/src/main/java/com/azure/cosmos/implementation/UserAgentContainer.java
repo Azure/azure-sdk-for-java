@@ -8,7 +8,8 @@ package com.azure.cosmos.implementation;
  */
 public class UserAgentContainer {
 
-    private static final int MAX_SUFFIX_LENGTH = 64;
+    private static final int MAX_USER_AGENT_LENGTH = 255;
+    private final int maxSuffixLength;
     private final String baseUserAgent;
     private String suffix;
     private String userAgent;
@@ -18,6 +19,7 @@ public class UserAgentContainer {
         this.baseUserAgent = Utils.getUserAgent(sdkName, sdkVersion);
         this.suffix = "";
         this.userAgent = baseUserAgent;
+        this.maxSuffixLength = MAX_USER_AGENT_LENGTH - 1 - baseUserAgent.length();
     }
 
     public UserAgentContainer() {
@@ -29,8 +31,8 @@ public class UserAgentContainer {
     }
 
     public void setSuffix(String suffix) {
-        if (suffix.length() > MAX_SUFFIX_LENGTH) {
-            suffix = suffix.substring(0, MAX_SUFFIX_LENGTH);
+        if (suffix.length() > maxSuffixLength) {
+            suffix = suffix.substring(0, maxSuffixLength);
         }
 
         this.suffix = suffix;

@@ -15,7 +15,7 @@
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-    <version>3.5.0-beta.1</version>
+    <version>3.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -273,7 +273,7 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
  
 
 ## Next steps
