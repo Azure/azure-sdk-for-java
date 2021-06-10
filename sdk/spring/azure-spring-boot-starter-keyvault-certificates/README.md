@@ -47,17 +47,12 @@ This starter allows you to securely manage and tightly control your certificates
 
 #### Using a client ID and client secret
 
-To create a client use the command line below:
+To create a client and client secret use the command line below:
 ```shell
   export APP_NAME=myApp
   az ad app create --display-name ${APP_NAME}
-```
-
-Store the `appId` returned, which will be used later.
-
-To create a client secret for your client use the comment line below, replace "RETURN_APP_ID" with the returned `appId`:
-```shell
-  export CLIENT_ID="RETURN_APP_ID"
+  az ad sp create-for-rbac --name ${APP_NAME}
+  export CLIENT_ID=$(az ad sp list --display-name ${APP_NAME} | jq -r '.[0].appId')
   az ad app credential reset --id ${CLIENT_ID}
 ```
 
