@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
@@ -33,6 +34,37 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link TableClient} and
  * {@link TableAsyncClient} objects. Call {@link #buildClient()} or {@link #buildAsyncClient()}, respectively, to
  * construct an instance of the desired client.
+ *
+ * <p>The minimal configuration options required by {@link TableClientBuilder} to build a {@link TableClient} or
+ * {@link TableAsyncClient} are a {@link String tableName} and {@link String endpoint} and a form of authentication,
+ * which can be set via: {@link TableClientBuilder#connectionString(String)},
+ * {@link TableClientBuilder#credential(AzureSasCredential)},
+ * {@link TableClientBuilder#credential(AzureNamedKeyCredential)} or {@link TableClientBuilder#sasToken(String)}</p>
+ *
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * {@codesnippet com.azure.data.tables.tableClient.instantiation}
+ * <p><strong>Samples to construct an async client</strong></p>
+ * {@codesnippet com.azure.data.tables.tableAsyncClient.instantiation}
+ *
+ * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpPipelinePolicy policies} and a custom
+ * {@link HttpClient HTTP client} can be optionally configured in the {@link TableClientBuilder}.</p>
+ *
+ * <p><strong>Samples to construct a sync client with a custom HTTP Client</strong></p>
+ * {@codesnippet com.azure.data.tables.tableClient.withHttpClient.instantiation}
+ * <p><strong>Samples to construct an async client with a custom HTTP Client</strong></p>
+ * {@codesnippet com.azure.data.tables.tableAsyncClient.withHttpClient.instantiation}
+ *
+ * <p>Alternatively, a custom {@link HttpPipeline HTTP pipeline} with custom {@link HttpPipelinePolicy policies} and a
+ * {@link String tableName} and an {@link String endpoint} can be specified. It provides finer control over the
+ * construction of {@link TableClient} and {@link TableAsyncClient}.</p>
+ *
+ * <p><strong>Samples to construct a sync client with a custom HTTP Pipeline</strong></p>
+ * {@codesnippet com.azure.data.tables.tableClient.withPipeline.instantiation}
+ * <p><strong>Samples to construct an async client with a custom HTTP Pipeline</strong></p>
+ * {@codesnippet com.azure.data.tables.tableAsyncClient.withPipeline.instantiation}
+ *
+ * @see TableAsyncClient
+ * @see TableClient
  */
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
 public final class TableClientBuilder {
