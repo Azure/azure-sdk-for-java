@@ -33,10 +33,10 @@
 /sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
+/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy @lmolkova
 
 # PRLabel: %Azure.Core
-/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask
+/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
 
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
@@ -73,7 +73,7 @@
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
-/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar
+/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar @lmolkova
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication @craigktreasure

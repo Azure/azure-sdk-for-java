@@ -555,7 +555,6 @@ public final class TableServiceAsyncClient {
         return this.setPropertiesWithResponse(tableServiceProperties).flatMap(FluxUtil::toMono);
     }
 
-
     /**
      * Sets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.

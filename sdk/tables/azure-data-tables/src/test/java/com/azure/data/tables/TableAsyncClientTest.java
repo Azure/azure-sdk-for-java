@@ -13,8 +13,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
 import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionActionType;
@@ -35,6 +37,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -1006,6 +1009,88 @@ public class TableAsyncClientTest extends TestBase {
 
         StepVerifier.create(tableAsyncClient.createEntityWithResponse(entity))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    public void setAndListAccessPolicies() {
+        OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        String permissions = "r";
+        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
+            .setStartsOn(startTime)
+            .setExpiresOn(expiryTime)
+            .setPermissions(permissions);
+        String id = "testPolicy";
+        TableSignedIdentifier tableSignedIdentifier = new TableSignedIdentifier(id).setAccessPolicy(tableAccessPolicy);
+
+        StepVerifier.create(tableClient.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier)))
+            .assertNext(response -> assertEquals(204, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(tableClient.getAccessPolicies())
+            .assertNext(tableAccessPolicies -> {
+                assertNotNull(tableAccessPolicies);
+                assertNotNull(tableAccessPolicies.getIdentifiers());
+
+                TableSignedIdentifier signedIdentifier = tableAccessPolicies.getIdentifiers().get(0);
+
+                assertNotNull(signedIdentifier);
+
+                TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
+
+                assertNotNull(accessPolicy);
+                assertEquals(startTime, accessPolicy.getStartsOn());
+                assertEquals(expiryTime, accessPolicy.getExpiresOn());
+                assertEquals(permissions, accessPolicy.getPermissions());
+                assertEquals(id, signedIdentifier.getId());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    public void setAndListMultipleAccessPolicies() {
+        OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        String permissions = "r";
+        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
+            .setStartsOn(startTime)
+            .setExpiresOn(expiryTime)
+            .setPermissions(permissions);
+        String id1 = "testPolicy1";
+        String id2 = "testPolicy2";
+        List<TableSignedIdentifier> tableSignedIdentifiers = new ArrayList<>();
+        tableSignedIdentifiers.add(new TableSignedIdentifier(id1).setAccessPolicy(tableAccessPolicy));
+        tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
+
+        StepVerifier.create(tableClient.setAccessPoliciesWithResponse(tableSignedIdentifiers))
+            .assertNext(response -> assertEquals(204, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(tableClient.getAccessPolicies())
+            .assertNext(tableAccessPolicies -> {
+                assertNotNull(tableAccessPolicies);
+                assertNotNull(tableAccessPolicies.getIdentifiers());
+
+                assertEquals(2, tableAccessPolicies.getIdentifiers().size());
+                assertEquals(id1, tableAccessPolicies.getIdentifiers().get(0).getId());
+                assertEquals(id2, tableAccessPolicies.getIdentifiers().get(1).getId());
+
+                for (TableSignedIdentifier signedIdentifier : tableAccessPolicies.getIdentifiers()) {
+                    assertNotNull(signedIdentifier);
+
+                    TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
+
+                    assertNotNull(accessPolicy);
+                    assertEquals(startTime, accessPolicy.getStartsOn());
+                    assertEquals(expiryTime, accessPolicy.getExpiresOn());
+                    assertEquals(permissions, accessPolicy.getPermissions());
+                }
+            })
             .expectComplete()
             .verify();
     }
