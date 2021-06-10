@@ -25,38 +25,37 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAccessTokenGroupRolesExtractionTest {
 
+    private static final String GROUP_ID_1 = "d07c0bd6-4aab-45ac-b87c-23e8d00194ab";
+    private static final String GROUP_ID_2 = "6eddcc22-a24a-4459-b036-b9d9fc0f0bc7";
+
+    private final AADAuthenticationProperties properties = new AADAuthenticationProperties();
+    private final AADAuthenticationProperties.UserGroupProperties userGroup =
+        new AADAuthenticationProperties.UserGroupProperties();
+    private AutoCloseable autoCloseable;
+
     @Mock
     private OAuth2AccessToken accessToken;
     @Mock
     private GraphClient graphClient;
 
-    private AADAuthenticationProperties properties = new AADAuthenticationProperties();
-    private AADAuthenticationProperties.UserGroupProperties userGroup =
-        new AADAuthenticationProperties.UserGroupProperties();
-    private AADOAuth2UserService userService;
-    private AutoCloseable autoCloseable;
-    private GroupInformation groupInformationFromGraph;
-    private Set<String> groupNamesFromGraph;
-    private Set<String> groupIdsFromGraph;
-
     @BeforeAll
     public void setup() {
         this.autoCloseable = MockitoAnnotations.openMocks(this);
-        groupInformationFromGraph = new GroupInformation();
-        groupNamesFromGraph = new HashSet<>();
-        groupIdsFromGraph = new HashSet<>();
+        GroupInformation groupInformationFromGraph = new GroupInformation();
+        Set<String> groupNamesFromGraph = new HashSet<>();
+        Set<String> groupIdsFromGraph = new HashSet<>();
         groupNamesFromGraph.add("group1");
         groupNamesFromGraph.add("group2");
-        groupIdsFromGraph.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        groupIdsFromGraph.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
+        groupIdsFromGraph.add(GROUP_ID_1);
+        groupIdsFromGraph.add(GROUP_ID_2);
         groupInformationFromGraph.setGroupsIds(groupIdsFromGraph);
         groupInformationFromGraph.setGroupsNames(groupNamesFromGraph);
         properties.setUserGroup(userGroup);
         properties.setGraphMembershipUri("https://graph.microsoft.com/v1.0/me/memberOf");
-        Mockito.lenient().when(accessToken.getTokenValue()).thenReturn("fake-access-token");
-        userService = new AADOAuth2UserService(properties, graphClient);
+        Mockito.lenient().when(accessToken.getTokenValue())
+                         .thenReturn("fake-access-token");
         Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-               .thenReturn(groupInformationFromGraph);
+                         .thenReturn(groupInformationFromGraph);
     }
 
     @AfterEach
@@ -72,115 +71,107 @@ public class AADAccessTokenGroupRolesExtractionTest {
     }
 
     @Test
-    public void testGroupsName() {
-        List<String> customizeGroupName = new ArrayList<>();
-        customizeGroupName.add("group1");
-        userGroup.setAllowedGroupNames(customizeGroupName);
-
+    public void testAllowedGroupsNames() {
+        List<String> allowedGroupNames = new ArrayList<>();
+        allowedGroupNames.add("group1");
+        userGroup.setAllowedGroupNames(allowedGroupNames);
+        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-
-        assertThat(groupRoles).contains("ROLE_group1");
-        assertThat(groupRoles).doesNotContain("ROLE_group5");
         assertThat(groupRoles).hasSize(1);
-    }
-
-    @Test
-    public void testGroupsId() {
-        Set<String> customizeGroupId = new HashSet<>();
-        customizeGroupId.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        userGroup.setAllowedGroupIds(customizeGroupId);
-
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-
-        assertThat(groupRoles).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        assertThat(groupRoles).doesNotContain("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194abaaa");
-        assertThat(groupRoles).hasSize(1);
-    }
-
-    @Test
-    public void testGroupsNameAndGroupsId() {
-        Set<String> customizeGroupIds = new HashSet<>();
-        customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        List<String> customizeGroupName = new ArrayList<>();
-        customizeGroupName.add("group1");
-
-        userGroup.setAllowedGroupIds(customizeGroupIds);
-        userGroup.setAllowedGroupNames(customizeGroupName);
-
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-        assertThat(groupRoles).contains("ROLE_group1");
-        assertThat(groupRoles).doesNotContain("ROLE_group5");
-        assertThat(groupRoles).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        assertThat(groupRoles).doesNotContain("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194abaaa");
-        assertThat(groupRoles).hasSize(2);
-    }
-
-    @Test
-    public void testWithEnableFullList() {
-        Set<String> customizeGroupIds = new HashSet<>();
-        customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        List<String> customizeGroupName = new ArrayList<>();
-        customizeGroupName.add("group1");
-
-        userGroup.setAllowedGroupIds(customizeGroupIds);
-        userGroup.setAllowedGroupNames(customizeGroupName);
-        userGroup.setEnableFullList(true);
-
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-        assertThat(groupRoles).hasSize(3);
-        assertThat(groupRoles).contains("ROLE_group1");
-    }
-
-    @Test
-    public void testWithoutEnableFullList() {
-        List<String> customizeGroupNames = new ArrayList<>();
-        Set<String> customizeGroupIds = new HashSet<>();
-        customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        customizeGroupNames.add("group1");
-
-        userGroup.setEnableFullList(false);
-        userGroup.setAllowedGroupIds(customizeGroupIds);
-        userGroup.setAllowedGroupNames(customizeGroupNames);
-
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-
-        assertThat(groupRoles).contains("ROLE_group1");
-        assertThat(groupRoles).doesNotContain("ROLE_group5");
-        assertThat(groupRoles).contains("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        assertThat(groupRoles).doesNotContain("ROLE_d07c0bd6-4aab-45ac-b87c-23e8d00194abaaa");
-        assertThat(groupRoles).hasSize(2);
-    }
-
-    @Test
-    public void testAllGroupIds() {
-        Set<String> customizeGroupIds = new HashSet<>();
-        customizeGroupIds.add("all");
-        List<String> customizeGroupName = new ArrayList<>();
-        customizeGroupName.add("group1");
-
-        userGroup.setAllowedGroupIds(customizeGroupIds);
-        userGroup.setAllowedGroupNames(customizeGroupName);
-        userGroup.setEnableFullList(true);
-
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-        assertThat(groupRoles).hasSize(3);
         assertThat(groupRoles).contains("ROLE_group1");
         assertThat(groupRoles).doesNotContain("ROLE_group2");
     }
 
     @Test
+    public void testAllowedGroupsIds() {
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add(GROUP_ID_1);
+        userGroup.setAllowedGroupIds(allowedGroupIds);
+        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupRoles).hasSize(1);
+        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
+        assertThat(groupRoles).doesNotContain("ROLE_" + GROUP_ID_2);
+    }
+
+    @Test
+    public void testAllowedGroupsNamesAndAllowedGroupsIds() {
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add(GROUP_ID_1);
+        List<String> allowedGroupNames = new ArrayList<>();
+        allowedGroupNames.add("group1");
+        userGroup.setAllowedGroupIds(allowedGroupIds);
+        userGroup.setAllowedGroupNames(allowedGroupNames);
+        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupRoles).hasSize(2);
+        assertThat(groupRoles).contains("ROLE_group1");
+        assertThat(groupRoles).doesNotContain("ROLE_group2");
+        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
+        assertThat(groupRoles).doesNotContain("ROLE_" + GROUP_ID_2);
+    }
+
+    @Test
+    public void testWithEnableFullList() {
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add(GROUP_ID_1);
+        List<String> allowedGroupNames = new ArrayList<>();
+        allowedGroupNames.add("group1");
+        userGroup.setAllowedGroupIds(allowedGroupIds);
+        userGroup.setAllowedGroupNames(allowedGroupNames);
+        userGroup.setEnableFullList(true);
+        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupRoles).hasSize(3);
+        assertThat(groupRoles).contains("ROLE_group1");
+        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
+        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_2);
+    }
+
+    @Test
+    public void testWithoutEnableFullList() {
+        List<String> allowedGroupNames = new ArrayList<>();
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add(GROUP_ID_1);
+        allowedGroupNames.add("group1");
+        userGroup.setEnableFullList(false);
+        userGroup.setAllowedGroupIds(allowedGroupIds);
+        userGroup.setAllowedGroupNames(allowedGroupNames);
+        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupRoles).hasSize(2);
+        assertThat(groupRoles).contains("ROLE_group1");
+        assertThat(groupRoles).doesNotContain("ROLE_group2");
+        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
+        assertThat(groupRoles).doesNotContain("ROLE_" + GROUP_ID_2);
+    }
+
+    @Test
+    public void testAllowedGroupIdsAllWithoutEnableFullList() {
+        Set<String> allowedGroupIds = new HashSet<>();
+        allowedGroupIds.add("all");
+        List<String> allowedGroupNames = new ArrayList<>();
+        allowedGroupNames.add("group1");
+        userGroup.setAllowedGroupIds(allowedGroupIds);
+        userGroup.setAllowedGroupNames(allowedGroupNames);
+        userGroup.setEnableFullList(false);
+        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
+        assertThat(groupRoles).hasSize(3);
+        assertThat(groupRoles).contains("ROLE_group1");
+        assertThat(groupRoles).doesNotContain("ROLE_group2");
+        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
+        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_2);
+    }
+
+    @Test
     public void testIllegalGroupIdParam() {
-        Set<String> customizeGroupIds = new HashSet<>();
-        customizeGroupIds.add("all");
-        customizeGroupIds.add("d07c0bd6-4aab-45ac-b87c-23e8d00194ab");
-        customizeGroupIds.add("6eddcc22-a24a-4459-b036-b9d9fc0f0bc7");
-        List<String> customizeGroupName = new ArrayList<>();
-        customizeGroupName.add("group1");
-
-        userGroup.setAllowedGroupNames(customizeGroupName);
-
-        assertThrows(IllegalStateException.class, () ->
-            userGroup.setAllowedGroupIds(customizeGroupIds), "When 'all' is used, there is no need to configure"
-            + " additional group id.");
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.user-group.allowed-group-ids = all," + GROUP_ID_1
+            )
+            .run(context ->
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
     }
 }
