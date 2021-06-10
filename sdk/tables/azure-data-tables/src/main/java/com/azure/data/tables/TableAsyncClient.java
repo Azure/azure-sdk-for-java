@@ -1288,7 +1288,7 @@ public final class TableAsyncClient {
         }
 
         if (error != null || errorMessage != null) {
-            String message = "An operation within the batch failed, the transaction has been rolled back.";
+            String message = "An action within the operation failed, the transaction has been rolled back.";
 
             if (failedAction != null) {
                 message += " The failed operation was: " + failedAction;

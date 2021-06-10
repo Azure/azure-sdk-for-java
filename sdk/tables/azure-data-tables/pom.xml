@@ -32,10 +32,6 @@ Licensed under the MIT License.
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

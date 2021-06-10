@@ -46,6 +46,7 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, secondEntity));
+
         System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.%n", partitionKey,
             secondEntityRowKey);
 
@@ -55,6 +56,7 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.UPDATE_MERGE, entityToUpdate));
+
         System.out.printf("Added update action for entity with partition key '%s', and row key '%s'.%n", partitionKey,
             rowKeyForUpdate);
 
@@ -64,6 +66,7 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.DELETE, entityToDelete));
+
         System.out.printf("Added delete action for entity with partition key '%s', and row key '%s'.%n", partitionKey,
             rowKeyForDelete);
 

@@ -80,6 +80,15 @@ public final class TableServiceClient {
     }
 
     /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return This client's {@link HttpPipeline}.
+     */
+    HttpPipeline getHttpPipeline() {
+        return client.getHttpPipeline();
+    }
+
+    /**
      * Generates an account SAS for the Azure Storage account using the specified
      * {@link TableAccountSasSignatureValues}.
      *
