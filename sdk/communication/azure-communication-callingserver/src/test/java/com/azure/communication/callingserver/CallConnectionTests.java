@@ -26,7 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * live. By default, tests are run in playback mode.
  */
 @Disabled("need to re-record")
-public class CallClientTests extends CallingServerTestBase {
+public class CallConnectionTests extends CallingServerTestBase {
     private String from = "8:acs:631fa8d8-aab5-4ac5-8e15-261aa2590750_0000000a-92a6-f177-28c5-593a0d001285";
     private String alternateId =   "+11111111111";
     private String to =   "+11111111111";

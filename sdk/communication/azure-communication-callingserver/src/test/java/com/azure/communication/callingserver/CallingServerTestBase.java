@@ -28,7 +28,7 @@ public class CallingServerTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://recording-e2e-sample-xiaoxli.communication.azure.com/;accesskey=JNHe2Dx6NVxiDxLygkRbGcGGRWVsfaeZiZqLAbl+x1BClaSdKxE7SGAxHAyI3Ieldu3XFRdiZll7jpSoMkwTzQ==");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
