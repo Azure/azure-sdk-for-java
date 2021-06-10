@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.HandlerException;
@@ -23,7 +24,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-class ReactorExecutor implements Closeable {
+class ReactorExecutor implements AsyncCloseable {
     private static final String LOG_MESSAGE = "connectionId[{}], message[{}]";
 
     private final ClientLogger logger = new ClientLogger(ReactorExecutor.class);
@@ -62,6 +63,18 @@ class ReactorExecutor implements Closeable {
         logger.info(LOG_MESSAGE, connectionId, "Starting reactor.");
         reactor.start();
         scheduler.schedule(this::run);
+    }
+
+    /**
+     * Stops the reactor and schedules any pending tasks.
+     */
+    void stop() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        logger.info("Stop was called. Disposing of ReactorExecutor.");
+
     }
 
     /**
@@ -175,26 +188,27 @@ class ReactorExecutor implements Closeable {
         }, timeout.toMillis(), TimeUnit.MILLISECONDS);
     }
 
-    @Override
-    public void close() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        if (hasStarted.get()) {
-            scheduleCompletePendingTasks();
-        }
-    }
-
     private void close(String reason) {
         logger.verbose("Completing close and disposing scheduler. {}", reason);
-
+        scheduler.dispose();
         isClosedMono.emitEmpty((signalType, emitResult) -> {
             logger.verbose("signalType[{}] emitResult[{}]: Unable to emit close event on reactor", signalType,
                 emitResult);
             return false;
         });
         exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, false, reason));
-        scheduler.dispose();
+    }
+
+    @Override
+    public Mono<Void> closeAsync() {
+        if (isDisposed.getAndSet(true)) {
+            return isClosedMono.asMono();
+        }
+
+        if (hasStarted.get()) {
+            scheduleCompletePendingTasks();
+        }
+
+        return isClosedMono.asMono();
     }
 }
