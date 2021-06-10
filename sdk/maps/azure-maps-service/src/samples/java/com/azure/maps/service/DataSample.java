@@ -2,29 +2,16 @@ package com.azure.maps.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.maps.service.models.AliasListItem;
-import com.azure.maps.service.models.ConversionListDetailInfo;
-import com.azure.maps.service.models.ConversionsConvertResponse;
-import com.azure.maps.service.models.ConversionsGetOperationResponse;
 import com.azure.maps.service.models.DatasGetOperationPreviewResponse;
 import com.azure.maps.service.models.DatasUpdatePreviewResponse;
 import com.azure.maps.service.models.DatasUploadPreviewResponse;
-import com.azure.maps.service.models.LongRunningOperationResult;
 import com.azure.maps.service.models.MapDataListResponse;
 import com.azure.maps.service.models.UploadDataFormat;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DataSample {
 	public static void main(String[] args) throws InterruptedException, IOException {

@@ -6,8 +6,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.maps.service.models.AliasListItem;
-import com.azure.maps.service.models.DatasGetOperationPreviewResponse;
 import com.azure.maps.service.models.DatasetDetailInfo;
 import com.azure.maps.service.models.DatasetsCreateResponse;
 import com.azure.maps.service.models.DatasetsGetOperationResponse;
@@ -35,30 +33,21 @@ public class DatasetSample {
 			return;
 		}
 		try {
-			get(datasets, datasetId);
-			list(datasets);
+			DatasetDetailInfo datasetDetailInfo = client.getDatasets().get(datasetId);
+			System.out.println("Got details of dataset:");
+			MapsCommon.print(datasetDetailInfo);
+
+			PagedIterable<DatasetDetailInfo> list = client.getDatasets().list();
+			System.out.println("View all previously created datasets:");
+			for(DatasetDetailInfo item : list) {
+				MapsCommon.print(item);
+			}
 		} catch(HttpResponseException err) {
 			System.out.println(err);
 		} finally {
-			delete(datasets, datasetId);
+			client.getDatasets().delete(datasetId);
+		    System.out.println(String.format("Deleted dataset with aliasId: %s", datasetId));
 		}
-	}
-
-	public static void list(Datasets datasets) throws JsonProcessingException	{
-		PagedIterable<DatasetDetailInfo> result = datasets.list();
-		System.out.println("View all previously created datasets:");
-		for(DatasetDetailInfo item : result) {
-			MapsCommon.print(item);
-		}
-	}
-	public static void delete(Datasets datasets, String datasetId) {
-		datasets.delete(datasetId);
-	    System.out.println(String.format("Deleted dataset with aliasId: %s", datasetId));
-	}
-	public static void get(Datasets datasets, String datasetId) throws JsonProcessingException {
-		DatasetDetailInfo result = datasets.get(datasetId);
-		System.out.println("Got details of dataset:");
-		MapsCommon.print(result);
 	}
 
 	public static MapsCommon.OperationWithHeaders getOperation(Datasets datasets, String operationId) {

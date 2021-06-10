@@ -1,6 +1,7 @@
 package com.azure.maps.service;
 
-import com.azure.maps.service.models.IpAddressToLocationResult;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.maps.service.models.ResponseFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -11,13 +12,9 @@ public class GeolocationSample {
 			return;
 		}
 		String ip = args[0];
-		Geolocations geolocations = MapsCommon.createMapsClient().getGeolocations();
-		getIPToLocationPreview(geolocations, ip);
-	}
-
-	public static void getIPToLocationPreview(Geolocations geolocations, String ip) throws JsonProcessingException {
-		IpAddressToLocationResult result = geolocations.getIPToLocationPreview(ResponseFormat.JSON, ip);
-		System.out.println("Got location by ip");
-	    MapsCommon.print(result);
+    	HttpPipelinePolicy policy = new AzureKeyInQueryPolicy("subscription-key", new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY")));
+    	MapsClient client = new MapsClientBuilder().addPolicy(policy).buildClient();
+		System.out.println("Get location by ip");
+	    MapsCommon.print(client.getGeolocations().getIPToLocationPreview(ResponseFormat.JSON, ip));
 	}
 }

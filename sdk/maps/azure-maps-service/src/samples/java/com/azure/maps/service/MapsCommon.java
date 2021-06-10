@@ -7,8 +7,6 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.maps.service.models.ErrorDetail;
 import com.azure.maps.service.models.LongRunningOperationResult;
 import com.azure.maps.service.models.LroStatus;
