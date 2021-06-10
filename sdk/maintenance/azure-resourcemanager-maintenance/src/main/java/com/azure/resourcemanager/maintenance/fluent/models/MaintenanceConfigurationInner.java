@@ -7,8 +7,10 @@ package com.azure.resourcemanager.maintenance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
+import com.azure.resourcemanager.maintenance.models.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -32,26 +34,91 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     private Map<String, String> tags;
 
     /*
-     * Gets or sets namespace of the resource e.g. Microsoft.Maintenance or
-     * Microsoft.Sql
+     * Gets or sets namespace of the resource
      */
     @JsonProperty(value = "properties.namespace")
     private String namespace;
 
     /*
-     * Gets or sets extensionProperties of the maintenanceConfiguration. This
-     * is for future use only and would be a set of key value pairs for
-     * additional information e.g. whether to follow SDP etc.
+     * Gets or sets extensionProperties of the maintenanceConfiguration
      */
     @JsonProperty(value = "properties.extensionProperties")
     private Map<String, String> extensionProperties;
 
     /*
-     * Gets or sets maintenanceScope of the configuration. It represent the
-     * impact area of the maintenance
+     * Gets or sets maintenanceScope of the configuration
      */
     @JsonProperty(value = "properties.maintenanceScope")
     private MaintenanceScope maintenanceScope;
+
+    /*
+     * Gets or sets the visibility of the configuration. The default value is
+     * 'Custom'
+     */
+    @JsonProperty(value = "properties.visibility")
+    private Visibility visibility;
+
+    /*
+     * Effective start date of the maintenance window in YYYY-MM-DD hh:mm
+     * format. The start date can be set to either the current date or future
+     * date. The window will be created in the time zone provided and adjusted
+     * to daylight savings according to that time zone.
+     */
+    @JsonProperty(value = "properties.maintenanceWindow.startDateTime")
+    private String startDateTime;
+
+    /*
+     * Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm
+     * format. The window will be created in the time zone provided and
+     * adjusted to daylight savings according to that time zone. Expiration
+     * date must be set to a future date. If not provided, it will be set to
+     * the maximum datetime 9999-12-31 23:59:59.
+     */
+    @JsonProperty(value = "properties.maintenanceWindow.expirationDateTime")
+    private String expirationDateTime;
+
+    /*
+     * Duration of the maintenance window in HH:mm format. If not provided,
+     * default value will be used based on maintenance scope provided. Example:
+     * 05:00.
+     */
+    @JsonProperty(value = "properties.maintenanceWindow.duration")
+    private String duration;
+
+    /*
+     * Name of the timezone. List of timezones can be obtained by executing
+     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example:
+     * Pacific Standard Time, UTC, W. Europe Standard Time, Korea Standard
+     * Time, Cen. Australia Standard Time.
+     */
+    @JsonProperty(value = "properties.maintenanceWindow.timeZone")
+    private String timeZone;
+
+    /*
+     * Rate at which a Maintenance window is expected to recur. The rate can be
+     * expressed as daily, weekly, or monthly schedules. Daily schedule are
+     * formatted as recurEvery: [Frequency as integer]['Day(s)']. If no
+     * frequency is provided, the default frequency is 1. Daily schedule
+     * examples are recurEvery: Day, recurEvery: 3Days.  Weekly schedule are
+     * formatted as recurEvery: [Frequency as integer]['Week(s)'] [Optional
+     * comma separated list of weekdays Monday-Sunday]. Weekly schedule
+     * examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday.
+     * Monthly schedules are formatted as [Frequency as integer]['Month(s)']
+     * [Comma separated list of month days] or [Frequency as
+     * integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth,
+     * Last)] [Weekday Monday-Sunday]. Monthly schedule examples are
+     * recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
+     * recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday.
+     */
+    @JsonProperty(value = "properties.maintenanceWindow.recurEvery")
+    private String recurEvery;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the location property: Gets or sets location of the resource.
@@ -94,7 +161,7 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the namespace property: Gets or sets namespace of the resource e.g. Microsoft.Maintenance or Microsoft.Sql.
+     * Get the namespace property: Gets or sets namespace of the resource.
      *
      * @return the namespace value.
      */
@@ -103,7 +170,7 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Set the namespace property: Gets or sets namespace of the resource e.g. Microsoft.Maintenance or Microsoft.Sql.
+     * Set the namespace property: Gets or sets namespace of the resource.
      *
      * @param namespace the namespace value to set.
      * @return the MaintenanceConfigurationInner object itself.
@@ -114,9 +181,7 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration. This is
-     * for future use only and would be a set of key value pairs for additional information e.g. whether to follow SDP
-     * etc.
+     * Get the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration.
      *
      * @return the extensionProperties value.
      */
@@ -125,9 +190,7 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Set the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration. This is
-     * for future use only and would be a set of key value pairs for additional information e.g. whether to follow SDP
-     * etc.
+     * Set the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration.
      *
      * @param extensionProperties the extensionProperties value to set.
      * @return the MaintenanceConfigurationInner object itself.
@@ -138,8 +201,7 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the maintenanceScope property: Gets or sets maintenanceScope of the configuration. It represent the impact
-     * area of the maintenance.
+     * Get the maintenanceScope property: Gets or sets maintenanceScope of the configuration.
      *
      * @return the maintenanceScope value.
      */
@@ -148,8 +210,7 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Set the maintenanceScope property: Gets or sets maintenanceScope of the configuration. It represent the impact
-     * area of the maintenance.
+     * Set the maintenanceScope property: Gets or sets maintenanceScope of the configuration.
      *
      * @param maintenanceScope the maintenanceScope value to set.
      * @return the MaintenanceConfigurationInner object itself.
@@ -157,6 +218,169 @@ public class MaintenanceConfigurationInner extends ProxyResource {
     public MaintenanceConfigurationInner withMaintenanceScope(MaintenanceScope maintenanceScope) {
         this.maintenanceScope = maintenanceScope;
         return this;
+    }
+
+    /**
+     * Get the visibility property: Gets or sets the visibility of the configuration. The default value is 'Custom'.
+     *
+     * @return the visibility value.
+     */
+    public Visibility visibility() {
+        return this.visibility;
+    }
+
+    /**
+     * Set the visibility property: Gets or sets the visibility of the configuration. The default value is 'Custom'.
+     *
+     * @param visibility the visibility value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withVisibility(Visibility visibility) {
+        this.visibility = visibility;
+        return this;
+    }
+
+    /**
+     * Get the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
+     * start date can be set to either the current date or future date. The window will be created in the time zone
+     * provided and adjusted to daylight savings according to that time zone.
+     *
+     * @return the startDateTime value.
+     */
+    public String startDateTime() {
+        return this.startDateTime;
+    }
+
+    /**
+     * Set the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
+     * start date can be set to either the current date or future date. The window will be created in the time zone
+     * provided and adjusted to daylight savings according to that time zone.
+     *
+     * @param startDateTime the startDateTime value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withStartDateTime(String startDateTime) {
+        this.startDateTime = startDateTime;
+        return this;
+    }
+
+    /**
+     * Get the expirationDateTime property: Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm
+     * format. The window will be created in the time zone provided and adjusted to daylight savings according to that
+     * time zone. Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime
+     * 9999-12-31 23:59:59.
+     *
+     * @return the expirationDateTime value.
+     */
+    public String expirationDateTime() {
+        return this.expirationDateTime;
+    }
+
+    /**
+     * Set the expirationDateTime property: Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm
+     * format. The window will be created in the time zone provided and adjusted to daylight savings according to that
+     * time zone. Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime
+     * 9999-12-31 23:59:59.
+     *
+     * @param expirationDateTime the expirationDateTime value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withExpirationDateTime(String expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
+        return this;
+    }
+
+    /**
+     * Get the duration property: Duration of the maintenance window in HH:mm format. If not provided, default value
+     * will be used based on maintenance scope provided. Example: 05:00.
+     *
+     * @return the duration value.
+     */
+    public String duration() {
+        return this.duration;
+    }
+
+    /**
+     * Set the duration property: Duration of the maintenance window in HH:mm format. If not provided, default value
+     * will be used based on maintenance scope provided. Example: 05:00.
+     *
+     * @param duration the duration value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withDuration(String duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    /**
+     * Get the timeZone property: Name of the timezone. List of timezones can be obtained by executing
+     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
+     * Standard Time, Korea Standard Time, Cen. Australia Standard Time.
+     *
+     * @return the timeZone value.
+     */
+    public String timeZone() {
+        return this.timeZone;
+    }
+
+    /**
+     * Set the timeZone property: Name of the timezone. List of timezones can be obtained by executing
+     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
+     * Standard Time, Korea Standard Time, Cen. Australia Standard Time.
+     *
+     * @param timeZone the timeZone value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+        return this;
+    }
+
+    /**
+     * Get the recurEvery property: Rate at which a Maintenance window is expected to recur. The rate can be expressed
+     * as daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery: [Frequency as
+     * integer]['Day(s)']. If no frequency is provided, the default frequency is 1. Daily schedule examples are
+     * recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted as recurEvery: [Frequency as
+     * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
+     * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
+     * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
+     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
+     * Monday.
+     *
+     * @return the recurEvery value.
+     */
+    public String recurEvery() {
+        return this.recurEvery;
+    }
+
+    /**
+     * Set the recurEvery property: Rate at which a Maintenance window is expected to recur. The rate can be expressed
+     * as daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery: [Frequency as
+     * integer]['Day(s)']. If no frequency is provided, the default frequency is 1. Daily schedule examples are
+     * recurEvery: Day, recurEvery: 3Days. Weekly schedule are formatted as recurEvery: [Frequency as
+     * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
+     * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
+     * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
+     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
+     * Monday.
+     *
+     * @param recurEvery the recurEvery value to set.
+     * @return the MaintenanceConfigurationInner object itself.
+     */
+    public MaintenanceConfigurationInner withRecurEvery(String recurEvery) {
+        this.recurEvery = recurEvery;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.maintenance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,6 +37,13 @@ public class ApplyUpdateInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.lastUpdateTime")
     private OffsetDateTime lastUpdateTime;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the status property: The status.
@@ -95,6 +103,15 @@ public class ApplyUpdateInner extends ProxyResource {
     public ApplyUpdateInner withLastUpdateTime(OffsetDateTime lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

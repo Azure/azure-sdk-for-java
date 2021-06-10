@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.11.0</version>
+    <version>12.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -37,13 +37,13 @@ az storage account create \
     --location <location>
 ```
 
-Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
+Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows:
 http(s)://<storage-account-name>.blob.core.windows.net
 
 ### Authenticate the client
 
-In order to interact with the Storage Service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
-To make this possible you'll need the Account SAS (shared access signature) string of the Storage Account. Learn more at [SAS Token][sas_token]
+In order to interact with the Storage Service (Blob, Queue, Message, MessageId, File), you'll need to create an instance of the Service Client class.
+To make this possible you'll need the Account SAS (shared access signature) string of the Storage Account. Learn more at [SAS Token][sas_token].
 
 #### Get credentials
 
@@ -75,7 +75,7 @@ az storage blob generate-sas \
     --expiry 2020-06-15
 ```
 
-b. Alternatively, get the Account SAS Token from the Azure Portal.
+b. Alternatively, get the Account SAS token from the Azure Portal.
 
 1. Go to your Storage Account
 2. Select `Shared access signature` from the menu on the left

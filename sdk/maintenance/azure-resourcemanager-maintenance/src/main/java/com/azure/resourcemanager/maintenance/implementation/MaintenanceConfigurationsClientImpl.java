@@ -43,14 +43,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     private final MaintenanceConfigurationsService service;
 
     /** The service client containing this operation class. */
-    private final MaintenanceClientImpl client;
+    private final MaintenanceManagementClientImpl client;
 
     /**
      * Initializes an instance of MaintenanceConfigurationsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MaintenanceConfigurationsClientImpl(MaintenanceClientImpl client) {
+    MaintenanceConfigurationsClientImpl(MaintenanceManagementClientImpl client) {
         this.service =
             RestProxy
                 .create(
@@ -59,11 +59,11 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
-     * The interface defining all the services for MaintenanceClientMaintenanceConfigurations to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for MaintenanceManagementClientMaintenanceConfigurations to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MaintenanceClientMai")
+    @ServiceInterface(name = "MaintenanceManagemen")
     private interface MaintenanceConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
@@ -100,7 +100,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Maintenance"
                 + "/maintenanceConfigurations/{resourceName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MaintenanceConfigurationInner>> delete(
             @HostParam("$host") String endpoint,
@@ -143,7 +143,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,7 +191,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -237,7 +237,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -260,7 +260,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,7 +275,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Get Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,7 +292,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -347,7 +347,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +400,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -425,7 +425,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -442,7 +442,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Create or Update configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,7 +460,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -508,7 +508,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -554,7 +554,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -577,7 +577,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -592,7 +592,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Delete Configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -609,7 +609,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -664,7 +664,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,7 +717,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -742,7 +742,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -759,7 +759,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * Patch configuration record.
      *
      * @param resourceGroupName Resource Group Name.
-     * @param resourceName Resource Identifier.
+     * @param resourceName Maintenance Configuration Name.
      * @param configuration The configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

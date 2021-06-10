@@ -117,4 +117,22 @@ public interface ReactiveCosmosQueryExecution {
             return operations.delete(query, type, container);
         }
     }
+
+    /**
+     * Count operation implementation to execute a count query
+     */
+    final class CountExecution implements ReactiveCosmosQueryExecution {
+
+        private final ReactiveCosmosOperations operations;
+
+        public CountExecution(ReactiveCosmosOperations operations) {
+            this.operations = operations;
+        }
+
+        @Override
+        public Object execute(CosmosQuery query, Class<?> type, String container) {
+            return operations.count(query, container);
+        }
+    }
+
 }

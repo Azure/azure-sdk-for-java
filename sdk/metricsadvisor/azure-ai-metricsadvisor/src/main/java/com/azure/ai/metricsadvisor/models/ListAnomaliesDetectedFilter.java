@@ -3,11 +3,15 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
+import com.azure.core.annotation.Fluent;
+
 import java.util.List;
 
 /**
  * Describes additional conditions to filter the anomalies while listing.
  */
+@Fluent
 public final class ListAnomaliesDetectedFilter {
     private AnomalySeverity minSeverity;
     private AnomalySeverity maxSeverity;

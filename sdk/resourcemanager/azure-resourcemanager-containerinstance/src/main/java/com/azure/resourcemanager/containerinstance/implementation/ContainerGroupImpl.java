@@ -468,8 +468,16 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
         String virtualNetworkId, String subnetName) {
-        creatableNetworkProfileName = manager().resourceManager().internalContext()
+        String randomNetworkProfileName = manager().resourceManager().internalContext()
             .randomResourceName("aci-profile-", 20);
+        return this.withNewNetworkProfileOnExistingVirtualNetwork(randomNetworkProfileName,
+            virtualNetworkId, subnetName);
+    }
+
+    @Override
+    public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
+        String networkProfileName, String virtualNetworkId, String subnetName) {
+        creatableNetworkProfileName = networkProfileName;
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
         SubnetInner subnetInner = new SubnetInner();
         subnetInner.withId(subnetId);

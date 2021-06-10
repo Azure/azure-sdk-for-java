@@ -16,6 +16,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -131,24 +132,23 @@ public class ClientStore {
     }
 
     /**
-     * Gets the latest Configuration Setting from the revisions given config store that match the Setting Selector
-     * criteria.
+     * Gets the Configuration Setting for the given config store that match the Setting Selector
+     * criteria. Follows retry-after-ms heards.
      *
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @param storeName Name of the App Configuration store to query against.
-     * @return List of Configuration Settings.
+     * @return The first returned configuration.
      */
-    public final ConfigurationSetting getRevison(SettingSelector settingSelector, String storeName) {
-        PagedResponse<ConfigurationSetting> configurationRevision = null;
+    public final ConfigurationSetting getWatchKey(SettingSelector settingSelector, String storeName) {
+        PagedResponse<ConfigurationSetting> watchedKey = null;
         int retryCount = 0;
 
         ConfigurationAsyncClient client = getClient(storeName);
         while (retryCount <= appProperties.getMaxRetries()) {
-            configurationRevision = client.listRevisions(settingSelector).byPage().blockFirst();
-
-            if (configurationRevision != null
-                && configurationRevision.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
-                HttpHeader retryAfterHeader = configurationRevision.getHeaders().get("retry-after-ms");
+            watchedKey =  client.listConfigurationSettings(settingSelector).byPage(100).blockFirst();
+            if (watchedKey != null
+                && watchedKey.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
+                HttpHeader retryAfterHeader = watchedKey.getHeaders().get("retry-after-ms");
 
                 if (retryAfterHeader != null) {
                     try {
@@ -161,10 +161,9 @@ public class ClientStore {
                         LOGGER.warn("Failed to wait after getting 429.", e);
                     }
                 }
-
-                configurationRevision = null;
-            } else if (configurationRevision != null && configurationRevision.getItems().size() > 0) {
-                return configurationRevision.getItems().get(0);
+                watchedKey = null;
+            } else if (watchedKey != null && watchedKey.getValue().size() > 0) {
+                return watchedKey.getValue().get(0);
             } else {
                 return null;
             }

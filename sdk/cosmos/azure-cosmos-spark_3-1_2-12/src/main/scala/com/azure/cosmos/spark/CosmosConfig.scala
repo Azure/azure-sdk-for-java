@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.spark.OperationListener
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
@@ -37,6 +37,7 @@ private object CosmosConfigNames {
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
+  val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
@@ -78,6 +79,7 @@ private object CosmosConfigNames {
     PreferredRegionsList,
     ApplicationName,
     UseGatewayMode,
+    ReadCustomQuery,
     ReadForceEventualConsistency,
     ReadSchemaConversionMode,
     ReadInferSchemaSamplingSize,
@@ -281,7 +283,8 @@ private object CosmosAccountConfig {
 }
 
 private case class CosmosReadConfig(forceEventualConsistency: Boolean,
-                                    schemaConversionMode: SchemaConversionMode)
+                                    schemaConversionMode: SchemaConversionMode,
+                                    customQuery: Option[CosmosParameterizedQuery])
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -308,11 +311,24 @@ private object CosmosReadConfig {
       " When reading json documents, if a document contains an attribute that does not map to the schema type," +
       " the user can decide whether to use a `null` value (Relaxed) or an exception (Strict).")
 
+  private val CustomQuery = CosmosConfigEntry[CosmosParameterizedQuery](
+    key = CosmosConfigNames.ReadCustomQuery,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = queryText => CosmosParameterizedQuery(queryText, List.empty[String], List.empty[Any]),
+    helpMessage = "When provided the custom query will be processed against the Cosmos endpoint instead " +
+      "of dynamically generating the query via predicate push down. Usually it is recommended to rely " +
+      "on Spark's predicate push down because that will allow to generate the most efficient set of filters " +
+      "based on the query plan. But there are a couple of of predicates like aggregates (count, group by, avg, sum " +
+      "etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow " +
+      "them to be pushed into the query sent to Cosmos.")
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
+    val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
 
-    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get)
+    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get, customQuery)
   }
 }
 
@@ -381,7 +397,7 @@ private object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified = Value
 }
 
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
@@ -517,7 +533,7 @@ private object CosmosSchemaInferenceConfig {
   private val inferSchemaForceNullableProperties = CosmosConfigEntry[Boolean](
     key = CosmosConfigNames.ReadInferSchemaForceNullableProperties,
     mandatory = false,
-    defaultValue = Some(false),
+    defaultValue = Some(true),
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should enforce inferred properties to be nullable - even when no null-values are contained in the sample set")
 
@@ -533,7 +549,7 @@ private object CosmosSchemaInferenceConfig {
     parseFromStringFunction = query => query,
     helpMessage = "When schema inference is enabled, used as custom query to infer it")
 
-  def parseCosmosReadConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
+  def parseCosmosInferenceConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
     val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
     val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
     val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)

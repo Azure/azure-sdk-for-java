@@ -1,21 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/39c81a0a-5dd2-47de-8c2f-ea445b7e5ee3?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/digitaltwins/e8e02b7f-ea09-4dae-8df8-441e45bc2fcb?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c871f801-3b4e-4c79-828d-6a876ed060b8"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bcbf41ca-d2ff-4903-9bdc-5328b400295f"
     },
     "Response" : {
+      "content-length" : "289",
       "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-02e6fbd4e285374786ad7c754ab3bdf5-c49f1071a33c1045-01",
       "retry-after" : "0",
-      "Content-Length" : "289",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID 39c81a0a-5dd2-47de-8c2f-ea445b7e5ee3. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
-      "Date" : "Wed, 13 Jan 2021 20:05:47 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID e8e02b7f-ea09-4dae-8df8-441e45bc2fcb. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Tue, 18 May 2021 00:26:29 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "39c81a0a-5dd2-47de-8c2f-ea445b7e5ee3" ]
+  "variables" : [ "e8e02b7f-ea09-4dae-8df8-441e45bc2fcb" ]
 }

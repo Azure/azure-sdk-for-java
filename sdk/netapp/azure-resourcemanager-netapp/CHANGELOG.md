@@ -1,7 +1,77 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+
+## 1.0.0-beta.3 (2021-05-13)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Change
+
+* `models.VolumeBackupStatus` was removed
+
+#### `NetAppFilesManager` was modified
+
+* `volumeBackupStatus()` was removed
+
+#### `models.Backup` was modified
+
+* `java.lang.String backupType()` -> `models.BackupType backupType()`
+
+#### `models.BackupsList` was modified
+
+* `innerModel()` was removed
+* `java.util.List value()` -> `java.util.List value()`
+
+#### `models.BackupPatch` was modified
+
+* `java.lang.String backupType()` -> `models.BackupType backupType()`
+
+#### `models.AccountBackups` was modified
+
+* `models.BackupsList list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### New Feature
+
+* `models.BackupType` was added
+
+#### `models.Backup` was modified
+
+* `useExistingSnapshot()` was added
+
+#### `models.Backups` was modified
+
+* `getStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `snapshot()` was added
+* `withSnapshot(models.VolumeSnapshotProperties)` was added
+
+#### `models.BackupsList` was modified
+
+* `validate()` was added
+* `withValue(java.util.List)` was added
+
+#### `models.BackupPatch` was modified
+
+* `withUseExistingSnapshot(java.lang.Boolean)` was added
+* `useExistingSnapshot()` was added
+
+#### `models.Backup$Update` was modified
+
+* `withUseExistingSnapshot(java.lang.Boolean)` was added
+
+#### `models.AccountBackups` was modified
+
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Backup$Definition` was modified
+
+* `withUseExistingSnapshot(java.lang.Boolean)` was added
 
 ## 1.0.0-beta.2 (2021-03-15)
 

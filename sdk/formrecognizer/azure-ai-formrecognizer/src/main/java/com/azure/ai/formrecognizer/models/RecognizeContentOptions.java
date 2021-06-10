@@ -67,10 +67,8 @@ public final class RecognizeContentOptions {
 
     /**
      * Get the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
      *
      * @return the language code for the text in the document.
      */
@@ -80,10 +78,8 @@ public final class RecognizeContentOptions {
 
     /**
      * Set the BCP-47 language code of the text in the document.
-     * See supported language codes here:
-     * <a>
-     * https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support.
-     * </a>
+     * See supported language codes
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
      *
      * @param language the language code value to set.
      * @return the updated {@code RecognizeContentOptions} value.

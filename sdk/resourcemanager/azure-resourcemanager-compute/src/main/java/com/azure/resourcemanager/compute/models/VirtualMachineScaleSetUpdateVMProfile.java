@@ -69,6 +69,13 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     @JsonProperty(value = "scheduledEventsProfile")
     private ScheduledEventsProfile scheduledEventsProfile;
 
+    /*
+     * UserData for the VM, which must be base-64 encoded. Customer should not
+     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
+     */
+    @JsonProperty(value = "userData")
+    private String userData;
+
     /**
      * Get the osProfile property: The virtual machine scale set OS profile.
      *
@@ -252,6 +259,28 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     public VirtualMachineScaleSetUpdateVMProfile withScheduledEventsProfile(
         ScheduledEventsProfile scheduledEventsProfile) {
         this.scheduledEventsProfile = scheduledEventsProfile;
+        return this;
+    }
+
+    /**
+     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @return the userData value.
+     */
+    public String userData() {
+        return this.userData;
+    }
+
+    /**
+     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @param userData the userData value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile withUserData(String userData) {
+        this.userData = userData;
         return this;
     }
 

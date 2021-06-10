@@ -1,6 +1,23 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
+
+
+## 1.3.1 (2021-06-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.17.0
+
+
+## 1.3.0 (2021-05-11)
+
+### Features Added
+- Added `AzurePowerShellCredential` to support authentication using Powershell on development platforms.
+- Added support to disable CP1 capability in `TokenCredentials` via configuration of environment variable `AZURE_IDENTITY_DISABLE_CP1`
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.16.0
+- Upgraded `msal4j` dependency to 1.1.0
 
 
 ## 1.3.0-beta.2 (2021-03-10)

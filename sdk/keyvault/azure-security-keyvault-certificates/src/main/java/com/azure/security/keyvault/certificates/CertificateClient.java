@@ -297,7 +297,6 @@ public final class CertificateClient {
         return client.updateCertificatePropertiesWithResponse(properties, context).block();
     }
 
-
     /**
      * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
      * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
@@ -607,7 +606,6 @@ public final class CertificateClient {
         return listDeletedCertificates(false, Context.NONE);
     }
 
-
     /**
      * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
      * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
@@ -705,6 +703,7 @@ public final class CertificateClient {
      * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName, Context context) {
         return client.getCertificatePolicyWithResponse(certificateName, context).block();
     }
@@ -955,7 +954,6 @@ public final class CertificateClient {
         return client.updateIssuerWithResponse(issuer, context).block();
     }
 
-
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
@@ -1009,7 +1007,6 @@ public final class CertificateClient {
     public PagedIterable<CertificateContact> listContacts() {
         return listContacts(Context.NONE);
     }
-
 
     /**
      * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts permission.
@@ -1099,6 +1096,7 @@ public final class CertificateClient {
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
         return client.deleteCertificateOperationWithResponse(certificateName, context).block();
     }
+
     /**
      * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
      *
@@ -1191,6 +1189,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy importCertificate(ImportCertificateOptions importCertificateOptions) {
         return importCertificateWithResponse(importCertificateOptions, Context.NONE).getValue();
     }
@@ -1209,6 +1208,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         return client.importCertificateWithResponse(importCertificateOptions, context).block();
     }

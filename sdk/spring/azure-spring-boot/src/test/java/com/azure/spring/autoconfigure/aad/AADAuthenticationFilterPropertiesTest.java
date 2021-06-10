@@ -3,9 +3,9 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADAuthenticationFilterPropertiesTest {
-    @After
+
+    @AfterEach
     public void clearAllProperties() {
         System.clearProperty("azure.activedirectory.environment");
         System.clearProperty("azure.activedirectory.tenant-id");
@@ -43,7 +44,7 @@ public class AADAuthenticationFilterPropertiesTest {
             assertThat(properties.getClientId()).isEqualTo(TestConstants.CLIENT_ID);
             assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
-                    .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
+                                 .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
     }
 
@@ -56,8 +57,9 @@ public class AADAuthenticationFilterPropertiesTest {
         System.setProperty("azure.activedirectory.allow-telemetry", "false");
     }
 
+    @Disabled
     @Test
-    @Ignore // TODO (wepa) clientId and clientSecret can also be configured in oauth2 config, test to be refactored
+    //TODO (wepa) clientId and clientSecret can also be configured in oauth2 config, test to be refactored
     public void emptySettingsNotAllowed() {
         System.setProperty("azure.activedirectory.client-id", "");
         System.setProperty("azure.activedirectory.client-secret", "");
@@ -82,10 +84,10 @@ public class AADAuthenticationFilterPropertiesTest {
             final List<String> errorStrings = errors.stream().map(ObjectError::toString).collect(Collectors.toList());
 
             final List<String> errorStringsExpected = Arrays.asList(
-                    "Field error in object 'azure.activedirectory' on field 'activeDirectoryGroups': "
-                            + "rejected value [null];",
-                    "Field error in object 'azure.activedirectory' on field 'clientId': rejected value [];",
-                    "Field error in object 'azure.activedirectory' on field 'clientSecret': rejected value [];"
+                "Field error in object 'azure.activedirectory' on field 'activeDirectoryGroups': "
+                    + "rejected value [null];",
+                "Field error in object 'azure.activedirectory' on field 'clientId': rejected value [];",
+                "Field error in object 'azure.activedirectory' on field 'clientSecret': rejected value [];"
             );
 
             Collections.sort(errorStrings);

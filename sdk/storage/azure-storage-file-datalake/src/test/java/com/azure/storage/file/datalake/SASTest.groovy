@@ -42,8 +42,8 @@ class SASTest extends APISpec {
         pathName = generatePathName()
         sasClient = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
-        sasClient.append(defaultInputStream.get(), 0, defaultDataSize)
-        sasClient.flush(defaultDataSize)
+        sasClient.append(data.defaultInputStream, 0, data.defaultDataSize)
+        sasClient.flush(data.defaultDataSize)
     }
 
     DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
@@ -101,7 +101,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
@@ -236,7 +236,7 @@ class SASTest extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == new String(data.defaultBytes)
         validateSasProperties(properties)
         notThrown(DataLakeStorageException)
     }
@@ -364,8 +364,8 @@ class SASTest extends APISpec {
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
 
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         then:
         notThrown(DataLakeStorageException)
@@ -411,8 +411,8 @@ class SASTest extends APISpec {
 
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         then:
         thrown(DataLakeStorageException)
@@ -436,8 +436,8 @@ class SASTest extends APISpec {
         client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
 
         client.create(true)
-        client.append(defaultInputStream.get(), 0, defaultDataSize)
-        client.flush(defaultDataSize)
+        client.append(data.defaultInputStream, 0, data.defaultDataSize)
+        client.flush(data.defaultDataSize)
 
         client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
 
@@ -524,8 +524,8 @@ class SASTest extends APISpec {
         def pathName = generatePathName()
         def fc = fsc.getFileClient(pathName)
         fc.create()
-        fc.append(defaultInputStream.get(), 0, defaultDataSize)
-        fc.flush(defaultDataSize)
+        fc.append(data.defaultInputStream, 0, data.defaultDataSize)
+        fc.flush(data.defaultDataSize)
 
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -545,7 +545,7 @@ class SASTest extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == defaultText
+        os.toString() == data.defaultText
     }
 
     def "account sas file delete error"() {

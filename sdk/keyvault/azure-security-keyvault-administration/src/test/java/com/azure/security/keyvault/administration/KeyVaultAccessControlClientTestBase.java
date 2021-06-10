@@ -12,7 +12,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import org.junit.jupiter.api.Test;
 
@@ -81,7 +80,6 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertEquals(roleAssignment1.getId(), roleAssignment2.getId());
         assertEquals(roleAssignment1.getName(), roleAssignment2.getName());
         assertEquals(roleAssignment1.getType(), roleAssignment2.getType());
-        assertEquals(roleAssignment1.getRoleScope(), roleAssignment2.getRoleScope());
 
         KeyVaultRoleAssignmentProperties properties1 = roleAssignment1.getProperties();
         KeyVaultRoleAssignmentProperties properties2 = roleAssignment2.getProperties();
@@ -94,6 +92,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertNotNull(properties2);
         assertEquals(properties1.getPrincipalId(), properties2.getPrincipalId());
         assertEquals(properties1.getRoleDefinitionId(), properties2.getRoleDefinitionId());
+        assertEquals(properties1.getScope(), properties2.getScope());
     }
 
     static void assertRoleDefinitionEquals(KeyVaultRoleDefinition roleDefinition1,
@@ -101,22 +100,12 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertEquals(roleDefinition1.getId(), roleDefinition2.getId());
         assertEquals(roleDefinition1.getName(), roleDefinition2.getName());
         assertEquals(roleDefinition1.getType(), roleDefinition2.getType());
+        assertEquals(roleDefinition1.getRoleName(), roleDefinition2.getRoleName());
+        assertEquals(roleDefinition1.getRoleType(), roleDefinition2.getRoleType());
+        assertEquals(roleDefinition1.getDescription(), roleDefinition2.getDescription());
 
-        KeyVaultRoleDefinitionProperties properties1 = roleDefinition1.getProperties();
-        KeyVaultRoleDefinitionProperties properties2 = roleDefinition2.getProperties();
-
-        if (properties1 == null && properties2 == null) {
-            return;
-        }
-
-        assertNotNull(properties1);
-        assertNotNull(properties2);
-        assertEquals(properties1.getRoleName(), properties2.getRoleName());
-        assertEquals(properties1.getRoleType(), properties2.getRoleType());
-        assertEquals(properties1.getDescription(), properties2.getDescription());
-
-        List<KeyVaultRoleScope> assignableScopes1 = properties1.getAssignableScopes();
-        List<KeyVaultRoleScope> assignableScopes2 = properties2.getAssignableScopes();
+        List<KeyVaultRoleScope> assignableScopes1 = roleDefinition1.getAssignableScopes();
+        List<KeyVaultRoleScope> assignableScopes2 = roleDefinition2.getAssignableScopes();
 
         if (assignableScopes1 == null && assignableScopes2 == null) {
             return;
@@ -128,8 +117,8 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertEquals(assignableScopes1.size(), assignableScopes2.size());
         assertTrue(assignableScopes1.containsAll(assignableScopes2));
 
-        List<KeyVaultPermission> permissions1 = properties1.getPermissions();
-        List<KeyVaultPermission> permissions2 = properties2.getPermissions();
+        List<KeyVaultPermission> permissions1 = roleDefinition1.getPermissions();
+        List<KeyVaultPermission> permissions2 = roleDefinition2.getPermissions();
 
         if (permissions1 == null && permissions2 == null) {
             return;

@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.Utility.detectContentType;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
@@ -54,8 +55,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card, invoice and ID document data from input
- * documents, extracting layout information, analyzing custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
+ * input documents, extracting layout information, analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
@@ -686,7 +687,7 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
-                finalRecognizeBusinessCardsOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(
                     () -> service.analyzeBusinessCardAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
@@ -778,7 +779,7 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeBusinessCardsOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo = finalRecognizeBusinessCardsOptions.getLocale();
             return new PollerFlux<>(
-                recognizeBusinessCardsOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 streamActivationOperation(
                     (contentType -> service.analyzeBusinessCardAsyncWithResponseAsync(
                         contentType,
@@ -867,7 +868,7 @@ public final class FormRecognizerAsyncClient {
                 = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
             final boolean isFieldElementsIncluded = finalRecognizeIdentityDocumentOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                finalRecognizeIdentityDocumentOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(
                     () -> service.analyzeIdDocumentAsyncWithResponseAsync(isFieldElementsIncluded,
                         finalRecognizeIdentityDocumentOptions.getPages(),
@@ -959,7 +960,7 @@ public final class FormRecognizerAsyncClient {
                 = getRecognizeIdentityDocumentOptions(recognizeIdentityDocumentOptions);
             final boolean isFieldElementsIncluded = finalRecognizeIdentityDocumentOptions.isFieldElementsIncluded();
             return new PollerFlux<>(
-                finalRecognizeIdentityDocumentOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 streamActivationOperation(
                     (contentType -> service.analyzeIdDocumentAsyncWithResponseAsync(
                         contentType,
@@ -1133,7 +1134,7 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
-                finalRecognizeInvoicesOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(
                     () -> service.analyzeInvoiceAsyncWithResponseAsync(isFieldElementsIncluded,
                         localeInfo == null ? null : Locale.fromString(localeInfo.toString()),
@@ -1227,7 +1228,7 @@ public final class FormRecognizerAsyncClient {
             final boolean isFieldElementsIncluded = finalRecognizeInvoicesOptions.isFieldElementsIncluded();
             final FormRecognizerLocale localeInfo  = finalRecognizeInvoicesOptions.getLocale();
             return new PollerFlux<>(
-                finalRecognizeInvoicesOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 streamActivationOperation(
                     (contentType -> service.analyzeInvoiceAsyncWithResponseAsync(
                         contentType,

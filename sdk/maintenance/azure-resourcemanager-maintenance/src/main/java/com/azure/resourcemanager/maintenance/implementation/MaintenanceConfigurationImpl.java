@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.maintenance.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
+import com.azure.resourcemanager.maintenance.models.Visibility;
 import java.util.Collections;
 import java.util.Map;
 
@@ -58,6 +60,34 @@ public final class MaintenanceConfigurationImpl
 
     public MaintenanceScope maintenanceScope() {
         return this.innerModel().maintenanceScope();
+    }
+
+    public Visibility visibility() {
+        return this.innerModel().visibility();
+    }
+
+    public String startDateTime() {
+        return this.innerModel().startDateTime();
+    }
+
+    public String expirationDateTime() {
+        return this.innerModel().expirationDateTime();
+    }
+
+    public String duration() {
+        return this.innerModel().duration();
+    }
+
+    public String timeZone() {
+        return this.innerModel().timeZone();
+    }
+
+    public String recurEvery() {
+        return this.innerModel().recurEvery();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -191,6 +221,36 @@ public final class MaintenanceConfigurationImpl
 
     public MaintenanceConfigurationImpl withMaintenanceScope(MaintenanceScope maintenanceScope) {
         this.innerModel().withMaintenanceScope(maintenanceScope);
+        return this;
+    }
+
+    public MaintenanceConfigurationImpl withVisibility(Visibility visibility) {
+        this.innerModel().withVisibility(visibility);
+        return this;
+    }
+
+    public MaintenanceConfigurationImpl withStartDateTime(String startDateTime) {
+        this.innerModel().withStartDateTime(startDateTime);
+        return this;
+    }
+
+    public MaintenanceConfigurationImpl withExpirationDateTime(String expirationDateTime) {
+        this.innerModel().withExpirationDateTime(expirationDateTime);
+        return this;
+    }
+
+    public MaintenanceConfigurationImpl withDuration(String duration) {
+        this.innerModel().withDuration(duration);
+        return this;
+    }
+
+    public MaintenanceConfigurationImpl withTimeZone(String timeZone) {
+        this.innerModel().withTimeZone(timeZone);
+        return this;
+    }
+
+    public MaintenanceConfigurationImpl withRecurEvery(String recurEvery) {
+        this.innerModel().withRecurEvery(recurEvery);
         return this;
     }
 }

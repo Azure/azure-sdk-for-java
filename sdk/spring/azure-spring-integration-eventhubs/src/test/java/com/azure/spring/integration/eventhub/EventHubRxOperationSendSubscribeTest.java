@@ -12,18 +12,19 @@ import com.azure.spring.integration.eventhub.api.EventHubRxOperation;
 import com.azure.spring.integration.eventhub.support.RxEventHubTestOperation;
 import com.azure.spring.integration.test.support.pojo.User;
 import com.azure.spring.integration.test.support.rx.RxSendSubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EventHubRxOperationSendSubscribeTest extends RxSendSubscribeByGroupOperationTest<EventHubRxOperation> {
 
     @Mock
@@ -32,14 +33,22 @@ public class EventHubRxOperationSendSubscribeTest extends RxSendSubscribeByGroup
     @Mock
     PartitionContext partitionContext;
 
-    @Before
+    private AutoCloseable closeable;
+
+    @BeforeEach
     @Override
     public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
         when(this.partitionContext.getPartitionId()).thenReturn(this.partitionId);
 
         this.sendSubscribeOperation = new RxEventHubTestOperation(null, () -> eventContext);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override
