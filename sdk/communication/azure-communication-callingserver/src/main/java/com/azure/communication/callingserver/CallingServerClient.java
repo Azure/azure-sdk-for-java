@@ -126,25 +126,11 @@ public final class CallingServerClient {
      * {@code endpoint} and write it into the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint, OutputStream destinationStream) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        downloadToWithResponse(sourceEndpoint, destinationStream, null, null);
-    }
-
-    /**
-     * Download the recording content, e.g. Recording's metadata, Recording video, etc., from
-     * {@code endpoint} and write it into the {@link OutputStream} passed as parameter.
-     * @param sourceEndpoint - ACS URL where the content is located.
-     * @param destinationStream - A stream where to write the downloaded content.
-     * @param httpRange
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
         downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
     }
 
@@ -153,7 +139,8 @@ public final class CallingServerClient {
      * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     * @param httpRange
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
      * @param context A {@link Context} representing the request context.
      * @return Response containing the http response information from the download.
      */
@@ -178,8 +165,6 @@ public final class CallingServerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceEndpoint, Path destinationPath,
                            ParallelDownloadOptions parallelDownloadOptions, boolean overwrite) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
     }
 

@@ -8,16 +8,24 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doAnswer;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -32,6 +40,24 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadMetadataAsync(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
+
+        try {
+            Flux<ByteBuffer> content = conversationAsyncClient.downloadStream(METADATA_URL);
+            byte[] contentBytes = FluxUtil.collectBytesInByteBufferStream(content).block();
+            assertThat(contentBytes, is(notNullValue()));
+            String metadata = new String(contentBytes, StandardCharsets.UTF_8);
+            assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void downloadMetadataRetryingAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
 
@@ -76,6 +102,36 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
         assertThat(response.getStatusCode(), is(equalTo(404)));
         assertThrows(CallingServerErrorException.class,
             () -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).block());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void downloadToFileAsync(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
+        AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
+
+        doAnswer(invocation -> {
+            ByteBuffer stream = invocation.getArgument(0);
+            String metadata = new String(stream.array(), StandardCharsets.UTF_8);
+            assertTrue(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"));
+            CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
+            completionHandler.completed(957, null);
+            return null;
+        }).when(channel).write(any(ByteBuffer.class),
+            anyLong(),
+            any(),
+            any());
+
+        conversationAsyncClient
+            .downloadToWithResponse(METADATA_URL,
+                Paths.get("dummyPath"),
+                channel,
+                null,
+                null).block();
+
+        Mockito.verify(channel).write(any(ByteBuffer.class), anyLong(),
+            any(), any());
     }
 
     private CallingServerAsyncClient setupAsyncClient(CallingServerClientBuilder builder, String testName) {

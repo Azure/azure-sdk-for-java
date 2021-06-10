@@ -52,14 +52,14 @@ class ContentDownloader {
                                 HttpRange httpRange, Context context) {
         return downloadStreamWithResponse(sourceEndpoint, httpRange, context)
             .flatMap(response -> response.getValue().reduce(destinationStream, (outputStream, buffer) -> {
-            try {
-                outputStream.write(FluxUtil.byteBufferToArray(buffer));
-                return outputStream;
-            } catch (IOException ex) {
-                throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-            }
-        }).thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), null)));
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), null)));
     }
 
     Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange httpRange,
