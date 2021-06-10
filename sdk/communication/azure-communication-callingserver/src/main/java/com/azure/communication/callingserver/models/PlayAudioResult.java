@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response payload of the cancel all media operations. */
+/** The response payload for play audio operation. */
 @Fluent
-public final class CancelAllMediaOperationsResponse {
+public final class PlayAudioResult {
     /*
      * Gets or sets the identifier.
      */
@@ -47,9 +47,9 @@ public final class CancelAllMediaOperationsResponse {
      * Set the id property: Gets or sets the identifier.
      *
      * @param id the id value to set.
-     * @return the CancelAllMediaOperationsResponse object itself.
+     * @return the PlayAudioResult object itself.
      */
-    public CancelAllMediaOperationsResponse setId(String id) {
+    public PlayAudioResult setId(String id) {
         this.id = id;
         return this;
     }
@@ -67,9 +67,9 @@ public final class CancelAllMediaOperationsResponse {
      * Set the status property: Gets or sets the status of the operation.
      *
      * @param status the status value to set.
-     * @return the CancelAllMediaOperationsResponse object itself.
+     * @return the PlayAudioResult object itself.
      */
-    public CancelAllMediaOperationsResponse setStatus(OperationStatus status) {
+    public PlayAudioResult setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }
@@ -87,9 +87,9 @@ public final class CancelAllMediaOperationsResponse {
      * Set the operationContext property: Gets or sets the operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the CancelAllMediaOperationsResponse object itself.
+     * @return the PlayAudioResult object itself.
      */
-    public CancelAllMediaOperationsResponse setOperationContext(String operationContext) {
+    public PlayAudioResult setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -107,9 +107,9 @@ public final class CancelAllMediaOperationsResponse {
      * Set the resultInfo property: Gets or sets the result info.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the CancelAllMediaOperationsResponse object itself.
+     * @return the PlayAudioResult object itself.
      */
-    public CancelAllMediaOperationsResponse setResultInfo(ResultInfo resultInfo) {
+    public PlayAudioResult setResultInfo(ResultInfo resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }

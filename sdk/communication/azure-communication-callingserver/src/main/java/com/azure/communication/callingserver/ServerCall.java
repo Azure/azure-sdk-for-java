@@ -5,10 +5,10 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-import com.azure.communication.callingserver.models.CallRecordingStateResponse;
+import com.azure.communication.callingserver.models.CallRecordingStateResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResponse;
-import com.azure.communication.callingserver.models.StartCallRecordingResponse;
+import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -102,10 +102,10 @@ public final class ServerCall {
      * Start recording
      *
      * @param recordingStateCallbackUri The uri to send state change callbacks.
-     * @return response for a successful startRecording request.
+     * @return result for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResponse startRecording(String recordingStateCallbackUri) {
+    public StartCallRecordingResult startRecording(String recordingStateCallbackUri) {
         return serverCallAsync.startRecording(recordingStateCallbackUri).block();
     }
 
@@ -114,10 +114,10 @@ public final class ServerCall {
      *
      * @param recordingStateCallbackUri The uri to send state change callbacks.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful startRecording request.
+     * @return result for a successful startRecording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartCallRecordingResponse> startRecordingWithResponse(
+    public Response<StartCallRecordingResult> startRecordingWithResponse(
             String recordingStateCallbackUri, Context context) {
         return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context).block();
     }
@@ -198,7 +198,7 @@ public final class ServerCall {
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingStateResponse getRecordingState(String recordingId) {
+    public CallRecordingStateResult getRecordingState(String recordingId) {
         return serverCallAsync.getRecordingState(recordingId).block();
     }
 
@@ -210,7 +210,7 @@ public final class ServerCall {
      * @return response for a successful getRecordingState request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallRecordingStateResponse> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<CallRecordingStateResult> getRecordingStateWithResponse(String recordingId, Context context) {
         return serverCallAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 
@@ -226,10 +226,10 @@ public final class ServerCall {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String audioFileUri,
-                                       String audioFileId,
-                                       String callbackUri,
-                                       String operationContext) {
+    public PlayAudioResult playAudio(String audioFileUri,
+                                     String audioFileId,
+                                     String callbackUri,
+                                     String operationContext) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
         PlayAudioRequest playAudioRequest = new PlayAudioRequest();
         playAudioRequest.setAudioFileUri(audioFileUri);
@@ -253,7 +253,7 @@ public final class ServerCall {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
+    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
                                                              String audioFileId,
                                                              String callbackUri,
                                                              String operationContext,
@@ -278,7 +278,7 @@ public final class ServerCall {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String audioFileUri,
+    public PlayAudioResult playAudio(String audioFileUri,
                                        PlayAudioOptions playAudioOptions) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
@@ -296,7 +296,7 @@ public final class ServerCall {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
+    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
                                                              PlayAudioOptions playAudioOptions,
                                                              Context context) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false

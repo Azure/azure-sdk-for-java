@@ -4,9 +4,9 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.communication.callingserver.models.CallRecordingStateResponse;
-import com.azure.communication.callingserver.models.PlayAudioResponse;
-import com.azure.communication.callingserver.models.StartCallRecordingResponse;
+import com.azure.communication.callingserver.models.CallRecordingStateResult;
+import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartCallRecordingResult;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -47,8 +47,8 @@ public class ConversationClientReadmeSamples {
         String serverCallId = "<serverCallId received from starting call>";
         String recordingStateCallbackUri = "<webhook endpoint to which calling service can report status>";
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
-        StartCallRecordingResponse response = serverCall.startRecording(recordingStateCallbackUri);
-        String recordingId = response.getRecordingId();
+        StartCallRecordingResult result = serverCall.startRecording(recordingStateCallbackUri);
+        String recordingId = result.getRecordingId();
         return recordingId;
     }
 
@@ -102,15 +102,12 @@ public class ConversationClientReadmeSamples {
     public CallRecordingState getRecordingState(CallingServerClient callingServerClient,
                                                 String serverCallId, String recordingId) {
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
-        CallRecordingStateResponse callRecordingStateResponse =
-            serverCall.getRecordingState(recordingId);
+        CallRecordingStateResult callRecordingStateResult = serverCall.getRecordingState(recordingId);
 
-        /**
-         * CallRecordingState: Active, Inactive
-         * If the call has ended, CommunicationErrorException will be thrown. Inactive is
-         * only returned when the recording is paused.
-         */
-        CallRecordingState callRecordingState = callRecordingStateResponse.getRecordingState();
+        // CallRecordingState: Active, Inactive
+        // If the call has ended, CommunicationErrorException will be thrown. Inactive is
+        // only returned when the recording is paused.
+        CallRecordingState callRecordingState = callRecordingStateResult.getRecordingState();
         return callRecordingState;
     }
 
@@ -119,15 +116,15 @@ public class ConversationClientReadmeSamples {
      *
      * @param callingServerClient {@link CallingServerClient} to use for recording.
      * @param serverCallId Identifier of the current server call.
-     * @return information about the play audio request, {@link PlayAudioResponse}.
+     * @return information about the play audio request, {@link PlayAudioResult}.
      */
-    public PlayAudioResponse playAudio(CallingServerClient callingServerClient, String serverCallId) {
+    public PlayAudioResult playAudio(CallingServerClient callingServerClient, String serverCallId) {
         String audioFileUri = "<uri of the file to play>";
         String audioFileId = "<a name to use for caching the audio file>";
         String callbackUri = "<webhook endpoint to which calling service can report status>";
         String context = "<Identifier for correlating responses>";
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
-        PlayAudioResponse playAudioResponse = serverCall.playAudio(audioFileUri, audioFileId, callbackUri, context);
-        return playAudioResponse;
+        PlayAudioResult playAudioResult = serverCall.playAudio(audioFileUri, audioFileId, callbackUri, context);
+        return playAudioResult;
     }
 }

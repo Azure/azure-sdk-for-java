@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response payload of start call recording operation. */
 @Fluent
-public final class StartCallRecordingResponse {
+public final class StartCallRecordingResult {
     /*
      * The recording id of the started recording
      */
@@ -29,9 +29,9 @@ public final class StartCallRecordingResponse {
      * Set the recordingId property: The recording id of the started recording.
      *
      * @param recordingId the recordingId value to set.
-     * @return the StartCallRecordingResponse object itself.
+     * @return the StartCallRecordingResult object itself.
      */
-    public StartCallRecordingResponse setRecordingId(String recordingId) {
+    public StartCallRecordingResult setRecordingId(String recordingId) {
         this.recordingId = recordingId;
         return this;
     }

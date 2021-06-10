@@ -5,9 +5,9 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
+import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResponse;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -48,7 +48,7 @@ public final class CallConnection {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String audioFileUri,
+    public PlayAudioResult playAudio(String audioFileUri,
                                        boolean loop,
                                        String audioFileId,
                                        String callbackUri,
@@ -76,12 +76,12 @@ public final class CallConnection {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
-                                                             boolean loop,
-                                                             String audioFileId,
-                                                             String callbackUri,
-                                                             String operationContext,
-                                                             Context context) {
+    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
+                                                           boolean loop,
+                                                           String audioFileId,
+                                                           String callbackUri,
+                                                           String operationContext,
+                                                           Context context) {
         PlayAudioRequest playAudioRequest = new PlayAudioRequest();
         playAudioRequest.setAudioFileUri(audioFileUri);
         playAudioRequest.setLoop(loop);
@@ -101,7 +101,7 @@ public final class CallConnection {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
+    public PlayAudioResult playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
         return callConnectionAsync.playAudio(playAudioRequest).block();
     }
@@ -117,7 +117,7 @@ public final class CallConnection {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(String audioFileUri,
+    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
                                                              PlayAudioOptions playAudioOptions,
                                                              Context context) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
@@ -152,7 +152,7 @@ public final class CallConnection {
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelAllMediaOperationsResponse cancelAllMediaOperations(String operationContext) {
+    public CancelAllMediaOperationsResult cancelAllMediaOperations(String operationContext) {
         return callConnectionAsync.cancelAllMediaOperations(operationContext).block();
     }
 
@@ -164,7 +164,7 @@ public final class CallConnection {
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAllMediaOperationsResponse> cancelAllMediaOperationsWithResponse(String operationContext,
+    public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(String operationContext,
                                                                                            Context context) {
         return callConnectionAsync.cancelAllMediaOperationsWithResponse(operationContext, context).block();
     }

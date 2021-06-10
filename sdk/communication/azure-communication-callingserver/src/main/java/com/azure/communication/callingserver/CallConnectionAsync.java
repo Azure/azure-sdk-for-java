@@ -16,9 +16,9 @@ import com.azure.communication.callingserver.implementation.models.Communication
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResponse;
+import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResponse;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -64,11 +64,11 @@ public final class CallConnectionAsync {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResponse> playAudio(String audioFileUri,
-                                             boolean loop,
-                                             String audioFileId,
-                                             String callbackUri,
-                                             String operationContext) {
+    public Mono<PlayAudioResult> playAudio(String audioFileUri,
+                                           boolean loop,
+                                           String audioFileId,
+                                           String callbackUri,
+                                           String operationContext) {
         PlayAudioRequest playAudioRequest = new PlayAudioRequest();
         playAudioRequest.setAudioFileUri(audioFileUri);
         playAudioRequest.setLoop(loop);
@@ -88,18 +88,18 @@ public final class CallConnectionAsync {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResponse> playAudio(String audioFileUri,
+    public Mono<PlayAudioResult> playAudio(String audioFileUri,
                                              PlayAudioOptions playAudioOptions) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
         return playAudio(playAudioRequest);
 
     }
 
-    Mono<PlayAudioResponse> playAudio(PlayAudioRequest playAudioRequest) {
+    Mono<PlayAudioResult> playAudio(PlayAudioRequest playAudioRequest) {
         try {
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
             return this.callConnectionInternal.playAudioAsync(callConnectionId, playAudioRequest)
-                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -118,7 +118,7 @@ public final class CallConnectionAsync {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResponse>> playAudioWithResponse(String audioFileUri,
+    public Mono<Response<PlayAudioResult>> playAudioWithResponse(String audioFileUri,
                                                                    boolean loop,
                                                                    String audioFileId,
                                                                    String callbackUri,
@@ -142,20 +142,20 @@ public final class CallConnectionAsync {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResponse>> playAudioWithResponse(String audioFileUri,
+    public Mono<Response<PlayAudioResult>> playAudioWithResponse(String audioFileUri,
                                                                    PlayAudioOptions playAudioOptions) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
         return playAudioWithResponse(playAudioRequest, Context.NONE);
     }
 
-    Mono<Response<PlayAudioResponse>> playAudioWithResponse(PlayAudioRequest playAudioRequest,
+    Mono<Response<PlayAudioResult>> playAudioWithResponse(PlayAudioRequest playAudioRequest,
                                                             Context context) {
         try {
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return this.callConnectionInternal.playAudioWithResponseAsync(callConnectionId, playAudioRequest, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -171,7 +171,7 @@ public final class CallConnectionAsync {
     public Mono<Void> hangup() {
         try {
             return this.callConnectionInternal.hangupCallAsync(callConnectionId)
-                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -192,7 +192,7 @@ public final class CallConnectionAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return this.callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -206,12 +206,12 @@ public final class CallConnectionAsync {
      * @return the response payload of the cancel media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResponse> cancelAllMediaOperations(String operationContext) {
+    public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperations(String operationContext) {
         try {
             CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
             request.setOperationContext(operationContext);
             return this.callConnectionInternal.cancelAllMediaOperationsAsync(callConnectionId, request)
-                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -224,11 +224,11 @@ public final class CallConnectionAsync {
      * @return the response payload of the cancel media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResponse>> cancelAllMediaOperationsWithResponse(String operationContext) {
+    public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String operationContext) {
         return cancelAllMediaOperationsWithResponse(operationContext, Context.NONE);
     }
 
-    Mono<Response<CancelAllMediaOperationsResponse>> cancelAllMediaOperationsWithResponse(String operationContext,
+    Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String operationContext,
                                                                                           Context context) {
         try {
             CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
@@ -236,7 +236,7 @@ public final class CallConnectionAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return this.callConnectionInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -262,7 +262,7 @@ public final class CallConnectionAsync {
                 operationContext,
                 null);
             return this.callConnectionInternal.inviteParticipantsAsync(callConnectionId, request)
-                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -293,7 +293,7 @@ public final class CallConnectionAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return this.callConnectionInternal.inviteParticipantsWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -311,7 +311,7 @@ public final class CallConnectionAsync {
         try {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return this.callConnectionInternal.removeParticipantAsync(callConnectionId, participantId)
-                .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -337,7 +337,7 @@ public final class CallConnectionAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return this.callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, e -> CallingServerErrorConverter.translateException(e));
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

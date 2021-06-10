@@ -9,10 +9,10 @@ import com.azure.communication.callingserver.implementation.models.InvitePartici
 import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
-import com.azure.communication.callingserver.models.CallRecordingStateResponse;
-import com.azure.communication.callingserver.models.JoinCallResponse;
-import com.azure.communication.callingserver.models.PlayAudioResponse;
-import com.azure.communication.callingserver.models.StartCallRecordingResponse;
+import com.azure.communication.callingserver.models.CallRecordingStateResult;
+import com.azure.communication.callingserver.models.JoinCallResult;
+import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -93,7 +93,7 @@ public final class ServerCallsImpl {
                 value = CommunicationErrorException.class,
                 code = {400, 404, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<StartCallRecordingResponse>> startRecording(
+        Mono<Response<StartCallRecordingResult>> startRecording(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("serverCallId") String serverCallId,
                 @QueryParam("api-version") String apiVersion,
@@ -107,7 +107,7 @@ public final class ServerCallsImpl {
                 value = CommunicationErrorException.class,
                 code = {400, 404, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<CallRecordingStateResponse>> recordingState(
+        Mono<Response<CallRecordingStateResult>> recordingState(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("serverCallId") String serverCallId,
                 @PathParam("recordingId") String recordingId,
@@ -163,7 +163,7 @@ public final class ServerCallsImpl {
                 value = CommunicationErrorException.class,
                 code = {400, 401, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<JoinCallResponse>> joinCall(
+        Mono<Response<JoinCallResult>> joinCall(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("serverCallId") String serverCallId,
                 @QueryParam("api-version") String apiVersion,
@@ -177,7 +177,7 @@ public final class ServerCallsImpl {
                 value = CommunicationErrorException.class,
                 code = {400, 401, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<PlayAudioResponse>> playAudio(
+        Mono<Response<PlayAudioResult>> playAudio(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("serverCallId") String serverCallId,
                 @QueryParam("api-version") String apiVersion,
@@ -431,7 +431,7 @@ public final class ServerCallsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResponse>> startRecordingWithResponseAsync(
+    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponseAsync(
             String serverCallId, StartCallRecordingRequest request) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -458,7 +458,7 @@ public final class ServerCallsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResponse>> startRecordingWithResponseAsync(
+    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponseAsync(
             String serverCallId, StartCallRecordingRequest request, Context context) {
         final String accept = "application/json";
         return service.startRecording(
@@ -477,11 +477,10 @@ public final class ServerCallsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResponse> startRecordingAsync(
-            String serverCallId, StartCallRecordingRequest request) {
+    public Mono<StartCallRecordingResult> startRecordingAsync(String serverCallId, StartCallRecordingRequest request) {
         return startRecordingWithResponseAsync(serverCallId, request)
                 .flatMap(
-                        (Response<StartCallRecordingResponse> res) -> {
+                        (Response<StartCallRecordingResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -503,11 +502,11 @@ public final class ServerCallsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResponse> startRecordingAsync(
+    public Mono<StartCallRecordingResult> startRecordingAsync(
             String serverCallId, StartCallRecordingRequest request, Context context) {
         return startRecordingWithResponseAsync(serverCallId, request, context)
                 .flatMap(
-                        (Response<StartCallRecordingResponse> res) -> {
+                        (Response<StartCallRecordingResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -528,7 +527,7 @@ public final class ServerCallsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResponse startRecording(String serverCallId, StartCallRecordingRequest request) {
+    public StartCallRecordingResult startRecording(String serverCallId, StartCallRecordingRequest request) {
         return startRecordingAsync(serverCallId, request).block();
     }
 
@@ -545,7 +544,7 @@ public final class ServerCallsImpl {
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartCallRecordingResponse> startRecordingWithResponse(
+    public Response<StartCallRecordingResult> startRecordingWithResponse(
             String serverCallId, StartCallRecordingRequest request, Context context) {
         return startRecordingWithResponseAsync(serverCallId, request, context).block();
     }
@@ -562,7 +561,7 @@ public final class ServerCallsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallRecordingStateResponse>> recordingStateWithResponseAsync(
+    public Mono<Response<CallRecordingStateResult>> recordingStateWithResponseAsync(
             String serverCallId, String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -589,7 +588,7 @@ public final class ServerCallsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallRecordingStateResponse>> recordingStateWithResponseAsync(
+    public Mono<Response<CallRecordingStateResult>> recordingStateWithResponseAsync(
             String serverCallId, String recordingId, Context context) {
         final String accept = "application/json";
         return service.recordingState(
@@ -608,10 +607,10 @@ public final class ServerCallsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallRecordingStateResponse> recordingStateAsync(String serverCallId, String recordingId) {
+    public Mono<CallRecordingStateResult> recordingStateAsync(String serverCallId, String recordingId) {
         return recordingStateWithResponseAsync(serverCallId, recordingId)
                 .flatMap(
-                        (Response<CallRecordingStateResponse> res) -> {
+                        (Response<CallRecordingStateResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -633,11 +632,11 @@ public final class ServerCallsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallRecordingStateResponse> recordingStateAsync(
+    public Mono<CallRecordingStateResult> recordingStateAsync(
             String serverCallId, String recordingId, Context context) {
         return recordingStateWithResponseAsync(serverCallId, recordingId, context)
                 .flatMap(
-                        (Response<CallRecordingStateResponse> res) -> {
+                        (Response<CallRecordingStateResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -658,7 +657,7 @@ public final class ServerCallsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingStateResponse recordingState(String serverCallId, String recordingId) {
+    public CallRecordingStateResult recordingState(String serverCallId, String recordingId) {
         return recordingStateAsync(serverCallId, recordingId).block();
     }
 
@@ -675,7 +674,7 @@ public final class ServerCallsImpl {
      * @return call recording state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallRecordingStateResponse> recordingStateWithResponse(
+    public Response<CallRecordingStateResult> recordingStateWithResponse(
             String serverCallId, String recordingId, Context context) {
         return recordingStateWithResponseAsync(serverCallId, recordingId, context).block();
     }
@@ -1026,8 +1025,7 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JoinCallResponse>> joinCallWithResponseAsync(
-            String serverCallId, JoinCallRequest callRequest) {
+    public Mono<Response<JoinCallResult>> joinCallWithResponseAsync(String serverCallId, JoinCallRequest callRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1053,7 +1051,7 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JoinCallResponse>> joinCallWithResponseAsync(
+    public Mono<Response<JoinCallResult>> joinCallWithResponseAsync(
             String serverCallId, JoinCallRequest callRequest, Context context) {
         final String accept = "application/json";
         return service.joinCall(
@@ -1072,10 +1070,10 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JoinCallResponse> joinCallAsync(String serverCallId, JoinCallRequest callRequest) {
+    public Mono<JoinCallResult> joinCallAsync(String serverCallId, JoinCallRequest callRequest) {
         return joinCallWithResponseAsync(serverCallId, callRequest)
                 .flatMap(
-                        (Response<JoinCallResponse> res) -> {
+                        (Response<JoinCallResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1097,10 +1095,10 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JoinCallResponse> joinCallAsync(String serverCallId, JoinCallRequest callRequest, Context context) {
+    public Mono<JoinCallResult> joinCallAsync(String serverCallId, JoinCallRequest callRequest, Context context) {
         return joinCallWithResponseAsync(serverCallId, callRequest, context)
                 .flatMap(
-                        (Response<JoinCallResponse> res) -> {
+                        (Response<JoinCallResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1121,7 +1119,7 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JoinCallResponse joinCall(String serverCallId, JoinCallRequest callRequest) {
+    public JoinCallResult joinCall(String serverCallId, JoinCallRequest callRequest) {
         return joinCallAsync(serverCallId, callRequest).block();
     }
 
@@ -1138,7 +1136,7 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JoinCallResponse> joinCallWithResponse(
+    public Response<JoinCallResult> joinCallWithResponse(
             String serverCallId, JoinCallRequest callRequest, Context context) {
         return joinCallWithResponseAsync(serverCallId, callRequest, context).block();
     }
@@ -1155,7 +1153,7 @@ public final class ServerCallsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResponse>> playAudioWithResponseAsync(String serverCallId, PlayAudioRequest request) {
+    public Mono<Response<PlayAudioResult>> playAudioWithResponseAsync(String serverCallId, PlayAudioRequest request) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1181,7 +1179,7 @@ public final class ServerCallsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResponse>> playAudioWithResponseAsync(
+    public Mono<Response<PlayAudioResult>> playAudioWithResponseAsync(
             String serverCallId, PlayAudioRequest request, Context context) {
         final String accept = "application/json";
         return service.playAudio(
@@ -1200,10 +1198,10 @@ public final class ServerCallsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResponse> playAudioAsync(String serverCallId, PlayAudioRequest request) {
+    public Mono<PlayAudioResult> playAudioAsync(String serverCallId, PlayAudioRequest request) {
         return playAudioWithResponseAsync(serverCallId, request)
                 .flatMap(
-                        (Response<PlayAudioResponse> res) -> {
+                        (Response<PlayAudioResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1225,10 +1223,10 @@ public final class ServerCallsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResponse> playAudioAsync(String serverCallId, PlayAudioRequest request, Context context) {
+    public Mono<PlayAudioResult> playAudioAsync(String serverCallId, PlayAudioRequest request, Context context) {
         return playAudioWithResponseAsync(serverCallId, request, context)
                 .flatMap(
-                        (Response<PlayAudioResponse> res) -> {
+                        (Response<PlayAudioResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1249,7 +1247,7 @@ public final class ServerCallsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResponse playAudio(String serverCallId, PlayAudioRequest request) {
+    public PlayAudioResult playAudio(String serverCallId, PlayAudioRequest request) {
         return playAudioAsync(serverCallId, request).block();
     }
 
@@ -1266,7 +1264,7 @@ public final class ServerCallsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResponse> playAudioWithResponse(
+    public Response<PlayAudioResult> playAudioWithResponse(
             String serverCallId, PlayAudioRequest request, Context context) {
         return playAudioWithResponseAsync(serverCallId, request, context).block();
     }
