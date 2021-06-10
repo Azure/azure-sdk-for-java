@@ -88,9 +88,9 @@ public final class ProgressReporter {
          */
         private final AtomicLong totalProgress;
 
-        ParallelProgressReporter(ProgressReceiver progressReceiver, AtomicLong totalProgress) {
+        ParallelProgressReporter(ProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
             super(progressReceiver);
-            this.transferLock = new ReentrantLock();
+            this.transferLock = lock;
             this.totalProgress = totalProgress;
         }
 
@@ -106,11 +106,8 @@ public final class ProgressReporter {
             requests happening at once to stage/download separate chunks, so we still need to lock either way.
              */
             transferLock.lock();
-            try {
-                this.progressReceiver.reportProgress(this.totalProgress.addAndGet(bytesTransferred));
-            } finally {
-                transferLock.unlock();
-            }
+            this.progressReceiver.reportProgress(this.totalProgress.addAndGet(bytesTransferred));
+            transferLock.unlock();
         }
 
         /*
@@ -156,17 +153,19 @@ public final class ProgressReporter {
      *
      * @param data The data whose transfer progress is to be tracked.
      * @param progressReceiver {@link ProgressReceiver}
+     * @param lock This lock will be instantiated by the operation initiating the whole transfer to coordinate each
+     * ProgressReporterImpl.
      * @param totalProgress We need an AtomicLong to be able to update the value referenced. Because we are already
      * synchronizing with the lock, we don't incur any additional performance hit here by the synchronization.
      * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount of
      * data emitted so far.
      */
     public static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data,
-                                                                ProgressReceiver progressReceiver, AtomicLong totalProgress) {
+                                                                ProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {
             return data;
         } else {
-            ParallelProgressReporter tracker = new ParallelProgressReporter(progressReceiver, totalProgress);
+            ParallelProgressReporter tracker = new ParallelProgressReporter(progressReceiver, lock, totalProgress);
             return tracker.addProgressReporting(data);
         }
     }

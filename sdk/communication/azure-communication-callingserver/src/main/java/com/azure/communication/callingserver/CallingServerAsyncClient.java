@@ -66,8 +66,7 @@ public final class CallingServerAsyncClient {
 
         contentDownloader = new ContentDownloader(
             callServiceClient.getEndpoint(),
-            callServiceClient.getHttpPipeline(),
-            logger);
+            callServiceClient.getHttpPipeline());
     }
 
     /**
