@@ -494,8 +494,11 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         String secondaryEndpoint = primaryEndpoint.getScheme() + "://" + secondaryHostJoiner;
 
-        TableServiceAsyncClient secondaryClient = new TableServiceAsyncClient(serviceClient.getHttpPipeline(),
-            secondaryEndpoint, serviceClient.getServiceVersion(), serviceClient.getSerializerAdapter());
+        TableServiceAsyncClient secondaryClient = new TableServiceClientBuilder()
+            .endpoint(secondaryEndpoint)
+            .serviceVersion(serviceClient.getServiceVersion())
+            .pipeline(serviceClient.getHttpPipeline())
+            .buildAsyncClient();
 
         StepVerifier.create(secondaryClient.getStatistics())
             .assertNext(statistics -> {

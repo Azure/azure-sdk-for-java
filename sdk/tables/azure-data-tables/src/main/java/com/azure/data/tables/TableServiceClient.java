@@ -12,9 +12,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.TableUtils;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
@@ -84,15 +82,6 @@ public final class TableServiceClient {
      */
     HttpPipeline getHttpPipeline() {
         return client.getHttpPipeline();
-    }
-
-    /**
-     * Gets this client's {@link SerializerAdapter}.
-     *
-     * @return This client's {@link SerializerAdapter}.
-     */
-    SerializerAdapter getSerializerAdapter() {
-        return client.getSerializerAdapter();
     }
 
     /**

@@ -441,9 +441,11 @@ public class TableServiceClientTest extends TestBase {
 
         String secondaryEndpoint = primaryEndpoint.getScheme() + "://" + secondaryHostJoiner;
 
-        TableServiceClient secondaryClient = new TableServiceClient(new TableServiceAsyncClient(
-            serviceClient.getHttpPipeline(), secondaryEndpoint, serviceClient.getServiceVersion(),
-            serviceClient.getSerializerAdapter()));
+        TableServiceClient secondaryClient = new TableServiceClientBuilder()
+            .endpoint(secondaryEndpoint)
+            .serviceVersion(serviceClient.getServiceVersion())
+            .pipeline(serviceClient.getHttpPipeline())
+            .buildClient();
 
         TableServiceStatistics statistics = secondaryClient.getStatistics();
 
