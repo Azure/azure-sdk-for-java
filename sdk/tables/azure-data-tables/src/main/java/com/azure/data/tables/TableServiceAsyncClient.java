@@ -72,6 +72,7 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
 @ServiceClient(builder = TableServiceClientBuilder.class, isAsync = true)
 public final class TableServiceAsyncClient {
     private final ClientLogger logger = new ClientLogger(TableServiceAsyncClient.class);
+    private final SerializerAdapter serializerAdapter;
     private final AzureTableImpl implementation;
     private final String accountName;
     private final HttpPipeline pipeline;
@@ -88,6 +89,7 @@ public final class TableServiceAsyncClient {
             throw logger.logExceptionAsError(ex);
         }
 
+        this.serializerAdapter = serializerAdapter;
         this.implementation = new AzureTableImplBuilder()
             .serializerAdapter(serializerAdapter)
             .url(url)
@@ -140,6 +142,15 @@ public final class TableServiceAsyncClient {
      */
     ClientLogger getLogger() {
         return this.logger;
+    }
+
+    /**
+     * Gets this client's {@link SerializerAdapter}.
+     *
+     * @return This client's {@link SerializerAdapter}.
+     */
+    SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
     }
 
     /**
