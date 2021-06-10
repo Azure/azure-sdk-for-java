@@ -39,14 +39,14 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Red");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, firstEntity));
-        System.out.printf("Added create action for entity with partition key: %s, and row key: %s\n", partitionKey,
+        System.out.printf("Added create action for entity with partition key: %s, and row key: %s%n", partitionKey,
             firstEntityRowKey);
 
         TableEntity secondEntity = new TableEntity(partitionKey, secondEntityRowKey)
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, secondEntity));
-        System.out.printf("Added create action for entity with partition key: %s, and row key: %s\n", partitionKey,
+        System.out.printf("Added create action for entity with partition key: %s, and row key: %s%n", partitionKey,
             secondEntityRowKey);
 
         // Now let's update a different entity.
@@ -55,7 +55,7 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.UPDATE_MERGE, entityToUpdate));
-        System.out.printf("Added update action for entity with partition key: %s, and row key: %s\n", partitionKey,
+        System.out.printf("Added update action for entity with partition key: %s, and row key: %s%n", partitionKey,
             rowKeyForUpdate);
 
         // And delete another one.
@@ -64,7 +64,7 @@ public class TransactionalBatchOperation {
             .addProperty("Brand", "Crayola")
             .addProperty("Color", "Blue");
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.DELETE, entityToDelete));
-        System.out.printf("Added delete action for entity with partition key: %s, and row key: %s\n", partitionKey,
+        System.out.printf("Added delete action for entity with partition key: %s, and row key: %s%n", partitionKey,
             rowKeyForDelete);
 
         // Finally, let's submit the batch of operations and inspect all the responses.

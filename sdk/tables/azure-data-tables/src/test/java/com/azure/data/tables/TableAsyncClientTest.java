@@ -29,7 +29,6 @@ import com.azure.data.tables.sas.TableSasSignatureValues;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -53,10 +52,34 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TableAsyncClientTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
+    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
 
     private TableAsyncClient tableClient;
     private HttpPipelinePolicy recordPolicy;
     private HttpClient playbackClient;
+
+    private TableClientBuilder getClientBuilder(String tableName, String connectionString) {
+        final TableClientBuilder builder = new TableClientBuilder()
+            .connectionString(connectionString)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .tableName(tableName);
+
+        if (interceptorManager.isPlaybackMode()) {
+            playbackClient = interceptorManager.getPlaybackClient();
+
+            builder.httpClient(playbackClient);
+        } else {
+            builder.httpClient(DEFAULT_HTTP_CLIENT);
+
+            if (!interceptorManager.isLiveMode()) {
+                recordPolicy = interceptorManager.getRecordPolicy();
+
+                builder.addPolicy(recordPolicy);
+            }
+        }
+
+        return builder;
+    }
 
     @BeforeAll
     static void beforeAll() {
@@ -72,29 +95,8 @@ public class TableAsyncClientTest extends TestBase {
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        tableClient = getClientBuilder(tableName, connectionString).buildAsyncClient();
 
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName);
-
-        if (interceptorManager.isPlaybackMode()) {
-            playbackClient = interceptorManager.getPlaybackClient();
-
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                recordPolicy = interceptorManager.getRecordPolicy();
-
-                builder.addPolicy(recordPolicy);
-            }
-
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        tableClient = builder.buildAsyncClient();
         tableClient.createTable().block(TIMEOUT);
     }
 
@@ -103,23 +105,7 @@ public class TableAsyncClientTest extends TestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName2);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(recordPolicy);
-            }
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        final TableAsyncClient tableClient2 = builder.buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(tableClient2.createTable())
@@ -133,23 +119,7 @@ public class TableAsyncClientTest extends TestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName2);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(recordPolicy);
-            }
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        final TableAsyncClient tableClient2 = builder.buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert
@@ -977,7 +947,7 @@ public class TableAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             tableClientBuilder.httpClient(playbackClient);
         } else {
-            tableClientBuilder.httpClient(HttpClient.createDefault());
+            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 tableClientBuilder.addPolicy(recordPolicy);

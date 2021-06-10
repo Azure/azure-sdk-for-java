@@ -28,7 +28,6 @@ import com.azure.data.tables.sas.TableAccountSasService;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -53,6 +52,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests methods for {@link TableServiceClient}.
  */
 public class TableServiceClientTest extends TestBase {
+    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+
     private TableServiceClient serviceClient;
     private HttpPipelinePolicy recordPolicy;
     private HttpClient playbackClient;
@@ -69,16 +70,13 @@ public class TableServiceClientTest extends TestBase {
 
             builder.httpClient(playbackClient);
         } else {
-            builder.httpClient(HttpClient.createDefault());
+            builder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
 
                 builder.addPolicy(recordPolicy);
             }
-
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
         }
 
         serviceClient = builder.buildClient();
@@ -348,7 +346,7 @@ public class TableServiceClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             tableClientBuilder.httpClient(playbackClient);
         } else {
-            tableClientBuilder.httpClient(HttpClient.createDefault());
+            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 tableClientBuilder.addPolicy(recordPolicy);

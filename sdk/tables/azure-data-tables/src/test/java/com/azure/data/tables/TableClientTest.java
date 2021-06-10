@@ -27,7 +27,6 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -52,15 +51,13 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Tests {@link TableClient}.
  */
 public class TableClientTest extends TestBase {
+    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+
     private TableClient tableClient;
     private HttpPipelinePolicy recordPolicy;
     private HttpClient playbackClient;
 
-    @Override
-    protected void beforeTest() {
-        final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-
+    private TableClientBuilder getClientBuilder(String tableName, String connectionString) {
         final TableClientBuilder builder = new TableClientBuilder()
             .connectionString(connectionString)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -71,18 +68,24 @@ public class TableClientTest extends TestBase {
 
             builder.httpClient(playbackClient);
         } else {
-            builder.httpClient(HttpClient.createDefault());
+            builder.httpClient(DEFAULT_HTTP_CLIENT);
+
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
 
                 builder.addPolicy(recordPolicy);
             }
-
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
         }
 
-        tableClient = builder.buildClient();
+        return builder;
+    }
+
+    @Override
+    protected void beforeTest() {
+        final String tableName = testResourceNamer.randomName("tableName", 20);
+        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        tableClient = getClientBuilder(tableName, connectionString).buildClient();
+
         tableClient.createTable();
     }
 
@@ -91,23 +94,7 @@ public class TableClientTest extends TestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName2);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(recordPolicy);
-            }
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        final TableClient tableClient2 = builder.buildClient();
+        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
 
         // Act & Assert
         assertNotNull(tableClient2.createTable());
@@ -118,23 +105,7 @@ public class TableClientTest extends TestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName2);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(HttpClient.createDefault());
-            if (!interceptorManager.isLiveMode()) {
-                builder.addPolicy(recordPolicy);
-            }
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
-        }
-
-        final TableClient tableClient2 = builder.buildClient();
+        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert
@@ -947,7 +918,7 @@ public class TableClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             tableClientBuilder.httpClient(playbackClient);
         } else {
-            tableClientBuilder.httpClient(HttpClient.createDefault());
+            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 tableClientBuilder.addPolicy(recordPolicy);

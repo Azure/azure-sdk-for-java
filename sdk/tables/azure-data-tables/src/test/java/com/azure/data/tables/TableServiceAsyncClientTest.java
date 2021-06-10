@@ -27,7 +27,6 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -50,6 +49,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TableServiceAsyncClientTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
+    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+
     private TableServiceAsyncClient serviceClient;
     private HttpPipelinePolicy recordPolicy;
     private HttpClient playbackClient;
@@ -76,16 +77,13 @@ public class TableServiceAsyncClientTest extends TestBase {
 
             builder.httpClient(playbackClient);
         } else {
-            builder.httpClient(HttpClient.createDefault());
+            builder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
 
                 builder.addPolicy(recordPolicy);
             }
-
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
         }
 
         serviceClient = builder.buildAsyncClient();
@@ -396,7 +394,7 @@ public class TableServiceAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             tableClientBuilder.httpClient(playbackClient);
         } else {
-            tableClientBuilder.httpClient(HttpClient.createDefault());
+            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 tableClientBuilder.addPolicy(recordPolicy);
