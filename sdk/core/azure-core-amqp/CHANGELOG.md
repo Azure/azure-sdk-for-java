@@ -3,14 +3,22 @@
 ## 2.1.0-beta.1 (Unreleased)
 
 ### New Features
+
 - Exposing CbsAuthorizationType.
 - Exposing ManagementNode that can perform management and metadata operations on an AMQP message broker.
 - AmqpConnection, AmqpSession, AmqpSendLink, and AmqpReceiveLink extend from AsyncCloseable.
 - Delivery outcomes and delivery states are added.
 
 ### Bug Fixes
+
 - Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
-- Fixed a bug where ReactorExecutor did not dispose of its scheduler when IO pipe was interrupted.
+- Fixed a bug where ReactorExecutor did not dispose of its scheduler when "IO Sink was interrupted".
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
+- Upgraded `proton-j` from `0.33.4` to `0.33.8`.
+- Upgraded `qpid-proton-j-extensions` from `1.2.3` to `1.2.4`.
 
 ## 2.0.6 (2021-05-24)
 ### Bug Fixes
