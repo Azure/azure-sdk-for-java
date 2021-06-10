@@ -43,19 +43,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
     /**
-     * Store certificates loaded from classpath.
+     * Stores the Jre key store certificates.
      */
-    private final ClasspathCertificates classpathCertificates;
-
-    /**
-     * Store certificates loaded from KeyVault.
-     */
-    private final KeyVaultCertificates keyVaultCertificates;
-
-    /**
-     * Store custom certificates loaded from file system.
-     */
-    private final FileSystemCertificates customCertificates;
+    private final JreCertificates jreCertificates;
 
     /**
      * Store well Know certificates loaded from file system.
@@ -63,9 +53,19 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final FileSystemCertificates wellKnowCertificates;
 
     /**
-     * Stores the Jre key store certificates.
+     * Store custom certificates loaded from file system.
      */
-    private final JreCertificates jreCertificates;
+    private final FileSystemCertificates customCertificates;
+
+    /**
+     * Store certificates loaded from KeyVault.
+     */
+    private final KeyVaultCertificates keyVaultCertificates;
+
+    /**
+     * Store certificates loaded from classpath.
+     */
+    private final ClasspathCertificates classpathCertificates;
 
     /**
      * Stores all the certificates.
@@ -87,14 +87,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Store the path where the well know certificate is placed
      */
-    private final String customPath = Optional.ofNullable(System.getProperty("azure.cert-path.well-known"))
-        .orElse("/etc/certs/well-known/");
+    final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.cert-path.well-known"))
+            .orElse("/etc/certs/well-known/");
 
     /**
      * Store the path where the custom certificate is placed
      */
-    private final String wellKnowPath = Optional.ofNullable(System.getProperty("azure.cert-path.custom"))
-        .orElse("/etc/certs/custom/");
+    final String customPath = Optional.ofNullable(System.getProperty("azure.cert-path.custom"))
+            .orElse("/etc/certs/custom/");
 
     /**
      * Constructor.
@@ -128,12 +128,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         refreshCertificatesWhenHaveUnTrustCertificate = Optional.ofNullable(System.getProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate"))
             .map(Boolean::parseBoolean)
             .orElse(false);
+        jreCertificates = JreCertificates.getInstance();
+        wellKnowCertificates = new FileSystemCertificates(wellKnowPath);
+        customCertificates = new FileSystemCertificates(customPath);
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
-        jreCertificates = JreCertificates.getInstance();
-        customCertificates = new FileSystemCertificates(customPath);
-        wellKnowCertificates = new FileSystemCertificates(wellKnowPath);
-        allCertificates = Arrays.asList(keyVaultCertificates, classpathCertificates, jreCertificates, wellKnowCertificates, customCertificates);
+        allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
     }
 
     @Override
@@ -267,16 +267,18 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             }
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
-        classpathCertificates.loadCertificatesFromClasspath();
-        wellKnowCertificates.loadCertificatesFromFileSystem();
-        customCertificates.loadCertificatesFromFileSystem();
+        loadCertificates();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
-        classpathCertificates.loadCertificatesFromClasspath();
+        loadCertificates();
+    }
+
+    private void loadCertificates() {
         wellKnowCertificates.loadCertificatesFromFileSystem();
         customCertificates.loadCertificatesFromFileSystem();
+        classpathCertificates.loadCertificatesFromClasspath();
     }
 
     @Override
