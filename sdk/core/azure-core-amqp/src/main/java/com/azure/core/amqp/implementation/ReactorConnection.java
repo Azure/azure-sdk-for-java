@@ -464,17 +464,12 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         connection.close();
+        handler.close();
 
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
         sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
 
-        final Mono<Void> closedExecutor;
-        if (executor != null) {
-            closedExecutor = executor.isClosed();
-            executor.close();
-        } else {
-            closedExecutor = Mono.empty();
-        }
+        final Mono<Void> closedExecutor = executor != null ? executor.closeAsync() : Mono.empty();
 
         // Close all the children.
         final Mono<Void> closeSessionsMono = Mono.when(closingSessions)
@@ -491,7 +486,6 @@ public class ReactorConnection implements AmqpConnection {
                     return false;
                 });
 
-                handler.close();
                 subscriptions.dispose();
             }));
 
@@ -521,10 +515,6 @@ public class ReactorConnection implements AmqpConnection {
 
             final ReactorExceptionHandler reactorExceptionHandler = new ReactorExceptionHandler();
 
-            reactorProvider.getReactorDispatcher().getShutdownSignal()
-                .subscribe(signal -> reactorExceptionHandler.onConnectionShutdown(signal),
-                    error -> reactorExceptionHandler.onConnectionError(error));
-
             // Use a new single-threaded scheduler for this connection as QPID's Reactor is not thread-safe.
             // Using Schedulers.single() will use the same thread for all connections in this process which
             // limits the scalability of the no. of concurrent connections a single process can have.
@@ -538,6 +528,22 @@ public class ReactorConnection implements AmqpConnection {
             executor = new ReactorExecutor(reactor, scheduler, connectionId,
                 reactorExceptionHandler, pendingTasksDuration,
                 connectionOptions.getFullyQualifiedNamespace());
+
+            // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
+            // It will not be kicked off until subscribed to.
+            final Mono<Void> executorCloseMono = executor.closeAsync();
+            reactorProvider.getReactorDispatcher().getShutdownSignal()
+                .flatMap(signal -> {
+                    logger.info("Shutdown signal received from reactor provider.");
+                    reactorExceptionHandler.onConnectionShutdown(signal);
+                    return executorCloseMono;
+                })
+                .onErrorResume(error -> {
+                    logger.info("Error received from reactor provider.", error);
+                    reactorExceptionHandler.onConnectionError(error);
+                    return executorCloseMono;
+                })
+                .subscribe();
 
             executor.start();
         }
