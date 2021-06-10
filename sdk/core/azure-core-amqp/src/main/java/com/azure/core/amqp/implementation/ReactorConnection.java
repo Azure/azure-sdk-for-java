@@ -529,16 +529,19 @@ public class ReactorConnection implements AmqpConnection {
                 reactorExceptionHandler, pendingTasksDuration,
                 connectionOptions.getFullyQualifiedNamespace());
 
+            // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
+            // It will not be kicked off until subscribed to.
+            final Mono<Void> executorCloseMono = executor.closeAsync();
             reactorProvider.getReactorDispatcher().getShutdownSignal()
                 .flatMap(signal -> {
                     logger.info("Shutdown signal received from reactor provider.");
                     reactorExceptionHandler.onConnectionShutdown(signal);
-                    return executor.closeAsync();
+                    return executorCloseMono;
                 })
                 .onErrorResume(error -> {
                     logger.info("Error received from reactor provider.", error);
                     reactorExceptionHandler.onConnectionError(error);
-                    return executor.closeAsync();
+                    return executorCloseMono;
                 })
                 .subscribe();
 
