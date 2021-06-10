@@ -71,6 +71,6 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     }
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
-        return new AADOAuth2AuthorizationRequestResolver(this.repo);
+        return new AADOAuth2AuthorizationRequestResolver(this.repo, properties);
     }
 }

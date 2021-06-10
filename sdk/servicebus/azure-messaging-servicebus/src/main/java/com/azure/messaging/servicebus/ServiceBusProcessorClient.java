@@ -337,7 +337,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         if (!isRunning()) {
             return;
         }
-        if (!receiverSubscriptions.containsKey(requester)) {
+        if (requester != null && !receiverSubscriptions.containsKey(requester)) {
             return;
         }
         receiverSubscriptions.keySet().forEach(Subscription::cancel);

@@ -220,7 +220,11 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString());
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
     }
 
     /**

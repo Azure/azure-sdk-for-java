@@ -4,7 +4,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.credential.AzureSasCredential
-import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
@@ -31,8 +30,8 @@ import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import spock.lang.Retry
 import spock.lang.Unroll
-import spock.lang.Ignore
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -115,6 +114,8 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob sas user delegation"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -183,6 +184,8 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob sas snapshot user delegation"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
@@ -220,6 +223,8 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "container sas user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -344,6 +349,8 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob user delegation saoid"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -374,6 +381,8 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "container user delegation correlation id"() {
         setup:
         def permissions = new BlobContainerSasPermission()

@@ -20,11 +20,14 @@ import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
 import com.azure.data.tables.implementation.StorageEndpoint;
 import com.azure.data.tables.implementation.TablesJacksonSerializer;
+import com.azure.data.tables.implementation.TablesMultipartSerializer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.data.tables.BuilderHelper.validateCredentials;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link TableClient} and
@@ -34,6 +37,7 @@ import java.util.List;
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
 public final class TableClientBuilder {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
+    private static final TablesMultipartSerializer TRANSACTIONAL_BATCH_SERIALIZER = new TablesMultipartSerializer();
 
     private final ClientLogger logger = new ClientLogger(TableClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -41,6 +45,7 @@ public final class TableClientBuilder {
     private String tableName;
     private Configuration configuration;
     private HttpClient httpClient;
+    private String connectionString;
     private String endpoint;
     private HttpLogOptions httpLogOptions;
     private ClientOptions clientOptions;
@@ -63,8 +68,13 @@ public final class TableClientBuilder {
      *
      * @return A {@link TableClient} created from the configurations in this builder.
      *
-     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws NullPointerException If {@code endpoint} or {@code tableName} are {@code null}.
+     * @throws IllegalArgumentException If {@code endpoint} is malformed or empty or if {@code tableName} is empty.
+     * @throws IllegalStateException If no form of authentication or {@code endpoint} have been specified or if
+     * multiple forms of authentication are provided, with the exception of {@code sasToken} +
+     * {@code connectionString}. Also thrown if {@code endpoint} and/or {@code sasToken} are set alongside a
+     * {@code connectionString} and the endpoint and/or SAS token in the latter are different than the former,
+     * respectively.
      */
     public TableClient buildClient() {
         return new TableClient(buildAsyncClient());
@@ -75,17 +85,69 @@ public final class TableClientBuilder {
      *
      * @return A {@link TableAsyncClient} created from the configurations in this builder.
      *
-     * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws NullPointerException If {@code endpoint} or {@code tableName} are {@code null}.
+     * @throws IllegalArgumentException If {@code endpoint} is malformed or empty or if {@code tableName} is empty.
+     * @throws IllegalStateException If no form of authentication or {@code endpoint} have been specified or if
+     * multiple forms of authentication are provided, with the exception of {@code sasToken} +
+     * {@code connectionString}. Also thrown if {@code endpoint} and/or {@code sasToken} are set alongside a
+     * {@code connectionString} and the endpoint and/or SAS token in the latter are different than the former,
+     * respectively.
      */
     public TableAsyncClient buildAsyncClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
+
+        validateCredentials(azureNamedKeyCredential, azureSasCredential, sasToken, connectionString, logger);
+
+        // If 'connectionString' was provided, extract the endpoint and sasToken.
+        if (connectionString != null) {
+            StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
+            StorageEndpoint storageConnectionStringTableEndpoint = storageConnectionString.getTableEndpoint();
+
+            if (storageConnectionStringTableEndpoint == null
+                || storageConnectionStringTableEndpoint.getPrimaryUri() == null) {
+
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "'connectionString' is missing the required settings to derive a Tables endpoint."));
+            }
+
+            String connectionStringEndpoint = storageConnectionStringTableEndpoint.getPrimaryUri();
+
+            // If no 'endpoint' was provided, use the one in the 'connectionString'. Else, verify they are the same.
+            if (endpoint == null) {
+                endpoint = connectionStringEndpoint;
+            } else {
+                if (endpoint.endsWith("/")) {
+                    endpoint = endpoint.substring(0, endpoint.length() - 1);
+                }
+
+                if (connectionStringEndpoint.endsWith("/")) {
+                    connectionStringEndpoint =
+                        connectionStringEndpoint.substring(0, connectionStringEndpoint.length() - 1);
+                }
+
+                if (!endpoint.equals(connectionStringEndpoint)) {
+                    throw logger.logExceptionAsError(new IllegalStateException(
+                        "'endpoint' points to a different tables endpoint than 'connectionString'."));
+                }
+            }
+
+            StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+
+            if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+                azureNamedKeyCredential = (azureNamedKeyCredential != null) ? azureNamedKeyCredential
+                    : new AzureNamedKeyCredential(authSettings.getAccount().getName(),
+                    authSettings.getAccount().getAccessKey());
+            } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+                sasToken = (sasToken != null) ? sasToken : authSettings.getSasToken();
+            }
+        }
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             azureNamedKeyCredential, azureSasCredential, sasToken, endpoint, retryPolicy, httpLogOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER);
+        return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
+            TRANSACTIONAL_BATCH_SERIALIZER);
     }
 
     /**
@@ -95,6 +157,7 @@ public final class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
      */
     public TableClientBuilder connectionString(String connectionString) {
@@ -102,25 +165,9 @@ public final class TableClientBuilder {
             throw logger.logExceptionAsError(new NullPointerException("'connectionString' cannot be null."));
         }
 
-        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
-        StorageEndpoint endpoint = storageConnectionString.getTableEndpoint();
+        StorageConnectionString.create(connectionString, logger);
 
-        if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                    "'connectionString' missing required settings to derive tables service endpoint."));
-        }
-
-        this.endpoint(endpoint.getPrimaryUri());
-
-        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
-
-        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
-            this.credential(new AzureNamedKeyCredential(authSettings.getAccount().getName(),
-                authSettings.getAccount().getAccessKey()));
-        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
-            this.sasToken(authSettings.getSasToken());
-        }
+        this.connectionString = connectionString;
 
         return this;
     }
@@ -132,6 +179,7 @@ public final class TableClientBuilder {
      *
      * @return The updated {@link TableClientBuilder}.
      *
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
      * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
      */
     public TableClientBuilder endpoint(String endpoint) {
@@ -181,14 +229,15 @@ public final class TableClientBuilder {
     }
 
     /**
-     * Sets the SAS token used to authorize requests sent to the service.
+     * Sets the SAS token used to authorize requests sent to the service. Setting this is mutually exclusive with
+     * {@code credential(AzureSasCredential)} or {@code credential(AzureNamedKeyCredential)}.
      *
      * @param sasToken The SAS token to use for authenticating requests.
      *
      * @return The updated {@link TableClientBuilder}.
      *
-     * @throws IllegalArgumentException If {@code sasToken} is empty.
      * @throws NullPointerException If {@code sasToken} is {@code null}.
+     * @throws IllegalArgumentException If {@code sasToken} is empty.
      */
     public TableClientBuilder sasToken(String sasToken) {
         if (sasToken == null) {
@@ -196,17 +245,17 @@ public final class TableClientBuilder {
         }
 
         if (sasToken.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'sasToken' cannot be null or empty."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'sasToken' cannot be empty."));
         }
 
         this.sasToken = sasToken;
-        this.azureNamedKeyCredential = null;
 
         return this;
     }
 
     /**
-     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service. Setting this is mutually
+     * exclusive with {@code credential(AzureNamedKeyCredential)} or {@code sasToken(String)}.
      *
      * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
      *
@@ -225,7 +274,8 @@ public final class TableClientBuilder {
     }
 
     /**
-     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service. Setting this is mutually
+     * exclusive with using {@code credential(AzureSasCredential)} or {@code sasToken(String)}.
      *
      * @param credential {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
@@ -239,7 +289,6 @@ public final class TableClientBuilder {
         }
 
         this.azureNamedKeyCredential = credential;
-        this.sasToken = null;
 
         return this;
     }

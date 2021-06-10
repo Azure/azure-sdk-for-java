@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.*;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
@@ -45,7 +44,6 @@ public class PhoneNumbersClientBuilderTest {
     void setUp() {
         this.httpClient = mock(HttpClient.class);
         this.clientBuilder = Mockito.spy(new PhoneNumbersClientBuilder());
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "all").matches("all|phonenumbers"));
     }
 
     @AfterEach

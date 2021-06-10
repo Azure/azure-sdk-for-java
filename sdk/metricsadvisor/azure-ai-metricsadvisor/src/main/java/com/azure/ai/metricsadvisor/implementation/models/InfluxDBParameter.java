@@ -11,37 +11,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class InfluxDBParameter {
     /*
-     * InfluxDB connection string
+     * The connection string of this InfluxDB
      */
-    @JsonProperty(value = "connectionString", required = true)
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
-     * Database name
+     * A database name
      */
-    @JsonProperty(value = "database", required = true)
+    @JsonProperty(value = "database")
     private String database;
 
     /*
-     * Database access user
+     * The user name of the account that can access this database
      */
-    @JsonProperty(value = "userName", required = true)
+    @JsonProperty(value = "userName")
     private String userName;
 
     /*
-     * Database access password
+     * The password of the account that can access this database
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /*
-     * Query script
+     * The script to query this database
      */
     @JsonProperty(value = "query", required = true)
     private String query;
 
     /**
-     * Get the connectionString property: InfluxDB connection string.
+     * Get the connectionString property: The connection string of this InfluxDB.
      *
      * @return the connectionString value.
      */
@@ -50,7 +50,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the connectionString property: InfluxDB connection string.
+     * Set the connectionString property: The connection string of this InfluxDB.
      *
      * @param connectionString the connectionString value to set.
      * @return the InfluxDBParameter object itself.
@@ -61,7 +61,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the database property: Database name.
+     * Get the database property: A database name.
      *
      * @return the database value.
      */
@@ -70,7 +70,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the database property: Database name.
+     * Set the database property: A database name.
      *
      * @param database the database value to set.
      * @return the InfluxDBParameter object itself.
@@ -81,7 +81,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the userName property: Database access user.
+     * Get the userName property: The user name of the account that can access this database.
      *
      * @return the userName value.
      */
@@ -90,7 +90,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the userName property: Database access user.
+     * Set the userName property: The user name of the account that can access this database.
      *
      * @param userName the userName value to set.
      * @return the InfluxDBParameter object itself.
@@ -101,7 +101,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the password property: Database access password.
+     * Get the password property: The password of the account that can access this database.
      *
      * @return the password value.
      */
@@ -110,7 +110,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the password property: Database access password.
+     * Set the password property: The password of the account that can access this database.
      *
      * @param password the password value to set.
      * @return the InfluxDBParameter object itself.
@@ -121,7 +121,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Get the query property: Query script.
+     * Get the query property: The script to query this database.
      *
      * @return the query value.
      */
@@ -130,7 +130,7 @@ public final class InfluxDBParameter {
     }
 
     /**
-     * Set the query property: Query script.
+     * Set the query property: The script to query this database.
      *
      * @param query the query value to set.
      * @return the InfluxDBParameter object itself.

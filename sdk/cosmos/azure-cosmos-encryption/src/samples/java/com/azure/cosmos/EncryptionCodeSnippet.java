@@ -149,6 +149,11 @@ public class EncryptionCodeSnippet {
         // To use key value please use AzureKeyVaultKeyStoreProvider
 
         @Override
+        public String getProviderName() {
+            return "SimpleEncryptionKeyStoreProvider";
+        }
+
+        @Override
         public byte[] unwrapKey(String s, KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
             return encryptedBytes;
         }

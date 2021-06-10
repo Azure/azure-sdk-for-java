@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 /**
  * Exception thrown on phone number specific errors
  */
-public class IdentityErrorResponseException extends HttpResponseException {
+public final class IdentityErrorResponseException extends HttpResponseException {
     /**
      * Initializes a new instance of the IdentityErrorResponseException class.
      *

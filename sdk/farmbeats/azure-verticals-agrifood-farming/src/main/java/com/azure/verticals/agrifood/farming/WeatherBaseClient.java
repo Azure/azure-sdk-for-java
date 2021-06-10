@@ -146,7 +146,7 @@ public final class WeatherBaseClient {
      *     extensionDataProviderApiKey: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -160,7 +160,7 @@ public final class WeatherBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -193,7 +193,7 @@ public final class WeatherBaseClient {
      *     extensionDataProviderApiKey: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -244,7 +244,7 @@ public final class WeatherBaseClient {
      *     endDateTime: OffsetDateTime
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -258,7 +258,7 @@ public final class WeatherBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -289,7 +289,7 @@ public final class WeatherBaseClient {
      *     endDateTime: OffsetDateTime
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -309,7 +309,7 @@ public final class WeatherBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param jobId Job Id supplied by end user.
+     * @param jobId Job ID supplied by end user.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

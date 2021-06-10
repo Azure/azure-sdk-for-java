@@ -6,7 +6,9 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-/** Defines values for FormRecognizerLocale. */
+/**
+ * Defines values for FormRecognizerLocale.
+ */
 public final class FormRecognizerLocale extends ExpandableStringEnum<FormRecognizerLocale> {
     /** Static value en-AU for FormRecognizerLocale. */
     public static final FormRecognizerLocale EN_AU = fromString("en-AU");

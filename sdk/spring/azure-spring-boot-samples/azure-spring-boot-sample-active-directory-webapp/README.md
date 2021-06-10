@@ -79,9 +79,8 @@ azure:
     client-secret: <client-secret>
     tenant-id: <tenant-id>
     user-group:
-      allowed-group-names: group1,group2
-      allowed-group-ids: <group1-id>,<group2-id>
-      enable-full-list: false  
+      allowed-group-names: <group1>,<group2>
+      allowed-group-ids: <group1-id>,<group2-id>   # When 'all' is used, all group id can be obtained.
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:
@@ -95,7 +94,7 @@ azure:
 #        scopes:
 #          - <Web-API-A-app-id-url>/Obo.WebApiA.ExampleScope
       
-# enable-full-list is used to control whether to list all group id, default is false
+# enable-full-list is used to control whether to list all group ids, default is false
 
 # It's suggested the logged in user should at least belong to one of the above groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
