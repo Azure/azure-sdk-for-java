@@ -4,8 +4,8 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
@@ -59,8 +59,8 @@ public class AADAccessTokenGroupRolesExtractionTest {
                .thenReturn(groupInformationFromGraph);
     }
 
-    @BeforeEach
-    public void init() {
+    @AfterEach
+    public void reset() {
         userGroup.setAllowedGroupNames(Collections.emptyList());
         userGroup.setAllowedGroupIds(Collections.emptySet());
         userGroup.setEnableFullList(false);
