@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.azure.communication.callingserver.models.CallModality;
@@ -18,7 +19,7 @@ import com.azure.communication.common.CommunicationIdentifier;
  */
 public final class JoinCallConverter {
     /**
-     * Maps from {@Link JoinCallOptions} to {@link JoinCallRequest}.
+     * Maps from JoinCallOptions to JoinCallRequest.
      */
     public static JoinCallRequest convert(CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
         if (source == null) {
@@ -37,16 +38,12 @@ public final class JoinCallConverter {
 
 
         List<CallModality> requestedModalities = new ArrayList<>();
-        for (CallModality callModality : joinCallOptions.getRequestedModalities()) {
-            requestedModalities.add(callModality);
-        }
+        Collections.addAll(requestedModalities, joinCallOptions.getRequestedMediaTypes());
         joinCallRequest.setRequestedMediaTypes(requestedModalities);
 
 
         List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
-        for (EventSubscriptionType eventSubscription : joinCallOptions.getRequestedCallEvents()) {
-            requestedCallEvents.add(eventSubscription);
-        }
+        Collections.addAll(requestedCallEvents, joinCallOptions.getRequestedCallEvents());
         joinCallRequest.setRequestedCallEvents(requestedCallEvents);
 
         return joinCallRequest;

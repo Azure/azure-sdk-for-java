@@ -23,6 +23,13 @@ public class CallingServerTestUtils {
         validateCallConnection(callConnectionResponse.getValue());
     }
 
+    protected static void validateJoinCallConnectionResponse(Response<CallConnection> callConnectionResponse) {
+        assertNotNull(callConnectionResponse);
+        assertEquals(202, callConnectionResponse.getStatusCode());
+        assertNotNull(callConnectionResponse.getValue());
+        validateCallConnection(callConnectionResponse.getValue());
+    }
+
     protected static void validateCallConnection(CallConnection callConnection) {
         assertNotNull(callConnection);
         assertNotNull(callConnection.getCallConnectionId());
@@ -32,6 +39,13 @@ public class CallingServerTestUtils {
     protected static void validateCallConnectionAsyncResponse(Response<CallConnectionAsync> callConnectionResponseAsync) {
         assertNotNull(callConnectionResponseAsync);
         assertEquals(201, callConnectionResponseAsync.getStatusCode());
+        assertNotNull(callConnectionResponseAsync.getValue());
+        validateCallConnectionAsync(callConnectionResponseAsync.getValue());
+    }
+
+    protected static void validateJoinCallConnectionAsyncResponse(Response<CallConnectionAsync> callConnectionResponseAsync) {
+        assertNotNull(callConnectionResponseAsync);
+        assertEquals(202, callConnectionResponseAsync.getStatusCode());
         assertNotNull(callConnectionResponseAsync.getValue());
         validateCallConnectionAsync(callConnectionResponseAsync.getValue());
     }

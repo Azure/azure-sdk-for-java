@@ -22,10 +22,10 @@ public final class JoinCallOptions {
     private String callbackUri;
 
     /*
-     * The requested modalities.
+     * The requested MediaTypes.
      */
-    @JsonProperty(value = "requestedModalities", required = true)
-    private CallModality[] requestedModalities;
+    @JsonProperty(value = "requestedMediaTypes", required = true)
+    private CallModality[] requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
@@ -74,22 +74,22 @@ public final class JoinCallOptions {
     }
 
     /**
-     * Get the requestedModalities property: The requested modalities.
+     * Get the requestedMediaTypes property: The requested MediaTypes.
      *
-     * @return the requestedModalities value.
+     * @return the requestedMediaTypes value.
      */
-    public CallModality[] getRequestedModalities() {
-        return this.requestedModalities == null ? new CallModality[0] : this.requestedModalities.clone();
+    public CallModality[] getRequestedMediaTypes() {
+        return this.requestedMediaTypes == null ? new CallModality[0] : this.requestedMediaTypes.clone();
     }
 
     /**
-     * Set the requestedModalities property: The requested modalities.
+     * Set the requestedMediaTypes property: The requested MediaTypes.
      *
-     * @param requestedModalities the requestedModalities value to set.
+     * @param requestedMediaTypes the requestedModalities value to set.
      * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedModalities(CallModality[] requestedModalities) {
-        this.requestedModalities = requestedModalities == null ? new CallModality[0] : requestedModalities.clone();
+    public JoinCallOptions setRequestedMediaTypes(CallModality[] requestedMediaTypes) {
+        this.requestedMediaTypes = requestedMediaTypes == null ? new CallModality[0] : requestedMediaTypes.clone();
         return this;
     }
 
@@ -113,5 +113,33 @@ public final class JoinCallOptions {
     public JoinCallOptions setRequestedCallEvents(EventSubscriptionType[] requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents == null ? new EventSubscriptionType[0] : requestedCallEvents.clone();
         return this;
+    }
+
+    /**
+     * Initializes a new instance of JoingCallOptions.
+     *
+     * @param callbackUri the callback URI.
+     * @param requestedMediaTypes the requested media types.
+     * @param requestedCallEvents the requested call events to subscribe to.
+     * @throws IllegalArgumentException if any parameters are null.
+     */
+    public JoinCallOptions(String callbackUri,
+                                 CallModality[] requestedMediaTypes,
+                                 EventSubscriptionType[] requestedCallEvents) {
+        if (callbackUri == null) {
+            throw new IllegalArgumentException("object callbackUri cannot be null");
+        }
+
+        if (requestedMediaTypes == null) {
+            throw new IllegalArgumentException("object requestedMediaTypes cannot be null");
+        }
+        if (requestedCallEvents == null) {
+            throw new IllegalArgumentException("object requestedCallEvents cannot be null");
+        }
+
+        this.callbackUri = callbackUri;
+
+        this.requestedMediaTypes = requestedMediaTypes.clone();
+        this.requestedCallEvents = requestedCallEvents.clone();
     }
 }

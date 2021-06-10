@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -16,7 +17,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,14 +24,16 @@ import org.junit.jupiter.params.provider.MethodSource;
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to setup if tests are playback or
  * live. By default, tests are run in playback mode.
  */
-@Disabled
 public class CallConnectionTests extends CallingServerTestBase {
+
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
+    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
+    private String joinedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012cf";
     private String alternateId =   "+11111111111";
     private String to =   "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
     private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
-    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
+
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -155,7 +157,7 @@ public class CallConnectionTests extends CallingServerTestBase {
             callConnection.addParticipant(new CommunicationUserIdentifier(invitedUser), null, operationContext);
 
             // Remove Participant
-            String participantId = "ec1f7dc0-9d1b-4598-9f88-51902818ed40";
+            String participantId = "f29f70e3-1eaf-44c0-839c-b4e8a74ffec3";
             callConnection.removeParticipant(participantId);
 
             // Hang up
@@ -201,7 +203,7 @@ public class CallConnectionTests extends CallingServerTestBase {
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
-            String participantId = "78a9ca1d-b0af-450c-82ed-07ce34e9275e";
+            String participantId = "71ed956b-366e-450c-9a61-3bbccf42baa5";
             Response<Void> removeParticipantResponse = callConnection.removeParticipantWithResponse(participantId, Context.NONE);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
@@ -216,28 +218,39 @@ public class CallConnectionTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateDeleteScenario(HttpClient httpClient) {
+    public void runCreateJoinHangupScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runCreateDeleteScenario");
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenario");
 
         try {
             // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
+            CreateCallOptions createCallOptions = new CreateCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
-                options);
+                createCallOptions);
 
             CallingServerTestUtils.validateCallConnection(callConnection);
 
-            // Delete call
+            // Join
+            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            JoinCallOptions joinCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+            CallConnection joinedCallConnection =
+                callingServerClient.join(serverCallId, new CommunicationUserIdentifier(joinedUser), joinCallOptions);
+            CallingServerTestUtils.validateCallConnection(joinedCallConnection);
+
+            //Hangup
             callConnection.hangup();
+            joinedCallConnection.hangup();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -246,31 +259,48 @@ public class CallConnectionTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runCreateDeleteScenarioWithResponse(HttpClient httpClient) {
+    public void runCreateJoinHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runCreateDeleteScenarioWithResponse");
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenarioWithResponse");
 
         try {
             // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
+            CreateCallOptions createCallOptions = new CreateCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
 
             Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
                 new CommunicationUserIdentifier(from),
                 new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
-                options,
+                createCallOptions,
                 Context.NONE);
 
             CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
             CallConnection callConnection = callConnectionResponse.getValue();
 
-            // Delete Call
+            // Join
+            var serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            JoinCallOptions joinCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+            Response<CallConnection> joinedCallConnectionResponse =
+                callingServerClient.joinWithResponse(
+                    serverCallId,
+                    new CommunicationUserIdentifier(joinedUser),
+                    joinCallOptions,
+                    Context.NONE);
+            CallingServerTestUtils.validateJoinCallConnectionResponse(joinedCallConnectionResponse);
+            CallConnection joinedCallConnection = joinedCallConnectionResponse.getValue();
+
+            //Hangup
             Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
             CallingServerTestUtils.validateResponse(hangupResponse);
+            Response<Void> joinCallHangupResponse = joinedCallConnection.hangupWithResponse(Context.NONE);
+            CallingServerTestUtils.validateResponse(joinCallHangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
