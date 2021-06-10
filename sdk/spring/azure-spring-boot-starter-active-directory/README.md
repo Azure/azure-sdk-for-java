@@ -280,8 +280,8 @@ This starter provides following properties:
 | **azure.activedirectory**.graph-membership-uri                          | It's used to load users' groups. The default value is `https://graph.microsoft.com/v1.0/me/memberOf`, this uri just get direct groups. To get all transitive membership, set it to `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`. The 2 uris are both Azure Global, check `Property example 1` if you want to use Azure China.|
 | **azure.activedirectory**.post-logout-redirect-uri                      | Redirect uri for posting log-out.                            |
 | **azure.activedirectory**.tenant-id                                     | Azure Tenant ID.                                             |
-| **azure.activedirectory**.user-group.allowed-group-names                | If matching user group names are found in the MemeberOf Graph API response, they will grant access control permissions. |
-| **azure.activedirectory**.user-group.allowed-group-ids                  | If matching user group ids are found in the MemeberOf Graph API response, they will grant access control permissions. |
+| **azure.activedirectory**.user-group.allowed-group-names                | Users' group name can be use in `@PreAuthorize("hasRole('ROLE_group_name_1')")`. Not all group name will take effect, only group names configured in this property will take effect. |
+| **azure.activedirectory**.user-group.allowed-group-ids                  | Users' group id can be use in `@PreAuthorize("hasRole('ROLE_group_id_1')")`. Not all group id will take effect, only group id configured in this property will take effect. If this property's value is `all`, then all group id will take effect.|
 | **azure.activedirectory**.user-name-attribute                           | Decide which claim to be principal's name. |
 
 Here are some examples about how to use these properties:
@@ -296,17 +296,18 @@ Here are some examples about how to use these properties:
         graph-base-uri: https://microsoftgraph.chinacloudapi.cn
     ```
 
-#### Property example 2: Use `group name` to protect some method in web application.
+#### Property example 2: Use `group name` or `group id` to protect some method in web application.
 
 * Step 1: Add property in application.yml
     ```yaml
     azure:
       activedirectory:
         user-group:
-          allowed-group-names: <group1-name>, <group2-name>
-          # When azure.active directory.user-group.allowed-group-ids is configured as 'all', there is no need to configure other group ids,
-          # it will automatically use all group ids responded by MemeberOf Graph API as permissions.
-          allowed-group-ids: <group1-id>, <group2-id>  
+          allowed-group-names: group1_name_1, group2_name_2
+          # 1. If allowed-group-ids = all, then all group id will take effect. 
+          # 2. If "all" is used, we should not configure other group ids.
+          # 3. "all" is only supported for allowed-group-ids, not supported for allowed-group-names.
+          allowed-group-ids: group_id_1, group_id_2  
     ```
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
