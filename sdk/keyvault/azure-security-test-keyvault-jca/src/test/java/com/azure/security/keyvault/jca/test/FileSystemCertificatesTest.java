@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca.test;
 
-import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,9 +12,7 @@ import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.Security;
 import java.security.cert.CertificateException;
-import java.util.Arrays;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class FileSystemCertificatesTest {
@@ -25,14 +22,8 @@ public class FileSystemCertificatesTest {
     @BeforeAll
     public static void setEnvironmentProperty() {
         System.setProperty("azure.cert-path.custom", getFilePath());
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
-                "AZURE_KEYVAULT_TENANT_ID",
-                "AZURE_KEYVAULT_CLIENT_ID",
-                "AZURE_KEYVAULT_CLIENT_SECRET")
-        );
-        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
-        Security.addProvider(provider);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.addKeyVaultJcaProvider();
         certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 

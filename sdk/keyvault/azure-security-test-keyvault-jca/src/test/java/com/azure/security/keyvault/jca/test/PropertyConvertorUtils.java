@@ -3,12 +3,14 @@
 
 package com.azure.security.keyvault.jca.test;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +42,11 @@ public class PropertyConvertorUtils {
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
         keyStore.load(parameter);
         return keyStore;
+    }
+
+    public static void addKeyVaultJcaProvider() {
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
     }
 
 }
