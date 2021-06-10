@@ -337,8 +337,8 @@ public class PhoneNumbersClientBuilderTest {
 
         // Validate HttpPipelinePolicy settings
         assertEquals(5, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
-        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
-        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
+        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
+        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
 
@@ -390,8 +390,8 @@ public class PhoneNumbersClientBuilderTest {
         int customPolicyIndex = 4;
 
         assertEquals(expectedPolicyCount, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
-        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
-        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
+        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
+        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
 

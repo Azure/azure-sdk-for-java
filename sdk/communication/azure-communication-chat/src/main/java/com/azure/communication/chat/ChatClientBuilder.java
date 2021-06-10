@@ -221,9 +221,12 @@ public final class ChatClientBuilder {
                                             List<HttpPipelinePolicy> additionalPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-        applyRequiredPolicies(policies);
+        policies.add(getUserAgentPolicy());
+        policies.add(this.retryPolicy);
+        policies.add(new CookiePolicy());
         // auth policy is per request, should be after retry
         policies.add(authorizationPolicy);
+        policies.add(new HttpLoggingPolicy(logOptions));
 
         if (additionalPolicies != null && additionalPolicies.size() > 0) {
             policies.addAll(additionalPolicies);
@@ -233,13 +236,6 @@ public final class ChatClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
-        policies.add(getUserAgentPolicy());
-        policies.add(this.retryPolicy);
-        policies.add(new CookiePolicy());
-        policies.add(new HttpLoggingPolicy(logOptions));
     }
 
     /*

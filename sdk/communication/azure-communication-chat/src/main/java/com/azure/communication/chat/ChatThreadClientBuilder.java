@@ -235,9 +235,12 @@ public final class ChatThreadClientBuilder {
                                             List<HttpPipelinePolicy> additionalPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-        applyRequiredPolicies(policies);
+        policies.add(getUserAgentPolicy());
+        policies.add(this.retryPolicy);
+        policies.add(new CookiePolicy());
         // auth policy is per request, should be after retry
         policies.add(authorizationPolicy);
+        policies.add(new HttpLoggingPolicy(logOptions));
 
         if (additionalPolicies != null && additionalPolicies.size() > 0) {
             policies.addAll(additionalPolicies);
@@ -249,12 +252,6 @@ public final class ChatThreadClientBuilder {
             .build();
     }
 
-    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
-        policies.add(getUserAgentPolicy());
-        policies.add(this.retryPolicy);
-        policies.add(new CookiePolicy());
-        policies.add(new HttpLoggingPolicy(logOptions));
-    }
 
     /*
      * Creates a {@link UserAgentPolicy} using the default chat service module name and version.
