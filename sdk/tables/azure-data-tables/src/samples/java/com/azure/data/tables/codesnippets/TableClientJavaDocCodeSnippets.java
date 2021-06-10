@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.tables;
+package com.azure.data.tables.codesnippets;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -10,6 +10,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.data.tables.TableClient;
+import com.azure.data.tables.TableClientBuilder;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
@@ -44,47 +46,6 @@ public class TableClientJavaDocCodeSnippets {
             .tableName("myTable")
             .buildClient();
         // END: com.azure.data.tables.tableClient.instantiation
-
-        return tableClient;
-    }
-
-    /**
-     * Generates a code sample for creating a {@link TableClient} while providing an {@link HttpClient}.
-     *
-     * @return An instance of {@link TableClient}.
-     */
-    public TableClient createClientWithHttpClient() {
-        // BEGIN: com.azure.data.tables.tableClient.withHttpClient.instantiation
-        TableClient tableClient = new TableClientBuilder()
-            .endpoint("https://myaccount.core.windows.net/")
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .tableName("myTable")
-            .httpClient(HttpClient.createDefault())
-            .buildClient();
-        // END: com.azure.data.tables.tableClient.withHttpClient.instantiation
-
-        return tableClient;
-    }
-
-    /**
-     * Generates a code sample for creating a {@link TableClient} while providing an {@link HttpPipeline}.
-     *
-     * @return An instance of {@link TableClient}.
-     */
-    public TableClient createClientWithPipeline() {
-        // BEGIN: com.azure.data.tables.tableClient.withPipeline.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new TableAzureNamedKeyCredentialPolicy(new AzureNamedKeyCredential("name", "key")),
-                new RetryPolicy())
-            .build();
-
-        TableClient tableClient = new TableClientBuilder()
-            .endpoint("https://myaccount.core.windows.net/")
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .tableName("myTable")
-            .pipeline(pipeline)
-            .buildClient();
-        // END: com.azure.data.tables.tableClient.withPipeline.instantiation
 
         return tableClient;
     }

@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.tables;
+package com.azure.data.tables.codesnippets;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.data.tables.TableServiceAsyncClient;
+import com.azure.data.tables.TableServiceClientBuilder;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableServiceLogging;
 import com.azure.data.tables.models.TableServiceMetrics;
@@ -30,45 +32,6 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
             .credential(new AzureNamedKeyCredential("name", "key"))
             .buildAsyncClient();
         // END: com.azure.data.tables.tableServiceAsyncClient.instantiation
-
-        return tableServiceAsyncClient;
-    }
-
-    /**
-     * Generates a code sample for creating a {@link TableServiceAsyncClient} while providing an {@link HttpClient}.
-     *
-     * @return An instance of {@link TableServiceAsyncClient}.
-     */
-    public TableServiceAsyncClient createAsyncClientWithHttpClient() {
-        // BEGIN: com.azure.data.tables.tableServiceAsyncClient.withHttpClient.instantiation
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
-            .endpoint("https://myaccount.core.windows.net/")
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .httpClient(HttpClient.createDefault())
-            .buildAsyncClient();
-        // END: com.azure.data.tables.tableServiceAsyncClient.withHttpClient.instantiation
-
-        return tableServiceAsyncClient;
-    }
-
-    /**
-     * Generates a code sample for creating a {@link TableServiceAsyncClient} while providing an {@link HttpPipeline}.
-     *
-     * @return An instance of {@link TableServiceAsyncClient}.
-     */
-    public TableServiceAsyncClient createAsyncClientWithPipeline() {
-        // BEGIN: com.azure.data.tables.tableServiceAsyncClient.withPipeline.instantiation
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new TableAzureNamedKeyCredentialPolicy(new AzureNamedKeyCredential("name", "key")),
-                new RetryPolicy())
-            .build();
-
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
-            .endpoint("https://myaccount.core.windows.net/")
-            .credential(new AzureNamedKeyCredential("name", "key"))
-            .pipeline(pipeline)
-            .buildAsyncClient();
-        // END: com.azure.data.tables.tableServiceAsyncClient.withPipeline.instantiation
 
         return tableServiceAsyncClient;
     }

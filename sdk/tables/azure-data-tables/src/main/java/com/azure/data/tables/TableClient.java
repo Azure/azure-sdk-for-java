@@ -620,7 +620,7 @@ public final class TableClient {
      * @return A {@link List} of {@link TableTransactionActionResponse sub-responses} that correspond to each
      * {@link TableTransactionResult action} in the transaction.
      *
-     * @throws IllegalStateException If no {@link TableTransactionResult actions} have been added to the list.
+     * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
      * @throws TableTransactionFailedException If any {@link TableTransactionResult action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.
@@ -654,7 +654,7 @@ public final class TableClient {
      * a {@link List} of {@link TableTransactionActionResponse sub-responses} that correspond to each
      * {@link TableTransactionAction action} in the transaction.
      *
-     * @throws IllegalStateException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
      * @throws TableTransactionFailedException If any {@link TableTransactionAction action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.

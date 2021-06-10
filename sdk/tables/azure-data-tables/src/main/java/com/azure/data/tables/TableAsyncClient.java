@@ -1129,9 +1129,9 @@ public final class TableAsyncClient {
      * {@link TableEntity entities} in a table.
      *
      * @return A {@link Mono} containing a {@link List} of {@link TableTransactionActionResponse sub-responses} that
-     * correspond to each {@link TableTransactionResult action} in the transaction.
+     * correspond to each {@link TableTransactionAction action} in the transaction.
      *
-     * @throws IllegalStateException If no {@link TableTransactionResult actions} have been added to the list.
+     * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
      * @throws TableTransactionFailedException If any {@link TableTransactionResult action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.
@@ -1163,7 +1163,7 @@ public final class TableAsyncClient {
      * response's value will contain a {@link List} of {@link TableTransactionActionResponse sub-responses} that
      * correspond to each {@link TableTransactionAction action} in the transaction.
      *
-     * @throws IllegalStateException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
      * @throws TableTransactionFailedException If any {@link TableTransactionAction action} within the transaction
      * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
      * may cause a given {@link TableTransactionAction action} to fail.
@@ -1178,7 +1178,7 @@ public final class TableAsyncClient {
 
         if (transactionActions.size() == 0) {
             throw logger.logExceptionAsError(
-                new IllegalStateException("A transaction must contain at least one operation."));
+                new IllegalArgumentException("A transaction must contain at least one operation."));
         }
 
         final List<TransactionalBatchAction> operations = new ArrayList<>();
