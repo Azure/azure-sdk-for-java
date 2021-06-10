@@ -7,10 +7,11 @@
 package com.azure.maps.service;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -148,18 +149,18 @@ public final class MapsClientBuilder {
     }
 
     /*
-     * The Azure Key Credential used for authentication.
+     * The TokenCredential used for authentication.
      */
-    private AzureKeyCredential azureKeyCredential;
+    private TokenCredential tokenCredential;
 
     /**
-     * Sets The Azure Key Credential used for authentication.
+     * Sets The TokenCredential used for authentication.
      *
-     * @param azureKeyCredential the azureKeyCredential value.
+     * @param tokenCredential the tokenCredential value.
      * @return the MapsClientBuilder.
      */
-    public MapsClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.azureKeyCredential = azureKeyCredential;
+    public MapsClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -238,8 +239,8 @@ public final class MapsClientBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (azureKeyCredential != null) {
-            policies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
