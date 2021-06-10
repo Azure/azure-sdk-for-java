@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TopicSubscriptionWithRuleOperationsSample {
 
     static final String SERVICE_BUS_CONNECTION_STRING = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-    static final String SERVICE_BUS_TOPIC_NAME = "{Your Service Bus Topic Name}";
+    static final String SERVICE_BUS_TOPIC_NAME = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
     static final String ALL_MESSAGES_SUBSCRIPTION_NAME = "{Subscription 1 Name}";
     static final String SQL_FILTER_ONLY_SUBSCRIPTION_NAME = "{Subscription 2 Name}";
     static final String SQL_FILTER_WITH_ACTION_SUBSCRIPTION_NAME = "{Subscription 3 Name}";
