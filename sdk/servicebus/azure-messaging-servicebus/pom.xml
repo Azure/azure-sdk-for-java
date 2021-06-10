@@ -53,6 +53,7 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
