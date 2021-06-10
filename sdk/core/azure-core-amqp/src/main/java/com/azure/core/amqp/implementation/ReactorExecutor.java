@@ -155,10 +155,6 @@ class ReactorExecutor implements AsyncCloseable {
         }
     }
 
-    Mono<Void> isClosed() {
-        return isClosedMono.asMono();
-    }
-
     /**
      * Schedules the release of the current reactor after operation timeout has elapsed.
      */
