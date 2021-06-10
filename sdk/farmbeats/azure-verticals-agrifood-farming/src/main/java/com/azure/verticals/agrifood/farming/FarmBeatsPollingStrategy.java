@@ -20,8 +20,8 @@ public class FarmBeatsPollingStrategy extends LocationPollingStrategy {
     }
 
     @Override
-    public String getFinalResultUrl(PollingContext<PollResult> ctx) {
-        return normalizeUrl(super.getFinalResultUrl(ctx));
+    public String getFinalGetUrl(PollingContext<PollResult> ctx) {
+        return normalizeUrl(super.getFinalGetUrl(ctx));
     }
 
     private String normalizeUrl(String url) {

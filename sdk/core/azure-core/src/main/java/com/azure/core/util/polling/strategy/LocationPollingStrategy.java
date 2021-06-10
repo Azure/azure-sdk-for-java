@@ -6,11 +6,17 @@ package com.azure.core.util.polling.strategy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.TypeUtil;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollResult;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import reactor.core.publisher.Mono;
+
+import java.lang.reflect.Type;
 
 public class LocationPollingStrategy implements PollingStrategy {
     private static final String OPERATION_LOCATION = "Operation-Location";
@@ -32,7 +38,7 @@ public class LocationPollingStrategy implements PollingStrategy {
     }
 
     @Override
-    public String getFinalResultUrl(PollingContext<PollResult> ctx) {
+    public String getFinalGetUrl(PollingContext<PollResult> ctx) {
         PollResponse<PollResult> lastResponse = ctx.getLatestResponse();
         String finalGetUrl = lastResponse.getValue().getResourceLocation();
         if (finalGetUrl == null) {
@@ -50,7 +56,7 @@ public class LocationPollingStrategy implements PollingStrategy {
     }
 
     @Override
-    public PollResult parseInitialResponse(Response<?> response, PollingContext<PollResult> ctx) {
+    public Mono<PollResult> onActivationResponse(Response<?> response, PollingContext<PollResult> ctx) {
         HttpHeader locationHeader = response.getHeaders().get(LOCATION);
         if (locationHeader != null) {
             ctx.setData(LOCATION, locationHeader.getValue());
@@ -62,14 +68,14 @@ public class LocationPollingStrategy implements PollingStrategy {
                 || response.getStatusCode() == 201
                 || response.getStatusCode() == 202
                 || response.getStatusCode() == 204) {
-            return new PollResult().setStatus(LongRunningOperationStatus.IN_PROGRESS);
+            return Mono.just(new PollResult().setStatus(LongRunningOperationStatus.IN_PROGRESS));
         } else {
             throw new RuntimeException("Operation failed or cancelled: " + response.getStatusCode());
         }
     }
 
     @Override
-    public PollResult parsePollingResponse(HttpResponse response, String responseBody, PollingContext<PollResult> ctx) {
+    public Mono<PollResult> onPollingResponse(HttpResponse response, PollingContext<PollResult> ctx) {
         HttpHeader locationHeader = response.getHeaders().get(LOCATION);
         if (locationHeader != null) {
             ctx.setData(LOCATION, locationHeader.getValue());
@@ -83,6 +89,16 @@ public class LocationPollingStrategy implements PollingStrategy {
         } else {
             status = LongRunningOperationStatus.FAILED;
         }
-        return new PollResult().setStatus(status);
+        return Mono.just(new PollResult().setStatus(status));
+    }
+
+    @Override
+    public <U> Mono<U> getFinalResult(HttpResponse response, PollingContext<PollResult> ctx, Type resultType) {
+        if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, resultType)) {
+            return (Mono<U>) BinaryData.fromFlux(response.getBody());
+        } else {
+            return response.getBodyAsString().flatMap(body -> Mono.fromCallable(() ->
+                    serializer.deserialize(body, resultType, SerializerEncoding.JSON)));
+        }
     }
 }

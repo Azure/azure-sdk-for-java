@@ -6,14 +6,18 @@ package com.azure.core.util.polling.strategy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.TypeUtil;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollResult;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+import java.lang.reflect.Type;
 
 public class OperationResourcePollingStrategy implements PollingStrategy {
     private static final String OPERATION_LOCATION = "Operation-Location";
@@ -21,7 +25,7 @@ public class OperationResourcePollingStrategy implements PollingStrategy {
     private static final String REQUEST_URL = "requestURL";
     private static final String HTTP_METHOD = "httpMethod";
 
-    private final JacksonAdapter serializer = new JacksonAdapter();
+    private final SerializerAdapter serializer = new JacksonAdapter();
 
     @Override
     public boolean canPoll(Response<?> activationResponse) {
@@ -35,7 +39,7 @@ public class OperationResourcePollingStrategy implements PollingStrategy {
     }
 
     @Override
-    public String getFinalResultUrl(PollingContext<PollResult> ctx) {
+    public String getFinalGetUrl(PollingContext<PollResult> ctx) {
         PollResponse<PollResult> lastResponse = ctx.getLatestResponse();
         String finalGetUrl = lastResponse.getValue().getResourceLocation();
         if (finalGetUrl == null) {
@@ -53,7 +57,7 @@ public class OperationResourcePollingStrategy implements PollingStrategy {
     }
 
     @Override
-    public PollResult parseInitialResponse(Response<?> response, PollingContext<PollResult> ctx) {
+    public Mono<PollResult> onActivationResponse(Response<?> response, PollingContext<PollResult> ctx) {
         HttpHeader operationLocationHeader = response.getHeaders().get(OPERATION_LOCATION);
         HttpHeader locationHeader = response.getHeaders().get(LOCATION);
         if (operationLocationHeader != null) {
@@ -69,18 +73,26 @@ public class OperationResourcePollingStrategy implements PollingStrategy {
                 || response.getStatusCode() == 201
                 || response.getStatusCode() == 202
                 || response.getStatusCode() == 204) {
-            return new PollResult().setStatus(LongRunningOperationStatus.IN_PROGRESS);
+            return Mono.just(new PollResult().setStatus(LongRunningOperationStatus.IN_PROGRESS));
         } else {
-            throw new RuntimeException("Operation failed or cancelled: " + response.getStatusCode());
+            return Mono.error(new RuntimeException("Operation failed or cancelled: " + response.getStatusCode()));
         }
     }
 
     @Override
-    public PollResult parsePollingResponse(HttpResponse response, String responseBody, PollingContext<PollResult> ctx) {
-        try {
-            return serializer.deserialize(responseBody, PollResult.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public Mono<PollResult> onPollingResponse(HttpResponse response, PollingContext<PollResult> ctx) {
+        return response.getBodyAsString().flatMap(body -> Mono.fromCallable(() ->
+                serializer.deserialize(body, PollResult.class, SerializerEncoding.JSON)));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <U> Mono<U> getFinalResult(HttpResponse response, PollingContext<PollResult> ctx, Type resultType) {
+        if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, resultType)) {
+            return (Mono<U>) BinaryData.fromFlux(response.getBody());
+        } else {
+            return response.getBodyAsString().flatMap(body -> Mono.fromCallable(() ->
+                    serializer.deserialize(body, resultType, SerializerEncoding.JSON)));
         }
     }
 }

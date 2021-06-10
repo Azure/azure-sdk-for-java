@@ -17,7 +17,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResult;
 import com.azure.core.util.polling.PollerFactory;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Mono;
 
 /**
@@ -131,7 +130,7 @@ public final class FarmsAsyncClient {
     }
 
     public PollerFlux<PollResult, BinaryData> beginCreateOrUpdateWithResponse(String farmerId, String farmId, RequestOptions options) {
-        return new PollerFactory<BinaryData>(new JacksonAdapter(), httpPipeline)
+        return new PollerFactory<BinaryData>(httpPipeline)
                 .createPoller(new FarmBeatsPollingStrategy(apiVersion), () -> createOrUpdateWithResponse(farmerId, farmId, options), BinaryData.class);
     }
 

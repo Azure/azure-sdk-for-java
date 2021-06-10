@@ -42,17 +42,17 @@ public class ChainedPollingStrategy implements PollingStrategy {
     }
 
     @Override
-    public String getFinalResultUrl(PollingContext<PollResult> ctx) {
-        return pollableStrategy.getFinalResultUrl(ctx);
+    public String getFinalGetUrl(PollingContext<PollResult> ctx) {
+        return pollableStrategy.getFinalGetUrl(ctx);
     }
 
     @Override
-    public PollResult parseInitialResponse(Response<?> response, PollingContext<PollResult> ctx) {
-        return pollableStrategy.parseInitialResponse(response, ctx);
+    public PollResult onActivationResponse(Response<?> response, PollingContext<PollResult> ctx) {
+        return pollableStrategy.onActivationResponse(response, ctx);
     }
 
     @Override
-    public PollResult parsePollingResponse(HttpResponse response, String responseBody, PollingContext<PollResult> ctx) {
-        return pollableStrategy.parsePollingResponse(response, responseBody, ctx);
+    public PollResult onPollingResponse(HttpResponse response, String responseBody, PollingContext<PollResult> ctx) {
+        return pollableStrategy.onPollingResponse(response, responseBody, ctx);
     }
 }

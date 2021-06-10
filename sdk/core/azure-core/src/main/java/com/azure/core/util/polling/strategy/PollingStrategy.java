@@ -7,11 +7,15 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.polling.PollResult;
 import com.azure.core.util.polling.PollingContext;
+import reactor.core.publisher.Mono;
+
+import java.lang.reflect.Type;
 
 public interface PollingStrategy {
     boolean canPoll(Response<?> activationResponse);
+    Mono<PollResult> onActivationResponse(Response<?> response, PollingContext<PollResult> ctx);
     String getPollingUrl(PollingContext<PollResult> ctx);
-    String getFinalResultUrl(PollingContext<PollResult> ctx);
-    PollResult parseInitialResponse(Response<?> response, PollingContext<PollResult> ctx);
-    PollResult parsePollingResponse(HttpResponse response, String responseBody, PollingContext<PollResult> ctx);
+    Mono<PollResult> onPollingResponse(HttpResponse response, PollingContext<PollResult> ctx);
+    String getFinalGetUrl(PollingContext<PollResult> ctx);
+    <U> Mono<U> getFinalResult(HttpResponse response, PollingContext<PollResult> ctx, Type resultType);
 }
