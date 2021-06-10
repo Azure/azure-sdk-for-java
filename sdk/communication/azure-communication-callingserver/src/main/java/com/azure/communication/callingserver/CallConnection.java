@@ -118,8 +118,8 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
-                                                             PlayAudioOptions playAudioOptions,
-                                                             Context context) {
+                                                           PlayAudioOptions playAudioOptions,
+                                                           Context context) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
         return callConnectionAsync.playAudioWithResponse(playAudioRequest, context).block();
     }

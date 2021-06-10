@@ -87,17 +87,20 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
             validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
 
             Response<Void> pauseResponse = serverCallAsync.pauseRecordingWithResponse(recordingId).block();
+            assert pauseResponse != null;
             assertEquals(pauseResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.INACTIVE);
 
             Response<Void> resumeResponse = serverCallAsync.resumeRecordingWithResponse(recordingId).block();
-            assertEquals(resumeResponse.getStatusCode(), 200);            
+            assert resumeResponse != null;
+            assertEquals(resumeResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
         } finally {
             Response<Void> stopResponse = serverCallAsync.stopRecordingWithResponse(recordingId).block();
+            assert stopResponse != null;
             assertEquals(stopResponse.getStatusCode(), 200);
         }
     }
@@ -158,6 +161,7 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response = serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri).block();
+            assert response != null;
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
@@ -276,7 +280,7 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
         assert callRecordingStateResult != null;
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
-    
+
     protected void validateCallRecordingStateWithResponse(ServerCallAsync serverCallAsync,
             String recordingId,
             CallRecordingState expectedCallRecordingState) {
@@ -295,5 +299,5 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
         assertEquals(response.getStatusCode(), 200);
         assertNotNull(response.getValue());
         assertEquals(response.getValue().getRecordingState(), expectedCallRecordingState);
-    }     
+    }
 }

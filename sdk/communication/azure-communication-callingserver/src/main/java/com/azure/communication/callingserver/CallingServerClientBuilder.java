@@ -30,8 +30,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+
 /**
  * CallingServerClientBuilder that creates CallingServerAsyncClient and CallingServerClient.
+ *
+ * <p><strong>Instantiating synchronous and asynchronous Calling Server Clients</strong></p>
+ *
+ * {@codesnippet com.azure.communication.callingserver.CallingServerClientBuilder.pipeline.instantiation}
  */
 @ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
 public final class CallingServerClientBuilder {
@@ -49,7 +54,7 @@ public final class CallingServerClientBuilder {
     private HttpPipeline pipeline;
     private Configuration configuration;
     private final Map<String, String> properties = CoreUtils.getProperties(APP_CONFIG_PROPERTIES);
-    private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
+    private final List<HttpPipelinePolicy> customPolicies = new ArrayList<>();
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
 

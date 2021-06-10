@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 /**
  * Exception thrown for an invalid response with {@link CallingServerError} information.
  **/
-public class CallingServerErrorException extends HttpResponseException {
+public final class CallingServerErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the CallingServerResponseException class.
      *
