@@ -22,10 +22,10 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
 
         configuration = Configuration.getGlobalConfiguration().clone();
-        String connectionString = configuration.get("TABLES_CONNECTION_STRING");
+        String connectionString = configuration.get("AZURE_TABLES_CONNECTION_STRING");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            throw new IllegalStateException("Environment variable TABLES_CONNECTION_STRING must be set");
+            throw new IllegalStateException("Environment variable AZURE_TABLES_CONNECTION_STRING must be set");
         }
 
         // Setup the service client
