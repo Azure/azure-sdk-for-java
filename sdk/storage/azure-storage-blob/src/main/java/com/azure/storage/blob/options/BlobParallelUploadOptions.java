@@ -53,7 +53,7 @@ public class BlobParallelUploadOptions {
     /**
      * Constructs a new {@code BlobParalleUploadOptions}.
      *
-     * Use {@link BlobParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
+     * Use {@link #BlobParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
      * length beforehand.
      *
      * @param dataStream The data to write to the blob.
