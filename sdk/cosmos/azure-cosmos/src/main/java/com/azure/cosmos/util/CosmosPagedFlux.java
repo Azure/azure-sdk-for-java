@@ -165,7 +165,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                     ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                     try {
-                        int threshold = pagedFluxOptions.getThreshHoldForDiagnosticsOnTracerInMS();
+                        int threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracerInMS();
                         if(threshold < 0) {
                             threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
                         }
@@ -194,7 +194,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
                 ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                 try {
-                    int threshold = pagedFluxOptions.getThreshHoldForDiagnosticsOnTracerInMS();
+                    int threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracerInMS();
                     if(threshold < 0) {
                         threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
                     }

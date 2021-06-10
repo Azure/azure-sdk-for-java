@@ -546,7 +546,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
                 this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
-            pagedFluxOptions.setThreshHoldForDiagnosticsOnTracerInMS(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracerInMS());
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracerInMS(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracerInMS());
 
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
@@ -563,7 +563,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
                 this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
-            pagedFluxOptions.setThreshHoldForDiagnosticsOnTracerInMS(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracerInMS());
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracerInMS(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracerInMS());
 
             return sqlQuerySpecMono.flux()
                 .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
