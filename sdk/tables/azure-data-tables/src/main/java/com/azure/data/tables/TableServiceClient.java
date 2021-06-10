@@ -32,12 +32,12 @@ import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalT
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
  *
- * The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
+ * <p>The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
- * invoke REST API operations to make the requests and obtain the results that are returned.
+ * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildClient()} method on a
- * {@link TableServiceClientBuilder} object.
+ * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildClient()} method on a
+ * {@link TableServiceClientBuilder} object.</p>
  *
  * <p><strong>Samples to construct a sync client</strong></p>
  * {@codesnippet com.azure.data.tables.tableServiceClient.instantiation}
@@ -88,7 +88,7 @@ public final class TableServiceClient {
      *
      * @param tableAccountSasSignatureValues {@link TableAccountSasSignatureValues}.
      *
-     * @return A {@link String} representing the SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      *
      * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
      * {@link AzureNamedKeyCredential}.
@@ -274,7 +274,7 @@ public final class TableServiceClient {
 
     /**
      * If the {@code filter} parameter in the options is set, only tables matching the filter will be returned. If the
-     * {@code top} parameter is set, the maximum number of returned tables will be limited to that value.
+     * {@code top} parameter is set, the maximum number of returned tables per page will be limited to that value.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all tables that match the filter. Prints out the details of the retrieved tables.</p>

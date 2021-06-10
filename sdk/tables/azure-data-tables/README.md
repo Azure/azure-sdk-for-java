@@ -1,5 +1,5 @@
-# Azure Data Tables client library for Java
-Azure Data Tables is a service that stores structured NoSQL data in the cloud, providing a key/attribute store with a schemaless design. Azure Data Tables gives developers flexibility and scalability with all the best parts of Azure cloud.
+# Azure Tables client library for Java
+Azure Tables is a service that stores structured NoSQL data in the cloud, providing a key/attribute store with a schemaless design. Azure Tables gives developers flexibility and scalability with all the best parts of Azure cloud.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_documentation] | [Samples][samples]
@@ -53,7 +53,7 @@ Your Table API account URL, subsequently identified as `<your-table-account-url>
 ### Authenticate the client
 Every request made to the Tables service must be authorized using a connection string, named key credential, or Shared Access Signature. The samples below demonstrate the usage of these methods.
 
-Note: Azure Data Tables doesn't support Azure Active Directory (AAD) authentication.
+Note: Azure Tables doesn't support Azure Active Directory (AAD) authentication.
 
 #### Connection string
 A connection string includes the authentication information required for your application to access data in an Azure table at runtime using Shared Key authorization. See [Authenticate with a Connection String](#authenticate-with-a-connection-string) for an example of how to use a connection string with a `TableServiceClient`.

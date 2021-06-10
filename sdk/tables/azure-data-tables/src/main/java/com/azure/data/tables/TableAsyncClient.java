@@ -73,13 +73,13 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
 /**
  * Provides an asynchronous service client for accessing a table in the Azure Tables service.
  *
- * The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
+ * <p>The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
  * credentials for accessing the storage or CosmosDB table API account. It provides methods to create and delete the
  * table itself, as well as methods to create, upsert, update, delete, list, and get entities within the table. These
- * methods invoke REST API operations to make the requests and obtain the results that are returned.
+ * methods invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * Instances of this client are obtained by calling the {@link TableClientBuilder#buildAsyncClient()} method on a
- * {@link TableClientBuilder} object.
+ * <p>Instances of this client are obtained by calling the {@link TableClientBuilder#buildAsyncClient()} method on a
+ * {@link TableClientBuilder} object.</p>
  *
  * <p><strong>Samples to construct an async client</strong></p>
  * {@codesnippet com.azure.data.tables.tableAsyncClient.instantiation}
@@ -210,7 +210,7 @@ public final class TableAsyncClient {
      *
      * @param tableSasSignatureValues {@link TableSasSignatureValues}.
      *
-     * @return A {@link String} representing the SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      *
      * @throws IllegalStateException If this {@link TableAsyncClient} is not authenticated with an
      * {@link AzureNamedKeyCredential}.
@@ -246,8 +246,7 @@ public final class TableAsyncClient {
      * Creates the table within the Tables service.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a table. Prints out the details of the {@link Response {@link Response {@link Response HTTP
-     * response}}} and the created table.</p>
+     * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
      * {@codesnippet com.azure.data.tables.tableAsyncClient.createTableWithResponse}
      *
      * @return A {@link Mono} containing the {@link Response HTTP response} that in turn contains a {@link TableItem}
@@ -335,7 +334,7 @@ public final class TableAsyncClient {
      *
      * @throws TableServiceException If an {@link TableEntity entity} with the same partition key and row key already
      * exists within the table.
-     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createEntity(TableEntity entity) {
@@ -356,7 +355,7 @@ public final class TableAsyncClient {
      *
      * @throws TableServiceException If an {@link TableEntity entity} with the same partition key and row key already
      * exists within the table.
-     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createEntityWithResponse(TableEntity entity) {
@@ -387,10 +386,6 @@ public final class TableAsyncClient {
      * Inserts an {@link TableEntity entity} into the table if it does not exist, or merges the
      * {@link TableEntity entity} with the existing {@link TableEntity entity} otherwise.
      *
-     * If no {@link TableEntity entity} exists within the table having the same partition key and row key as the
-     * provided {@link TableEntity entity}, it will be inserted. Otherwise, the provided {@link TableEntity entity}'s
-     * properties will be merged into the existing {@link TableEntity entity}.
-     *
      * <p><strong>Code Samples</strong></p>
      * <p>Upserts an {@link TableEntity entity} into the table. Prints out the details of the upserted
      * {@link TableEntity entity}.</p>
@@ -400,7 +395,7 @@ public final class TableAsyncClient {
      *
      * @return An empty {@link Mono}.
      *
-     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -413,14 +408,11 @@ public final class TableAsyncClient {
      * {@link TableEntity entity} using the specified {@link TableEntityUpdateMode update mode} otherwise. The default
      * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}.
      *
-     * If no {@link TableEntity entity} exists within the table having the same partition key and row key as the
-     * provided {@link TableEntity entity}, it will be inserted. Otherwise, the existing {@link TableEntity entity}
-     * will be updated according to the specified {@link TableEntityUpdateMode update mode}.
-     *
-     * When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
+     * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
      * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
      * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
      * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity entity}.
+     * </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Upserts an {@link TableEntity entity} into the table with the specified
@@ -433,7 +425,7 @@ public final class TableAsyncClient {
      *
      * @return A {@link Mono} containing the {@link Response HTTP response}.
      *
-     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -487,7 +479,7 @@ public final class TableAsyncClient {
      *
      * @return An empty {@link Mono}.
      *
-     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      * @throws TableServiceException If no {@link TableEntity entity} with the same partition key and row key exists
      * within the table.
      */
@@ -500,10 +492,11 @@ public final class TableAsyncClient {
      * Updates an existing {@link TableEntity entity} using the specified {@link TableEntityUpdateMode update mode}.
      * The default {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}.
      *
-     * When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
+     * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
      * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
      * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
      * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity entity}.
+     * </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Updates a {@link TableEntity entity} on the table with the specified
@@ -515,7 +508,7 @@ public final class TableAsyncClient {
      *
      * @return An empty {@link Mono}.
      *
-     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      * @throws TableServiceException If no {@link TableEntity entity} with the same partition key and row key exists
      * within the table.
      */
@@ -529,11 +522,11 @@ public final class TableAsyncClient {
      * Updates an existing {@link TableEntity entity} using the specified {@link TableEntityUpdateMode update mode}.
      * The default {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}.
      *
-     * When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
+     * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
      * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
      * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
-     * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity
-     * entity}.
+     * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity entity}.
+     * </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Updates a {@link TableEntity entity} on the table with the specified {@link TableEntityUpdateMode update
@@ -550,7 +543,7 @@ public final class TableAsyncClient {
      *
      * @return A {@link Mono} containing the {@link Response HTTP response}.
      *
-     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      * @throws TableServiceException If no {@link TableEntity entity} with the same partition key and row key exists
      * within the table, or if {@code ifUnchanged} is {@code true} and the existing {@link TableEntity entity}'s ETag
      * does not match that of the provided {@link TableEntity entity}.
@@ -699,10 +692,10 @@ public final class TableAsyncClient {
     /**
      * Lists {@link TableEntity entities} using the parameters in the provided options.
      *
-     * If the {@code filter} parameter in the options is set, only {@link TableEntity entities} matching the filter
+     * <p>If the {@code filter} parameter in the options is set, only {@link TableEntity entities} matching the filter
      * will be returned. If the {@code select} parameter is set, only the properties included in the select parameter
      * will be returned for each {@link TableEntity entity}. If the {@code top} parameter is set, the maximum number of
-     * returned {@link TableEntity entities} will be limited to that value.
+     * returned {@link TableEntity entities} per page will be limited to that value.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists all {@link TableEntity entities} on the table. Prints out the details of the
@@ -1124,6 +1117,10 @@ public final class TableAsyncClient {
      * {@link TableEntity entities} on a table. Prints out details of each {@link TableTransactionAction action}'s
      * {@link Response HTTP response}.</p>
      * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransaction#List}
+     * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
+     * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
+     * transaction.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.submitTransactionWithError#List}
      *
      * @param transactionActions A {@link List} of {@link TableTransactionAction actions} to perform on
      * {@link TableEntity entities} in a table.
@@ -1155,6 +1152,10 @@ public final class TableAsyncClient {
      * operation, as well as each {@link TableTransactionAction action}'s corresponding {@link Response HTTP
      * response}.</p>
      * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransactionWithResponse#List}
+     * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
+     * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
+     * transaction.</p>
+     * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransactionWithResponseWithError#List}
      *
      * @param transactionActions A {@link List} of {@link TableTransactionAction transaction actions} to perform on
      * {@link TableEntity entities} in a table.

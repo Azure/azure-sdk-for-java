@@ -222,12 +222,14 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values during building of the client.
+     * Sets the {@link Configuration configuration} object used to retrieve environment configuration values during
+     * building of the client.
      *
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * <p>The {@link Configuration default configuration store} is a clone of the
+     * {@link Configuration#getGlobalConfiguration() global configuration store}, use {@link Configuration#NONE} to
+     * bypass using configuration settings during construction.</p>
      *
-     * @param configuration Configuration store used to retrieve environment configurations.
+     * @param configuration {@link Configuration} store used to retrieve environment configuration.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
@@ -239,7 +241,8 @@ public final class TableServiceClientBuilder {
 
     /**
      * Sets the SAS token used to authorize requests sent to the service. Setting this is mutually exclusive with
-     * {@code credential(AzureSasCredential)} or {@code credential(AzureNamedKeyCredential)}.
+     * {@link TableServiceClientBuilder#credential(AzureSasCredential)} or
+     * {@link TableServiceClientBuilder#credential(AzureNamedKeyCredential)}.
      *
      * @param sasToken The SAS token to use for authenticating requests.
      *
@@ -264,7 +267,8 @@ public final class TableServiceClientBuilder {
 
     /**
      * Sets the {@link AzureSasCredential} used to authorize requests sent to the service. Setting this is mutually
-     * exclusive with {@code credential(AzureNamedKeyCredential)} or {@code sasToken(String)}.
+     * exclusive with {@link TableServiceClientBuilder#credential(AzureNamedKeyCredential)} or
+     * {@link TableServiceClientBuilder#sasToken(String)}.
      *
      * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
      *
@@ -284,7 +288,8 @@ public final class TableServiceClientBuilder {
 
     /**
      * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service. Setting this is mutually
-     * exclusive with using {@code credential(AzureSasCredential)} or {@code sasToken(String)}.
+     * exclusive with using {@link TableServiceClientBuilder#credential(AzureSasCredential)} or
+     * {@link TableServiceClientBuilder#sasToken(String)}.
      *
      * @param credential {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
@@ -320,11 +325,11 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the logging configuration to use when sending and receiving requests to and from the service.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
-     *
-     * @param logOptions The logging configuration to use when sending and receiving requests to and from the service.
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
@@ -335,10 +340,11 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If the
-     * method is called multiple times, all policies will be added and their order preserved.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent. The policy will be added
+     * after the {@link RetryPolicy retry policy}. If the method is called multiple times, all
+     * {@link HttpPipelinePolicy policies} will be added and their order preserved.
      *
-     * @param pipelinePolicy A pipeline policy.
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      *
@@ -359,13 +365,16 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link TableServiceVersion} that is used when making API requests.
+     * Sets the {@link TableServiceVersion service version} that is used when making API requests.
      *
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>If a {@link TableServiceVersion service version} is not provided, the
+     * {@link TableServiceVersion service version} that will be used will be the latest known
+     * {@link TableServiceVersion service version} based on the version of the client library being used. If no
+     * {@link TableServiceVersion service version} is specified, updating to a newer version of the client library will
+     * have the result of potentially moving to a newer {@link TableServiceVersion service version}.</p>
      *
-     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
+     * <p>Targeting a specific {@link TableServiceVersion service version} may also mean that the service will return an
+     * error for newer APIs.</p>
      *
      * @param serviceVersion The {@link TableServiceVersion} of the service to be used when making requests.
      *
@@ -378,9 +387,8 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the request retry policy for all the requests made through the client.
-     *
-     * The default retry policy will be used in the pipeline, if not provided.
+     * Sets the request {@link RetryPolicy} for all the requests made through the client. The default
+     * {@link RetryPolicy} will be used in the pipeline, if not provided.
      *
      * @param retryPolicy {@link RetryPolicy}.
      *
@@ -393,7 +401,7 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the client options such as application ID and custom headers to set on a request.
+     * Sets the {@link ClientOptions} such as application ID and custom headers to set on a request.
      *
      * @param clientOptions The {@link ClientOptions}.
      *

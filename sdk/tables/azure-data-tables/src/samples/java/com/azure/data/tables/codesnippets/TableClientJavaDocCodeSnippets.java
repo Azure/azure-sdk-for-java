@@ -21,6 +21,7 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
 import com.azure.data.tables.models.TableTransactionActionType;
+import com.azure.data.tables.models.TableTransactionFailedException;
 import com.azure.data.tables.models.TableTransactionResult;
 
 import java.time.Duration;
@@ -432,8 +433,8 @@ public class TableClientJavaDocCodeSnippets {
 
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, firstEntity));
 
-        System.out.printf("Added create operation to transactional batch for entity with partition key '%s', and row"
-            + " key '%s'.\n", partitionKey, firstEntityRowKey);
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", partitionKey,
+            firstEntityRowKey);
 
         TableEntity secondEntity = new TableEntity(partitionKey, secondEntityRowKey)
             .addProperty("Type", "Wet")
@@ -441,8 +442,8 @@ public class TableClientJavaDocCodeSnippets {
 
         transactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, secondEntity));
 
-        System.out.printf("Added create operation to transactional batch for entity with partition key '%s', and row"
-            + " key '%s'.\n", partitionKey, secondEntityRowKey);
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", partitionKey,
+            secondEntityRowKey);
 
         TableTransactionResult tableTransactionResult = tableClient.submitTransaction(transactionActions);
 
@@ -451,6 +452,24 @@ public class TableClientJavaDocCodeSnippets {
         tableTransactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
             System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
         // END: com.azure.data.tables.tableClient.submitTransaction#List
+
+        // BEGIN: com.azure.data.tables.tableClient.submitTransactionWithError#List
+        try {
+            TableTransactionResult transactionResult = tableClient.submitTransaction(transactionActions);
+
+            System.out.print("Submitted transaction. The ordered response status codes for the actions are:");
+
+            transactionResult.getTransactionActionResponses().forEach(tableTransactionActionResponse ->
+                System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+        } catch (TableTransactionFailedException e) {
+            // If the transaction fails, the resulting exception contains the index of the first action that failed.
+            int failedActionIndex = e.getFailedTransactionActionIndex();
+            // You can use this index to modify the offending action or remove it from the list of actions to send in
+            // the transaction, for example.
+            transactionActions.remove(failedActionIndex);
+            // And then retry submitting the transaction.
+        }
+        // END: com.azure.data.tables.tableClient.submitTransactionWithError#List
 
         // BEGIN: com.azure.data.tables.tableClient.submitTransactionWithResponse#List-Duration-Context
         List<TableTransactionAction> myTransactionActions = new ArrayList<>();
@@ -465,8 +484,8 @@ public class TableClientJavaDocCodeSnippets {
 
         myTransactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, myFirstEntity));
 
-        System.out.printf("Added create operation to transactional batch for entity with partition key '%s', and row"
-            + " key '%s'.\n", myPartitionKey, myFirstEntityRowKey);
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", myPartitionKey,
+            myFirstEntityRowKey);
 
         TableEntity mySecondEntity = new TableEntity(myPartitionKey, mySecondEntityRowKey)
             .addProperty("Type", "Wet")
@@ -474,8 +493,8 @@ public class TableClientJavaDocCodeSnippets {
 
         myTransactionActions.add(new TableTransactionAction(TableTransactionActionType.CREATE, mySecondEntity));
 
-        System.out.printf("Added create operation to transactional batch for entity with partition key '%s', and row"
-            + " key '%s'.\n", myPartitionKey, mySecondEntityRowKey);
+        System.out.printf("Added create action for entity with partition key '%s', and row key '%s'.\n", myPartitionKey,
+            mySecondEntityRowKey);
 
         Response<TableTransactionResult> response = tableClient.submitTransactionWithResponse(myTransactionActions,
             Duration.ofSeconds(5), new Context("key1", "value1"));
@@ -486,5 +505,27 @@ public class TableClientJavaDocCodeSnippets {
         response.getValue().getTransactionActionResponses().forEach(tableTransactionActionResponse ->
             System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
         // END: com.azure.data.tables.tableClient.submitTransactionWithResponse#List-Duration-Context
+
+        // BEGIN: com.azure.data.tables.tableClient.submitTransactionWithResponseWithError#List-Duration-Context
+        try {
+            Response<TableTransactionResult> transactionResultResponse =
+                tableClient.submitTransactionWithResponse(myTransactionActions, Duration.ofSeconds(5),
+                    new Context("key1", "value1"));
+
+            System.out.printf("Response successful with status code: %d. The ordered response status codes of the"
+                + " submitted actions are:", transactionResultResponse.getStatusCode());
+
+            transactionResultResponse.getValue().getTransactionActionResponses()
+                .forEach(tableTransactionActionResponse ->
+                    System.out.printf("\n%d", tableTransactionActionResponse.getStatusCode()));
+        } catch (TableTransactionFailedException e) {
+            // If the transaction fails, the resulting exception contains the index of the first action that failed.
+            int failedActionIndex = e.getFailedTransactionActionIndex();
+            // You can use this index to modify the offending action or remove it from the list of actions to send in
+            // the transaction, for example.
+            myTransactionActions.remove(failedActionIndex);
+            // And then retry submitting the transaction.
+        }
+        // END: com.azure.data.tables.tableClient.submitTransactionWithResponseWithError#List-Duration-Context
     }
 }
