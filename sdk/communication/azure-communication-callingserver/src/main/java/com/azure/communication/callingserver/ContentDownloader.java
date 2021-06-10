@@ -39,13 +39,11 @@ import static java.lang.StrictMath.toIntExact;
 class ContentDownloader {
     private final String resourceEndpoint;
     private final HttpPipeline httpPipeline;
-    private final ClientLogger logger;
+    private final ClientLogger logger = new ClientLogger(ContentDownloader.class);
 
-    ContentDownloader(String resourceEndpoint, HttpPipeline httpPipeline,
-                             ClientLogger logger) {
+    ContentDownloader(String resourceEndpoint, HttpPipeline httpPipeline) {
         this.resourceEndpoint = resourceEndpoint;
         this.httpPipeline = httpPipeline;
-        this.logger = logger;
     }
 
     Mono<Response<Void>> downloadToStream(String sourceEndpoint, OutputStream destinationStream,

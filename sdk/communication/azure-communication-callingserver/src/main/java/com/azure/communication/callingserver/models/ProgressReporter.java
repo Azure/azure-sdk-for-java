@@ -9,7 +9,6 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * {@code ProgressReporter} offers a convenient way to add progress tracking to a given Flux.
