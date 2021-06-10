@@ -70,15 +70,14 @@ public final class FileSystemCertificates implements AzureCertificates {
 
     @Override
     public void deleteEntry(String alias) {
-        if (aliases != null) {
-            aliases.remove(alias);
-        }
+        aliases.remove(alias);
         certificates.remove(alias);
         certificateKeys.remove(alias);
     }
 
     /**
      * Constructor.
+     *
      * @param certificatePath Store the file path where certificates are placed
      */
     FileSystemCertificates(String certificatePath) {
@@ -87,36 +86,33 @@ public final class FileSystemCertificates implements AzureCertificates {
 
     /**
      * Add alias and certificate
+     *
      * @param alias certificate alias
      * @param certificate certificate value
      */
     public void setCertificateEntry(String alias, Certificate certificate) {
-        if (aliases != null) {
-            aliases.add(alias);
-            certificates.put(alias, certificate);
-        }
+        aliases.add(alias);
+        certificates.put(alias, certificate);
     }
 
     /**
      * If the file can be parsed into a certificate, add it to the list
-     * @param alias certificate alias
+     *
      * @param file file which try to parsed into a certificate
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    private void setCertificateByAliasAndFile(String alias, File file) throws IOException {
-        X509Certificate certificate = null;
-        try (InputStream inputStream = new FileInputStream(file)) {
-
-            BufferedInputStream bytes = new BufferedInputStream(inputStream);
+    private void setCertificateByFile(File file) throws IOException {
+        X509Certificate certificate;
+        try (InputStream inputStream = new FileInputStream(file);
+             BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
+            String alias = toCertificateAlias(file);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             certificate = (X509Certificate) cf.generateCertificate(bytes);
-
             if (certificate != null) {
                 setCertificateEntry(alias, certificate);
                 LOGGER.log(INFO, "Load file system certificate: {0} from: {1}",
                     new Object[]{alias, file.getName()});
             }
-
         } catch (CertificateException e) {
             LOGGER.log(WARNING, "Unable to load file system certificate from: " + file.getName(), e);
         }
@@ -129,16 +125,25 @@ public final class FileSystemCertificates implements AzureCertificates {
         try {
             List<File> files = getFiles();
             for (File file : files) {
-                String alias = file.getName();
-                if (alias.lastIndexOf('.') != -1) {
-                    alias = alias.substring(0, alias.lastIndexOf('.'));
-                }
-                setCertificateByAliasAndFile(alias, file);
-
+                setCertificateByFile(file);
             }
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to determine certificates to file system", ioe);
         }
+    }
+
+    /**
+     * Get alias from file
+     * @param file File containing certificate information
+     * @return certificate alias
+     */
+    public static String toCertificateAlias(File file) {
+        String fileName = file.getName();
+        int lastIndexOfDot = fileName.lastIndexOf('.');
+        if (lastIndexOfDot == -1) {
+            return fileName;
+        }
+        return fileName.substring(0, lastIndexOfDot);
     }
 
     /**
@@ -155,7 +160,7 @@ public final class FileSystemCertificates implements AzureCertificates {
                 .filter(File::isFile)
                 .filter(File::exists)
                 .filter(File::canRead)
-                .forEach(a -> files.add(a));
+                .forEach(files::add);
         return files;
     }
 }

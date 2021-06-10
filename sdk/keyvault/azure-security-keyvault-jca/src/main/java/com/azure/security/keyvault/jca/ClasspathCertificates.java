@@ -107,25 +107,23 @@ public final class ClasspathCertificates implements AzureCertificates {
     void loadCertificatesFromClasspath() {
         try {
             String[] filenames = getFilenames("/keyvault");
-            if (filenames.length > 0) {
-                for (String filename : filenames) {
-                    try (InputStream inputStream = getClass().getResourceAsStream("/keyvault/" + filename)) {
-                        String alias = filename;
-                        if (alias != null) {
-                            if (alias.lastIndexOf('.') != -1) {
-                                alias = alias.substring(0, alias.lastIndexOf('.'));
-                            }
-                            byte[] bytes = readAllBytes(inputStream);
-                            try {
-                                CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                                X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                    new ByteArrayInputStream(bytes));
-                                setCertificateEntry(alias, certificate);
-                                LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                    new Object[]{alias, filename});
-                            } catch (CertificateException e) {
-                                LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
-                            }
+            for (String filename : filenames) {
+                try (InputStream inputStream = getClass().getResourceAsStream("/keyvault/" + filename)) {
+                    String alias = filename;
+                    if (alias != null) {
+                        if (alias.lastIndexOf('.') != -1) {
+                            alias = alias.substring(0, alias.lastIndexOf('.'));
+                        }
+                        byte[] bytes = readAllBytes(inputStream);
+                        try {
+                            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+                            X509Certificate certificate = (X509Certificate) cf.generateCertificate(
+                                new ByteArrayInputStream(bytes));
+                            setCertificateEntry(alias, certificate);
+                            LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
+                                new Object[]{alias, filename});
+                        } catch (CertificateException e) {
+                            LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
                         }
                     }
                 }
