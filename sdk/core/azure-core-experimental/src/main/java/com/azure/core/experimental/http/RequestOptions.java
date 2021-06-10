@@ -112,7 +112,7 @@ public class RequestOptions {
 
     /**
      * Sets the request callback to modify the HTTP request before it's sent by the HttpClient.
-     * This removes & overwrites the effects of all other setters on this RequestOptions object.
+     * This removes and overwrites the effects of all other setters on this RequestOptions object.
      * @param requestCallback the request callback
      * @return the modified RequestOptions object
      */
