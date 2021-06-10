@@ -6,6 +6,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -71,6 +72,15 @@ public final class TableServiceClient {
      */
     public TableServiceVersion getServiceVersion() {
         return client.getServiceVersion();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return This client's {@link HttpPipeline}.
+     */
+    HttpPipeline getHttpPipeline() {
+        return client.getHttpPipeline();
     }
 
     /**

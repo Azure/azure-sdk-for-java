@@ -12,9 +12,12 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
+import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableServiceLogging;
+import com.azure.data.tables.models.TableServiceMetrics;
 import com.azure.data.tables.models.TableServiceProperties;
-import com.azure.data.tables.models.TableServiceStatistics;
+import com.azure.data.tables.models.TableServiceRetentionPolicy;
 import com.azure.data.tables.sas.TableAccountSasPermission;
 import com.azure.data.tables.sas.TableAccountSasResourceType;
 import com.azure.data.tables.sas.TableAccountSasService;
@@ -24,13 +27,17 @@ import com.azure.data.tables.sas.TableSasProtocol;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,6 +49,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TableServiceAsyncClientTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
+    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+
     private TableServiceAsyncClient serviceClient;
     private HttpPipelinePolicy recordPolicy;
     private HttpClient playbackClient;
@@ -68,16 +77,13 @@ public class TableServiceAsyncClientTest extends TestBase {
 
             builder.httpClient(playbackClient);
         } else {
-            builder.httpClient(HttpClient.createDefault());
+            builder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
 
                 builder.addPolicy(recordPolicy);
             }
-
-            builder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
         }
 
         serviceClient = builder.buildAsyncClient();
@@ -96,19 +102,6 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableFailsIfExistsAsync() {
-        // Arrange
-        String tableName = testResourceNamer.randomName("test", 20);
-        serviceClient.createTable(tableName).block(TIMEOUT);
-
-        //Act & Assert
-        StepVerifier.create(serviceClient.createTable(tableName))
-            .expectErrorMatches(e -> e instanceof TableServiceException
-                && ((TableServiceException) e).getResponse().getStatusCode() == 409)
-            .verify();
-    }
-
-    @Test
     void serviceCreateTableWithResponseAsync() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
@@ -121,6 +114,19 @@ public class TableServiceAsyncClientTest extends TestBase {
                 assertNotNull(response.getValue());
             })
             .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void serviceCreateTableFailsIfExistsAsync() {
+        // Arrange
+        String tableName = testResourceNamer.randomName("test", 20);
+        serviceClient.createTable(tableName).block(TIMEOUT);
+
+        //Act & Assert
+        StepVerifier.create(serviceClient.createTable(tableName))
+            .expectErrorMatches(e -> e instanceof TableServiceException
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409)
             .verify();
     }
 
@@ -213,7 +219,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
-            .assertNext(response -> Assertions.assertEquals(expectedStatusCode, response.getStatusCode()))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -226,13 +232,12 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
-            .assertNext(response -> Assertions.assertEquals(expectedStatusCode, response.getStatusCode()))
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify();
     }
 
     @Test
-    @Tag("ListTables")
     void serviceListTablesAsync() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
@@ -249,7 +254,6 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListTables")
     void serviceListTablesWithFilterAsync() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
@@ -270,7 +274,6 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("ListTables")
     void serviceListTablesWithTopAsync() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
@@ -302,7 +305,6 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("r");
@@ -331,7 +333,6 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("rdau");
@@ -367,7 +368,6 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    @Tag("SAS")
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableAccountSasPermission permissions = TableAccountSasPermission.parse("a");
@@ -394,7 +394,7 @@ public class TableServiceAsyncClientTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             tableClientBuilder.httpClient(playbackClient);
         } else {
-            tableClientBuilder.httpClient(HttpClient.createDefault());
+            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
 
             if (!interceptorManager.isLiveMode()) {
                 tableClientBuilder.addPolicy(recordPolicy);
@@ -419,25 +419,87 @@ public class TableServiceAsyncClientTest extends TestBase {
     }
 
     @Test
-    public void getProperties() {
-        TableServiceProperties properties =  serviceClient.getProperties().block();
+    public void setGetProperties() {
+        TableServiceRetentionPolicy retentionPolicy = new TableServiceRetentionPolicy()
+            .setDaysToRetain(5)
+            .setEnabled(true);
 
-        assertNotNull(properties);
-        assertNotNull(properties.getCorsRules());
-        assertEquals(1, properties.getCorsRules().size());
-        assertNotNull(properties.getCorsRules().get(0));
-        assertNotNull(properties.getHourMetrics());
-        assertNotNull(properties.getMinuteMetrics());
-        assertNotNull(properties.getLogging());
+        TableServiceLogging logging = new TableServiceLogging()
+            .setReadLogged(true)
+            .setAnalyticsVersion("1.0")
+            .setRetentionPolicy(retentionPolicy);
+
+        List<TableServiceCorsRule> corsRules = new ArrayList<>();
+        corsRules.add(new TableServiceCorsRule()
+            .setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10));
+
+        TableServiceMetrics hourMetrics = new TableServiceMetrics()
+            .setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+
+        TableServiceMetrics minuteMetrics = new TableServiceMetrics()
+            .setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+
+        TableServiceProperties properties = new TableServiceProperties()
+            .setLogging(logging)
+            .setCorsRules(corsRules)
+            .setMinuteMetrics(minuteMetrics)
+            .setHourMetrics(hourMetrics);
+
+        StepVerifier.create(serviceClient.setProperties(properties))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(serviceClient.getProperties())
+            .assertNext(retrievedProperties -> {
+                assertNotNull(retrievedProperties);
+                assertNotNull(retrievedProperties.getCorsRules());
+                assertEquals(1, retrievedProperties.getCorsRules().size());
+                assertNotNull(retrievedProperties.getCorsRules().get(0));
+                assertNotNull(retrievedProperties.getHourMetrics());
+                assertNotNull(retrievedProperties.getMinuteMetrics());
+                assertNotNull(retrievedProperties.getLogging());
+            })
+            .expectComplete()
+            .verify();
     }
 
     @Test
-    public void getStatistics() {
-        TableServiceStatistics statistics =  serviceClient.getStatistics().block();
+    public void getStatistics() throws URISyntaxException {
+        URI primaryEndpoint = new URI(serviceClient.getServiceEndpoint());
+        String[] hostParts = primaryEndpoint.getHost().split("\\.");
+        StringJoiner secondaryHostJoiner = new StringJoiner(".");
+        secondaryHostJoiner.add(hostParts[0] + "-secondary");
 
-        assertNotNull(statistics);
-        assertNotNull(statistics.getGeoReplication());
-        assertNotNull(statistics.getGeoReplication().getStatus());
-        assertNotNull(statistics.getGeoReplication().getLastSyncTime());
+        for (int i = 1; i < hostParts.length; i++) {
+            secondaryHostJoiner.add(hostParts[i]);
+        }
+
+        String secondaryEndpoint = primaryEndpoint.getScheme() + "://" + secondaryHostJoiner;
+
+        TableServiceAsyncClient secondaryClient = new TableServiceClientBuilder()
+            .endpoint(secondaryEndpoint)
+            .serviceVersion(serviceClient.getServiceVersion())
+            .pipeline(serviceClient.getHttpPipeline())
+            .buildAsyncClient();
+
+        StepVerifier.create(secondaryClient.getStatistics())
+            .assertNext(statistics -> {
+                assertNotNull(statistics);
+                assertNotNull(statistics.getGeoReplication());
+                assertNotNull(statistics.getGeoReplication().getStatus());
+                assertNotNull(statistics.getGeoReplication().getLastSyncTime());
+            })
+            .expectComplete()
+            .verify();
     }
 }
