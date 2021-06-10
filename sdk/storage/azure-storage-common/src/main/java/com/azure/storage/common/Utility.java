@@ -284,6 +284,7 @@ public final class Utility {
                     }
                     return ByteBuffer.wrap(cache);
                 }))
+                .log()
                 .doOnComplete(() -> {
                     try {
                         System.out.println("In complete");
