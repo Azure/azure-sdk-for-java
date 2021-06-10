@@ -280,7 +280,8 @@ This starter provides following properties:
 | **azure.activedirectory**.graph-membership-uri                          | It's used to load users' groups. The default value is `https://graph.microsoft.com/v1.0/me/memberOf`, this uri just get direct groups. To get all transitive membership, set it to `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`. The 2 uris are both Azure Global, check `Property example 1` if you want to use Azure China.|
 | **azure.activedirectory**.post-logout-redirect-uri                      | Redirect uri for posting log-out.                            |
 | **azure.activedirectory**.tenant-id                                     | Azure Tenant ID.                                             |
-| **azure.activedirectory**.user-group.allowed-groups                     | Expected user groups that an authority will be granted to if found in the response from the MemeberOf Graph API Call. |
+| **azure.activedirectory**.user-group.allowed-group-names                | If matching user group names are found in the MemeberOf Graph API response, they will grant access control permissions. |
+| **azure.activedirectory**.user-group.allowed-group-ids                  | If matching user group ids are found in the MemeberOf Graph API response, they will grant access control permissions. |
 | **azure.activedirectory**.user-name-attribute                           | Decide which claim to be principal's name. |
 
 Here are some examples about how to use these properties:
@@ -302,7 +303,10 @@ Here are some examples about how to use these properties:
     azure:
       activedirectory:
         user-group:
-          allowed-groups: group1, group2
+          allowed-group-names: <group1-name>, <group2-name>
+          # When azure.active directory.user-group.allowed-group-ids is configured as 'all', there is no need to configure other group ids,
+          # it will automatically use all group ids responded by MemeberOf Graph API as permissions.
+          allowed-group-ids: <group1-id>, <group2-id>  
     ```
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
