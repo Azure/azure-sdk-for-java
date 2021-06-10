@@ -286,6 +286,7 @@ public final class Utility {
                 }))
                 .doOnComplete(() -> {
                     try {
+                        System.out.println("In complete");
                         if (data.read() != -1) {
                             long totalLength = currentTotalLength[0] + data.available();
                             throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
