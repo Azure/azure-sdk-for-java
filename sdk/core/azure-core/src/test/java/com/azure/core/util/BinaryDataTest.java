@@ -110,7 +110,7 @@ public class BinaryDataTest {
         // Act
         BinaryData data = BinaryData.fromStream(null);
         final byte[] actual = new byte[0];
-        (data.toStream()).read(actual, 0, expected.length);
+        data.toStream().read(actual, 0, expected.length);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
@@ -164,7 +164,7 @@ public class BinaryDataTest {
 
         // Act
         BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
-        (data.toStream()).read(actual, 0, expected.length);
+        data.toStream().read(actual, 0, expected.length);
 
         // Assert
         assertArrayEquals(expected, data.toBytes());
@@ -180,9 +180,7 @@ public class BinaryDataTest {
 
         // Act & Assert
         StepVerifier.create(BinaryData.fromFlux(expectedFlux))
-            .assertNext(actual -> {
-                Assertions.assertArrayEquals(expected, actual.toBytes());
-            })
+            .assertNext(actual -> Assertions.assertArrayEquals(expected, actual.toBytes()))
             .verifyComplete();
     }
 
@@ -193,9 +191,7 @@ public class BinaryDataTest {
 
         // Act & Assert
         StepVerifier.create(BinaryData.fromStreamAsync(new ByteArrayInputStream(expected)))
-            .assertNext(actual -> {
-                Assertions.assertArrayEquals(expected, actual.toBytes());
-            })
+            .assertNext(actual -> Assertions.assertArrayEquals(expected, actual.toBytes()))
             .verifyComplete();
     }
 
@@ -203,16 +199,12 @@ public class BinaryDataTest {
     public void createFromObjectAsync() {
         // Arrange
         final Person expected = new Person().setName("Jon").setAge(50);
-        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(expected, CUSTOM_SERIALIZER).block();
+        final TypeReference<Person> personTypeReference = TypeReference.createInstance(Person.class);
 
         // Act & Assert
-        StepVerifier.create(expectedBinaryData
-            .toObjectAsync(TypeReference.createInstance(Person.class), CUSTOM_SERIALIZER))
-            .assertNext(actual -> {
-                System.out.println(actual.getName());
-                System.out.println(actual.getAge());
-                Assertions.assertEquals(expected, actual);
-            })
+        StepVerifier.create(BinaryData.fromObjectAsync(expected, CUSTOM_SERIALIZER)
+            .flatMap(binaryData -> binaryData.toObjectAsync(personTypeReference, CUSTOM_SERIALIZER)))
+            .assertNext(actual -> Assertions.assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -224,12 +216,11 @@ public class BinaryDataTest {
         List<Person> personList = new ArrayList<>();
         personList.add(person1);
         personList.add(person2);
-
-        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(personList, CUSTOM_SERIALIZER).block();
+        final TypeReference<List<Person>> personListTypeReference = new TypeReference<List<Person>>() { };
 
         // Act & Assert
-        StepVerifier.create(expectedBinaryData
-            .toObjectAsync(new TypeReference<List<Person>>() { }, CUSTOM_SERIALIZER))
+        StepVerifier.create(BinaryData.fromObjectAsync(personList, CUSTOM_SERIALIZER)
+            .flatMap(binaryData -> binaryData.toObjectAsync(personListTypeReference, CUSTOM_SERIALIZER)))
             .assertNext(persons -> {
                 assertEquals(2, persons.size());
                 assertEquals("Jon", persons.get(0).getName());
@@ -341,16 +332,11 @@ public class BinaryDataTest {
     public void createFromObjectAsyncWithDefaultSerializer() {
         // Arrange
         final Person expected = new Person().setName("Jon").setAge(50);
-        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(expected).block();
 
         // Act & Assert
-        StepVerifier.create(expectedBinaryData
-            .toObjectAsync(TypeReference.createInstance(Person.class)))
-            .assertNext(actual -> {
-                System.out.println(actual.getName());
-                System.out.println(actual.getAge());
-                Assertions.assertEquals(expected, actual);
-            })
+        StepVerifier.create(BinaryData.fromObjectAsync(expected)
+            .flatMap(binaryData -> binaryData.toObjectAsync(TypeReference.createInstance(Person.class))))
+            .assertNext(actual -> Assertions.assertEquals(expected, actual))
             .verifyComplete();
     }
 
@@ -363,11 +349,9 @@ public class BinaryDataTest {
         personList.add(person1);
         personList.add(person2);
 
-        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(personList).block();
-
         // Act & Assert
-        StepVerifier.create(expectedBinaryData
-            .toObjectAsync(new TypeReference<List<Person>>() { }))
+        StepVerifier.create(BinaryData.fromObjectAsync(personList)
+            .flatMap(binaryData -> binaryData.toObjectAsync(new TypeReference<List<Person>>() { })))
             .assertNext(persons -> {
                 assertEquals(2, persons.size());
                 assertEquals("Jon", persons.get(0).getName());

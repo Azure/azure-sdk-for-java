@@ -231,39 +231,6 @@ public interface IotHubResources {
         String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
 
     /**
-     * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
-     * @param name The name of the consumer group to add.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the EventHubConsumerGroupInfo object.
-     */
-    EventHubConsumerGroupInfo createEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
-
-    /**
-     * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
-     * @param name The name of the consumer group to add.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the EventHubConsumerGroupInfo object.
-     */
-    Response<EventHubConsumerGroupInfo> createEventHubConsumerGroupWithResponse(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
-
-    /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
@@ -658,6 +625,31 @@ public interface IotHubResources {
     Response<IotHubDescription> getByIdWithResponse(String id, Context context);
 
     /**
+     * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     */
+    EventHubConsumerGroupInfo getEventHubConsumerGroupById(String id);
+
+    /**
+     * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     */
+    Response<EventHubConsumerGroupInfo> getEventHubConsumerGroupByIdWithResponse(String id, Context context);
+
+    /**
      * Delete an IoT hub.
      *
      * @param id the resource ID.
@@ -683,10 +675,42 @@ public interface IotHubResources {
     IotHubDescription deleteByIdWithResponse(String id, Context context);
 
     /**
+     * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteEventHubConsumerGroupById(String id);
+
+    /**
+     * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Response<Void> deleteEventHubConsumerGroupByIdWithResponse(String id, Context context);
+
+    /**
      * Begins definition for a new IotHubDescription resource.
      *
      * @param name resource name.
      * @return the first stage of the new IotHubDescription definition.
      */
     IotHubDescription.DefinitionStages.Blank define(String name);
+
+    /**
+     * Begins definition for a new EventHubConsumerGroupInfo resource.
+     *
+     * @param name resource name.
+     * @return the first stage of the new EventHubConsumerGroupInfo definition.
+     */
+    EventHubConsumerGroupInfo.DefinitionStages.Blank defineEventHubConsumerGroup(String name);
 }

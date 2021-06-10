@@ -14,11 +14,12 @@ private object CosmosConstants {
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"
-    val ChangeFeedDataSourceShortName = "cosmos.changeFeed"
+    val ChangeFeedDataSourceShortName = "cosmos.oltp.changeFeed"
   }
 
   object Properties {
     val Id = "id"
+    val ETag = "_etag"
   }
 
   object StatusCodes {
@@ -27,5 +28,10 @@ private object CosmosConstants {
     val InternalServerError = 500
     val Gone = 410
     val Timeout = 408
+    val PreconditionFailed = 412
+  }
+
+  object SystemProperties {
+    val LineSeparator = System.getProperty("line.separator")
   }
 }

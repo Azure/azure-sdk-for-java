@@ -1,6 +1,24 @@
 # Release History
 
-## 7.3.0-beta.2 (Unreleased)
+## 7.3.0-beta.3 (Unreleased)
+
+## 7.2.2 (2021-05-26)
+### Fixed
+- Fixed some connection retry issues when network errors happen.
+- Fixed an issue that caused `ServiceBusSenderClient` to keep running after it's already closed.
+
+### Dependency Updates
+- Upgraded `azure-core-amqp` dependency to `2.0.6`.
+
+## 7.2.1 (2021-05-12)
+### Fixed
+- Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 
+  messages that are not delivered to the client in time and sometime the client is not able to settle these messages as
+  the message lock might expire.
+  
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.5`.
 
 ## 7.3.0-beta.1 (2021-04-14)
 ### New Features

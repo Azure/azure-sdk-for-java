@@ -10,25 +10,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Managed service identity. */
+/** Identity for the resource. */
 @Fluent
 public class Identity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
 
     /*
-     * Type of managed service identity.
+     * The identity type.
      */
     @JsonProperty(value = "type")
-    private IdentityType type;
+    private ResourceIdentityType type;
 
     /*
-     * Tenant of managed service identity.
+     * The tenant ID of resource.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * Principal Id of managed service identity.
+     * The principal ID of resource identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
@@ -43,27 +43,27 @@ public class Identity {
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
-     * Get the type property: Type of managed service identity.
+     * Get the type property: The identity type.
      *
      * @return the type value.
      */
-    public IdentityType type() {
+    public ResourceIdentityType type() {
         return this.type;
     }
 
     /**
-     * Set the type property: Type of managed service identity.
+     * Set the type property: The identity type.
      *
      * @param type the type value to set.
      * @return the Identity object itself.
      */
-    public Identity withType(IdentityType type) {
+    public Identity withType(ResourceIdentityType type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the tenantId property: Tenant of managed service identity.
+     * Get the tenantId property: The tenant ID of resource.
      *
      * @return the tenantId value.
      */
@@ -72,7 +72,7 @@ public class Identity {
     }
 
     /**
-     * Get the principalId property: Principal Id of managed service identity.
+     * Get the principalId property: The principal ID of resource identity.
      *
      * @return the principalId value.
      */

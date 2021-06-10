@@ -36,6 +36,12 @@ public final class QueryFormat {
     @JsonProperty(value = "ArrowConfiguration")
     private ArrowConfiguration arrowConfiguration;
 
+    /*
+     * Any object
+     */
+    @JsonProperty(value = "ParquetTextConfiguration")
+    private Object parquetTextConfiguration;
+
     /**
      * Get the type property: The quick query format type.
      *
@@ -113,6 +119,26 @@ public final class QueryFormat {
      */
     public QueryFormat setArrowConfiguration(ArrowConfiguration arrowConfiguration) {
         this.arrowConfiguration = arrowConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the parquetTextConfiguration property: Any object.
+     *
+     * @return the parquetTextConfiguration value.
+     */
+    public Object getParquetTextConfiguration() {
+        return this.parquetTextConfiguration;
+    }
+
+    /**
+     * Set the parquetTextConfiguration property: Any object.
+     *
+     * @param parquetTextConfiguration the parquetTextConfiguration value to set.
+     * @return the QueryFormat object itself.
+     */
+    public QueryFormat setParquetTextConfiguration(Object parquetTextConfiguration) {
+        this.parquetTextConfiguration = parquetTextConfiguration;
         return this;
     }
 }

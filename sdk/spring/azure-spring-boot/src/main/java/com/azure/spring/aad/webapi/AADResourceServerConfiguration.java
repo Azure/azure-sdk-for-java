@@ -47,7 +47,7 @@ public class AADResourceServerConfiguration {
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
-     * @return JwtDecoder bean
+     * @return Get the jwtDecoder instance.
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
@@ -64,10 +64,10 @@ public class AADResourceServerConfiguration {
     public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
+        if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId())) {
+        if (StringUtils.hasText(aadAuthenticationProperties.getClientId())) {
             validAudiences.add(aadAuthenticationProperties.getClientId());
         }
         if (!validAudiences.isEmpty()) {

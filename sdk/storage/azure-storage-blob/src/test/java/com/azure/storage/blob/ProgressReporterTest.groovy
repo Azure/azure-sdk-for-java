@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import spock.lang.Requires
 
@@ -35,7 +36,7 @@ class ProgressReporterTest extends APISpec {
         0 * mockReceiver.reportProgress({ it > 30 })
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     def "Report progress sequential network test"() {
         setup:
         ProgressReceiver mockReceiver = Mock(ProgressReceiver)
@@ -44,7 +45,7 @@ class ProgressReporterTest extends APISpec {
         Flux<ByteBuffer> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
 
         when:
-        BlockBlobAsyncClient bu = getBlobAsyncClient(primaryCredential, cc.getBlobContainerUrl(), generateBlobName())
+        BlockBlobAsyncClient bu = getBlobAsyncClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), generateBlobName())
             .getBlockBlobAsyncClient()
 
         bu.upload(data, buffer.remaining()).block()

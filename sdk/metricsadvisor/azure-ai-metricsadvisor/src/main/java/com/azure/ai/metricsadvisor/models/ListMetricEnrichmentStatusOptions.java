@@ -10,16 +10,16 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ListMetricEnrichmentStatusOptions {
-    private Integer top;
+    private Integer maxPageSize;
     private Integer skip;
 
     /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The top value.
+     * @return The maxPageSize value.
      */
-    public Integer getTop() {
-        return this.top;
+    public Integer getMaxPageSize() {
+        return this.maxPageSize;
     }
 
     /**
@@ -35,12 +35,12 @@ public final class ListMetricEnrichmentStatusOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param top The top value.
+     * @param maxPageSize The maxPageSize value.
      *
      * @return The ListDataFeedOptions object itself.
      */
-    public ListMetricEnrichmentStatusOptions setTop(int top) {
-        this.top = top;
+    public ListMetricEnrichmentStatusOptions setMaxPageSize(int maxPageSize) {
+        this.maxPageSize = maxPageSize;
         return this;
     }
 

@@ -9,6 +9,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -28,7 +29,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     }
 
     /**
-     * Tests that a Key Vault can be backed up.
+     * Tests that a Key Vault or MHSM can be backed up.
      */
     @SuppressWarnings("ConstantConditions")
     @ParameterizedTest(name = DISPLAY_NAME)
@@ -85,7 +86,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @SuppressWarnings("ConstantConditions")
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginSelectiveRestore(HttpClient httpClient) {
+    public void beginSelectiveKeyRestore(HttpClient httpClient) {
         if (getTestMode() != TestMode.PLAYBACK) {
             // Currently there is no Managed HSM environment for pipeline testing.
             // TODO: Remove once there is a proper cloud environment available.
@@ -100,9 +101,9 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Restore the backup
         String backupFolderUrl = backupPollResponse.getFinalResult().block();
-        AsyncPollResponse<KeyVaultRestoreOperation, Void> selectiveRestorePollResponse =
-            asyncClient.beginSelectiveRestore("testKey", backupFolderUrl, sasToken).blockLast();
+        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, Void> selectiveKeyRestorePollResponse =
+            asyncClient.beginSelectiveKeyRestore("testKey", backupFolderUrl, sasToken).blockLast();
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveRestorePollResponse.getStatus());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveKeyRestorePollResponse.getStatus());
     }
 }

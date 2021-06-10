@@ -13,7 +13,7 @@ import java.util.Map;
 
 /** Profile for the container service agent pool. */
 @Fluent
-public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
+public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfile.class);
 
     /*

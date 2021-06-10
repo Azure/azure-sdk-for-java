@@ -1,10 +1,14 @@
 ## Release History
 
-### 3.7.0-beta.1 (Unreleased)
-#### New Features
-- Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).
-- Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/).
+## 3.8.0-beta.1 (Unreleased)
 
+
+### 3.7.0 (2021-05-12)
+#### New Features
+* Updated Spring Boot to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).
+* Updated Spring Cloud to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/).
+* Added `slice` support for queries that do not require page count.
+* Updated `azure-cosmos` to version 4.15.0.
 
 ### 3.6.0 (2021-04-06)
 #### New Features

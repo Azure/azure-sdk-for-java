@@ -150,6 +150,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateOrReplaceDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .addWithResponseAsync(
@@ -228,6 +232,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .getByIdWithResponseAsync(
@@ -291,6 +299,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .updateWithResponseAsync(
@@ -339,6 +351,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .deleteWithResponseAsync(
@@ -406,6 +422,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> createOrReplaceRelationshipWithResponse(String digitalTwinId, String relationshipId, T relationship, Class<T> clazz, CreateOrReplaceRelationshipOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .addRelationshipWithResponseAsync(
@@ -477,6 +497,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> getRelationshipWithResponse(String digitalTwinId, String relationshipId, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .getRelationshipByIdWithResponseAsync(
@@ -537,6 +561,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateRelationshipWithResponse(String digitalTwinId, String relationshipId, JsonPatchDocument jsonPatch, UpdateRelationshipOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .updateRelationshipWithResponseAsync(
@@ -586,6 +614,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> deleteRelationshipWithResponse(String digitalTwinId, String relationshipId, DeleteRelationshipOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .deleteRelationshipWithResponseAsync(
@@ -642,11 +674,15 @@ public final class DigitalTwinsAsyncClient {
 
     <T> PagedFlux<T> listRelationships(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
         return new PagedFlux<>(
-            () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context),
-            nextLink -> listRelationshipsNextPage(nextLink, clazz, context));
+            () -> listRelationshipsFirstPage(digitalTwinId, relationshipName, clazz, context != null ? context : Context.NONE),
+            nextLink -> listRelationshipsNextPage(nextLink, clazz, context != null ? context : Context.NONE));
     }
 
     <T> Mono<PagedResponse<T>> listRelationshipsFirstPage(String digitalTwinId, String relationshipName, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .listRelationshipsSinglePageAsync(
@@ -678,6 +714,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<PagedResponse<T>> listRelationshipsNextPage(String nextLink, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwins()
             .listRelationshipsNextSinglePageAsync(
@@ -725,11 +765,15 @@ public final class DigitalTwinsAsyncClient {
 
     PagedFlux<IncomingRelationship> listIncomingRelationships(String digitalTwinId, Context context) {
         return new PagedFlux<>(
-            () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context),
-            nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context));
+            () -> listIncomingRelationshipsFirstPageAsync(digitalTwinId, context != null ? context : Context.NONE),
+            nextLink -> listIncomingRelationshipsNextSinglePageAsync(nextLink, context != null ? context : Context.NONE ));
     }
 
-    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, Context context){
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsFirstPageAsync(String digitalTwinId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer.getDigitalTwins()
             .listIncomingRelationshipsSinglePageAsync(
                 digitalTwinId,
@@ -738,7 +782,11 @@ public final class DigitalTwinsAsyncClient {
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
-    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, Context context){
+    Mono<PagedResponse<IncomingRelationship>> listIncomingRelationshipsNextSinglePageAsync(String nextLink, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer.getDigitalTwins()
             .listIncomingRelationshipsNextSinglePageAsync(
                 nextLink,
@@ -799,6 +847,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Iterable<DigitalTwinsModelData>>> createModelsWithResponse(Iterable<String> dtdlModels, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         List<Object> modelsPayload = new ArrayList<>();
         for (String model : dtdlModels) {
             try {
@@ -854,7 +906,11 @@ public final class DigitalTwinsAsyncClient {
         return withContext(context -> getModelWithResponse(modelId, context));
     }
 
-    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, Context context){
+    Mono<Response<DigitalTwinsModelData>> getModelWithResponse(String modelId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getDigitalTwinModels()
             .getByIdWithResponseAsync(
@@ -903,13 +959,17 @@ public final class DigitalTwinsAsyncClient {
             nextLink -> withContext(context -> listModelsNextSinglePageAsync(nextLink, options, context)));
     }
 
-    PagedFlux<DigitalTwinsModelData> listModels(ListModelsOptions options, Context context){
+    PagedFlux<DigitalTwinsModelData> listModels(ListModelsOptions options, Context context) {
         return new PagedFlux<>(
-            () -> listModelsSinglePageAsync(options, context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, options, context));
+            () -> listModelsSinglePageAsync(options, context != null ? context : Context.NONE),
+            nextLink -> listModelsNextSinglePageAsync(nextLink, options, context != null ? context : Context.NONE));
     }
 
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelsOptions options, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsSinglePageAsync(ListModelsOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         // default values for these options
         List<String> getDependenciesFor = null;
         boolean includeModelDefinition = true; //service default is false, but we expect customers to want the model definitions by default
@@ -942,7 +1002,11 @@ public final class DigitalTwinsAsyncClient {
             );
     }
 
-    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, ListModelsOptions options, Context context){
+    Mono<PagedResponse<DigitalTwinsModelData>> listModelsNextSinglePageAsync(String nextLink, ListModelsOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions protocolLayerOptions = null;
         if (options != null) {
             protocolLayerOptions = new com.azure.digitaltwins.core.implementation.models.DigitalTwinModelsListOptions()
@@ -999,7 +1063,11 @@ public final class DigitalTwinsAsyncClient {
         return withContext(context -> deleteModelWithResponse(modelId, context));
     }
 
-    Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context){
+    Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer.getDigitalTwinModels()
             .deleteWithResponseAsync(
                 modelId,
@@ -1039,6 +1107,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> decommissionModelWithResponse(String modelId, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         JsonPatchDocument updateOperation = new JsonPatchDocument()
             .appendReplace("/decommissioned", true);
 
@@ -1091,6 +1163,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<DigitalTwinsResponse<T>> getComponentWithResponse(String digitalTwinId, String componentName, Class<T> clazz, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer.getDigitalTwins()
             .getComponentWithResponseAsync(
                 digitalTwinId,
@@ -1150,6 +1226,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<DigitalTwinsResponse<Void>> updateComponentWithResponse(String digitalTwinId, String componentName, JsonPatchDocument jsonPatch, UpdateComponentOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer.getDigitalTwins()
             .updateComponentWithResponseAsync(
                 digitalTwinId,
@@ -1228,11 +1308,15 @@ public final class DigitalTwinsAsyncClient {
 
     <T> PagedFlux<T> query(String query, Class<T> clazz, QueryOptions options, Context context) {
         return new PagedFlux<T>(
-            () -> queryFirstPage(query, clazz, options, context),
-            nextLink -> queryNextPage(nextLink, clazz, options, context));
+            () -> queryFirstPage(query, clazz, options, context != null ? context : Context.NONE),
+            nextLink -> queryNextPage(nextLink, clazz, options, context != null ? context : Context.NONE));
     }
 
     <T> Mono<PagedResponse<T>> queryFirstPage(String query, Class<T> clazz, QueryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         QuerySpecification querySpecification = new QuerySpecification().setQuery(query);
 
         return protocolLayer
@@ -1261,6 +1345,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     <T> Mono<PagedResponse<T>> queryNextPage(String nextLink, Class<T> clazz, QueryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         QuerySpecification querySpecification = new QuerySpecification().setContinuationToken(nextLink);
 
         return protocolLayer
@@ -1331,7 +1419,11 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Void>> createOrReplaceEventRouteWithResponse(String eventRouteId, DigitalTwinsEventRoute eventRoute, Context context)
     {
-        return this.protocolLayer.getEventRoutes().addWithResponseAsync(eventRouteId, EventRouteConverter.map(eventRoute), null, context);
+         return this.protocolLayer.getEventRoutes().addWithResponseAsync(
+            eventRouteId,
+            EventRouteConverter.map(eventRoute),
+            null,
+            context != null ? context : Context.NONE);
     }
 
     /**
@@ -1369,6 +1461,10 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<DigitalTwinsEventRoute>> getEventRouteWithResponse(String eventRouteId, Context context)
     {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(
             eventRouteId,
             null,
@@ -1415,7 +1511,10 @@ public final class DigitalTwinsAsyncClient {
 
     Mono<Response<Void>> deleteEventRouteWithResponse(String eventRouteId, Context context)
     {
-        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(eventRouteId, null, context);
+        return this.protocolLayer.getEventRoutes().deleteWithResponseAsync(
+            eventRouteId,
+            null,
+            context != null ? context : Context.NONE);
     }
 
     /**
@@ -1457,11 +1556,15 @@ public final class DigitalTwinsAsyncClient {
     PagedFlux<DigitalTwinsEventRoute> listEventRoutes(ListDigitalTwinsEventRoutesOptions options, Context context)
     {
         return new PagedFlux<>(
-            () -> listEventRoutesFirstPage(options, context),
-            nextLink -> listEventRoutesNextPage(nextLink, options, context));
+            () -> listEventRoutesFirstPage(options, context != null ? context : Context.NONE),
+            nextLink -> listEventRoutesNextPage(nextLink, options, context != null ? context : Context.NONE));
     }
 
     Mono<PagedResponse<DigitalTwinsEventRoute>> listEventRoutesFirstPage(ListDigitalTwinsEventRoutesOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getEventRoutes()
             .listSinglePageAsync(
@@ -1471,6 +1574,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<PagedResponse<DigitalTwinsEventRoute>> listEventRoutesNextPage(String nextLink, ListDigitalTwinsEventRoutesOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         return protocolLayer
             .getEventRoutes()
             .listNextSinglePageAsync(
@@ -1552,6 +1659,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> publishTelemetryWithResponse(String digitalTwinId, String messageId, Object payload, PublishTelemetryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         if (messageId == null || messageId.isEmpty()) {
             messageId = UUID.randomUUID().toString();
         }
@@ -1624,6 +1735,10 @@ public final class DigitalTwinsAsyncClient {
     }
 
     Mono<Response<Void>> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName, String messageId, Object payload, PublishComponentTelemetryOptions options, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+
         if (messageId == null || messageId.isEmpty()) {
             messageId = UUID.randomUUID().toString();
         }

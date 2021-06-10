@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -169,34 +171,35 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(transaction.get());
 
         // Assert & Act
-        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().next().block(TIMEOUT);
-        assertNotNull(receivedMessage);
-
-        final Mono<Void> operation;
-        switch (dispositionStatus) {
-            case COMPLETED:
-                operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get()));
-                messagesPending.decrementAndGet();
-                break;
-            case ABANDONED:
-                operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(transaction.get()));
-                break;
-            case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setTransactionContext(transaction.get())
-                    .setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage, deadLetterOptions);
-                messagesPending.decrementAndGet();
-                break;
-            case DEFERRED:
-                operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Disposition status not recognized for this test case: " + dispositionStatus));
-        }
-
-        StepVerifier.create(operation)
-            .verifyComplete();
+        final ServiceBusReceivedMessage message = receiver.receiveMessages()
+            .flatMap(receivedMessage -> {
+                final Mono<Void> operation;
+                switch (dispositionStatus) {
+                    case COMPLETED:
+                        operation = receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get()));
+                        messagesPending.decrementAndGet();
+                        break;
+                    case ABANDONED:
+                        operation = receiver.abandon(receivedMessage, new AbandonOptions().setTransactionContext(transaction.get()));
+                        break;
+                    case SUSPENDED:
+                        DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setTransactionContext(transaction.get())
+                            .setDeadLetterReason(deadLetterReason);
+                        operation = receiver.deadLetter(receivedMessage, deadLetterOptions);
+                        messagesPending.decrementAndGet();
+                        break;
+                    case DEFERRED:
+                        operation = receiver.defer(receivedMessage, new DeferOptions().setTransactionContext(transaction.get()));
+                        break;
+                    default:
+                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                            "Disposition status not recognized for this test case: " + dispositionStatus));
+                }
+                return operation
+                    .thenReturn(receivedMessage);
+            })
+            .next().block(TIMEOUT);
+        assertNotNull(message);
 
         StepVerifier.create(receiver.commitTransaction(transaction.get()))
             .verifyComplete();
@@ -552,19 +555,36 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE, false);
 
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, false);
+        final AtomicInteger messageId = new AtomicInteger();
+        final AtomicLong actualCount = new AtomicLong();
         final int maxMessages = 2;
-        final int fromSequenceNumber = 1;
+        final AtomicLong fromSequenceNumber = new AtomicLong();
+        fromSequenceNumber.set(1);
 
-        Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
+        final byte[] content = "peek-message-from-sequence".getBytes(Charset.defaultCharset());
+        for (int i = 0; i < maxMessages; ++i) {
+            ServiceBusMessage message = getMessage(content, String.valueOf(i), isSessionEnabled);
+            Mono.when(sendMessage(message)).block(TIMEOUT);
+        }
 
         // Assert & Act
-        StepVerifier.create(receiver.peekMessages(maxMessages, fromSequenceNumber))
-            .expectNextCount(maxMessages)
-            .verifyComplete();
 
-        // cleanup
+        // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try two times.
+        // https://github.com/Azure/azure-sdk-for-java/issues/21168
+        for (int i = 0; i < 2 && actualCount.get() < maxMessages; ++i) {
+            receiver.peekMessages(maxMessages, fromSequenceNumber.get()).toStream().forEach(receivedMessage -> {
+                Long previousSequenceNumber = fromSequenceNumber.get();
+                fromSequenceNumber.set(receivedMessage.getSequenceNumber() + 1);
+                actualCount.addAndGet(1);
+                assertEquals(String.valueOf(messageId.getAndIncrement()), receivedMessage.getMessageId(),
+                    String.format("Message id did not match. Message payload: [%s], peek from Sequence Number [%s], "
+                        + " received message Sequence Number [%s]", receivedMessage.getBody().toString(),
+                        previousSequenceNumber, receivedMessage.getSequenceNumber()));
+            });
+        }
+
+        assertEquals(maxMessages, actualCount.get());
+
         StepVerifier.create(receiver.receiveMessages().take(maxMessages))
             .assertNext(receivedMessage -> {
                 receiver.complete(receivedMessage).block(Duration.ofSeconds(15));
@@ -860,38 +880,38 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = getMessage(messageId, false);
         sendMessage(message).block(TIMEOUT);
 
-        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().next().block(TIMEOUT);
+        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages()
+            .flatMap(m -> receiver.defer(m).thenReturn(m))
+            .next().block(TIMEOUT);
+
         assertNotNull(receivedMessage);
 
-        receiver.defer(receivedMessage).block(TIMEOUT);
-
+        // Assert & Act
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
+            .flatMap(m -> {
+                final Mono<Void> operation;
+                switch (dispositionStatus) {
+                    case ABANDONED:
+                        operation = receiver.abandon(m);
+                        break;
+                    case SUSPENDED:
+                        operation = receiver.deadLetter(m);
+                        break;
+                    case COMPLETED:
+                        operation = receiver.complete(m);
+                        break;
+                    default:
+                        throw logger.logExceptionAsError(new IllegalArgumentException(
+                            "Disposition status not recognized for this test case: " + dispositionStatus));
+                }
+                return operation.thenReturn(m);
+
+            })
             .block(TIMEOUT);
 
         assertNotNull(receivedDeferredMessage);
         assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
-
-        final Mono<Void> operation;
-        switch (dispositionStatus) {
-            case ABANDONED:
-                operation = receiver.abandon(receivedDeferredMessage);
-                break;
-            case SUSPENDED:
-                operation = receiver.deadLetter(receivedDeferredMessage);
-                break;
-            case COMPLETED:
-                operation = receiver.complete(receivedDeferredMessage);
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Disposition status not recognized for this test case: " + dispositionStatus));
-        }
-
-        // Assert & Act
-        StepVerifier.create(operation)
-            .expectComplete()
-            .verify();
 
         if (dispositionStatus != DispositionStatus.COMPLETED) {
             messagesPending.decrementAndGet();

@@ -4,6 +4,7 @@ package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -27,6 +28,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
+@ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.UserFlowCondition.class })
 @EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2COAuth2ClientConfiguration.class)

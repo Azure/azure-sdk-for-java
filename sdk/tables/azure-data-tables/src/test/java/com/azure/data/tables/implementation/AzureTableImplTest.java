@@ -3,6 +3,7 @@
 
 package com.azure.data.tables.implementation;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -18,9 +19,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.TablesServiceVersion;
-import com.azure.data.tables.TablesSharedKeyCredential;
-import com.azure.data.tables.TablesSharedKeyCredentialPolicy;
+import com.azure.data.tables.TableAzureNamedKeyCredentialPolicy;
+import com.azure.data.tables.TableServiceVersion;
 import com.azure.data.tables.TestUtils;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
@@ -28,8 +28,6 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
-import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -80,12 +78,12 @@ public class AzureTableImplTest extends TestBase {
         Assertions.assertNotNull(connectionString, "Cannot continue test if connectionString is not set.");
 
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
-        TablesSharedKeyCredential sharedKeyCredential = new TablesSharedKeyCredential(
+        AzureNamedKeyCredential azureNamedKeyCredential = new AzureNamedKeyCredential(
             authSettings.getAccount().getName(), authSettings.getAccount().getAccessKey());
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new AddDatePolicy());
-        policies.add(new TablesSharedKeyCredentialPolicy(sharedKeyCredential));
+        policies.add(new TableAzureNamedKeyCredentialPolicy(azureNamedKeyCredential));
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         // Add Accept header so we don't get back XML.
@@ -111,7 +109,7 @@ public class AzureTableImplTest extends TestBase {
         azureTable = new AzureTableImplBuilder()
                 .pipeline(pipeline)
                 .serializerAdapter(new TablesJacksonSerializer())
-                .version(TablesServiceVersion.getLatest().getVersion())
+                .version(TableServiceVersion.getLatest().getVersion())
                 .url(storageConnectionString.getTableEndpoint().getPrimaryUri())
                 .buildClient();
     }

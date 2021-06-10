@@ -4,17 +4,18 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner;
 import com.azure.resourcemanager.iothub.models.EndpointHealthData;
 import com.azure.resourcemanager.iothub.models.EndpointHealthStatus;
+import java.time.OffsetDateTime;
 
 public final class EndpointHealthDataImpl implements EndpointHealthData {
     private EndpointHealthDataInner innerObject;
 
-    private final IotHubManager serviceManager;
+    private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    EndpointHealthDataImpl(EndpointHealthDataInner innerObject, IotHubManager serviceManager) {
+    EndpointHealthDataImpl(
+        EndpointHealthDataInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -27,11 +28,27 @@ public final class EndpointHealthDataImpl implements EndpointHealthData {
         return this.innerModel().healthStatus();
     }
 
+    public String lastKnownError() {
+        return this.innerModel().lastKnownError();
+    }
+
+    public OffsetDateTime lastKnownErrorTime() {
+        return this.innerModel().lastKnownErrorTime();
+    }
+
+    public OffsetDateTime lastSuccessfulSendAttemptTime() {
+        return this.innerModel().lastSuccessfulSendAttemptTime();
+    }
+
+    public OffsetDateTime lastSendAttemptTime() {
+        return this.innerModel().lastSendAttemptTime();
+    }
+
     public EndpointHealthDataInner innerModel() {
         return this.innerObject;
     }
 
-    private IotHubManager manager() {
+    private com.azure.resourcemanager.iothub.IotHubManager manager() {
         return this.serviceManager;
     }
 }

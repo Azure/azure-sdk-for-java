@@ -211,9 +211,10 @@ public class ServiceBusProcessorTest {
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
                 ServiceBusMessageContext serviceBusMessageContext =
                     new ServiceBusMessageContext(serviceBusReceivedMessage);
-                sink.next(serviceBusMessageContext);
                 if (state == 2) {
                     throw new IllegalStateException("error");
+                } else {
+                    sink.next(serviceBusMessageContext);
                 }
                 return state + 1;
             });
@@ -225,12 +226,14 @@ public class ServiceBusProcessorTest {
         countDownLatch.set(new CountDownLatch(4));
 
         AtomicBoolean assertionFailed = new AtomicBoolean();
+        StringBuffer messageIdNotMatched = new StringBuffer();
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder,
             messageContext -> {
                 try {
                     assertEquals(String.valueOf(messageId.getAndIncrement() % 2),
                         messageContext.getMessage().getMessageId());
                 } catch (AssertionError error) {
+                    messageIdNotMatched.append(messageContext.getMessage().getMessageId()).append(",");
                     assertionFailed.set(true);
                 } finally {
                     countDownLatch.get().countDown();
@@ -242,7 +245,8 @@ public class ServiceBusProcessorTest {
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.get().await(20, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
-        Assertions.assertTrue(!assertionFailed.get() && success, "Failed to receive all expected messages");
+        Assertions.assertTrue(!assertionFailed.get(), "Message id did not match. Invalid message Ids: " + messageIdNotMatched);
+        Assertions.assertTrue(success, "Failed to receive all expected messages");
     }
 
     /**

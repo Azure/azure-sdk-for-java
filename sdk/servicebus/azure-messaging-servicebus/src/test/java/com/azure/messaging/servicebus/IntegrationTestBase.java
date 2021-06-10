@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.AsyncAutoCloseable;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -27,7 +28,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -101,10 +101,6 @@ public abstract class IntegrationTestBase extends TestBase {
         logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
         StepVerifier.resetDefaultTimeout();
         afterTest();
-
-        // Tear down any inline mocks to avoid memory leaks.
-        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -353,8 +349,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 continue;
             }
 
-            if (closeable instanceof AsyncAutoCloseable) {
-                final Mono<Void> voidMono = ((AsyncAutoCloseable) closeable).closeAsync();
+            if (closeable instanceof AsyncCloseable) {
+                final Mono<Void> voidMono = ((AsyncCloseable) closeable).closeAsync();
                 closeableMonos.add(voidMono);
 
                 voidMono.subscribe();
@@ -371,10 +367,14 @@ public abstract class IntegrationTestBase extends TestBase {
         Mono.when(closeableMonos).block(TIMEOUT);
     }
 
-    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
+    protected ServiceBusMessage getMessage(byte[] content, String messageId, boolean isSessionEnabled) {
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(content, messageId);
         logger.verbose("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
+    }
+
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
+        return getMessage(CONTENTS_BYTES, messageId, isSessionEnabled);
     }
 
     protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {

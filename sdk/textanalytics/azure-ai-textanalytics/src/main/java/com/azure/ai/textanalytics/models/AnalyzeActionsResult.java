@@ -15,6 +15,7 @@ public final class AnalyzeActionsResult {
     private IterableStream<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults;
     private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults;
+    private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
@@ -48,6 +49,12 @@ public final class AnalyzeActionsResult {
                 public void setExtractKeyPhrasesActionResults(AnalyzeActionsResult analyzeActionsResult,
                     IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
                     analyzeActionsResult.setExtractKeyPhrasesActionResults(extractKeyPhrasesActionResults);
+                }
+
+                @Override
+                public void setAnalyzeSentimentActionResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
+                    analyzeActionsResult.setAnalyzeSentimentActionResults(analyzeSentimentActionResults);
                 }
             });
     }
@@ -100,6 +107,15 @@ public final class AnalyzeActionsResult {
         return this.extractKeyPhrasesActionResults;
     }
 
+    /**
+     * Get the {@code analyzeSentimentActionResults} property: The sentiment analysis actions results property.
+     *
+     * @return the analyzeSentimentActionResults value.
+     */
+    public IterableStream<AnalyzeSentimentActionResult> getAnalyzeSentimentActionResults() {
+        return this.analyzeSentimentActionResults;
+    }
+
     private void setStatistics(TextDocumentBatchStatistics statistics) {
         this.statistics = statistics;
     }
@@ -122,5 +138,10 @@ public final class AnalyzeActionsResult {
     private void setExtractKeyPhrasesActionResults(
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
         this.extractKeyPhrasesActionResults = extractKeyPhrasesActionResults;
+    }
+
+    private void setAnalyzeSentimentActionResults(
+        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
+        this.analyzeSentimentActionResults = analyzeSentimentActionResults;
     }
 }

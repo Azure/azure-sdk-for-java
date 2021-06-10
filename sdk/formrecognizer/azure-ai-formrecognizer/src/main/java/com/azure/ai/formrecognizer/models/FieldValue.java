@@ -11,10 +11,9 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.ai.formrecognizer.models.FieldValueType.COUNTRY;
+import static com.azure.ai.formrecognizer.models.FieldValueType.COUNTRY_REGION;
 import static com.azure.ai.formrecognizer.models.FieldValueType.DATE;
 import static com.azure.ai.formrecognizer.models.FieldValueType.FLOAT;
-import static com.azure.ai.formrecognizer.models.FieldValueType.GENDER;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LIST;
 import static com.azure.ai.formrecognizer.models.FieldValueType.LONG;
 import static com.azure.ai.formrecognizer.models.FieldValueType.MAP;
@@ -24,7 +23,8 @@ import static com.azure.ai.formrecognizer.models.FieldValueType.STRING;
 import static com.azure.ai.formrecognizer.models.FieldValueType.TIME;
 
 /**
- * The FieldValue model.
+ * Represents the strongly-typed value of a field recognized from the input document and provides
+ * methods for converting it to the appropriate type.
  */
 @Fluent
 public final class FieldValue {
@@ -39,8 +39,7 @@ public final class FieldValue {
     private SelectionMarkState selectionMarkState;
     private String formFieldString;
     private String formFieldPhoneNumber;
-    private String formFieldCountry;
-    private FieldValueGender formFieldGender;
+    private String formFieldCountryRegion;
 
     /**
      * Constructs a FieldValue object
@@ -79,11 +78,8 @@ public final class FieldValue {
             case SELECTION_MARK_STATE:
                 selectionMarkState = (SelectionMarkState) value;
                 break;
-            case COUNTRY:
-                formFieldCountry = (String) value;
-                break;
-            case GENDER:
-                formFieldGender =  FieldValueGender.fromString(value.toString());
+            case COUNTRY_REGION:
+                formFieldCountryRegion = (String) value;
                 break;
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Unexpected type value: " + valueType));
@@ -228,32 +224,17 @@ public final class FieldValue {
     }
 
     /**
-     * Gets the value of the field as a Country field.
+     * Gets the value of the field as a country or region in the world.
      *
-     * @return the value of the field as Country.
+     * @return the value of the field as COUNTRY_REGION.
      * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
-     * {@link FieldValueType#COUNTRY}.
+     * {@link FieldValueType#COUNTRY_REGION}.
      */
-    public String asCountry() {
-        if (COUNTRY != this.getValueType()) {
+    public String asCountryRegion() {
+        if (COUNTRY_REGION != this.getValueType()) {
             throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
-                "Cannot get field as a %s from field value of type %s", COUNTRY, this.getValueType()))));
+                "Cannot get field as a %s from field value of type %s", COUNTRY_REGION, this.getValueType()))));
         }
-        return this.formFieldCountry;
-    }
-
-    /**
-     * Gets the value of the field as a gender value.
-     *
-     * @return the value of the field as a gender value.
-     * @throws UnsupportedOperationException if {@link FieldValue#getValueType()} is not
-     * {@link FieldValueType#GENDER}.
-     */
-    public FieldValueGender asGender() {
-        if (GENDER != this.getValueType()) {
-            throw logger.logExceptionAsError((new UnsupportedOperationException(String.format(
-                "Cannot get field as a %s from field value of type %s", GENDER, this.getValueType()))));
-        }
-        return this.formFieldGender;
+        return this.formFieldCountryRegion;
     }
 }

@@ -28,16 +28,21 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountEnumerateSkusResultInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CognitiveServicesAccountKeysInner;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsagesResultInner;
-import com.azure.resourcemanager.cognitiveservices.models.CognitiveServicesAccountListResult;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountSkuListResultInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ApiKeysInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.AccountListResult;
 import com.azure.resourcemanager.cognitiveservices.models.RegenerateKeyParameters;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AccountsClient. */
@@ -73,13 +78,13 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountInner>> create(
+        Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CognitiveServicesAccountInner account,
+            @BodyParam("application/json") AccountInner account,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -89,13 +94,13 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountInner>> update(
+        Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") CognitiveServicesAccountInner account,
+            @BodyParam("application/json") AccountInner account,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -105,7 +110,7 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -120,7 +125,7 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountInner>> getByResourceGroup(
+        Mono<Response<AccountInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -135,7 +140,7 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountListResult>> listByResourceGroup(
+        Mono<Response<AccountListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -147,7 +152,7 @@ public final class AccountsClientImpl implements AccountsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/accounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountListResult>> list(
+        Mono<Response<AccountListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -160,7 +165,7 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountKeysInner>> listKeys(
+        Mono<Response<ApiKeysInner>> listKeys(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -175,7 +180,7 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountKeysInner>> regenerateKey(
+        Mono<Response<ApiKeysInner>> regenerateKey(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -191,7 +196,7 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountEnumerateSkusResultInner>> listSkus(
+        Mono<Response<AccountSkuListResultInner>> listSkus(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -206,7 +211,7 @@ public final class AccountsClientImpl implements AccountsClient {
                 + "/accounts/{accountName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsagesResultInner>> getUsages(
+        Mono<Response<UsageListResultInner>> listUsages(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -220,7 +225,7 @@ public final class AccountsClientImpl implements AccountsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountListResult>> listByResourceGroupNext(
+        Mono<Response<AccountListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -230,7 +235,7 @@ public final class AccountsClientImpl implements AccountsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CognitiveServicesAccountListResult>> listNext(
+        Mono<Response<AccountListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -247,12 +252,12 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String accountName, AccountInner account) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -305,12 +310,12 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -359,21 +364,43 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CognitiveServicesAccountInner> createAsync(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
-        return createWithResponseAsync(resourceGroupName, accountName, account)
-            .flatMap(
-                (Response<CognitiveServicesAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(
+        String resourceGroupName, String accountName, AccountInner account) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, account);
+        return this
+            .client
+            .<AccountInner, AccountInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, Context.NONE);
+    }
+
+    /**
+     * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
+     * developer to access intelligent APIs. It's also the resource type for billing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginCreateAsync(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, accountName, account, context);
+        return this
+            .client
+            .<AccountInner, AccountInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, context);
     }
 
     /**
@@ -386,12 +413,92 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CognitiveServicesAccountInner create(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
+        String resourceGroupName, String accountName, AccountInner account) {
+        return beginCreateAsync(resourceGroupName, accountName, account).getSyncPoller();
+    }
+
+    /**
+     * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
+     * developer to access intelligent APIs. It's also the resource type for billing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
+    }
+
+    /**
+     * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
+     * developer to access intelligent APIs. It's also the resource type for billing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccountInner> createAsync(String resourceGroupName, String accountName, AccountInner account) {
+        return beginCreateAsync(resourceGroupName, accountName, account)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
+     * developer to access intelligent APIs. It's also the resource type for billing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccountInner> createAsync(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, account, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
+     * developer to access intelligent APIs. It's also the resource type for billing.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccountInner create(String resourceGroupName, String accountName, AccountInner account) {
         return createAsync(resourceGroupName, accountName, account).block();
     }
 
@@ -406,13 +513,12 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CognitiveServicesAccountInner> createWithResponse(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account, Context context) {
-        return createWithResponseAsync(resourceGroupName, accountName, account, context).block();
+    public AccountInner create(String resourceGroupName, String accountName, AccountInner account, Context context) {
+        return createAsync(resourceGroupName, accountName, account, context).block();
     }
 
     /**
@@ -424,12 +530,12 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String accountName, AccountInner account) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -481,12 +587,12 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -534,21 +640,42 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CognitiveServicesAccountInner> updateAsync(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
-        return updateWithResponseAsync(resourceGroupName, accountName, account)
-            .flatMap(
-                (Response<CognitiveServicesAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, AccountInner account) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, account);
+        return this
+            .client
+            .<AccountInner, AccountInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, Context.NONE);
+    }
+
+    /**
+     * Updates a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<AccountInner>, AccountInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, accountName, account, context);
+        return this
+            .client
+            .<AccountInner, AccountInner>getLroResult(
+                mono, this.client.getHttpPipeline(), AccountInner.class, AccountInner.class, context);
     }
 
     /**
@@ -560,12 +687,88 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CognitiveServicesAccountInner update(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account) {
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
+        String resourceGroupName, String accountName, AccountInner account) {
+        return beginUpdateAsync(resourceGroupName, accountName, account).getSyncPoller();
+    }
+
+    /**
+     * Updates a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, account, context).getSyncPoller();
+    }
+
+    /**
+     * Updates a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccountInner> updateAsync(String resourceGroupName, String accountName, AccountInner account) {
+        return beginUpdateAsync(resourceGroupName, accountName, account)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccountInner> updateAsync(
+        String resourceGroupName, String accountName, AccountInner account, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, account, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param account The parameters to provide for the created account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccountInner update(String resourceGroupName, String accountName, AccountInner account) {
         return updateAsync(resourceGroupName, accountName, account).block();
     }
 
@@ -579,13 +782,12 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CognitiveServicesAccountInner> updateWithResponse(
-        String resourceGroupName, String accountName, CognitiveServicesAccountInner account, Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, account, context).block();
+    public AccountInner update(String resourceGroupName, String accountName, AccountInner account, Context context) {
+        return updateAsync(resourceGroupName, accountName, account, context).block();
     }
 
     /**
@@ -599,7 +801,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -647,7 +849,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -692,8 +894,97 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Deletes a Cognitive Services account from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String accountName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a Cognitive Services account from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
+        return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a Cognitive Services account from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String accountName, Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a Cognitive Services account from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName).flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, accountName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a Cognitive Services account from the resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -719,11 +1010,10 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, context).block();
+    public void delete(String resourceGroupName, String accountName, Context context) {
+        deleteAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
@@ -734,11 +1024,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountInner>> getByResourceGroupWithResponseAsync(
+    private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -784,11 +1074,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountInner>> getByResourceGroupWithResponseAsync(
+    private Mono<Response<AccountInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -830,14 +1120,14 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CognitiveServicesAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
+    private Mono<AccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (Response<CognitiveServicesAccountInner> res) -> {
+                (Response<AccountInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -854,11 +1144,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CognitiveServicesAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
+    public AccountInner getByResourceGroup(String resourceGroupName, String accountName) {
         return getByResourceGroupAsync(resourceGroupName, accountName).block();
     }
 
@@ -871,11 +1161,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services Account is an Azure resource representing the provisioned account, its type, location
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
      *     and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CognitiveServicesAccountInner> getByResourceGroupWithResponse(
+    public Response<AccountInner> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
     }
@@ -890,8 +1180,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<AccountInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -920,7 +1209,7 @@ public final class AccountsClientImpl implements AccountsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .<PagedResponse<CognitiveServicesAccountInner>>map(
+            .<PagedResponse<AccountInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -943,7 +1232,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listByResourceGroupSinglePageAsync(
+    private Mono<PagedResponse<AccountInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -992,7 +1281,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CognitiveServicesAccountInner> listByResourceGroupAsync(String resourceGroupName) {
+    private PagedFlux<AccountInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -1009,8 +1298,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CognitiveServicesAccountInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
+    private PagedFlux<AccountInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
@@ -1026,7 +1314,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CognitiveServicesAccountInner> listByResourceGroup(String resourceGroupName) {
+    public PagedIterable<AccountInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
@@ -1041,7 +1329,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CognitiveServicesAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<AccountInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
@@ -1053,7 +1341,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<AccountInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1077,7 +1365,7 @@ public final class AccountsClientImpl implements AccountsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .<PagedResponse<CognitiveServicesAccountInner>>map(
+            .<PagedResponse<AccountInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1099,7 +1387,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<AccountInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1140,7 +1428,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CognitiveServicesAccountInner> listAsync() {
+    private PagedFlux<AccountInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1154,7 +1442,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CognitiveServicesAccountInner> listAsync(Context context) {
+    private PagedFlux<AccountInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -1167,7 +1455,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CognitiveServicesAccountInner> list() {
+    public PagedIterable<AccountInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
@@ -1181,7 +1469,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CognitiveServicesAccountInner> list(Context context) {
+    public PagedIterable<AccountInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
@@ -1196,8 +1484,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<Response<ApiKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1245,7 +1532,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountKeysInner>> listKeysWithResponseAsync(
+    private Mono<Response<ApiKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1290,10 +1577,10 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CognitiveServicesAccountKeysInner> listKeysAsync(String resourceGroupName, String accountName) {
+    private Mono<ApiKeysInner> listKeysAsync(String resourceGroupName, String accountName) {
         return listKeysWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (Response<CognitiveServicesAccountKeysInner> res) -> {
+                (Response<ApiKeysInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1313,7 +1600,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CognitiveServicesAccountKeysInner listKeys(String resourceGroupName, String accountName) {
+    public ApiKeysInner listKeys(String resourceGroupName, String accountName) {
         return listKeysAsync(resourceGroupName, accountName).block();
     }
 
@@ -1329,8 +1616,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CognitiveServicesAccountKeysInner> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context) {
+    public Response<ApiKeysInner> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
@@ -1346,7 +1632,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountKeysInner>> regenerateKeyWithResponseAsync(
+    private Mono<Response<ApiKeysInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1402,7 +1688,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountKeysInner>> regenerateKeyWithResponseAsync(
+    private Mono<Response<ApiKeysInner>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1454,11 +1740,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CognitiveServicesAccountKeysInner> regenerateKeyAsync(
+    private Mono<ApiKeysInner> regenerateKeyAsync(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
-                (Response<CognitiveServicesAccountKeysInner> res) -> {
+                (Response<ApiKeysInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1479,7 +1765,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CognitiveServicesAccountKeysInner regenerateKey(
+    public ApiKeysInner regenerateKey(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters) {
         return regenerateKeyAsync(resourceGroupName, accountName, parameters).block();
     }
@@ -1497,7 +1783,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the access keys for the cognitive services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CognitiveServicesAccountKeysInner> regenerateKeyWithResponse(
+    public Response<ApiKeysInner> regenerateKeyWithResponse(
         String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
     }
@@ -1513,7 +1799,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountEnumerateSkusResultInner>> listSkusWithResponseAsync(
+    private Mono<Response<AccountSkuListResultInner>> listSkusWithResponseAsync(
         String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1562,7 +1848,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CognitiveServicesAccountEnumerateSkusResultInner>> listSkusWithResponseAsync(
+    private Mono<Response<AccountSkuListResultInner>> listSkusWithResponseAsync(
         String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1607,11 +1893,10 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CognitiveServicesAccountEnumerateSkusResultInner> listSkusAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<AccountSkuListResultInner> listSkusAsync(String resourceGroupName, String accountName) {
         return listSkusWithResponseAsync(resourceGroupName, accountName)
             .flatMap(
-                (Response<CognitiveServicesAccountEnumerateSkusResultInner> res) -> {
+                (Response<AccountSkuListResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1631,7 +1916,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CognitiveServicesAccountEnumerateSkusResultInner listSkus(String resourceGroupName, String accountName) {
+    public AccountSkuListResultInner listSkus(String resourceGroupName, String accountName) {
         return listSkusAsync(resourceGroupName, accountName).block();
     }
 
@@ -1647,7 +1932,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CognitiveServicesAccountEnumerateSkusResultInner> listSkusWithResponse(
+    public Response<AccountSkuListResultInner> listSkusWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return listSkusWithResponseAsync(resourceGroupName, accountName, context).block();
     }
@@ -1665,7 +1950,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UsagesResultInner>> getUsagesWithResponseAsync(
+    private Mono<Response<UsageListResultInner>> listUsagesWithResponseAsync(
         String resourceGroupName, String accountName, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1691,7 +1976,7 @@ public final class AccountsClientImpl implements AccountsClient {
             .withContext(
                 context ->
                     service
-                        .getUsages(
+                        .listUsages(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             accountName,
@@ -1717,7 +2002,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UsagesResultInner>> getUsagesWithResponseAsync(
+    private Mono<Response<UsageListResultInner>> listUsagesWithResponseAsync(
         String resourceGroupName, String accountName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1741,7 +2026,7 @@ public final class AccountsClientImpl implements AccountsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getUsages(
+            .listUsages(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 accountName,
@@ -1765,10 +2050,10 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsagesResultInner> getUsagesAsync(String resourceGroupName, String accountName, String filter) {
-        return getUsagesWithResponseAsync(resourceGroupName, accountName, filter)
+    private Mono<UsageListResultInner> listUsagesAsync(String resourceGroupName, String accountName, String filter) {
+        return listUsagesWithResponseAsync(resourceGroupName, accountName, filter)
             .flatMap(
-                (Response<UsagesResultInner> res) -> {
+                (Response<UsageListResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1788,11 +2073,11 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<UsagesResultInner> getUsagesAsync(String resourceGroupName, String accountName) {
+    private Mono<UsageListResultInner> listUsagesAsync(String resourceGroupName, String accountName) {
         final String filter = null;
-        return getUsagesWithResponseAsync(resourceGroupName, accountName, filter)
+        return listUsagesWithResponseAsync(resourceGroupName, accountName, filter)
             .flatMap(
-                (Response<UsagesResultInner> res) -> {
+                (Response<UsageListResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1812,9 +2097,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UsagesResultInner getUsages(String resourceGroupName, String accountName) {
+    public UsageListResultInner listUsages(String resourceGroupName, String accountName) {
         final String filter = null;
-        return getUsagesAsync(resourceGroupName, accountName, filter).block();
+        return listUsagesAsync(resourceGroupName, accountName, filter).block();
     }
 
     /**
@@ -1831,9 +2116,9 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return usages for the requested Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UsagesResultInner> getUsagesWithResponse(
+    public Response<UsageListResultInner> listUsagesWithResponse(
         String resourceGroupName, String accountName, String filter, Context context) {
-        return getUsagesWithResponseAsync(resourceGroupName, accountName, filter, context).block();
+        return listUsagesWithResponseAsync(resourceGroupName, accountName, filter, context).block();
     }
 
     /**
@@ -1846,7 +2131,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<AccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1860,7 +2145,7 @@ public final class AccountsClientImpl implements AccountsClient {
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CognitiveServicesAccountInner>>map(
+            .<PagedResponse<AccountInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1883,8 +2168,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1919,7 +2203,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<AccountInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1932,7 +2216,7 @@ public final class AccountsClientImpl implements AccountsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CognitiveServicesAccountInner>>map(
+            .<PagedResponse<AccountInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1955,8 +2239,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return the list of cognitive services accounts operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CognitiveServicesAccountInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AccountInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

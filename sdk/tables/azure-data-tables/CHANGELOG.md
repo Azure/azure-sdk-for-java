@@ -1,11 +1,96 @@
 # Release History
 
-## 12.0.0-beta.7 (Unreleased)
+## 12.0.0-beta.8 (Unreleased)
+
+### New Features
+
+- Introduced the `TableTransactionAction` class and the `TableTransactionActionType` enum.
+- Added support for generating SAS tokens at the Account and Table Service level in all clients.
+- Added the following methods to `TableClient`, `TableAsyncClient`:
+    - `listAccessPolicies()`
+    - `setAccessPolicies()`
+    - `setAccessPoliciesWithResponse()`
+    - `generateSasToken()`
+- Added the following methods to `TableServiceClient`, `TableServiceAsyncClient`:
+    - `getProperties()`
+    - `getPropertiesWithResponse()`
+    - `setProperties()`
+    - `setPropertiesWithResponse()`
+    - `getStatistics()`
+    - `getStatisticsWithResponse()`
+    - `generateAccountSasToken()`
+
+### Breaking Changes
+
+- Removed the `TableBatch` and `TableAsyncBatch` types, as well as the methods `TableAsyncClient.createBatch()` and `TableClient.createBatch()`. In their place, batch operations can now be submitted via the following methods:
+    - `TableAsyncClient.submitTransaction(List<TableTransactionAction> transactionalBatch)`
+    - `TableAsyncClient.submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch)`
+    - `TableClient.submitTransaction(List<TableTransactionAction> transactionalBatch)`
+    - `TableClient.submitTransactionWithResponse(List<TableTransactionAction> transactionalBatch, Duration timeout, Context context)`
+- `deleteEntity()` variants in `TableClient` and `TableAsyncClient` now accept an `ifUnchanged` flag instead of an `eTag` parameter for conditional operations. When said flag is set to `true`, the ETag of a given `TableEntity` will be matched with the ETag of the entity in the Table service.
+- Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag)` with `deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged)` in `TableAsyncClient`.
+- Replaced `deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout, Context context)` with `deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout, Context context)` in `TableClient`.
+- Removed remaining public APIs supporting the use of `TableEntity` subclasses from `TableAsyncClient`.
+- Removed the following method overloads from `TableClient` and `TableAsyncClient`:
+    - `upsertEntity(TableEntity entity, TableEntityUpdateMode updateMode)`
+    - `updateEntity(TableEntity entity, TableEntityUpdateMode updateMode,
+      boolean ifUnchanged)`
+    - `getEntity(String partitionKey, String rowKey, List<String> select)`
+- Client builders now also throw an `IllegalStateException` when calling `buildClient()` and `buildAsyncClient()` if multiple forms of authentication are provided, with the exception of `sasToken` + `connectionString`; or if `endpoint` and/or `sasToken` are set alongside a `connectionString` and the endpoint and/or SAS token in the latter are different than the former, respectively.
+
+## 12.0.0-beta.7 (2021-05-15)
+
+### New Features
+
+- Added `getAccessPolicy()` and `setAccessPolicy()` to `TableClient` and `TableAsyncClient`.
+- Added `getProperties()`, `setProperties()` and `getStatistics()` to `TableServiceClient` and `TableServiceAsyncClient`.
+- Added the following models:
+    - `TableAccessPolicy`
+    - `TableServiceCorsRule`
+    - `TableServiceGeoReplication`
+    - `TableServiceGeoReplicationStatus`
+    - `TableServiceLogging`
+    - `TableServiceMetrics`
+    - `TableServiceProperties`
+    - `TableServiceRetentionPolicy`
+    - `TableServiceStatistics`
+    - `TableSignedIdentifier`
+
+### Breaking Changes
+
+- Renamed `create()` and `delete()` methods to `createTable()` and `deleteTable()` on `TableClient` and `TableAsyncClient`. Also made `createTable()` and its variants return a `TableItem`.
+- Removed `deleteEntity(String partitionKey, String rowKey, String eTag)` and added `deleteEntity(TableEntity tableEntity)` in both `TableClient` and `TableAsyncClient`.
+- Made it so that when deleting a table or entity that does not exist, the resulting `404` error gets swallowed instead of thrown.
+- Removed public APIs supporting the use of `TableEntity` subclasses.
+- Made the following classes `final`:
+    - `TableEntity`
+    - `TableItem`
+    - `TableClient`
+    - `TableServiceClient`
+    - `TableServiceAsyncClient`
+    - `TableClientBuilder`
+    - `TableServiceClientBuilder`.
+- Removed method overloads that used `timeout`, except in the maximal overload for a method (the `withResponse` variant).
+- Ensured that all timeout usages are client-side and not server-side.
+- Made `createTable()` and `createTableIfNotExists()` in `TableServiceClient` and `TableServiceAsyncClient` return a `TableClient` and `TableAsyncClient` respectively.
+- Made select in `ListEntitiesOptions` a `List` of `Strings` instead of a single `String`. Did the same for select in `getEntity()` and `getEntityWithResponse()` in `TableClient` and `TableAsyncClient`.
+- Replaced `retryOptions(RequestRetryOptions)` with `retryPolicy(RetryPolicy)` in `TableClientBuilder` and `TableServiceClientBuilder`.
+- Removed `TableSharedKeyCredential` in favor of using Azure Core's `AzureNamedKeyCredential`.
+- Replaced `TableSharedKeyCredentialPolicy` with `AzureNamedKeyCredentialPolicy`.
+- Renamed `UpdateMode` to `TableEntityUpdateMode`.
+- Renamed `TablesServiceVersion` to `TableServiceVersion`.
+- Renamed `getTableUrl()` and `getApiVersion()` to `getTableEndpoint()` and `getServiceVersion()` respectively, in `TableClient` and `TableAsyncClient`.
+- Renamed `getServiceUrl()` and `getApiVersion()` to `getServiceEndpoint()` and `getServiceVersion()` respectively, in `TableClient` and `TableAsyncClient`.
+- Renamed `addProperties()` to `setProperties()` in `TableEntity`. Also made `setProperties()` replace the contents of properties map with those of the argument, instead of adding them to the existing properties.
+- Removed dependency on `azure-storage-common` and added direct dependency on `azure-core-http-netty`.
 
 ### Bug Fixes
 
 - Merge operations no longer fail for Cosmos table endpoints.
 - Fixed issue with `TablesJacksonSerializer` where it could not handle HTTP responses with empty bodies.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`.
 
 ## 12.0.0-beta.6 (2021-04-07)
 

@@ -65,6 +65,7 @@ public final class ManagementErrorDeserializer extends StdDeserializer<Object> {
 
     @Override
     public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        p.setCodec(mapper);
         JsonNode errorNode = p.readValueAsTree();
         if (errorNode == null) {
             return null;

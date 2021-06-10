@@ -213,6 +213,12 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     }
 
     @Override
+    public Mono<Void> deleteAllById(Iterable<? extends K> ids) {
+        Assert.notNull(ids, "The given Iterable of ids must not be null!");
+        return Flux.fromIterable(ids).flatMap(this::deleteById).then();
+    }
+
+    @Override
     public Mono<Void> deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 

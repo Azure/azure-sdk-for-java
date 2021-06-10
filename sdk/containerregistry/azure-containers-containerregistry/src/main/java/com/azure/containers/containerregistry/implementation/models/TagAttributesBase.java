@@ -4,14 +4,15 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
-import com.azure.containers.containerregistry.models.ContentProperties;
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Tag attribute details. */
-@Immutable
-public final class TagAttributesBase {
+@JsonFlatten
+@Fluent
+public class TagAttributesBase {
     /*
      * Tag name
      */
@@ -37,10 +38,28 @@ public final class TagAttributesBase {
     private OffsetDateTime lastUpdatedOn;
 
     /*
-     * Writeable properties of the resource
+     * Delete enabled
      */
-    @JsonProperty(value = "changeableAttributes", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private ContentProperties writeableProperties;
+    @JsonProperty(value = "changeableAttributes.deleteEnabled")
+    private Boolean deleteEnabled;
+
+    /*
+     * Write enabled
+     */
+    @JsonProperty(value = "changeableAttributes.writeEnabled")
+    private Boolean writeEnabled;
+
+    /*
+     * List enabled
+     */
+    @JsonProperty(value = "changeableAttributes.listEnabled")
+    private Boolean listEnabled;
+
+    /*
+     * Read enabled
+     */
+    @JsonProperty(value = "changeableAttributes.readEnabled")
+    private Boolean readEnabled;
 
     /**
      * Get the name property: Tag name.
@@ -79,11 +98,82 @@ public final class TagAttributesBase {
     }
 
     /**
-     * Get the writeableProperties property: Writeable properties of the resource.
+     * Get the deleteEnabled property: Delete enabled.
      *
-     * @return the writeableProperties value.
+     * @return the deleteEnabled value.
      */
-    public ContentProperties getWriteableProperties() {
-        return this.writeableProperties;
+    public Boolean isDeleteEnabled() {
+        return this.deleteEnabled;
+    }
+
+    /**
+     * Set the deleteEnabled property: Delete enabled.
+     *
+     * @param deleteEnabled the deleteEnabled value to set.
+     * @return the TagAttributesBase object itself.
+     */
+    public TagAttributesBase setDeleteEnabled(Boolean deleteEnabled) {
+        this.deleteEnabled = deleteEnabled;
+        return this;
+    }
+
+    /**
+     * Get the writeEnabled property: Write enabled.
+     *
+     * @return the writeEnabled value.
+     */
+    public Boolean isWriteEnabled() {
+        return this.writeEnabled;
+    }
+
+    /**
+     * Set the writeEnabled property: Write enabled.
+     *
+     * @param writeEnabled the writeEnabled value to set.
+     * @return the TagAttributesBase object itself.
+     */
+    public TagAttributesBase setWriteEnabled(Boolean writeEnabled) {
+        this.writeEnabled = writeEnabled;
+        return this;
+    }
+
+    /**
+     * Get the listEnabled property: List enabled.
+     *
+     * @return the listEnabled value.
+     */
+    public Boolean isListEnabled() {
+        return this.listEnabled;
+    }
+
+    /**
+     * Set the listEnabled property: List enabled.
+     *
+     * @param listEnabled the listEnabled value to set.
+     * @return the TagAttributesBase object itself.
+     */
+    public TagAttributesBase setListEnabled(Boolean listEnabled) {
+        this.listEnabled = listEnabled;
+        return this;
+    }
+
+    /**
+     * Get the readEnabled property: Read enabled.
+     *
+     * @return the readEnabled value.
+     */
+    public Boolean isReadEnabled() {
+        return this.readEnabled;
+    }
+
+    /**
+     * Set the readEnabled property: Read enabled.
+     *
+     * @param readEnabled the readEnabled value to set.
+     * @return the TagAttributesBase object itself.
+     */
+    public TagAttributesBase setReadEnabled(Boolean readEnabled) {
+        this.readEnabled = readEnabled;
+        return this;
     }
 }

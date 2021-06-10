@@ -17,7 +17,7 @@ public final class MongoDBDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter")
+    @JsonProperty(value = "dataSourceParameter", required = true)
     private MongoDBParameter dataSourceParameter;
 
     /**

@@ -106,7 +106,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
                 .create();
@@ -353,7 +353,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
@@ -479,7 +479,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

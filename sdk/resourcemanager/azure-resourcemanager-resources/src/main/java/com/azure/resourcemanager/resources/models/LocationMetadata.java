@@ -57,6 +57,12 @@ public final class LocationMetadata {
     @JsonProperty(value = "pairedRegion")
     private List<PairedRegion> pairedRegion;
 
+    /*
+     * The home location of an edge zone.
+     */
+    @JsonProperty(value = "homeLocation", access = JsonProperty.Access.WRITE_ONLY)
+    private String homeLocation;
+
     /**
      * Get the regionType property: The type of the region.
      *
@@ -129,6 +135,15 @@ public final class LocationMetadata {
     public LocationMetadata withPairedRegion(List<PairedRegion> pairedRegion) {
         this.pairedRegion = pairedRegion;
         return this;
+    }
+
+    /**
+     * Get the homeLocation property: The home location of an edge zone.
+     *
+     * @return the homeLocation value.
+     */
+    public String homeLocation() {
+        return this.homeLocation;
     }
 
     /**

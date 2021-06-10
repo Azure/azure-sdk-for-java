@@ -74,6 +74,7 @@ public final class SecretClient {
      * @throws HttpResponseException if {@link KeyVaultSecret#getName() name} or {@link KeyVaultSecret#getValue() value}
      *     is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(KeyVaultSecret secret) {
         return setSecretWithResponse(secret, Context.NONE).getValue();
     }
@@ -93,6 +94,7 @@ public final class SecretClient {
      * @throws ResourceModifiedException if invalid {@code name} or {@code value} is specified.
      * @throws HttpResponseException if {@code name} or {@code value} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret setSecret(String name, String value) {
         return setSecretWithResponse(new KeyVaultSecret(name, value), Context.NONE).getValue();
     }
@@ -113,6 +115,7 @@ public final class SecretClient {
      * @throws ResourceModifiedException if invalid {@code name} or {@code value} is specified.
      * @throws HttpResponseException if {@code name} or {@code value} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, Context context) {
         return client.setSecretWithResponse(secret, context).block();
     }
@@ -133,6 +136,7 @@ public final class SecretClient {
      *     key vault.
      * @throws HttpResponseException if {@code name} or {@code version} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret getSecret(String name, String version) {
         return getSecretWithResponse(name, version, Context.NONE).getValue();
     }
@@ -150,6 +154,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException if {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret getSecret(String name) {
         return getSecretWithResponse(name, "", Context.NONE).getValue();
     }
@@ -171,6 +176,7 @@ public final class SecretClient {
      *     vault.
      * @throws HttpResponseException if {@code name} or {@code version} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, Context context) {
         return client.getSecretWithResponse(name, version, context).block();
     }
@@ -197,6 +203,7 @@ public final class SecretClient {
      * @throws HttpResponseException if {@link SecretProperties#getName() name} or
      *     {@link SecretProperties#getVersion() version} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
         return client.updateSecretPropertiesWithResponse(secretProperties, context).block();
     }
@@ -222,6 +229,7 @@ public final class SecretClient {
      * @throws HttpResponseException if {@link SecretProperties#getName() name} or {@link SecretProperties#getVersion() version} is
      *     empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretProperties updateSecretProperties(SecretProperties secretProperties) {
         return updateSecretPropertiesWithResponse(secretProperties, Context.NONE).getValue();
     }
@@ -283,6 +291,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedSecret getDeletedSecret(String name) {
         return getDeletedSecretWithResponse(name, Context.NONE).getValue();
     }
@@ -303,6 +312,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, Context context) {
         return client.getDeletedSecretWithResponse(name, context).block();
     }
@@ -321,6 +331,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedSecret(String name) {
         purgeDeletedSecretWithResponse(name, Context.NONE);
     }
@@ -340,6 +351,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedSecretWithResponse(String name, Context context) {
         return client.purgeDeletedSecretWithResponse(name, context).block();
     }
@@ -397,6 +409,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupSecret(String name) {
         return backupSecretWithResponse(name, Context.NONE).getValue();
     }
@@ -417,6 +430,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupSecretWithResponse(String name, Context context) {
         return client.backupSecretWithResponse(name, context).block();
     }
@@ -435,6 +449,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultSecret restored secret}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret restoreSecretBackup(byte[] backup) {
         return restoreSecretBackupWithResponse(backup, Context.NONE).getValue();
     }
@@ -454,6 +469,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultSecret restored secret}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, Context context) {
         return client.restoreSecretBackupWithResponse(backup, context).block();
     }
@@ -480,6 +496,7 @@ public final class SecretClient {
      * @return {@link PagedIterable} of {@link SecretProperties} of all the secrets in the vault. The
      *     {@link SecretProperties} contains all the information about the secret, except its value.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets() {
         return listPropertiesOfSecrets(Context.NONE);
     }
@@ -499,6 +516,7 @@ public final class SecretClient {
      * @return {@link PagedIterable} of {@link SecretProperties} of all the secrets in the vault. {@link SecretProperties}
      *     contains all the information about the secret, except its value.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(Context context) {
         return new PagedIterable<>(client.listPropertiesOfSecrets(context));
     }
@@ -514,6 +532,7 @@ public final class SecretClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return {@link PagedIterable} of all of the {@link DeletedSecret deleted secrets} in the vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(Context context) {
         return new PagedIterable<>(client.listDeletedSecrets(context));
     }
@@ -533,6 +552,7 @@ public final class SecretClient {
      *
      * @return {@link PagedIterable} of all of the {@link DeletedSecret deleted secrets} in the vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets() {
         return listDeletedSecrets(Context.NONE);
     }
@@ -553,6 +573,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name) {
         return listPropertiesOfSecretVersions(name, Context.NONE);
     }
@@ -581,6 +602,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
         return new PagedIterable<>(client.listPropertiesOfSecretVersions(name, context));
     }

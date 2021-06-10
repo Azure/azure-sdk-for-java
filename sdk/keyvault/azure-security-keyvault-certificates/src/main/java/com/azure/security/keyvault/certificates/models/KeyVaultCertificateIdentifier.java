@@ -14,12 +14,12 @@ import java.net.URL;
  * calling methods of {@link CertificateClient} or {@link CertificateAsyncClient}.
  */
 public final class KeyVaultCertificateIdentifier {
-    private final String certificateId, vaultUrl, name, version;
+    private final String sourceId, vaultUrl, name, version;
 
     /**
-     * Create a new {@link KeyVaultCertificateIdentifier} from a given certificate identifier.
+     * Create a new {@link KeyVaultCertificateIdentifier} from a given Key Vault identifier.
      *
-     * <p>Valid examples are:
+     * <p>Some examples:
      *
      * <ul>
      *     <li>https://{key-vault-name}.vault.azure.net/certificates/{certificate-name}</li>
@@ -28,34 +28,32 @@ public final class KeyVaultCertificateIdentifier {
      *     <li>https://{key-vault-name}.vault.azure.net/deletedcertificates/{deleted-certificate-name}</li>
      * </ul>
      *
-     * @param certificateId The certificate identifier to extract information from.
+     * @param sourceId The identifier to extract information from.
      *
-     * @throws IllegalArgumentException If {@code certificateId} is an invalid Key Vault Certificate identifier.
-     * @throws NullPointerException If {@code certificateId} is {@code null}.
+     * @throws IllegalArgumentException If {@code sourceId} is an invalid Key Vault Certificate identifier.
+     * @throws NullPointerException If {@code sourceId} is {@code null}.
      */
-    public KeyVaultCertificateIdentifier(String certificateId) {
-        if (certificateId == null) {
-            throw new NullPointerException("'certificateId' cannot be null");
+    public KeyVaultCertificateIdentifier(String sourceId) {
+        if (sourceId == null) {
+            throw new NullPointerException("'sourceId' cannot be null");
         }
 
         try {
-            final URL url = new URL(certificateId);
-            // We expect an identifier with either 2 or 3 path segments: collection + name [+ version]
+            final URL url = new URL(sourceId);
+            // We expect a sourceId with either 3 or 4 path segments: key vault + collection + name [+ "pending"/version]
             final String[] pathSegments = url.getPath().split("/");
 
-            if ((pathSegments.length != 3 && pathSegments.length != 4) // More or less segments in the URI than expected.
-                || !"https".equals(url.getProtocol()) // Invalid protocol.
-                || ("deletedcertificates".equals(pathSegments[1]) && pathSegments.length == 4)) { // Deleted items do not include a version.
-
-                throw new IllegalArgumentException("certificateId is not a valid Key Vault Certificate identifier");
+            // More or less segments in the URI than expected.
+            if (pathSegments.length != 3 && pathSegments.length != 4) {
+                throw new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.");
             }
 
-            this.certificateId = certificateId;
+            this.sourceId = sourceId;
             this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("Could not parse certificateId", e);
+            throw new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e);
         }
     }
 
@@ -64,8 +62,8 @@ public final class KeyVaultCertificateIdentifier {
      *
      * @return The certificate identifier.
      */
-    public String getCertificateId() {
-        return certificateId;
+    public String getSourceId() {
+        return sourceId;
     }
 
     /**
