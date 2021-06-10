@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 
-import java.io.Closeable;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.util.Locale;
@@ -24,6 +23,9 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Schedules the proton-j reactor to continuously run work.
+ */
 class ReactorExecutor implements AsyncCloseable {
     private static final String LOG_MESSAGE = "connectionId[{}], message[{}]";
 

@@ -10,6 +10,7 @@
 
 ### Bug Fixes
 - Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
+- Fixed a bug where ReactorExecutor did not dispose of its scheduler when IO pipe was interrupted.
 
 ## 2.0.6 (2021-05-24)
 ### Bug Fixes
