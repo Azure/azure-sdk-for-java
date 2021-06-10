@@ -2,7 +2,6 @@
 
 ## 12.0.0-beta.8 (Unreleased)
 
-- Updated blob dependency to 12.12.0
 
 ## 12.0.0-beta.7 (2021-06-09)
 ### Dependency updates
