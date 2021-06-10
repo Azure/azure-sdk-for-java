@@ -29,11 +29,6 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-/**
- * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
- * live. By default, tests are run in playback mode. The runAllClientFunctions and runAllClientFunctionsWithResponse
- * test will not run in LIVE or RECORD as they cannot get their own conversationId.
- */
 public class ServerCallTests extends CallingServerTestBase {
     private String serverCallId = "aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM";
 
