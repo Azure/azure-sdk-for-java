@@ -4,7 +4,6 @@
 package com.azure.storage.common.test.shared
 
 import com.azure.storage.common.implementation.Constants
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import spock.lang.IgnoreIf
 import spock.lang.Specification
 
