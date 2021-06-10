@@ -10,7 +10,7 @@ import spock.lang.Specification
 
 abstract class ServiceVersionTest extends Specification {
 
-    @IgnoreIf({ isBeta() })
+    @IgnoreIf({ PackageVersionChecker.isBeta() })
     def "latest should be last when we release"() {
         when:
         Class clazz = getServiceVersionClass()
@@ -21,7 +21,7 @@ abstract class ServiceVersionTest extends Specification {
         latestVersion == lastVersion
     }
 
-    @IgnoreIf({ isBeta() })
+    @IgnoreIf({ PackageVersionChecker.isBeta() })
     def "Header version should match last when we release"() {
         when:
         Class clazz = getServiceVersionClass()
@@ -32,15 +32,4 @@ abstract class ServiceVersionTest extends Specification {
     }
 
     abstract Class getServiceVersionClass()
-
-    protected static boolean isBeta() {
-        return getVersionFromPomFile().contains("beta")
-    }
-
-    private static String getVersionFromPomFile() {
-        String fileName = "pom.xml";
-        File file = new File(fileName);
-        def doc = new XmlMapper().readValue(file, Map.class)
-        return (String) doc.get("version")
-    }
 }
