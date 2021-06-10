@@ -87,7 +87,7 @@ public final class AttachmentsBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param farmerId ID of the associated farmer.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -123,8 +123,8 @@ public final class AttachmentsBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
-     * @param attachmentId Id of the attachment.
+     * @param farmerId ID of the associated farmer.
+     * @param attachmentId ID of the attachment.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -175,8 +175,8 @@ public final class AttachmentsBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
-     * @param attachmentId Id of the attachment resource.
+     * @param farmerId ID of the associated farmer resource.
+     * @param attachmentId ID of the attachment resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -195,8 +195,8 @@ public final class AttachmentsBaseClient {
     /**
      * Deletes a specified attachment resource under a particular farmer.
      *
-     * @param farmerId Id of the farmer.
-     * @param attachmentId Id of the attachment.
+     * @param farmerId ID of the farmer.
+     * @param attachmentId ID of the attachment.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -215,8 +215,8 @@ public final class AttachmentsBaseClient {
     /**
      * Downloads and returns attachment as response for the given input filePath.
      *
-     * @param farmerId Id of the associated farmer.
-     * @param attachmentId Id of attachment to be downloaded.
+     * @param farmerId ID of the associated farmer.
+     * @param attachmentId ID of attachment to be downloaded.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

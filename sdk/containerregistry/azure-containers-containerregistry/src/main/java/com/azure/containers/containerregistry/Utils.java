@@ -175,6 +175,7 @@ final class Utils {
         Configuration configuration,
         RetryPolicy retryPolicy,
         TokenCredential credential,
+        String authenticationScope,
         List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
@@ -211,6 +212,7 @@ final class Utils {
 
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
+            authenticationScope,
             endpoint,
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))

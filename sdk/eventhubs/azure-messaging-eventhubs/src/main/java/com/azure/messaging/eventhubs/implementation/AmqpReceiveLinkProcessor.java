@@ -9,7 +9,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.amqp.implementation.AsyncAutoCloseable;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
@@ -599,11 +599,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         }
 
         try {
-            if (link instanceof AsyncAutoCloseable) {
-                ((AsyncAutoCloseable) link).closeAsync().subscribe();
-            } else {
-                link.dispose();
-            }
+            ((AsyncCloseable) link).closeAsync().subscribe();
         } catch (Exception error) {
             logger.warning("linkName[{}] entityPath[{}] Unable to dispose of link.", link.getLinkName(),
                 link.getEntityPath(), error);

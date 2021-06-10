@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,11 +18,10 @@ import java.util.List;
  * terms will be marked as keywords so that they will not be stemmed with stemmers down the chain. Must be placed before
  * any stemming filters. This token filter is implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.StemmerOverrideTokenFilter")
-@JsonFlatten
 @Fluent
-public class StemmerOverrideTokenFilter extends TokenFilter {
+public final class StemmerOverrideTokenFilter extends TokenFilter {
     /*
      * A list of stemming rules in the following format: "word => stem", for
      * example: "ran => run".

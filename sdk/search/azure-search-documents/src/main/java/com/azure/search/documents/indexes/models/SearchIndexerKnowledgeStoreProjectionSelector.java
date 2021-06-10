@@ -12,7 +12,7 @@ import java.util.List;
 
 /** Abstract class to share properties between concrete selectors. */
 @Fluent
-public class SearchIndexerKnowledgeStoreProjectionSelector {
+public abstract class SearchIndexerKnowledgeStoreProjectionSelector {
     /*
      * Name of reference key to different projection.
      */

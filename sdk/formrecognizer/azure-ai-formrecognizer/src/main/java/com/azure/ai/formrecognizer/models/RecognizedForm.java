@@ -120,8 +120,7 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the identifier of the model that was used for recognition, if not using a prebuilt
-     * model.
+     * Get the identifier of the model that was used for recognition, if not using a prebuilt model.
      *
      * @return the modelId value.
      */

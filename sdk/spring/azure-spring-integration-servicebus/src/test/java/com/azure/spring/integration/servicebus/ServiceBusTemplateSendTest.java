@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
 import com.azure.spring.integration.test.support.SendOperationTest;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,7 +30,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
     protected C mockClient;
     protected T mockClientFactory;
 
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     @Override
