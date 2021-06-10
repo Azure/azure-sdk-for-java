@@ -6,7 +6,9 @@
 
 ### New Features
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
-- Use aad.group.allowed-group-ids=all means to configure all group ids, don't affect work for allowed-group-names.[#21983](https://github.com/Azure/azure-sdk-for-java/issues/21983)
+- "aad.group.allowed-group-ids=all" can be used to map all group ids to GrantedAuthority (ROLE_group_id). 
+  And it can work together with group names configured by "aad.group.allowed-group-names" (ROLE_group_name).[#21983](https://github.com/Azure/azure-sdk-for-java/issues/21983)
+
 
 ## 3.5.0 (2021-05-24)
 ### New Features
