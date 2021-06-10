@@ -5,19 +5,19 @@ package com.azure.spring.cloud.config.pipline.policies;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpRequest;
-import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.apache.http.HttpHeaders;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpRequest;
 
 public class BaseAppConfigurationPolicyTest {
 

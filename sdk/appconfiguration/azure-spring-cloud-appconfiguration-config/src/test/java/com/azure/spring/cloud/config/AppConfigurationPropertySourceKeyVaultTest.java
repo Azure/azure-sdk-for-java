@@ -45,8 +45,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.azure.spring.cloud.config.AppConfigurationPropertySource;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
@@ -65,19 +63,17 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     public static final List<ConfigurationSetting> FEATURE_ITEMS = new ArrayList<>();
     private static final String EMPTY_CONTENT_TYPE = "";
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
-    private static final ConfigurationSetting item1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
+    private static final ConfigurationSetting ITEM_1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting item2 = createItem(TEST_CONTEXT, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
+    private static final ConfigurationSetting ITEM_2 = createItem(TEST_CONTEXT, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting item3 = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+    private static final ConfigurationSetting ITEM_3 = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting keyVaultItem = createItem(TEST_CONTEXT, TEST_KEY_VAULT_1,
+    private static final ConfigurationSetting KEY_VAULT_ITEM = createItem(TEST_CONTEXT, TEST_KEY_VAULT_1,
         TEST_VALUE_VAULT_1, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
-
-    public List<ConfigurationSetting> testItems = new ArrayList<>();
     
     private AppConfigurationPropertySource propertySource;
     private AppConfigurationProperties appConfigurationProperties;
@@ -102,7 +98,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     public static void init() {
         TestUtils.addStore(TEST_PROPS, TEST_STORE_NAME, TEST_CONN_STRING);
 
-        keyVaultItem.setContentType(KEY_VAULT_CONTENT_TYPE);
+        KEY_VAULT_ITEM.setContentType(KEY_VAULT_CONTENT_TYPE);
     }
 
     @Before
@@ -117,17 +113,16 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         contexts.add("/application/*");
         propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, testStore, "\0",
             appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null);
-
-        testItems = new ArrayList<ConfigurationSetting>();
-        testItems.add(item1);
-        testItems.add(item2);
-        testItems.add(item3);
+        
+        TEST_ITEMS.add(ITEM_1);
+        TEST_ITEMS.add(ITEM_2);
+        TEST_ITEMS.add(ITEM_3);
     }
 
     @Test
     public void testKeyVaultTest() throws Exception {
-        testItems.add(keyVaultItem);
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(testItems)
+        TEST_ITEMS.add(KEY_VAULT_ITEM);
+        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(TEST_ITEMS)
             .thenReturn(new ArrayList<ConfigurationSetting>());
         KeyVaultClient client = Mockito.mock(KeyVaultClient.class);
         PowerMockito.whenNew(KeyVaultClient.class).withAnyArguments().thenReturn(client);
@@ -144,7 +139,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         }
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = testItems.stream()
+        String[] expectedKeyNames = TEST_ITEMS.stream()
             .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);

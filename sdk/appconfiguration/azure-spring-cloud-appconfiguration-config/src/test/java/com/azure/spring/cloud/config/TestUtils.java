@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import java.util.List;
+
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
-
-import java.util.List;
 
 /**
  * Utility methods which can be used across different test classes

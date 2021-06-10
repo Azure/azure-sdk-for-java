@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.stores;
 
+import java.net.URI;
+import java.time.Duration;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -12,21 +17,20 @@ import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 
-import java.net.URI;
-import java.time.Duration;
-import org.apache.commons.lang3.StringUtils;
-
+/**
+ * Client for connecting to and getting secrets from a Key Vault
+ */
 public class KeyVaultClient {
 
     private SecretAsyncClient secretClient;
 
-    private AppConfigurationProperties properties;
+    private final AppConfigurationProperties properties;
 
-    private SecretClientBuilderSetup keyVaultClientProvider;
+    private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private URI uri;
+    private final URI uri;
 
-    private TokenCredential tokenCredential;
+    private final TokenCredential tokenCredential;
 
     public KeyVaultClient(
         AppConfigurationProperties properties,
@@ -38,6 +42,8 @@ public class KeyVaultClient {
         this.uri = uri;
         if (tokenCredentialProvider != null) {
             this.tokenCredential = tokenCredentialProvider.getKeyVaultCredential("https://" + uri.getHost());
+        } else {
+            this.tokenCredential = null;
         }
         this.keyVaultClientProvider = keyVaultClientProvider;
     }
@@ -76,7 +82,7 @@ public class KeyVaultClient {
      * Gets the specified secret using the Secret Identifier
      *
      * @param secretIdentifier The Secret Identifier to Secret
-     * @param timeout          How long it waits for a response from Key Vault
+     * @param timeout How long it waits for a response from Key Vault
      * @return Secret values that matches the secretIdentifier
      */
     public KeyVaultSecret getSecret(URI secretIdentifier, int timeout) {

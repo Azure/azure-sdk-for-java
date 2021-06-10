@@ -5,15 +5,14 @@ package com.azure.spring.cloud.config;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.State;
-import com.azure.spring.cloud.config.StateHolder;
-import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 
 public class StateHolderTest {
 

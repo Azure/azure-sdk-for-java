@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang3.time.DateUtils;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 class State {
 

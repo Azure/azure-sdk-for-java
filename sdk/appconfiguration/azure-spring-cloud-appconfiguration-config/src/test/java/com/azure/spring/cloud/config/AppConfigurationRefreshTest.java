@@ -12,16 +12,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.AppConfigurationRefresh;
-import com.azure.spring.cloud.config.StateHolder;
-import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.properties.FeatureFlagStore;
-import com.azure.spring.cloud.config.stores.ClientStore;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +29,14 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
+
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.azure.spring.cloud.config.properties.ConfigStore;
+import com.azure.spring.cloud.config.properties.FeatureFlagStore;
+import com.azure.spring.cloud.config.stores.ClientStore;
 
 public class AppConfigurationRefreshTest {
 

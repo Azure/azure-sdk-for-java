@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.feature.management.entity;
 
+import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureSet {

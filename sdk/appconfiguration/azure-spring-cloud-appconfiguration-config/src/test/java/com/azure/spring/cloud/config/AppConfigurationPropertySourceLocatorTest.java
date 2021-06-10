@@ -33,14 +33,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
@@ -48,9 +46,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
-import com.azure.spring.cloud.config.StateHolder;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
@@ -69,10 +64,10 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     private static final String PROFILE_NAME_2 = "prod";
 
-    private static final ConfigurationSetting featureItem = createItem(".appconfig.featureflag/", "Alpha",
+    private static final ConfigurationSetting FEATURE_ITEM = createItem(".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
     private static final String EMPTY_CONTENT_TYPE = "";
-    private static final ConfigurationSetting item1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
+    private static final ConfigurationSetting ITEM_1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
         EMPTY_CONTENT_TYPE);
     
     @Mock
@@ -198,8 +193,8 @@ public class AppConfigurationPropertySourceLocatorTest {
         labels[0] = "\0";
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(item1)
-        .thenReturn(featureItem);
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
+        .thenReturn(FEATURE_ITEM);
         
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
         featureFlagStore.setEnabled(true);
@@ -231,8 +226,8 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(item1)
-            .thenReturn(featureItem);
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
+            .thenReturn(FEATURE_ITEM);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
             tokenCredentialProvider, null);

@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config.properties;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;

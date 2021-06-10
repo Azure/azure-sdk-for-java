@@ -16,7 +16,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -30,19 +29,22 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 import com.azure.spring.cloud.config.resource.Connection;
 import com.azure.spring.cloud.config.resource.ConnectionPool;
 
+/**
+ * Client for connecting to and getting keys from an Azure App Configuration Instance
+ */
 public class ClientStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
 
-    private AppConfigurationProviderProperties appProperties;
+    private final AppConfigurationProviderProperties appProperties;
 
-    private ConnectionPool pool;
+    private final ConnectionPool pool;
 
-    private AppConfigurationCredentialProvider tokenCredentialProvider;
+    private final AppConfigurationCredentialProvider tokenCredentialProvider;
 
-    private ConfigurationClientBuilderSetup clientProvider;
+    private final ConfigurationClientBuilderSetup clientProvider;
 
-    private HashMap<String, ConfigurationAsyncClient> clients;
+    private final HashMap<String, ConfigurationAsyncClient> clients;
 
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,

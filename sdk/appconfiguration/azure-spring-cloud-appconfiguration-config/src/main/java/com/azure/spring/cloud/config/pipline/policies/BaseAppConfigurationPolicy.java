@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.pipline.policies;
 
+import java.net.URISyntaxException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpHeaders;
+
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
@@ -11,9 +16,6 @@ import com.azure.spring.cloud.config.HostType;
 import com.azure.spring.cloud.config.RequestTracingConstants;
 import com.azure.spring.cloud.config.RequestType;
 
-import java.net.URISyntaxException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
 import reactor.core.publisher.Mono;
 
 public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {

@@ -39,9 +39,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -50,8 +48,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.AppConfigurationPropertySource;
-import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
@@ -82,40 +78,40 @@ public class AppConfigurationPropertySourceTest {
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
 
-    private static final ConfigurationSetting item1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
+    private static final ConfigurationSetting ITEM_1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting item2 = createItem(TEST_CONTEXT, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
+    private static final ConfigurationSetting ITEM_2 = createItem(TEST_CONTEXT, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting item3 = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+    private static final ConfigurationSetting ITEM_3 = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting item3Null = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3,
+    private static final ConfigurationSetting ITEM_NULL = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3,
         TEST_LABEL_3,
         null);
 
-    private static final ConfigurationSetting featureItem = createItem(".appconfig.featureflag/", "Alpha",
+    private static final ConfigurationSetting FEATURE_ITEM = createItem(".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting featureItem2 = createItem(".appconfig.featureflag/", "Beta",
+    private static final ConfigurationSetting FEATURE_ITEM_2 = createItem(".appconfig.featureflag/", "Beta",
         FEATURE_BOOLEAN_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting featureItem3 = createItem(".appconfig.featureflag/", "Gamma",
+    private static final ConfigurationSetting FEATURE_ITEM_3 = createItem(".appconfig.featureflag/", "Gamma",
         FEATURE_VALUE_PARAMETERS, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting featureItemNull = createItem(".appconfig.featureflag/", "Alpha",
+    private static final ConfigurationSetting FEATURE_ITEM_NULL = createItem(".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE,
         FEATURE_LABEL, null);
 
-    private static final ConfigurationSetting featureItemTargeting = createItem(".appconfig.featureflag/", "target",
+    private static final ConfigurationSetting FEATURE_ITEM_TARGETING = createItem(".appconfig.featureflag/", "target",
         FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
     private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
-    public List<ConfigurationSetting> testItems = new ArrayList<>();
+    private List<ConfigurationSetting> testItems = new ArrayList<>();
 
     private AppConfigurationPropertySource propertySource;
 
@@ -158,13 +154,13 @@ public class AppConfigurationPropertySourceTest {
     public static void init() {
         TestUtils.addStore(TEST_PROPS, TEST_STORE_NAME, TEST_CONN_STRING);
 
-        featureItem.setContentType(FEATURE_FLAG_CONTENT_TYPE);
-        FEATURE_ITEMS.add(featureItem);
-        FEATURE_ITEMS.add(featureItem2);
-        FEATURE_ITEMS.add(featureItem3);
+        FEATURE_ITEM.setContentType(FEATURE_FLAG_CONTENT_TYPE);
+        FEATURE_ITEMS.add(FEATURE_ITEM);
+        FEATURE_ITEMS.add(FEATURE_ITEM_2);
+        FEATURE_ITEMS.add(FEATURE_ITEM_3);
         mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
-        FEATURE_ITEMS_TARGETING.add(featureItemTargeting);
+        FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
     }
 
     @Before
@@ -178,9 +174,9 @@ public class AppConfigurationPropertySourceTest {
             appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null);
 
         testItems = new ArrayList<ConfigurationSetting>();
-        testItems.add(item1);
-        testItems.add(item2);
-        testItems.add(item3);
+        testItems.add(ITEM_1);
+        testItems.add(ITEM_2);
+        testItems.add(ITEM_3);
 
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
         featureFlagStore = new FeatureFlagStore();
@@ -362,7 +358,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void initNullValidContentTypeTest() throws IOException {
         ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
-        items.add(item3Null);
+        items.add(ITEM_NULL);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(items)
             .thenReturn(new ArrayList<ConfigurationSetting>());
 
@@ -383,7 +379,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void initNullInvalidContentTypeFeatureFlagTest() throws IOException {
         ArrayList<ConfigurationSetting> items = new ArrayList<ConfigurationSetting>();
-        items.add(featureItemNull);
+        items.add(FEATURE_ITEM_NULL);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(items);
 

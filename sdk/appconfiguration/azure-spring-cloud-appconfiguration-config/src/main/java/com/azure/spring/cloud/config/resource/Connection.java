@@ -4,6 +4,7 @@ package com.azure.spring.cloud.config.resource;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.springframework.util.Assert;
 
 public class Connection {
@@ -20,6 +21,12 @@ public class Connection {
 
     private final String clientId;
 
+    /**
+     * Creates a Connection that can be used to connect to an Azure App Configuration Store.
+     * 
+     * @param connectionString App Configuration Connection String
+     * @throws IllegalStateException Connection String format is invalid.
+     */
     public Connection(String connectionString) {
         Assert.hasText(connectionString, String.format("Connection string cannot be empty."));
 

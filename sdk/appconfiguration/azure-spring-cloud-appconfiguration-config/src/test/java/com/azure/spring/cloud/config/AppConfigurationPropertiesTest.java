@@ -36,7 +36,6 @@ import org.springframework.boot.test.context.assertj.AssertableApplicationContex
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 
-import com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
