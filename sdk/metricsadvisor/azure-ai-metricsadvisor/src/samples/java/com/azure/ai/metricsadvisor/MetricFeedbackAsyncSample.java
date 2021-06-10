@@ -39,7 +39,7 @@ public class MetricFeedbackAsyncSample {
 
         System.out.printf("Creating Metric Feedback%n");
         final Mono<MetricFeedback> createdFeedbackMono
-            = advisorAsyncClient.addFeeddback(metricId, metricChangePointFeedback);
+            = advisorAsyncClient.addFeedback(metricId, metricChangePointFeedback);
 
         createdFeedbackMono
             .doOnSubscribe(__ ->

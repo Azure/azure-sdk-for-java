@@ -5,12 +5,12 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -21,15 +21,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableSasGenerator;
+import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.TransactionalBatchImpl;
 import com.azure.data.tables.implementation.models.AccessPolicy;
-import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
-import com.azure.data.tables.implementation.models.TransactionalBatchAction;
-import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
-import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
-import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
@@ -38,8 +35,13 @@ import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
 import com.azure.data.tables.implementation.models.TableServiceError;
-import com.azure.data.tables.models.TableTransactionActionResponse;
+import com.azure.data.tables.implementation.models.TransactionalBatchAction;
+import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
+import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
+import com.azure.data.tables.implementation.models.TransactionalBatchResponse;
+import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
@@ -47,23 +49,23 @@ import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableSignedIdentifier;
 import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 import com.azure.data.tables.models.TableTransactionFailedException;
 import com.azure.data.tables.models.TableTransactionResult;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
-import static com.azure.core.util.FluxUtil.fluxContext;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
@@ -193,6 +195,30 @@ public final class TableAsyncClient {
      */
     public TableServiceVersion getServiceVersion() {
         return TableServiceVersion.fromString(tablesImplementation.getVersion());
+    }
+
+    /**
+     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
+     *
+     * <p>Note : The client must be authenticated via {@link AzureNamedKeyCredential}
+     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param tableSasSignatureValues {@link TableSasSignatureValues}
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableAsyncClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
+     */
+    public String generateSas(TableSasSignatureValues tableSasSignatureValues) {
+        AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
+
+        if (azureNamedKeyCredential == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Cannot generate a SAS token with a client that"
+                + " is not authenticated with an AzureNamedKeyCredential."));
+        }
+
+        return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential).getSas();
     }
 
     /**
@@ -817,45 +843,55 @@ public final class TableAsyncClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return A paged reactive result containing the HTTP response and the table's
-     * {@link TableSignedIdentifier access policies}.
+     * @return A reactive result containing the table's {@link TableAccessPolicies access policies}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TableSignedIdentifier> getAccessPolicy() {
-        return (PagedFlux<TableSignedIdentifier>) fluxContext(this::getAccessPolicy);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableAccessPolicies> getAccessPolicies() {
+        return withContext(context -> getAccessPoliciesWithResponse(context)
+            .flatMap(response -> Mono.justOrEmpty(response.getValue())));
     }
 
-    PagedFlux<TableSignedIdentifier> getAccessPolicy(Context context) {
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     *
+     * @return A reactive result containing an HTTP response that contains the table's
+     * {@link TableAccessPolicies access policies}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse() {
+        return withContext(this::getAccessPoliciesWithResponse);
+    }
+
+    Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
 
         try {
-            Context finalContext = context;
-            Function<String, Mono<PagedResponse<TableSignedIdentifier>>> retriever =
-                marker ->
-                    tablesImplementation.getTables()
-                        .getAccessPolicyWithResponseAsync(tableName, null, null, finalContext)
-                        .map(response -> new PagedResponseBase<>(response.getRequest(),
-                            response.getStatusCode(),
-                            response.getHeaders(),
-                            response.getValue().stream()
-                                .map(this::toTableSignedIdentifier)
-                                .collect(Collectors.toList()),
-                            null,
-                            response.getDeserializedHeaders()));
-
-            return new PagedFlux<>(() -> retriever.apply(null), retriever);
+            return tablesImplementation.getTables()
+                .getAccessPolicyWithResponseAsync(tableName, null, null, context)
+                .map(response -> new SimpleResponse<>(response,
+                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
+                        .map(this::toTableSignedIdentifier)
+                        .collect(Collectors.toList()))));
         } catch (RuntimeException e) {
-            return pagedFluxError(logger, e);
+            return monoError(logger, e);
         }
     }
 
     private TableSignedIdentifier toTableSignedIdentifier(SignedIdentifier signedIdentifier) {
-        return new TableSignedIdentifier()
-            .setId(signedIdentifier.getId())
+        if (signedIdentifier == null) {
+            return null;
+        }
+
+        return new TableSignedIdentifier(signedIdentifier.getId())
             .setAccessPolicy(toTableAccessPolicy(signedIdentifier.getAccessPolicy()));
     }
 
     private TableAccessPolicy toTableAccessPolicy(AccessPolicy accessPolicy) {
+        if (accessPolicy == null) {
+            return null;
+        }
+
         return new TableAccessPolicy()
             .setExpiresOn(accessPolicy.getExpiry())
             .setStartsOn(accessPolicy.getStart())
@@ -870,8 +906,8 @@ public final class TableAsyncClient {
      * @return An empty reactive result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setAccessPolicy(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        return this.setAccessPolicyWithResponse(tableSignedIdentifiers).flatMap(FluxUtil::toMono);
+    public Mono<Void> setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return this.setAccessPoliciesWithResponse(tableSignedIdentifiers).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -883,18 +919,52 @@ public final class TableAsyncClient {
      * @return A reactive result containing the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
-        return withContext(context -> this.setAccessPolicyWithResponse(tableSignedIdentifiers, context));
+    public Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        return withContext(context -> this.setAccessPoliciesWithResponse(tableSignedIdentifiers, context));
     }
 
-    Mono<Response<Void>> setAccessPolicyWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
-                                                     Context context) {
+    Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                       Context context) {
         context = context == null ? Context.NONE : context;
+        List<SignedIdentifier> signedIdentifiers = null;
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (tableSignedIdentifiers != null) {
+            signedIdentifiers = tableSignedIdentifiers.stream()
+                .map(tableSignedIdentifier -> {
+                    SignedIdentifier signedIdentifier = toSignedIdentifier(tableSignedIdentifier);
+
+                    if (signedIdentifier != null) {
+                        if (signedIdentifier.getAccessPolicy() != null
+                            && signedIdentifier.getAccessPolicy().getStart() != null) {
+
+                            signedIdentifier.getAccessPolicy()
+                                .setStart(signedIdentifier.getAccessPolicy()
+                                    .getStart().truncatedTo(ChronoUnit.SECONDS));
+                        }
+
+                        if (signedIdentifier.getAccessPolicy() != null
+                            && signedIdentifier.getAccessPolicy().getExpiry() != null) {
+
+                            signedIdentifier.getAccessPolicy()
+                                .setExpiry(signedIdentifier.getAccessPolicy()
+                                    .getExpiry().truncatedTo(ChronoUnit.SECONDS));
+                        }
+                    }
+
+                    return signedIdentifier;
+                })
+                .collect(Collectors.toList());
+        }
 
         try {
             return tablesImplementation.getTables()
-                .setAccessPolicyWithResponseAsync(tableName, null, null,
-                    tableSignedIdentifiers.stream().map(this::toSignedIdentifier).collect(Collectors.toList()), context)
+                .setAccessPolicyWithResponseAsync(tableName, null, null, signedIdentifiers, context)
                 .map(response -> new SimpleResponse<>(response, response.getValue()));
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -902,12 +972,20 @@ public final class TableAsyncClient {
     }
 
     private SignedIdentifier toSignedIdentifier(TableSignedIdentifier tableSignedIdentifier) {
+        if (tableSignedIdentifier == null) {
+            return null;
+        }
+
         return new SignedIdentifier()
             .setId(tableSignedIdentifier.getId())
             .setAccessPolicy(toAccessPolicy(tableSignedIdentifier.getAccessPolicy()));
     }
 
     private AccessPolicy toAccessPolicy(TableAccessPolicy tableAccessPolicy) {
+        if (tableAccessPolicy == null) {
+            return null;
+        }
+
         return new AccessPolicy()
             .setExpiry(tableAccessPolicy.getExpiresOn())
             .setStart(tableAccessPolicy.getStartsOn())
@@ -1074,7 +1152,7 @@ public final class TableAsyncClient {
         }
 
         if (error != null || errorMessage != null) {
-            String message = "An operation within the batch failed, the transaction has been rolled back.";
+            String message = "An action within the operation failed, the transaction has been rolled back.";
 
             if (failedAction != null) {
                 message += " The failed operation was: " + failedAction;

@@ -5,7 +5,7 @@
 package com.azure.monitor.query.metricsdefinitions.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.monitor.query.models.MetricsDefinition;
+import com.azure.monitor.query.models.MetricDefinition;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,7 +17,7 @@ public final class MetricDefinitionCollection {
      * the values for the metric definitions.
      */
     @JsonProperty(value = "value", required = true)
-    private List<MetricsDefinition> value;
+    private List<MetricDefinition> value;
 
     /**
      * Creates an instance of MetricDefinitionCollection class.
@@ -25,7 +25,7 @@ public final class MetricDefinitionCollection {
      * @param value the value value to set.
      */
     @JsonCreator
-    public MetricDefinitionCollection(@JsonProperty(value = "value", required = true) List<MetricsDefinition> value) {
+    public MetricDefinitionCollection(@JsonProperty(value = "value", required = true) List<MetricDefinition> value) {
         this.value = value;
     }
 
@@ -34,7 +34,7 @@ public final class MetricDefinitionCollection {
      *
      * @return the value value.
      */
-    public List<MetricsDefinition> getValue() {
+    public List<MetricDefinition> getValue() {
         return this.value;
     }
 

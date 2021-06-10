@@ -106,7 +106,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
                 .create();
@@ -353,7 +353,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
@@ -479,7 +479,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 .withExistingPrimaryInternalLoadBalancer(vmssInternalLoadBalancer)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
@@ -508,6 +508,14 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         Identity identity = msiManager.identities().getById(emsiIds.iterator().next());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName1));
+
+        // Update VMSS without modify MSI
+        virtualMachineScaleSet.update()
+            .withNewDataDisk(10)
+            .apply();
+        emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
+        Assertions.assertNotNull(emsiIds);
+        Assertions.assertEquals(1, emsiIds.size());
 
         // Creates an EMSI
         //

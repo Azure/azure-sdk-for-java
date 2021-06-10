@@ -35,7 +35,7 @@ public class ServerTimeoutSample {
             .build();
 
         // create client
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
@@ -47,7 +47,7 @@ public class ServerTimeoutSample {
             .setIncludeStatistics(true);
 
         // make service call with these request options set as filter header
-        Response<LogsQueryResult> response = logsClient
+        Response<LogsQueryResult> response = logsQueryClient
             .queryLogsWithResponse(options, Context.NONE);
         LogsQueryResult logsQueryResult = response.getValue();
 

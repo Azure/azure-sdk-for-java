@@ -348,6 +348,35 @@ public final class ChatThreadAsyncClient {
     /**
      * Gets the participants of a thread.
      *
+     * @param listParticipantsOptions The request options.
+     * @return the participants of a thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions) {
+        final ListParticipantsOptions serviceListParticipantsOptions =
+            listParticipantsOptions == null ? new ListParticipantsOptions() : listParticipantsOptions;
+
+        try {
+            return pagedFluxConvert(new PagedFlux<>(
+                () -> withContext(context ->
+                        this.chatThreadClient.listChatParticipantsSinglePageAsync(
+                            chatThreadId,
+                            serviceListParticipantsOptions.getMaxPageSize(),
+                            serviceListParticipantsOptions.getSkip(),
+                            context)
+                            .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
+                nextLink -> withContext(context ->
+                    this.chatThreadClient.listChatParticipantsNextSinglePageAsync(nextLink, context)
+                            .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e)))),
+                f -> ChatParticipantConverter.convert(f));
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the participants of a thread.
+     *
      * @param context The context to associate with this operation.
      * @param listParticipantsOptions The request options.
      * @return the participants of a thread.
@@ -816,6 +845,34 @@ public final class ChatThreadAsyncClient {
         try {
             ListReadReceiptOptions listReadReceiptOptions = new ListReadReceiptOptions();
             return listReadReceipts(listReadReceiptOptions, Context.NONE);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets read receipts for a thread.
+     *
+     * @param listReadReceiptOptions The additional options for this operation.
+     * @return read receipts for a thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions) {
+        final ListReadReceiptOptions serviceListReadReceiptOptions =
+            listReadReceiptOptions == null ? new ListReadReceiptOptions() : listReadReceiptOptions;
+
+        try {
+            return pagedFluxConvert(new PagedFlux<>(
+                    () -> withContext(context ->  this.chatThreadClient.listChatReadReceiptsSinglePageAsync(
+                        chatThreadId,
+                        serviceListReadReceiptOptions.getMaxPageSize(),
+                        serviceListReadReceiptOptions.getSkip(),
+                        context)
+                        .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))),
+                    nextLink -> withContext(context -> this.chatThreadClient.listChatReadReceiptsNextSinglePageAsync(
+                        nextLink, context)
+                        .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e)))),
+                f -> ChatMessageReadReceiptConverter.convert(f));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
