@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -151,12 +151,6 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
-            for (String allowedGroupId : allowedGroupIds) {
-                if (allowedGroupIds.size() > 1 && allowedGroupId.equalsIgnoreCase("all")) {
-                    throw new IllegalStateException("When 'all' is used, there is no need to configure additional group"
-                        + " id.");
-                }
-            }
             this.allowedGroupIds = allowedGroupIds;
         }
 
@@ -170,8 +164,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         @Deprecated
         @DeprecatedConfigurationProperty(
-            reason = "The name of enable-full-list may be confused for users, since if the value is true, it will "
-                + "ignore allowed-group-names.",
+            reason = "enable-full-list is not easy to understand.",
             replacement = "allowed-group-ids: all")
         public Boolean getEnableFullList() {
             return enableFullList;
@@ -388,7 +381,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
             baseUri = "https://login.microsoftonline.com/";
@@ -415,6 +408,14 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "the prefix of azure.activedirectory.graph-membership-uri. "
                 + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
                 + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+        }
+
+        Set<String> allowedGroupIds = userGroup.getAllowedGroupIds();
+        if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
+            throw new IllegalStateException("When azure.activedirectory.user-group.allowed-group-ids contains 'all', "
+                + "no other group ids can be configured. "
+                + "But actually azure.activedirectory.user-group.allowed-group-ids="
+                + allowedGroupIds);
         }
 
         if (!StringUtils.hasText(tenantId)) {
