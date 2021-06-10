@@ -143,7 +143,7 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResult>> playAudioWithResponse(String audioFileUri,
-                                                                   PlayAudioOptions playAudioOptions) {
+                                                                 PlayAudioOptions playAudioOptions) {
         PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
         return playAudioWithResponse(playAudioRequest, Context.NONE);
     }

@@ -92,7 +92,7 @@ public class ServerCallTests extends CallingServerTestBase {
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.INACTIVE);
 
             Response<Void> resumeResponse = serverCall.resumeRecordingWithResponse(recordingId, Context.NONE);
-            assertEquals(resumeResponse.getStatusCode(), 200);            
+            assertEquals(resumeResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -259,7 +259,7 @@ public class ServerCallTests extends CallingServerTestBase {
             String recordingId,
             CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCall);
-        assertNotNull(serverCall.getServerCallId());        
+        assertNotNull(serverCall.getServerCallId());
         assertNotNull(recordingId);
 
         // There is a delay between the action and when the state is available.
@@ -275,7 +275,7 @@ public class ServerCallTests extends CallingServerTestBase {
             String recordingId,
             CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCall);
-        assertNotNull(serverCall.getServerCallId());        
+        assertNotNull(serverCall.getServerCallId());
         assertNotNull(recordingId);
 
 
@@ -289,5 +289,5 @@ public class ServerCallTests extends CallingServerTestBase {
         assertEquals(response.getStatusCode(), 200);
         assertNotNull(response.getValue());
         assertEquals(response.getValue().getRecordingState(), expectedCallRecordingState);
-    } 
+    }
 }
