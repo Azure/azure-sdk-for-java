@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.test.shared
 
+import com.azure.storage.common.implementation.Constants
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import spock.lang.IgnoreIf
 import spock.lang.Specification
@@ -20,9 +21,19 @@ abstract class ServiceVersionTest extends Specification {
         latestVersion == lastVersion
     }
 
+    @IgnoreIf({ isBeta() })
+    def "Header version should match last when we release"() {
+        when:
+        Class clazz = getServiceVersionClass()
+        def latestVersion = clazz.getLatest()
+
+        then:
+        Constants.HeaderConstants.TARGET_STORAGE_VERSION == latestVersion.getVersion()
+    }
+
     abstract Class getServiceVersionClass()
 
-    private static boolean isBeta() {
+    protected static boolean isBeta() {
         return getVersionFromPomFile().contains("beta")
     }
 
