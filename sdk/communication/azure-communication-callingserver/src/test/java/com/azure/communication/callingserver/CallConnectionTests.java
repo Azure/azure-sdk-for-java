@@ -17,6 +17,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,6 +25,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to setup if tests are playback or
  * live. By default, tests are run in playback mode.
  */
+@Disabled
 public class CallConnectionTests extends CallingServerTestBase {
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
     private String alternateId =   "+11111111111";

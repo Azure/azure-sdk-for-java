@@ -18,6 +18,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -146,6 +147,7 @@ public class ServerCallTests extends CallingServerTestBase {
         }
     }
 
+    @Disabled
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenario(HttpClient httpClient) throws URISyntaxException, InterruptedException {
@@ -169,6 +171,7 @@ public class ServerCallTests extends CallingServerTestBase {
         }
     }
 
+    @Disabled
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioWithResponse(HttpClient httpClient) throws URISyntaxException, InterruptedException {
