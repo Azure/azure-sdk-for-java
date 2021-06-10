@@ -1,74 +1,56 @@
 package com.azure.maps.service;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.maps.service.models.AliasCreateResponseV2;
-import com.azure.maps.service.models.AliasListItem;
 import com.azure.maps.service.models.ConversionListDetailInfo;
 import com.azure.maps.service.models.ConversionsConvertResponse;
 import com.azure.maps.service.models.ConversionsGetOperationResponse;
-import com.azure.maps.service.models.LongRunningOperationResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class ConversionSample {
-	public static void main(String[] args) throws InterruptedException {
-		if (args.length != 2) {
-			System.out.println("Usage ConversionSample.java <udid> <dont_delete(default false)>");
-		}
-		if (args.length < 1) {
+	public static void main(String[] args) throws InterruptedException, JsonProcessingException {
+		if (args.length != 1) {
+			System.out.println("Usage ConversionSample.java <udid>");
 			return;
 		}
 		String udid = args[0];
-		boolean doDelete = true;
-		if (args.length >= 2) {
-			doDelete = false;
-		}
-		Conversions conversion = MapsCommon.createMapsClient().getConversions();
-		String operationId = ConversionSample.convert(conversion, udid);
-		String conversionId = MapsCommon.waitForStatusComplete(operationId, id -> ConversionSample.getOperation(conversion, id));
+    	HttpPipelinePolicy policy = new AzureKeyInQueryPolicy("subscription-key", new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY")));
+    	MapsClient client = new MapsClientBuilder().addPolicy(policy).buildClient();
+
+		ConversionsConvertResponse result = client.getConversions().convertWithResponseAsync(udid, "facility-2.0", null).block();
+		String operationLocation = result.getDeserializedHeaders().getOperationLocation();
+		System.out.println(String.format("Created conversion with operation_id %s", operationLocation));
+		MapsCommon.print(result.getValue());
+		
+		String operationId = MapsCommon.getUid(operationLocation);
+		String conversionId = MapsCommon.waitForStatusComplete(operationId, id -> ConversionSample.getOperation(client.getConversions(), id));
 		if (conversionId == null) {
 			System.out.println("Conversion Failed");
 			return;
 		}
 		try {
-			get(conversion, conversionId);
-			list(conversion);
+			ConversionListDetailInfo conversionListDetailInfo = client.getConversions().get(conversionId);
+			System.out.println("Got conversion:");
+			MapsCommon.print(conversionListDetailInfo);
+
+			PagedIterable<ConversionListDetailInfo> list = client.getConversions().list();
+			System.out.println("View all conversions:");
+			for(ConversionListDetailInfo item : list) {
+				MapsCommon.print(item);
+			}
 		} catch(HttpResponseException err) {
 			System.out.println(err);
 		} finally {
-			if(doDelete) {
-				delete(conversion, conversionId);
-			}
+			client.getConversions().delete(conversionId);
+			System.out.println(String.format("Deleted conversion with id %s", conversionId));
 		}
 	}
 	
 	public static MapsCommon.OperationWithHeaders getOperation(Conversions conversion, String operationId) {
-		ConversionsGetOperationResponse conversionsGetOperationResponse = conversion.getOperationWithResponseAsync(operationId).block();
-		System.out.println(String.format("Get conversion operation with operation_id %s and result %s", operationId, conversionsGetOperationResponse.getValue().getStatus()));
-	    return new MapsCommon.OperationWithHeaders(conversionsGetOperationResponse.getValue(), conversionsGetOperationResponse.getDeserializedHeaders().getResourceLocation());
-	}
-
-	public static String convert(Conversions conversion, String udid) {
-		ConversionsConvertResponse response = conversion.convertWithResponseAsync(udid, "facility-2.0", null).block();
-		String operationLocation = response.getDeserializedHeaders().getOperationLocation();
-		System.out.println(String.format("Created conversion with operation_id %s", operationLocation));
-		return MapsCommon.getUid(operationLocation);
-	}
-	
-	public static void get(Conversions conversion, String conversionId) {
-		ConversionListDetailInfo conversionListDetailInfo = conversion.get(conversionId);
-		System.out.println(String.format("Got conversion with id %s udid %s", conversionListDetailInfo.getConversionId(), conversionListDetailInfo.getUdid()));
-	}
-	
-	public static void delete(Conversions conversion, String conversionId) {
-		conversion.delete(conversionId);
-		System.out.println(String.format("Deleted conversion with id %s", conversionId));
-	}
-	public static void list(Conversions conversion) {
-		PagedIterable<ConversionListDetailInfo> conversionList = conversion.list();
-		System.out.println("View all conversions:");
-		conversionList.forEach(conversionListItem -> System.out.println(conversionListItem.getConversionId()));
+		ConversionsGetOperationResponse result = conversion.getOperationWithResponseAsync(operationId).block();
+		System.out.println(String.format("Get conversion operation with operation_id %s status %s", operationId, result.getValue().getStatus()));
+	    return new MapsCommon.OperationWithHeaders(result.getValue(), result.getDeserializedHeaders().getResourceLocation());
 	}
 }
