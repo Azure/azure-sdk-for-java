@@ -264,8 +264,9 @@ public final class CommunicationIdentityClientBuilder {
                                             List<HttpPipelinePolicy> customPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-        policies.add(authorizationPolicy);
         applyRequiredPolicies(policies);
+        // auth policy is per request, should be after retry
+        policies.add(authorizationPolicy);
 
         if (customPolicies != null && customPolicies.size() > 0) {
             policies.addAll(customPolicies);
