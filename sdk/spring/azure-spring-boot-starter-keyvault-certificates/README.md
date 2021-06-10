@@ -47,7 +47,7 @@ This starter allows you to securely manage and tightly control your certificates
 
 #### Using a client ID and client secret
 
-To create a client and  client secret use the command line below:
+To create a client and client secret use the command line below:
 ```shell
   export APP_NAME=myApp
   az ad app create --display-name ${APP_NAME}
