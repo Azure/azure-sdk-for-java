@@ -417,7 +417,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-appconfiguration-config[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-appconfiguration-config-web[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf|azure-template-perf[/\\].*\.java"/>
