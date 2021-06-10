@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import com.azure.data.tables.models.TableItem;
@@ -411,12 +412,11 @@ public final class TableClient {
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
      *
-     * @return A reactive result containing the HTTP response and the table's
-     * {@link TableSignedIdentifier access policies}.
+     * @return The table's {@link TableAccessPolicies access policies}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> listAccessPolicies() {
-        return new PagedIterable<>(client.listAccessPolicies());
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableAccessPolicies getAccessPolicies() {
+        return client.getAccessPolicies().block();
     }
 
     /**
@@ -426,12 +426,11 @@ public final class TableClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A reactive result containing the HTTP response and the table's
-     * {@link TableSignedIdentifier access policies}.
+     * @return An HTTP response containing the table's {@link TableAccessPolicies access policies}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableSignedIdentifier> listAccessPolicies(Duration timeout, Context context) {
-        return new PagedIterable<>(applyOptionalTimeout(client.listAccessPolicies(context), timeout));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.getAccessPoliciesWithResponse(context), timeout);
     }
 
     /**

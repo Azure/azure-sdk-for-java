@@ -76,9 +76,6 @@ final class BuilderHelper {
                 httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         }
 
-        // TODO: Remove the Accept header after making sure the JacksonAdapter can handle not setting such value.
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList).set("Accept", "application/json")));
-
         // Add per call additional policies.
         policies.addAll(perCallAdditionalPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);

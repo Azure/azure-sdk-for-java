@@ -1,11 +1,15 @@
 # Release History
 
 ## 3.6.0-beta.1 (Unreleased)
+### Breaking Changes
+- Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
+- Deprecated `allowTelemetry` configuration item.
+
 ### New Features
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
+- "aad.group.allowed-group-ids=all" can be used to map all group ids to GrantedAuthority (ROLE_group_id). 
+  And it can work together with group names configured by "aad.group.allowed-group-names" (ROLE_group_name).[#21983](https://github.com/Azure/azure-sdk-for-java/issues/21983)
 
-### Breaking Changes
-- Deprecated `allowTelemetry` configuration item.
 
 ## 3.5.0 (2021-05-24)
 ### New Features

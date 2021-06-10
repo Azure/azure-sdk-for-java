@@ -21,10 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * GraphClient is used to access graph server. Mainly used to get groups information of a user.
@@ -38,8 +35,8 @@ public class GraphClient {
         this.properties = properties;
     }
 
-    public Set<String> getGroupsFromGraph(String accessToken) {
-        final Set<String> groups = new LinkedHashSet<>();
+    public GroupInformation getGroupInformation(String accessToken) {
+        GroupInformation groupInformation = new GroupInformation();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
         String aadMembershipRestUri = properties.getGraphMembershipUri();
         while (aadMembershipRestUri != null) {
@@ -51,21 +48,17 @@ public class GraphClient {
                 LOGGER.error("Can not get group information from graph server.", ioException);
                 break;
             }
-            memberships.getValue()
-                       .stream()
-                       .filter(this::isGroupObject)
-                       .map(membership -> {
-                           if (properties.getUserGroup().getEnableFullList()) {
-                               return Arrays.asList(membership.getObjectID());
-                           } else {
-                               return Arrays.asList(membership.getDisplayName(), membership.getObjectID());
-                           }
-                       }).forEach(groups::addAll);
+            for (Membership membership : memberships.getValue()) {
+                if (isGroupObject(membership)) {
+                    groupInformation.getGroupsIds().add(membership.getObjectID());
+                    groupInformation.getGroupsNames().add(membership.getDisplayName());
+                }
+            }
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
                                            .orElse(null);
         }
-        return groups;
+        return groupInformation;
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {

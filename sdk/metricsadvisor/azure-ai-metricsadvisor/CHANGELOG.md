@@ -1,6 +1,9 @@
 # Release History
 
-## 1.0.0-beta.4 (2021-03-08)
+## 1.0.0-beta.5 (Unreleased)
+
+
+## 1.0.0-beta.4 (2021-06-09)
 
 ### Features added
 - Added support for Azure Log Analytics DataFeed source
