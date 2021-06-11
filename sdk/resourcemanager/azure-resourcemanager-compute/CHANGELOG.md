@@ -2,6 +2,8 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 
+- Supported boot diagnostics with managed storage account.
+
 ## 2.5.0 (2021-05-28)
 - Refreshed `api-version` `2021-03-01`
 

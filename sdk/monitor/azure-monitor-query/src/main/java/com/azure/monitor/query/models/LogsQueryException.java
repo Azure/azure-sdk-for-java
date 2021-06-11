@@ -10,21 +10,21 @@ import com.azure.core.http.HttpResponse;
  * Exception thrown when a query to retrieve logs fails.
  */
 public final class LogsQueryException extends HttpResponseException {
-    private final transient LogsQueryErrorDetails error;
+    private final transient LogsQueryError error;
 
     /**
-     * Creates a new instance of this exception with the {@link HttpResponse} and {@link LogsQueryError error}
+     * Creates a new instance of this exception with the {@link HttpResponse} and {@link LogsQueryErrorDetail error}
      * information.
      * @param response The {@link HttpResponse}.
      * @param error The {@link LogsQueryError error} details.
      */
-    public LogsQueryException(HttpResponse response, LogsQueryErrorDetails error) {
+    public LogsQueryException(HttpResponse response, LogsQueryError error) {
         super("Failed to executed logs query", response, error);
         this.error = error;
     }
 
     @Override
-    public LogsQueryErrorDetails getValue() {
+    public LogsQueryError getValue() {
         return this.error;
     }
 }

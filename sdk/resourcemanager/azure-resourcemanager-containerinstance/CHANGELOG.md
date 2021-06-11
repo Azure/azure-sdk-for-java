@@ -2,6 +2,8 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 
+- Supported attach for output stream for container instance in `ContainerGroup`.
+
 ## 2.5.0 (2021-05-28)
 - Updated core dependency from resources
 
