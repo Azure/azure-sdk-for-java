@@ -9,6 +9,7 @@
       "content-length" : "0",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "Microsoft-HTTPAPI/2.0",
+      "Content-Range" : "bytes */957",
       "retry-after" : "0",
       "StatusCode" : "416",
       "Date" : "Thu, 03 Jun 2021 00:22:03 GMT"
