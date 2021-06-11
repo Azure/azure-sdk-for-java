@@ -59,6 +59,7 @@ public class BlobParallelUploadOptions {
      * @param dataStream The data to write to the blob.
      * @param length The exact length of the data, or -1. It is important that a non-negative value match precisely the
      * length of the data provided in the {@link InputStream}.
+     * @deprecated length is no longer necessary; use {@link #BlobParallelUploadOptions(InputStream)} instead.
      */
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", dataStream);
