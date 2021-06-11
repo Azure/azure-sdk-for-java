@@ -105,14 +105,27 @@ class ContentDownloader {
         return FluxUtil.createRetriableDownloadFlux(
             () -> getResponseBody(httpResponse),
             (Throwable throwable, Long aLong) -> {
+                if (throwable instanceof CallingServerErrorException) {
+                    CallingServerErrorException exception = (CallingServerErrorException) throwable;
+                    if(exception.getResponse().getStatusCode() == 416) {
+                        return  makeDownloadRequest(sourceEndpoint, null, context)
+                            .map(this::getResponseBody)
+                            .flux()
+                            .flatMap(flux -> flux);
+                    }
+                }
+
                 HttpRange range;
                 if (httpRange != null) {
                     range = new HttpRange(aLong + 1, httpRange.getLength() - aLong - 1);
                 } else {
                     range = new HttpRange(aLong + 1);
                 }
-                Mono<HttpResponse> resumeResponse = makeDownloadRequest(sourceEndpoint, range, context);
-                return resumeResponse.map(this::getResponseBody).block();
+
+                return makeDownloadRequest(sourceEndpoint, range, context)
+                    .map(this::getResponseBody)
+                    .flux()
+                    .flatMap(flux -> flux);
             },
             Constants.ContentDownloader.MAX_RETRIES
         );
@@ -123,6 +136,8 @@ class ContentDownloader {
             case 200:
             case 206:
                 return response.getBody();
+            case 416:
+                return FluxUtil.fluxError(logger, new CallingServerErrorException(formatExceptionMessage(response), response));
             default:
                 throw logger.logExceptionAsError(
                     new CallingServerErrorException(formatExceptionMessage(response), response)
@@ -187,25 +202,6 @@ class ContentDownloader {
                 );
 
                 return Mono.zip(Mono.just(totalLength), Mono.just(response));
-            })
-            .onErrorResume(CallingServerErrorException.class, exception -> {
-                if (exception.getResponse().getStatusCode() == 416
-                    && extractTotalBlobLength(
-                        exception.getResponse().getHeaderValue(Constants.HeaderNames.CONTENT_RANGE)) == 0) {
-                    return downloader.apply(new HttpRange(0, 0L)).subscribeOn(Schedulers.boundedElastic())
-                        .flatMap(response -> {
-                            /*
-                            Ensure the blob is still 0 length by checking our download was the full length.
-                            (200 is for full blob; 206 is partial).
-                             */
-                            if (response.getStatusCode() != 200) {
-                                Mono.error(new IllegalStateException("Blob was modified mid download. It was "
-                                    + "originally 0 bytes and is now larger."));
-                            }
-                            return Mono.zip(Mono.just(0L), Mono.just(response));
-                        });
-                }
-                return Mono.error(exception);
             });
     }
 

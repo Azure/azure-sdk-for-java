@@ -3,6 +3,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
@@ -93,19 +94,6 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void downloadContent404Async(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");
-        Response<Flux<ByteBuffer>> response = conversationAsyncClient
-                .downloadStreamWithResponse(CONTENT_URL_404, null).block();
-        assertThat(response, is(notNullValue()));
-        assertThat(response.getStatusCode(), is(equalTo(404)));
-        assertThrows(CallingServerErrorException.class,
-            () -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).block());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadToFileAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
@@ -133,6 +121,51 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
         Mockito.verify(channel).write(any(ByteBuffer.class), anyLong(),
             any(), any());
     }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void downloadToFileRetryingAsync(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
+        AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
+
+        doAnswer(invocation -> {
+            ByteBuffer stream = invocation.getArgument(0);
+            String metadata = new String(stream.array(), StandardCharsets.UTF_8);
+            assertTrue(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"));
+            CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
+            completionHandler.completed(957, null);
+            return null;
+        }).when(channel).write(any(ByteBuffer.class),
+            anyLong(),
+            any(),
+            any());
+
+
+        conversationAsyncClient
+            .downloadToWithResponse(METADATA_URL,
+                Paths.get("dummyPath"),
+                channel,
+                new ParallelDownloadOptions().setBlockSizeLong(957L),
+                null).block();
+
+        Mockito.verify(channel).write(any(ByteBuffer.class), anyLong(),
+            any(), any());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void downloadContent404Async(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");
+        Response<Flux<ByteBuffer>> response = conversationAsyncClient
+            .downloadStreamWithResponse(CONTENT_URL_404, null).block();
+        assertThat(response, is(notNullValue()));
+        assertThat(response.getStatusCode(), is(equalTo(404)));
+        assertThrows(CallingServerErrorException.class,
+            () -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).block());
+    }
+
 
     private CallingServerAsyncClient setupAsyncClient(CallingServerClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();
