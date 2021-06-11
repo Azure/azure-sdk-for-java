@@ -18,6 +18,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -322,6 +323,7 @@ public final class CallingServerClientBuilder {
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policyList.add((this.retryPolicy == null) ? new RetryPolicy() : this.retryPolicy);
         policyList.add(new CookiePolicy());
+        policyList.add(new RequestIdPolicy());
 
         // Add additional policies
         if (!this.customPolicies.isEmpty()) {
