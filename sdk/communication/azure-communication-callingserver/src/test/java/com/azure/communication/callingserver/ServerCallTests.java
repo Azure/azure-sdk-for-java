@@ -35,8 +35,8 @@ public class ServerCallTests extends CallingServerTestBase {
     // Calling Tests
     private String fromUser = getRandomUserId();
     private String toUser = getRandomUserId();
-    private String alternateId =   "+11111111111";
-    private String to =   "+11111111111";
+    private String alternateId = "+11111111111";
+    private String to = "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
 
     @ParameterizedTest
@@ -47,7 +47,7 @@ public class ServerCallTests extends CallingServerTestBase {
         String recordingId = "";
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         String groupId = "ecf4c528-8a18-4fdb-b317-b9ef14786278"; // This needs to match the recording
-        List<CallConnection> callConnections = new ArrayList<CallConnection>();
+        List<CallConnection> callConnections = new ArrayList<>();
         ServerCall serverCall = null;
 
         try {
@@ -87,7 +87,7 @@ public class ServerCallTests extends CallingServerTestBase {
         String recordingId = "";
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         String groupId = "878e946e-e25c-4693-995e-3106692f79dd"; // This needs to match the recording
-        List<CallConnection> callConnections = new ArrayList<CallConnection>();
+        List<CallConnection> callConnections = new ArrayList<>();
         ServerCall serverCall = null;
 
         try {
