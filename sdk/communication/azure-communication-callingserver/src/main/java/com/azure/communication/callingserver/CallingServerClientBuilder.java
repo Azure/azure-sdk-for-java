@@ -252,16 +252,16 @@ public final class CallingServerClientBuilder {
             CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
             String endpoint = connectionStringObject.getEndpoint();
             String accessKey = connectionStringObject.getAccessKey();
-            this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
+            endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
         }
 
         Objects.requireNonNull(endpoint);
-        if (this.pipeline == null) {
+        if (pipeline == null) {
             Objects.requireNonNull(httpClient);
         }
 
-        HttpPipeline builderPipeline = this.pipeline;
-        if (this.pipeline == null) {
+        HttpPipeline builderPipeline = pipeline;
+        if (pipeline == null) {
             builderPipeline = createHttpPipeline(httpClient);
         }
 
@@ -284,15 +284,15 @@ public final class CallingServerClientBuilder {
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.tokenCredential != null && this.azureKeyCredential != null) {
+        if (tokenCredential != null && azureKeyCredential != null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
-        if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
+        if (tokenCredential != null) {
+            return new BearerTokenAuthenticationPolicy(tokenCredential,
                 "https://communication.azure.com//.default");
-        } else if (this.azureKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.azureKeyCredential);
+        } else if (azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
@@ -300,8 +300,8 @@ public final class CallingServerClientBuilder {
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient) {
-        if (this.pipeline != null) {
-            return this.pipeline;
+        if (pipeline != null) {
+            return pipeline;
         }
 
         List<HttpPipelinePolicy> policyList = new ArrayList<>();
@@ -317,31 +317,31 @@ public final class CallingServerClientBuilder {
         }
 
         // Add required policies
-        policyList.add(this.createHttpPipelineAuthPolicy());
+        policyList.add(createHttpPipelineAuthPolicy());
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policyList.add(new RequestIdPolicy());
-        policyList.add((this.retryPolicy == null) ? new RetryPolicy() : this.retryPolicy);
+        policyList.add((retryPolicy == null) ? new RetryPolicy() : retryPolicy);
         policyList.add(new CookiePolicy());
 
         // Add additional policies
-        if (!this.customPolicies.isEmpty()) {
-            policyList.addAll(this.customPolicies);
+        if (!customPolicies.isEmpty()) {
+            policyList.addAll(customPolicies);
         }
 
         // Add logging policy
-        policyList.add(new HttpLoggingPolicy(this.getHttpLogOptions()));
+        policyList.add(new HttpLoggingPolicy(getHttpLogOptions()));
 
         return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0])).httpClient(httpClient)
             .build();
     }
 
     private HttpLogOptions getHttpLogOptions() {
-        if (this.httpLogOptions == null) {
-            this.httpLogOptions = new HttpLogOptions();
+        if (httpLogOptions == null) {
+            httpLogOptions = new HttpLogOptions();
         }
 
-        return this.httpLogOptions;
+        return httpLogOptions;
     }
 }

@@ -31,7 +31,7 @@ public final class ResultInfo {
      * @return the code value.
      */
     public Integer getCode() {
-        return this.code;
+        return code;
     }
 
     /**
@@ -40,7 +40,7 @@ public final class ResultInfo {
      * @return the subcode value.
      */
     public Integer getSubcode() {
-        return this.subcode;
+        return subcode;
     }
 
     /**
@@ -49,7 +49,7 @@ public final class ResultInfo {
      * @return the message value.
      */
     public String getMessage() {
-        return this.message;
+        return message;
     }
 
     /**

@@ -88,7 +88,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(targets, "'targets' cannot be null.");
             Objects.requireNonNull(createCallOptions, "'createCallOptions' cannot be null.");
             CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
-            return this.callConnectionInternal.createCallAsync(request)
+            return callConnectionInternal.createCallAsync(request)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
@@ -113,7 +113,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(targets, "'targets' cannot be null.");
             Objects.requireNonNull(createCallOptions, "'CreateCallOptions' cannot be null.");
             CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
-            return this.callConnectionInternal.createCallWithResponseAsync(request)
+            return callConnectionInternal.createCallWithResponseAsync(request)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .map(response -> new SimpleResponse<>(response,
                     new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal)));
@@ -130,7 +130,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(targets, "'targets' cannot be null.");
             Objects.requireNonNull(createCallOptions, "'createCallOptions' cannot be null.");
             CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
-            return this.callConnectionInternal.createCallAsync(request)
+            return callConnectionInternal.createCallAsync(request)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response -> Mono.just(new CallConnection(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal))));
         } catch (RuntimeException ex) {
@@ -149,7 +149,7 @@ public final class CallingServerAsyncClient {
             CreateCallRequestInternal request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callConnectionInternal.createCallWithResponseAsync(request, contextValue)
+                return callConnectionInternal.createCallWithResponseAsync(request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                     .map(response -> new SimpleResponse<>(response,
                         new CallConnection(new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal))));
@@ -175,7 +175,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
-            return this.serverCallInternal
+            return serverCallInternal
                 .joinCallAsync(serverCallId, JoinCallConverter.convert(source, joinCallOptions))
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
@@ -200,7 +200,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
-            return this.serverCallInternal.
+            return serverCallInternal.
                 joinCallWithResponseAsync(serverCallId, JoinCallConverter.convert(source, joinCallOptions))
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .map(response -> new SimpleResponse<>(response,
@@ -217,7 +217,7 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
-            return this.serverCallInternal
+            return serverCallInternal
                 .joinCallAsync(serverCallId, JoinCallConverter.convert(source, joinCallOptions))
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response -> Mono.just(new CallConnection(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal))));
@@ -238,7 +238,7 @@ public final class CallingServerAsyncClient {
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal.
+                return serverCallInternal.
                     joinCallWithResponseAsync(serverCallId,
                         JoinCallConverter.convert(source, joinCallOptions), contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
@@ -276,7 +276,7 @@ public final class CallingServerAsyncClient {
     }
 
     ServerCall initializeServerCallInternal(String serverCallId) {
-        return new ServerCall(serverCallId, new ServerCallAsync(serverCallId, serverCallInternal));
+        return new ServerCall(new ServerCallAsync(serverCallId, serverCallInternal));
     }
 
 

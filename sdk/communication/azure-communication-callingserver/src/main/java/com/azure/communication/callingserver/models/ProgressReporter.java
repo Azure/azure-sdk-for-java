@@ -27,11 +27,11 @@ public final class ProgressReporter {
 
         @Override
         public void reportProgress(long bytesTransferred) {
-            this.blockProgress += bytesTransferred;
+            blockProgress += bytesTransferred;
         }
 
         void rewindProgress() {
-            this.blockProgress = 0;
+            blockProgress = 0;
         }
 
         Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data) {
@@ -66,7 +66,7 @@ public final class ProgressReporter {
         @Override
         public void reportProgress(long bytesTransferred) {
             super.reportProgress(bytesTransferred);
-            this.progressReceiver.reportProgress(this.blockProgress);
+            progressReceiver.reportProgress(blockProgress);
         }
     }
 
@@ -106,7 +106,7 @@ public final class ProgressReporter {
             requests happening at once to stage/download separate chunks, so we still need to lock either way.
              */
             transferLock.lock();
-            this.progressReceiver.reportProgress(this.totalProgress.addAndGet(bytesTransferred));
+            progressReceiver.reportProgress(totalProgress.addAndGet(bytesTransferred));
             transferLock.unlock();
         }
 
@@ -121,7 +121,7 @@ public final class ProgressReporter {
             thread will be trying to add to the progress while the other is trying to zero it. The updates are strictly
             sequential. Avoiding using the lock is ideal.
              */
-            this.totalProgress.addAndGet(-1 * this.blockProgress);
+            this.totalProgress.addAndGet(-1 * blockProgress);
             super.rewindProgress();
         }
 

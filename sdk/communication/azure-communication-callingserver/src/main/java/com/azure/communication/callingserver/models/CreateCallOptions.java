@@ -21,7 +21,7 @@ public final class CreateCallOptions {
      * @return the alternate caller id object itself.
      */
     public PhoneNumberIdentifier getAlternateCallerId() {
-        return this.alternateCallerId;
+        return alternateCallerId;
     }
 
     /**
@@ -46,7 +46,7 @@ public final class CreateCallOptions {
      * @return the subject value.
      */
     public String getSubject() {
-        return this.subject;
+        return subject;
     }
 
     /**
@@ -71,7 +71,7 @@ public final class CreateCallOptions {
      * @return the subject value.
      */
     public String getCallbackUri() {
-        return this.callbackUri;
+        return callbackUri;
     }
 
     /**
@@ -99,7 +99,7 @@ public final class CreateCallOptions {
      * @return the requested call events to subscribe to object itself.
      */
     public EventSubscriptionType[] getRequestedCallEvents() {
-        return this.requestedCallEvents.clone();
+        return requestedCallEvents.clone();
     }
 
     /**

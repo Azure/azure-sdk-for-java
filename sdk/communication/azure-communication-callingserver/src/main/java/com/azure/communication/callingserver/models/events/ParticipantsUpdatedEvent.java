@@ -32,7 +32,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
-        return this.callConnectionId;
+        return callConnectionId;
     }
 
 
@@ -42,7 +42,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      * @return the result info value.
      */
     public CallParticipant[] getParticipants() {
-        return this.participants == null ? new CallParticipant[0] : this.participants.clone();
+        return participants == null ? new CallParticipant[0] : participants.clone();
     }
 
     /**

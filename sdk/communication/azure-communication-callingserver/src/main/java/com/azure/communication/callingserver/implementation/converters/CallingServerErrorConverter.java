@@ -14,26 +14,26 @@ import java.util.stream.Collectors;
 
 
 public final class CallingServerErrorConverter {
-    public static CallingServerError convert(CommunicationError obj) {
-        if (obj == null) {
+    public static CallingServerError convert(CommunicationError communicationError) {
+        if (communicationError == null) {
             return null;
         }
 
         List<CallingServerError> details = new ArrayList<>();
 
-        if (obj.getDetails() != null) {
-            details = obj.getDetails()
+        if (communicationError.getDetails() != null) {
+            details = communicationError.getDetails()
                 .stream()
                 .map(CallingServerErrorConverter::convert)
                 .collect(Collectors.toList());
         }
 
         return new CallingServerError(
-            obj.getMessage(),
-            obj.getCode(),
-            obj.getTarget(),
+            communicationError.getMessage(),
+            communicationError.getCode(),
+            communicationError.getTarget(),
             details,
-            convert(obj.getInnerError())
+            convert(communicationError.getInnerError())
         );
     }
 

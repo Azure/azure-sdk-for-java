@@ -16,7 +16,7 @@ public final class StartCallRecordingResult {
      * @return the recordingId value.
      */
     public String getRecordingId() {
-        return this.recordingId;
+        return recordingId;
     }
 
     /**

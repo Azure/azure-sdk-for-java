@@ -38,7 +38,7 @@ public final class CallingServerError {
      * @return the code value.
      */
     public String getCode() {
-        return this.code;
+        return code;
     }
 
     /**
@@ -47,7 +47,7 @@ public final class CallingServerError {
      * @return the message value.
      */
     public String getMessage() {
-        return this.message;
+        return message;
     }
 
     /**
@@ -56,7 +56,7 @@ public final class CallingServerError {
      * @return the target value.
      */
     public String getTarget() {
-        return this.target;
+        return target;
     }
 
     /**
@@ -66,7 +66,7 @@ public final class CallingServerError {
      * @return the details value.
      */
     public List<CallingServerError> getDetails() {
-        return this.details;
+        return details;
     }
 
     /**
@@ -75,7 +75,7 @@ public final class CallingServerError {
      * @return the innerError value.
      */
     public CallingServerError getInnerError() {
-        return this.innerError;
+        return innerError;
     }
 
     /**

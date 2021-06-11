@@ -31,7 +31,7 @@ public final class CallParticipant {
      * @return the communication identity of the participant object itself
      */
     public CommunicationIdentifier getIdentifier() {
-        return this.identifier;
+        return identifier;
     }
 
     /**
@@ -40,7 +40,7 @@ public final class CallParticipant {
      * @return the participant id value.
      */
     public String getParticipantId() {
-        return this.participantId;
+        return participantId;
     }
 
     /**
@@ -49,7 +49,7 @@ public final class CallParticipant {
      * @return the communication identity of the participant object itself
      */
     public boolean getIsMuted() {
-        return this.isMuted;
+        return isMuted;
     }
 
     /**

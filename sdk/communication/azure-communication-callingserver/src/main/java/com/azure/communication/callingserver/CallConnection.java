@@ -32,7 +32,7 @@ public final class CallConnection {
      * @return the id value.
      */
     public String getCallConnectionId() {
-        return this.callConnectionAsync.getCallConnectionId();
+        return callConnectionAsync.getCallConnectionId();
     }
 
     /**

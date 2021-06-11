@@ -25,7 +25,7 @@ public final class ToneReceivedEvent {
      * @return the toneInfo value.
      */
     public ToneInfo getToneInfo() {
-        return this.toneInfo;
+        return toneInfo;
     }
 
     /**
@@ -34,7 +34,7 @@ public final class ToneReceivedEvent {
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
-        return this.callConnectionId;
+        return callConnectionId;
     }
 
     /**
