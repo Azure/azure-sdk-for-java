@@ -61,6 +61,7 @@ public class BlobParallelUploadOptions {
      * length of the data provided in the {@link InputStream}.
      * @deprecated length is no longer necessary; use {@link #BlobParallelUploadOptions(InputStream)} instead.
      */
+    @Deprecated
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", dataStream);
         StorageImplUtils.assertInBounds("length", length, -1, Long.MAX_VALUE);

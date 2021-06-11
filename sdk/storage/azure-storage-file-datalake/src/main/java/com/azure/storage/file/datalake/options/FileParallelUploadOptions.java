@@ -56,6 +56,7 @@ public class FileParallelUploadOptions {
      * data provided in the {@link InputStream}.
      * @deprecated length is no longer necessary; use {@link #FileParallelUploadOptions(InputStream)} instead.
      */
+    @Deprecated
     public FileParallelUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, -1, Long.MAX_VALUE);

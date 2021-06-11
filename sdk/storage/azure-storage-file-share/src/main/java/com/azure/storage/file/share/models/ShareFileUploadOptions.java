@@ -49,6 +49,7 @@ public final class ShareFileUploadOptions {
      * data provided in the {@link InputStream}.
      * @deprecated length is no longer necessary; use {@link #ShareFileUploadOptions(InputStream)} instead.
      */
+    @Deprecated
     public ShareFileUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, -1, Long.MAX_VALUE);
