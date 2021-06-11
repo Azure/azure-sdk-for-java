@@ -107,7 +107,7 @@ class ContentDownloader {
             (Throwable throwable, Long aLong) -> {
                 if (throwable instanceof CallingServerErrorException) {
                     CallingServerErrorException exception = (CallingServerErrorException) throwable;
-                    if(exception.getResponse().getStatusCode() == 416) {
+                    if (exception.getResponse().getStatusCode() == 416) {
                         return  makeDownloadRequest(sourceEndpoint, null, context)
                             .map(this::getResponseBody)
                             .flux()
@@ -136,8 +136,9 @@ class ContentDownloader {
             case 200:
             case 206:
                 return response.getBody();
-            case 416:
-                return FluxUtil.fluxError(logger, new CallingServerErrorException(formatExceptionMessage(response), response));
+            case 416:   // Retriable with new HttpRange, potentially bytes=0-
+                return FluxUtil.fluxError(logger,
+                    new CallingServerErrorException(formatExceptionMessage(response), response));
             default:
                 throw logger.logExceptionAsError(
                     new CallingServerErrorException(formatExceptionMessage(response), response)

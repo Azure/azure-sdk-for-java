@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -100,11 +101,12 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
 
         doAnswer(invocation -> {
-            ByteBuffer stream = invocation.getArgument(0);
-            String metadata = new String(stream.array(), StandardCharsets.UTF_8);
-            assertTrue(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"));
             CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
-            completionHandler.completed(957, null);
+            completionHandler.completed(439, null);
+            return null;
+        }).doAnswer(invocation -> {
+            CompletionHandler<Integer, Object> completionHandler = invocation.getArgument(3);
+            completionHandler.completed(438, null);
             return null;
         }).when(channel).write(any(ByteBuffer.class),
             anyLong(),
@@ -115,10 +117,10 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
             .downloadToWithResponse(METADATA_URL,
                 Paths.get("dummyPath"),
                 channel,
-                null,
+                new ParallelDownloadOptions().setBlockSizeLong(479L),
                 null).block();
 
-        Mockito.verify(channel).write(any(ByteBuffer.class), anyLong(),
+        Mockito.verify(channel, times(2)).write(any(ByteBuffer.class), anyLong(),
             any(), any());
     }
 
@@ -146,7 +148,7 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
             .downloadToWithResponse(METADATA_URL,
                 Paths.get("dummyPath"),
                 channel,
-                new ParallelDownloadOptions().setBlockSizeLong(957L),
+                null,
                 null).block();
 
         Mockito.verify(channel).write(any(ByteBuffer.class), anyLong(),
@@ -174,5 +176,4 @@ public class DownloadContentAsyncTests extends CallingServerTestBase {
     protected CallingServerClientBuilder addLoggingPolicy(CallingServerClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
-
 }
