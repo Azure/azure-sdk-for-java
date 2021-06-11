@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca;
 
-import org.slf4j.LoggerFactory;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
@@ -22,7 +20,9 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import org.slf4j.Logger;
+import java.util.logging.Logger;
+
+import static java.util.logging.Level.WARNING;
 
 /**
  * The Azure Key Vault implementation of the KeyStoreSpi.
@@ -42,7 +42,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultKeyStore.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
     /**
      * Stores the Jre key store certificates.
@@ -281,7 +281,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         aliasLists.forEach((key, value) -> {
             value.forEach(a -> {
                 if (allAliases.contains(a)) {
-                    LOGGER.debug(String.format("The certificate with alias %s under %s already exists", a, key));
+                    LOGGER.log(WARNING, String.format("The certificate with alias %s under %s already exists", a, key));
                 } else {
                     allAliases.add(a);
                 }
@@ -294,7 +294,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (getAllAliases().contains(alias)) {
-            LOGGER.warn("Cannot overwrite own certificate");
+            LOGGER.log(WARNING, "Cannot overwrite own certificate");
             return;
         }
         classpathCertificates.setCertificateEntry(alias, certificate);
