@@ -29,7 +29,7 @@ public class QueueSasImplUtil {
 
     private final ClientLogger logger = new ClientLogger(QueueSasImplUtil.class);
 
-    private String version;
+    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     private SasProtocol protocol;
 
@@ -53,7 +53,6 @@ public class QueueSasImplUtil {
      */
     public QueueSasImplUtil(QueueServiceSasSignatureValues sasValues, String queueName) {
         Objects.requireNonNull(sasValues);
-        this.version = sasValues.getVersion();
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
@@ -111,10 +110,6 @@ public class QueueSasImplUtil {
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      */
     private void ensureState() {
-        if (version == null) {
-            version = QueueServiceVersion.getLatest().getVersion();
-        }
-
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
                 throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "

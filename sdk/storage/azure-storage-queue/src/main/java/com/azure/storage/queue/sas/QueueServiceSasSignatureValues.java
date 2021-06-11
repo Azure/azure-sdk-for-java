@@ -254,8 +254,6 @@ public final class QueueServiceSasSignatureValues {
      *
      * <p><strong>Notes on SAS generation</strong></p>
      * <ul>
-     * <li>If {@link #setVersion(String) version} is not set, the {@link QueueServiceVersion#getLatest() latest service
-     * version} is used.</li>
      * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
      * permissions should not be set. These values are inherited from the stored access policy.</li>
      * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
