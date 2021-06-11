@@ -110,7 +110,7 @@ public class KeyVaultProperties {
 
     @Deprecated
     @DeprecatedConfigurationProperty(
-        reason = "Remove data collection based on fixed endpoints, and support based on service endpoints.")
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public String getAllowTelemetry() {
         return allowTelemetry;
     }

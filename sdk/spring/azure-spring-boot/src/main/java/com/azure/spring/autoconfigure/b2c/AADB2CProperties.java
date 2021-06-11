@@ -251,7 +251,7 @@ public class AADB2CProperties implements InitializingBean {
 
     @Deprecated
     @DeprecatedConfigurationProperty(
-        reason = "Remove data collection based on fixed endpoints, and support based on service endpoints.")
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }

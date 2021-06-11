@@ -1,5 +1,5 @@
 # Azure Spring cloud azure telemetry client library for Java
-We are deprecating this starter, Use service-based endpoints to collect data. 
+We are deprecating this starter, use HTTP header User Agent instead. 
 
 ## Key concepts
 ## Getting started
