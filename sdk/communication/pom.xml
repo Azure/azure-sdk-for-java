@@ -90,6 +90,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+		<module>azure-communication-callingserver</module>
         <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
