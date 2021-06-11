@@ -2,6 +2,10 @@
 
 ## 5.1.0-beta.8 (Unreleased)
 
+### Breaking Changes
+- Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
+- Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
+  `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`.
 
 ## 5.1.0-beta.7 (2021-05-19)
 ### Features Added

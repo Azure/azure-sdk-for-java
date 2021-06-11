@@ -952,7 +952,7 @@ final class TestUtils {
     static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(boolean isError,
         OffsetDateTime completeAt, RecognizeEntitiesResultCollection resultCollection, TextAnalyticsError actionError) {
         RecognizeEntitiesActionResult recognizeEntitiesActionResult = new RecognizeEntitiesActionResult();
-        RecognizeEntitiesActionResultPropertiesHelper.setResult(recognizeEntitiesActionResult, resultCollection);
+        RecognizeEntitiesActionResultPropertiesHelper.setDocumentResults(recognizeEntitiesActionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(recognizeEntitiesActionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(recognizeEntitiesActionResult, actionError);
@@ -963,7 +963,7 @@ final class TestUtils {
         OffsetDateTime completedAt, RecognizePiiEntitiesResultCollection resultCollection,
         TextAnalyticsError actionError) {
         RecognizePiiEntitiesActionResult recognizePiiEntitiesActionResult = new RecognizePiiEntitiesActionResult();
-        RecognizePiiEntitiesActionResultPropertiesHelper.setResult(recognizePiiEntitiesActionResult, resultCollection);
+        RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentResults(recognizePiiEntitiesActionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, completedAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(recognizePiiEntitiesActionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(recognizePiiEntitiesActionResult, actionError);
@@ -974,7 +974,7 @@ final class TestUtils {
         OffsetDateTime completedAt, ExtractKeyPhrasesResultCollection resultCollection,
         TextAnalyticsError actionError) {
         ExtractKeyPhrasesActionResult extractKeyPhrasesActionResult = new ExtractKeyPhrasesActionResult();
-        ExtractKeyPhrasesActionResultPropertiesHelper.setResult(extractKeyPhrasesActionResult, resultCollection);
+        ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentResults(extractKeyPhrasesActionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, completedAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(extractKeyPhrasesActionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(extractKeyPhrasesActionResult, actionError);
@@ -985,7 +985,7 @@ final class TestUtils {
         OffsetDateTime completeAt, RecognizeLinkedEntitiesResultCollection resultCollection,
         TextAnalyticsError actionError) {
         RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
-        RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult, resultCollection);
+        RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
@@ -995,7 +995,7 @@ final class TestUtils {
     static AnalyzeSentimentActionResult getExpectedAnalyzeSentimentActionResult(boolean isError,
         OffsetDateTime completeAt, AnalyzeSentimentResultCollection resultCollection, TextAnalyticsError actionError) {
         AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
-        AnalyzeSentimentActionResultPropertiesHelper.setResult(actionResult, resultCollection);
+        AnalyzeSentimentActionResultPropertiesHelper.setDocumentResults(actionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);

@@ -10,11 +10,11 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
  * The {@link RecognizePiiEntitiesActionResult} model.
  */
 public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionResult {
-    private RecognizePiiEntitiesResultCollection result;
+    private RecognizePiiEntitiesResultCollection documentResults;
 
     static {
         RecognizePiiEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, result) -> actionsResult.setResult(result));
+            (actionsResult, documentResults) -> actionsResult.setDocumentResults(documentResults));
     }
 
     /**
@@ -25,12 +25,12 @@ public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionR
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public RecognizePiiEntitiesResultCollection getResult() {
+    public RecognizePiiEntitiesResultCollection getDocumentResults() {
         throwExceptionIfError();
-        return result;
+        return documentResults;
     }
 
-    private void setResult(RecognizePiiEntitiesResultCollection result) {
-        this.result = result;
+    private void setDocumentResults(RecognizePiiEntitiesResultCollection documentResults) {
+        this.documentResults = documentResults;
     }
 }

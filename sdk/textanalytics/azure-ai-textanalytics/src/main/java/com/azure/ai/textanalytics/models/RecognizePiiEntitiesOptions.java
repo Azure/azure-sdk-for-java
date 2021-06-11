@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 @Fluent
 public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptions {
-    private PiiEntityDomainType domainFilter;
+    private PiiEntityDomain domainFilter;
     private StringIndexType stringIndexType;
     private Iterable<PiiEntityCategory> categoriesFilter;
 
@@ -68,7 +68,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      *
      * @return The value of domainFilter.
      */
-    public PiiEntityDomainType getDomainFilter() {
+    public PiiEntityDomain getDomainFilter() {
         return domainFilter;
     }
 
@@ -81,7 +81,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
      *
      * @return The {@link RecognizePiiEntitiesOptions} object itself.
      */
-    public RecognizePiiEntitiesOptions setDomainFilter(PiiEntityDomainType domainFilter) {
+    public RecognizePiiEntitiesOptions setDomainFilter(PiiEntityDomain domainFilter) {
         this.domainFilter = domainFilter;
         return this;
     }
