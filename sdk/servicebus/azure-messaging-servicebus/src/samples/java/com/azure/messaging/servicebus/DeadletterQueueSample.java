@@ -65,18 +65,18 @@ public class DeadletterQueueSample {
      * @Param maxMessages Maximum Number Of Messages
      */
     void sendMessagesAsync(ServiceBusSenderClient senderAsyncClient, int maxMessages) {
-        List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>(){{
-            add(createServiceBusMessage("{\"name\" : \"Einstein\", \"firstName\" : \"Albert\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Heisenberg\", \"firstName\" : \"Werner\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Curie\", \"firstName\" : \"Marie\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Hawking\", \"firstName\" : \"Steven\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Newton\", \"firstName\" : \"Isaac\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Bohr\", \"firstName\" : \"Niels\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Faraday\", \"firstName\" : \"Michael\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Galilei\", \"firstName\" : \"Galileo\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Kepler\", \"firstName\" : \"Johannes\"}"));
-            add(createServiceBusMessage("{\"name\" : \"Kopernikus\", \"firstName\" : \"Nikolaus\"}"));
-        }};
+        List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>();
+        messageList.add(createServiceBusMessage("{\"name\" : \"Einstein\", \"firstName\" : \"Albert\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Heisenberg\", \"firstName\" : \"Werner\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Curie\", \"firstName\" : \"Marie\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Hawking\", \"firstName\" : \"Steven\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Newton\", \"firstName\" : \"Isaac\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Bohr\", \"firstName\" : \"Niels\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Faraday\", \"firstName\" : \"Michael\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Galilei\", \"firstName\" : \"Galileo\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Kepler\", \"firstName\" : \"Johannes\"}"));
+        messageList.add(createServiceBusMessage("{\"name\" : \"Kopernikus\", \"firstName\" : \"Nikolaus\"}"));
+
         for (int i = 0; i < Math.min(messageList.size(), maxMessages); i++) {
             final String messageId = Integer.toString(i);
             ServiceBusMessage message = messageList.get(i);
@@ -150,10 +150,10 @@ public class DeadletterQueueSample {
             .buildAsyncClient();
 
         receiverAsyncClient.receiveMessages().subscribe(receiveMessage -> {
-            if (receiveMessage.getSubject() != null &&
-                receiveMessage.getContentType() != null &&
-                receiveMessage.getSubject().contentEquals("Scientist") &&
-                receiveMessage.getContentType().contentEquals("application/json")) {
+            if (receiveMessage.getSubject() != null
+                && receiveMessage.getContentType() != null
+                && receiveMessage.getSubject().contentEquals("Scientist")
+                && receiveMessage.getContentType().contentEquals("application/json")) {
                 byte[] body = receiveMessage.getBody().toBytes();
                 JSONObject jsonObject = null;
                 try {
@@ -162,8 +162,8 @@ public class DeadletterQueueSample {
                     e.printStackTrace();
                 }
                 System.out.printf(
-                    "\n\t\t\t\tMessage received: \n\t\t\t\t\t\tMessageId = %s, \n\t\t\t\t\t\tSequenceNumber = %s, \n\t\t\t\t\t\tEnqueuedTimeUtc = %s," +
-                        "\n\t\t\t\t\t\tExpiresAtUtc = %s, \n\t\t\t\t\t\tContentType = \"%s\",  \n\t\t\t\t\t\tContent: [ firstName = %s, name = %s ]\n",
+                    "\n\t\t\t\tMessage received: \n\t\t\t\t\t\tMessageId = %s, \n\t\t\t\t\t\tSequenceNumber = %s, \n\t\t\t\t\t\tEnqueuedTimeUtc = %s,"
+                        + "\n\t\t\t\t\t\tExpiresAtUtc = %s, \n\t\t\t\t\t\tContentType = \"%s\",  \n\t\t\t\t\t\tContent: [ firstName = %s, name = %s ]\n",
                     receiveMessage.getMessageId(),
                     receiveMessage.getSequenceNumber(),
                     receiveMessage.getEnqueuedTime(),
