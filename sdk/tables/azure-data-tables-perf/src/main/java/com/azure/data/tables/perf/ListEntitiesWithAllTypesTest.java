@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables.perf;
 
 import com.azure.data.tables.models.TableTransactionAction;
@@ -9,10 +11,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-public class ListTableEntitiesWithAllTypesTest extends TableTestBase<PerfStressOptions> {
+public class ListEntitiesWithAllTypesTest extends TableTestBase<PerfStressOptions> {
     private final String partitionKey;
 
-    public ListTableEntitiesWithAllTypesTest(PerfStressOptions options) {
+    public ListEntitiesWithAllTypesTest(PerfStressOptions options) {
         super(options);
 
         partitionKey = UUID.randomUUID().toString();

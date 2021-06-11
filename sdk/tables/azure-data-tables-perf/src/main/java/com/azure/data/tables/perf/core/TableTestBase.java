@@ -1,5 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables.perf.core;
 
+import com.azure.core.test.utils.ResourceNamer;
 import com.azure.data.tables.TableAsyncClient;
 import com.azure.data.tables.TableClient;
 import com.azure.data.tables.models.TableEntity;
@@ -51,7 +54,7 @@ public abstract class TableTestBase<TOptions extends PerfStressOptions> extends 
     public TableTestBase(TOptions options) {
         super(options);
 
-        String tableName = "tablePerfTest-" + UUID.randomUUID();
+        String tableName = new ResourceNamer("PerfTest").randomName("table", 20);
 
         tableClient = tableServiceClient.getTableClient(tableName);
         tableAsyncClient = tableServiceAsyncClient.getTableClient(tableName);

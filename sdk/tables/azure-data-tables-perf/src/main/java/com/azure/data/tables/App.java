@@ -1,8 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.data.tables;
 
+import com.azure.data.tables.perf.CreateEntityWithAllTypes;
+import com.azure.data.tables.perf.CreateEntityWithAllTypesUsingTransaction;
+import com.azure.data.tables.perf.CreateEntityWithStringsOnly;
+import com.azure.data.tables.perf.CreateEntityWithStringsOnlyUsingTransaction;
+import com.azure.data.tables.perf.ListEntitiesWithStringsOnlyTest;
+import com.azure.data.tables.perf.ListEntitiesWithAllTypesTest;
 import com.azure.perf.test.core.PerfStressProgram;
 
 /**
@@ -16,17 +21,13 @@ import com.azure.perf.test.core.PerfStressProgram;
  */
 public class App {
     public static void main(String[] args) {
-        Class<?>[] testClasses;
-
-        try {
-            testClasses = new Class<?>[] {
-                Class.forName("com.azure.<service>.<sub-package>.perf.<APIName>Test"),
-                Class.forName("com.azure.<service>.<sub-package>.perf.<APIName>Test")
-            };
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        PerfStressProgram.run(testClasses, args);
+        PerfStressProgram.run(new Class<?>[]{
+            CreateEntityWithAllTypes.class,
+            CreateEntityWithStringsOnly.class,
+            ListEntitiesWithAllTypesTest.class,
+            ListEntitiesWithStringsOnlyTest.class,
+            CreateEntityWithAllTypesUsingTransaction.class,
+            CreateEntityWithStringsOnlyUsingTransaction.class
+        }, args);
     }
 }
