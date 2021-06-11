@@ -8,7 +8,6 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityConditionality;
@@ -16,11 +15,9 @@ import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.StringIndexType;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -458,20 +455,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22257")
     public void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        batchEmojiRunner(
-            documents -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(documents,
-                new RecognizeEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
-                             .assertNext(response -> response.getValue().stream().forEach(
-                                 recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
-                                     categorizedEntity -> {
-                                         assertEquals(9, categorizedEntity.getLength());
-                                         assertEquals(12, categorizedEntity.getOffset());
-                                     })))
-                    .verifyComplete(),
-            CATEGORIZED_ENTITY_INPUTS.get(1)
-        );
+//        batchEmojiRunner(
+//            documents -> StepVerifier.create(client.recognizeEntitiesBatchWithResponse(documents,
+//                new RecognizeEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+//                             .assertNext(response -> response.getValue().stream().forEach(
+//                                 recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
+//                                     categorizedEntity -> {
+//                                         assertEquals(9, categorizedEntity.getLength());
+//                                         assertEquals(12, categorizedEntity.getOffset());
+//                                     })))
+//                    .verifyComplete(),
+//            CATEGORIZED_ENTITY_INPUTS.get(1)
+//        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -716,20 +714,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22257")
     public void recognizePiiEntitiesBatchWithResponseEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        batchEmojiRunner(
-            documents -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(documents,
-                new RecognizePiiEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
-                             .assertNext(response -> response.getValue().stream().forEach(
-                                 result -> result.getEntities().forEach(
-                                     piiEntity -> {
-                                         assertEquals(11, piiEntity.getLength());
-                                         assertEquals(7, piiEntity.getOffset());
-                                     })))
-                             .verifyComplete(),
-            PII_ENTITY_OFFSET_INPUT
-        );
+//        batchEmojiRunner(
+//            documents -> StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(documents,
+//                new RecognizePiiEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+//                             .assertNext(response -> response.getValue().stream().forEach(
+//                                 result -> result.getEntities().forEach(
+//                                     piiEntity -> {
+//                                         assertEquals(11, piiEntity.getLength());
+//                                         assertEquals(7, piiEntity.getOffset());
+//                                     })))
+//                             .verifyComplete(),
+//            PII_ENTITY_OFFSET_INPUT
+//        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1072,22 +1071,23 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22257")
     public void recognizeLinkedEntitiesBatchWithResponseEmoji(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        batchEmojiRunner(
-            documents -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(documents,
-                new RecognizeLinkedEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
-                             .assertNext(response -> response.getValue().stream().forEach(
-                                 result -> result.getEntities().forEach(
-                                     linkedEntity ->
-                                         linkedEntity.getMatches().forEach(linkedEntityMatch -> {
-                                             assertEquals(9, linkedEntityMatch.getLength());
-                                             assertEquals(12, linkedEntityMatch.getOffset());
-                                         }))))
-                             .verifyComplete(),
-            LINKED_ENTITY_INPUTS.get(1)
-        );
+//        batchEmojiRunner(
+//            documents -> StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(documents,
+//                new RecognizeLinkedEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+//                             .assertNext(response -> response.getValue().stream().forEach(
+//                                 result -> result.getEntities().forEach(
+//                                     linkedEntity ->
+//                                         linkedEntity.getMatches().forEach(linkedEntityMatch -> {
+//                                             assertEquals(9, linkedEntityMatch.getLength());
+//                                             assertEquals(12, linkedEntityMatch.getOffset());
+//                                         }))))
+//                             .verifyComplete(),
+//            LINKED_ENTITY_INPUTS.get(1)
+//        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1719,32 +1719,33 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22257")
     public void analyzeSentimentBatchWithResponseEmoji(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        batchEmojiRunner(
-            documents ->
-                StepVerifier.create(client.analyzeSentimentBatchWithResponse(documents,
-                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)
-                        .setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
-                    .assertNext(response -> response.getValue().stream().forEach(
-                        result -> result.getDocumentSentiment().getSentences().forEach(
-                            sentenceSentiment -> {
-                                assertEquals(24, sentenceSentiment.getLength());
-                                assertEquals(0, sentenceSentiment.getOffset());
-                                sentenceSentiment.getOpinions().forEach(opinion -> {
-                                    opinion.getAssessments().forEach(assessmentSentiment -> {
-                                        assertEquals(7, assessmentSentiment.getLength());
-                                        assertEquals(16, assessmentSentiment.getOffset());
-                                    });
-                                    final TargetSentiment targetSentiment = opinion.getTarget();
-                                    assertEquals(5, targetSentiment.getLength());
-                                    assertEquals(6, targetSentiment.getOffset());
-                                });
-                            })))
-                    .verifyComplete(),
-            SENTIMENT_OFFSET_INPUT
-        );
+//        batchEmojiRunner(
+//            documents ->
+//                StepVerifier.create(client.analyzeSentimentBatchWithResponse(documents,
+//                    new AnalyzeSentimentOptions().setIncludeOpinionMining(true)
+//                        .setStringIndexType(StringIndexType.UNICODE_CODE_POINT)))
+//                    .assertNext(response -> response.getValue().stream().forEach(
+//                        result -> result.getDocumentSentiment().getSentences().forEach(
+//                            sentenceSentiment -> {
+//                                assertEquals(24, sentenceSentiment.getLength());
+//                                assertEquals(0, sentenceSentiment.getOffset());
+//                                sentenceSentiment.getOpinions().forEach(opinion -> {
+//                                    opinion.getAssessments().forEach(assessmentSentiment -> {
+//                                        assertEquals(7, assessmentSentiment.getLength());
+//                                        assertEquals(16, assessmentSentiment.getOffset());
+//                                    });
+//                                    final TargetSentiment targetSentiment = opinion.getTarget();
+//                                    assertEquals(5, targetSentiment.getLength());
+//                                    assertEquals(6, targetSentiment.getOffset());
+//                                });
+//                            })))
+//                    .verifyComplete(),
+//            SENTIMENT_OFFSET_INPUT
+//        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2016,29 +2017,30 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22257")
     public void analyzeHealthcareEntitiesEmojiUnicodeCodePoint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        emojiRunner(
-            document -> {
-                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
-                    syncPoller = client.beginAnalyzeHealthcareEntities(
-                        Collections.singletonList(new TextDocumentInput("0", document)),
-                        new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT))
-                                     .getSyncPoller();
-                syncPoller = setPollInterval(syncPoller);
-                syncPoller.waitForCompletion();
-                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
-                    = syncPoller.getFinalResult();
-                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
-                    result.forEach(entitiesResult ->
-                        entitiesResult.getEntities().forEach(entity -> {
-                            assertEquals(11, entity.getLength());
-                            assertEquals(19, entity.getOffset());
-                        }));
-                });
-            },
-            HEALTHCARE_ENTITY_OFFSET_INPUT
-        );
+//        emojiRunner(
+//            document -> {
+//                SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+//                    syncPoller = client.beginAnalyzeHealthcareEntities(
+//                        Collections.singletonList(new TextDocumentInput("0", document)),
+//                        new AnalyzeHealthcareEntitiesOptions().setStringIndexType(StringIndexType.UNICODE_CODE_POINT))
+//                                     .getSyncPoller();
+//                syncPoller = setPollInterval(syncPoller);
+//                syncPoller.waitForCompletion();
+//                PagedFlux<AnalyzeHealthcareEntitiesResultCollection> healthcareEntitiesResultCollectionPagedFlux
+//                    = syncPoller.getFinalResult();
+//                healthcareEntitiesResultCollectionPagedFlux.toStream().forEach(result -> {
+//                    result.forEach(entitiesResult ->
+//                        entitiesResult.getEntities().forEach(entity -> {
+//                            assertEquals(11, entity.getLength());
+//                            assertEquals(19, entity.getOffset());
+//                        }));
+//                });
+//            },
+//            HEALTHCARE_ENTITY_OFFSET_INPUT
+//        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

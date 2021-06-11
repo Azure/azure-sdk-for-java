@@ -34,6 +34,7 @@ import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTask;
 import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityLinkingTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
@@ -81,7 +82,6 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
@@ -202,7 +202,7 @@ class AnalyzeActionsAsyncClient {
                         entitiesTask.setParameters(
                             new EntitiesTaskParameters()
                                 .setModelVersion(action.getModelVersion())
-                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType())));
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
@@ -218,7 +218,7 @@ class AnalyzeActionsAsyncClient {
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
-                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType()))
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
                         );
                         return piiTask;
