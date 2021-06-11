@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class AccountSasSignatureValues {
-    private String version;
+    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     private SasProtocol protocol;
 
@@ -79,9 +79,12 @@ public final class AccountSasSignatureValues {
      *
      * @param version Target version to set
      * @return the updated AccountSasSignatureValues object.
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public AccountSasSignatureValues setVersion(String version) {
-        this.version = version;
+        // no-op
         return this;
     }
 
@@ -271,10 +274,6 @@ public final class AccountSasSignatureValues {
         StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
         StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
         StorageImplUtils.assertNotNull("permissions", this.permissions);
-
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        }
 
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));

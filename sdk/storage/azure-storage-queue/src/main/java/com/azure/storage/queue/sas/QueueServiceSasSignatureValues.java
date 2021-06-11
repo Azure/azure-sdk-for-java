@@ -24,7 +24,7 @@ import java.time.OffsetDateTime;
  * SAS</a>
  */
 public final class QueueServiceSasSignatureValues {
-    private String version;
+    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     private SasProtocol protocol;
 
@@ -86,9 +86,12 @@ public final class QueueServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated QueueServiceSasSignatureValues object
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public QueueServiceSasSignatureValues setVersion(String version) {
-        this.version = version;
+        // no-op
         return this;
     }
 
@@ -273,10 +276,6 @@ public final class QueueServiceSasSignatureValues {
     public QueueServiceSasQueryParameters generateSasQueryParameters(
         StorageSharedKeyCredential storageSharedKeyCredentials) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
-
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = QueueServiceVersion.getLatest().getVersion();
-        }
 
         // Signature is generated on the un-url-encoded values.
         String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName(), queueName);

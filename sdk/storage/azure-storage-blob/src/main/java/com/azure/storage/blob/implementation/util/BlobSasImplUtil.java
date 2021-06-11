@@ -10,7 +10,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.sas.BlobSasServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -51,7 +50,7 @@ public class BlobSasImplUtil {
 
     private final ClientLogger logger = new ClientLogger(BlobSasImplUtil.class);
 
-    private String version;
+    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     private SasProtocol protocol;
 
@@ -115,7 +114,6 @@ public class BlobSasImplUtil {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
         }
-        this.version = null; /* Setting this to null forces the latest service version - see ensureState. */
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
@@ -246,10 +244,6 @@ public class BlobSasImplUtil {
      * https://github.com/Azure/azure-sdk-for-net/blob/master/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
      */
     private void ensureState() {
-        if (version == null) {
-            version = BlobSasServiceVersion.getLatest().getVersion();
-        }
-
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
                 throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "

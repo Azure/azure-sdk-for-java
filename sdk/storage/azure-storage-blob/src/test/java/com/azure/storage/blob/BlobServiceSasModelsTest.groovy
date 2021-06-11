@@ -220,7 +220,6 @@ class BlobServiceSasModelsTest extends Specification {
     def "ensure state version"() {
         when:
         BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues("id"), "container")
-        implUtil.version = null
         implUtil.ensureState()
 
         then:

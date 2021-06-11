@@ -3,10 +3,10 @@
 
 package com.azure.storage.file.datalake.sas;
 
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 
 import java.time.OffsetDateTime;
@@ -25,7 +25,7 @@ import java.time.OffsetDateTime;
  */
 public final class DataLakeServiceSasSignatureValues {
 
-    private final String version = DataLakeServiceVersion.getLatest().getVersion();
+    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     private SasProtocol protocol;
 

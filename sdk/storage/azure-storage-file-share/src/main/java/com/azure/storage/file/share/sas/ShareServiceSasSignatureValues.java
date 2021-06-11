@@ -34,7 +34,7 @@ public final class ShareServiceSasSignatureValues {
      */
     private static final String SAS_SHARE_CONSTANT = "s";
 
-    private String version;
+    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     private SasProtocol protocol;
 
@@ -122,9 +122,12 @@ public final class ShareServiceSasSignatureValues {
      *
      * @param version Version to target
      * @return the updated FileServiceSasSignatureValues object
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public ShareServiceSasSignatureValues setVersion(String version) {
-        this.version = version;
+        // no-op
         return this;
     }
 
@@ -453,10 +456,6 @@ public final class ShareServiceSasSignatureValues {
             if (permissions != null) {
                 permissions = ShareFileSasPermission.parse(permissions).toString();
             }
-        }
-
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = ShareServiceVersion.getLatest().getVersion();
         }
 
         // Signature is generated on the un-url-encoded values.
