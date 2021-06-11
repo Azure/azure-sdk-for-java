@@ -238,13 +238,10 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        // TODO: [ServiceBug] service currently returns two entities by errors, reuse the result and record again
-        // after service correct it. https://github.com/Azure/azure-sdk-for-java/issues/18982
-//        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26);
         CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34);
-//        return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
-        return asList(categorizedEntity2, categorizedEntity3);
+        return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
     /**
