@@ -624,7 +624,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param options The {@link RecognizeLinkedEntitiesOptions options} to configure the scoring model for documents
-     * , show statistics, and {@link StringIndexType}.
+     * , and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} that contains a {@link RecognizeLinkedEntitiesResultCollection}.
