@@ -31,12 +31,12 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
 
             int maximumConnectionPoolSize = clientOptions.getMaximumConnectionPoolSize();
 
-            ConnectionProvider.Builder connectionProviderBuilder = ConnectionProvider.builder("azure-sdk")
-                .maxIdleTime(clientOptions.getConnectionIdleTimeout());
+            ConnectionProvider.Builder connectionProviderBuilder = ConnectionProvider.builder("azure-sdk");
+            connectionProviderBuilder.maxIdleTime(clientOptions.getConnectionIdleTimeout());
 
             // Only configure the maximum connections if it has been set in the options.
             if (maximumConnectionPoolSize > 0) {
-                connectionProviderBuilder = connectionProviderBuilder.maxConnections(maximumConnectionPoolSize);
+                connectionProviderBuilder.maxConnections(maximumConnectionPoolSize);
             }
 
             builder = builder.connectionProvider(connectionProviderBuilder.build());
