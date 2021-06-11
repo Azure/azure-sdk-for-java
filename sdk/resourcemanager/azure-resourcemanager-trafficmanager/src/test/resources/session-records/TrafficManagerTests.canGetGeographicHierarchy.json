@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/providers/Microsoft.Network/trafficManagerGeographicHierarchies/default?api-version=2018-04-01",
+    "Uri" : "http://localhost:1234/providers/Microsoft.Network/trafficManagerGeographicHierarchies/default?api-version=2018-08-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.trafficmanager/2.0.0-beta.4 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a3e2014e-9827-4aa0-9b6a-2e4b23ab19bf",
