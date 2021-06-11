@@ -56,10 +56,10 @@ import com.azure.learn.appconfig.implementation.models.GetRevisionsResponse;
 import com.azure.learn.appconfig.implementation.models.Head6ItemsItem;
 import com.azure.learn.appconfig.implementation.models.Head7ItemsItem;
 import com.azure.learn.appconfig.implementation.models.Key;
+import com.azure.learn.appconfig.implementation.models.KeyValue;
 import com.azure.learn.appconfig.implementation.models.Label;
 import com.azure.learn.appconfig.implementation.models.PutKeyValueResponse;
 import com.azure.learn.appconfig.implementation.models.PutLockResponse;
-import com.azure.learn.appconfig.models.ConfigurationSetting;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -259,7 +259,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
-                @BodyParam("application/json") ConfigurationSetting entity,
+                @BodyParam("application/json") KeyValue entity,
                 Context context);
 
         @Delete("/kv/{key}")
@@ -481,7 +481,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-values.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> getKeyValuesSinglePageAsync(
+    public Mono<PagedResponse<KeyValue>> getKeyValuesSinglePageAsync(
             String key,
             String label,
             String after,
@@ -605,12 +605,7 @@ public final class AzureAppConfigurationImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PutKeyValueResponse> putKeyValueWithResponseAsync(
-            String key,
-            String label,
-            String ifMatch,
-            String ifNoneMatch,
-            ConfigurationSetting entity,
-            Context context) {
+            String key, String label, String ifMatch, String ifNoneMatch, KeyValue entity, Context context) {
         return service.putKeyValue(
                 this.getEndpoint(),
                 key,
@@ -823,7 +818,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value revisions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> getRevisionsSinglePageAsync(
+    public Mono<PagedResponse<KeyValue>> getRevisionsSinglePageAsync(
             String key, String label, String after, String acceptDatetime, List<Enum4> select, Context context) {
         String selectConverted =
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
@@ -918,7 +913,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> getKeyValuesNextSinglePageAsync(
+    public Mono<PagedResponse<KeyValue>> getKeyValuesNextSinglePageAsync(
             String nextLink, String acceptDatetime, Context context) {
         return service.getKeyValuesNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, context)
                 .map(
@@ -970,7 +965,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a list request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSetting>> getRevisionsNextSinglePageAsync(
+    public Mono<PagedResponse<KeyValue>> getRevisionsNextSinglePageAsync(
             String nextLink, String acceptDatetime, Context context) {
         return service.getRevisionsNext(nextLink, this.getEndpoint(), this.getSyncToken(), acceptDatetime, context)
                 .map(
