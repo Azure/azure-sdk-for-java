@@ -6,6 +6,7 @@ package com.azure.resourcemanager.trafficmanager.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -53,12 +54,15 @@ public final class GeographicHierarchiesClientImpl implements GeographicHierarch
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     private interface GeographicHierarchiesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Network/trafficManagerGeographicHierarchies/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficManagerGeographicHierarchyInner>> getDefault(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -76,9 +80,11 @@ public final class GeographicHierarchiesClientImpl implements GeographicHierarch
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(
+                context -> service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -98,8 +104,9 @@ public final class GeographicHierarchiesClientImpl implements GeographicHierarch
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), context);
+        return service.getDefault(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.trafficmanager.models.AllowedEndpointRecordType;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
@@ -16,6 +17,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStat
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Class representing a Traffic Manager profile. */
 @JsonFlatten
@@ -60,6 +62,12 @@ public class ProfileInner extends Resource {
      */
     @JsonProperty(value = "properties.trafficViewEnrollmentStatus")
     private TrafficViewEnrollmentStatus trafficViewEnrollmentStatus;
+
+    /*
+     * The list of allowed endpoint record types.
+     */
+    @JsonProperty(value = "properties.allowedEndpointRecordTypes")
+    private List<AllowedEndpointRecordType> allowedEndpointRecordTypes;
 
     /*
      * Maximum number of endpoints to be returned for MultiValue routing type.
@@ -192,6 +200,26 @@ public class ProfileInner extends Resource {
     }
 
     /**
+     * Get the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
+     *
+     * @return the allowedEndpointRecordTypes value.
+     */
+    public List<AllowedEndpointRecordType> allowedEndpointRecordTypes() {
+        return this.allowedEndpointRecordTypes;
+    }
+
+    /**
+     * Set the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
+     *
+     * @param allowedEndpointRecordTypes the allowedEndpointRecordTypes value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withAllowedEndpointRecordTypes(List<AllowedEndpointRecordType> allowedEndpointRecordTypes) {
+        this.allowedEndpointRecordTypes = allowedEndpointRecordTypes;
+        return this;
+    }
+
+    /**
      * Get the maxReturn property: Maximum number of endpoints to be returned for MultiValue routing type.
      *
      * @return the maxReturn value.
@@ -208,6 +236,20 @@ public class ProfileInner extends Resource {
      */
     public ProfileInner withMaxReturn(Long maxReturn) {
         this.maxReturn = maxReturn;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProfileInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ProfileInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

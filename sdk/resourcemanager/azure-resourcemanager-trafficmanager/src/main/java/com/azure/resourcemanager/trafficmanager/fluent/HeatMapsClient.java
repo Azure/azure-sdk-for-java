@@ -19,8 +19,8 @@ public interface HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -35,8 +35,8 @@ public interface HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -77,8 +77,8 @@ public interface HeatMapsClient {
      *
      * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
      * @param profileName The name of the Traffic Manager profile.
-     * @param topLeft Array of Get4ItemsItem.
-     * @param botRight Array of Get5ItemsItem.
+     * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
+     * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
