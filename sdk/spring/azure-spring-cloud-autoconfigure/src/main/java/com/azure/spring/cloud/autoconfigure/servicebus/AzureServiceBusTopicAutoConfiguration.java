@@ -26,10 +26,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
-import javax.annotation.PostConstruct;
-
-import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.getNamespace;
-
 /**
  * An auto-configuration for Service Bus topic
  *

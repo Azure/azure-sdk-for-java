@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.RedisOperations;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 /**
