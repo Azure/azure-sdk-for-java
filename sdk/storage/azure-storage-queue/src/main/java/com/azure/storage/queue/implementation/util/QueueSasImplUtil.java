@@ -29,7 +29,7 @@ public class QueueSasImplUtil {
 
     private final ClientLogger logger = new ClientLogger(QueueSasImplUtil.class);
 
-    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private final String version = Constants.SAS_SERVICE_VERSION;
 
     private SasProtocol protocol;
 

@@ -24,7 +24,7 @@ import java.time.OffsetDateTime;
  * SAS</a>
  */
 public final class QueueServiceSasSignatureValues {
-    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private final String version = Constants.SAS_SERVICE_VERSION;
 
     private SasProtocol protocol;
 

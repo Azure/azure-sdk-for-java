@@ -68,7 +68,7 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
 
         then:
         parts.getScheme() == "http"
@@ -77,7 +77,7 @@ class HelperTest extends APISpec {
         parts.getBlobName() == finalBlobName
         parts.getSnapshot() == "snapshot"
         parts.getCommonSasQueryParameters().getPermissions() == "r"
-        parts.getCommonSasQueryParameters().getVersion() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
+        parts.getCommonSasQueryParameters().getVersion() == Constants.SAS_SERVICE_VERSION
         parts.getCommonSasQueryParameters().getResource() == "c"
         parts.getCommonSasQueryParameters().getSignature() == Utility.urlDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
 

@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class AccountSasSignatureValues {
-    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private final String version = Constants.SAS_SERVICE_VERSION;
 
     private SasProtocol protocol;
 

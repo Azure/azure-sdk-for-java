@@ -40,7 +40,7 @@ public class ShareSasImplUtil {
 
     private final ClientLogger logger = new ClientLogger(ShareSasImplUtil.class);
 
-    private final String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private final String version = Constants.SAS_SERVICE_VERSION;
 
     private SasProtocol protocol;
 

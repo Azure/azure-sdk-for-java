@@ -46,7 +46,7 @@ public class DataLakeSasImplUtil {
 
     private final ClientLogger logger = new ClientLogger(DataLakeSasImplUtil.class);
 
-    private static String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+    private static String version = Constants.SAS_SERVICE_VERSION;
 
     private SasProtocol protocol;
 
