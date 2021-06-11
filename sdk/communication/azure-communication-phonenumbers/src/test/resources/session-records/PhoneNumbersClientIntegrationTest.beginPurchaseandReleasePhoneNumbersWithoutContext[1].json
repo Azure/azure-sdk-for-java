@@ -89,7 +89,7 @@
       "retry-after" : "0",
       "X-Azure-Ref" : "0/77DYAAAAAD2oiOSJ7v7R7nUldQNWhuVWVZSMzBFREdFMDQxNAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"searchId\":\"9bd1d3a6-d821-4b89-b8e3-61b795cce1c1\",\"phoneNumbers\":[\"+18335812010\"],\"phoneNumberType\":\"tollFree\",\"assignmentType\":\"application\",\"capabilities\":{\"calling\":\"inbound\",\"sms\":\"inbound+outbound\"},\"cost\":{\"amount\":2.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"},\"searchExpiresBy\":\"2021-06-11T20:08:30.8810177+00:00\"}",
+      "Body" : "{\"searchId\":\"9bd1d3a6-d821-4b89-b8e3-61b795cce1c1\",\"phoneNumbers\":[\"+REDACTED\"],\"phoneNumberType\":\"tollFree\",\"assignmentType\":\"application\",\"capabilities\":{\"calling\":\"inbound\",\"sms\":\"inbound+outbound\"},\"cost\":{\"amount\":2.0,\"currencyCode\":\"USD\",\"billingFrequency\":\"monthly\"},\"searchExpiresBy\":\"2021-06-11T20:08:30.8810177+00:00\"}",
       "Date" : "Fri, 11 Jun 2021 19:52:32 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
@@ -386,7 +386,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/+18335812010?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/+REDACTED?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7d9210bb-5a7b-472b-8a80-155ed8064e57"
