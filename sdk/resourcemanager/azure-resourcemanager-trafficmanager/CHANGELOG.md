@@ -2,6 +2,8 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2018-08-01`
+
 ## 2.5.0 (2021-05-28)
 - Updated core dependency from resources
 
