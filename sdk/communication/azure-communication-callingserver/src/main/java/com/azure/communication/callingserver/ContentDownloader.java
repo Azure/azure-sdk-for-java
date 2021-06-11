@@ -16,6 +16,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -32,6 +33,8 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 import static java.lang.StrictMath.toIntExact;
@@ -39,38 +42,44 @@ import static java.lang.StrictMath.toIntExact;
 class ContentDownloader {
     private final String resourceEndpoint;
     private final HttpPipeline httpPipeline;
-    private final ClientLogger logger;
+    private final ClientLogger logger = new ClientLogger(ContentDownloader.class);
 
-    ContentDownloader(String resourceEndpoint, HttpPipeline httpPipeline,
-                             ClientLogger logger) {
+    ContentDownloader(String resourceEndpoint, HttpPipeline httpPipeline) {
         this.resourceEndpoint = resourceEndpoint;
         this.httpPipeline = httpPipeline;
-        this.logger = logger;
     }
 
-    Mono<Response<Void>> downloadToStream(String sourceEndpoint, OutputStream destinationStream,
-                                          ParallelDownloadOptions parallelDownloadOptions, Context context) {
-        return downloadTo(sourceEndpoint, parallelDownloadOptions, context,
-            chunkNum -> totalProgress -> response ->
-                writeBodyToStream(response, destinationStream, chunkNum, parallelDownloadOptions, totalProgress).flux());
+    Mono<Response<Void>> downloadToStreamWithResponse(String sourceEndpoint, OutputStream destinationStream,
+                                HttpRange httpRange, Context context) {
+        return downloadStreamWithResponse(sourceEndpoint, httpRange, context)
+            .flatMap(response -> response.getValue().reduce(destinationStream, (outputStream, buffer) -> {
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), null)));
     }
 
-    Mono<Response<Void>> downloadToFile(String sourceEndpoint, AsynchronousFileChannel destinationFile,
-                                        ParallelDownloadOptions parallelDownloadOptions, Context context) {
-        return downloadTo(sourceEndpoint, parallelDownloadOptions, context,
-            chunkNum -> totalProgress -> response ->
-                writeBodyToFile(response, destinationFile, chunkNum, parallelDownloadOptions, totalProgress).flux());
+    Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange httpRange,
+                                                                Context context) {
+        Mono<HttpResponse> httpResponse = makeDownloadRequest(sourceEndpoint, httpRange, context);
+        return httpResponse.map(response -> {
+            Flux<ByteBuffer> result = getFluxStream(response, sourceEndpoint, httpRange, context);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), result);
+        });
     }
 
-    private Mono<Response<Void>> downloadTo(
-        String endpoint,
-        ParallelDownloadOptions parallelDownloadOptions, Context context,
-        Function<Integer, Function<AtomicLong, Function<Response<Flux<ByteBuffer>>, Flux<Void>>>> writer) {
-
+    Mono<Response<Void>> downloadToFileWithResponse(String sourceEndpoint, AsynchronousFileChannel destinationFile,
+                                                    ParallelDownloadOptions parallelDownloadOptions, Context context) {
+        Lock progressLock = new ReentrantLock();
         AtomicLong totalProgress = new AtomicLong(0);
 
         Function<HttpRange, Mono<Response<Flux<ByteBuffer>>>> downloadFunc =
-            range -> downloadStreamWithResponse(endpoint, range, context);
+            range -> downloadStreamWithResponse(sourceEndpoint, range, context);
 
         return downloadFirstChunk(parallelDownloadOptions, downloadFunc)
             .flatMap(setupTuple2 -> {
@@ -84,31 +93,11 @@ class ContentDownloader {
                 return Flux.range(0, numChunks)
                     .flatMap(chunkNum -> downloadChunk(chunkNum, initialResponse,
                         parallelDownloadOptions, newCount, downloadFunc,
-                        writer.apply(chunkNum).apply(totalProgress)))
+                        response ->
+                            writeBodyToFile(response, destinationFile, chunkNum,
+                                parallelDownloadOptions, progressLock, totalProgress).flux()))
                     .then(Mono.just(new SimpleResponse<>(initialResponse, null)));
             });
-    }
-
-    Flux<ByteBuffer> downloadStream(String sourceEndpoint, HttpRange httpRange) {
-        Mono<HttpResponse> httpResponse = makeDownloadRequest(sourceEndpoint, httpRange, null);
-        return httpResponse
-            .map(response -> getFluxStream(response, sourceEndpoint, httpRange, null))
-            .flux()
-            .flatMap(flux -> flux);
-    }
-
-    Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String endpoint, HttpRange httpRange) {
-        return downloadStreamWithResponse(endpoint, httpRange, null);
-    }
-
-    Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange httpRange,
-                                                                Context context) {
-        Mono<HttpResponse> httpResponse = makeDownloadRequest(sourceEndpoint, httpRange, context);
-        return httpResponse.map(response -> {
-            Flux<ByteBuffer> result = getFluxStream(response, sourceEndpoint, httpRange, context);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), result);
-        });
     }
 
     private Flux<ByteBuffer> getFluxStream(HttpResponse httpResponse, String sourceEndpoint, HttpRange httpRange,
@@ -256,36 +245,16 @@ class ContentDownloader {
 
     private static Mono<Void> writeBodyToFile(Response<Flux<ByteBuffer>> response, AsynchronousFileChannel file,
                                               long chunkNum, ParallelDownloadOptions parallelDownloadOptions,
-                                              AtomicLong totalProgress) {
+                                              Lock progressLock, AtomicLong totalProgress) {
         // Extract the body.
         Flux<ByteBuffer> data = response.getValue();
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,
-            parallelDownloadOptions.getProgressReceiver(), totalProgress);
+            parallelDownloadOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
         return FluxUtil.writeFile(data, file, chunkNum * parallelDownloadOptions.getBlockSizeLong());
-    }
-
-    private static Mono<Void> writeBodyToStream(Response<Flux<ByteBuffer>> response, OutputStream stream,
-                                                long chunkNum, ParallelDownloadOptions parallelDownloadOptions,
-                                                AtomicLong totalProgress) {
-        Flux<ByteBuffer> data = response.getValue();
-
-        Flux<ByteBuffer> finalData = ProgressReporter.addParallelProgressReporting(data,
-            parallelDownloadOptions.getProgressReceiver(), totalProgress);
-
-        return Mono.create(emitter -> finalData.doOnError(emitter::error).subscribe(byteBuffer -> {
-            try {
-                byte[] bytes = byteBuffer.array();
-                stream.write(bytes, (int) ((int) chunkNum * parallelDownloadOptions.getBlockSizeLong()), bytes.length);
-                emitter.success();
-            } catch (IOException ex) {
-                emitter.error(ex);
-            }
-        })
-        );
     }
 
     void downloadToFileCleanup(AsynchronousFileChannel channel, Path filePath, SignalType signalType) {
