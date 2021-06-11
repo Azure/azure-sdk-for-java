@@ -15,82 +15,82 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 @Immutable
 public final class HealthcareEntityCategory extends ExpandableStringEnum<HealthcareEntityCategory> {
     /** Static value BODY_STRUCTURE for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory BODY_STRUCTURE = fromString("BODY_STRUCTURE");
+    public static final HealthcareEntityCategory BODY_STRUCTURE = fromString("BodyStructure");
 
     /** Static value AGE for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory AGE = fromString("AGE");
+    public static final HealthcareEntityCategory AGE = fromString("Age");
 
     /** Static value GENDER for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory GENDER = fromString("GENDER");
+    public static final HealthcareEntityCategory GENDER = fromString("Gender");
 
     /** Static value EXAMINATION_NAME for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory EXAMINATION_NAME = fromString("EXAMINATION_NAME");
+    public static final HealthcareEntityCategory EXAMINATION_NAME = fromString("ExaminationName");
 
     /** Static value DATE for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory DATE = fromString("DATE");
+    public static final HealthcareEntityCategory DATE = fromString("Date");
 
     /** Static value DIRECTION for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory DIRECTION = fromString("DIRECTION");
+    public static final HealthcareEntityCategory DIRECTION = fromString("Direction");
 
     /** Static value FREQUENCY for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory FREQUENCY = fromString("FREQUENCY");
+    public static final HealthcareEntityCategory FREQUENCY = fromString("Frequency");
 
     /** Static value MEASUREMENT_VALUE for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory MEASUREMENT_VALUE = fromString("MEASUREMENT_VALUE");
+    public static final HealthcareEntityCategory MEASUREMENT_VALUE = fromString("MeasurementValue");
 
     /** Static value MEASUREMENT_UNIT for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory MEASUREMENT_UNIT = fromString("MEASUREMENT_UNIT");
+    public static final HealthcareEntityCategory MEASUREMENT_UNIT = fromString("MeasurementUnit");
 
     /** Static value RELATIONAL_OPERATOR for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory RELATIONAL_OPERATOR = fromString("RELATIONAL_OPERATOR");
+    public static final HealthcareEntityCategory RELATIONAL_OPERATOR = fromString("RelationalOperator");
 
     /** Static value TIME for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory TIME = fromString("TIME");
+    public static final HealthcareEntityCategory TIME = fromString("Time");
 
     /** Static value GENE_OR_PROTEIN for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory GENE_ORPROTEIN = fromString("GENE_OR_PROTEIN");
+    public static final HealthcareEntityCategory GENE_OR_PROTEIN = fromString("GeneOrProtein");
 
     /** Static value VARIANT for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory VARIANT = fromString("VARIANT");
+    public static final HealthcareEntityCategory VARIANT = fromString("Variant");
 
     /** Static value ADMINISTRATIVE_EVENT for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory ADMINISTRATIVE_EVENT = fromString("ADMINISTRATIVE_EVENT");
+    public static final HealthcareEntityCategory ADMINISTRATIVE_EVENT = fromString("AdministrativeEvent");
 
     /** Static value CARE_ENVIRONMENT for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory CARE_ENVIRONMENT = fromString("CARE_ENVIRONMENT");
+    public static final HealthcareEntityCategory CARE_ENVIRONMENT = fromString("CareEnvironment");
 
     /** Static value HEALTHCARE_PROFESSION for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory HEALTHCARE_PROFESSION = fromString("HEALTHCARE_PROFESSION");
+    public static final HealthcareEntityCategory HEALTHCARE_PROFESSION = fromString("HealthcareProfession");
 
     /** Static value DIAGNOSIS for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory DIAGNOSIS = fromString("DIAGNOSIS");
+    public static final HealthcareEntityCategory DIAGNOSIS = fromString("Diagnosis");
 
     /** Static value SYMPTOM_OR_SIGN for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory SYMPTOM_OR_SIGN = fromString("SYMPTOM_OR_SIGN");
+    public static final HealthcareEntityCategory SYMPTOM_OR_SIGN = fromString("SymptomOrSign");
 
     /** Static value CONDITION_QUALIFIER for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory CONDITION_QUALIFIER = fromString("CONDITION_QUALIFIER");
+    public static final HealthcareEntityCategory CONDITION_QUALIFIER = fromString("ConditionQualifier");
 
     /** Static value MEDICATION_CLASS for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory MEDICATION_CLASS = fromString("MEDICATION_CLASS");
+    public static final HealthcareEntityCategory MEDICATION_CLASS = fromString("MedicationClass");
 
     /** Static value MEDICATION_NAME for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory MEDICATION_NAME = fromString("MEDICATION_NAME");
+    public static final HealthcareEntityCategory MEDICATION_NAME = fromString("MedicationName");
 
     /** Static value DOSAGE for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory DOSAGE = fromString("DOSAGE");
+    public static final HealthcareEntityCategory DOSAGE = fromString("Dosage");
 
     /** Static value MEDICATION_FORM for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory MEDICATION_FORM = fromString("MEDICATION_FORM");
+    public static final HealthcareEntityCategory MEDICATION_FORM = fromString("MedicationForm");
 
     /** Static value MEDICATION_ROUTE for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory MEDICATION_ROUTE = fromString("MEDICATION_ROUTE");
+    public static final HealthcareEntityCategory MEDICATION_ROUTE = fromString("MedicationRoute");
 
     /** Static value FAMILY_RELATION for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory FAMILY_RELATION = fromString("FAMILY_RELATION");
+    public static final HealthcareEntityCategory FAMILY_RELATION = fromString("FamilyRelation");
 
     /** Static value TREATMENT_NAME for HealthcareEntityCategory. */
-    public static final HealthcareEntityCategory TREATMENT_NAME = fromString("TREATMENT_NAME");
+    public static final HealthcareEntityCategory TREATMENT_NAME = fromString("TreatmentName");
 
     /**
      * Creates or finds a {@link HealthcareEntityCategory} from its string representation.

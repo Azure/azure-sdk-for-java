@@ -702,7 +702,7 @@ final class TestUtils {
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.CONDITION_QUALIFIER);
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.fromString("Course"));
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 0.91);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 57);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 11);
@@ -739,13 +739,13 @@ final class TestUtils {
         // HealthcareEntityRelations
         final HealthcareEntityRelation healthcareEntityRelation1 = new HealthcareEntityRelation();
         final HealthcareEntityRelationRole role1 = new HealthcareEntityRelationRole();
-        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Qualifier");
+        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Course");
         HealthcareEntityRelationRolePropertiesHelper.setEntity(role1, healthcareEntity3);
         final HealthcareEntityRelationRole role2 = new HealthcareEntityRelationRole();
         HealthcareEntityRelationRolePropertiesHelper.setName(role2, "Condition");
         HealthcareEntityRelationRolePropertiesHelper.setEntity(role2, healthcareEntity4);
         HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation1,
-            HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
+            HealthcareEntityRelationType.fromString("CourseOfCondition"));
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
             IterableStream.of(asList(role1, role2)));
 
