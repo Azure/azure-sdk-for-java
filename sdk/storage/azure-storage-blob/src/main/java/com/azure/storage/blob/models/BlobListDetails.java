@@ -178,7 +178,7 @@ public final class BlobListDetails {
      *
      * @return a flag indicating if deleted blobs with versioning will be returned in the listing
      */
-    public boolean getRetrieveDeletedBlobsWitVersions() {
+    public boolean getRetrieveDeletedBlobsWithVersions() {
         return retrieveDeletedWithVersions;
     }
 
@@ -188,7 +188,7 @@ public final class BlobListDetails {
      * @param retrieveDeletedWithVersions Flag indicating whether deleted blobs with versioning should be returned
      * @return the updated BlobListDetails object
      */
-    public BlobListDetails setRetrieveDeletedBlobsWitVersions(boolean retrieveDeletedWithVersions) {
+    public BlobListDetails setRetrieveDeletedBlobsWithVersions(boolean retrieveDeletedWithVersions) {
         this.retrieveDeletedWithVersions = retrieveDeletedWithVersions;
         return this;
     }
