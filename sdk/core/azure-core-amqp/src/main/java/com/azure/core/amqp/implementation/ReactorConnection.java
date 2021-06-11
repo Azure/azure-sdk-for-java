@@ -394,7 +394,7 @@ public class ReactorConnection implements AmqpConnection {
             })
             .repeat();
 
-        return createChannel.takeUntilOther(Mono.firstWithSignal(isClosedMono.asMono(), shutdownSignalSink.asMono()))
+        return createChannel
             .subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
                 channel -> channel.getEndpointStates(), retryPolicy,
                 new ClientLogger(RequestResponseChannel.class + ":" + entityPath)));
@@ -469,7 +469,7 @@ public class ReactorConnection implements AmqpConnection {
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
         sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
 
-        final Mono<Void> closedExecutor = executor != null ? executor.closeAsync() : Mono.empty();
+        final Mono<Void> closedExecutor = executor != null ? Mono.defer(() -> executor.closeAsync()) : Mono.empty();
 
         // Close all the children.
         final Mono<Void> closeSessionsMono = Mono.when(closingSessions)
@@ -531,7 +531,7 @@ public class ReactorConnection implements AmqpConnection {
 
             // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
             // It will not be kicked off until subscribed to.
-            final Mono<Void> executorCloseMono = executor.closeAsync();
+            final Mono<Void> executorCloseMono = Mono.defer(() -> executor.closeAsync());
             reactorProvider.getReactorDispatcher().getShutdownSignal()
                 .flatMap(signal -> {
                     logger.info("Shutdown signal received from reactor provider.");
