@@ -470,7 +470,7 @@ public class ReactorConnection implements AmqpConnection {
         sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
 
         final Mono<Void> closedExecutor = executor != null ? Mono.defer(() ->  {
-            synchronized(this) {
+            synchronized (this) {
                 return executor.closeAsync();
             }
         }) : Mono.empty();
@@ -536,7 +536,7 @@ public class ReactorConnection implements AmqpConnection {
             // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
             // It will not be kicked off until subscribed to.
             final Mono<Void> executorCloseMono = Mono.defer(() ->  {
-                synchronized(this) {
+                synchronized (this) {
                     return executor.closeAsync();
                 }
             });
