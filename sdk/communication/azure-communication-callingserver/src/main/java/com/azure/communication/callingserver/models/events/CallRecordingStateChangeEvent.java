@@ -3,39 +3,33 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.models.CallRecordingStateChangeEventInternal;
 import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
 /** The call recording state change event. */
-@Fluent
-public final class CallRecordingStateChangeEvent extends CallingServerEventBase {
+public final class CallRecordingStateChangeEvent {
     /*
      * The call recording id
      */
-    @JsonProperty(value = "recordingId")
-    private String recordingId;
+    private final String recordingId;
 
     /*
      * The recording state of the recording
      */
-    @JsonProperty(value = "state")
-    private CallRecordingState state;
+    private final CallRecordingState state;
 
     /*
      * The time of the recording started
      */
-    @JsonProperty(value = "startDateTime")
-    private OffsetDateTime startDateTime;
+    private final OffsetDateTime startDateTime;
 
     /*
      * The server call.id.
      */
-    @JsonProperty(value = "serverCallId")
-    private String serverCallId;
+    private final String serverCallId;
 
     /**
      * Get the recordingId property: The call recording id.
@@ -44,17 +38,6 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
      */
     public String getRecordingId() {
         return this.recordingId;
-    }
-
-    /**
-     * Set the recordingId property: The call recording id.
-     *
-     * @param recordingId the recordingId value to set.
-     * @return the CallRecordingStateChangeEvent object itself.
-     */
-    public CallRecordingStateChangeEvent setRecordingId(String recordingId) {
-        this.recordingId = recordingId;
-        return this;
     }
 
     /**
@@ -67,34 +50,12 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
     }
 
     /**
-     * Set the state property: The recording state of the recording.
-     *
-     * @param state the state value to set.
-     * @return the CallRecordingStateChangeEvent object itself.
-     */
-    public CallRecordingStateChangeEvent setState(CallRecordingState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
      * Get the startDateTime property: The time of the recording started.
      *
      * @return the startDateTime value.
      */
     public OffsetDateTime getStartDateTime() {
         return this.startDateTime;
-    }
-
-    /**
-     * Set the startDateTime property: The time of the recording started.
-     *
-     * @param startDateTime the startDateTime value to set.
-     * @return the CallRecordingStateChangeEvent object itself.
-     */
-    public CallRecordingStateChangeEvent setStartDateTime(OffsetDateTime startDateTime) {
-        this.startDateTime = startDateTime;
-        return this;
     }
 
     /**
@@ -107,23 +68,37 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
     }
 
     /**
-     * Set the serverCallId property: The server call.id.
+     * Initializes a new instance of CallRecordingStateChangeEvent.
      *
-     * @param serverCallId the serverCallId value to set.
-     * @return the CallRecordingStateChangeEvent object itself.
+     * @param recordingId the recordingId value.
+     * @param state the state value.
+     * @param startDateTime the startDateTime value.
+     * @param serverCallId the serverCallId value.
      */
-    public CallRecordingStateChangeEvent setServerCallId(String serverCallId) {
+    public CallRecordingStateChangeEvent(String recordingId, CallRecordingState state, OffsetDateTime startDateTime, String serverCallId) {
+        this.recordingId = recordingId;
+        this.state = state;
+        this.startDateTime = startDateTime;
         this.serverCallId = serverCallId;
-        return this;
-    }
-    /**
-     * Deserialize {@link com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent} event.
-     *
-     * @param eventData binary data for event
-     * @return {@link com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent} event.
-     */
-    public static com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent deserialize(BinaryData eventData) {
-        return eventData == null ? null : eventData.toObject(com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent.class);
     }
 
+    /**
+     * Deserialize {@link CallRecordingStateChangeEvent} event.
+     *
+     * @param eventData binary data for event
+     * @return {@link CallRecordingStateChangeEvent} event.
+     */
+    public static CallRecordingStateChangeEvent deserialize(BinaryData eventData) {
+        if (eventData == null) {
+            return null;
+        }
+        CallRecordingStateChangeEventInternal callRecordingStateChangeEventInternal =
+            eventData.toObject(CallRecordingStateChangeEventInternal.class);
+        return new CallRecordingStateChangeEvent(
+            callRecordingStateChangeEventInternal.getRecordingId(),
+            callRecordingStateChangeEventInternal.getState(),
+            callRecordingStateChangeEventInternal.getStartDateTime(),
+            callRecordingStateChangeEventInternal.getServerCallId());
+    }
 }
+

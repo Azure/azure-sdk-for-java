@@ -19,11 +19,6 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.UnknownIdentifier;
 
 public class CommunicationIdentifierConverter {
-    /**
-     * Convert {@link CommunicationIdentifierModel}  into CommunicationIdentifier
-     * @param identifier {@link CommunicationIdentifierModel} to be converted
-     * @return {@link CommunicationIdentifier}
-     */
     public static CommunicationIdentifier convert(CommunicationIdentifierModel identifier) {
         assertSingleType(identifier);
         String rawId = identifier.getRawId();
@@ -59,7 +54,7 @@ public class CommunicationIdentifierConverter {
         PhoneNumberIdentifierModel phoneNumber = identifier.getPhoneNumber();
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUser = identifier.getMicrosoftTeamsUser();
 
-        ArrayList<String> presentProperties = new ArrayList<String>();
+        ArrayList<String> presentProperties = new ArrayList<>();
         if (communicationUser != null) {
             presentProperties.add(communicationUser.getClass().getName());
         }
@@ -78,13 +73,6 @@ public class CommunicationIdentifierConverter {
         }
     }
 
-    /**
-     * Convert {@link CommunicationIdentifier} into {@link CommunicationIdentifierModel}
-     * @param identifier {@link CommunicationIdentifier} object to be converted
-     * @return {@link CommunicationIdentifierModel}
-     * @throws IllegalArgumentException when identifier is an unknown class derived from
-     *          {@link CommunicationIdentifier}
-     */
     public static CommunicationIdentifierModel convert(CommunicationIdentifier identifier)
         throws IllegalArgumentException {
 
@@ -119,5 +107,4 @@ public class CommunicationIdentifierConverter {
 
         throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", identifier.getClass().getName()));
     }
-
 }

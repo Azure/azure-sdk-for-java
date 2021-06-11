@@ -5,13 +5,13 @@
 package com.azure.communication.callingserver.implementation;
 
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
+import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsResultInternal;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequestInternal;
+import com.azure.communication.callingserver.implementation.models.CreateCallResultInternal;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.CreateCallResult;
-import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.implementation.models.PlayAudioResultInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -60,7 +60,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<CreateCallResult>> createCall(
+        Mono<Response<CreateCallResultInternal>> createCall(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateCallRequestInternal callRequest,
@@ -80,7 +80,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/:playAudio")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<PlayAudioResult>> playAudio(
+        Mono<Response<PlayAudioResultInternal>> playAudio(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -91,7 +91,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/:cancelAllMediaOperations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
-        Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperations(
+        Mono<Response<CancelAllMediaOperationsResultInternal>> cancelAllMediaOperations(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -132,7 +132,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResult>> createCallWithResponseAsync(CreateCallRequestInternal callRequest) {
+    public Mono<Response<CreateCallResultInternal>> createCallWithResponseAsync(CreateCallRequestInternal callRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -151,7 +151,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResult>> createCallWithResponseAsync(
+    public Mono<Response<CreateCallResultInternal>> createCallWithResponseAsync(
             CreateCallRequestInternal callRequest, Context context) {
         final String accept = "application/json";
         return service.createCall(this.client.getEndpoint(), this.client.getApiVersion(), callRequest, accept, context);
@@ -167,10 +167,10 @@ public final class CallConnectionsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCallAsync(CreateCallRequestInternal callRequest) {
+    public Mono<CreateCallResultInternal> createCallAsync(CreateCallRequestInternal callRequest) {
         return createCallWithResponseAsync(callRequest)
                 .flatMap(
-                        (Response<CreateCallResult> res) -> {
+                        (Response<CreateCallResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -190,10 +190,10 @@ public final class CallConnectionsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCallAsync(CreateCallRequestInternal callRequest, Context context) {
+    public Mono<CreateCallResultInternal> createCallAsync(CreateCallRequestInternal callRequest, Context context) {
         return createCallWithResponseAsync(callRequest, context)
                 .flatMap(
-                        (Response<CreateCallResult> res) -> {
+                        (Response<CreateCallResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -212,7 +212,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CreateCallRequestInternal callRequest) {
+    public CreateCallResultInternal createCall(CreateCallRequestInternal callRequest) {
         return createCallAsync(callRequest).block();
     }
 
@@ -227,7 +227,8 @@ public final class CallConnectionsImpl {
      * @return the response payload of the create call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResult> createCallWithResponse(CreateCallRequestInternal callRequest, Context context) {
+    public Response<CreateCallResultInternal> createCallWithResponse(
+            CreateCallRequestInternal callRequest, Context context) {
         return createCallWithResponseAsync(callRequest, context).block();
     }
 
@@ -338,7 +339,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResult>> playAudioWithResponseAsync(
+    public Mono<Response<PlayAudioResultInternal>> playAudioWithResponseAsync(
             String callConnectionId, PlayAudioRequest request) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -364,7 +365,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResult>> playAudioWithResponseAsync(
+    public Mono<Response<PlayAudioResultInternal>> playAudioWithResponseAsync(
             String callConnectionId, PlayAudioRequest request, Context context) {
         final String accept = "application/json";
         return service.playAudio(
@@ -382,10 +383,10 @@ public final class CallConnectionsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResult> playAudioAsync(String callConnectionId, PlayAudioRequest request) {
+    public Mono<PlayAudioResultInternal> playAudioAsync(String callConnectionId, PlayAudioRequest request) {
         return playAudioWithResponseAsync(callConnectionId, request)
                 .flatMap(
-                        (Response<PlayAudioResult> res) -> {
+                        (Response<PlayAudioResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -406,10 +407,11 @@ public final class CallConnectionsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResult> playAudioAsync(String callConnectionId, PlayAudioRequest request, Context context) {
+    public Mono<PlayAudioResultInternal> playAudioAsync(
+            String callConnectionId, PlayAudioRequest request, Context context) {
         return playAudioWithResponseAsync(callConnectionId, request, context)
                 .flatMap(
-                        (Response<PlayAudioResult> res) -> {
+                        (Response<PlayAudioResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -429,7 +431,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String callConnectionId, PlayAudioRequest request) {
+    public PlayAudioResultInternal playAudio(String callConnectionId, PlayAudioRequest request) {
         return playAudioAsync(callConnectionId, request).block();
     }
 
@@ -445,7 +447,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(
+    public Response<PlayAudioResultInternal> playAudioWithResponse(
             String callConnectionId, PlayAudioRequest request, Context context) {
         return playAudioWithResponseAsync(callConnectionId, request, context).block();
     }
@@ -461,7 +463,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponseAsync(
+    public Mono<Response<CancelAllMediaOperationsResultInternal>> cancelAllMediaOperationsWithResponseAsync(
             String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -487,7 +489,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponseAsync(
+    public Mono<Response<CancelAllMediaOperationsResultInternal>> cancelAllMediaOperationsWithResponseAsync(
             String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest, Context context) {
         final String accept = "application/json";
         return service.cancelAllMediaOperations(
@@ -510,11 +512,11 @@ public final class CallConnectionsImpl {
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperationsAsync(
+    public Mono<CancelAllMediaOperationsResultInternal> cancelAllMediaOperationsAsync(
             String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest) {
         return cancelAllMediaOperationsWithResponseAsync(callConnectionId, cancelAllMediaOperationRequest)
                 .flatMap(
-                        (Response<CancelAllMediaOperationsResult> res) -> {
+                        (Response<CancelAllMediaOperationsResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -535,11 +537,11 @@ public final class CallConnectionsImpl {
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperationsAsync(
+    public Mono<CancelAllMediaOperationsResultInternal> cancelAllMediaOperationsAsync(
             String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest, Context context) {
         return cancelAllMediaOperationsWithResponseAsync(callConnectionId, cancelAllMediaOperationRequest, context)
                 .flatMap(
-                        (Response<CancelAllMediaOperationsResult> res) -> {
+                        (Response<CancelAllMediaOperationsResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -559,7 +561,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelAllMediaOperationsResult cancelAllMediaOperations(
+    public CancelAllMediaOperationsResultInternal cancelAllMediaOperations(
             String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest) {
         return cancelAllMediaOperationsAsync(callConnectionId, cancelAllMediaOperationRequest).block();
     }
@@ -576,7 +578,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
+    public Response<CancelAllMediaOperationsResultInternal> cancelAllMediaOperationsWithResponse(
             String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest, Context context) {
         return cancelAllMediaOperationsWithResponseAsync(callConnectionId, cancelAllMediaOperationRequest, context)
                 .block();

@@ -3,31 +3,26 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.models.CallConnectionStateChangedEventInternal;
 import com.azure.communication.callingserver.models.CallConnectionState;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The call connection state changed event. */
-@Fluent
-public final class CallConnectionStateChangedEvent  extends CallingServerEventBase {
+public final class CallConnectionStateChangedEvent {
     /*
      * The server call.id.
      */
-    @JsonProperty(value = "serverCallId")
-    private String serverCallId;
+    private final String serverCallId;
 
     /*
      * The call connection id.
      */
-    @JsonProperty(value = "callConnectionId")
-    private String callConnectionId;
+    private final String callConnectionId;
 
     /*
      * The call connection state.
      */
-    @JsonProperty(value = "callConnectionState")
-    private CallConnectionState callConnectionState;
+    private final CallConnectionState callConnectionState;
 
     /**
      * Get the serverCallId property: The server call.id.
@@ -36,17 +31,6 @@ public final class CallConnectionStateChangedEvent  extends CallingServerEventBa
      */
     public String getServerCallId() {
         return this.serverCallId;
-    }
-
-    /**
-     * Set the serverCallId property: The server call.id.
-     *
-     * @param serverCallId the serverCallId value to set.
-     * @return the CallConnectionStateChangedEvent object itself.
-     */
-    public CallConnectionStateChangedEvent setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
-        return this;
     }
 
     /**
@@ -59,17 +43,6 @@ public final class CallConnectionStateChangedEvent  extends CallingServerEventBa
     }
 
     /**
-     * Set the callConnectionId property: The call connection id.
-     *
-     * @param callConnectionId the callConnectionId value to set.
-     * @return the CallConnectionStateChangedEvent object itself.
-     */
-    public CallConnectionStateChangedEvent setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        return this;
-    }
-
-    /**
      * Get the callConnectionState property: The call connection state.
      *
      * @return the callConnectionState value.
@@ -79,14 +52,16 @@ public final class CallConnectionStateChangedEvent  extends CallingServerEventBa
     }
 
     /**
-     * Set the callConnectionState property: The call connection state.
+     * Initializes a new instance of PlayAudioResult.
      *
-     * @param callConnectionState the callConnectionState value to set.
-     * @return the CallConnectionStateChangedEvent object itself.
+     * @param serverCallId the serverCallId value.
+     * @param callConnectionId the callConnectionId value.
+     * @param callConnectionState the callConnectionState value.
      */
-    public CallConnectionStateChangedEvent setCallConnectionState(CallConnectionState callConnectionState) {
+    public CallConnectionStateChangedEvent(String serverCallId, String callConnectionId, CallConnectionState callConnectionState) {
+        this.serverCallId = serverCallId;
+        this.callConnectionId = callConnectionId;
         this.callConnectionState = callConnectionState;
-        return this;
     }
 
     /**
@@ -96,6 +71,17 @@ public final class CallConnectionStateChangedEvent  extends CallingServerEventBa
      * @return {@link CallConnectionStateChangedEvent} event.
      */
     public static CallConnectionStateChangedEvent deserialize(BinaryData eventData) {
-        return eventData == null ? null : eventData.toObject(CallConnectionStateChangedEvent.class);
+        if (eventData == null) {
+            return null;
+        }
+        CallConnectionStateChangedEventInternal callConnectionStateChangedEventInternal =
+            eventData.toObject(CallConnectionStateChangedEventInternal.class);
+        return new CallConnectionStateChangedEvent(
+            callConnectionStateChangedEventInternal.getServerCallId(),
+            callConnectionStateChangedEventInternal.getCallConnectionId(),
+            callConnectionStateChangedEventInternal.getCallConnectionState());
     }
 }
+
+
+

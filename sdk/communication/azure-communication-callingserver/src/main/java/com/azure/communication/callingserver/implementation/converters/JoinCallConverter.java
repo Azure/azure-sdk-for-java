@@ -13,14 +13,7 @@ import com.azure.communication.callingserver.implementation.models.JoinCallReque
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 
-/**
- * A converter between {@link JoinCallOptions} and
- * {@link JoinCallRequest}.
- */
 public final class JoinCallConverter {
-    /**
-     * Maps from JoinCallOptions to JoinCallRequest.
-     */
     public static JoinCallRequest convert(CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
         if (source == null) {
             return null;
@@ -36,11 +29,9 @@ public final class JoinCallConverter {
         joinCallRequest.setSubject(joinCallOptions.getSubject());
         joinCallRequest.setCallbackUri(joinCallOptions.getCallbackUri());
 
-
         List<CallModality> requestedModalities = new ArrayList<>();
         Collections.addAll(requestedModalities, joinCallOptions.getRequestedMediaTypes());
         joinCallRequest.setRequestedMediaTypes(requestedModalities);
-
 
         List<EventSubscriptionType> requestedCallEvents = new ArrayList<>();
         Collections.addAll(requestedCallEvents, joinCallOptions.getRequestedCallEvents());

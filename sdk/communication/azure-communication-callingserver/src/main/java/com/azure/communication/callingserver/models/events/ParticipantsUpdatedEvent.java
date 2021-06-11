@@ -6,9 +6,8 @@ package com.azure.communication.callingserver.models.events;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
-import com.azure.communication.callingserver.models.CommunicationParticipant;
+import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,13 +19,12 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
      * The call connection id.
      */
-    @JsonProperty(value = "callConnectionId")
-    private String callConnectionId;
+    private final String callConnectionId;
 
     /**
      * The participants.
      */
-    private CommunicationParticipant[] participants;
+    private final CallParticipant[] participants;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -37,42 +35,14 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
         return this.callConnectionId;
     }
 
-    /**
-     * Set the callConnectionId property: The call connection id.
-     *
-     * @param callConnectionId the callConnectionId value to set.
-     * @return the ParticipantsUpdatedEvent object itself.
-     */
-    public ParticipantsUpdatedEvent setCallConnectionId(String callConnectionId) {
-        this.callConnectionId = callConnectionId;
-        return this;
-    }
 
     /**
      * Get the participants.
      *
      * @return the result info value.
      */
-    public CommunicationParticipant[] getParticipants() {
-        return this.participants == null ? new CommunicationParticipant[0] : this.participants.clone();
-    }
-
-    /**
-     * Set the participants.
-     *
-     * @param participants the list of participants.
-     * @return the ParticipantsUpdatedEvent object itself.
-     */
-    public ParticipantsUpdatedEvent setParticipants(CommunicationParticipant[] participants) {
-        this.participants = participants == null ? new CommunicationParticipant[0] : participants.clone();
-        return this;
-    }
-
-    /**
-     * Initializes a new instance of ParticipantsUpdatedEvent.
-     */
-    public ParticipantsUpdatedEvent() {
-
+    public CallParticipant[] getParticipants() {
+        return this.participants == null ? new CallParticipant[0] : this.participants.clone();
     }
 
     /**
@@ -82,7 +52,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      * @param participants The participants
      * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ParticipantsUpdatedEvent(String callConnectionId, CommunicationParticipant[] participants) {
+    public ParticipantsUpdatedEvent(String callConnectionId, CallParticipant[] participants) {
         if (callConnectionId == null || callConnectionId.isEmpty()) {
             throw new IllegalArgumentException("object callConnectionId cannot be null or empty");
         }
@@ -104,15 +74,15 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
             return null;
         }
         ParticipantsUpdatedEventInternal internalEvent = eventData.toObject(ParticipantsUpdatedEventInternal.class);
-        List<CommunicationParticipant> participants = new LinkedList<>();
+        List<CallParticipant> participants = new LinkedList<>();
         for (CommunicationParticipantInternal communicationParticipantInternal : internalEvent.getParticipants()) {
             participants.add(
-                new CommunicationParticipant(
+                new CallParticipant(
                     CommunicationIdentifierConverter.convert(communicationParticipantInternal.getIdentifier()),
                     communicationParticipantInternal.getParticipantId(),
                     communicationParticipantInternal.isMuted()));
         }
         return new ParticipantsUpdatedEvent(internalEvent.getCallConnectionId(),
-            participants.toArray(new CommunicationParticipant[participants.size()]));
+            participants.toArray(new CallParticipant[0]));
     }
 }

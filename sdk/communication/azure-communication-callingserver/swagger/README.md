@@ -38,7 +38,7 @@ java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,ToneInfo,ResultInfo,JoinCallResult,CancelAllMediaOperationsResult,PlayAudioResult,OperationStatus,StartCallRecordingResult,CallRecordingStateResult,CallRecordingState,CallConnectionState,CreateCallResult,EventSubscriptionType,CallModality
+custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,CallModality
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
@@ -47,14 +47,21 @@ add-context-parameter: true
 context-client-method-parameter: true
 title: Azure Communication CallingServer Service 
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    delete  $["CallConnectionStateChangedEvent"];
-    delete  $["CallRecordingStateChangeEvent"];
-    delete  $["InviteParticipantsResultEvent"];
-    delete  $["PlayAudioResultEvent"];
-    delete  $["ToneReceivedEvent"]; 
+- rename-model:
+    from: CallRecordingStateChangeEvent
+    to: CallRecordingStateChangeEventInternal    
+- rename-model:
+    from: InviteParticipantsResultEvent
+    to: InviteParticipantsResultEventInternal    
+- rename-model:
+    from: PlayAudioResultEvent
+    to: PlayAudioResultEventInternal   
+- rename-model:
+    from: ToneReceivedEvent
+    to: ToneReceivedEventInternal      
+- rename-model:
+    from: CallConnectionStateChangedEvent
+    to: CallConnectionStateChangedEventInternal    
 - rename-model:
     from: CreateCallRequest
     to: CreateCallRequestInternal
@@ -64,4 +71,28 @@ directive:
 - rename-model:
     from: CommunicationParticipant
     to: CommunicationParticipantInternal
+- rename-model:
+    from: JoinCallResult
+    to: JoinCallResultInternal
+- rename-model:
+    from: PlayAudioResult
+    to: PlayAudioResultInternal
+- rename-model:
+    from: CallRecordingStateResult
+    to: CallRecordingStateResultInternal
+- rename-model:
+    from: StartCallRecordingResult
+    to: StartCallRecordingResultInternal
+- rename-model:
+    from: CreateCallResult
+    to: CreateCallResultInternal
+- rename-model:
+    from: CancelAllMediaOperationsResult
+    to: CancelAllMediaOperationsResultInternal
+- rename-model:
+    from: ResultInfo
+    to: ResultInfoInternal
+- rename-model:
+    from: ToneInfo
+    to: ToneInfoInternal                      
 ```
