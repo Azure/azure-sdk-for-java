@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "780ced4f-1dac-493f-9519-0d337e04887c",
+      "x-ms-client-request-id" : "9b443ee3-99cf-40c3-b935-3546d96cfdf5",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2020-07-20-preview1, 2020-08-20-preview, 2021-03-07",
-      "X-Processing-Time" : "561ms",
-      "MS-CV" : "qCIVH9rCsU+gxE5y4c38kA.0",
+      "X-Processing-Time" : "642ms",
+      "MS-CV" : "fycjSKx+LEq36jLsQEA/yA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0i5vDYAAAAADuLGv1OM4pT7rft3T/plAtWVZSMzBFREdFMDMxOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0jL/DYAAAAADo5ElcVZKUQrMznY4wZlp8WVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "202",
-      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_2021061117211609f71167-a090-461f-965b-a1d18df45016_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
-      "Date" : "Fri, 11 Jun 2021 17:21:15 GMT",
+      "Body" : "{\"value\":[{\"to\":\"REDACTED\",\"messageId\":\"Outgoing_20210611195453f84f7ece-54c0-41b2-915e-642d82966aa5_noam\",\"httpStatusCode\":202,\"repeatabilityResult\":\"accepted\",\"successful\":true}]}",
+      "Date" : "Fri, 11 Jun 2021 19:54:52 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
