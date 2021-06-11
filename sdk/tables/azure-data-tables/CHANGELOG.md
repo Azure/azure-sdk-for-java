@@ -3,9 +3,9 @@
 ## 12.0.0 (2021-06-11)
 
 ### Bug fixes
-- Fixed issue where clients builders would not throw when calling `buildClient()` or `buildAsyncClient()` if not `endpoint` had been set.
+- Fixed issue where clients builders would not throw when calling `buildClient()` or `buildAsyncClient()` if no `endpoint` had been set.
 - Fixed issue where `TableClient`'s and `TableClientAsync`'s `submitTransaction()` and `submitTransactionWithResponse()` could not be called from inside a Reactor thread (e.g. calling it inside a chain of reactive operations, such as `myOtherOperation.then(result -> client.submitTransaction(transactionActions)`).
-- Fixed issue that would make an exception be raised when calling `submitTransaction()` ifJava's SecurityManager was enabled and no `ReflectPermission` had been granted.
+- Fixed issue that would make an exception be raised when calling `submitTransaction()` if Java's SecurityManager was enabled and no `ReflectPermission` had been granted.
 
 ### New Features
 
@@ -13,7 +13,7 @@
     - `TableAccessPolicies`
     - `TableTransactionAction`
     - `TableTransactionActionType`
-    - `TableTrtansactionFailedException`
+    - `TableTransactionFailedException`
     - `TableTransactionResult`
 - Added support for generating SAS tokens at the Account and Table Service level in all clients. Introduced the following related classes:
     - `TableAccountSasPermission`
