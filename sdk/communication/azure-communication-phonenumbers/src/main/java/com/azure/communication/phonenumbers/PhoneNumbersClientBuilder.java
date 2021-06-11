@@ -312,7 +312,6 @@ public final class PhoneNumbersClientBuilder {
         }
 
         // Add required policies
-        policyList.add(this.createAuthenticationPolicy());
         policyList.add(this.createUserAgentPolicy(
             applicationId,
             PROPERTIES.get(SDK_NAME),
@@ -320,6 +319,8 @@ public final class PhoneNumbersClientBuilder {
             this.configuration
         ));
         policyList.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
+        // auth policy is per request, should be after retry
+        policyList.add(this.createAuthenticationPolicy());
         policyList.add(this.createCookiePolicy());
 
         // Add additional policies

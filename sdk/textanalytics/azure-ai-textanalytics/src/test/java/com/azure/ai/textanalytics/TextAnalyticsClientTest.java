@@ -14,6 +14,7 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -1180,9 +1181,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22208")
     public void extractKeyPhrasesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        extractKeyPhrasesForSingleTextInputRunner(input ->
-            assertEquals("monde",
-                client.extractKeyPhrases(input).iterator().next()));
+        extractKeyPhrasesForSingleTextInputRunner(input -> {
+            final KeyPhrasesCollection keyPhrasesCollection = client.extractKeyPhrases(input);
+            validateKeyPhrases(asList("Bonjour", "monde"),
+                keyPhrasesCollection.stream().collect(Collectors.toList()));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

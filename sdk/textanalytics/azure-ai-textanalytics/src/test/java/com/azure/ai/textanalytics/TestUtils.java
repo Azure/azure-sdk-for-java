@@ -239,13 +239,10 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        // TODO: [ServiceBug] service currently returns two entities by errors, reuse the result and record again
-        // after service correct it. https://github.com/Azure/azure-sdk-for-java/issues/18982
-//        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26);
         CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34);
-//        return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
-        return asList(categorizedEntity2, categorizedEntity3);
+        return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
     /**
@@ -453,8 +450,8 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
 
-        ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", textDocumentStatistics1, null, new KeyPhrasesCollection(new IterableStream<>(asList("input text", "world")), null));
-        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, new KeyPhrasesCollection(new IterableStream<>(Collections.singletonList("monde")), null));
+        ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", textDocumentStatistics1, null, new KeyPhrasesCollection(new IterableStream<>(asList("Hello world", "input text")), null));
+        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", textDocumentStatistics2, null, new KeyPhrasesCollection(new IterableStream<>(asList("Bonjour", "monde")), null));
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
@@ -935,9 +932,9 @@ final class TestUtils {
     static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollection() {
         return new ExtractKeyPhrasesResultCollection(
             asList(new ExtractKeyPhraseResult("0", new TextDocumentStatistics(44, 1),
-                null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle", "week")), null)),
+                null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle")), null)),
                 new ExtractKeyPhraseResult("1", new TextDocumentStatistics(67, 1),
-                    null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")), null))),
+                    null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome", "API")), null))),
             DEFAULT_MODEL_VERSION,
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
@@ -1079,7 +1076,7 @@ final class TestUtils {
         List<ExtractKeyPhraseResult> extractKeyPhraseResults = new ArrayList<>();
         for (int i = startIndex; i < startIndex + documentCount; i++) {
             extractKeyPhraseResults.add(new ExtractKeyPhraseResult(Integer.toString(i), null, null,
-                new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")),
+                new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome", "API")),
                     null)));
         }
         return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResults, "2020-07-01",
