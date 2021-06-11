@@ -28,7 +28,7 @@ public class FileSystemCertificatesTest {
     }
 
     public static String getFilePath() {
-        String filepath = "\\src\\test\\java\\com\\azure\\security\\keyvault\\jca\\certificate\\";
+        String filepath = "\\src\\test\\resources\\custom\\";
         return System.getProperty("user.dir") + filepath.replace("\\", System.getProperty("file.separator"));
     }
 

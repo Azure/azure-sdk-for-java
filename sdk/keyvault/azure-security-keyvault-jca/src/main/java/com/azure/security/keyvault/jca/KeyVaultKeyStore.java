@@ -320,7 +320,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
-        if (allAliases.contains(alias)) {
+        if (keyVaultCertificates.getAliases().contains(alias)) {
             LOGGER.log(WARNING, "Cannot overwrite own certificate");
             return;
         }

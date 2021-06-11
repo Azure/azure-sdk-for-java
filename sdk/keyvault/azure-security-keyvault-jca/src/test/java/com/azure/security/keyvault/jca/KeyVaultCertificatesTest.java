@@ -12,8 +12,7 @@ import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class KeyVaultCertificatesTest {
 
@@ -25,14 +24,19 @@ public class KeyVaultCertificatesTest {
 
     private KeyVaultCertificates keyVaultCertificates;
 
+    private KeyVaultKeyStore ks;
+
     @BeforeEach
     public void beforeEach() {
+
         List<String> aliases = new ArrayList<>();
         aliases.add("myalias");
         when(keyVaultClient.getAliases()).thenReturn(aliases);
         when(keyVaultClient.getKey("myalias", null)).thenReturn(key);
         when(keyVaultClient.getCertificate("myalias")).thenReturn(certificate);
-        keyVaultCertificates = new KeyVaultCertificates(0, keyVaultClient);
+        ks = mock(KeyVaultKeyStore.class);
+        doNothing().when(ks).loadAlias(true);
+        keyVaultCertificates = new KeyVaultCertificates(0, keyVaultClient, ks);
     }
 
     @Test
@@ -66,7 +70,7 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testCertificatesNeedRefresh() throws InterruptedException {
-        keyVaultCertificates = new KeyVaultCertificates(1000, keyVaultClient);
+        keyVaultCertificates = new KeyVaultCertificates(1000, keyVaultClient, ks);
         Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());

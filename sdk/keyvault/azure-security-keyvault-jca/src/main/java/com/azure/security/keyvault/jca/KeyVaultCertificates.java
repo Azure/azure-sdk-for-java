@@ -48,7 +48,7 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
-    private KeyVaultKeyStore ks;
+    private final KeyVaultKeyStore ks;
 
     void setKeyVaultClient(KeyVaultClient keyVaultClient) {
         this.keyVaultClient = keyVaultClient;

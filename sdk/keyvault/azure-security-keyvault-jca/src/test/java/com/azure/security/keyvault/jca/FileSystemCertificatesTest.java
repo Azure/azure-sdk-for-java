@@ -26,7 +26,6 @@ public class FileSystemCertificatesTest {
     public void testFileSystemCertificatePath() {
         // Test them together cause System.setProperty will interdependent
         System.setProperty("azure.keyvault.uri", "https://fake-vaule.vault.azure.net/");
-        System.out.println(System.getProperty("azure.cert-path.custom") + "---------1212");
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
         Assertions.assertEquals(ks.customPath, "/etc/certs/custom/");
         Assertions.assertEquals(ks.wellKnowPath, "/etc/certs/well-known/");
