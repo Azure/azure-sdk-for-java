@@ -8,16 +8,10 @@ import com.azure.communication.callingserver.implementation.models.PhoneNumberId
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 
-/**
- * A converter for {@link InviteParticipantsRequest}
- */
 public final class AddParticipantConverter {
-    /**
-     * Maps to {@link InviteParticipantsRequest}.
-     */
     public static InviteParticipantsRequest convert(CommunicationIdentifier participant, String alternateCallerId, String operationContext, String callBackUri) {
         if (participant == null) {
             return null;
@@ -27,7 +21,7 @@ public final class AddParticipantConverter {
                 : CommunicationIdentifierConverter.convert(new PhoneNumberIdentifier(alternateCallerId)).getPhoneNumber();
 
         InviteParticipantsRequest inviteParticipantsRequest = new InviteParticipantsRequest();
-        inviteParticipantsRequest.setParticipants(new LinkedList<>(Arrays.asList(CommunicationIdentifierConverter.convert(participant))));
+        inviteParticipantsRequest.setParticipants(new LinkedList<>(Collections.singletonList(CommunicationIdentifierConverter.convert(participant))));
         inviteParticipantsRequest.setAlternateCallerId(phoneNumberIdentifierModel);
         inviteParticipantsRequest.setOperationContext(operationContext);
         inviteParticipantsRequest.setCallbackUri(callBackUri);

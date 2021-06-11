@@ -3,43 +3,34 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** The Calling Server error. */
-@Fluent
 public final class CallingServerError {
     /*
      * The error code.
      */
-    @JsonProperty(value = "code", required = true)
-    private String code;
+    private final String code;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "message", required = true)
-    private String message;
+    private final String message;
 
     /*
      * The error target.
      */
-    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
-    private String target;
+    private final String target;
 
     /*
      * Further details about specific errors that led to this error.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CallingServerError> details;
+    private final List<CallingServerError> details;
 
     /*
      * The inner error if any.
      */
-    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
-    private CallingServerError innerError;
+    private final CallingServerError innerError;
 
     /**
      * Get the code property: The error code.
@@ -51,34 +42,12 @@ public final class CallingServerError {
     }
 
     /**
-     * Set the code property: The error code.
-     *
-     * @param code the code value to set.
-     * @return the CommunicationError object itself.
-     */
-    public CallingServerError setCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message property: The error message.
      *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    /**
-     * Set the message property: The error message.
-     *
-     * @param message the message value to set.
-     * @return the CommunicationError object itself.
-     */
-    public CallingServerError setMessage(String message) {
-        this.message = message;
-        return this;
     }
 
     /**

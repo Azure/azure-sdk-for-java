@@ -5,8 +5,11 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
 import com.azure.communication.callingserver.implementation.converters.AddParticipantConverter;
+import com.azure.communication.callingserver.implementation.converters.CallRecordingStateResultConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
+import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
+import com.azure.communication.callingserver.implementation.converters.StartCallRecordingResultConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
@@ -19,6 +22,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -179,12 +183,13 @@ public final class ServerCallAsync {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(new URI(recordingStateCallbackUri).isAbsolute())) {
-                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' cannot be non absolute Uri"));
+                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
             StartCallRecordingRequest request = new StartCallRecordingRequest();
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
-            return this.serverCallInternal.startRecordingAsync(serverCallId, request)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+            return serverCallInternal.startRecordingAsync(serverCallId, request)
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(StartCallRecordingResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         } catch (URISyntaxException ex) {
@@ -209,7 +214,7 @@ public final class ServerCallAsync {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(new URI(recordingStateCallbackUri).isAbsolute())) {
-                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' cannot be non absolute Uri"));
+                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
             StartCallRecordingRequest request = new StartCallRecordingRequest();
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
@@ -217,7 +222,9 @@ public final class ServerCallAsync {
                 contextValue = context == null ? contextValue : context;
                 return this.serverCallInternal
                     .startRecordingWithResponseAsync(serverCallId, request, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, StartCallRecordingResultConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -363,7 +370,8 @@ public final class ServerCallAsync {
         try {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return this.serverCallInternal.recordingStateAsync(serverCallId, recordingId)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(CallRecordingStateResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -387,7 +395,9 @@ public final class ServerCallAsync {
                 contextValue = context == null ? contextValue : context;
                 return this.serverCallInternal
                     .recordingStateWithResponseAsync(serverCallId, recordingId, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, CallRecordingStateResultConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -447,7 +457,8 @@ public final class ServerCallAsync {
         try {
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
             return this.serverCallInternal.playAudioAsync(serverCallId, playAudioRequest)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -504,7 +515,9 @@ public final class ServerCallAsync {
                 contextValue = context == null ? contextValue : context;
                 return this.serverCallInternal
                     .playAudioWithResponseAsync(serverCallId, playAudioRequest, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

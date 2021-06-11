@@ -12,37 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * A converter between {@link CommunicationError} and
- * {@link CallingServerError}.
- */
+
 public final class CallingServerErrorConverter {
-    /**
-     * Maps from {@Link CommunicationError} to {@link CallingServerError}.
-     */
     public static CallingServerError convert(CommunicationError obj) {
         if (obj == null) {
             return null;
         }
 
-        List<CallingServerError> details = new ArrayList<CallingServerError>();
+        List<CallingServerError> details = new ArrayList<>();
 
         if (obj.getDetails() != null) {
             details = obj.getDetails()
                 .stream()
-                .map(detail -> convert(detail))
+                .map(CallingServerErrorConverter::convert)
                 .collect(Collectors.toList());
         }
 
-        CallingServerError serverCallingError = new CallingServerError(
+        return new CallingServerError(
             obj.getMessage(),
             obj.getCode(),
             obj.getTarget(),
             details,
             convert(obj.getInnerError())
         );
-
-        return serverCallingError;
     }
 
     public static CallingServerErrorException translateException(CommunicationErrorException exception) {

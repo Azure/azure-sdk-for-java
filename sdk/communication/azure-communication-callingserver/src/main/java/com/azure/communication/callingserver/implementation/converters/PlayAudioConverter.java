@@ -7,12 +7,6 @@ import com.azure.communication.callingserver.implementation.models.PlayAudioRequ
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 
 public class PlayAudioConverter {
-    /**
-     * Convert PlayAudioOptions into PlayAudioRequest
-     * @param audioFileUri Audio file uri to be added during conversion
-     * @param playAudioOptions PlayAudioOptions to be converted
-     * @return PlayAudioRequest
-     */
     public static PlayAudioRequest convert(String audioFileUri, PlayAudioOptions playAudioOptions) {
         return new PlayAudioRequest()
             .setAudioFileUri(audioFileUri)

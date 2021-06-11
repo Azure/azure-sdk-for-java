@@ -3,32 +3,28 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.converters.ResultInfoConverter;
+import com.azure.communication.callingserver.implementation.models.InviteParticipantsResultEventInternal;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.ResultInfo;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InviteParticipantResultEvent model. */
-@Fluent
-public final class InviteParticipantResultEvent extends CallingServerEventBase {
+public final class InviteParticipantResultEvent {
     /*
      * The result details.
      */
-    @JsonProperty(value = "resultInfo")
-    private ResultInfo resultInfo;
+    private final ResultInfo resultInfo;
 
     /*
      * The operation context.
      */
-    @JsonProperty(value = "operationContext")
-    private String operationContext;
+    private final String operationContext;
 
     /*
      * Gets or sets the status of the operation
      */
-    @JsonProperty(value = "status")
-    private OperationStatus status;
+    private final OperationStatus status;
 
     /**
      * Get the resultInfo property: The result details.
@@ -37,17 +33,6 @@ public final class InviteParticipantResultEvent extends CallingServerEventBase {
      */
     public ResultInfo getResultInfo() {
         return this.resultInfo;
-    }
-
-    /**
-     * Set the resultInfo property: The result details.
-     *
-     * @param resultInfo the resultInfo value to set.
-     * @return the InviteParticipantResultEvent object itself.
-     */
-    public InviteParticipantResultEvent setResultInfo(ResultInfo resultInfo) {
-        this.resultInfo = resultInfo;
-        return this;
     }
 
     /**
@@ -60,17 +45,6 @@ public final class InviteParticipantResultEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the operationContext property: The operation context.
-     *
-     * @param operationContext the operationContext value to set.
-     * @return the InviteParticipantResultEvent object itself.
-     */
-    public InviteParticipantResultEvent setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
      * Get the status property: Gets or sets the status of the operation.
      *
      * @return the status value.
@@ -80,14 +54,16 @@ public final class InviteParticipantResultEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the status property: Gets or sets the status of the operation.
+     * Initializes a new instance of InviteParticipantResultEvent.
      *
-     * @param status the status value to set.
-     * @return the InviteParticipantResultEvent object itself.
+     * @param resultInfo the resultInfo value.
+     * @param operationContext the operationContext value.
+     * @param status the status value.
      */
-    public InviteParticipantResultEvent setStatus(OperationStatus status) {
+    public InviteParticipantResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
+        this.resultInfo = resultInfo;
+        this.operationContext = operationContext;
         this.status = status;
-        return this;
     }
 
     /**
@@ -97,6 +73,14 @@ public final class InviteParticipantResultEvent extends CallingServerEventBase {
      * @return {@link InviteParticipantResultEvent} event.
      */
     public static InviteParticipantResultEvent deserialize(BinaryData eventData) {
-        return eventData == null ? null : eventData.toObject(InviteParticipantResultEvent.class);
+        if (eventData == null) {
+            return null;
+        }
+        InviteParticipantsResultEventInternal inviteParticipantsResultEventInternal =
+            eventData.toObject(InviteParticipantsResultEventInternal.class);
+        return new InviteParticipantResultEvent(
+            ResultInfoConverter.convert(inviteParticipantsResultEventInternal.getResultInfo()),
+            inviteParticipantsResultEventInternal.getOperationContext(),
+            inviteParticipantsResultEventInternal.getStatus());
     }
 }

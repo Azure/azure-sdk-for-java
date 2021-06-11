@@ -3,25 +3,21 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.models.ToneReceivedEventInternal;
 import com.azure.communication.callingserver.models.ToneInfo;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The subscribe to tone event. */
-@Fluent
-public final class ToneReceivedEvent extends CallingServerEventBase {
+public final class ToneReceivedEvent {
     /*
      * The tone info.
      */
-    @JsonProperty(value = "toneInfo")
-    private ToneInfo toneInfo;
+    private final ToneInfo toneInfo;
 
     /*
      * The call connection id.
      */
-    @JsonProperty(value = "callConnectionId")
-    private String callConnectionId;
+    private final String callConnectionId;
 
     /**
      * Get the toneInfo property: The tone info.
@@ -30,17 +26,6 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
      */
     public ToneInfo getToneInfo() {
         return this.toneInfo;
-    }
-
-    /**
-     * Set the toneInfo property: The tone info.
-     *
-     * @param toneInfo the toneInfo value to set.
-     * @return the ToneReceivedEvent object itself.
-     */
-    public ToneReceivedEvent setToneInfo(ToneInfo toneInfo) {
-        this.toneInfo = toneInfo;
-        return this;
     }
 
     /**
@@ -53,23 +38,31 @@ public final class ToneReceivedEvent extends CallingServerEventBase {
     }
 
     /**
-     * Set the callConnectionId property: The call connection id.
+     * Initializes a new instance of InviteParticipantResultEvent.
      *
-     * @param callConnectionId the callConnectionId value to set.
-     * @return the ToneReceivedEvent object itself.
+     * @param toneInfo the toneInfo value.
+     * @param callConnectionId the callConnectionId value.
      */
-    public ToneReceivedEvent setCallConnectionId(String callConnectionId) {
+    public ToneReceivedEvent(ToneInfo toneInfo, String callConnectionId) {
+        this.toneInfo = toneInfo;
         this.callConnectionId = callConnectionId;
-        return this;
     }
 
     /**
-     * Deserialize {@link com.azure.communication.callingserver.models.events.ToneReceivedEvent} event.
+     * Deserialize {@link ToneReceivedEvent} event.
      *
      * @param eventData binary data for event
-     * @return {@link com.azure.communication.callingserver.models.events.ToneReceivedEvent} event.
+     * @return {@link ToneReceivedEvent} event.
      */
-    public static com.azure.communication.callingserver.models.events.ToneReceivedEvent deserialize(BinaryData eventData) {
-        return eventData == null ? null : eventData.toObject(com.azure.communication.callingserver.models.events.ToneReceivedEvent.class);
+    public static ToneReceivedEvent deserialize(BinaryData eventData) {
+        if (eventData == null) {
+            return null;
+        }
+        ToneReceivedEventInternal toneReceivedEventInternal = eventData.toObject(ToneReceivedEventInternal.class);
+        return new ToneReceivedEvent(
+            new ToneInfo(
+                toneReceivedEventInternal.getToneInfo().getSequenceId(),
+                toneReceivedEventInternal.getToneInfo().getTone()),
+            toneReceivedEventInternal.getCallConnectionId());
     }
 }

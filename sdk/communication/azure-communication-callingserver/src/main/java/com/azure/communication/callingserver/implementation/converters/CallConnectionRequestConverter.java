@@ -16,18 +16,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * A converter for {@link CreateCallRequestInternal}
- */
-public final class CallConnectionRequestConverter {
 
-    /**
-     * Convert create call parameters into CreateCallRequestInternal
-     * @param source Source of the call
-     * @param targets Targets for the call
-     * @param createCallOptions CreateCallOptions
-     * @return CreateCallRequestInternal
-     */
+public final class CallConnectionRequestConverter {
     public static CreateCallRequestInternal convert(CommunicationIdentifier source,
                                                     CommunicationIdentifier[] targets,
                                                     CreateCallOptions createCallOptions) {
