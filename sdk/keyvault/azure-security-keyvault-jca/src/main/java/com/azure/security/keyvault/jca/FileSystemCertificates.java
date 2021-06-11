@@ -200,7 +200,7 @@ public final class FileSystemCertificates implements AzureCertificates {
          * @return well known file certificate
          */
         public static FileSystemCertificates getWellKnownFileSystemCertificates(String path) {
-            if (customFileSystemCertificates == null) {
+            if (wellKnownFileSystemCertificates == null) {
                 synchronized (FileSystemCertificatesFactory.class) {
                     if (wellKnownFileSystemCertificates == null) {
                         wellKnownFileSystemCertificates = new FileSystemCertificates(path);
