@@ -416,6 +416,7 @@ the main ServiceBusClientBuilder. -->
       files="com.azure.cosmos.ClientSideRequestStatistics"/>
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-appconfiguration-config-web[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>

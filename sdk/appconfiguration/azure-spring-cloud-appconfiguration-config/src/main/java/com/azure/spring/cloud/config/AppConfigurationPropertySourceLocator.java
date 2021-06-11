@@ -62,9 +62,9 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private static final AtomicBoolean CONFIG_LOADED = new AtomicBoolean(false);
+    private static AtomicBoolean configloaded = new AtomicBoolean(false);
 
-    private static final AtomicBoolean STARTUP = new AtomicBoolean(true);
+    private static AtomicBoolean startup = new AtomicBoolean(true);
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
@@ -84,7 +84,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         }
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
-        if (CONFIG_LOADED.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
+        if (configloaded.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
             return null;
         }
 
@@ -103,7 +103,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
 
-            Boolean loadNewPropertySources = STARTUP.get() || StateHolder.getLoadState(configStore.getEndpoint());
+            Boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
 
             if (configStore.isEnabled() && loadNewPropertySources) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
@@ -114,8 +114,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
-        CONFIG_LOADED.set(true);
-        STARTUP.set(false);
+        configloaded.set(true);
+        startup.set(false);
         return composite;
     }
 
@@ -155,7 +155,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 LOGGER.debug("PropertySource context [{}] is added.", sourceContext);
             } catch (Exception e) {
-                if (store.isFailFast() || !STARTUP.get()) {
+                if (store.isFailFast() || !startup.get()) {
                     LOGGER.error(
                         "Fail fast is set and there was an error reading configuration from Azure App "
                             + "Configuration store " + store.getEndpoint()
