@@ -1219,7 +1219,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractKeyPhrasesForSingleTextInputRunner(input ->
             StepVerifier.create(client.extractKeyPhrases(input))
-                .assertNext(response -> assertEquals("monde", response.iterator().next()))
+                .assertNext(keyPhrasesCollection -> validateKeyPhrases(asList("Bonjour", "monde"),
+                    keyPhrasesCollection.stream().collect(Collectors.toList())))
                 .verifyComplete());
     }
 
@@ -1965,6 +1966,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Healthcare LRO
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22208")
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroPaginationRunner((documents, options) -> {
@@ -1983,6 +1985,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22208")
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
@@ -2144,6 +2147,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22208")
     public void analyzeHealthcareEntitiesDiacriticsNfc(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
@@ -2171,6 +2175,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/22208")
     public void analyzeHealthcareEntitiesDiacriticsNfd(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
