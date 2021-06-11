@@ -55,6 +55,7 @@ import com.azure.data.tables.models.TableTransactionResult;
 import com.azure.data.tables.sas.TableSasSignatureValues;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.temporal.ChronoUnit;
@@ -1225,6 +1226,7 @@ public final class TableAsyncClient {
             .flatMapSequential(op -> op.prepareRequest(transactionalBatchClient).zipWith(Mono.just(op)))
             .collect(TransactionalBatchRequestBody::new, (body, pair) ->
                 body.addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
+            .publishOn(Schedulers.boundedElastic())
             .flatMap(body ->
                 transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
                     finalContext).zipWith(Mono.just(body)))

@@ -53,6 +53,7 @@
       </activation>
       <modules>
         <module>azure-data-tables</module>
+        <module>azure-data-tables-perf</module>
       </modules>
     </profile>
   </profiles>
