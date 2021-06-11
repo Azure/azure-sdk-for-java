@@ -172,17 +172,17 @@ public class TopicSubscriptionWithRuleOperationsSample {
             .topicName(SERVICE_BUS_TOPIC_NAME)
             .buildClient();
 
-        List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>() {{
-            add(createServiceBusMessage("Red", null));
-            add(createServiceBusMessage("Blue", null));
-            add(createServiceBusMessage("Red", "important"));
-            add(createServiceBusMessage("Blue", "important"));
-            add(createServiceBusMessage("Red", "notimportant"));
-            add(createServiceBusMessage("Blue", "notimportant"));
-            add(createServiceBusMessage("Green", null));
-            add(createServiceBusMessage("Green", "important"));
-            add(createServiceBusMessage("Green", "notimportant"));
-        }};
+        List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>();
+        messageList.add(createServiceBusMessage("Red", null));
+        messageList.add(createServiceBusMessage("Blue", null));
+        messageList.add(createServiceBusMessage("Red", "important"));
+        messageList.add(createServiceBusMessage("Blue", "important"));
+        messageList.add(createServiceBusMessage("Red", "notimportant"));
+        messageList.add(createServiceBusMessage("Blue", "notimportant"));
+        messageList.add(createServiceBusMessage("Green", null));
+        messageList.add(createServiceBusMessage("Green", "important"));
+        messageList.add(createServiceBusMessage("Green", "notimportant"));
+
         System.out.println("==========================================================================");
         System.out.println("Sending Messages to Topic");
         ServiceBusMessageBatch messageBatch = topicSenderClient.createMessageBatch();
