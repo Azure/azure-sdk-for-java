@@ -10,6 +10,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -125,14 +126,12 @@ public final class CallingServerClient {
      * {@code endpoint} and write it into the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint, OutputStream destinationStream,
-                           ParallelDownloadOptions parallelDownloadOptions) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        downloadToWithResponse(sourceEndpoint, destinationStream, parallelDownloadOptions, null);
+    public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
+        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
     }
 
     /**
@@ -140,17 +139,17 @@ public final class CallingServerClient {
      * {@code endpoint} and write it in the {@link OutputStream} passed as parameter.
      * @param sourceEndpoint - ACS URL where the content is located.
      * @param destinationStream - A stream where to write the downloaded content.
-     * @param parallelDownloadOptions - an optional {@link ParallelDownloadOptions} object to modify how the parallel
-     *                               download will work.
+     * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
+     *                  the whole content will be downloaded.
      * @param context A {@link Context} representing the request context.
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> downloadToWithResponse(String sourceEndpoint, OutputStream destinationStream,
-                                                 ParallelDownloadOptions parallelDownloadOptions, Context context) {
+                                                 HttpRange httpRange, Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationStream, parallelDownloadOptions, context)
+        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
             .block();
     }
 
@@ -166,8 +165,6 @@ public final class CallingServerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceEndpoint, Path destinationPath,
                            ParallelDownloadOptions parallelDownloadOptions, boolean overwrite) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
     }
 

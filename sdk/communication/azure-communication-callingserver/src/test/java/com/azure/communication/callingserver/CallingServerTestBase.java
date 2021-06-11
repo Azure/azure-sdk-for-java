@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,10 @@ public class CallingServerTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
+
+    protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER", "016a7064-0581-40b9-be73-6dde64d69d72");        
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -50,6 +54,10 @@ public class CallingServerTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
         return builder;
+    }
+
+    protected String getRandomUserId() {
+        return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID().toString();
     }
 
     protected CallingServerClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
@@ -88,8 +96,8 @@ public class CallingServerTestBase extends TestBase {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
                 // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                System.out.println("Chain-ID header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
     }
