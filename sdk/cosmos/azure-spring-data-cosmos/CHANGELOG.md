@@ -1,7 +1,15 @@
 ## Release History
 
-## 3.8.0-beta.1 (Unreleased)
+### 3.8.0 (2021-06-11)
+#### New Features
+* Updated `Spring Boot` to version 2.5.0.
+* Updated `azure-cosmos` to version 4.16.0.
+* Added Autoscale RU support feature.
+* Added support for `countBy*` methods on `Repository` and `@Query` annotation.
 
+#### Key Bug Fixes
+* Fixed an issue with `MappingCosmosConverter` handling query with value types.
+* Fixed an issue with `CosmosIndexingPolicy` getting reset on application bootup.
 
 ### 3.7.0 (2021-05-12)
 #### New Features
