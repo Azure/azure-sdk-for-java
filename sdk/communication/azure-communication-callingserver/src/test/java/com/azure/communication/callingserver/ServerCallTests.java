@@ -35,33 +35,33 @@ public class ServerCallTests extends CallingServerTestBase {
     // Calling Tests
     private String fromUser = getRandomUserId();
     private String toUser = getRandomUserId();
-    private String alternateId =   "+11111111111";
-    private String to =   "+11111111111";
+    private String alternateId = "+11111111111";
+    private String to = "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctions(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctions");    
+        CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctions");
         String recordingId = "";
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         String groupId = "ecf4c528-8a18-4fdb-b317-b9ef14786278"; // This needs to match the recording
-        List<CallConnection> callConnections = new ArrayList<CallConnection>();
+        List<CallConnection> callConnections = new ArrayList<>();
         ServerCall serverCall = null;
 
         try {
             callConnections = createCall(callingServerClient, groupId, fromUser, toUser);
             serverCall = callingServerClient.initializeServerCall(groupId);
 
-            StartCallRecordingResult startCallRecordingResult = serverCall.startRecording(recordingStateCallbackUri);     
+            StartCallRecordingResult startCallRecordingResult = serverCall.startRecording(recordingStateCallbackUri);
             recordingId = startCallRecordingResult.getRecordingId();
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
 
             serverCall.pauseRecording(recordingId);
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.INACTIVE);
 
-            serverCall.resumeRecording(recordingId);         
+            serverCall.resumeRecording(recordingId);
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -75,7 +75,7 @@ public class ServerCallTests extends CallingServerTestBase {
                 }
             }
 
-            cleanUpConnections(callConnections); 
+            cleanUpConnections(callConnections);
         }
     }
 
@@ -83,11 +83,11 @@ public class ServerCallTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctionsWithResponse");    
+        CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctionsWithResponse");
         String recordingId = "";
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         String groupId = "878e946e-e25c-4693-995e-3106692f79dd"; // This needs to match the recording
-        List<CallConnection> callConnections = new ArrayList<CallConnection>();
+        List<CallConnection> callConnections = new ArrayList<>();
         ServerCall serverCall = null;
 
         try {
@@ -96,7 +96,7 @@ public class ServerCallTests extends CallingServerTestBase {
 
             Response<StartCallRecordingResult> startRecordingResponse = serverCall.startRecordingWithResponse(recordingStateCallbackUri, Context.NONE);
             assertEquals(startRecordingResponse.getStatusCode(), 200);
-            StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();     
+            StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();
             recordingId = startCallRecordingResult.getRecordingId();
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
 
@@ -105,7 +105,7 @@ public class ServerCallTests extends CallingServerTestBase {
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.INACTIVE);
 
             Response<Void> resumeResponse = serverCall.resumeRecordingWithResponse(recordingId, Context.NONE);
-            assertEquals(resumeResponse.getStatusCode(), 200);                     
+            assertEquals(resumeResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -114,13 +114,13 @@ public class ServerCallTests extends CallingServerTestBase {
             if (serverCall != null) {
                 try {
                     Response<Void> stopResponse = serverCall.stopRecordingWithResponse(recordingId, Context.NONE);
-                    assertEquals(stopResponse.getStatusCode(), 200);                     
+                    assertEquals(stopResponse.getStatusCode(), 200);
                 } catch (Exception e) {
                     System.out.println("Error stopping recording: " + e.getMessage());
                 }
             }
 
-            cleanUpConnections(callConnections); 
+            cleanUpConnections(callConnections);
         }
     }
 
@@ -316,23 +316,23 @@ public class ServerCallTests extends CallingServerTestBase {
         if (connections == null) {
             return;
         }
-        
+
         connections.forEach(c -> {
             if (c != null) {
                 try {
-                    c.hangup();  
+                    c.hangup();
                 } catch (Exception e) {
                     System.out.println("Error hanging up: " + e.getMessage());
                 }
             }
-        }); 
+        });
     }
 
     protected List<CallConnection> createCall(CallingServerClient callingServerClient, String groupId, String from, String to) {
         CallConnection fromCallConnection =  null;
         CallConnection toCallConnection = null;
 
-        try {          
+        try {
             CommunicationIdentifier fromParticipant = new CommunicationUserIdentifier(from);
             CommunicationIdentifier toParticipant = new CommunicationUserIdentifier(to);
 
@@ -343,12 +343,12 @@ public class ServerCallTests extends CallingServerTestBase {
             fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(fromCallConnection);
-            
+
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
-            
+
             toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(toCallConnection);
@@ -366,6 +366,6 @@ public class ServerCallTests extends CallingServerTestBase {
             }
 
             throw e;
-        }        
+        }
     }
 }

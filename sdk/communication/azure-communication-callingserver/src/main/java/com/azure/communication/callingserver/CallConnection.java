@@ -49,16 +49,17 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayAudioResult playAudio(String audioFileUri,
-                                       boolean loop,
-                                       String audioFileId,
-                                       String callbackUri,
-                                       String operationContext) {
-        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-        playAudioRequest.setAudioFileUri(audioFileUri);
-        playAudioRequest.setLoop(loop);
-        playAudioRequest.setAudioFileId(audioFileId);
-        playAudioRequest.setOperationContext(operationContext);
-        playAudioRequest.setCallbackUri(callbackUri);
+                                     boolean loop,
+                                     String audioFileId,
+                                     String callbackUri,
+                                     String operationContext) {
+        PlayAudioRequest playAudioRequest =
+            new PlayAudioRequest()
+                .setAudioFileUri(audioFileUri)
+                .setLoop(loop)
+                .setAudioFileId(audioFileId)
+                .setOperationContext(operationContext)
+                .setCallbackUri(callbackUri);
         return callConnectionAsync.playAudio(playAudioRequest).block();
     }
 
@@ -82,12 +83,13 @@ public final class CallConnection {
                                                            String callbackUri,
                                                            String operationContext,
                                                            Context context) {
-        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-        playAudioRequest.setAudioFileUri(audioFileUri);
-        playAudioRequest.setLoop(loop);
-        playAudioRequest.setAudioFileId(audioFileId);
-        playAudioRequest.setOperationContext(operationContext);
-        playAudioRequest.setCallbackUri(callbackUri);
+        PlayAudioRequest playAudioRequest =
+            new PlayAudioRequest()
+                .setAudioFileUri(audioFileUri)
+                .setLoop(loop)
+                .setAudioFileId(audioFileId)
+                .setOperationContext(operationContext)
+                .setCallbackUri(callbackUri);
         return callConnectionAsync.playAudioWithResponse(playAudioRequest, context).block();
     }
 

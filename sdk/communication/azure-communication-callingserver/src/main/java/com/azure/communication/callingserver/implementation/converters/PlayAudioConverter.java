@@ -14,12 +14,11 @@ public class PlayAudioConverter {
      * @return PlayAudioRequest
      */
     public static PlayAudioRequest convert(String audioFileUri, PlayAudioOptions playAudioOptions) {
-        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-        playAudioRequest.setAudioFileUri(audioFileUri);
-        playAudioRequest.setLoop(playAudioOptions.isLoop());
-        playAudioRequest.setAudioFileId(playAudioOptions.getAudioFileId());
-        playAudioRequest.setOperationContext(playAudioOptions.getOperationContext());
-        playAudioRequest.setCallbackUri(playAudioOptions.getCallbackUri());
-        return playAudioRequest;
+        return new PlayAudioRequest()
+            .setAudioFileUri(audioFileUri)
+            .setLoop(playAudioOptions.isLoop())
+            .setAudioFileId(playAudioOptions.getAudioFileId())
+            .setOperationContext(playAudioOptions.getOperationContext())
+            .setCallbackUri(playAudioOptions.getCallbackUri());
     }
 }

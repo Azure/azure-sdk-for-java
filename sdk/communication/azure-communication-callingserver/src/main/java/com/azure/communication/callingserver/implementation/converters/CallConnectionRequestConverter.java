@@ -11,6 +11,7 @@ import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.common.CommunicationIdentifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,13 +29,10 @@ public final class CallConnectionRequestConverter {
      * @return CreateCallRequestInternal
      */
     public static CreateCallRequestInternal convert(CommunicationIdentifier source,
-                                                              CommunicationIdentifier[] targets,
-                                                              CreateCallOptions createCallOptions) {
+                                                    CommunicationIdentifier[] targets,
+                                                    CreateCallOptions createCallOptions) {
 
-        List<CommunicationIdentifier> targetsList = new ArrayList<>();
-        for (CommunicationIdentifier communicationIdentifier : targets) {
-            targetsList.add(communicationIdentifier);
-        }
+        List<CommunicationIdentifier> targetsList = new ArrayList<>(Arrays.asList(targets));
 
         List<CallModality> requestedModalities = new LinkedList<>();
         for (CallModality modality : createCallOptions.getRequestedMediaTypes()) {
@@ -55,7 +53,7 @@ public final class CallConnectionRequestConverter {
         CreateCallRequestInternal request = new CreateCallRequestInternal();
         request.setSource(CommunicationIdentifierConverter.convert(source));
         request.setTargets(targetsList.stream()
-            .map(target -> CommunicationIdentifierConverter.convert(target))
+            .map(CommunicationIdentifierConverter::convert)
             .collect(Collectors.toList()));
         request.setCallbackUri(createCallOptions.getCallbackUri());
         request.setRequestedMediaTypes(requestedModalities);

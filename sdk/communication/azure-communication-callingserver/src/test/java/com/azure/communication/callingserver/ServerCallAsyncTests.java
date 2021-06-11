@@ -34,8 +34,8 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
     // Calling Tests
     private String fromUser = getRandomUserId();
     private String toUser = getRandomUserId();
-    private String alternateId =   "+11111111111";
-    private String to =   "+11111111111";
+    private String alternateId = "+11111111111";
+    private String to = "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
 
     @ParameterizedTest
@@ -46,21 +46,22 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
         String recordingId = "";
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         String groupId = "c400789f-e11b-4ceb-88cb-bc8df2a01568"; // This needs to match the recording
-        List<CallConnectionAsync> callConnections = new ArrayList<CallConnectionAsync>();
+        List<CallConnectionAsync> callConnections = new ArrayList<>();
         ServerCallAsync serverCall = null;
 
         try {
             callConnections = createCall(callingServerAsyncClient, groupId, fromUser, toUser);
             serverCall = callingServerAsyncClient.initializeServerCall(groupId);
 
-            StartCallRecordingResult startCallRecordingResult = serverCall.startRecording(recordingStateCallbackUri).block();     
+            StartCallRecordingResult startCallRecordingResult = serverCall.startRecording(recordingStateCallbackUri).block();
+            assert startCallRecordingResult != null;
             recordingId = startCallRecordingResult.getRecordingId();
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
 
             serverCall.pauseRecording(recordingId).block();
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.INACTIVE);
 
-            serverCall.resumeRecording(recordingId).block();         
+            serverCall.resumeRecording(recordingId).block();
             validateCallRecordingState(serverCall, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -74,7 +75,7 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
                 }
             }
 
-            cleanUpConnectionsAsync(callConnections); 
+            cleanUpConnectionsAsync(callConnections);
         }
     }
 
@@ -82,11 +83,11 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");  
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
         String recordingId = "";
         String recordingStateCallbackUri = "https://dev.skype.net:6448";
         String groupId = "7936319e-4317-475d-919d-ada32213b700"; // This needs to match the recording
-        List<CallConnectionAsync> callConnections = new ArrayList<CallConnectionAsync>();
+        List<CallConnectionAsync> callConnections = new ArrayList<>();
         ServerCallAsync serverCallAsync = null;
 
         try {
@@ -94,8 +95,9 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
             serverCallAsync = callingServerAsyncClient.initializeServerCall(groupId);
 
             Response<StartCallRecordingResult> startRecordingResponse = serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri).block();
+            assert startRecordingResponse != null;
             assertEquals(startRecordingResponse.getStatusCode(), 200);
-            StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();     
+            StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();
             recordingId = startCallRecordingResult.getRecordingId();
             validateCallRecordingStateWithResponse(serverCallAsync, recordingId, CallRecordingState.ACTIVE);
 
@@ -115,13 +117,14 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
             if (serverCallAsync != null) {
                 try {
                     Response<Void> stopResponse = serverCallAsync.stopRecordingWithResponse(recordingId).block();
-                    assertEquals(stopResponse.getStatusCode(), 200);                     
+                    assert stopResponse != null;
+                    assertEquals(stopResponse.getStatusCode(), 200);
                 } catch (Exception e) {
                     System.out.println("Error stopping recording: " + e.getMessage());
                 }
             }
 
-            cleanUpConnectionsAsync(callConnections); 
+            cleanUpConnectionsAsync(callConnections);
         }
     }
 
@@ -320,28 +323,28 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
         assertNotNull(response.getValue());
         assertEquals(response.getValue().getRecordingState(), expectedCallRecordingState);
     }
-    
+
     protected void cleanUpConnectionsAsync(List<CallConnectionAsync> connections) {
         if (connections == null) {
             return;
         }
-        
+
         connections.forEach(c -> {
             if (c != null) {
                 try {
-                    c.hangup().block();  
+                    c.hangup().block();
                 } catch (Exception e) {
                     System.out.println("Error hanging up: " + e.getMessage());
                 }
             }
-        }); 
+        });
     }
 
     protected List<CallConnectionAsync> createCall(CallingServerAsyncClient callingServerClient, String groupId, String from, String to) {
         CallConnectionAsync fromCallConnection =  null;
         CallConnectionAsync toCallConnection = null;
 
-        try {          
+        try {
             CommunicationIdentifier fromParticipant = new CommunicationUserIdentifier(from);
             CommunicationIdentifier toParticipant = new CommunicationUserIdentifier(to);
 
@@ -352,12 +355,12 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
             fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(fromCallConnection);
-            
+
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
-            
+
             toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(toCallConnection);
@@ -375,6 +378,6 @@ public class ServerCallAsyncTests extends CallingServerTestBase {
             }
 
             throw e;
-        }        
-    }    
+        }
+    }
 }
