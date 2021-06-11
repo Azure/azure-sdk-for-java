@@ -12,12 +12,12 @@ import com.azure.core.util.ExpandableStringEnum;
 @Immutable
 public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain> {
     /**
-     * Protected health information (PHI) as the PiiEntityDomainType.
+     * Protected health information (PHI) as the PiiEntityDomain.
      */
     public static final PiiEntityDomain PROTECTED_HEALTH_INFORMATION = fromString("PHI");
 
     /**
-     * None as the PiiEntityDomainType.
+     * None as the PiiEntityDomain.
      */
     public static final PiiEntityDomain NONE = fromString("none");
 
