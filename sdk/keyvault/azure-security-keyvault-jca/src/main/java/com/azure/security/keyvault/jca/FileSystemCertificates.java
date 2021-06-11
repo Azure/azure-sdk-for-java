@@ -80,7 +80,7 @@ public final class FileSystemCertificates implements AzureCertificates {
      *
      * @param certificatePath Store the file path where certificates are placed
      */
-    FileSystemCertificates(String certificatePath) {
+    private FileSystemCertificates(String certificatePath) {
         this.certificatePath = certificatePath;
     }
 
@@ -168,4 +168,47 @@ public final class FileSystemCertificates implements AzureCertificates {
                 .forEach(files::add);
         return files;
     }
+
+    /**
+     * Factory of FileSystemCertificate, to avoid loading files multiple times
+     */
+    public static class FileSystemCertificatesFactory {
+
+        private static volatile FileSystemCertificates customFileSystemCertificates;
+
+        /**
+         * Get Singleton custom file system certificates
+         * @param path custom certificate path, which works only in first time
+         * @return custom file certificate
+         */
+        public static FileSystemCertificates getCustomFileSystemCertificates(String path) {
+            if (customFileSystemCertificates == null) {
+                synchronized (FileSystemCertificatesFactory.class) {
+                    if (customFileSystemCertificates == null) {
+                        customFileSystemCertificates = new FileSystemCertificates(path);
+                    }
+                }
+            }
+            return customFileSystemCertificates;
+        }
+
+        private static volatile FileSystemCertificates wellKnownFileSystemCertificates;
+
+        /**
+         * Get Singleton well known file system certificates
+         * @param path well known certificate path, which works only in first time
+         * @return well known file certificate
+         */
+        public static FileSystemCertificates getWellKnownFileSystemCertificates(String path) {
+            if (customFileSystemCertificates == null) {
+                synchronized (FileSystemCertificatesFactory.class) {
+                    if (wellKnownFileSystemCertificates == null) {
+                        wellKnownFileSystemCertificates = new FileSystemCertificates(path);
+                    }
+                }
+            }
+            return wellKnownFileSystemCertificates;
+        }
+    }
+
 }
