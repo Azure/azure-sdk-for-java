@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.8.0-beta.1 (2021-06-11)
+### 3.8.0 (2021-06-11)
 #### New Features
 * Updated `Spring Boot` to version 2.5.0.
 * Updated `azure-cosmos` to version 4.16.0.
