@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Common class for authenticating refresh requests.
+ */
 public class AppConfigurationEndpoint {
 
     private static final String CONFIG_STORE_TOPIC = "configurationstores";
