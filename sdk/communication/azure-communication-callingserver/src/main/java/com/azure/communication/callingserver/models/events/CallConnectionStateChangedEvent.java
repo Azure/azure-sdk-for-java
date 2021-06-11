@@ -29,7 +29,9 @@ public final class CallConnectionStateChangedEvent {
      *
      * @return the serverCallId value.
      */
-    public String getServerCallId() { return serverCallId; }
+    public String getServerCallId() {
+        return serverCallId;
+    }
 
     /**
      * Get the callConnectionId property: The call connection id.
