@@ -7,8 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -17,6 +20,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -75,6 +79,32 @@ public class DownloadContentTests extends CallingServerTestBase {
             () -> conversationClient
                 .downloadTo(CONTENT_URL_404, baos, null));
         assertThat(ex.getResponse().getStatusCode(), is(equalTo(404)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void downloadContentWrongUrl(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+            () -> conversationClient
+                .downloadTo("wrongurl", baos, null));
+        assertThat(ex, is(notNullValue()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void downloadContentStreamFailure(HttpClient httpClient) throws IOException {
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
+
+        ByteArrayOutputStream baos = Mockito.mock(ByteArrayOutputStream.class);
+        doThrow(IOException.class).when(baos).write(Mockito.any());
+        assertThrows(UncheckedIOException.class,
+            () -> conversationClient
+                .downloadTo(METADATA_URL, baos, null));
     }
 
     private CallingServerClient setupClient(CallingServerClientBuilder builder, String testName) {
