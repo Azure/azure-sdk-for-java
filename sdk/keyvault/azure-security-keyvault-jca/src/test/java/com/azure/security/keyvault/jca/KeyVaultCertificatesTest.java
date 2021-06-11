@@ -24,8 +24,6 @@ public class KeyVaultCertificatesTest {
 
     private KeyVaultCertificates keyVaultCertificates;
 
-    private KeyVaultKeyStore ks;
-
     @BeforeEach
     public void beforeEach() {
 
@@ -34,9 +32,7 @@ public class KeyVaultCertificatesTest {
         when(keyVaultClient.getAliases()).thenReturn(aliases);
         when(keyVaultClient.getKey("myalias", null)).thenReturn(key);
         when(keyVaultClient.getCertificate("myalias")).thenReturn(certificate);
-        ks = mock(KeyVaultKeyStore.class);
-        doNothing().when(ks).loadAlias(true);
-        keyVaultCertificates = new KeyVaultCertificates(0, keyVaultClient, ks);
+        keyVaultCertificates = new KeyVaultCertificates(0, keyVaultClient);
     }
 
     @Test
@@ -70,7 +66,7 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testCertificatesNeedRefresh() throws InterruptedException {
-        keyVaultCertificates = new KeyVaultCertificates(1000, keyVaultClient, ks);
+        keyVaultCertificates = new KeyVaultCertificates(1000, keyVaultClient);
         Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());

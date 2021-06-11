@@ -37,8 +37,7 @@ public class JreKeyStoreTest {
         /*
          * Set system properties.
          */
-
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(PropertyConvertorUtils.SYSTEM_PROPERTIES);
     }
 
     @Test

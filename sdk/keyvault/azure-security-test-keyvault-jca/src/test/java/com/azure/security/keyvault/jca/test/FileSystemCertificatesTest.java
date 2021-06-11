@@ -17,14 +17,11 @@ import java.security.cert.CertificateException;
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class FileSystemCertificatesTest {
 
-    private static String certificateName;
-
     @BeforeAll
     public static void setEnvironmentProperty() {
         System.setProperty("azure.cert-path.custom", getFilePath());
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(PropertyConvertorUtils.SYSTEM_PROPERTIES);
         PropertyConvertorUtils.addKeyVaultJcaProvider();
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     public static String getFilePath() {

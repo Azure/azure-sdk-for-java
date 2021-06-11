@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PropertyConvertorUtils {
 
-    public static void putEnvironmentPropertyToSystemProperty(List<String> key) {
+    public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca(List<String> key) {
         key.forEach(
             environmentPropertyKey -> {
                 String value = System.getenv(environmentPropertyKey);

@@ -24,7 +24,7 @@ public class KeyVaultJcaProviderTest {
      */
     @Test
     public void testGetCertificate() throws Exception {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(PropertyConvertorUtils.SYSTEM_PROPERTIES);
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keystore = PropertyConvertorUtils.getKeyVaultKeyStore();
         assertNotNull(keystore.getCertificate(System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME")));
