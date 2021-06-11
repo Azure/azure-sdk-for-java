@@ -18,6 +18,7 @@ import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
@@ -242,9 +243,10 @@ public class ModelHelper {
         headers.setLastAccessedTime(internalHeaders.getXMsLastAccessTime());
         headers.setCurrentVersion(internalHeaders.isXMsIsCurrentVersion());
 
-        headers.setImmutabilityPolicyMode(internalHeaders.getXMsImmutabilityPolicyMode() == null ? null
-            : BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()));
-        headers.setImmutabilityPolicyExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate());
+        headers.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setPolicyMode(internalHeaders.getXMsImmutabilityPolicyMode() == null ? null
+            : BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()))
+            .setExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate()));
         headers.setHasLegalHold(internalHeaders.isXMsLegalHold());
 
         return headers;
