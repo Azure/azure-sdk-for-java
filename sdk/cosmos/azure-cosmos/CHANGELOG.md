@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.17.0-beta.1 (Unreleased)
+
+
 ### 4.16.0 (2021-06-11)
 #### Key Bug Fixes
 * Fixed an issue on handling partition splits during bulk operations in Gateway Mode.
