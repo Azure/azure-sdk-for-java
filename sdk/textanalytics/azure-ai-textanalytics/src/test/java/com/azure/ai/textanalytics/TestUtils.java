@@ -931,9 +931,9 @@ final class TestUtils {
     static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollection() {
         return new ExtractKeyPhrasesResultCollection(
             asList(new ExtractKeyPhraseResult("0", new TextDocumentStatistics(44, 1),
-                null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle", "week")), null)),
+                null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle")), null)),
                 new ExtractKeyPhraseResult("1", new TextDocumentStatistics(67, 1),
-                    null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")), null))),
+                    null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome", "API")), null))),
             DEFAULT_MODEL_VERSION,
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
@@ -1075,7 +1075,7 @@ final class TestUtils {
         List<ExtractKeyPhraseResult> extractKeyPhraseResults = new ArrayList<>();
         for (int i = startIndex; i < startIndex + documentCount; i++) {
             extractKeyPhraseResults.add(new ExtractKeyPhraseResult(Integer.toString(i), null, null,
-                new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")),
+                new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome", "API")),
                     null)));
         }
         return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResults, "2020-07-01",
