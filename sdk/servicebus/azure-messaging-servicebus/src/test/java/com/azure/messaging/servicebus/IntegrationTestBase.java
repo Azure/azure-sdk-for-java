@@ -44,7 +44,11 @@ import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
-import static com.azure.messaging.servicebus.TestUtils.*;
+import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
