@@ -36,8 +36,8 @@ public class ServerCallTests extends CallingServerTestBase {
     // Calling Tests
     private String fromUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
     private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-93fa-bc5c-28c5-593a0d000f2c";
-    private String alternateId =   "+11111111111";
-    private String to =   "+11111111111";
+    private String alternateId = "+11111111111";
+    private String to = "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
 
 

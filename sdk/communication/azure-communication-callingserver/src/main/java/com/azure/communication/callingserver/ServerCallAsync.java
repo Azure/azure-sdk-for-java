@@ -414,12 +414,13 @@ public final class ServerCallAsync {
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
 
             //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-            PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-            playAudioRequest.setAudioFileUri(audioFileUri);
-            playAudioRequest.setLoop(false);
-            playAudioRequest.setAudioFileId(audioFileId);
-            playAudioRequest.setOperationContext(operationContext);
-            playAudioRequest.setCallbackUri(callbackUri);
+            PlayAudioRequest playAudioRequest =
+                new PlayAudioRequest()
+                    .setAudioFileUri(audioFileUri)
+                    .setLoop(false)
+                    .setAudioFileId(audioFileId)
+                    .setOperationContext(operationContext)
+                    .setCallbackUri(callbackUri);
             return playAudio(playAudioRequest);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -469,12 +470,13 @@ public final class ServerCallAsync {
                                                                    String callbackUri,
                                                                    String operationContext) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-        playAudioRequest.setAudioFileUri(audioFileUri);
-        playAudioRequest.setLoop(false);
-        playAudioRequest.setAudioFileId(audioFileId);
-        playAudioRequest.setOperationContext(operationContext);
-        playAudioRequest.setCallbackUri(callbackUri);
+        PlayAudioRequest playAudioRequest =
+            new PlayAudioRequest()
+                .setAudioFileUri(audioFileUri)
+                .setLoop(false)
+                .setAudioFileId(audioFileId)
+                .setOperationContext(operationContext)
+                .setCallbackUri(callbackUri);
         return playAudioWithResponse(playAudioRequest, Context.NONE);
     }
 

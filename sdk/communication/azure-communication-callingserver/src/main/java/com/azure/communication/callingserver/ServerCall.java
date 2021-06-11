@@ -231,12 +231,13 @@ public final class ServerCall {
                                      String callbackUri,
                                      String operationContext) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-        playAudioRequest.setAudioFileUri(audioFileUri);
-        playAudioRequest.setLoop(false);
-        playAudioRequest.setAudioFileId(audioFileId);
-        playAudioRequest.setOperationContext(operationContext);
-        playAudioRequest.setCallbackUri(callbackUri);
+        PlayAudioRequest playAudioRequest =
+            new PlayAudioRequest()
+                .setAudioFileUri(audioFileUri)
+                .setLoop(false)
+                .setAudioFileId(audioFileId)
+                .setOperationContext(operationContext)
+                .setCallbackUri(callbackUri);
         return serverCallAsync.playAudio(playAudioRequest).block();
     }
 
@@ -259,12 +260,13 @@ public final class ServerCall {
                                                              String operationContext,
                                                              Context context) {
         //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest = new PlayAudioRequest();
-        playAudioRequest.setAudioFileUri(audioFileUri);
-        playAudioRequest.setLoop(false);
-        playAudioRequest.setAudioFileId(audioFileId);
-        playAudioRequest.setOperationContext(operationContext);
-        playAudioRequest.setCallbackUri(callbackUri);
+        PlayAudioRequest playAudioRequest =
+            new PlayAudioRequest()
+                .setAudioFileUri(audioFileUri)
+                .setLoop(false)
+                .setAudioFileId(audioFileId)
+                .setOperationContext(operationContext)
+                .setCallbackUri(callbackUri);
         return serverCallAsync.playAudioWithResponse(playAudioRequest, context).block();
     }
 

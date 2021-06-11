@@ -29,8 +29,8 @@ public class CallConnectionTests extends CallingServerTestBase {
     private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
     private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
     private String joinedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012cf";
-    private String alternateId =   "+11111111111";
-    private String to =   "+11111111111";
+    private String alternateId = "+11111111111";
+    private String to = "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
     private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
 

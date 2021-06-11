@@ -61,9 +61,6 @@ public final class ServerCallsImpl {
     private interface ServerCallsService {
         @Post("/calling/serverCalls/{serverCallId}/participants")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 401, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<Void>> inviteParticipants(
                 @HostParam("endpoint") String endpoint,
@@ -75,9 +72,6 @@ public final class ServerCallsImpl {
 
         @Delete("/calling/serverCalls/{serverCallId}/participants/{participantId}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 401, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<Void>> removeParticipant(
                 @HostParam("endpoint") String endpoint,
@@ -89,9 +83,6 @@ public final class ServerCallsImpl {
 
         @Post("/calling/serverCalls/{serverCallId}/recordings")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 404, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<StartCallRecordingResult>> startRecording(
                 @HostParam("endpoint") String endpoint,
@@ -103,9 +94,6 @@ public final class ServerCallsImpl {
 
         @Get("/calling/serverCalls/{serverCallId}/recordings/{recordingId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 404, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<CallRecordingStateResult>> recordingState(
                 @HostParam("endpoint") String endpoint,
@@ -117,9 +105,6 @@ public final class ServerCallsImpl {
 
         @Delete("/calling/serverCalls/{serverCallId}/recordings/{recordingId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<Void>> stopRecording(
                 @HostParam("endpoint") String endpoint,
@@ -131,9 +116,6 @@ public final class ServerCallsImpl {
 
         @Post("/calling/serverCalls/{serverCallId}/recordings/{recordingId}/:pause")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<Void>> pauseRecording(
                 @HostParam("endpoint") String endpoint,
@@ -145,9 +127,6 @@ public final class ServerCallsImpl {
 
         @Post("/calling/serverCalls/{serverCallId}/recordings/{recordingId}/:resume")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<Void>> resumeRecording(
                 @HostParam("endpoint") String endpoint,
@@ -159,9 +138,6 @@ public final class ServerCallsImpl {
 
         @Post("/calling/serverCalls/{serverCallId}/:join")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 401, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<JoinCallResult>> joinCall(
                 @HostParam("endpoint") String endpoint,
@@ -173,9 +149,6 @@ public final class ServerCallsImpl {
 
         @Post("/calling/serverCalls/{serverCallId}/:playAudio")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = CommunicationErrorException.class,
-                code = {400, 401, 500})
         @UnexpectedResponseExceptionType(CommunicationErrorException.class)
         Mono<Response<PlayAudioResult>> playAudio(
                 @HostParam("endpoint") String endpoint,
@@ -193,7 +166,6 @@ public final class ServerCallsImpl {
      * @param inviteParticipantsRequest The invite participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -220,7 +192,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -244,7 +215,6 @@ public final class ServerCallsImpl {
      * @param inviteParticipantsRequest The invite participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -263,7 +233,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -281,7 +250,6 @@ public final class ServerCallsImpl {
      * @param inviteParticipantsRequest The invite participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -297,7 +265,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -314,7 +281,6 @@ public final class ServerCallsImpl {
      * @param participantId Participant id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -340,7 +306,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -359,7 +324,6 @@ public final class ServerCallsImpl {
      * @param participantId Participant id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -377,7 +341,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -394,7 +357,6 @@ public final class ServerCallsImpl {
      * @param participantId Participant id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -410,7 +372,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -426,7 +387,6 @@ public final class ServerCallsImpl {
      * @param request The request body of start call recording request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of start call recording operation.
      */
@@ -453,7 +413,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of start call recording operation.
      */
@@ -472,7 +431,6 @@ public final class ServerCallsImpl {
      * @param request The request body of start call recording request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of start call recording operation.
      */
@@ -497,7 +455,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of start call recording operation.
      */
@@ -522,7 +479,6 @@ public final class ServerCallsImpl {
      * @param request The request body of start call recording request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of start call recording operation.
      */
@@ -539,7 +495,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of start call recording operation.
      */
@@ -556,7 +511,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return call recording state.
      */
@@ -583,7 +537,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return call recording state.
      */
@@ -602,7 +555,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return call recording state.
      */
@@ -627,7 +579,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return call recording state.
      */
@@ -652,7 +603,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return call recording state.
      */
@@ -669,7 +619,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 404, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return call recording state.
      */
@@ -686,7 +635,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -712,7 +660,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -731,7 +678,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -748,7 +694,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -765,7 +710,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -781,7 +725,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -797,7 +740,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -823,7 +765,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -842,7 +783,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -859,7 +799,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -876,7 +815,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -892,7 +830,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -908,7 +845,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -934,7 +870,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -953,7 +888,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -971,7 +905,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -988,7 +921,6 @@ public final class ServerCallsImpl {
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1004,7 +936,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1020,7 +951,6 @@ public final class ServerCallsImpl {
      * @param callRequest The join call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the join call operation.
      */
@@ -1046,7 +976,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the join call operation.
      */
@@ -1065,7 +994,6 @@ public final class ServerCallsImpl {
      * @param callRequest The join call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the join call operation.
      */
@@ -1090,7 +1018,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the join call operation.
      */
@@ -1114,7 +1041,6 @@ public final class ServerCallsImpl {
      * @param callRequest The join call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the join call operation.
      */
@@ -1131,7 +1057,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of the join call operation.
      */
@@ -1148,7 +1073,6 @@ public final class ServerCallsImpl {
      * @param request Play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
@@ -1174,7 +1098,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
@@ -1193,7 +1116,6 @@ public final class ServerCallsImpl {
      * @param request Play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
@@ -1218,7 +1140,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
@@ -1242,7 +1163,6 @@ public final class ServerCallsImpl {
      * @param request Play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
@@ -1259,7 +1179,6 @@ public final class ServerCallsImpl {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorException thrown if the request is rejected by server.
-     * @throws CommunicationErrorException thrown if the request is rejected by server on status code 400, 401, 500.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
