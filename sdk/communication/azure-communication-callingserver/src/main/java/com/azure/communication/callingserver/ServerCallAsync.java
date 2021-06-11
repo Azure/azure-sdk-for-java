@@ -78,7 +78,7 @@ public final class ServerCallAsync {
                     alternateCallerId,
                     operationContext,
                     callBackUri);
-            return this.serverCallInternal.inviteParticipantsAsync(serverCallId, request)
+            return serverCallInternal.inviteParticipantsAsync(serverCallId, request)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -120,7 +120,7 @@ public final class ServerCallAsync {
                     callBackUri);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .inviteParticipantsWithResponseAsync(serverCallId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
@@ -139,7 +139,7 @@ public final class ServerCallAsync {
     public Mono<Void> removeParticipant(String participantId) {
         try {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
-            return this.serverCallInternal.removeParticipantAsync(serverCallId, participantId)
+            return serverCallInternal.removeParticipantAsync(serverCallId, participantId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -162,7 +162,7 @@ public final class ServerCallAsync {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .removeParticipantWithResponseAsync(serverCallId, participantId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
@@ -220,7 +220,7 @@ public final class ServerCallAsync {
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .startRecordingWithResponseAsync(serverCallId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
@@ -243,7 +243,7 @@ public final class ServerCallAsync {
     public Mono<Void> stopRecording(String recordingId) {
         try {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.serverCallInternal.stopRecordingAsync(serverCallId, recordingId)
+            return serverCallInternal.stopRecordingAsync(serverCallId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -266,7 +266,7 @@ public final class ServerCallAsync {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .stopRecordingWithResponseAsync(serverCallId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
@@ -285,7 +285,7 @@ public final class ServerCallAsync {
     public Mono<Void> pauseRecording(String recordingId) {
         try {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.serverCallInternal.pauseRecordingAsync(serverCallId, recordingId)
+            return serverCallInternal.pauseRecordingAsync(serverCallId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -308,7 +308,7 @@ public final class ServerCallAsync {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .pauseRecordingWithResponseAsync(serverCallId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
@@ -327,7 +327,7 @@ public final class ServerCallAsync {
     public Mono<Void> resumeRecording(String recordingId) {
         try {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.serverCallInternal.resumeRecordingAsync(serverCallId, recordingId)
+            return serverCallInternal.resumeRecordingAsync(serverCallId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -350,7 +350,7 @@ public final class ServerCallAsync {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .resumeRecordingWithResponseAsync(serverCallId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
@@ -369,7 +369,7 @@ public final class ServerCallAsync {
     public Mono<CallRecordingStateResult> getRecordingState(String recordingId) {
         try {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
-            return this.serverCallInternal.recordingStateAsync(serverCallId, recordingId)
+            return serverCallInternal.recordingStateAsync(serverCallId, recordingId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(CallRecordingStateResultConverter.convert(result)));
         } catch (RuntimeException ex) {
@@ -393,7 +393,7 @@ public final class ServerCallAsync {
             Objects.requireNonNull(recordingId, "'recordingId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .recordingStateWithResponseAsync(serverCallId, recordingId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
@@ -456,7 +456,7 @@ public final class ServerCallAsync {
     Mono<PlayAudioResult> playAudio(PlayAudioRequest playAudioRequest) {
         try {
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
-            return this.serverCallInternal.playAudioAsync(serverCallId, playAudioRequest)
+            return serverCallInternal.playAudioAsync(serverCallId, playAudioRequest)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
         } catch (RuntimeException ex) {
@@ -513,7 +513,7 @@ public final class ServerCallAsync {
             Objects.requireNonNull(playAudioRequest.getAudioFileUri(), "'audioFileUri' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.serverCallInternal
+                return serverCallInternal
                     .playAudioWithResponseAsync(serverCallId, playAudioRequest, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                     .map(response ->

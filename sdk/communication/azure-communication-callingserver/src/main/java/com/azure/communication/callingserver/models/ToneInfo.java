@@ -24,7 +24,7 @@ public final class ToneInfo {
      * @return the sequenceId value.
      */
     public Integer getSequenceId() {
-        return this.sequenceId;
+        return sequenceId;
     }
 
     /**
@@ -33,7 +33,7 @@ public final class ToneInfo {
      * @return the tone value.
      */
     public ToneValue getTone() {
-        return this.tone;
+        return tone;
     }
 
     /**

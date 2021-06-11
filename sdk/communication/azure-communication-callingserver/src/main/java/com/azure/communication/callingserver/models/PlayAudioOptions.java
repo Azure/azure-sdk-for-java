@@ -42,7 +42,7 @@ public final class PlayAudioOptions {
      * @return the loop value.
      */
     public Boolean isLoop() {
-        return this.loop;
+        return loop;
     }
 
     /**
@@ -62,7 +62,7 @@ public final class PlayAudioOptions {
      * @return the operationContext value.
      */
     public String getOperationContext() {
-        return this.operationContext;
+        return operationContext;
     }
 
     /**
@@ -82,7 +82,7 @@ public final class PlayAudioOptions {
      * @return the audioFileId value.
      */
     public String getAudioFileId() {
-        return this.audioFileId;
+        return audioFileId;
     }
 
     /**
@@ -102,7 +102,7 @@ public final class PlayAudioOptions {
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
-        return this.callbackUri;
+        return callbackUri;
     }
 
     /**

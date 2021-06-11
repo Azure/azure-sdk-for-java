@@ -21,7 +21,7 @@ public final class CallRecordingStateResult {
      * @return the recordingState value.
      */
     public CallRecordingState getRecordingState() {
-        return this.recordingState;
+        return recordingState;
     }
 
     /**

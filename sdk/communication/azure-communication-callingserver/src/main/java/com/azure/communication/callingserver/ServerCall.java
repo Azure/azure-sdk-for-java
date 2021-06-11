@@ -21,7 +21,7 @@ import com.azure.core.util.Context;
 public final class ServerCall {
     private final ServerCallAsync serverCallAsync;
 
-    ServerCall(String serverCallId, ServerCallAsync serverCallAsync) {
+    ServerCall(ServerCallAsync serverCallAsync) {
         this.serverCallAsync = serverCallAsync;
     }
 
@@ -31,7 +31,7 @@ public final class ServerCall {
      * @return the id value.
      */
     public String getServerCallId() {
-        return this.serverCallAsync.getServerCallId();
+        return serverCallAsync.getServerCallId();
     }
 
     /**

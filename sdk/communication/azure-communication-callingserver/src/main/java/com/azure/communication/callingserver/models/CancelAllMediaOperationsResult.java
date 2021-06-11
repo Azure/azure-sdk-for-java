@@ -31,7 +31,7 @@ public final class CancelAllMediaOperationsResult {
      * @return the id value.
      */
     public String getId() {
-        return this.id;
+        return id;
     }
 
     /**
@@ -40,7 +40,7 @@ public final class CancelAllMediaOperationsResult {
      * @return the status value.
      */
     public OperationStatus getStatus() {
-        return this.status;
+        return status;
     }
 
     /**
@@ -49,7 +49,7 @@ public final class CancelAllMediaOperationsResult {
      * @return the operationContext value.
      */
     public String getOperationContext() {
-        return this.operationContext;
+        return operationContext;
     }
 
     /**
@@ -58,7 +58,7 @@ public final class CancelAllMediaOperationsResult {
      * @return the resultInfo value.
      */
     public ResultInfo getResultInfo() {
-        return this.resultInfo;
+        return resultInfo;
     }
 
     /**

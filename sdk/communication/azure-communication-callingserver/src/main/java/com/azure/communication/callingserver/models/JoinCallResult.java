@@ -16,7 +16,7 @@ public final class JoinCallResult {
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
-        return this.callConnectionId;
+        return callConnectionId;
     }
 
     /**

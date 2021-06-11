@@ -37,7 +37,7 @@ public final class CallRecordingStateChangeEvent {
      * @return the recordingId value.
      */
     public String getRecordingId() {
-        return this.recordingId;
+        return recordingId;
     }
 
     /**
@@ -46,7 +46,7 @@ public final class CallRecordingStateChangeEvent {
      * @return the state value.
      */
     public CallRecordingState getState() {
-        return this.state;
+        return state;
     }
 
     /**
@@ -55,7 +55,7 @@ public final class CallRecordingStateChangeEvent {
      * @return the startDateTime value.
      */
     public OffsetDateTime getStartDateTime() {
-        return this.startDateTime;
+        return startDateTime;
     }
 
     /**
@@ -64,7 +64,7 @@ public final class CallRecordingStateChangeEvent {
      * @return the serverCallId value.
      */
     public String getServerCallId() {
-        return this.serverCallId;
+        return serverCallId;
     }
 
     /**

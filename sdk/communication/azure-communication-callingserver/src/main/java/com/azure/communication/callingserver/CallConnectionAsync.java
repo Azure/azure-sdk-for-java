@@ -179,7 +179,7 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangup() {
         try {
-            return this.callConnectionInternal.hangupCallAsync(callConnectionId)
+            return callConnectionInternal.hangupCallAsync(callConnectionId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -200,7 +200,7 @@ public final class CallConnectionAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, contextValue)
+                return callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
@@ -219,7 +219,7 @@ public final class CallConnectionAsync {
         try {
             CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
             request.setOperationContext(operationContext);
-            return this.callConnectionInternal.cancelAllMediaOperationsAsync(callConnectionId, request)
+            return callConnectionInternal.cancelAllMediaOperationsAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(CancelAllMediaOperationsResultConverter.convert(result)));
         } catch (RuntimeException ex) {
@@ -245,7 +245,7 @@ public final class CallConnectionAsync {
             request.setOperationContext(operationContext);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callConnectionInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
+                return callConnectionInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response, CancelAllMediaOperationsResultConverter.convert(response.getValue())));
@@ -273,7 +273,7 @@ public final class CallConnectionAsync {
                 alternateCallerId,
                 operationContext,
                 null);
-            return this.callConnectionInternal.inviteParticipantsAsync(callConnectionId, request)
+            return callConnectionInternal.inviteParticipantsAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -304,7 +304,7 @@ public final class CallConnectionAsync {
             InviteParticipantsRequest request = AddParticipantConverter.convert(participant, alternateCallerId, operationContext, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callConnectionInternal.inviteParticipantsWithResponseAsync(callConnectionId, request, contextValue)
+                return callConnectionInternal.inviteParticipantsWithResponseAsync(callConnectionId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
@@ -322,7 +322,7 @@ public final class CallConnectionAsync {
     public Mono<Void> removeParticipant(String participantId) {
         try {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
-            return this.callConnectionInternal.removeParticipantAsync(callConnectionId, participantId)
+            return callConnectionInternal.removeParticipantAsync(callConnectionId, participantId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -348,7 +348,7 @@ public final class CallConnectionAsync {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return this.callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
+                return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {

@@ -31,7 +31,7 @@ public final class ParallelDownloadOptions {
      * @return The block size.
      */
     public long getBlockSizeLong() {
-        return this.blockSize == null ? ContentDownloader.DEFAULT_BUFFER_SIZE : this.blockSize;
+        return blockSize == null ? ContentDownloader.DEFAULT_BUFFER_SIZE : blockSize;
     }
 
 
@@ -60,7 +60,7 @@ public final class ParallelDownloadOptions {
      * @return The progress reporter
      */
     public ProgressReceiver getProgressReceiver() {
-        return this.progressReceiver;
+        return progressReceiver;
     }
 
     /**
@@ -79,7 +79,7 @@ public final class ParallelDownloadOptions {
      * @return The max concurrency value.
      */
     public int getMaxConcurrency() {
-        return this.maxConcurrency == null ? ContentDownloader.DEFAULT_CONCURRENT_TRANSFERS_COUNT : this.maxConcurrency;
+        return maxConcurrency == null ? ContentDownloader.DEFAULT_CONCURRENT_TRANSFERS_COUNT : maxConcurrency;
     }
 
     /**

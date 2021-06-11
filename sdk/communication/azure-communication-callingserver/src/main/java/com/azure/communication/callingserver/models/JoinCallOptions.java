@@ -39,7 +39,7 @@ public final class JoinCallOptions {
      * @return the subject value.
      */
     public String getSubject() {
-        return this.subject;
+        return subject;
     }
 
     /**
@@ -59,7 +59,7 @@ public final class JoinCallOptions {
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
-        return this.callbackUri;
+        return callbackUri;
     }
 
     /**
@@ -79,7 +79,7 @@ public final class JoinCallOptions {
      * @return the requestedMediaTypes value.
      */
     public CallModality[] getRequestedMediaTypes() {
-        return this.requestedMediaTypes == null ? new CallModality[0] : this.requestedMediaTypes.clone();
+        return requestedMediaTypes == null ? new CallModality[0] : requestedMediaTypes.clone();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class JoinCallOptions {
      * @return the requestedCallEvents value.
      */
     public EventSubscriptionType[] getRequestedCallEvents() {
-        return this.requestedCallEvents == null ? new EventSubscriptionType[0] : this.requestedCallEvents.clone();
+        return requestedCallEvents == null ? new EventSubscriptionType[0] : requestedCallEvents.clone();
     }
 
     /**
