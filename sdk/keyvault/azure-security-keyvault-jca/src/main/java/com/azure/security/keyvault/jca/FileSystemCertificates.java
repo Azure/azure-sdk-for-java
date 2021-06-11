@@ -91,6 +91,11 @@ public final class FileSystemCertificates implements AzureCertificates {
      * @param certificate certificate value
      */
     public void setCertificateEntry(String alias, Certificate certificate) {
+        //Add verification to avoid certificate files with the same file name but different suffixes
+        if (aliases.contains(alias)) {
+            LOGGER.log(WARNING, "Cannot load certificates with the same alias in file system", alias);
+            return;
+        }
         aliases.add(alias);
         certificates.put(alias, certificate);
     }
