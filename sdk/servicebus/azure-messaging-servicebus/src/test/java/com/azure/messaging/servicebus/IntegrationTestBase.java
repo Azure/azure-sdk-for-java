@@ -6,7 +6,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.AsyncAutoCloseable;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -21,6 +20,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderCl
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -44,11 +44,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
-import static com.azure.messaging.servicebus.TestUtils.getEntityName;
-import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
-import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
-import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
-import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
