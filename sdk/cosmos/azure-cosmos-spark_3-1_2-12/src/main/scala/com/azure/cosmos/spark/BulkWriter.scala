@@ -95,7 +95,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                   SMono.defer(() => {
                     scheduleWriteInternal(itemOperation.getPartitionKeyValue,
                       itemOperation.getItem.asInstanceOf[ObjectNode],
-                      OperationContext(context.itemId, context.partitionKeyValue, context.attemptNumber + 1))
+                      OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
                     SMono.empty
                   }).subscribeOn(Schedulers.boundedElastic())
                     .subscribe()
@@ -158,7 +158,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     val cnt = totalScheduledMetrics.getAndIncrement()
     logDebug(s"total scheduled ${cnt}")
 
-    scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(getId(objectNode), partitionKeyValue, 1))
+    scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1))
   }
 
   private def scheduleWriteInternal(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationContext: OperationContext): Unit = {
@@ -173,12 +173,15 @@ class BulkWriter(container: CosmosAsyncContainer,
       case ItemWriteStrategy.ItemAppend =>
         BulkOperations.getCreateItemOperation(objectNode, partitionKeyValue)
       case ItemWriteStrategy.ItemDelete =>
-        BulkOperations.getDeleteItemOperation(objectNode.get(CosmosConstants.Properties.Id).asText(), partitionKeyValue)
+        BulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue)
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
         BulkOperations.getDeleteItemOperation(
-          objectNode.get(CosmosConstants.Properties.Id).asText(),
+          operationContext.itemId,
           partitionKeyValue,
-          new BulkItemRequestOptions().setIfMatchETag(objectNode.get(CosmosConstants.Properties.ETag).asText()))
+          operationContext.eTag match {
+            case Some(eTag) => new BulkItemRequestOptions().setIfMatchETag(eTag)
+            case _ =>  new BulkItemRequestOptions()
+          })
       case _ =>
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
@@ -280,12 +283,21 @@ class BulkWriter(container: CosmosAsyncContainer,
       Exceptions.canBeTransientFailure(cosmosException)
   }
 
-  private case class OperationContext(itemId: String, partitionKeyValue: PartitionKey, attemptNumber: Int /** starts from 1 * */)
+  private case class OperationContext(itemId: String, partitionKeyValue: PartitionKey, eTag: Option[String], attemptNumber: Int /** starts from 1 * */)
 
   private def getId(objectNode: ObjectNode) = {
     val idField = objectNode.get(CosmosConstants.Properties.Id)
     assume(idField != null && idField.isTextual)
     idField.textValue()
+  }
+
+  private def getETag(objectNode: ObjectNode) = {
+    val eTagField = objectNode.get(CosmosConstants.Properties.ETag)
+    if (eTagField != null && eTagField.isTextual) {
+      Some(eTagField.textValue())
+    } else {
+      None
+    }
   }
 }
 

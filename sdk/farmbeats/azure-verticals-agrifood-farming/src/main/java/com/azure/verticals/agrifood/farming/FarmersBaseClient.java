@@ -158,7 +158,7 @@ public final class FarmersBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param farmerId Id of the farmer resource.
+     * @param farmerId ID of the farmer resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -176,7 +176,7 @@ public final class FarmersBaseClient {
     /**
      * Deletes a specified farmer resource.
      *
-     * @param farmerId Id of farmer to be deleted.
+     * @param farmerId ID of farmer to be deleted.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -203,7 +203,7 @@ public final class FarmersBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -217,7 +217,7 @@ public final class FarmersBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -244,7 +244,7 @@ public final class FarmersBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime

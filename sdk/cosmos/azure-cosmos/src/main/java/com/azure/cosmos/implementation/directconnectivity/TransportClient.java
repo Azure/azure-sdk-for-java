@@ -27,7 +27,9 @@ public abstract class TransportClient implements AutoCloseable {
             request.requestContext.resourcePhysicalAddress = physicalAddress.toString();
         }
         if (this.throughputControlStore != null) {
-            return this.throughputControlStore.processRequest(request, this.invokeStoreAsync(physicalAddress, request));
+            return this.throughputControlStore.processRequest(
+                request,
+                Mono.defer(() -> this.invokeStoreAsync(physicalAddress, request)));
         }
 
         return this.invokeStoreAsync(physicalAddress, request);

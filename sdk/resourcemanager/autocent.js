@@ -18,7 +18,7 @@ const specs = {
   'managedapplications': 'resources'
 };
 const groupUrl = 'https://repo1.maven.org/maven2/com/azure/resourcemanager/';
-const artiRegEx = />(azure-resourcemanager-.+)\/</g;
+const artiRegEx = /<a href="(azure-resourcemanager-[-\w]+)\/"/g;
 const verRegEx = /<version>(.+)<\/version>/g;
 const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/;
 const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;

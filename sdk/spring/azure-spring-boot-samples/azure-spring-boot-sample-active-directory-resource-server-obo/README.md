@@ -1,4 +1,4 @@
-# OAuth 2.0 Sample for azure-spring-boot-sample-active-directory-resource-server-obo library for Java
+# Azure OAuth 2.0 Sample for azure-spring-boot-sample-active-directory-resource-server-obo client library for Java
 
 ## Key concepts
 [Resource server access other resources usage] is an extension scenario of the *azure-spring-boot-sample-active-directory-resource-server* sample. Similarly, this sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts, and the restricted resource will access other restricted resource, such as Graph API and Custom API.

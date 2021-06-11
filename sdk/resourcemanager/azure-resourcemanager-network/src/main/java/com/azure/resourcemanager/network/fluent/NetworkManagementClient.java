@@ -626,6 +626,13 @@ public interface NetworkManagementClient {
     LocalNetworkGatewaysClient getLocalNetworkGateways();
 
     /**
+     * Gets the VirtualNetworkGatewayNatRulesClient object to access its operations.
+     *
+     * @return the VirtualNetworkGatewayNatRulesClient object.
+     */
+    VirtualNetworkGatewayNatRulesClient getVirtualNetworkGatewayNatRules();
+
+    /**
      * Gets the VirtualNetworkTapsClient object to access its operations.
      *
      * @return the VirtualNetworkTapsClient object.

@@ -115,7 +115,7 @@ public final class SeasonalFieldsBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param farmerId ID of the associated farmer.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -255,8 +255,8 @@ public final class SeasonalFieldsBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
-     * @param seasonalFieldId Id of the seasonal field.
+     * @param farmerId ID of the associated farmer.
+     * @param seasonalFieldId ID of the seasonal field.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -315,8 +315,8 @@ public final class SeasonalFieldsBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
-     * @param seasonalFieldId Id of the seasonal field resource.
+     * @param farmerId ID of the associated farmer resource.
+     * @param seasonalFieldId ID of the seasonal field resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -335,8 +335,8 @@ public final class SeasonalFieldsBaseClient {
     /**
      * Deletes a specified seasonal-field resource under a particular farmer.
      *
-     * @param farmerId Id of the farmer.
-     * @param seasonalFieldId Id of the seasonal field.
+     * @param farmerId ID of the farmer.
+     * @param seasonalFieldId ID of the seasonal field.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -364,7 +364,7 @@ public final class SeasonalFieldsBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -378,7 +378,7 @@ public final class SeasonalFieldsBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -405,7 +405,7 @@ public final class SeasonalFieldsBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
