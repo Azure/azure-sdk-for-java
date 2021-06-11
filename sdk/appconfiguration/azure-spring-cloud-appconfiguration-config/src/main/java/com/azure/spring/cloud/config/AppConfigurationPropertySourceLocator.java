@@ -33,6 +33,9 @@ import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
+/**
+ * Locates Azure App Configuration Property Sources.
+ */
 public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
@@ -59,9 +62,9 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private static AtomicBoolean configLoaded = new AtomicBoolean(false);
+    private static final AtomicBoolean CONFIG_LOADED = new AtomicBoolean(false);
 
-    private static AtomicBoolean startup = new AtomicBoolean(true);
+    private static final AtomicBoolean STARTUP = new AtomicBoolean(true);
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
@@ -81,7 +84,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         }
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
-        if (configLoaded.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
+        if (CONFIG_LOADED.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
             return null;
         }
 
@@ -100,7 +103,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         while (configStoreIterator.hasNext()) {
             ConfigStore configStore = configStoreIterator.next();
 
-            Boolean loadNewPropertySources = startup.get() || StateHolder.getLoadState(configStore.getEndpoint());
+            Boolean loadNewPropertySources = STARTUP.get() || StateHolder.getLoadState(configStore.getEndpoint());
 
             if (configStore.isEnabled() && loadNewPropertySources) {
                 addPropertySource(composite, configStore, applicationName, profiles, storeContextsMap,
@@ -111,8 +114,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
-        configLoaded.set(true);
-        startup.set(false);
+        CONFIG_LOADED.set(true);
+        STARTUP.set(false);
         return composite;
     }
 
@@ -152,7 +155,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 LOGGER.debug("PropertySource context [{}] is added.", sourceContext);
             } catch (Exception e) {
-                if (store.isFailFast() || !startup.get()) {
+                if (store.isFailFast() || !STARTUP.get()) {
                     LOGGER.error(
                         "Fail fast is set and there was an error reading configuration from Azure App "
                             + "Configuration store " + store.getEndpoint()

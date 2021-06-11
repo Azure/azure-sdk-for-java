@@ -24,6 +24,9 @@ import com.azure.spring.cloud.config.resource.Connection;
 import com.azure.spring.cloud.config.resource.ConnectionPool;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
+/**
+ * Setup ConnectionPool, AppConfigurationPropertySourceLocator, and ClientStore when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
+ */
 @Configuration
 @EnableConfigurationProperties({AppConfigurationProperties.class, AppConfigurationProviderProperties.class})
 @ConditionalOnClass(AppConfigurationPropertySourceLocator.class)

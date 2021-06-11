@@ -25,6 +25,10 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
+/**
+ * Enables checking of Configuration updates.
+ *
+ */
 @Component
 public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
