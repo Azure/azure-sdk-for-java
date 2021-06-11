@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.5 (Unreleased)
+
+
 ## 1.0.0-beta.4 (2021-06-10)
 
 - Update the description of the package, to add more info on the maven page.
