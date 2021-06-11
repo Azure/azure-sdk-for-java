@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for BlobImmutabilityPolicyMode. */
 public enum BlobImmutabilityPolicyMode {
+    /** Enum value Mutable. */
+    MUTABLE("Mutable"),
+
     /** Enum value Unlocked. */
     UNLOCKED("Unlocked"),
 
     /** Enum value Locked. */
-    LOCKED("Locked"),
-
-    /** Enum value Mutable. */
-    MUTABLE("Mutable");
+    LOCKED("Locked");
 
     /** The actual serialized value for a BlobImmutabilityPolicyMode instance. */
     private final String value;

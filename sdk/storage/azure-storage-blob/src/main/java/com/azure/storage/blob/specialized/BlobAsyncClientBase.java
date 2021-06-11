@@ -1303,8 +1303,7 @@ public class BlobAsyncClientBase {
             hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
             hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
             hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
-            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicyExpiryTime(),
-            hd.getImmutabilityPolicyMode(), hd.hasLegalHold());
+            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicy(), hd.hasLegalHold());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }
 
@@ -1458,8 +1457,9 @@ public class BlobAsyncClientBase {
                     ModelHelper.getObjectReplicationSourcePolicies(hd.getXMsOr()),
                     ModelHelper.getObjectReplicationDestinationPolicyId(hd.getXMsOr()),
                     RehydratePriority.fromString(hd.getXMsRehydratePriority()), hd.isXMsBlobSealed(),
-                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime(), hd.getXMsImmutabilityPolicyUntilDate(),
-                    hd.getXMsImmutabilityPolicyMode(), hd.isXMsLegalHold());
+                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime(), new BlobImmutabilityPolicy()
+                    .setExpiryTime(hd.getXMsImmutabilityPolicyUntilDate())
+                    .setPolicyMode(hd.getXMsImmutabilityPolicyMode()), hd.isXMsLegalHold());
                 return new SimpleResponse<>(rb, properties);
             });
     }

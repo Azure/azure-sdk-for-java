@@ -339,16 +339,9 @@ public final class BlobDownloadHeaders {
     private Boolean currentVersion;
 
     /*
-     * The x-ms-immutability-policy-mode property.
+     * The x-ms-immutability-policy-mode and x-ms-immutability-policy-until-date property.
      */
-    @JsonProperty(value = "x-ms-immutability-policy-mode")
-    private BlobImmutabilityPolicyMode immutabilityPolicyMode;
-
-    /*
-     * The x-ms-immutability-policy-until-date property.
-     */
-    @JsonProperty(value = "x-ms-immutability-policy-until-date")
-    private OffsetDateTime immutabilityPolicyExpiryTime;
+    private BlobImmutabilityPolicy immutabilityPolicy;
 
     /*
      * The x-ms-legal-hold property.
@@ -1350,42 +1343,24 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the immutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     * Get the immutabilityPolicy property: The  x-ms-immutability-policy-mode and x-ms-immutability-policy-until-date
+     * property.
      *
-     * @return the immutabilityPolicyMode value.
+     * @return the immutabilityPolicy value.
      */
-    public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
-        return this.immutabilityPolicyMode;
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return this.immutabilityPolicy;
     }
 
     /**
-     * Set the immutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
+     * Set the immutabilityPolicy property:  x-ms-immutability-policy-mode and x-ms-immutability-policy-until-date
+     * property.
      *
-     * @param immutabilityPolicyMode the immutabilityPolicyMode value to set.
+     * @param immutabilityPolicy the immutabilityPolicy value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setImmutabilityPolicyMode(BlobImmutabilityPolicyMode immutabilityPolicyMode) {
-        this.immutabilityPolicyMode = immutabilityPolicyMode;
-        return this;
-    }
-
-    /**
-     * Get the immutabilityPolicyExpiryTime property: The x-ms-immutability-policy-until-date property.
-     *
-     * @return the immutabilityPolicyExpiryTime value.
-     */
-    public OffsetDateTime getImmutabilityPolicyExpiryTime() {
-        return this.immutabilityPolicyExpiryTime;
-    }
-
-    /**
-     * Set the immutabilityPolicyExpiryTime property: The x-ms-immutability-policy-until-date property.
-     *
-     * @param immutabilityPolicyExpiryTime the xMsImmutabilityPolicyUntilDate value to set.
-     * @return the BlobDownloadHeaders object itself.
-     */
-    public BlobDownloadHeaders setImmutabilityPolicyExpiryTime(OffsetDateTime immutabilityPolicyExpiryTime) {
-        this.immutabilityPolicyExpiryTime = immutabilityPolicyExpiryTime;
+    public BlobDownloadHeaders setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
         return this;
     }
 

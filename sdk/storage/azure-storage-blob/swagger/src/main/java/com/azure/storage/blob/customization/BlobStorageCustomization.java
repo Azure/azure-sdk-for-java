@@ -135,6 +135,7 @@ public class BlobStorageCustomization extends Customization {
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+        blobContainerItemProperties.getMethod("setIsImmutableStorageWithVersioningEnabled").rename("setImmutableStorageWithVersioningEnabled");
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");

@@ -58,8 +58,7 @@ public final class BlobProperties {
     private final Boolean isSealed;
     private final OffsetDateTime lastAccessedTime;
     private final OffsetDateTime expiresOn;
-    private final OffsetDateTime immutabilityPolicyExpiresOn;
-    private final BlobImmutabilityPolicyMode immutabilityPolicyMode;
+    private final BlobImmutabilityPolicy immutabilityPolicy;
     private final Boolean hasLegalHold;
 
     /**
@@ -321,7 +320,7 @@ public final class BlobProperties {
             isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
             encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount, tagCount,
             versionId, isCurrentVersion, objectReplicationSourcePolicies, objectReplicationDestinationPolicyId,
-            rehydratePriority, isSealed, lastAccessedTime, expiresOn, null, null, false);
+            rehydratePriority, isSealed, lastAccessedTime, expiresOn, null, false);
     }
 
     /**
@@ -371,8 +370,7 @@ public final class BlobProperties {
      * @param isSealed Whether or not the blob is sealed.
      * @param lastAccessedTime The date and time the blob was read or written to.
      * @param expiresOn The time when the blob is going to expire.
-     * @param immutabilityPolicyExpiresOn when the blob's immutability policy will expire.
-     * @param immutabilityPolicyMode the immutability policy mode of the blob
+     * @param immutabilityPolicy the immutability policy of the blob.
      * @param hasLegalHold whether or not the blob has a legal hold.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
@@ -389,8 +387,7 @@ public final class BlobProperties {
         final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
         final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
-        OffsetDateTime immutabilityPolicyExpiresOn, BlobImmutabilityPolicyMode immutabilityPolicyMode,
-        Boolean hasLegalHold) {
+        BlobImmutabilityPolicy immutabilityPolicy, Boolean hasLegalHold) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -432,8 +429,7 @@ public final class BlobProperties {
         this.isSealed = isSealed;
         this.lastAccessedTime = lastAccessedTime;
         this.expiresOn = expiresOn;
-        this.immutabilityPolicyExpiresOn = immutabilityPolicyExpiresOn;
-        this.immutabilityPolicyMode = immutabilityPolicyMode;
+        this.immutabilityPolicy = immutabilityPolicy;
         this.hasLegalHold = hasLegalHold;
     }
 
@@ -740,17 +736,10 @@ public final class BlobProperties {
     }
 
     /**
-     * @return when the immutability policy on the blob expires.
+     * @return the immutability policy.
      */
-    public OffsetDateTime getImmutabilityPolicyExpiresOn() {
-        return immutabilityPolicyExpiresOn;
-    }
-
-    /**
-     * @return the immutability policy mode.
-     */
-    public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
-        return immutabilityPolicyMode;
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return immutabilityPolicy;
     }
 
     /**
