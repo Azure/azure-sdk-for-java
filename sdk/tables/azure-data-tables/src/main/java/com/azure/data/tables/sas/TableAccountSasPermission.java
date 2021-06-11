@@ -41,7 +41,7 @@ public final class TableAccountSasPermission {
      *
      * @param permissionsString A {@code String} which represents the {@link TableAccountSasPermission account permissions}.
      *
-     * @return An {@link TableAccountSasPermission} object generated from the given {@link String}.
+     * @return An {@link TableAccountSasPermission} object generated from the given {@code String}.
      *
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u, p,
      * t or f.
@@ -345,10 +345,10 @@ public final class TableAccountSasPermission {
     }
 
     /**
-     * Converts the given permissions to a {@link String}. Using this method will guarantee the permissions are in an
+     * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service. If all permissions are set to false, an empty string is returned from this method.
      *
-     * @return A {@link String} which represents the {@link TableAccountSasPermission}.
+     * @return A {@code String} which represents the {@link TableAccountSasPermission}.
      */
     @Override
     public String toString() {
