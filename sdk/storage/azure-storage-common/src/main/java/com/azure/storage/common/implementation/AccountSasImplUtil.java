@@ -73,7 +73,7 @@ public class AccountSasImplUtil {
         StorageImplUtils.assertNotNull("permissions", this.permissions);
 
         if (CoreUtils.isNullOrEmpty(version)) {
-            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+            version = Constants.HeaderConstants.getTargetStorageVersion();
         }
         String stringToSign = stringToSign(storageSharedKeyCredentials);
         StorageImplUtils.logStringToSign(logger, stringToSign, context);

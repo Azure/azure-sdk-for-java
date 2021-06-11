@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.options.BlobBreakLeaseOptions
+import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
@@ -31,6 +32,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
+import com.azure.storage.common.test.shared.Hack
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Timeout
@@ -91,6 +93,9 @@ class APISpec extends StorageSpec {
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
+
+        Hack.updateStaticField(Constants.HeaderConstants.class, "targetStorageVersion", BlobSasServiceVersion.values().last().getVersion())
+        Hack.updateFinalField(BlobSasServiceVersion.getLatest(), "version", BlobSasServiceVersion.values().last().getVersion())
     }
 
     def setup() {

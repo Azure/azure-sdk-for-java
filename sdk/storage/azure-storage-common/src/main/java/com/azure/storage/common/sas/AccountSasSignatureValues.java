@@ -273,7 +273,7 @@ public final class AccountSasSignatureValues {
         StorageImplUtils.assertNotNull("permissions", this.permissions);
 
         if (CoreUtils.isNullOrEmpty(version)) {
-            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
+            version = Constants.HeaderConstants.getTargetStorageVersion();
         }
 
         // Signature is generated on the un-url-encoded values.

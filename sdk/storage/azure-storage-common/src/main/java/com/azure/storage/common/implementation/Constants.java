@@ -195,10 +195,16 @@ public final class Constants {
      */
     public static final class HeaderConstants {
 
+        private static String targetStorageVersion = "2020-08-04";
+
+        public static String getTargetStorageVersion() {
+            return targetStorageVersion;
+        }
+
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2020-08-04";
+        public static final String TARGET_STORAGE_VERSION = targetStorageVersion;
 
         /**
          * Error code returned from the service.
