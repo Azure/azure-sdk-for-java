@@ -18,7 +18,7 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
@@ -824,7 +824,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizePiiLanguageHintRunner((inputs, language) -> {
             final RecognizePiiEntitiesResultCollection response = client.recognizePiiEntitiesBatch(inputs, language,
-                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION));
             validatePiiEntitiesResultCollection(false, getExpectedBatchPiiEntitiesForDomainFilter(), response);
         });
     }
@@ -835,7 +835,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeBatchPiiEntitiesRunner((inputs) -> {
             final Response<RecognizePiiEntitiesResultCollection> response = client.recognizePiiEntitiesBatchWithResponse(inputs,
-                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION), Context.NONE);
+                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION), Context.NONE);
             validatePiiEntitiesResultCollectionWithResponse(false, getExpectedBatchPiiEntitiesForDomainFilter(), 200, response);
         });
     }

@@ -7,19 +7,19 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- * Defines values for {@link PiiEntityDomainType}.
+ * Defines values for {@link PiiEntityDomain}.
  */
 @Immutable
-public final class PiiEntityDomainType extends ExpandableStringEnum<PiiEntityDomainType> {
+public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain> {
     /**
      * Protected health information (PHI) as the PiiEntityDomainType.
      */
-    public static final PiiEntityDomainType PROTECTED_HEALTH_INFORMATION = fromString("PHI");
+    public static final PiiEntityDomain PROTECTED_HEALTH_INFORMATION = fromString("PHI");
 
     /**
      * None as the PiiEntityDomainType.
      */
-    public static final PiiEntityDomainType NONE = fromString("none");
+    public static final PiiEntityDomain NONE = fromString("none");
 
     /**
      * Creates or finds a {@link EntityCategory} from its string representation.
@@ -27,7 +27,7 @@ public final class PiiEntityDomainType extends ExpandableStringEnum<PiiEntityDom
      * @param name The string name to look for.
      * @return The corresponding {@link EntityCategory}.
      */
-    public static PiiEntityDomainType fromString(String name) {
-        return fromString(name, PiiEntityDomainType.class);
+    public static PiiEntityDomain fromString(String name) {
+        return fromString(name, PiiEntityDomain.class);
     }
 }

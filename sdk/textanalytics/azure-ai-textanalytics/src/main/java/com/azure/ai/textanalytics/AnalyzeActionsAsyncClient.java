@@ -384,7 +384,7 @@ class AnalyzeActionsAsyncClient {
                 final RecognizeEntitiesActionResult actionResult = new RecognizeEntitiesActionResult();
                 final EntitiesResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizeEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toRecognizeEntitiesResultCollectionResponse(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -398,7 +398,7 @@ class AnalyzeActionsAsyncClient {
                 final RecognizePiiEntitiesActionResult actionResult = new RecognizePiiEntitiesActionResult();
                 final PiiResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toRecognizePiiEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -412,7 +412,7 @@ class AnalyzeActionsAsyncClient {
                 final ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
                 final KeyPhraseResult results = taskItem.getResults();
                 if (results != null) {
-                    ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toExtractKeyPhrasesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -427,7 +427,7 @@ class AnalyzeActionsAsyncClient {
                 final RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
                 final EntityLinkingResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toRecognizeLinkedEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -442,7 +442,7 @@ class AnalyzeActionsAsyncClient {
                 final AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
                 final SentimentResponse results = taskItem.getResults();
                 if (results != null) {
-                    AnalyzeSentimentActionResultPropertiesHelper.setResult(actionResult,
+                    AnalyzeSentimentActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toAnalyzeSentimentResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
