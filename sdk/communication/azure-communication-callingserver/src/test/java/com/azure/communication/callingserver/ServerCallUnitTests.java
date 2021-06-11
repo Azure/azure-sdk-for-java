@@ -38,6 +38,19 @@ public class ServerCallUnitTests {
     }
 
     @Test
+    public void startRecordingWithResponseRelativeUriFails() {
+        ServerCall serverCall = new CallingServerClientBuilder()
+            .httpClient(new NoOpHttpClient())
+            .connectionString(MOCK_CONNECTION_STRING)
+            .buildClient()
+            .initializeServerCall(serverCallId);
+
+        assertThrows(InvalidParameterException.class, () -> {
+            serverCall.startRecordingWithResponse("/not/absolute/uri", null);
+        });
+    }
+
+    @Test
     public void addParticipantNullParticipantFails() {
         ServerCall serverCall = new CallingServerClientBuilder()
             .httpClient(new NoOpHttpClient())

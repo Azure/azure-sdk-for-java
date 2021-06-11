@@ -25,9 +25,9 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 public class CallConnectionAsyncTests extends CallingServerTestBase {
 
-    private String from = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-6198-4a66-02c3-593a0d00560d";
-    private String invitedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012ce";
-    private String joinedUser = "8:acs:016a7064-0581-40b9-be73-6dde64d69d72_0000000a-74ee-b6ea-6a0b-343a0d0012cf";
+    private String from = getRandomUserId();
+    private String invitedUser = getRandomUserId();
+    private String joinedUser = getRandomUserId();
     private String alternateId = "+11111111111";
     private String to = "+11111111111";
     private String callBackUri = "https://host.app/api/callback/calling";
@@ -56,7 +56,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
             // Play Audio
-            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
             PlayAudioResult playAudioResult = callConnectionAsync.playAudio(
                 audioFileUri,
@@ -64,12 +64,12 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
                 UUID.randomUUID().toString(),
                 null,
                 operationContext).block();
-            CallingServerTestUtils.validatePlayAudioResult(playAudioResult, operationContext);
+            CallingServerTestUtils.validatePlayAudioResult(playAudioResult);
 
             // Cancel All Media Operations
-            String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
+            String cancelMediaOperationContext = UUID.randomUUID().toString();
             CancelAllMediaOperationsResult cancelAllMediaOperationsResult = callConnectionAsync.cancelAllMediaOperations(cancelMediaOperationContext).block();
-            CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResult, cancelMediaOperationContext);
+            CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResult);
 
             // Hang up
             callConnectionAsync.hangup().block();
@@ -104,7 +104,7 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
             // Play Audio
-            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = UUID.randomUUID().toString();
             Response<PlayAudioResult> playAudioResponse =
                 callConnectionAsync.playAudioWithResponse(
                     audioFileUri,
@@ -112,12 +112,12 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
                     UUID.randomUUID().toString(),
                     null,
                     operationContext).block();
-            CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse, operationContext);
+            CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse);
 
             // Cancel All Media Operations
-            String cancelMediaOperationContext = "ac794123-3820-4979-8e2d-50c7d3e07b13";
+            String cancelMediaOperationContext = UUID.randomUUID().toString();
             Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult = callConnectionAsync.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext).block();
-            CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResult, cancelMediaOperationContext);
+            CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResult);
 
             // Hang up
             Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
@@ -151,11 +151,17 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
             // Invite User
-            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
             callConnectionAsync.addParticipant(new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
 
             // Remove Participant
+            /**
+             * There is an update that we require to beable to get
+             * the participantId from the service when a user is
+             * added to a call. Until that is fixed this recorded
+             * valuse needs to be used.
+             */
             String participantId = "e3560385-776f-41d1-bf04-07ef738f2fc1";
             callConnectionAsync.removeParticipant(participantId).block();
 
@@ -192,11 +198,17 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
             // Invite User
-            String operationContext = "ac794123-3820-4979-8e2d-50c7d3e07b12";
+            String operationContext = UUID.randomUUID().toString();
             Response<Void> inviteParticipantResponse = callConnectionAsync.addParticipantWithResponse(new CommunicationUserIdentifier(invitedUser), null, operationContext).block();
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
+            /**
+             * There is an update that we require to beable to get
+             * the participantId from the service when a user is
+             * added to a call. Until that is fixed this recorded
+             * valuse needs to be used.
+             */            
             String participantId = "80238d5f-9eda-481a-b911-e2e12eba9eda";
             Response<Void> removeParticipantResponse = callConnectionAsync.removeParticipantWithResponse(participantId).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
@@ -233,6 +245,10 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
             // Join
+            /**
+             * Waiting for an upate to beable to get this serverCallId when using
+             * createCallConnection()
+             */
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
@@ -281,6 +297,10 @@ public class CallConnectionAsyncTests extends CallingServerTestBase {
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
             // Join
+            /**
+             * Waiting for an upate to beable to get this serverCallId when using
+             * createCallConnection()
+             */            
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3lKQXY0TnVlOEV5bUpYVm1IYklIeUE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,

@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.JoinCallResult;
@@ -62,36 +61,32 @@ public class CallingServerTestUtils {
         assertFalse(joinCallResult.getCallConnectionId().isEmpty());
     }
 
-    protected static void validatePlayAudioResponse(Response<PlayAudioResult> playAudioResponse, String operationContext) {
+    protected static void validatePlayAudioResponse(Response<PlayAudioResult> playAudioResponse) {
         assertNotNull(playAudioResponse);
         Assertions.assertEquals(202, playAudioResponse.getStatusCode());
         assertNotNull(playAudioResponse.getValue());
-        validatePlayAudioResult(playAudioResponse.getValue(), operationContext);
+        validatePlayAudioResult(playAudioResponse.getValue());
     }
 
-    protected static void validatePlayAudioResult(PlayAudioResult playAudioResponse, String operationContext) {
+    protected static void validatePlayAudioResult(PlayAudioResult playAudioResponse) {
         assertNotNull(playAudioResponse);
         assertNotNull(playAudioResponse.getId());
         assertFalse(playAudioResponse.getId().isEmpty());
-        assertNotNull(playAudioResponse.getOperationContext());
-        assertTrue(playAudioResponse.getOperationContext().equalsIgnoreCase(operationContext));
         assertNotNull(playAudioResponse.getStatus());
         assertSame(playAudioResponse.getStatus(), OperationStatus.RUNNING);
     }
 
-    protected static void validateCancelAllMediaOperationsResponse(Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult, String cancelMediaOperationContext) {
+    protected static void validateCancelAllMediaOperationsResponse(Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult) {
         assertNotNull(cancelAllMediaOperationsResult);
         Assertions.assertEquals(200, cancelAllMediaOperationsResult.getStatusCode());
         assertNotNull(cancelAllMediaOperationsResult.getValue());
-        validateCancelAllMediaOperations(cancelAllMediaOperationsResult.getValue(), cancelMediaOperationContext);
+        validateCancelAllMediaOperations(cancelAllMediaOperationsResult.getValue());
     }
 
-    protected static void validateCancelAllMediaOperations(CancelAllMediaOperationsResult cancelAllMediaOperationsResponse, String cancelMediaOperationContext) {
+    protected static void validateCancelAllMediaOperations(CancelAllMediaOperationsResult cancelAllMediaOperationsResponse) {
         assertNotNull(cancelAllMediaOperationsResponse);
         assertNotNull(cancelAllMediaOperationsResponse.getId());
         assertFalse(cancelAllMediaOperationsResponse.getId().isEmpty());
-        assertNotNull(cancelAllMediaOperationsResponse.getOperationContext());
-        assertTrue(cancelAllMediaOperationsResponse.getOperationContext().equalsIgnoreCase(cancelMediaOperationContext));
         assertNotNull(cancelAllMediaOperationsResponse.getStatus());
         assertSame(cancelAllMediaOperationsResponse.getStatus(), OperationStatus.COMPLETED);
     }

@@ -3,6 +3,11 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -15,6 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -33,7 +39,10 @@ public class CallingServerTestBase extends TestBase {
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
 
     protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER", "016a7064-0581-40b9-be73-6dde64d69d72");        
+        .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER", "016a7064-0581-40b9-be73-6dde64d69d72");
+
+    protected static final String GROUP_IDENTIFIER = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_LIVETEST_STATIC_GROUP_IDENTIFIER", "c400789f-e11b-4ceb-88cb-bc8df2a01568");           
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -58,6 +67,23 @@ public class CallingServerTestBase extends TestBase {
 
     protected String getRandomUserId() {
         return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID().toString();
+    }
+
+    protected String getGroupId() {
+        /**
+         * If tests are running in live mode, we want them to all
+         * have unique groupId's so they do not conflict with other
+         * recording tests running in live mode.
+         */
+        if (getTestMode() == TestMode.LIVE) {
+            return UUID.randomUUID().toString();
+        }
+
+        /**
+         * For recording tests we need to make sure the groupId
+         * matches the recorded groupId, or the call will fail.
+         */
+        return GROUP_IDENTIFIER;
     }
 
     protected CallingServerClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
@@ -100,6 +126,88 @@ public class CallingServerTestBase extends TestBase {
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
+    }
+
+    protected List<CallConnection> createCall(CallingServerClient callingServerClient, String groupId, String from, String to, String callBackUri) {
+        CallConnection fromCallConnection =  null;
+        CallConnection toCallConnection = null;
+
+        try {
+            CommunicationIdentifier fromParticipant = new CommunicationUserIdentifier(from);
+            CommunicationIdentifier toParticipant = new CommunicationUserIdentifier(to);
+
+            JoinCallOptions fromCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+            fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions);
+            sleepIfRunningAgainstService(1000);
+            CallingServerTestUtils.validateCallConnection(fromCallConnection);
+
+            JoinCallOptions joinCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+
+            toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions);
+            sleepIfRunningAgainstService(1000);
+            CallingServerTestUtils.validateCallConnection(toCallConnection);
+
+            return Arrays.asList(fromCallConnection, toCallConnection);
+        } catch (Exception e) {
+            System.out.println("Error creating call: " + e.getMessage());
+
+            if (fromCallConnection != null) {
+                fromCallConnection.hangup();
+            }
+
+            if (toCallConnection != null) {
+                toCallConnection.hangup();
+            }
+
+            throw e;
+        }
+    }
+    
+    protected List<CallConnectionAsync> createAsyncCall(CallingServerAsyncClient callingServerClient, String groupId, String from, String to, String callBackUri) {
+        CallConnectionAsync fromCallConnection =  null;
+        CallConnectionAsync toCallConnection = null;
+
+        try {
+            CommunicationIdentifier fromParticipant = new CommunicationUserIdentifier(from);
+            CommunicationIdentifier toParticipant = new CommunicationUserIdentifier(to);
+
+            JoinCallOptions fromCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+            fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions).block();
+            sleepIfRunningAgainstService(1000);
+            CallingServerTestUtils.validateCallConnectionAsync(fromCallConnection);
+
+            JoinCallOptions joinCallOptions = new JoinCallOptions(
+                callBackUri,
+                new CallModality[] { CallModality.AUDIO },
+                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+
+            toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions).block();
+            sleepIfRunningAgainstService(1000);
+            CallingServerTestUtils.validateCallConnectionAsync(toCallConnection);
+
+            return Arrays.asList(fromCallConnection, toCallConnection);
+        } catch (Exception e) {
+            System.out.println("Error creating call: " + e.getMessage());
+
+            if (fromCallConnection != null) {
+                fromCallConnection.hangup();
+            }
+
+            if (toCallConnection != null) {
+                toCallConnection.hangup();
+            }
+
+            throw e;
+        }
     }
 
     static class FakeCredentials implements TokenCredential {
