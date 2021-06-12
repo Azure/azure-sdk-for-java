@@ -9,7 +9,7 @@
 - `KeyVaultCertificateIdentifier` can now be used to parse any Key Vault identifier.
 
 ### Breaking Changes
-- Removed service method overloads that take a `pollingDuration`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+- Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
 
 ### Non-Breaking Changes
 - Renamed `certificateId` to `sourceId` in `KeyVaultCertificateIdentifier`.

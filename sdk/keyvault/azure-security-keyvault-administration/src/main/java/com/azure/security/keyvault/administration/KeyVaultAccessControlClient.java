@@ -99,11 +99,13 @@ public final class KeyVaultAccessControlClient {
     }
 
     /**
-     * Creates or updates a {@link KeyVaultRoleDefinition}.
+     * Creates or updates a {@link KeyVaultRoleDefinition} with a given name. If no name is provided, then a 
+     * {@link KeyVaultRoleDefinition} will be created with a randomly generated name.
      *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}. Managed HSM
      * only supports '/'.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}. It can be any valid UUID.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}. It can be any valid UUID. If
+     * {@code null} is provided, a name will be randomly generated.
      *
      * @return The created or updated {@link KeyVaultRoleDefinition}.
      *

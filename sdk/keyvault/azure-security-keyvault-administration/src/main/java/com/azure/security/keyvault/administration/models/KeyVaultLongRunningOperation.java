@@ -24,10 +24,10 @@ public class KeyVaultLongRunningOperation {
      *
      * @param status Status of the {@link KeyVaultLongRunningOperation}.
      * @param statusDetails The status details of the {@link KeyVaultLongRunningOperation}.
+     * @param operationId Identifier for the full {@link KeyVaultLongRunningOperation}.
      * @param error Error encountered, if any, during the {@link KeyVaultLongRunningOperation}.
      * @param startTime The start time of the {@link KeyVaultLongRunningOperation}.
      * @param endTime The end time of the {@link KeyVaultLongRunningOperation}.
-     * @param operationId Identifier for the full {@link KeyVaultLongRunningOperation}.
      */
     public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         this.status = status;
@@ -57,6 +57,15 @@ public class KeyVaultLongRunningOperation {
     }
 
     /**
+     * Get the identifier for the {@link KeyVaultLongRunningOperation}.
+     *
+     * @return The operation ID.
+     */
+    public String getOperationId() {
+        return operationId;
+    }
+
+    /**
      * Get the error encountered, if any, during the {@link KeyVaultLongRunningOperation}.
      *
      * @return The error.
@@ -81,14 +90,5 @@ public class KeyVaultLongRunningOperation {
      */
     public OffsetDateTime getEndTime() {
         return endTime;
-    }
-
-    /**
-     * Get the identifier for the {@link KeyVaultLongRunningOperation}.
-     *
-     * @return The operation ID.
-     */
-    public String getOperationId() {
-        return operationId;
     }
 }

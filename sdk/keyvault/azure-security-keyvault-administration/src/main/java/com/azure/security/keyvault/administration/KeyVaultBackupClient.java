@@ -10,7 +10,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 
 /**
  * The {@link KeyVaultBackupClient} provides synchronous methods to perform full backup and restore of an Azure Key
@@ -69,7 +71,7 @@ public final class KeyVaultBackupClient {
      * @throws NullPointerException If the {@code folderUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultRestoreOperation, Void> beginRestore(String folderUrl, String sasToken) {
+    public SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginRestore(String folderUrl, String sasToken) {
         return asyncClient.beginRestore(folderUrl, sasToken).getSyncPoller();
     }
 
@@ -91,9 +93,7 @@ public final class KeyVaultBackupClient {
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, Void> beginSelectiveKeyRestore(String keyName,
-                                                                                           String folderUrl,
-                                                                                           String sasToken) {
+    public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> beginSelectiveKeyRestore(String keyName, String folderUrl, String sasToken) {
         return asyncClient.beginSelectiveKeyRestore(keyName, folderUrl, sasToken).getSyncPoller();
     }
 }

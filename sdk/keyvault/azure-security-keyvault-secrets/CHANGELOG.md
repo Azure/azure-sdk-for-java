@@ -6,7 +6,7 @@
 - Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
 
 ### Breaking Changes
-- Removed service method overloads that take a `pollingDuration`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+- Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
 
 ### Non-Breaking Changes
 - Renamed `secretId` to `sourceId` in `KeyVaultSecretIdentifier`.

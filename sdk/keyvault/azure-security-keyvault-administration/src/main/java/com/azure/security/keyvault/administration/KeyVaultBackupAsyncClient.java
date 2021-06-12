@@ -29,7 +29,10 @@ import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
+
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -151,7 +154,8 @@ public final class KeyVaultBackupAsyncClient {
         return new PollerFlux<>(getDefaultPollingInterval(),
             backupActivationOperation(blobStorageUrl, sasToken),
             backupPollOperation(),
-            (pollingContext, firstResponse) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (pollingContext, firstResponse) ->
+                Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
             backupFetchOperation());
     }
 
@@ -294,7 +298,7 @@ public final class KeyVaultBackupAsyncClient {
      * @throws NullPointerException If the {@code folderUrl} or {@code sasToken} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<KeyVaultRestoreOperation, Void> beginRestore(String folderUrl, String sasToken) {
+    public PollerFlux<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginRestore(String folderUrl, String sasToken) {
         if (folderUrl == null) {
             throw logger.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
@@ -310,8 +314,9 @@ public final class KeyVaultBackupAsyncClient {
         return new PollerFlux<>(getDefaultPollingInterval(),
             restoreActivationOperation(folderUrl, sasToken),
             restorePollOperation(),
-            (pollingContext, firstResponse) -> Mono.empty(),
-            (pollingContext) -> Mono.empty());
+            (pollingContext, firstResponse) ->
+                Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            (pollingContext) -> Mono.just(new KeyVaultRestoreResult()));
     }
 
     /**
@@ -437,9 +442,7 @@ public final class KeyVaultBackupAsyncClient {
      * null}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<KeyVaultSelectiveKeyRestoreOperation, Void> beginSelectiveKeyRestore(String keyName,
-                                                                                           String folderUrl,
-                                                                                           String sasToken) {
+    public PollerFlux<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> beginSelectiveKeyRestore(String keyName, String folderUrl, String sasToken) {
         if (keyName == null) {
             throw logger.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
@@ -461,8 +464,8 @@ public final class KeyVaultBackupAsyncClient {
         return new PollerFlux<>(getDefaultPollingInterval(),
             selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken),
             selectiveKeyRestorePollOperation(),
-            (pollingContext, firstResponse) -> Mono.empty(),
-            (pollingContext) -> Mono.empty());
+            (pollingContext, firstResponse) -> Mono.error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            (pollingContext) -> Mono.just(new KeyVaultSelectiveKeyRestoreResult()));
     }
 
     /**
