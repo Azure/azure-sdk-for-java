@@ -9,7 +9,9 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -86,7 +88,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
         // Restore the backup
         String backupFolderUrl = backupPollResponse.getFinalResult().block();
 
-        AsyncPollResponse<KeyVaultRestoreOperation, Void> restorePollResponse =
+        AsyncPollResponse<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePollResponse =
             asyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
@@ -113,7 +115,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Restore the backup
         String backupFolderUrl = backupPollResponse.getFinalResult().block();
-        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, Void> selectiveKeyRestorePollResponse =
+        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePollResponse =
             asyncClient.beginSelectiveKeyRestore("testKey", backupFolderUrl, sasToken).blockLast();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveKeyRestorePollResponse.getStatus());

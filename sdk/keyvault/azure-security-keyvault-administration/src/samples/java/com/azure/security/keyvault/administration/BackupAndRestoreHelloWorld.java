@@ -50,7 +50,8 @@ public class BackupAndRestoreHelloWorld {
         location the backup, as well as Shared Access Signature for accessing it. */
         String backupFolderUrl = backupPoller.getFinalResult();
 
-        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller = backupClient.beginRestore(backupFolderUrl, sasToken);
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
+            backupClient.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
     }
