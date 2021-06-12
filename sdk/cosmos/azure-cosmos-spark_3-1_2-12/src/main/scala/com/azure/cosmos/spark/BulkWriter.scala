@@ -5,7 +5,17 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.BulkWriter.DefaultMaxPendingOperationPerCore
-import com.azure.cosmos.{BulkItemRequestOptions, BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.
+{
+    BulkItemRequestOptions,
+    BulkOperations,
+    BulkProcessingOptions,
+    BulkProcessingThresholds,
+    CosmosAsyncContainer,
+    CosmosBulkOperationResponse,
+    CosmosException,
+    CosmosItemOperation
+}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.Disposable
 import reactor.core.publisher.Sinks
@@ -64,7 +74,11 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   private val subscriptionDisposable: Disposable = {
     val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
-      container.processBulkOperations[Object](bulkInputEmitter.asFlux()).asScala
+      container
+          .processBulkOperations[Object](
+              bulkInputEmitter.asFlux(),
+              new BulkProcessingOptions[Object](null, BulkWriter.bulkProcessingThresholds))
+          .asScala
 
     bulkOperationResponseFlux.subscribe(
       resp => {
@@ -313,6 +327,8 @@ private object BulkWriter {
 
   val emitFailureHandler: EmitFailureHandler =
         (signalType, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
+
+  val bulkProcessingThresholds = new BulkProcessingThresholds[Object]()
 }
 
 //scalastyle:on multiple.string.literals

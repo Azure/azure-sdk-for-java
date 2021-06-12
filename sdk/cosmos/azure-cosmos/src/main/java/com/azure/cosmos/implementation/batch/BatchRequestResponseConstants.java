@@ -15,6 +15,7 @@ public final class BatchRequestResponseConstants {
 
     public static final int DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS = 100;
     public static final int DEFAULT_MAX_MICRO_BATCH_CONCURRENCY = 2;
+    public static final double DEFAULT_MAX_MICRO_BATCH_RETRY_RATE = 0.1;
 
     static final String FIELD_OPERATION_TYPE = "operationType";
     static final String FIELD_RESOURCE_TYPE = "resourceType";
