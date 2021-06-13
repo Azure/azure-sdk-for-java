@@ -8,6 +8,8 @@ import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.identity.CommunicationIdentityClient;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -36,20 +38,44 @@ public class CallingServerTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
+            "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
 
     protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER", "016a7064-0581-40b9-be73-6dde64d69d72");
+        .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
+            "016a7064-0581-40b9-be73-6dde64d69d72");
 
     protected static final String GROUP_IDENTIFIER = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_GROUP_IDENTIFIER", "c400789f-e11b-4ceb-88cb-bc8df2a01568");           
+        .get("COMMUNICATION_LIVETEST_STATIC_GROUP_IDENTIFIER",
+            "c400789f-e11b-4ceb-88cb-bc8df2a01568");
+
+    protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
+        .get("AZURE_PHONE_NUMBER", "+15551234567");
+
+    protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
+        .get("AZURE_PHONE_NUMBER", "+15551234567");
+
+    protected static final String CALLBACK_URI = Configuration.getGlobalConfiguration()
+        .get("CALLBACK_URI", "https://host.app/api/callback/calling");
+
+    protected static final String AUDIO_FILE_URI = Configuration.getGlobalConfiguration()
+        .get("AUDIO_FILE_URI", "https://host.app/audio/bot-callcenter-intro.wav");
+
+    protected static final String METADATA_URL = Configuration.getGlobalConfiguration()
+        .get("METADATA_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata");
+
+    protected static final String VIDEO_URL = Configuration.getGlobalConfiguration()
+        .get("VIDEO_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/video");
+
+    protected static final String CONTENT_URL_404 = Configuration.getGlobalConfiguration()
+        .get("CONTENT_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("to");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
     protected CallingServerClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
@@ -65,23 +91,34 @@ public class CallingServerTestBase extends TestBase {
         return builder;
     }
 
-    protected String getRandomUserId() {
-        return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID().toString();
+    protected String getNewUserId() {
+        if (getTestMode() == TestMode.LIVE) {
+            CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+                .connectionString(CONNECTION_STRING)
+                .buildClient();
+            CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+            return user.getId();
+        }
+        return getRandomUserId();
+    }
+
+    private String getRandomUserId() {
+        return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID();
     }
 
     protected String getGroupId() {
-        /**
-         * If tests are running in live mode, we want them to all
-         * have unique groupId's so they do not conflict with other
-         * recording tests running in live mode.
+        /*
+          If tests are running in live mode, we want them to all
+          have unique groupId's so they do not conflict with other
+          recording tests running in live mode.
          */
         if (getTestMode() == TestMode.LIVE) {
             return UUID.randomUUID().toString();
         }
 
-        /**
-         * For recording tests we need to make sure the groupId
-         * matches the recorded groupId, or the call will fail.
+        /*
+          For recording tests we need to make sure the groupId
+          matches the recorded groupId, or the call will fail.
          */
         return GROUP_IDENTIFIER;
     }
@@ -121,14 +158,18 @@ public class CallingServerTestBase extends TestBase {
             .flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
+                /* Should sanitize printed response url */
                 System.out.println("Chain-ID header for " + testName + " request "
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
     }
 
-    protected List<CallConnection> createCall(CallingServerClient callingServerClient, String groupId, String from, String to, String callBackUri) {
+    protected List<CallConnection> createCall(CallingServerClient callingServerClient,
+                                              String groupId,
+                                              String from,
+                                              String to,
+                                              String callBackUri) {
         CallConnection fromCallConnection =  null;
         CallConnection toCallConnection = null;
 
@@ -168,8 +209,12 @@ public class CallingServerTestBase extends TestBase {
             throw e;
         }
     }
-    
-    protected List<CallConnectionAsync> createAsyncCall(CallingServerAsyncClient callingServerClient, String groupId, String from, String to, String callBackUri) {
+
+    protected List<CallConnectionAsync> createAsyncCall(CallingServerAsyncClient callingServerClient,
+                                                        String groupId,
+                                                        String from,
+                                                        String to,
+                                                        String callBackUri) {
         CallConnectionAsync fromCallConnection =  null;
         CallConnectionAsync toCallConnection = null;
 

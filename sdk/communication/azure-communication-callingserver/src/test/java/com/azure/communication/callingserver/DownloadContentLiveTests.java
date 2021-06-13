@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -22,15 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 
-/**
- * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
- * live. By default, tests are run in playback mode.
- * These tests will not run in LIVE or RECORD as they cannot get the content url.
- */
-public class DownloadContentTests extends CallingServerTestBase {
-    private static final String METADATA_URL = "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata";
-    private static final String VIDEO_URL = "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/video";
-    private static final String CONTENT_URL_404 = "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata";
+public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -39,9 +32,9 @@ public class DownloadContentTests extends CallingServerTestBase {
         CallingServerClient conversationClient = setupClient(builder, "downloadMetadata");
 
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            conversationClient.downloadTo(METADATA_URL, baos, null);
-            String metadata = new String(baos.toByteArray(), StandardCharsets.UTF_8);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            conversationClient.downloadTo(METADATA_URL, byteArrayOutputStream, null);
+            String metadata = byteArrayOutputStream.toString(StandardCharsets.UTF_8);
             assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -56,12 +49,16 @@ public class DownloadContentTests extends CallingServerTestBase {
         CallingServerClient conversationClient = setupClient(builder, "downloadVideo");
 
         try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             Response<Void> response = conversationClient
-                .downloadToWithResponse(VIDEO_URL, baos, null, null);
+                .downloadToWithResponse(VIDEO_URL, byteArrayOutputStream, null, null);
             assertThat(response, is(notNullValue()));
-            assertThat(response.getHeaders().getValue("Content-Type"), is(equalTo("application/octet-stream")));
-            assertThat(Integer.parseInt(response.getHeaders().getValue("Content-Length")), is(equalTo(baos.size())));
+            assertThat(
+                response.getHeaders().getValue("Content-Type"),
+                is(equalTo("application/octet-stream")));
+            assertThat(
+                Integer.parseInt(response.getHeaders().getValue("Content-Length")),
+                is(equalTo(byteArrayOutputStream.size())));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
@@ -74,10 +71,10 @@ public class DownloadContentTests extends CallingServerTestBase {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         CallingServerErrorException ex = assertThrows(CallingServerErrorException.class,
             () -> conversationClient
-                .downloadTo(CONTENT_URL_404, baos, null));
+                .downloadTo(CONTENT_URL_404, byteArrayOutputStream, null));
         assertThat(ex.getResponse().getStatusCode(), is(equalTo(404)));
     }
 
@@ -87,10 +84,12 @@ public class DownloadContentTests extends CallingServerTestBase {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-            () -> conversationClient
-                .downloadTo("wrongurl", baos, null));
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        IllegalArgumentException ex =
+            assertThrows(
+                IllegalArgumentException.class,
+                () -> conversationClient
+                    .downloadTo("wrongurl", byteArrayOutputStream, null));
         assertThat(ex, is(notNullValue()));
     }
 
@@ -100,11 +99,12 @@ public class DownloadContentTests extends CallingServerTestBase {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
-        ByteArrayOutputStream baos = Mockito.mock(ByteArrayOutputStream.class);
-        doThrow(IOException.class).when(baos).write(Mockito.any());
-        assertThrows(UncheckedIOException.class,
+        ByteArrayOutputStream byteArrayOutputStream = Mockito.mock(ByteArrayOutputStream.class);
+        doThrow(IOException.class).when(byteArrayOutputStream).write(Mockito.any());
+        assertThrows(
+            UncheckedIOException.class,
             () -> conversationClient
-                .downloadTo(METADATA_URL, baos, null));
+                .downloadTo(METADATA_URL, byteArrayOutputStream, null));
     }
 
     private CallingServerClient setupClient(CallingServerClientBuilder builder, String testName) {

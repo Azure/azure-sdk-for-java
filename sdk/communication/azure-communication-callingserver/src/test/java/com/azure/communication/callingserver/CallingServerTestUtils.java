@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.communication.callingserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.JoinCallResult;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.core.http.rest.Response;
@@ -53,12 +53,6 @@ public class CallingServerTestUtils {
         assertNotNull(callConnectionAsync);
         assertNotNull(callConnectionAsync.getCallConnectionId());
         assertFalse(callConnectionAsync.getCallConnectionId().isEmpty());
-    }
-
-    protected static void validateJoinCall(JoinCallResult joinCallResult) {
-        assertNotNull(joinCallResult);
-        assertNotNull(joinCallResult.getCallConnectionId());
-        assertFalse(joinCallResult.getCallConnectionId().isEmpty());
     }
 
     protected static void validatePlayAudioResponse(Response<PlayAudioResult> playAudioResponse) {
