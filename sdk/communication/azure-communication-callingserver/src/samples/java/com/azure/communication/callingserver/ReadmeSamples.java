@@ -83,7 +83,7 @@ public class ReadmeSamples {
         String callConnectionId = "callId";
         CallingServerClient callingServerClient = createCallingServerClient();
         CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
-        CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
-        callConnection.addParticipant(thirdCallee, "ACS User 2", "<string-for-tracing-responses>");
+        CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
+        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
     }
 }

@@ -31,7 +31,7 @@ public class ConversationClientReadmeSamples {
 
         // Initialize the calling server client
         final CallingServerClientBuilder builder = new CallingServerClientBuilder();
-        builder.endpoint(endpoint).connectionString(connectionString);
+        builder.connectionString(connectionString);
         CallingServerClient callingServerClient = builder.buildClient();
 
         return callingServerClient;

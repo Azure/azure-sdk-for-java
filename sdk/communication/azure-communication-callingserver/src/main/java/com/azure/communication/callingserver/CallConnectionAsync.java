@@ -148,7 +148,8 @@ public final class CallConnectionAsync {
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -284,7 +285,8 @@ public final class CallConnectionAsync {
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext operationContext
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @return the response payload of the cancel media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -303,7 +305,8 @@ public final class CallConnectionAsync {
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext operationContext
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @return the response payload of the cancel media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
