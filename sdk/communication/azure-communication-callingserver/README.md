@@ -97,7 +97,7 @@ callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-re
 callConnection.hangup();
 ```
 
-### Start, Stop, Pause, Resume, and Get a recording
+### Start, Pause, Resume, Stop and Get a recording
 
 #### Start a Recording: 
 <!-- embedme src/samples/java/com/azure/communication/callingserver/ConversationClientReadmeSamples.java#L47-L51 -->
