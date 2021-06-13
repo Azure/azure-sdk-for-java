@@ -3,8 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
-import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.CallRecordingStateResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -44,10 +42,11 @@ public final class ServerCall {
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void addParticipant(CommunicationIdentifier participant,
-                               String callBackUri,
-                               String alternateCallerId,
-                               String operationContext) {
+    public Void addParticipant(
+        CommunicationIdentifier participant,
+        String callBackUri,
+        String alternateCallerId,
+        String operationContext) {
         return serverCallAsync.addParticipant(participant, alternateCallerId, operationContext, callBackUri).block();
     }
 
@@ -62,11 +61,12 @@ public final class ServerCall {
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(CommunicationIdentifier participant,
-                                                     String callBackUri,
-                                                     String alternateCallerId,
-                                                     String operationContext,
-                                                     Context context) {
+    public Response<Void> addParticipantWithResponse(
+        CommunicationIdentifier participant,
+        String callBackUri,
+        String alternateCallerId,
+        String operationContext,
+        Context context) {
         return serverCallAsync.addParticipantWithResponse(
                 participant,
                 callBackUri,
@@ -118,7 +118,8 @@ public final class ServerCall {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResult> startRecordingWithResponse(
-            String recordingStateCallbackUri, Context context) {
+        String recordingStateCallbackUri,
+        Context context) {
         return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context).block();
     }
 
@@ -226,19 +227,26 @@ public final class ServerCall {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String audioFileUri,
-                                     String audioFileId,
-                                     String callbackUri,
-                                     String operationContext) {
-        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest =
-            new PlayAudioRequest()
-                .setAudioFileUri(audioFileUri)
-                .setLoop(false)
-                .setAudioFileId(audioFileId)
-                .setOperationContext(operationContext)
-                .setCallbackUri(callbackUri);
-        return serverCallAsync.playAudio(playAudioRequest).block();
+    public PlayAudioResult playAudio(
+        String audioFileUri,
+        String audioFileId,
+        String callbackUri,
+        String operationContext) {
+        return serverCallAsync.playAudioInternal(audioFileUri, audioFileId, callbackUri, operationContext).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
+     * @param playAudioOptions Options for play audio.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayAudioResult playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
+        return serverCallAsync.playAudioInternal(audioFileUri, playAudioOptions).block();
     }
 
     /**
@@ -254,37 +262,19 @@ public final class ServerCall {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
-                                                             String audioFileId,
-                                                             String callbackUri,
-                                                             String operationContext,
-                                                             Context context) {
-        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest =
-            new PlayAudioRequest()
-                .setAudioFileUri(audioFileUri)
-                .setLoop(false)
-                .setAudioFileId(audioFileId)
-                .setOperationContext(operationContext)
-                .setCallbackUri(callbackUri);
-        return serverCallAsync.playAudioWithResponse(playAudioRequest, context).block();
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param playAudioOptions Options for play audio.
-     * @return the response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String audioFileUri,
-                                       PlayAudioOptions playAudioOptions) {
-        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return serverCallAsync.playAudio(playAudioRequest).block();
+    public Response<PlayAudioResult> playAudioWithResponse(
+        String audioFileUri,
+        String audioFileId,
+        String callbackUri,
+        String operationContext,
+        Context context) {
+        return serverCallAsync
+            .playAudioWithResponseInternal(
+                audioFileUri,
+                audioFileId,
+                callbackUri,
+                operationContext,
+                context).block();
     }
 
     /**
@@ -298,11 +288,10 @@ public final class ServerCall {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
-                                                             PlayAudioOptions playAudioOptions,
-                                                             Context context) {
-        //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-        PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return serverCallAsync.playAudioWithResponse(playAudioRequest, context).block();
+    public Response<PlayAudioResult> playAudioWithResponse(
+        String audioFileUri,
+        PlayAudioOptions playAudioOptions,
+        Context context) {
+        return serverCallAsync.playAudioWithResponseInternal(audioFileUri, playAudioOptions, context).block();
     }
 }

@@ -41,7 +41,7 @@ public final class CancelAllMediaOperationsResultInternal {
      * @return the id value.
      */
     public String getId() {
-        return id;
+        return this.id;
     }
 
     /**
@@ -61,7 +61,7 @@ public final class CancelAllMediaOperationsResultInternal {
      * @return the status value.
      */
     public OperationStatus getStatus() {
-        return status;
+        return this.status;
     }
 
     /**

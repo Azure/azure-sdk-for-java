@@ -10,7 +10,7 @@ import com.azure.core.util.BinaryData;
 /** The call connection state changed event. */
 public final class CallConnectionStateChangedEvent {
     /*
-     * The server call.id.
+     * The server call id.
      */
     private final String serverCallId;
 
@@ -25,7 +25,7 @@ public final class CallConnectionStateChangedEvent {
     private final CallConnectionState callConnectionState;
 
     /**
-     * Get the serverCallId property: The server call.id.
+     * Get the serverCallId property: The server call id.
      *
      * @return the serverCallId value.
      */
@@ -52,13 +52,16 @@ public final class CallConnectionStateChangedEvent {
     }
 
     /**
-     * Initializes a new instance of PlayAudioResult.
+     * Initializes a new instance of CallConnectionStateChangedEvent.
      *
      * @param serverCallId the serverCallId value.
      * @param callConnectionId the callConnectionId value.
      * @param callConnectionState the callConnectionState value.
      */
-    public CallConnectionStateChangedEvent(String serverCallId, String callConnectionId, CallConnectionState callConnectionState) {
+    public CallConnectionStateChangedEvent(
+        String serverCallId,
+        String callConnectionId,
+        CallConnectionState callConnectionState) {
         this.serverCallId = serverCallId;
         this.callConnectionId = callConnectionId;
         this.callConnectionState = callConnectionState;
@@ -76,6 +79,7 @@ public final class CallConnectionStateChangedEvent {
         }
         CallConnectionStateChangedEventInternal callConnectionStateChangedEventInternal =
             eventData.toObject(CallConnectionStateChangedEventInternal.class);
+
         return new CallConnectionStateChangedEvent(
             callConnectionStateChangedEventInternal.getServerCallId(),
             callConnectionStateChangedEventInternal.getCallConnectionId(),

@@ -3,22 +3,21 @@
 
 package com.azure.communication.callingserver.models;
 
-/** Gets or sets the tone info. */
+/** The class to represent Tone info detail. */
 public final class ToneInfo {
     /*
-     * Gets or sets the sequence id. This id can be used to determine if the
-     * same tone
+     * The sequence id. This id can be used to determine if the same tone
      * was played multiple times or if any tones were missed.
      */
     private final Integer sequenceId;
 
     /*
-     * Gets or sets the tone detected.
+     * The tone detected.
      */
     private final ToneValue tone;
 
     /**
-     * Get the sequenceId property: Gets or sets the sequence id. This id can be used to determine if the same tone was
+     * Get the sequenceId property: Gets the sequence id. This id can be used to determine if the same tone was
      * played multiple times or if any tones were missed.
      *
      * @return the sequenceId value.
@@ -28,7 +27,7 @@ public final class ToneInfo {
     }
 
     /**
-     * Get the tone property: Gets or sets the tone detected.
+     * Get the tone property: Gets the tone detected.
      *
      * @return the tone value.
      */
@@ -46,5 +45,4 @@ public final class ToneInfo {
         this.sequenceId = sequenceId;
         this.tone = tone;
     }
-
 }

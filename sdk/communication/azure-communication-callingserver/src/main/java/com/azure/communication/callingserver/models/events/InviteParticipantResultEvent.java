@@ -9,7 +9,7 @@ import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.ResultInfo;
 import com.azure.core.util.BinaryData;
 
-/** The InviteParticipantResultEvent model. */
+/** The invite participant result event. */
 public final class InviteParticipantResultEvent {
     /*
      * The result details.
@@ -22,7 +22,7 @@ public final class InviteParticipantResultEvent {
     private final String operationContext;
 
     /*
-     * Gets or sets the status of the operation
+     * The status of the operation
      */
     private final OperationStatus status;
 
@@ -45,9 +45,9 @@ public final class InviteParticipantResultEvent {
     }
 
     /**
-     * Get the status property: Gets or sets the status of the operation.
+     * Get the status property: Gets the status of the operation.
      *
-     * @return the status value.
+     * @return the operation status value.
      */
     public OperationStatus getStatus() {
         return status;
@@ -57,7 +57,8 @@ public final class InviteParticipantResultEvent {
      * Initializes a new instance of InviteParticipantResultEvent.
      *
      * @param resultInfo the resultInfo value.
-     * @param operationContext the operationContext value.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @param status the status value.
      */
     public InviteParticipantResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
@@ -78,6 +79,7 @@ public final class InviteParticipantResultEvent {
         }
         InviteParticipantsResultEventInternal inviteParticipantsResultEventInternal =
             eventData.toObject(InviteParticipantsResultEventInternal.class);
+
         return new InviteParticipantResultEvent(
             ResultInfoConverter.convert(inviteParticipantsResultEventInternal.getResultInfo()),
             inviteParticipantsResultEventInternal.getOperationContext(),

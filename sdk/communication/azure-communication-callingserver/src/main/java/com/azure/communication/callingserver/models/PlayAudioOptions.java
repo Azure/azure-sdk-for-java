@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class PlayAudioOptions {
 
     /*
-     * The flag indicating whether audio file needs to be played in loop or
-     * not.
+     * The flag indicating whether audio file needs to be played in loop or not.
      */
     @JsonProperty(value = "loop")
     private Boolean loop;
@@ -24,14 +23,13 @@ public final class PlayAudioOptions {
     private String operationContext;
 
     /*
-     * An id for the media in the AudioFileUri, using which we cache the media
-     * resource.
+     * An id for the media in the AudioFileUri, using which we cache the media resource.
      */
     @JsonProperty(value = "audioFileId")
     private String audioFileId;
 
     /*
-     * The callback Uri to receive PlayAudio status notifications.
+     * The callback Uri to receive playAudio status notifications.
      */
     @JsonProperty(value = "callbackUri")
     private String callbackUri;

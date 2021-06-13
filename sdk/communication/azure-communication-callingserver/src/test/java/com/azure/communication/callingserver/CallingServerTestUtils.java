@@ -35,18 +35,18 @@ public class CallingServerTestUtils {
         assertFalse(callConnection.getCallConnectionId().isEmpty());
     }
 
-    protected static void validateCallConnectionAsyncResponse(Response<CallConnectionAsync> callConnectionResponseAsync) {
-        assertNotNull(callConnectionResponseAsync);
-        assertEquals(201, callConnectionResponseAsync.getStatusCode());
-        assertNotNull(callConnectionResponseAsync.getValue());
-        validateCallConnectionAsync(callConnectionResponseAsync.getValue());
+    protected static void validateCallConnectionAsyncResponse(Response<CallConnectionAsync> response) {
+        assertNotNull(response);
+        assertEquals(201, response.getStatusCode());
+        assertNotNull(response.getValue());
+        validateCallConnectionAsync(response.getValue());
     }
 
-    protected static void validateJoinCallConnectionAsyncResponse(Response<CallConnectionAsync> callConnectionResponseAsync) {
-        assertNotNull(callConnectionResponseAsync);
-        assertEquals(202, callConnectionResponseAsync.getStatusCode());
-        assertNotNull(callConnectionResponseAsync.getValue());
-        validateCallConnectionAsync(callConnectionResponseAsync.getValue());
+    protected static void validateJoinCallConnectionAsyncResponse(Response<CallConnectionAsync> response) {
+        assertNotNull(response);
+        assertEquals(202, response.getStatusCode());
+        assertNotNull(response.getValue());
+        validateCallConnectionAsync(response.getValue());
     }
 
     protected static void validateCallConnectionAsync(CallConnectionAsync callConnectionAsync) {
@@ -70,19 +70,19 @@ public class CallingServerTestUtils {
         assertSame(playAudioResponse.getStatus(), OperationStatus.RUNNING);
     }
 
-    protected static void validateCancelAllMediaOperationsResponse(Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult) {
-        assertNotNull(cancelAllMediaOperationsResult);
-        Assertions.assertEquals(200, cancelAllMediaOperationsResult.getStatusCode());
-        assertNotNull(cancelAllMediaOperationsResult.getValue());
-        validateCancelAllMediaOperations(cancelAllMediaOperationsResult.getValue());
+    protected static void validateCancelAllMediaOperationsResult(Response<CancelAllMediaOperationsResult> result) {
+        assertNotNull(result);
+        Assertions.assertEquals(200, result.getStatusCode());
+        assertNotNull(result.getValue());
+        validateCancelAllMediaOperations(result.getValue());
     }
 
-    protected static void validateCancelAllMediaOperations(CancelAllMediaOperationsResult cancelAllMediaOperationsResponse) {
-        assertNotNull(cancelAllMediaOperationsResponse);
-        assertNotNull(cancelAllMediaOperationsResponse.getId());
-        assertFalse(cancelAllMediaOperationsResponse.getId().isEmpty());
-        assertNotNull(cancelAllMediaOperationsResponse.getStatus());
-        assertSame(cancelAllMediaOperationsResponse.getStatus(), OperationStatus.COMPLETED);
+    protected static void validateCancelAllMediaOperations(CancelAllMediaOperationsResult result) {
+        assertNotNull(result);
+        assertNotNull(result.getId());
+        assertFalse(result.getId().isEmpty());
+        assertNotNull(result.getStatus());
+        assertSame(result.getStatus(), OperationStatus.COMPLETED);
     }
 
     protected static void validateResponse(Response<Void> response) {

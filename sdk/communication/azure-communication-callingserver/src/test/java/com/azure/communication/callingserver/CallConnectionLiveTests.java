@@ -59,7 +59,8 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = UUID.randomUUID().toString();
-            CancelAllMediaOperationsResult cancelAllMediaOperationsResult = callConnection.cancelAllMediaOperations(cancelMediaOperationContext);
+            CancelAllMediaOperationsResult cancelAllMediaOperationsResult =
+                callConnection.cancelAllMediaOperations(cancelMediaOperationContext);
             CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResult);
 
             // Hang up
@@ -74,7 +75,8 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
+        CallingServerClient callingServerClient =
+            setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
 
         try {
             // Establish a call
@@ -85,11 +87,12 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
-            Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
-                options,
-                Context.NONE);
+            Response<CallConnection> callConnectionResponse =
+                callingServerClient.createCallConnectionWithResponse(
+                    new CommunicationUserIdentifier(fromUser),
+                    new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                    options,
+                    Context.NONE);
 
             CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
             CallConnection callConnection = callConnectionResponse.getValue();
@@ -108,8 +111,9 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = UUID.randomUUID().toString();
-            Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult = callConnection.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext, Context.NONE);
-            CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResult);
+            Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult =
+                callConnection.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext, Context.NONE);
+            CallingServerTestUtils.validateCancelAllMediaOperationsResult(cancelAllMediaOperationsResult);
 
             // Hang up
             Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
@@ -168,7 +172,8 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
+        CallingServerClient callingServerClient =
+            setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
 
         try {
             // Establish a call
@@ -179,11 +184,12 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
-            Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
-                options,
-                Context.NONE);
+            Response<CallConnection> callConnectionResponse =
+                callingServerClient.createCallConnectionWithResponse(
+                    new CommunicationUserIdentifier(fromUser),
+                    new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                    options,
+                    Context.NONE);
 
             CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
             CallConnection callConnection = callConnectionResponse.getValue();
@@ -206,7 +212,8 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
               value needs to be used.
              */
             String participantId = "71ed956b-366e-450c-9a61-3bbccf42baa5";
-            Response<Void> removeParticipantResponse = callConnection.removeParticipantWithResponse(participantId, Context.NONE);
+            Response<Void> removeParticipantResponse =
+                callConnection.removeParticipantWithResponse(participantId, Context.NONE);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
@@ -267,7 +274,8 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateJoinHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenarioWithResponse");
+        CallingServerClient callingServerClient =
+            setupClient(builder, "runCreateJoinHangupScenarioWithResponse");
 
         try {
             // Establish a call

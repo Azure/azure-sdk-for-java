@@ -38,7 +38,7 @@ public final class ToneReceivedEvent {
     }
 
     /**
-     * Initializes a new instance of InviteParticipantResultEvent.
+     * Initializes a new instance of ToneReceivedEvent.
      *
      * @param toneInfo the toneInfo value.
      * @param callConnectionId the callConnectionId value.
@@ -59,6 +59,7 @@ public final class ToneReceivedEvent {
             return null;
         }
         ToneReceivedEventInternal toneReceivedEventInternal = eventData.toObject(ToneReceivedEventInternal.class);
+
         return new ToneReceivedEvent(
             new ToneInfo(
                 toneReceivedEventInternal.getToneInfo().getSequenceId(),

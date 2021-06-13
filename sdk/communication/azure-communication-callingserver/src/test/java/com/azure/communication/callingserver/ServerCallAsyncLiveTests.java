@@ -37,7 +37,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runAllClientFunctionsAsync");
         String recordingId = "";
         List<CallConnectionAsync> callConnections = new ArrayList<>();
         ServerCallAsync serverCall = null;
@@ -76,7 +77,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
         String recordingId = "";
         List<CallConnectionAsync> callConnections = new ArrayList<>();
         ServerCallAsync serverCallAsync = null;
@@ -85,7 +87,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             callConnections = createAsyncCall(callingServerAsyncClient, groupId, fromUser, toUser, CALLBACK_URI);
             serverCallAsync = callingServerAsyncClient.initializeServerCall(groupId);
 
-            Response<StartCallRecordingResult> startRecordingResponse = serverCallAsync.startRecordingWithResponse(CALLBACK_URI).block();
+            Response<StartCallRecordingResult> startRecordingResponse =
+                serverCallAsync.startRecordingWithResponse(CALLBACK_URI).block();
             assert startRecordingResponse != null;
             assertEquals(startRecordingResponse.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();
@@ -123,7 +126,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runPlayAudioFunctionAsync");
         ServerCallAsync serverCallAsync;
 
         List<CallConnectionAsync> callConnections = new ArrayList<>();
@@ -133,7 +137,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             callConnections = createAsyncCall(callingServerAsyncClient, groupId, fromUser, toUser, CALLBACK_URI);
             serverCallAsync = callingServerAsyncClient.initializeServerCall(groupId);
 
-            PlayAudioResult playAudioResult = serverCallAsync.playAudio(AUDIO_FILE_URI, operationContext, CALLBACK_URI, operationContext).block();
+            PlayAudioResult playAudioResult =
+                serverCallAsync.playAudio(AUDIO_FILE_URI, operationContext, CALLBACK_URI, operationContext).block();
             CallingServerTestUtils.validatePlayAudioResult(playAudioResult);
 
         } catch (Exception e) {
@@ -148,7 +153,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
         ServerCallAsync serverCallAsync;
 
         List<CallConnectionAsync> callConnections = new ArrayList<>();
@@ -158,7 +164,12 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             callConnections = createAsyncCall(callingServerAsyncClient, groupId, fromUser, toUser, CALLBACK_URI);
             serverCallAsync = callingServerAsyncClient.initializeServerCall(groupId);
 
-            Response<PlayAudioResult> playAudioResult = serverCallAsync.playAudioWithResponse(AUDIO_FILE_URI, operationContext, CALLBACK_URI, operationContext).block();
+            Response<PlayAudioResult> playAudioResult =
+                serverCallAsync.playAudioWithResponse(
+                    AUDIO_FILE_URI,
+                    operationContext,
+                    CALLBACK_URI,
+                    operationContext).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
@@ -178,7 +189,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         ServerCallAsync serverCallAsync = callingServerAsyncClient.initializeServerCall(invalidServerCallId);
 
         try {
-            Response<StartCallRecordingResult> response = serverCallAsync.startRecordingWithResponse(CALLBACK_URI).block();
+            Response<StartCallRecordingResult> response =
+                serverCallAsync.startRecordingWithResponse(CALLBACK_URI).block();
             assert response != null;
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
@@ -190,7 +202,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAddRemoveScenarioAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runAddRemoveScenarioAsync");
 
         try {
             // Establish a call
@@ -218,7 +231,13 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            serverCallAsync.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext, CALLBACK_URI).block();
+            serverCallAsync
+                .addParticipant(
+                    new CommunicationUserIdentifier(toUser),
+                    null,
+                    operationContext,
+                    CALLBACK_URI)
+                .block();
 
             // Remove User
             /*
@@ -271,7 +290,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<Void> addResponse = serverCallAsync.addParticipantWithResponse(new CommunicationUserIdentifier(toUser), null, operationContext, CALLBACK_URI).block();
+            Response<Void> addResponse =
+                serverCallAsync
+                    .addParticipantWithResponse(
+                        new CommunicationUserIdentifier(toUser),
+                        null,
+                        operationContext,
+                        CALLBACK_URI)
+                    .block();
             CallingServerTestUtils.validateResponse(addResponse);
 
             // Remove User
@@ -320,9 +346,10 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
 
-    protected void validateCallRecordingStateWithResponse(ServerCallAsync serverCallAsync,
-            String recordingId,
-            CallRecordingState expectedCallRecordingState) {
+    protected void validateCallRecordingStateWithResponse(
+        ServerCallAsync serverCallAsync,
+        String recordingId,
+        CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCallAsync);
         assertNotNull(serverCallAsync.getServerCallId());
         assertNotNull(recordingId);
@@ -333,7 +360,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         // against a live service.
         sleepIfRunningAgainstService(6000);
 
-        Response<CallRecordingStateResult> response = serverCallAsync.getRecordingStateWithResponse(recordingId).block();
+        Response<CallRecordingStateResult> response =
+            serverCallAsync.getRecordingStateWithResponse(recordingId).block();
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
         assertNotNull(response.getValue());

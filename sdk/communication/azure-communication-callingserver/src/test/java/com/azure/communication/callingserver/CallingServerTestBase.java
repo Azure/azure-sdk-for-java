@@ -160,7 +160,8 @@ public class CallingServerTestBase extends TestBase {
 
                 /* Should sanitize printed response url */
                 System.out.println("Chain-ID header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
+                    + bufferedResponse.getRequest().getUrl()
+                    + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
     }

@@ -6,27 +6,27 @@ package com.azure.communication.callingserver.models;
 /** The response payload of the cancel all media operations. */
 public final class CancelAllMediaOperationsResult {
     /*
-     * Gets or sets the identifier.
+     * The identifier.
      */
     private final String id;
 
     /*
-     * Gets or sets the status of the operation
+     * The status of the operation
      */
     private final OperationStatus status;
 
     /*
-     * Gets or sets the operation context
+     * The operation context
      */
     private final String operationContext;
 
     /*
-     * Gets or sets the result info
+     * The result info
      */
     private final ResultInfo resultInfo;
 
     /**
-     * Get the id property: Gets or sets the identifier.
+     * Get the id property: Gets the identifier.
      *
      * @return the id value.
      */
@@ -35,7 +35,7 @@ public final class CancelAllMediaOperationsResult {
     }
 
     /**
-     * Get the status property: Gets or sets the status of the operation.
+     * Get the status property: Gets the status of the operation.
      *
      * @return the status value.
      */
@@ -44,7 +44,7 @@ public final class CancelAllMediaOperationsResult {
     }
 
     /**
-     * Get the operationContext property: Gets or sets the operation context.
+     * Get the operationContext property: Gets the operation context.
      *
      * @return the operationContext value.
      */
@@ -53,7 +53,7 @@ public final class CancelAllMediaOperationsResult {
     }
 
     /**
-     * Get the resultInfo property: Gets or sets the result info.
+     * Get the resultInfo property: Gets the result info.
      *
      * @return the resultInfo value.
      */
@@ -69,7 +69,11 @@ public final class CancelAllMediaOperationsResult {
      * @param operationContext the operationContext value.
      * @param resultInfo the resultInfo value.
      */
-    public CancelAllMediaOperationsResult(String id, OperationStatus status, String operationContext, ResultInfo resultInfo) {
+    public CancelAllMediaOperationsResult(
+        String id,
+        OperationStatus status,
+        String operationContext,
+        ResultInfo resultInfo) {
         this.id = id;
         this.status = status;
         this.operationContext = operationContext;

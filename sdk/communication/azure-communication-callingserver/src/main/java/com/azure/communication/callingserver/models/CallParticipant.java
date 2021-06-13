@@ -53,16 +53,17 @@ public final class CallParticipant {
     }
 
     /**
-     * Initializes a new instance of CommunicationParticipant.
+     * Initializes a new instance of CallParticipant.
      *
      * @param communicationIdentifier Communication Identifier.
      * @param participantId Participant Id.
      * @param isMuted Is participant muted.
      * @throws IllegalArgumentException if either parameter is null.
      */
-    public CallParticipant(CommunicationIdentifier communicationIdentifier,
-                           String participantId,
-                           boolean isMuted) {
+    public CallParticipant(
+        CommunicationIdentifier communicationIdentifier,
+        String participantId,
+        boolean isMuted) {
         if (communicationIdentifier == null) {
             throw new IllegalArgumentException("object communicationIdentifier cannot be null");
         }

@@ -6,13 +6,24 @@ package com.azure.communication.callingserver.implementation.converters;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsResultInternal;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 
+/**
+ * A converter between {@link CancelAllMediaOperationsResultInternal} and {@link CancelAllMediaOperationsResult}.
+ */
 public class CancelAllMediaOperationsResultConverter {
-    public static CancelAllMediaOperationsResult convert(CancelAllMediaOperationsResultInternal cancelAllMediaOperationsResultInternal) {
+
+    /**
+     * Maps from {@link CancelAllMediaOperationsResultInternal} to {@link CancelAllMediaOperationsResult}.
+     */
+    public static CancelAllMediaOperationsResult convert(CancelAllMediaOperationsResultInternal resultInternal) {
+        if (resultInternal == null) {
+            return null;
+        }
+
         return new CancelAllMediaOperationsResult(
-            cancelAllMediaOperationsResultInternal.getId(),
-            cancelAllMediaOperationsResultInternal.getStatus(),
-            cancelAllMediaOperationsResultInternal.getOperationContext(),
-            ResultInfoConverter.convert(cancelAllMediaOperationsResultInternal.getResultInfo()));
+            resultInternal.getId(),
+            resultInternal.getStatus(),
+            resultInternal.getOperationContext(),
+            ResultInfoConverter.convert(resultInternal.getResultInfo()));
     }
 }
 

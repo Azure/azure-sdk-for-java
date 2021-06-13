@@ -49,11 +49,11 @@ public final class CallingServerClient {
      * {@codesnippet com.azure.communication.callingserver.CallingServerClient.create.call.connection}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection createCallConnection(CommunicationIdentifier source,
-                                         CommunicationIdentifier[] targets,
-                                         CreateCallOptions createCallOptions) {
-        return callingServerAsyncClient
-            .createCallConnectionInternal(source, targets, createCallOptions).block();
+    public CallConnection createCallConnection(
+        CommunicationIdentifier source,
+        CommunicationIdentifier[] targets,
+        CreateCallOptions createCallOptions) {
+        return callingServerAsyncClient.createCallConnectionInternal(source, targets, createCallOptions).block();
     }
 
     /**
@@ -66,10 +66,11 @@ public final class CallingServerClient {
      * @return response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> createCallConnectionWithResponse(CommunicationIdentifier source,
-                                                                     CommunicationIdentifier[] targets,
-                                                                     CreateCallOptions createCallOptions,
-                                                                     Context context) {
+    public Response<CallConnection> createCallConnectionWithResponse(
+        CommunicationIdentifier source,
+        CommunicationIdentifier[] targets,
+        CreateCallOptions createCallOptions,
+        Context context) {
         return callingServerAsyncClient
             .createCallConnectionWithResponseInternal(source, targets, createCallOptions, context).block();
     }
@@ -83,7 +84,10 @@ public final class CallingServerClient {
      * @return CallConnection for a successful Join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection join(String serverCallId, CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
+    public CallConnection join(
+        String serverCallId,
+        CommunicationIdentifier source,
+        JoinCallOptions joinCallOptions) {
         return callingServerAsyncClient.joinInternal(serverCallId, source, joinCallOptions).block();
     }
 
@@ -97,7 +101,11 @@ public final class CallingServerClient {
      * @return response for a successful Join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> joinWithResponse(String serverCallId, CommunicationIdentifier source, JoinCallOptions joinCallOptions, Context context) {
+    public Response<CallConnection> joinWithResponse(
+        String serverCallId,
+        CommunicationIdentifier source,
+        JoinCallOptions joinCallOptions,
+        Context context) {
         return callingServerAsyncClient.joinWithResponseInternal(serverCallId, source, joinCallOptions, context).block();
     }
 
@@ -145,11 +153,14 @@ public final class CallingServerClient {
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadToWithResponse(String sourceEndpoint, OutputStream destinationStream,
-                                                 HttpRange httpRange, Context context) {
+    public Response<Void> downloadToWithResponse(String sourceEndpoint,
+                                                 OutputStream destinationStream,
+                                                 HttpRange httpRange,
+                                                 Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
+        return callingServerAsyncClient
+            .downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
             .block();
     }
 
@@ -163,8 +174,10 @@ public final class CallingServerClient {
      * @param overwrite - True to overwrite the file if it exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void downloadTo(String sourceEndpoint, Path destinationPath,
-                           ParallelDownloadOptions parallelDownloadOptions, boolean overwrite) {
+    public void downloadTo(String sourceEndpoint,
+                           Path destinationPath,
+                           ParallelDownloadOptions parallelDownloadOptions,
+                           boolean overwrite) {
         downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
     }
 

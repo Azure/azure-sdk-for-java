@@ -22,7 +22,7 @@ public final class PlayAudioResultEvent {
     private final String operationContext;
 
     /*
-     * Gets or sets the status of the operation
+     * The status of the operation
      */
     private final OperationStatus status;
 
@@ -45,7 +45,7 @@ public final class PlayAudioResultEvent {
     }
 
     /**
-     * Get the status property: Gets or sets the status of the operation.
+     * Get the status property: Gets the status of the operation.
      *
      * @return the status value.
      */
@@ -54,10 +54,11 @@ public final class PlayAudioResultEvent {
     }
 
     /**
-     * Initializes a new instance of InviteParticipantResultEvent.
+     * Initializes a new instance of PlayAudioResultEvent.
      *
      * @param resultInfo the resultInfo value.
-     * @param operationContext the operationContext value.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @param status the status value.
      */
     public PlayAudioResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
@@ -78,6 +79,7 @@ public final class PlayAudioResultEvent {
         }
         PlayAudioResultEventInternal playAudioResultEventInternal =
             eventData.toObject(PlayAudioResultEventInternal.class);
+
         return new PlayAudioResultEvent(
             ResultInfoConverter.convert(playAudioResultEventInternal.getResultInfo()),
             playAudioResultEventInternal.getOperationContext(),

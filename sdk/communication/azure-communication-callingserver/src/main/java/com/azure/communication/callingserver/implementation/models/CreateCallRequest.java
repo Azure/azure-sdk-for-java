@@ -12,7 +12,7 @@ import java.util.List;
 
 /** The request payload for create call. */
 @Fluent
-public final class CreateCallRequestInternal {
+public final class CreateCallRequest {
     /*
      * The alternate identity of the source of the call if dialing out to a
      * pstn number
@@ -71,9 +71,9 @@ public final class CreateCallRequestInternal {
      * number.
      *
      * @param alternateCallerId the alternateCallerId value to set.
-     * @return the CreateCallRequestInternal object itself.
+     * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequestInternal setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+    public CreateCallRequest setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
         return this;
     }
@@ -91,9 +91,9 @@ public final class CreateCallRequestInternal {
      * Set the targets property: The targets of the call.
      *
      * @param targets the targets value to set.
-     * @return the CreateCallRequestInternal object itself.
+     * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequestInternal setTargets(List<CommunicationIdentifierModel> targets) {
+    public CreateCallRequest setTargets(List<CommunicationIdentifierModel> targets) {
         this.targets = targets;
         return this;
     }
@@ -111,9 +111,9 @@ public final class CreateCallRequestInternal {
      * Set the source property: The source of the call.
      *
      * @param source the source value to set.
-     * @return the CreateCallRequestInternal object itself.
+     * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequestInternal setSource(CommunicationIdentifierModel source) {
+    public CreateCallRequest setSource(CommunicationIdentifierModel source) {
         this.source = source;
         return this;
     }
@@ -131,9 +131,9 @@ public final class CreateCallRequestInternal {
      * Set the subject property: The subject.
      *
      * @param subject the subject value to set.
-     * @return the CreateCallRequestInternal object itself.
+     * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequestInternal setSubject(String subject) {
+    public CreateCallRequest setSubject(String subject) {
         this.subject = subject;
         return this;
     }
@@ -151,9 +151,9 @@ public final class CreateCallRequestInternal {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the CreateCallRequestInternal object itself.
+     * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequestInternal setCallbackUri(String callbackUri) {
+    public CreateCallRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }
@@ -171,9 +171,9 @@ public final class CreateCallRequestInternal {
      * Set the requestedMediaTypes property: The requested modalities.
      *
      * @param requestedMediaTypes the requestedMediaTypes value to set.
-     * @return the CreateCallRequestInternal object itself.
+     * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequestInternal setRequestedMediaTypes(List<CallModality> requestedMediaTypes) {
+    public CreateCallRequest setRequestedMediaTypes(List<CallModality> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
@@ -191,9 +191,9 @@ public final class CreateCallRequestInternal {
      * Set the requestedCallEvents property: The requested call events to subscribe to.
      *
      * @param requestedCallEvents the requestedCallEvents value to set.
-     * @return the CreateCallRequestInternal object itself.
+     * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequestInternal setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public CreateCallRequest setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }
