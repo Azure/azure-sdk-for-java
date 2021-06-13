@@ -20,20 +20,10 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-/**
- * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to setup if tests are playback or
- * live. By default, tests are run in playback mode.
- */
-public class CallConnectionTests extends CallingServerTestBase {
+public class CallConnectionLiveTests extends CallingServerTestBase {
 
-    private String from = getRandomUserId();
-    private String invitedUser = getRandomUserId();
-    private String joinedUser = getRandomUserId();
-    private String alternateId = "+11111111111";
-    private String to = "+11111111111";
-    private String callBackUri = "https://host.app/api/callback/calling";
-    private String audioFileUri = "https://host.app/audio/bot-callcenter-intro.wav";
-
+    private final String fromUser = getNewUserId();
+    private final String toUser = getNewUserId();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -44,15 +34,15 @@ public class CallConnectionTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
-                new CommunicationUserIdentifier(from),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                 options);
 
             CallingServerTestUtils.validateCallConnection(callConnection);
@@ -60,7 +50,7 @@ public class CallConnectionTests extends CallingServerTestBase {
             // Play Audio
             String playAudioOperationContext = UUID.randomUUID().toString();
             PlayAudioResult playAudioResult = callConnection.playAudio(
-                audioFileUri,
+                AUDIO_FILE_URI,
                 false,
                 UUID.randomUUID().toString(),
                 null,
@@ -89,15 +79,15 @@ public class CallConnectionTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(from),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                 options,
                 Context.NONE);
 
@@ -108,7 +98,7 @@ public class CallConnectionTests extends CallingServerTestBase {
             String operationContext = UUID.randomUUID().toString();
             Response<PlayAudioResult> playAudioResult =
                 callConnection.playAudioWithResponse(
-                    audioFileUri,
+                    AUDIO_FILE_URI,
                     false,
                     UUID.randomUUID().toString(),
                     null,
@@ -139,30 +129,30 @@ public class CallConnectionTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
-                new CommunicationUserIdentifier(from),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                 options);
 
             CallingServerTestUtils.validateCallConnection(callConnection);
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            callConnection.addParticipant(new CommunicationUserIdentifier(invitedUser), null, operationContext);
+            callConnection.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext);
 
             // Remove Participant
-            /**
-             * There is an update that we require to beable to get
-             * the participantId from the service when a user is
-             * added to a call. Until that is fixed this recorded
-             * valuse needs to be used.
-             */             
+            /*
+              There is an update that we require to be able to get
+              the participantId from the service when a user is
+              added to a call. Until that is fixed this recorded
+              value needs to be used.
+             */
             String participantId = "f29f70e3-1eaf-44c0-839c-b4e8a74ffec3";
             callConnection.removeParticipant(participantId);
 
@@ -183,38 +173,38 @@ public class CallConnectionTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            options.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(from),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                 options,
                 Context.NONE);
 
             CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
             CallConnection callConnection = callConnectionResponse.getValue();
 
-            // Add User      
+            // Add User
             String operationContext = UUID.randomUUID().toString();
             Response<Void> inviteParticipantResponse = callConnection
                 .addParticipantWithResponse(
-                    new CommunicationUserIdentifier(invitedUser),
+                    new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext,
                     Context.NONE);
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
-            /**
-             * There is an update that we require to beable to get
-             * the participantId from the service when a user is
-             * added to a call. Until that is fixed this recorded
-             * valuse needs to be used.
-             */ 
+            /*
+              There is an update that we require to be able to get
+              the participantId from the service when a user is
+              added to a call. Until that is fixed this recorded
+              value needs to be used.
+             */
             String participantId = "71ed956b-366e-450c-9a61-3bbccf42baa5";
             Response<Void> removeParticipantResponse = callConnection.removeParticipantWithResponse(participantId, Context.NONE);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
@@ -237,31 +227,31 @@ public class CallConnectionTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
-                new CommunicationUserIdentifier(from),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                 createCallOptions);
 
             CallingServerTestUtils.validateCallConnection(callConnection);
 
             // Join
-            /**
-             * Waiting for an upate to beable to get this serverCallId when using
-             * createCallConnection()
+            /*
+              Waiting for an update to be able to get this serverCallId when using
+              createCallConnection()
              */
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             CallConnection joinedCallConnection =
-                callingServerClient.join(serverCallId, new CommunicationUserIdentifier(joinedUser), joinCallOptions);
+                callingServerClient.join(serverCallId, new CommunicationUserIdentifier(toUser), joinCallOptions);
             CallingServerTestUtils.validateCallConnection(joinedCallConnection);
 
             //Hangup
@@ -282,15 +272,15 @@ public class CallConnectionTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
-            createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(alternateId));
+            createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             Response<CallConnection> callConnectionResponse = callingServerClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(from),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(to) },
+                new CommunicationUserIdentifier(fromUser),
+                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                 createCallOptions,
                 null);
 
@@ -300,13 +290,13 @@ public class CallConnectionTests extends CallingServerTestBase {
             // Join
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
-                callBackUri,
+                CALLBACK_URI,
                 new CallModality[] { CallModality.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             Response<CallConnection> joinedCallConnectionResponse =
                 callingServerClient.joinWithResponse(
                     serverCallId,
-                    new CommunicationUserIdentifier(joinedUser),
+                    new CommunicationUserIdentifier(toUser),
                     joinCallOptions,
                     null);
             CallingServerTestUtils.validateJoinCallConnectionResponse(joinedCallConnectionResponse);
