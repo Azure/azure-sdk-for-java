@@ -28,7 +28,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioAsync");
 
         try {
             // Establish a call
@@ -59,7 +60,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = UUID.randomUUID().toString();
-            CancelAllMediaOperationsResult cancelAllMediaOperationsResult = callConnectionAsync.cancelAllMediaOperations(cancelMediaOperationContext).block();
+            CancelAllMediaOperationsResult cancelAllMediaOperationsResult =
+                callConnectionAsync.cancelAllMediaOperations(cancelMediaOperationContext).block();
             CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResult);
 
             // Hang up
@@ -74,7 +76,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioWithResponseAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioWithResponseAsync");
 
         try {
             // Establish a call
@@ -85,10 +88,11 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
-            Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
-                options).block();
+            Response<CallConnectionAsync> callConnectionAsyncResponse =
+                callingServerAsyncClient.createCallConnectionWithResponse(
+                    new CommunicationUserIdentifier(fromUser),
+                    new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                    options).block();
 
             CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
             assert callConnectionAsyncResponse != null;
@@ -107,8 +111,9 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = UUID.randomUUID().toString();
-            Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult = callConnectionAsync.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext).block();
-            CallingServerTestUtils.validateCancelAllMediaOperationsResponse(cancelAllMediaOperationsResult);
+            Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult =
+                callConnectionAsync.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext).block();
+            CallingServerTestUtils.validateCancelAllMediaOperationsResult(cancelAllMediaOperationsResult);
 
             // Hang up
             Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
@@ -123,7 +128,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioAsync");
 
         try {
             // Establish a call
@@ -144,7 +150,10 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             // Invite User
             String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
-            callConnectionAsync.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext).block();
+            callConnectionAsync.addParticipant(
+                new CommunicationUserIdentifier(toUser),
+                null,
+                operationContext).block();
 
             // Remove Participant
             /*
@@ -168,7 +177,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioWithResponseAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioWithResponseAsync");
 
         try {
             // Establish a call
@@ -179,10 +189,11 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
-            Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
-                options).block();
+            Response<CallConnectionAsync> callConnectionAsyncResponse =
+                callingServerAsyncClient.createCallConnectionWithResponse(
+                    new CommunicationUserIdentifier(fromUser),
+                    new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                    options).block();
 
             CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
             assert callConnectionAsyncResponse != null;
@@ -190,7 +201,11 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             // Invite User
             String operationContext = UUID.randomUUID().toString();
-            Response<Void> inviteParticipantResponse = callConnectionAsync.addParticipantWithResponse(new CommunicationUserIdentifier(toUser), null, operationContext).block();
+            Response<Void> inviteParticipantResponse =
+                callConnectionAsync.addParticipantWithResponse(
+                    new CommunicationUserIdentifier(toUser),
+                    null,
+                    operationContext).block();
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
@@ -201,7 +216,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
               value needs to be used.
              */
             String participantId = "80238d5f-9eda-481a-b911-e2e12eba9eda";
-            Response<Void> removeParticipantResponse = callConnectionAsync.removeParticipantWithResponse(participantId).block();
+            Response<Void> removeParticipantResponse =
+                callConnectionAsync.removeParticipantWithResponse(participantId).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
@@ -217,7 +233,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateJoinHangupScenarioAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateJoinHangupScenarioAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioAsync");
 
         try {
             // Establish a call
@@ -267,7 +284,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateJoinHangupScenarioWithResponseAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runCreateJoinHangupScenarioWithResponseAsync");
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioWithResponseAsync");
 
         try {
             // Establish a call
@@ -278,10 +296,11 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
-            Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.createCallConnectionWithResponse(
-                new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
-                options).block();
+            Response<CallConnectionAsync> callConnectionAsyncResponse =
+                callingServerAsyncClient.createCallConnectionWithResponse(
+                    new CommunicationUserIdentifier(fromUser),
+                    new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                    options).block();
 
             CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
             assert callConnectionAsyncResponse != null;

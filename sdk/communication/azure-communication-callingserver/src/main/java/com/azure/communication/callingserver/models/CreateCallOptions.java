@@ -4,16 +4,38 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The options for creating a call.
  */
+@Fluent
 public final class CreateCallOptions {
 
     /**
      * The alternate caller id of the source.
      */
     private PhoneNumberIdentifier alternateCallerId;
+
+    /**
+     * The subject.
+     */
+    private String subject;
+
+    /**
+     * The callback URI.
+     */
+    private final String callbackUri;
+
+    /**
+     * The requested media types.
+     */
+    private final CallModality[] requestedMediaTypes;
+
+    /**
+     * The requested call events to subscribe to.
+     */
+    private final EventSubscriptionType[] requestedCallEvents;
 
     /**
      * Get the alternate caller id of the source.
@@ -36,11 +58,6 @@ public final class CreateCallOptions {
     }
 
     /**
-     * The subject.
-     */
-    private String subject;
-
-    /**
      * Get the subject.
      *
      * @return the subject value.
@@ -61,11 +78,6 @@ public final class CreateCallOptions {
     }
 
     /**
-     * The callback URI.
-     */
-    private final String callbackUri;
-
-    /**
      * Get the subject.
      *
      * @return the subject value.
@@ -73,11 +85,6 @@ public final class CreateCallOptions {
     public String getCallbackUri() {
         return callbackUri;
     }
-
-    /**
-     * The requested media types.
-     */
-    private final CallModality[] requestedMediaTypes;
 
     /**
      * Get the requested modalities.
@@ -89,11 +96,6 @@ public final class CreateCallOptions {
     }
 
     /**
-     * The requested call events to subscribe to.
-     */
-    private final EventSubscriptionType[] requestedCallEvents;
-
-    /**
      * Get the requested call events to subscribe to.
      *
      * @return the requested call events to subscribe to object itself.
@@ -103,16 +105,17 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Initializes a new instance of CreateCallResult.
+     * Initializes a new instance of CreateCallOptions.
      *
      * @param callbackUri the callback URI.
      * @param requestedMediaTypes the requested media types.
      * @param requestedCallEvents the requested call events to subscribe to.
      * @throws IllegalArgumentException if any parameters are null.
      */
-    public CreateCallOptions(String callbackUri,
-                             CallModality[] requestedMediaTypes,
-                             EventSubscriptionType[] requestedCallEvents) {
+    public CreateCallOptions(
+        String callbackUri,
+        CallModality[] requestedMediaTypes,
+        EventSubscriptionType[] requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }

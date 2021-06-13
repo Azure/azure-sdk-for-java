@@ -79,7 +79,7 @@ public class ConversationClientReadmeSamples {
     }
 
     /**
-     * Sample code for stoping a recording.
+     * Sample code for stopping a recording.
      *
      * @param callingServerClient {@link CallingServerClient} to use for recording.
      * @param serverCallId Identifier of the current server call.

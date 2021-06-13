@@ -6,12 +6,22 @@ package com.azure.communication.callingserver.implementation.converters;
 import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
 import com.azure.communication.callingserver.models.ResultInfo;
 
+/**
+ * A converter between {@link ResultInfoInternal} and {@link ResultInfo}.
+ */
 public final class ResultInfoConverter {
+
+    /**
+     * Maps from {@link ResultInfoInternal} to {@link ResultInfo}.
+     */
     public static ResultInfo convert(ResultInfoInternal resultInfoInternal) {
-        return resultInfoInternal == null ? null
-            : new ResultInfo(
-                resultInfoInternal.getCode(),
-                resultInfoInternal.getSubcode(),
-                resultInfoInternal.getMessage());
+        if (resultInfoInternal == null) {
+            return null;
+        }
+
+        return new ResultInfo(
+            resultInfoInternal.getCode(),
+            resultInfoInternal.getSubcode(),
+            resultInfoInternal.getMessage());
     }
 }

@@ -3,8 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.converters.PlayAudioConverter;
-import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -44,53 +42,19 @@ public final class CallConnection {
      * @param loop The flag indicating whether audio file needs to be played in loop or not.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String audioFileUri,
-                                     boolean loop,
-                                     String audioFileId,
-                                     String callbackUri,
-                                     String operationContext) {
-        PlayAudioRequest playAudioRequest =
-            new PlayAudioRequest()
-                .setAudioFileUri(audioFileUri)
-                .setLoop(loop)
-                .setAudioFileId(audioFileId)
-                .setOperationContext(operationContext)
-                .setCallbackUri(callbackUri);
-        return callConnectionAsync.playAudio(playAudioRequest).block();
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation.
-     * @param context A {@link Context} representing the request context.
-     * @return the response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
-                                                           boolean loop,
-                                                           String audioFileId,
-                                                           String callbackUri,
-                                                           String operationContext,
-                                                           Context context) {
-        PlayAudioRequest playAudioRequest =
-            new PlayAudioRequest()
-                .setAudioFileUri(audioFileUri)
-                .setLoop(loop)
-                .setAudioFileId(audioFileId)
-                .setOperationContext(operationContext)
-                .setCallbackUri(callbackUri);
-        return callConnectionAsync.playAudioWithResponse(playAudioRequest, context).block();
+    public PlayAudioResult playAudio(
+        String audioFileUri,
+        boolean loop,
+        String audioFileId,
+        String callbackUri,
+        String operationContext) {
+        return callConnectionAsync
+            .playAudioInternal(audioFileUri, loop, audioFileId, callbackUri, operationContext).block();
     }
 
     /**
@@ -104,8 +68,40 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayAudioResult playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
-        PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return callConnectionAsync.playAudio(playAudioRequest).block();
+        return callConnectionAsync.playAudioInternal(audioFileUri, playAudioOptions).block();
+    }
+
+    /**
+     * Play audio in a call.
+     *
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
+     * @param loop The flag indicating whether audio file needs to be played in loop or not.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri call back uri to receive notifications.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @param context A {@link Context} representing the request context.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayAudioResult> playAudioWithResponse(
+        String audioFileUri,
+        boolean loop,
+        String audioFileId,
+        String callbackUri,
+        String operationContext,
+        Context context) {
+        return callConnectionAsync
+            .playAudioWithResponseInternal(
+                audioFileUri,
+                loop,
+                audioFileId,
+                callbackUri,
+                operationContext,
+                context)
+            .block();
     }
 
     /**
@@ -119,11 +115,13 @@ public final class CallConnection {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(String audioFileUri,
-                                                           PlayAudioOptions playAudioOptions,
-                                                           Context context) {
-        PlayAudioRequest playAudioRequest = PlayAudioConverter.convert(audioFileUri, playAudioOptions);
-        return callConnectionAsync.playAudioWithResponse(playAudioRequest, context).block();
+    public Response<PlayAudioResult> playAudioWithResponse(
+        String audioFileUri,
+        PlayAudioOptions playAudioOptions,
+        Context context) {
+        return callConnectionAsync
+            .playAudioWithResponseInternal(audioFileUri, playAudioOptions, context)
+            .block();
     }
 
     /**
@@ -150,7 +148,8 @@ public final class CallConnection {
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext operationContext.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -161,13 +160,15 @@ public final class CallConnection {
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext operationContext.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
      * @return response for a successful CancelMediaOperations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(String operationContext,
-                                                                                           Context context) {
+    public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
+        String operationContext,
+        Context context) {
         return callConnectionAsync.cancelAllMediaOperationsWithResponse(operationContext, context).block();
     }
 
@@ -176,13 +177,15 @@ public final class CallConnection {
      *
      * @param participant Invited participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext operationContext.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void addParticipant(CommunicationIdentifier participant,
-                               String alternateCallerId,
-                               String operationContext) {
+    public Void addParticipant(
+        CommunicationIdentifier participant,
+        String alternateCallerId,
+        String operationContext) {
         return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext).block();
     }
 
@@ -191,15 +194,17 @@ public final class CallConnection {
      *
      * @param participant Invited participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext operationContext.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
      * @return response for a successful addParticipant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(CommunicationIdentifier participant,
-                                                     String alternateCallerId,
-                                                     String operationContext,
-                                                     Context context) {
+    public Response<Void> addParticipantWithResponse(
+        CommunicationIdentifier participant,
+        String alternateCallerId,
+        String operationContext,
+        Context context) {
         return callConnectionAsync
             .addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
     }

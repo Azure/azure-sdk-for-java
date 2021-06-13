@@ -116,7 +116,7 @@ public final class JoinCallOptions {
     }
 
     /**
-     * Initializes a new instance of JoingCallOptions.
+     * Initializes a new instance of JoinCallOptions.
      *
      * @param callbackUri the callback URI.
      * @param requestedMediaTypes the requested media types.

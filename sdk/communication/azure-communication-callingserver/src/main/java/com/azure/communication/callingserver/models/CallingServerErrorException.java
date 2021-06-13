@@ -27,8 +27,7 @@ public final class CallingServerErrorException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public CallingServerErrorException(
-        String message, HttpResponse response, CallingServerError value) {
+    public CallingServerErrorException(String message, HttpResponse response, CallingServerError value) {
         super(message, response, value);
     }
 

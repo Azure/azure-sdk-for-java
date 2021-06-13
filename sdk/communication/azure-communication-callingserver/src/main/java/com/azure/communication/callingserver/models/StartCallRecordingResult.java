@@ -6,7 +6,7 @@ package com.azure.communication.callingserver.models;
 /** The response payload of start call recording operation. */
 public final class StartCallRecordingResult {
     /*
-     * The recording id of the started recording
+     * The recording id
      */
     private final String recordingId;
 

@@ -39,7 +39,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
      * Get the participants.
      *
-     * @return the result info value.
+     * @return the list of participants value.
      */
     public CallParticipant[] getParticipants() {
         return participants == null ? new CallParticipant[0] : participants.clone();
@@ -82,6 +82,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
                     communicationParticipantInternal.getParticipantId(),
                     communicationParticipantInternal.isMuted()));
         }
+
         return new ParticipantsUpdatedEvent(internalEvent.getCallConnectionId(),
             participants.toArray(new CallParticipant[0]));
     }

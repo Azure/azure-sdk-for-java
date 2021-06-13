@@ -6,26 +6,26 @@ package com.azure.communication.callingserver.models;
 /** Result info class to be used to report result status for actions/operations. */
 public final class ResultInfo {
     /*
-     * Gets or sets the result code
+     * The result code
      * For synchronous failures, this maps one-to-one with HTTP responses. For
      * asynchronous failures or messages, it is contextual.
      */
     private final Integer code;
 
     /*
-     * Gets or sets the result subcode.
+     * The result subcode.
      * The subcode further classifies a failure. For example.
      */
     private final Integer subcode;
 
     /*
-     * Gets or sets the message
+     * The message
      * The message is a detail explanation of subcode.
      */
     private final String message;
 
     /**
-     * Get the code property: Gets or sets the result code For synchronous failures, this maps one-to-one with HTTP
+     * Get the code property: Gets the result code For synchronous failures, this maps one-to-one with HTTP
      * responses. For asynchronous failures or messages, it is contextual.
      *
      * @return the code value.
@@ -35,7 +35,7 @@ public final class ResultInfo {
     }
 
     /**
-     * Get the subcode property: Gets or sets the result subcode. The subcode further classifies a failure. For example.
+     * Get the subcode property: Gets the result subcode. The subcode further classifies a failure.
      *
      * @return the subcode value.
      */
@@ -44,7 +44,7 @@ public final class ResultInfo {
     }
 
     /**
-     * Get the message property: Gets or sets the message The message is a detail explanation of subcode.
+     * Get the message property: Gets the message The message is a detail explanation of subcode.
      *
      * @return the message value.
      */

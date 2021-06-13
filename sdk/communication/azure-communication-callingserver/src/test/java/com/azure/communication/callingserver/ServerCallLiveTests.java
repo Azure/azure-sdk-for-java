@@ -220,7 +220,12 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            serverCall.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext, CALLBACK_URI);
+            serverCall
+                .addParticipant(
+                    new CommunicationUserIdentifier(toUser),
+                    null,
+                    operationContext,
+                    CALLBACK_URI);
 
             // Remove User
             /*
@@ -307,9 +312,10 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
-    private void validateCallRecordingState(ServerCall serverCall,
-            String recordingId,
-            CallRecordingState expectedCallRecordingState) {
+    private void validateCallRecordingState(
+        ServerCall serverCall,
+        String recordingId,
+        CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCall);
         assertNotNull(serverCall.getServerCallId());
         assertNotNull(recordingId);
@@ -323,9 +329,10 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
 
-    protected void validateCallRecordingStateWithResponse(ServerCall serverCall,
-            String recordingId,
-            CallRecordingState expectedCallRecordingState) {
+    protected void validateCallRecordingStateWithResponse(
+        ServerCall serverCall,
+        String recordingId,
+        CallRecordingState expectedCallRecordingState) {
         assertNotNull(serverCall);
         assertNotNull(serverCall.getServerCallId());
         assertNotNull(recordingId);

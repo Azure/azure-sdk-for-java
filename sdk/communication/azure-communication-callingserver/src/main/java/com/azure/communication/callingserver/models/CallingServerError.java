@@ -86,7 +86,11 @@ public final class CallingServerError {
      * @param details Additional details
      * @param innerError The inner error
      */
-    public CallingServerError(String message, String code, String target, List<CallingServerError> details, CallingServerError innerError) {
+    public CallingServerError(
+        String message,
+        String code, String target,
+        List<CallingServerError> details,
+        CallingServerError innerError) {
         this.message = message;
         this.code = code;
         this.target = target;

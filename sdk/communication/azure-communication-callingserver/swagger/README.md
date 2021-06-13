@@ -21,13 +21,13 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.22
+autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
 ## Update generated files for server calling service
 To update generated files for calling service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.22
+> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 ``` yaml
@@ -61,10 +61,7 @@ directive:
     to: ToneReceivedEventInternal      
 - rename-model:
     from: CallConnectionStateChangedEvent
-    to: CallConnectionStateChangedEventInternal    
-- rename-model:
-    from: CreateCallRequest
-    to: CreateCallRequestInternal
+    to: CallConnectionStateChangedEventInternal
 - rename-model:
     from: ParticipantsUpdatedEvent
     to: ParticipantsUpdatedEventInternal
@@ -94,5 +91,5 @@ directive:
     to: ResultInfoInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal                      
+    to: ToneInfoInternal                        
 ```

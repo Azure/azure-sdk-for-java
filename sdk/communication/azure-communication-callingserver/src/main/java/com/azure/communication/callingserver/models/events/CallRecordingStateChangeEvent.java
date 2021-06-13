@@ -17,17 +17,17 @@ public final class CallRecordingStateChangeEvent {
     private final String recordingId;
 
     /*
-     * The recording state of the recording
+     * The state of the recording
      */
     private final CallRecordingState state;
 
     /*
-     * The time of the recording started
+     * The time the recording started
      */
     private final OffsetDateTime startDateTime;
 
     /*
-     * The server call.id.
+     * The server call id.
      */
     private final String serverCallId;
 
@@ -41,7 +41,7 @@ public final class CallRecordingStateChangeEvent {
     }
 
     /**
-     * Get the state property: The recording state of the recording.
+     * Get the state property: The state of the recording.
      *
      * @return the state value.
      */
@@ -50,7 +50,7 @@ public final class CallRecordingStateChangeEvent {
     }
 
     /**
-     * Get the startDateTime property: The time of the recording started.
+     * Get the startDateTime property: The time the recording started.
      *
      * @return the startDateTime value.
      */
@@ -59,7 +59,7 @@ public final class CallRecordingStateChangeEvent {
     }
 
     /**
-     * Get the serverCallId property: The server call.id.
+     * Get the serverCallId property: The server call id.
      *
      * @return the serverCallId value.
      */
@@ -75,7 +75,11 @@ public final class CallRecordingStateChangeEvent {
      * @param startDateTime the startDateTime value.
      * @param serverCallId the serverCallId value.
      */
-    public CallRecordingStateChangeEvent(String recordingId, CallRecordingState state, OffsetDateTime startDateTime, String serverCallId) {
+    public CallRecordingStateChangeEvent(
+        String recordingId,
+        CallRecordingState state,
+        OffsetDateTime startDateTime,
+        String serverCallId) {
         this.recordingId = recordingId;
         this.state = state;
         this.startDateTime = startDateTime;
@@ -94,6 +98,7 @@ public final class CallRecordingStateChangeEvent {
         }
         CallRecordingStateChangeEventInternal callRecordingStateChangeEventInternal =
             eventData.toObject(CallRecordingStateChangeEventInternal.class);
+
         return new CallRecordingStateChangeEvent(
             callRecordingStateChangeEventInternal.getRecordingId(),
             callRecordingStateChangeEventInternal.getState(),

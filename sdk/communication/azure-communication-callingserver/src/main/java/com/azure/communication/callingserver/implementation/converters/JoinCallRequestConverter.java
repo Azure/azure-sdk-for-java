@@ -3,17 +3,24 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
+import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
+import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.common.CommunicationIdentifier;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.azure.communication.callingserver.models.CallModality;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
-import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.common.CommunicationIdentifier;
+/**
+ * A converter for {@link JoinCallRequest}
+ */
+public final class JoinCallRequestConverter {
 
-public final class JoinCallConverter {
+    /**
+     * Converts to {@link JoinCallRequest}.
+     */
     public static JoinCallRequest convert(CommunicationIdentifier source, JoinCallOptions joinCallOptions) {
         if (source == null) {
             return null;
@@ -40,7 +47,7 @@ public final class JoinCallConverter {
         return joinCallRequest;
     }
 
-    private JoinCallConverter() {
+    private JoinCallRequestConverter() {
     }
 }
 

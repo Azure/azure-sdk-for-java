@@ -54,7 +54,7 @@ public final class PlayAudioRequest {
      * @return the audioFileUri value.
      */
     public String getAudioFileUri() {
-        return audioFileUri;
+        return this.audioFileUri;
     }
 
     /**
@@ -76,7 +76,7 @@ public final class PlayAudioRequest {
      * @return the loop value.
      */
     public Boolean isLoop() {
-        return loop;
+        return this.loop;
     }
 
     /**
@@ -96,7 +96,7 @@ public final class PlayAudioRequest {
      * @return the operationContext value.
      */
     public String getOperationContext() {
-        return operationContext;
+        return this.operationContext;
     }
 
     /**
@@ -116,7 +116,7 @@ public final class PlayAudioRequest {
      * @return the audioFileId value.
      */
     public String getAudioFileId() {
-        return audioFileId;
+        return this.audioFileId;
     }
 
     /**
@@ -136,7 +136,7 @@ public final class PlayAudioRequest {
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
-        return callbackUri;
+        return this.callbackUri;
     }
 
     /**
