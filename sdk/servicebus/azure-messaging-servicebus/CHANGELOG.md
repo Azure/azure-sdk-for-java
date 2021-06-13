@@ -1,6 +1,8 @@
 # Release History
 
-## 7.3.0-beta.3 (Unreleased)
+## 7.2.3 (2021-06-14)
+### Fixed
+Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is stuck when connection is broken.
 
 ## 7.2.2 (2021-05-26)
 ### Fixed
