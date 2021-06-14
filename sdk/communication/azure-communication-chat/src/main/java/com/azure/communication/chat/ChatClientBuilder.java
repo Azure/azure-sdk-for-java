@@ -21,6 +21,7 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
@@ -222,6 +223,7 @@ public final class ChatClientBuilder {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         policies.add(getUserAgentPolicy());
+        policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy);
         policies.add(new CookiePolicy());
         // auth policy is per request, should be after retry
