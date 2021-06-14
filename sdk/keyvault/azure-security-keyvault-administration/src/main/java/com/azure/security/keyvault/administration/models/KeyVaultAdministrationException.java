@@ -3,12 +3,14 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with {@link KeyVaultError} information.
  */
+@Immutable
 public final class KeyVaultAdministrationException extends HttpResponseException {
     /**
      * Creates a new instance of the {@link KeyVaultAdministrationException} class.
