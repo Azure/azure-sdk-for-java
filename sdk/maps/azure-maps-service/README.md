@@ -24,7 +24,7 @@ Maven dependency for the Azure Maps library. Add it to your project's POM file.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-service</artifactId>
-    <version>1.0.0-preview</version>
+    <version>2.0.0-preview</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

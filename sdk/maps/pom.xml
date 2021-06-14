@@ -19,7 +19,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-maps-service</artifactId>
-          <version>1.0.0-preview</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+          <version>2.0.0-preview</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
         </dependency>
       </dependencies>
       <build>

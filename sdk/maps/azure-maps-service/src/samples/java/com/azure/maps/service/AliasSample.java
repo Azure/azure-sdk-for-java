@@ -16,8 +16,9 @@ public class AliasSample {
 			System.out.println("Usage AliasSample.java <creatorDataItemId>");
 			return;
 		}
-    	HttpPipelinePolicy policy = new AzureKeyInQueryPolicy("subscription-key", new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY")));
-    	MapsClient client = new MapsClientBuilder().addPolicy(policy).buildClient();
+		HttpPipelinePolicy policy = new AzureKeyInQueryPolicy("subscription-key",
+				new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY")));
+		MapsClient client = new MapsClientBuilder().addPolicy(policy).buildClient();
 		String creatorDataItemId = args[0];
 
 		System.out.println("Create alias:");
@@ -28,7 +29,6 @@ public class AliasSample {
 			System.out.println("Assign resource:");
 			AliasListItem assignResponse = client.getAlias().assign(aliasId, creatorDataItemId);
 			MapsCommon.print(assignResponse);
-			
 
 			System.out.println("Get details:");
 			AliasListItem getDetailsResponse = client.getAlias().getDetails(aliasId);
@@ -36,14 +36,14 @@ public class AliasSample {
 
 			System.out.println("List aliases:");
 			PagedIterable<AliasListItem> list = client.getAlias().list();
-			for(AliasListItem item : list) {
+			for (AliasListItem item : list) {
 				MapsCommon.print(item);
 			}
-		} catch(HttpResponseException err) {
+		} catch (HttpResponseException err) {
 			System.out.println(err);
 		} finally {
 			client.getAlias().delete(aliasId);
-		    System.out.println(String.format("Deleted alias with aliasId: %s", aliasId));
+			System.out.println(String.format("Deleted alias with aliasId: %s", aliasId));
 		}
 	}
 }
