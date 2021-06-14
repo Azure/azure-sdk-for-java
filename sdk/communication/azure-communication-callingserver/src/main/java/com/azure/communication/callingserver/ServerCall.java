@@ -38,8 +38,9 @@ public final class ServerCall {
      * @param participant Invited participant.
      * @param callBackUri callBackUri to get notifications.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext operationContext.
-     * @return response for a successful addParticipant request.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void addParticipant(
@@ -56,9 +57,10 @@ public final class ServerCall {
      * @param participant Invited participant.
      * @param callBackUri callBackUri to get notifications.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext operationContext.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful addParticipant request.
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addParticipantWithResponse(
@@ -79,7 +81,7 @@ public final class ServerCall {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void removeParticipant(String participantId) {
@@ -91,7 +93,7 @@ public final class ServerCall {
      *
      * @param participantId Participant id.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
@@ -102,7 +104,7 @@ public final class ServerCall {
      * Start recording
      *
      * @param recordingStateCallbackUri The uri to send state change callbacks.
-     * @return result for a successful startRecording request.
+     * @return result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartCallRecordingResult startRecording(String recordingStateCallbackUri) {
@@ -114,7 +116,7 @@ public final class ServerCall {
      *
      * @param recordingStateCallbackUri The uri to send state change callbacks.
      * @param context A {@link Context} representing the request context.
-     * @return result for a successful startRecording request.
+     * @return result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResult> startRecordingWithResponse(
@@ -127,7 +129,7 @@ public final class ServerCall {
      * Stop recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful stopRecording request.
+     * @return response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void stopRecording(String recordingId) {
@@ -139,7 +141,7 @@ public final class ServerCall {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful stopRecording request.
+     * @return response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
@@ -150,7 +152,7 @@ public final class ServerCall {
      * Pause recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful pauseRecording request.
+     * @return response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void pauseRecording(String recordingId) {
@@ -162,7 +164,7 @@ public final class ServerCall {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful pauseRecording request.
+     * @return response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
@@ -173,7 +175,7 @@ public final class ServerCall {
      * Resume recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful resumeRecording request.
+     * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void resumeRecording(String recordingId) {
@@ -185,7 +187,7 @@ public final class ServerCall {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful resumeRecording request.
+     * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
@@ -196,7 +198,7 @@ public final class ServerCall {
      * Get recording state
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful getRecordingState request.
+     * @return response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallRecordingStateResult getRecordingState(String recordingId) {
@@ -208,7 +210,7 @@ public final class ServerCall {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful getRecordingState request.
+     * @return response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallRecordingStateResult> getRecordingStateWithResponse(String recordingId, Context context) {
@@ -223,7 +225,8 @@ public final class ServerCall {
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The value to identify context of the operation.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -257,7 +260,8 @@ public final class ServerCall {
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
      * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The value to identify context of the operation.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
      * @return the response payload for play audio operation.
      */

@@ -7,10 +7,10 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 
 ### Features Added
 - Create outbound call to an Azure Communication Service user or a phone number.
-- Hangup and delete the existing call.
+- Hangup the existing call.
 - Play audio in the call.
 - Outbound APIs for call recording including start, pause, resume and stop.
-- Subscribe to tone and receive tone selection via events.
+- Subscribe to tone and receive tone selections via events.
 - Invite and remove participants from the call.
 
 <!-- LINKS -->

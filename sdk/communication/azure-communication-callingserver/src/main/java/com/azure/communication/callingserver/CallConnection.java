@@ -125,9 +125,9 @@ public final class CallConnection {
     }
 
     /**
-     * Disconnect the current caller in a Group-call or end a p2p-call.
+     * Disconnect the current caller in a group-call or end a p2p-call.
      *
-     * @return response for a successful Hangup request.
+     * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void hangup() {
@@ -135,10 +135,10 @@ public final class CallConnection {
     }
 
     /**
-     * Disconnect the current caller in a Group-call or end a p2p-call.
+     * Disconnect the current caller in a group-call or end a p2p-call.
      *
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful HangupCall request.
+     * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> hangupWithResponse(Context context) {
@@ -150,7 +150,7 @@ public final class CallConnection {
      *
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return response for a successful CancelMediaOperations request.
+     * @return response for a successful cancel all media operations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CancelAllMediaOperationsResult cancelAllMediaOperations(String operationContext) {
@@ -163,7 +163,7 @@ public final class CallConnection {
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful CancelMediaOperations request.
+     * @return response for a successful cancel all media operations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
@@ -179,7 +179,7 @@ public final class CallConnection {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return response for a successful addParticipant request.
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void addParticipant(
@@ -197,7 +197,7 @@ public final class CallConnection {
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful addParticipant request.
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addParticipantWithResponse(
@@ -213,7 +213,7 @@ public final class CallConnection {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void removeParticipant(String participantId) {
@@ -225,7 +225,7 @@ public final class CallConnection {
      *
      * @param participantId Participant id.
      * @param context A {@link Context} representing the request context.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeParticipantWithResponse(String participantId, Context context) {

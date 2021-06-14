@@ -39,7 +39,7 @@ public final class CallingServerClient {
     }
 
     /**
-     * Create a Call Connection Request from source identity to targets identity.
+     * Create a call connection request from source identity to targets identity.
      *
      * @param source The source of the call.
      * @param targets The targets of the call.
