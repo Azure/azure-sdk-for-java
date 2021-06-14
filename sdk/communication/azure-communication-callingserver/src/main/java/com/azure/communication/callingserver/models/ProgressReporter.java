@@ -106,8 +106,11 @@ public final class ProgressReporter {
             requests happening at once to stage/download separate chunks, so we still need to lock either way.
              */
             transferLock.lock();
-            progressReceiver.reportProgress(totalProgress.addAndGet(bytesTransferred));
-            transferLock.unlock();
+            try {
+                progressReceiver.reportProgress(totalProgress.addAndGet(bytesTransferred));
+            } finally {
+                transferLock.unlock();
+            }
         }
 
         /*
