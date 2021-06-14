@@ -342,6 +342,24 @@ class FileAPITests extends APISpec {
         _ | data.defaultDataSize + 1
     }
 
+    def "Upload successful retry"() {
+        given:
+        primaryFileClient.create(data.defaultDataSize)
+        def clientWithFailure = getFileClient(
+            env.primaryAccount.credential,
+            primaryFileClient.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new ShareFileUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        primaryFileClient.download(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
     def "Upload range and download data"() {
         given:
         primaryFileClient.create(data.defaultDataSizeLong)

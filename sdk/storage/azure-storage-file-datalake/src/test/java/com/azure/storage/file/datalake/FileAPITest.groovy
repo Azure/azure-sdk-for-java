@@ -2928,6 +2928,23 @@ class FileAPITest extends APISpec {
         _ | data.defaultDataSize + 1
     }
 
+    def "Upload successful retry"() {
+        given:
+        def clientWithFailure = getFileClient(
+            env.dataLakeAccount.credential,
+            fc.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
     /* Quick Query Tests. */
 
     // Generates and uploads a CSV file

@@ -242,6 +242,21 @@ class BlobAPITest extends APISpec {
         _ | data.defaultDataSize + 1
     }
 
+    def "Upload successful retry"() {
+        given:
+        def clientWithFailure = getBlobClient(
+            env.primaryAccount.credential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy())
+
+        when:
+        clientWithFailure.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
+    }
+
     @LiveOnly
     // Reading from recordings will not allow for the timing of the test to work correctly.
     def "Upload timeout"() {
