@@ -56,8 +56,11 @@ class SasClientTests extends APISpec {
             .setDeletePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= "2019-12-12") {
+            permissions
+                .setMovePermission(true)
+                .setExecutePermission(true)
+        }
 
         def sasValues = generateValues(permissions)
 
@@ -71,9 +74,9 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
+        notThrown(BlobStorageException)
         os.toString() == data.defaultText
         validateSasProperties(properties)
-        notThrown(BlobStorageException)
     }
 
     def "container sas identifier and permissions"() {
@@ -93,8 +96,11 @@ class SasClientTests extends APISpec {
             .setDeletePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= "2019-12-12") {
+            permissions
+                .setMovePermission(true)
+                .setExecutePermission(true)
+        }
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
@@ -124,8 +130,11 @@ class SasClientTests extends APISpec {
             .setDeletePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= "2019-12-12") {
+            permissions
+                .setMovePermission(true)
+                .setExecutePermission(true)
+        }
 
         def sasValues = generateValues(permissions)
 
@@ -139,9 +148,9 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
+        notThrown(BlobStorageException)
         os.toString() == data.defaultText
         validateSasProperties(properties)
-        notThrown(BlobStorageException)
     }
 
     def "blob sas snapshot"() {
@@ -412,6 +421,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_02_10")
     def "container user delegation correlation id error"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -908,6 +918,7 @@ class SasClientTests extends APISpec {
         null                                                      | null       | null             | null                   | null     | null         | null          | null       | null       | null   | "versionId" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nbv\nversionId\n\n\n\n\n"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "blob sas impl util string to sign user delegation key"() {
         when:
