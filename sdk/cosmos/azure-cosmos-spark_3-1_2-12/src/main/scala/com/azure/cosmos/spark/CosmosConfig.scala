@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
-import com.azure.cosmos.spark.CosmosConfigNames.SynapseLinkedService
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
@@ -69,7 +68,6 @@ private object CosmosConfigNames {
     "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
   val ThroughputControlGlobalControlExpireIntervalInMS =
     "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
-  val SynapseLinkedService = "spark.synapse.linkedService"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -109,8 +107,7 @@ private object CosmosConfigNames {
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
-    ThroughputControlGlobalControlExpireIntervalInMS,
-    SynapseLinkedService
+    ThroughputControlGlobalControlExpireIntervalInMS
   )
 
   def validateConfigName(name: String): Unit = {
@@ -126,6 +123,8 @@ private object CosmosConfigNames {
   }
 }
 
+
+
 private object CosmosConfig {
   def getEffectiveConfig
   (
@@ -135,27 +134,21 @@ private object CosmosConfig {
     // spark application configteams
     userProvidedOptions: Map[String, String] // user provided config
   ) : Map[String, String] = {
-
-    var accountDataResolverCls: AccountDataResolver = null
+    var accountDataResolverCls = None : Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
     val iterator = serviceLoader.iterator()
     if (iterator.hasNext()) {
-        accountDataResolverCls = iterator.next()
-    }
-
-    var accountDataConfig : Map[String, String] = null
-    if (accountDataResolverCls != null) {
-        val linkedServiceNameOpt = tryGet(userProvidedOptions, SynapseLinkedService)
-        if (linkedServiceNameOpt.isDefined) {
-            accountDataConfig = accountDataResolverCls.getAccountDataConfig(linkedServiceNameOpt)
-        }
+        accountDataResolverCls = Some(iterator.next())
     }
 
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
+    if (accountDataResolverCls != null) {
+        val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
 
-    effectiveUserConfig += (CosmosConfigNames.AccountEndpoint -> accountDataConfig.get(CosmosConfigNames.AccountEndpoint))
-    effectiveUserConfig += (CosmosConfigNames.AccountKey -> accountDataConfig.get(CosmosConfigNames.AccountKey))
-    effectiveUserConfig += (CosmosConfigNames.Database -> accountDataConfig.get(CosmosConfigNames.Database))
+        effectiveUserConfig += (CosmosConfigNames.AccountEndpoint -> accountDataConfig(CosmosConfigNames.AccountEndpoint))
+        effectiveUserConfig += (CosmosConfigNames.AccountKey -> accountDataConfig(CosmosConfigNames.AccountKey))
+        effectiveUserConfig += (CosmosConfigNames.Database -> accountDataConfig(CosmosConfigNames.Database))
+    }
 
     if (databaseName.isDefined) {
       effectiveUserConfig += (CosmosContainerConfig.DATABASE_NAME_KEY -> databaseName.get)
