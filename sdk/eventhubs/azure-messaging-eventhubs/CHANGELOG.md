@@ -2,6 +2,10 @@
 
 ## 5.7.2 (2021-06-14)
 
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-amqp` dependency to `2.2.0`.
 
 ## 5.7.1 (2021-05-10)
 
