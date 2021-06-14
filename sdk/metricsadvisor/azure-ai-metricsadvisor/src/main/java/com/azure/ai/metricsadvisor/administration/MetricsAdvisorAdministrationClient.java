@@ -3,15 +3,19 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
-import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.DatasourceCredentialEntity;
+import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -221,8 +225,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId,
-        ListDataFeedIngestionOptions options) {
+        String dataFeedId, ListDataFeedIngestionOptions options) {
         return listDataFeedIngestionStatus(dataFeedId, options, Context.NONE);
     }
 
@@ -523,8 +526,9 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId) {
-        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId,
+    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId) {
+        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, null,
             Context.NONE));
     }
 
@@ -532,18 +536,21 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions-Context}
      *
      * @param metricId The metric id.
+     * @param options th e additional configurable options to specify when querying the result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The anomaly detection configurations.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(String metricId,
-                                                                                                  Context context) {
-        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId,
+    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+        String metricId,
+        ListMetricAnomalyDetectionConfigsOptions options,
+        Context context) {
+        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, options,
             context == null ? Context.NONE : context));
     }
 
@@ -867,9 +874,10 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions}
      *
      * @param detectionConfigurationId The id of the detection configuration.
+     * @param options th e additional configurable options to specify when querying the result.
      *
      * @return A {@link PagedIterable} containing information of all the
      * {@link AnomalyAlertConfiguration anomaly alert configurations} for the specified detection configuration.
@@ -879,17 +887,18 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId) {
-        return listAnomalyAlertConfigs(detectionConfigurationId, Context.NONE);
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
+        return listAnomalyAlertConfigs(detectionConfigurationId, options, Context.NONE);
     }
 
     /**
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions-Context}
      *
      * @param detectionConfigurationId The id of the detection configuration.
+     * @param options th e additional configurable options to specify when querying the result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link PagedIterable} containing information of all the
@@ -900,8 +909,178 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
-        String detectionConfigurationId, Context context) {
-        return new PagedIterable<>(client.listAnomalyAlertConfigs(detectionConfigurationId,
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
+        return new PagedIterable<>(client.listAnomalyAlertConfigs(detectionConfigurationId, options,
             context == null ? Context.NONE : context));
+    }
+
+    /**
+     * Create a data source credential entity.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredential#DatasourceCredentialEntity}
+     *
+     * @param datasourceCredential The credential entity.
+     * @return The created {@link DatasourceCredentialEntity}.
+     * @throws NullPointerException thrown if the {@code credentialEntity} is null
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasourceCredentialEntity createDatasourceCredential(DatasourceCredentialEntity datasourceCredential) {
+        return createDatasourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
+    }
+
+    /**
+     * Create a data source credential entity with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context}
+     *
+     * @param datasourceCredential The credential entity.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Response} containing the created {@link DatasourceCredentialEntity}.
+     * @throws NullPointerException thrown if the {@code credentialEntity} is null
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatasourceCredentialEntity> createDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential, Context context) {
+        return client.createDatasourceCredentialWithResponse(datasourceCredential, context).block();
+    }
+
+    /**
+     * Get a data source credential entity by its id.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredential#String}
+     *
+     * @param credentialId The data source credential entity unique id.
+     *
+     * @return The data source credential entity for the provided id.
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasourceCredentialEntity getDatasourceCredential(String credentialId) {
+        return getDatasourceCredentialWithResponse(credentialId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get a data source credential entity by its id with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDatasourceCredentialWithResponse#String-Context}
+     *
+     * @param credentialId The data source credential entity unique id.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The data feed for the provided id.
+     * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code dataFeedId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatasourceCredentialEntity> getDatasourceCredentialWithResponse(String credentialId,
+                                                                                    Context context) {
+        return client.getDatasourceCredentialWithResponse(credentialId, context).block();
+    }
+
+    /**
+     * Update a data source credential entity.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredential#DatasourceCredentialEntity}
+     *
+     * @param datasourceCredential The credential entity.
+     *
+     * @return The updated {@link DatasourceCredentialEntity}.
+     * @throws NullPointerException thrown if the {@code credentialEntity} is null
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatasourceCredentialEntity updateDatasourceCredential(DatasourceCredentialEntity datasourceCredential) {
+        return updateDatasourceCredentialWithResponse(datasourceCredential, Context.NONE).getValue();
+    }
+
+    /**
+     * Update a data source credential entity.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDatasourceCredentialWithResponse#DatasourceCredentialEntity-Context}
+     *
+     * @param datasourceCredential The credential entity.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return A {@link Response} containing the updated {@link DatasourceCredentialEntity}.
+     * @throws NullPointerException thrown if the {@code credentialEntity} is null
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DatasourceCredentialEntity> updateDatasourceCredentialWithResponse(
+        DatasourceCredentialEntity datasourceCredential, Context context) {
+        return client.updateDatasourceCredentialWithResponse(datasourceCredential, context).block();
+    }
+
+    /**
+     * Delete a data source credential entity.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredential#String}
+     *
+     * @param credentialId The data source credential entity unique id.
+     *
+     * @throws IllegalArgumentException If {@code credentialId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code credentialId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDatasourceCredential(String credentialId) {
+        deleteDatasourceCredentialWithResponse(credentialId, Context.NONE);
+    }
+
+    /**
+     * Delete a data source credential entity with REST response.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDatasourceCredentialWithResponse#String-Context}
+     *
+     * @param credentialId The data source credential entity unique id.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return a REST Response.
+     * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
+     * @throws NullPointerException thrown if the {@code dataFeedId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDatasourceCredentialWithResponse(String credentialId, Context context) {
+        return client.deleteDataFeedWithResponse(credentialId, context).block();
+    }
+
+    /**
+     * List information of all data source credential entities on the metrics advisor account.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials}
+     *
+     * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
+     * in the account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatasourceCredentialEntity> listDatasourceCredentials() {
+        return listDatasourceCredentials(null, Context.NONE);
+    }
+
+    /**
+     * List information of all data source credential entities on the metrics advisor account.
+     *
+     * <p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDatasourceCredentials#ListCredentialEntityOptions-Context}
+     *
+     * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering the output
+     * result.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link PagedIterable} containing information of all the {@link DatasourceCredentialEntity}
+     * in the account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatasourceCredentialEntity> listDatasourceCredentials(
+        ListCredentialEntityOptions options, Context context) {
+        return new PagedIterable<>(client.listDatasourceCredentials(options, context));
     }
 }

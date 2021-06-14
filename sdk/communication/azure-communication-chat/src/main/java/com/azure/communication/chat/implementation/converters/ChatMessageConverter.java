@@ -26,7 +26,8 @@ public final class ChatMessageConverter {
             .setCreatedOn(obj.getCreatedOn())
             .setDeletedOn(obj.getDeletedOn())
             .setEditedOn(obj.getEditedOn())
-            .setSenderDisplayName(obj.getSenderDisplayName());
+            .setSenderDisplayName(obj.getSenderDisplayName())
+            .setMetadata(obj.getMetadata());
 
         if (obj.getSenderCommunicationIdentifier() != null) {
             chatMessage.setSender(

@@ -33,6 +33,8 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.HostnameType;
+import com.azure.resourcemanager.appservice.models.IpFilterTag;
+import com.azure.resourcemanager.appservice.models.IpSecurityRestriction;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.ManagedPipelineMode;
@@ -88,6 +90,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -114,6 +117,9 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     protected static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
     protected static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
+
+    protected static final String IP_RESTRICTION_ACTION_ALLOW = "Allow";
+    protected static final String IP_RESTRICTION_ACTION_DENY = "Deny";
 
     private static final Map<AzureEnvironment, String> DNS_MAP =
         new HashMap<AzureEnvironment, String>() {
@@ -544,6 +550,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             return null;
         }
         return siteConfig.minTlsVersion();
+    }
+
+    @Override
+    public List<IpSecurityRestriction> ipSecurityRules() {
+        if (this.siteConfig == null || this.siteConfig.ipSecurityRestrictions() == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(siteConfig.ipSecurityRestrictions());
     }
 
     @Override
@@ -1729,6 +1743,110 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             siteConfig.withLinuxFxVersion(fxVersion);
         } else {
             siteConfig.withWindowsFxVersion(fxVersion);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessFromAllNetworks() {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.withIpSecurityRestrictions(new ArrayList<>());
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessFromNetworkSubnet(String subnetId, int priority) {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
+            .withAction(IP_RESTRICTION_ACTION_ALLOW)
+            .withPriority(priority)
+            .withTag(IpFilterTag.DEFAULT)
+            .withVnetSubnetResourceId(subnetId));
+        return (FluentImplT) this;
+    }
+
+    @Override
+    public FluentImplT withAccessFromIpAddress(String ipAddress, int priority) {
+        String ipAddressCidr = ipAddress.contains("/") ? ipAddress : ipAddress + "/32";
+        return withAccessFromIpAddressRange(ipAddressCidr, priority);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessFromIpAddressRange(String ipAddressCidr, int priority) {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
+            .withAction(IP_RESTRICTION_ACTION_ALLOW)
+            .withPriority(priority)
+            .withTag(IpFilterTag.DEFAULT)
+            .withIpAddress(ipAddressCidr));
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessRule(IpSecurityRestriction ipSecurityRule) {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.ipSecurityRestrictions().add(ipSecurityRule);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutNetworkSubnetAccess(String subnetId) {
+        if (this.siteConfig != null && this.siteConfig.ipSecurityRestrictions() != null) {
+            this.siteConfig.withIpSecurityRestrictions(this.siteConfig.ipSecurityRestrictions().stream()
+                .filter(r -> !(IP_RESTRICTION_ACTION_ALLOW.equalsIgnoreCase(r.action())
+                    && IpFilterTag.DEFAULT == r.tag()
+                    && subnetId.equalsIgnoreCase(r.vnetSubnetResourceId())))
+                .collect(Collectors.toList())
+            );
+        }
+        return (FluentImplT) this;
+    }
+
+    @Override
+    public FluentImplT withoutIpAddressAccess(String ipAddress) {
+        String ipAddressCidr = ipAddress.contains("/") ? ipAddress : ipAddress + "/32";
+        return withoutIpAddressRangeAccess(ipAddressCidr);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutIpAddressRangeAccess(String ipAddressCidr) {
+        if (this.siteConfig != null && this.siteConfig.ipSecurityRestrictions() != null) {
+            this.siteConfig.withIpSecurityRestrictions(this.siteConfig.ipSecurityRestrictions().stream()
+                .filter(r -> !(IP_RESTRICTION_ACTION_ALLOW.equalsIgnoreCase(r.action())
+                    && IpFilterTag.DEFAULT == r.tag()
+                    && Objects.equals(ipAddressCidr, r.ipAddress())))
+                .collect(Collectors.toList())
+            );
+        }
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutAccessRule(IpSecurityRestriction ipSecurityRule) {
+        if (this.siteConfig != null && this.siteConfig.ipSecurityRestrictions() != null) {
+            this.siteConfig.withIpSecurityRestrictions(this.siteConfig.ipSecurityRestrictions().stream()
+                .filter(r -> !(Objects.equals(r.action(), ipSecurityRule.action())
+                    && Objects.equals(r.tag(), ipSecurityRule.tag())
+                    && (Objects.equals(r.ipAddress(), ipSecurityRule.ipAddress())
+                    || Objects.equals(r.vnetSubnetResourceId(), ipSecurityRule.vnetSubnetResourceId()))))
+                .collect(Collectors.toList())
+            );
+        }
+        return (FluentImplT) this;
+    }
+
+    private void ensureIpSecurityRestrictions() {
+        if (this.siteConfig == null) {
+            this.siteConfig = new SiteConfigResourceInner();
+        }
+        if (this.siteConfig.ipSecurityRestrictions() == null) {
+            this.siteConfig.withIpSecurityRestrictions(new ArrayList<>());
         }
     }
 

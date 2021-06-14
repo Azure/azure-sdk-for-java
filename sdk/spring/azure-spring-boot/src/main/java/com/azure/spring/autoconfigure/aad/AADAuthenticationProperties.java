@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -54,24 +54,20 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String userNameAttribute;
 
     /**
-     * @deprecated Now the redirect-url-template is not configurable.
-     * <p>
-     * Redirect URI always equal to "{baseUrl}/login/oauth2/code/".
-     * </p>
-     * <p>
-     * User should set "Redirect URI" to "{baseUrl}/login/oauth2/code/" in Azure Portal.
-     * </p>
-     *
-     * @see <a href="https://github.com/Azure/azure-sdk-for-java/tree/c27ee4421309cec8598462b419e035cf091429da/sdk/spring/azure-spring-boot-starter-active-directory#accessing-a-web-application">aad-starter readme.</a>
-     * @see com.azure.spring.aad.webapp.AADWebAppConfiguration#clientRegistrationRepository()
+     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
+     * to the client via the resource owner user-agent.
      */
-    @Deprecated
     private String redirectUriTemplate;
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
      */
     private String appIdUri;
+
+    /**
+     * Add additional parameters to the Authorization URL.
+     */
+    private Map<String, Object> authenticateAdditionalParameters;
 
     /**
      * Connection Timeout for the JWKSet Remote URL call.
@@ -154,6 +150,11 @@ public class AADAuthenticationProperties implements InitializingBean {
             return allowedGroupIds;
         }
 
+        /**
+         * Set the allowed group ids.
+         *
+         * @param allowedGroupIds Allowed group ids.
+         */
         public void setAllowedGroupIds(Set<String> allowedGroupIds) {
             this.allowedGroupIds = allowedGroupIds;
         }
@@ -166,6 +167,10 @@ public class AADAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
+        @Deprecated
+        @DeprecatedConfigurationProperty(
+            reason = "enable-full-list is not easy to understand.",
+            replacement = "allowed-group-ids: all")
         public Boolean getEnableFullList() {
             return enableFullList;
         }
@@ -236,12 +241,10 @@ public class AADAuthenticationProperties implements InitializingBean {
         this.userNameAttribute = userNameAttribute;
     }
 
-    @Deprecated
     public String getRedirectUriTemplate() {
         return redirectUriTemplate;
     }
 
-    @Deprecated
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
     }
@@ -257,6 +260,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setAppIdUri(String appIdUri) {
         this.appIdUri = appIdUri;
+    }
+
+    public Map<String, Object> getAuthenticateAdditionalParameters() {
+        return authenticateAdditionalParameters;
+    }
+
+    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
+        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
     public int getJwtConnectTimeout() {
@@ -375,12 +386,16 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
 
         if (!StringUtils.hasText(baseUri)) {
             baseUri = "https://login.microsoftonline.com/";
         } else {
             baseUri = addSlash(baseUri);
+        }
+
+        if (!StringUtils.hasText(redirectUriTemplate)) {
+            redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
         }
 
         if (!StringUtils.hasText(graphBaseUri)) {
@@ -398,6 +413,14 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "the prefix of azure.activedirectory.graph-membership-uri. "
                 + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
                 + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+        }
+
+        Set<String> allowedGroupIds = userGroup.getAllowedGroupIds();
+        if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
+            throw new IllegalStateException("When azure.activedirectory.user-group.allowed-group-ids contains 'all', "
+                + "no other group ids can be configured. "
+                + "But actually azure.activedirectory.user-group.allowed-group-ids="
+                + allowedGroupIds);
         }
 
         if (!StringUtils.hasText(tenantId)) {

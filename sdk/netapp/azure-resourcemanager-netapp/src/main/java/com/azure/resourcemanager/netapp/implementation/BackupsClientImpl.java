@@ -35,8 +35,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
-import com.azure.resourcemanager.netapp.fluent.models.BackupsListInner;
+import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 import com.azure.resourcemanager.netapp.models.BackupPatch;
+import com.azure.resourcemanager.netapp.models.BackupsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -71,10 +72,27 @@ public final class BackupsClientImpl implements BackupsClient {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
+                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backupStatus")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupStatusInner>> getStatus(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName,
+            @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
                 + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/backups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupsListInner>> list(
+        Mono<Response<BackupsList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -160,6 +178,183 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
+     * Get the status of the backup for a volume.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the backup for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BackupStatusInner>> getStatusWithResponseAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getStatus(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            poolName,
+                            volumeName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the status of the backup for a volume.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the backup for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BackupStatusInner>> getStatusWithResponseAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getStatus(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                poolName,
+                volumeName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Get the status of the backup for a volume.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the backup for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupStatusInner> getStatusAsync(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        return getStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName)
+            .flatMap(
+                (Response<BackupStatusInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get the status of the backup for a volume.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the backup for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupStatusInner getStatus(
+        String resourceGroupName, String accountName, String poolName, String volumeName) {
+        return getStatusAsync(resourceGroupName, accountName, poolName, volumeName).block();
+    }
+
+    /**
+     * Get the status of the backup for a volume.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the backup for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BackupStatusInner> getStatusWithResponse(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+        return getStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+    }
+
+    /**
      * List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
@@ -218,7 +413,7 @@ public final class BackupsClientImpl implements BackupsClient {
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -357,7 +552,7 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get a particular backup of the volume.
+     * Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -367,7 +562,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup of the volume.
+     * @return the specified backup of the volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupInner>> getWithResponseAsync(
@@ -416,11 +611,11 @@ public final class BackupsClientImpl implements BackupsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a particular backup of the volume.
+     * Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -431,7 +626,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup of the volume.
+     * @return the specified backup of the volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupInner>> getWithResponseAsync(
@@ -486,7 +681,7 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get a particular backup of the volume.
+     * Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -496,7 +691,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup of the volume.
+     * @return the specified backup of the volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupInner> getAsync(
@@ -513,7 +708,7 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get a particular backup of the volume.
+     * Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -523,7 +718,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup of the volume.
+     * @return the specified backup of the volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupInner get(
@@ -532,7 +727,7 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get a particular backup of the volume.
+     * Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -543,7 +738,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup of the volume.
+     * @return the specified backup of the volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupInner> getWithResponse(
@@ -628,7 +823,7 @@ public final class BackupsClientImpl implements BackupsClient {
                             body,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -999,7 +1194,7 @@ public final class BackupsClientImpl implements BackupsClient {
                             body,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1398,7 +1593,7 @@ public final class BackupsClientImpl implements BackupsClient {
                             backupName,
                             this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

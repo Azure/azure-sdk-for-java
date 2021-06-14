@@ -3,12 +3,16 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.cryptography.KeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 
 /**
  * A key client which is used to synchronously wrap or unwrap another key.
  */
+@ServiceClient(builder = KeyEncryptionKeyClientBuilder.class)
 public final class KeyEncryptionKeyClient implements KeyEncryptionKey {
     private final KeyEncryptionKeyAsyncClient client;
 
@@ -35,6 +39,7 @@ public final class KeyEncryptionKeyClient implements KeyEncryptionKey {
      * {@inheritDoc}
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] wrapKey(String algorithm, byte[] key) {
         return client.wrapKey(algorithm, key).block();
     }
@@ -43,6 +48,7 @@ public final class KeyEncryptionKeyClient implements KeyEncryptionKey {
      * {@inheritDoc}
      */
     @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] unwrapKey(String algorithm, byte[] encryptedKey) {
         return client.unwrapKey(algorithm, encryptedKey).block();
     }

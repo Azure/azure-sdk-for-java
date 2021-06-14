@@ -3,15 +3,15 @@
 
 package com.azure.spring.sample.servicebus;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.OutputCaptureRule;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -21,34 +21,32 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = ServiceBusIntegrationApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties")
+@ExtendWith({ OutputCaptureExtension.class, MockitoExtension.class })
 public class ServiceBusIntegrationApplicationIT {
 
-    @Rule
-    public OutputCaptureRule capture = new OutputCaptureRule();
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void testQueueSendAndReceiveMessage() throws Exception {
-        testSendAndReceiveMessage("queues");
+    public void testQueueSendAndReceiveMessage(CapturedOutput capture) throws Exception {
+        testSendAndReceiveMessage("queues", capture);
     }
 
     @Test
-    public void testTopicSendAndReceiveMessage() throws Exception {
-        testSendAndReceiveMessage("topics");
+    public void testTopicSendAndReceiveMessage(CapturedOutput capture) throws Exception {
+        testSendAndReceiveMessage("topics", capture);
     }
 
-    private void testSendAndReceiveMessage(String url) throws Exception {
+    private void testSendAndReceiveMessage(String url, CapturedOutput capture) throws Exception {
         String message = UUID.randomUUID().toString();
 
         String urlTemplate = String.format("/%s?message=%s", url, message);
 
         mvc.perform(post(urlTemplate)).andExpect(status().isOk())
-            .andExpect(content().string(message));
+           .andExpect(content().string(message));
 
         String messageReceivedLog = String.format("New message received: '%s'", message);
         String messageCheckpointedLog = String.format("Message '%s' successfully checkpointed", message);

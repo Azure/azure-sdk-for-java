@@ -3,18 +3,19 @@
 
 package com.azure.spring.integration.servicebus.converter;
 
+import com.azure.core.util.BinaryData;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.Message;
-import com.microsoft.azure.servicebus.MessageBody;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.StringUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,11 +31,13 @@ import static com.azure.spring.integration.servicebus.converter.ServiceBusMessag
 import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
 
 /**
- * A converter to turn a {@link org.springframework.messaging.Message} to {@link IMessage} and vice versa.
+ * A converter to turn a {@link org.springframework.messaging.Message} to {@link ServiceBusMessage} and turn a {@link
+ * ServiceBusReceivedMessage} to {@link org.springframework.messaging.Message}
  *
  * @author Warren Zhu
  */
-public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IMessage> {
+public class ServiceBusMessageConverter
+    extends AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
 
     private final ObjectMapper objectMapper;
 
@@ -52,36 +55,23 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
     }
 
     @Override
-    protected byte[] getPayload(IMessage azureMessage) {
-        MessageBody messageBody = azureMessage.getMessageBody();
-        if (messageBody == null) {
-            return new byte[0];
-        }
-
-        switch (messageBody.getBodyType()) {
-            case BINARY:
-                return messageBody.getBinaryData().stream().findFirst().orElse(null);
-            case VALUE:
-                return String.valueOf(messageBody.getValueData()).getBytes(StandardCharsets.UTF_8);
-            case SEQUENCE:
-                return toPayload(messageBody.getSequenceData().stream().findFirst().orElse(null));
-            default:
-                return new byte[0];
-        }
+    protected byte[] getPayload(ServiceBusReceivedMessage azureMessage) {
+        final BinaryData body = azureMessage.getBody();
+        return body == null ? null : body.toBytes();
     }
 
     @Override
-    protected IMessage fromString(String payload) {
-        return new Message(payload);
+    protected ServiceBusMessage fromString(String payload) {
+        return new ServiceBusMessage(payload);
     }
 
     @Override
-    protected IMessage fromByte(byte[] payload) {
-        return new Message(payload);
+    protected ServiceBusMessage fromByte(byte[] payload) {
+        return new ServiceBusMessage(payload);
     }
 
     @Override
-    protected void setCustomHeaders(MessageHeaders headers, IMessage message) {
+    protected void setCustomHeaders(MessageHeaders headers, ServiceBusMessage message) {
 
         // Spring MessageHeaders
         getStringHeader(headers, MessageHeaders.ID).ifPresent(message::setMessageId);
@@ -93,31 +83,26 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
         Optional.ofNullable(headers.get(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, Integer.class))
                 .map(Duration::ofMillis)
                 .map(Instant.now()::plus)
-                .ifPresent(message::setScheduledEnqueueTimeUtc);
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+                .ifPresent(message::setScheduledEnqueueTime);
 
         // ServiceBusMessageHeaders, service bus headers have highest priority.
         getStringHeader(headers, MESSAGE_ID).ifPresent(message::setMessageId);
-        Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE))
-                .ifPresent(message::setTimeToLive);
+        Optional.ofNullable((Duration) headers.get(TIME_TO_LIVE)).ifPresent(message::setTimeToLive);
         Optional.ofNullable((Instant) headers.get(SCHEDULED_ENQUEUE_TIME))
-                .ifPresent(message::setScheduledEnqueueTimeUtc);
+                .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+                .ifPresent(message::setScheduledEnqueueTime);
         getStringHeader(headers, SESSION_ID).ifPresent(message::setSessionId);
         getStringHeader(headers, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getStringHeader(headers, TO).ifPresent(message::setTo);
         getStringHeader(headers, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
         getStringHeader(headers, PARTITION_KEY).ifPresent(message::setPartitionKey);
 
-        headers.forEach((key, value) -> message.getProperties().put(key, value.toString()));
-    }
-
-    private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, String key) {
-        return Optional.ofNullable(springMessageHeaders.get(key))
-                       .map(Object::toString)
-                       .filter(StringUtils::hasText);
+        headers.forEach((key, value) -> message.getApplicationProperties().put(key, value.toString()));
     }
 
     @Override
-    protected Map<String, Object> buildCustomHeaders(IMessage message) {
+    protected Map<String, Object> buildCustomHeaders(ServiceBusReceivedMessage message) {
         Map<String, Object> headers = new HashMap<>();
 
         // Spring MessageHeaders
@@ -135,23 +120,24 @@ public class ServiceBusMessageConverter extends AbstractAzureMessageConverter<IM
         setValueIfHasText(headers, PARTITION_KEY, message.getPartitionKey());
         setValueIfHasText(headers, TO, message.getTo());
         setValueIfPresent(headers, TIME_TO_LIVE, message.getTimeToLive());
-        setValueIfPresent(headers, SCHEDULED_ENQUEUE_TIME, message.getScheduledEnqueueTimeUtc());
+        setValueIfPresent(headers, SCHEDULED_ENQUEUE_TIME, message.getScheduledEnqueueTime());
         setValueIfHasText(headers, REPLY_TO_SESSION_ID, message.getReplyToSessionId());
         setValueIfHasText(headers, SESSION_ID, message.getSessionId());
 
-        headers.putAll(message.getProperties());
+        headers.putAll(message.getApplicationProperties());
 
         return Collections.unmodifiableMap(headers);
     }
 
+    private Optional<String> getStringHeader(MessageHeaders springMessageHeaders, String key) {
+        return Optional.ofNullable(springMessageHeaders.get(key)).map(Object::toString).filter(StringUtils::hasText);
+    }
+
     private void setValueIfHasText(Map<String, Object> map, String key, String value) {
-        Optional.ofNullable(value)
-                .filter(StringUtils::hasText)
-                .ifPresent(s -> map.put(key, s));
+        Optional.ofNullable(value).filter(StringUtils::hasText).ifPresent(s -> map.put(key, s));
     }
 
     private void setValueIfPresent(Map<String, Object> map, String key, Object value) {
-        Optional.ofNullable(value)
-                .ifPresent(s -> map.put(key, s));
+        Optional.ofNullable(value).ifPresent(s -> map.put(key, s));
     }
 }

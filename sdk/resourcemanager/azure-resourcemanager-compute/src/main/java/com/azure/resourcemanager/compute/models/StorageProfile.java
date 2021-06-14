@@ -29,7 +29,7 @@ public final class StorageProfile {
      * Specifies information about the operating system disk used by the
      * virtual machine. <br><br> For more information about disks, see [About
      * disks and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "osDisk")
     private OSDisk osDisk;
@@ -38,7 +38,7 @@ public final class StorageProfile {
      * Specifies the parameters that are used to add a data disk to a virtual
      * machine. <br><br> For more information about disks, see [About disks and
      * VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "dataDisks")
     private List<DataDisk> dataDisks;
@@ -70,7 +70,7 @@ public final class StorageProfile {
     /**
      * Get the osDisk property: Specifies information about the operating system disk used by the virtual machine.
      * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @return the osDisk value.
      */
@@ -81,7 +81,7 @@ public final class StorageProfile {
     /**
      * Set the osDisk property: Specifies information about the operating system disk used by the virtual machine.
      * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @param osDisk the osDisk value to set.
      * @return the StorageProfile object itself.
@@ -94,7 +94,7 @@ public final class StorageProfile {
     /**
      * Get the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine.
      * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @return the dataDisks value.
      */
@@ -105,7 +105,7 @@ public final class StorageProfile {
     /**
      * Set the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine.
      * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      *
      * @param dataDisks the dataDisks value to set.
      * @return the StorageProfile object itself.

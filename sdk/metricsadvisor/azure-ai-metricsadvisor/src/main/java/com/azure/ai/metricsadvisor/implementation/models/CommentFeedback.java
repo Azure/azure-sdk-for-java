@@ -31,7 +31,7 @@ public final class CommentFeedback extends MetricFeedback {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private CommentFeedbackValue value;
 
     /**

@@ -7,16 +7,15 @@ import com.azure.communication.sms.models.SmsSendOptions;
 import com.azure.communication.sms.models.SmsSendResult;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -222,6 +221,25 @@ public class SmsAsyncClientTests extends SmsTestBase {
         StepVerifier.create(response).verifyError();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void checkForRepeatabilityOptions(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "checkForRepeatabilityOptions");
+
+        StepVerifier.create(
+            asyncClient.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE)
+            .flatMap(requestResponse -> {
+                return requestResponse.getRequest().getBody().last();
+            })
+        ).assertNext(bodyBuff -> {
+            String bodyRequest = new String(bodyBuff.array());
+            assertTrue(bodyRequest.contains("repeatabilityRequestId"));
+            assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
+        })
+        .verifyComplete();
+    }
 
     private SmsAsyncClient setupAsyncClient(SmsClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();

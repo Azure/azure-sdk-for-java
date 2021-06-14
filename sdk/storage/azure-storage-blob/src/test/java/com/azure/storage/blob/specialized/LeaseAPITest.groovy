@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.models.BlobLeaseRequestConditions
 import com.azure.storage.blob.models.LeaseDurationType
 import com.azure.storage.blob.models.LeaseStateType
@@ -14,6 +15,7 @@ import com.azure.storage.blob.options.BlobBreakLeaseOptions
 import com.azure.storage.blob.options.BlobChangeLeaseOptions
 import com.azure.storage.blob.options.BlobReleaseLeaseOptions
 import com.azure.storage.blob.options.BlobRenewLeaseOptions
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -21,7 +23,7 @@ import java.time.Duration
 class LeaseAPITest extends APISpec {
     private BlobClientBase createBlobClient() {
         def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        bc.upload(defaultInputStream.get(), defaultDataSize)
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
 
         return bc
     }
@@ -86,6 +88,7 @@ class LeaseAPITest extends APISpec {
         70       | _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Acquire blob lease AC"() {
         setup:
@@ -183,6 +186,7 @@ class LeaseAPITest extends APISpec {
             .getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Renew blob lease AC"() {
         setup:
@@ -273,6 +277,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, leaseID).releaseLeaseWithResponse(new BlobReleaseLeaseOptions(), null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Release blob lease AC"() {
         setup:
@@ -373,6 +378,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions(), null, null).getStatusCode() == 202
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Break blob lease AC"() {
         setup:
@@ -472,6 +478,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(bc, leaseID).changeLeaseWithResponse(new BlobChangeLeaseOptions(namer.getRandomUuid()), null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Change blob lease AC"() {
         setup:

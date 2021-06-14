@@ -18,10 +18,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.Locale;
 import reactor.core.publisher.Mono;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -152,8 +157,14 @@ public final class SmsAsyncClient {
     private SendMessageRequest createSendMessageRequest(String from, Iterable<String> smsRecipient, String message, SmsSendOptions options) {
         SendMessageRequest request = new SendMessageRequest();
         List<SmsRecipient> recipients = new ArrayList<SmsRecipient>();
+
         for (String s : smsRecipient) {
-            recipients.add(new SmsRecipient().setTo(s));
+            SmsRecipient recipient = new SmsRecipient()
+                .setTo(s)
+                .setRepeatabilityRequestId(UUID.randomUUID().toString())
+                .setRepeatabilityFirstSent(OffsetDateTime.now(ZoneOffset.UTC)
+                    .format(DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)));
+            recipients.add(recipient);
         }
         request.setFrom(from)
             .setSmsRecipients(recipients)

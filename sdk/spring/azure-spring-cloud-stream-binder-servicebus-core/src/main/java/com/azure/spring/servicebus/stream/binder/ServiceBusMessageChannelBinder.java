@@ -47,8 +47,11 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     }
 
     @Override
-    protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
-        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
+    protected MessageHandler createProducerMessageHandler(
+        ProducerDestination destination,
+        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
+        MessageChannel errorChannel) {
+
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getSendOperation());
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
@@ -95,15 +98,21 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
 
     protected CheckpointConfig buildCheckpointConfig(
             ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        return CheckpointConfig.builder().checkpointMode(properties.getExtension().getCheckpointMode()).build();
+
+        return CheckpointConfig.builder()
+                               .checkpointMode(properties.getExtension().getCheckpointMode())
+                               .build();
     }
 
     protected ServiceBusClientConfig buildClientConfig(
             ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+
         ServiceBusConsumerProperties consumerProperties = properties.getExtension();
-        return ServiceBusClientConfig.builder().setPrefetchCount(consumerProperties.getPrefetchCount())
-                .setConcurrency(consumerProperties.getConcurrency())
-                .setSessionsEnabled(consumerProperties.isSessionsEnabled()).build();
+        return ServiceBusClientConfig.builder()
+                                     .setPrefetchCount(consumerProperties.getPrefetchCount())
+                                     .setConcurrency(consumerProperties.getConcurrency())
+                                     .setSessionsEnabled(consumerProperties.isSessionsEnabled())
+                                     .build();
     }
 
     abstract SendOperation getSendOperation();

@@ -5,7 +5,7 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AADWebAppConfigurationTest {
@@ -148,12 +149,14 @@ public class AADWebAppConfigurationTest {
                 ClientRegistration azure = repo.findByRegistrationId("azure");
                 ClientRegistration graph = repo.findByRegistrationId("graph");
 
-                assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(), AuthorizationGrantType.AUTHORIZATION_CODE);
-                assertEquals(repo.findByRegistrationId("graph").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
+                assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(),
+                    AuthorizationGrantType.AUTHORIZATION_CODE);
+                assertEquals(repo.findByRegistrationId("graph").getAuthorizationGrantType(),
+                    AuthorizationGrantType.CLIENT_CREDENTIALS);
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void webAppWithOboWithExceptionTest() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -161,11 +164,11 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on-behalf-of"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void clientWhichIsNotAuthorizationCodeButOnDemandExceptionTest() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -174,7 +177,7 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.authorization-clients.graph.on-demand = true"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
@@ -247,8 +250,7 @@ public class AADWebAppConfigurationTest {
     public void defaultClientWithAuthzScope() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties().withPropertyValues(
-            "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
-        )
+            "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read")
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo =
                     context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -323,7 +325,7 @@ public class AADWebAppConfigurationTest {
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void graphUriConfigurationWithExceptionTest() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -331,11 +333,11 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsConfiguredTest1() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -344,11 +346,11 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsConfiguredTest2() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -357,11 +359,11 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsConfiguredTest3() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -370,11 +372,11 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest1() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -384,11 +386,11 @@ public class AADWebAppConfigurationTest {
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest2() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -398,11 +400,11 @@ public class AADWebAppConfigurationTest {
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest3() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -412,11 +414,11 @@ public class AADWebAppConfigurationTest {
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest4() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -426,11 +428,11 @@ public class AADWebAppConfigurationTest {
                     + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void multiTenantWithAllowedGroupsConfiguredTest4() {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
@@ -439,7 +441,7 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
             )
             .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
     }
 

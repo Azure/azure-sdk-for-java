@@ -47,7 +47,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createClientEncryptionKey() {
-        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1");
+        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1", "custom");
         byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
             "ae 1e d9 1c").replace(" ", ""));
 
@@ -66,7 +66,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void replaceClientEncryptionKey() {
-        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key2", "tempmetadata1");
+        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata1");
         byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
             "ae 1e d9 1c").replace(" ", ""));
 
@@ -80,7 +80,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
 
         CosmosAsyncClientEncryptionKey clientEncryptionKey = createdDatabase.getClientEncryptionKey("key2");
 
-        encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key2", "tempmetadata2");
+        encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2");
         cosmosClientEncryptionKeyProperties = keyResponse.getProperties();
         cosmosClientEncryptionKeyProperties.setEncryptionKeyWrapMetadata(encryptionKeyWrapMetadata);
         keyResponse = clientEncryptionKey.replace(cosmosClientEncryptionKeyProperties).block();
@@ -89,7 +89,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryClientEncryptionKeys() {
-        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key3", "tempmetadata1");
+        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("custom", "key3", "tempmetadata1");
         byte[] key = Hex.decode(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
             "ae 1e d9 1c").replace(" ", ""));
 

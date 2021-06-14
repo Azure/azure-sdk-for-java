@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
@@ -33,6 +34,8 @@ public final class AnalyzeActionsResultPropertiesHelper {
             IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults);
         void setExtractKeyPhrasesActionResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults);
+        void setAnalyzeSentimentActionResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults);
     }
 
     /**
@@ -68,5 +71,10 @@ public final class AnalyzeActionsResultPropertiesHelper {
     public static void setExtractKeyPhrasesActionResults(AnalyzeActionsResult analyzeActionsResult,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults) {
         accessor.setExtractKeyPhrasesActionResults(analyzeActionsResult, extractKeyPhrasesActionResults);
+    }
+
+    public static void setAnalyzeSentimentActionResults(AnalyzeActionsResult analyzeActionsResult,
+        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults) {
+        accessor.setAnalyzeSentimentActionResults(analyzeActionsResult, analyzeSentimentActionResults);
     }
 }

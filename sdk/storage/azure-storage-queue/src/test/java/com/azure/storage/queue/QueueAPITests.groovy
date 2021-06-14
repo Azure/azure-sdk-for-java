@@ -37,7 +37,7 @@ class QueueAPITests extends APISpec {
 
     def "Get queue URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
 
         when:
@@ -50,7 +50,7 @@ class QueueAPITests extends APISpec {
     def "IP based endpoint"() {
         when:
         def queueClient = new QueueClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(env.primaryAccount.connectionString)
             .endpoint("http://127.0.0.1:10001/devstoreaccount1/myqueue")
             .buildClient()
 
@@ -608,7 +608,7 @@ class QueueAPITests extends APISpec {
         queueClient.sendMessage(expectMsg1)
         queueClient.sendMessage(expectMsg2)
         when:
-        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(1), null).iterator()
+        def peekMsgIter = queueClient.peekMessages(2, Duration.ofSeconds(10), null).iterator()
         then:
         expectMsg1 == peekMsgIter.next().getMessageText()
         expectMsg2 == peekMsgIter.next().getMessageText()

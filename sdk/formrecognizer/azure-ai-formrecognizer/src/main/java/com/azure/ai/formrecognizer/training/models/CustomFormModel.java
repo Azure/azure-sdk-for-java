@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.training.models;
 
 import com.azure.ai.formrecognizer.implementation.CustomFormModelHelper;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * The CustomFormModel
  */
+@Immutable
 public final class CustomFormModel {
 
     /*

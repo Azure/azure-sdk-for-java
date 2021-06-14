@@ -84,12 +84,18 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
 
       // TODO moderakh investigate if we should also support point write in non-blocking way
       // TODO moderakh support patch?
-      // TODO moderakh bulkWrite in another PR
 
       require(objectNode.has(CosmosConstants.Properties.Id) &&
         objectNode.get(CosmosConstants.Properties.Id).isTextual,
         s"${CosmosConstants.Properties.Id} is a mandatory field. " +
           s"But it is missing or it is not a string. Json: ${SparkUtils.objectNodeToJson(objectNode)}")
+
+      if (cosmosWriteConfig.itemWriteStrategy == ItemWriteStrategy.ItemDeleteIfNotModified) {
+        require(objectNode.has(CosmosConstants.Properties.ETag) &&
+          objectNode.get(CosmosConstants.Properties.ETag).isTextual,
+          s"${CosmosConstants.Properties.ETag} is a mandatory field for write strategy ItemDeleteIfNotModified. " +
+            s"But it is missing or it is not a string. Json: ${SparkUtils.objectNodeToJson(objectNode)}")
+      }
 
       val partitionKeyValue = PartitionKeyHelper.getPartitionKeyPath(objectNode, partitionKeyDefinition)
       writer.scheduleWrite(partitionKeyValue, objectNode)

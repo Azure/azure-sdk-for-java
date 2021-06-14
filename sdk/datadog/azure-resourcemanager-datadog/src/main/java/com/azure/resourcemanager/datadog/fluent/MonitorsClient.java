@@ -341,6 +341,52 @@ public interface MonitorsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body);
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context);
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body The parameters for a PATCH request to a monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatadogMonitorResourceInner update(
+        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body);
+
+    /**
+     * Update a monitor resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -362,7 +408,7 @@ public interface MonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatadogMonitorResourceInner> updateWithResponse(
+    DatadogMonitorResourceInner update(
         String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context);
 
     /**

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.maintenance.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignment;
 
@@ -41,6 +42,10 @@ public final class ConfigurationAssignmentImpl implements ConfigurationAssignmen
 
     public String resourceId() {
         return this.innerModel().resourceId();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ConfigurationAssignmentInner innerModel() {

@@ -13,7 +13,7 @@ import java.util.Map;
 
 /** Profile for the container service agent pool. */
 @Fluent
-public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
+public class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfile.class);
 
     /*
@@ -252,6 +252,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
         super.withEnableEncryptionAtHost(enableEncryptionAtHost);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withEnableUltraSsd(Boolean enableUltraSsd) {
+        super.withEnableUltraSsd(enableUltraSsd);
         return this;
     }
 

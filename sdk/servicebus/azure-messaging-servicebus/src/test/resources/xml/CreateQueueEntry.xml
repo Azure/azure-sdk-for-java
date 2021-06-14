@@ -16,8 +16,8 @@
             <AccessRights>Send</AccessRights>
           </Rights>
           <KeyName>test-name</KeyName>
-          <PrimaryKey>/4jWkzKBFwO0VemXmUYtBnXJ3Me+saF8hQPE5HzJ/hg=</PrimaryKey>
-          <SecondaryKey>NsNSEwj//k4ShF7wHsRHj54HsjnyWvyjmfCd3tfXR2Y=</SecondaryKey>
+          <PrimaryKey>fakePrimaryKey</PrimaryKey>
+          <SecondaryKey>fakeSecondaryKey</SecondaryKey>
         </AuthorizationRule>
       </AuthorizationRules>
       <Status>Active</Status>

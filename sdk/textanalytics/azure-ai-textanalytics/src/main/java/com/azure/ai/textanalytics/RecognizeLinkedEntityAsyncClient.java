@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
@@ -24,7 +25,6 @@ import java.util.Objects;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -135,8 +135,10 @@ class RecognizeLinkedEntityAsyncClient {
         options = options == null ? new RecognizeLinkedEntitiesOptions() : options;
         return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(), options.isIncludeStatistics(),
-            getNonNullStringIndexType(options.getStringIndexType()),
+            options.getModelVersion(),
+            options.isIncludeStatistics(),
+            options.isServiceLogsDisabled(),
+            StringIndexType.UTF16CODE_UNIT,
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                        getDocumentCount(documents)))

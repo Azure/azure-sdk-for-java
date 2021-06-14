@@ -3,15 +3,16 @@
 
 package com.azure.storage.file.share.specialized
 
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.APISpec
 import com.azure.storage.file.share.ShareClient
 import com.azure.storage.file.share.ShareFileClient
+import com.azure.storage.file.share.ShareServiceVersion
 import com.azure.storage.file.share.models.LeaseDurationType
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -166,6 +167,7 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Acquire share lease"() {
         setup:
@@ -190,11 +192,13 @@ class LeaseAPITest extends APISpec {
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Acquire share lease min"() {
         expect:
         createLeaseClient(shareClient).acquireLeaseWithResponse(null, null, null).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Acquire share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -249,6 +253,7 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Renew share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -265,6 +270,7 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(renewLeaseResponse.getHeaders())
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Renew share lease min"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -273,6 +279,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).renewLeaseWithResponse(null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Renew share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -310,6 +317,7 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Release share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -321,6 +329,7 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(releaseLeaseResponse.getHeaders())
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Release share lease min"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -329,6 +338,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).releaseLeaseWithResponse(null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Release share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -362,6 +372,7 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "Break share lease"() {
         setup:
@@ -388,6 +399,7 @@ class LeaseAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Break share lease min"() {
         setup:
         setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -396,6 +408,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null, null).getStatusCode() == 202
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Break share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
@@ -433,6 +446,7 @@ class LeaseAPITest extends APISpec {
         thrown(ShareStorageException)
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Change share lease"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -450,6 +464,7 @@ class LeaseAPITest extends APISpec {
         validateBasicHeaders(changeLeaseResponse.getHeaders())
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Change share lease min"() {
         setup:
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
@@ -458,6 +473,7 @@ class LeaseAPITest extends APISpec {
         createLeaseClient(shareClient, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), null, null).getStatusCode() == 200
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_02_10")
     def "Change share lease snapshot"() {
         setup:
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
