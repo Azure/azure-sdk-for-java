@@ -1,6 +1,13 @@
 # Release History
 
-## 7.3.0-beta.3 (Unreleased)
+## 7.2.3 (2021-06-14)
+### Fixed
+Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is stuck when connection is broken.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.17.0`.
+- Upgraded `azure-core-amqp` dependency to `2.2.0`.
+- Upgraded `azure-core-http-netty` to `1.10.0`.
 
 ## 7.2.2 (2021-05-26)
 ### Fixed

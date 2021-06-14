@@ -3,7 +3,7 @@
 package com.azure.data.tables.models;
 
 /**
- * The type of action to be executed on a {@link TableEntity} in a transactional batch operation.
+ * The type of action to be executed on a {@link TableEntity} in a transactional operation.
  */
 public enum TableTransactionActionType {
     /**

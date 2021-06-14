@@ -15,7 +15,7 @@ public class KeyVaultLongRunningOperation {
     private final String status;
     private final String statusDetails;
     private final KeyVaultError error;
-    private final String jobId;
+    private final String operationId;
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
 
@@ -24,18 +24,18 @@ public class KeyVaultLongRunningOperation {
      *
      * @param status Status of the {@link KeyVaultLongRunningOperation}.
      * @param statusDetails The status details of the {@link KeyVaultLongRunningOperation}.
+     * @param operationId Identifier for the full {@link KeyVaultLongRunningOperation}.
      * @param error Error encountered, if any, during the {@link KeyVaultLongRunningOperation}.
      * @param startTime The start time of the {@link KeyVaultLongRunningOperation}.
      * @param endTime The end time of the {@link KeyVaultLongRunningOperation}.
-     * @param jobId Identifier for the full {@link KeyVaultLongRunningOperation}.
      */
-    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String jobId, OffsetDateTime startTime, OffsetDateTime endTime) {
+    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         this.status = status;
         this.statusDetails = statusDetails;
         this.error = error;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.jobId = jobId;
+        this.operationId = operationId;
     }
 
     /**
@@ -54,6 +54,15 @@ public class KeyVaultLongRunningOperation {
      */
     public String getStatusDetails() {
         return statusDetails;
+    }
+
+    /**
+     * Get the identifier for the {@link KeyVaultLongRunningOperation}.
+     *
+     * @return The operation ID.
+     */
+    public String getOperationId() {
+        return operationId;
     }
 
     /**
@@ -81,14 +90,5 @@ public class KeyVaultLongRunningOperation {
      */
     public OffsetDateTime getEndTime() {
         return endTime;
-    }
-
-    /**
-     * Get the identifier for the {@link KeyVaultLongRunningOperation}.
-     *
-     * @return The job ID.
-     */
-    public String getJobId() {
-        return jobId;
     }
 }

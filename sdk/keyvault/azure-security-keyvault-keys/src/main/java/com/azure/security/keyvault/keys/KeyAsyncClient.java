@@ -797,32 +797,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
-        return beginDeleteKey(name, getDefaultPollingInterval());
-    }
-
-    /**
-     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
-     * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
-     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
-     * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
-     * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the
-     * {@code keys/delete} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted key
-     * details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#String-Duration}
-     *
-     * @param name The name of the key to be deleted.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link PollerFlux} to poll on the {@link DeletedKey deleted key} status.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DeletedKey, Void> beginDeleteKey(String name, Duration pollingInterval) {
-        return new PollerFlux<>(pollingInterval,
+        return new PollerFlux<>(getDefaultPollingInterval(),
             activationOperation(name),
             createPollOperation(name),
             (context, firstResponse) -> Mono.empty(),
@@ -999,29 +974,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return beginRecoverDeletedKey(name, getDefaultPollingInterval());
-    }
-
-    /**
-     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
-     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
-     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
-     * prints out the recovered key details when a response has been received.</p>
-     * //Assuming key is deleted on a soft-delete enabled vault.
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String-Duration}
-     *
-     * @param name The name of the deleted key to be recovered.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link PollerFlux} to poll on the {@link KeyVaultKey recovered key} status.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Duration pollingInterval) {
-        return new PollerFlux<>(pollingInterval,
+        return new PollerFlux<>(getDefaultPollingInterval(),
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (context, firstResponse) -> Mono.empty(),

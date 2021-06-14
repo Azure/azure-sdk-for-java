@@ -89,7 +89,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-containers-containerregistry</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -114,7 +114,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>2.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -169,7 +169,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.16.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.16.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -194,7 +194,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-tables</artifactId>
-      <version>12.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+      <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -209,27 +209,37 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.4.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
+      <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.8.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.8.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.3.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.2.3</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-webpubsub</artifactId>
       <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-query</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -311,12 +321,6 @@
       <artifactId>azure-sdk-template</artifactId>
       <version>1.2.1-beta.16</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
-    </dependency>
-
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
@@ -451,7 +455,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.8.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
