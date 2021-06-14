@@ -3,8 +3,10 @@
 
 package com.azure.storage.blob.sas;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -43,9 +45,10 @@ public final class BlobServiceSasSignatureValues {
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
 
-    private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobServiceSasSignatureValues.class);
 
-    private final String version = Constants.SAS_SERVICE_VERSION;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -171,7 +174,7 @@ public final class BlobServiceSasSignatureValues {
      * targeted by the library.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -580,7 +583,7 @@ public final class BlobServiceSasSignatureValues {
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
 
-        return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new BlobServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, null /* delegate */);
     }
@@ -632,7 +635,7 @@ public final class BlobServiceSasSignatureValues {
         String signature = StorageImplUtils.computeHMac256(
             delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
 
-        return new BlobServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new BlobServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature,
             this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType,
             delegationKey);
@@ -672,7 +675,7 @@ public final class BlobServiceSasSignatureValues {
                     break;
                 default:
                     // We won't reparse the permissions if we don't know the type.
-                    logger.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
+                    LOGGER.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
         }
@@ -698,7 +701,7 @@ public final class BlobServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version, /* Pin down to version so old string to sign works. This is reflected in the declaration of
+            VERSION, /* Pin down to version so old string to sign works. This is reflected in the declaration of
             version */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
@@ -724,7 +727,7 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version, /* Pin down to version so old string to sign works. This is reflected in the declaration of
+            VERSION, /* Pin down to version so old string to sign works. This is reflected in the declaration of
             version */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,

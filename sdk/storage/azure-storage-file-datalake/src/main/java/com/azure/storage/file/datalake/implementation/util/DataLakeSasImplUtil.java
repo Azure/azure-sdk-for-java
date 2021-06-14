@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -44,9 +45,10 @@ public class DataLakeSasImplUtil {
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
 
-    private final ClientLogger logger = new ClientLogger(DataLakeSasImplUtil.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeSasImplUtil.class);
 
-    private static String version = Constants.SAS_SERVICE_VERSION;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, DataLakeServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -141,7 +143,7 @@ public class DataLakeSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String stringToSign = stringToSign(canonicalName);
-        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(null /* userDelegationKey */, signature);
@@ -164,7 +166,7 @@ public class DataLakeSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
         final String stringToSign = stringToSign(delegationKey, canonicalName);
-        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
         return encode(delegationKey, signature);
@@ -183,7 +185,7 @@ public class DataLakeSasImplUtil {
          */
         StringBuilder sb = new StringBuilder();
 
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, version);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, VERSION);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
@@ -247,7 +249,7 @@ public class DataLakeSasImplUtil {
     private void ensureState() {
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
-                throw logger.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
+                throw LOGGER.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
                     + "and permissions must be set"));
             }
         }
@@ -274,13 +276,13 @@ public class DataLakeSasImplUtil {
                     break;
                 default:
                     // We won't reparse the permissions if we don't know the type.
-                    logger.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
+                    LOGGER.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
         }
 
         if (this.authorizedAadObjectId != null && this.unauthorizedAadObjectId != null) {
-            throw logger.logExceptionAsError(new IllegalStateException("agentObjectId and preauthorizedAgentObjectId "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("agentObjectId and preauthorizedAgentObjectId "
                 + "can not both be set."));
         }
     }
@@ -305,7 +307,7 @@ public class DataLakeSasImplUtil {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version,
+            VERSION,
             resource,
             "", /* Version segment. */
             this.cacheControl == null ? "" : this.cacheControl,
@@ -333,7 +335,7 @@ public class DataLakeSasImplUtil {
             this.correlationId == null ? "" : this.correlationId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            version,
+            VERSION,
             resource,
             "", /* Version segment. */
             this.cacheControl == null ? "" : this.cacheControl,

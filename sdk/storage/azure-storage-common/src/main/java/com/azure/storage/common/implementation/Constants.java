@@ -75,8 +75,10 @@ public final class Constants {
 
     public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
 
+    public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
+
     public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get("AZURE_STORAGE_SAS_SERVICE_VERSION", "2020-08-04");
+        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-08-04");
 
     private Constants() {
     }

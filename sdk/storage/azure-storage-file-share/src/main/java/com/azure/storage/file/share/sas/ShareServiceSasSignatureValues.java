@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.sas;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -34,7 +35,8 @@ public final class ShareServiceSasSignatureValues {
      */
     private static final String SAS_SHARE_CONSTANT = "s";
 
-    private final String version = Constants.SAS_SERVICE_VERSION;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, ShareServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -113,7 +115,7 @@ public final class ShareServiceSasSignatureValues {
      * targeted by the library.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -461,7 +463,7 @@ public final class ShareServiceSasSignatureValues {
         String stringToSign = stringToSign(canonicalName);
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
-        return new ShareServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new ShareServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, resource, this.permissions, signature, this.cacheControl,
             this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType);
     }
@@ -492,7 +494,7 @@ public final class ShareServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),
-            this.version == null ? "" : this.version,
+            VERSION == null ? "" : VERSION,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,

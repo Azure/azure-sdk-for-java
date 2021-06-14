@@ -3,11 +3,11 @@
 
 package com.azure.storage.queue.sas;
 
+import com.azure.core.util.Configuration;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.QueueServiceVersion;
 
@@ -24,7 +24,8 @@ import java.time.OffsetDateTime;
  * SAS</a>
  */
 public final class QueueServiceSasSignatureValues {
-    private final String version = Constants.SAS_SERVICE_VERSION;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, QueueServiceVersion.getLatest().getVersion());
 
     private SasProtocol protocol;
 
@@ -77,7 +78,7 @@ public final class QueueServiceSasSignatureValues {
      * targeted by the library.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -280,7 +281,7 @@ public final class QueueServiceSasSignatureValues {
         String stringToSign = stringToSign(canonicalName);
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
-        return new QueueServiceSasQueryParameters(this.version, this.protocol, this.startTime, this.expiryTime,
+        return new QueueServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
             this.sasIpRange, this.identifier, this.permissions, signature);
     }
 
@@ -304,7 +305,7 @@ public final class QueueServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : protocol.toString(),
-            this.version == null ? "" : this.version
+            VERSION == null ? "" : VERSION
         );
     }
 }
