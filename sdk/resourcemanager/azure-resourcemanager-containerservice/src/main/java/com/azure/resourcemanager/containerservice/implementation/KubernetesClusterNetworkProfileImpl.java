@@ -4,6 +4,7 @@ package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.LoadBalancerSku;
 import com.azure.resourcemanager.containerservice.models.NetworkPlugin;
 import com.azure.resourcemanager.containerservice.models.NetworkPolicy;
 
@@ -51,6 +52,12 @@ public class KubernetesClusterNetworkProfileImpl
     @Override
     public KubernetesClusterNetworkProfileImpl withDockerBridgeCidr(String dockerBridgeCidr) {
         ensureNetworkProfile().withDockerBridgeCidr(dockerBridgeCidr);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterNetworkProfileImpl withLoadBalancerSku(LoadBalancerSku loadBalancerSku) {
+        ensureNetworkProfile().withLoadBalancerSku(loadBalancerSku);
         return this;
     }
 

@@ -18,7 +18,12 @@ public final class TracerProxy {
     private static Tracer tracer;
 
     static {
-        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
+        // Use as classloader to load provider-configuration files and provider classes the classloader
+        // that loaded this class. In most cases this will be the System classloader.
+        // But this choice here provides additional flexibility in managed environments that control
+        // classloading differently (OSGi, Spring and others) and don't/ depend on the
+        // System classloader to load Tracer classes.
+        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class, TracerProxy.class.getClassLoader());
         Iterator<?> iterator = serviceLoader.iterator();
         if (iterator.hasNext()) {
             tracer = serviceLoader.iterator().next();

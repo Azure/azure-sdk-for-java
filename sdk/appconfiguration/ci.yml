@@ -18,6 +18,11 @@ trigger:
       - sdk/appconfiguration/spring-cloud-azure-feature-management-web
       - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web
+      - sdk/appconfiguration/azure-spring-cloud-feature-management
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
       - sdk/appconfiguration/azure-resourcemanager-appconfiguration
 
 pr:
@@ -41,6 +46,12 @@ pr:
       - sdk/appconfiguration/spring-cloud-azure-feature-management-web
       - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
       - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web
+      - sdk/appconfiguration/azure-spring-cloud-feature-management
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
       - sdk/appconfiguration/azure-resourcemanager-appconfiguration
 
 extends:
@@ -66,6 +77,21 @@ extends:
       - name: spring-cloud-starter-azure-appconfiguration-config
         groupId: com.microsoft.azure
         safeName: springcloudstarterazureappconfigurationconfig
+      - name: azure-spring-cloud-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: azurespringcloudappconfigurationconfig
+      - name: azure-spring-cloud-appconfiguration-config-web
+        groupId: com.azure.spring
+        safeName: azurespringcloudappconfigurationconfigweb
+      - name: azure-spring-cloud-feature-management
+        groupId: com.azure.spring
+        safeName: azurespringcloudfeaturemanagement
+      - name: azure-spring-cloud-feature-management-web
+        groupId: com.azure.spring
+        safeName: azurespringcloudfeaturemanagementweb
+      - name: azure-spring-cloud-starter-appconfiguration-config
+        groupId: com.azure.spring
+        safeName: azurespringcloudstarterappconfigurationconfig
       - name: azure-resourcemanager-appconfiguration
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappconfiguration

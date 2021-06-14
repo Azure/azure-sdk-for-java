@@ -13,25 +13,30 @@ import java.util.List;
 @Fluent
 public final class DetectionSeriesQuery {
     /*
-     * start time
+     * This is inclusive. The maximum number of data points (series number *
+     * time range) is 10000.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * end time
+     * This is exclusive. The maximum number of data points (series number *
+     * time range) is 10000.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
-     * series
+     * The series to be queried. The identity must be able to define one single
+     * time series instead of a group of time series. The maximum number of
+     * series is 100.
      */
     @JsonProperty(value = "series", required = true)
     private List<SeriesIdentity> series;
 
     /**
-     * Get the startTime property: start time.
+     * Get the startTime property: This is inclusive. The maximum number of data points (series number * time range) is
+     * 10000.
      *
      * @return the startTime value.
      */
@@ -40,7 +45,8 @@ public final class DetectionSeriesQuery {
     }
 
     /**
-     * Set the startTime property: start time.
+     * Set the startTime property: This is inclusive. The maximum number of data points (series number * time range) is
+     * 10000.
      *
      * @param startTime the startTime value to set.
      * @return the DetectionSeriesQuery object itself.
@@ -51,7 +57,8 @@ public final class DetectionSeriesQuery {
     }
 
     /**
-     * Get the endTime property: end time.
+     * Get the endTime property: This is exclusive. The maximum number of data points (series number * time range) is
+     * 10000.
      *
      * @return the endTime value.
      */
@@ -60,7 +67,8 @@ public final class DetectionSeriesQuery {
     }
 
     /**
-     * Set the endTime property: end time.
+     * Set the endTime property: This is exclusive. The maximum number of data points (series number * time range) is
+     * 10000.
      *
      * @param endTime the endTime value to set.
      * @return the DetectionSeriesQuery object itself.
@@ -71,7 +79,8 @@ public final class DetectionSeriesQuery {
     }
 
     /**
-     * Get the series property: series.
+     * Get the series property: The series to be queried. The identity must be able to define one single time series
+     * instead of a group of time series. The maximum number of series is 100.
      *
      * @return the series value.
      */
@@ -80,7 +89,8 @@ public final class DetectionSeriesQuery {
     }
 
     /**
-     * Set the series property: series.
+     * Set the series property: The series to be queried. The identity must be able to define one single time series
+     * instead of a group of time series. The maximum number of series is 100.
      *
      * @param series the series value to set.
      * @return the DetectionSeriesQuery object itself.

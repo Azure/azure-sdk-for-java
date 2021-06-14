@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.core.experimental.geojson.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.indexes.FieldBuilderIgnore;
 import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;

@@ -51,7 +51,7 @@ and bill at [this link][azure-account].
               destination: [the-same-eventhub-1-name-as-above]
             consume2-in-0:
               binder: eventhub-2
-              destination: [eventhub-1-name]
+              destination: [eventhub-2-name]
               group: [consumer-group]
             supply2-out-0:
               binder: eventhub-2

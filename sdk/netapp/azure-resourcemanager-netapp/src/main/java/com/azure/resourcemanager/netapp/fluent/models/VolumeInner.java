@@ -57,7 +57,7 @@ public class VolumeInner extends Resource {
     private VolumePropertiesExportPolicy exportPolicy;
 
     /*
-     * Set of protocol types, default NFSv3, CIFS fro SMB protocol
+     * Set of protocol types, default NFSv3, CIFS for SMB protocol
      */
     @JsonProperty(value = "properties.protocolTypes")
     private List<String> protocolTypes;
@@ -265,7 +265,7 @@ public class VolumeInner extends Resource {
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @return the protocolTypes value.
      */
@@ -274,7 +274,7 @@ public class VolumeInner extends Resource {
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeInner object itself.

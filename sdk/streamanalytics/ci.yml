@@ -1,0 +1,33 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - master
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/streamanalytics/
+
+pr:
+  branches:
+    include:
+      - master
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/streamanalytics/
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: streamanalytics
+    Artifacts:
+      - name: azure-resourcemanager-streamanalytics
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstreamanalytics

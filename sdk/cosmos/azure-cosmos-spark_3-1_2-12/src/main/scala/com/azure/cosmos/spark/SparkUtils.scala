@@ -3,10 +3,19 @@
 
 package com.azure.cosmos.spark
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
+
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.ThreadFactory
 
 private object SparkUtils {
+
+  private val mapper = new ObjectMapper()
+
+  def objectNodeToJson(node: ObjectNode): String = {
+    mapper.writeValueAsString(node)
+  }
 
   def daemonThreadFactory(): ThreadFactory = {
     new DaemonThreadFactory()

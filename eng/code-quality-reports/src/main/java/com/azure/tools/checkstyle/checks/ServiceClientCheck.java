@@ -158,11 +158,10 @@ public class ServiceClientCheck extends AbstractCheck {
      * @param ctorToken the CTOR_DEF AST node
      */
     private void checkConstructor(DetailAST ctorToken) {
-        final DetailAST modifiersToken = ctorToken.findFirstToken(TokenTypes.MODIFIERS);
         // find constructor's modifier accessibility, no public or protected constructor
-        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(ctorToken);
         if (accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED)) {
-            log(modifiersToken, "@ServiceClient class should not have any public or protected constructor.");
+            log(ctorToken, "@ServiceClient class should not have any public or protected constructor.");
         }
     }
 
@@ -178,10 +177,11 @@ public class ServiceClientCheck extends AbstractCheck {
         }
 
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
+
         // find method's modifier accessibility, should not have a public static method called 'builder'
-        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(methodDefToken);
         if (accessModifier.equals(AccessModifierOption.PUBLIC) && modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
-            log(modifiersToken, "@ServiceClient class should not have a public static method named ''builder''.");
+            log(methodDefToken, "@ServiceClient class should not have a public static method named ''builder''.");
         }
     }
 

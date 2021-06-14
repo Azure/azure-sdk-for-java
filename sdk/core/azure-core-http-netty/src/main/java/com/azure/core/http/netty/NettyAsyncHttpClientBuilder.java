@@ -172,6 +172,10 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the connection provider.
      *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider}
+     *
      * @param connectionProvider the connection provider
      * @return the updated {@link NettyAsyncHttpClientBuilder} object.
      */

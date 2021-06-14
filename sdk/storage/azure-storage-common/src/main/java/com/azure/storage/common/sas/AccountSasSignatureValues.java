@@ -179,6 +179,7 @@ public final class AccountSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated AccountSasSignatureValues object.
      */

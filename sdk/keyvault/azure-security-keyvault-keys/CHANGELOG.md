@@ -1,7 +1,41 @@
 # Release History
 
-## 4.3.0-beta.7 (Unreleased)
+## 4.3.0-beta.9 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### New Features
+- Added `createOctKey()` and `createOctKeyWithResponse()` to `KeyClient` and `KeyAsyncClient`.
+- Added factory methods for RSA algorithms in `DecryptParameters` and `EncryptParameters`:
+    - `createRsa15Parameters()`
+    - `createRsaOaepParameters()`
+    - `createRsaOaep256Parameters()`
+
+### Breaking Changes
+- Removed `EXPORT` from the `KeyOperation` enum.
+- Re-ordered parameters in the `EncryptResult` constructor to show `authenticationTag` before `additionalAuthenticatedData` to align with classes like `DecryptParameters`.
+
+### Non-Breaking Changes
+- Renamed `keyId` to `sourceId` in `KeyVaultKeyIdentifier`.
+- `KeyVaultKeyIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `KeyClient`, `KeyAsyncClient`, `CryptographyClient` and `CryptographyAsyncClient`.
+
+## 4.3.0-beta.8 (2021-05-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
+
+## 4.3.0-beta.7 (2021-04-29)
+
+### Bug fixes
+- Fixed issue that prevented setting tags on keys when creating or importing them.
+
+### Breaking Changes
+- Removed the `exportKey()` operation from `KeyAsyncClient` and `KeyClient`, as it is not yet supported in the current service version.
 
 ## 4.3.0-beta.6 (2021-04-09)
 
@@ -28,6 +62,12 @@
     - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey(JsonWebKey)`
     - `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey(JsonWebKey)`
 - `CryptograhpyClientBuilder.keyIdentifier(String)` now throws a `NullPointerException` if a `null` value is provided as an argument.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.1`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.1`
+- Upgraded `azure-identity` dependency to `1.2.5`
 
 ## 4.3.0-beta.5 (2021-03-12)
 

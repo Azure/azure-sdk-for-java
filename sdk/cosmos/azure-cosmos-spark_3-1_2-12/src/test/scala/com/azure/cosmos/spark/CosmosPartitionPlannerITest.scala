@@ -339,7 +339,7 @@ class CosmosPartitionPlannerITest
     val latestLsn = 100
     this.injectPartitionMetadata(docCount, docSizeInKB, latestLsn)
     val userConfig = collection.mutable.Map(this.userConfigTemplate.toSeq: _*)
-    userConfig.put("spark.cosmos.partitioning.strategy", strategy)
+    userConfig.put("spark.cosmos.read.partitioning.strategy", strategy)
     if (customPartitionCount.isDefined) {
       userConfig.put("spark.cosmos.partitioning.targetedCount", String.valueOf(customPartitionCount.get))
     }

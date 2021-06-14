@@ -596,6 +596,50 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         }
     }
 
+    /**
+     * Verify that when we specify a small prefetch, it continues to fetch items.
+     */
+    @Test
+    void receivesWithSmallPrefetch() {
+        // Arrange
+        final String secondPartitionId = "2";
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
+        final Disposable producerEvents = getEvents(isActive)
+            .flatMap(event -> producer.send(event, new SendOptions().setPartitionId(secondPartitionId)))
+            .subscribe(
+                sent -> {
+                },
+                error -> logger.error("Error sending event", error),
+                () -> logger.info("Event sent."));
+
+        final int prefetch = 5;
+        final int backpressure = 3;
+        final int batchSize = 10;
+        final EventHubConsumerAsyncClient consumer = builder
+            .prefetchCount(prefetch)
+            .buildAsyncConsumerClient();
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receiveFromPartition(secondPartitionId, EventPosition.latest()), prefetch)
+                .expectNextCount(prefetch)
+                .thenRequest(backpressure)
+                .expectNextCount(backpressure)
+                .thenRequest(batchSize)
+                .expectNextCount(batchSize)
+                .thenRequest(batchSize)
+                .expectNextCount(batchSize)
+                .thenAwait(Duration.ofSeconds(1))
+                .thenCancel()
+                .verify(TIMEOUT);
+        } finally {
+            isActive.set(false);
+            producerEvents.dispose();
+            dispose(producer, consumer);
+        }
+    }
+
     private static void assertPartitionEvent(PartitionEvent event, String eventHubName, Set<Integer> allPartitions,
         Set<Integer> expectedPartitions) {
         final PartitionContext context = event.getPartitionContext();

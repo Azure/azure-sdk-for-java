@@ -415,33 +415,38 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
+
         if (!interceptorManager.isPlaybackMode()) {
             return;
         }
 
         listDeletedKeysRunner((keys) -> {
-
             List<DeletedKey> deletedKeys = new ArrayList<>();
+
             for (CreateKeyOptions key : keys.values()) {
                 StepVerifier.create(client.createKey(key))
                     .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
+
             sleepInRecordMode(10000);
 
             for (CreateKeyOptions key : keys.values()) {
                 PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(key.getName());
-
                 AsyncPollResponse<DeletedKey, Void> response = poller.blockLast();
+
                 assertNotNull(response.getValue());
             }
 
             sleepInRecordMode(90000);
+
             DeletedKey deletedKey = client.listDeletedKeys().map(actualKey -> {
                 deletedKeys.add(actualKey);
                 assertNotNull(actualKey.getDeletedOn());
                 assertNotNull(actualKey.getRecoveryId());
+
                 return actualKey;
             }).blockLast();
+
             assertNotNull(deletedKey);
         });
     }

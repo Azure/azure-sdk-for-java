@@ -117,7 +117,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     public abstract void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
 
     @Test
-    public abstract void encryptDecryptRsa() throws Exception;
+    public abstract void encryptDecryptRsaLocal() throws Exception;
 
     void encryptDecryptRsaRunner(Consumer<KeyPair> testRunner) throws Exception {
         final Map<String, String> tags = new HashMap<>();
@@ -126,34 +126,34 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void encryptDecryptLocalAes128Cbc() throws Exception;
+    public abstract void encryptDecryptAes128CbcLocal() throws Exception;
 
     @Test
-    public abstract void encryptDecryptLocalAes192Cbc() throws Exception;
+    public abstract void encryptDecryptAes192CbcLocal() throws Exception;
 
     @Test
-    public abstract void encryptDecryptLocalAes256Cbc() throws Exception;
+    public abstract void encryptDecryptAes256CbcLocal() throws Exception;
 
     @Test
-    public abstract void encryptDecryptLocalAes128CbcPad() throws Exception;
+    public abstract void encryptDecryptAes128CbcPadLocal() throws Exception;
 
     @Test
-    public abstract void encryptDecryptLocalAes192CbcPad() throws Exception;
+    public abstract void encryptDecryptAes192CbcPadLocal() throws Exception;
 
     @Test
-    public abstract void encryptDecryptLocalAes256CbcPad() throws Exception;
+    public abstract void encryptDecryptAes256CbcPadLocal() throws Exception;
 
     @Test
     public abstract void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
-    public abstract void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+    public abstract void signVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
     public abstract void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
 
     @Test
-    public abstract void wrapUnwrapRsa() throws Exception;
+    public abstract void wrapUnwrapRsaLocal() throws Exception;
 
     @Test
     public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;

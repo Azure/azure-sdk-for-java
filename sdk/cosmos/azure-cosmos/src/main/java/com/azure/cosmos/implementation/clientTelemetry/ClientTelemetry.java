@@ -191,6 +191,10 @@ public class ClientTelemetry {
                         httpHeaders.set(HttpConstants.HttpHeaders.DATABASE_ACCOUNT_NAME,
                             this.globalDatabaseAccountName);
                         httpHeaders.set(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
+                        String envName = Configs.getEnvironmentName();
+                        if (StringUtils.isEmpty(envName)) {
+                            httpHeaders.set(HttpConstants.HttpHeaders.ENVIRONMENT_NAME, envName);
+                        }
 
                         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, targetEndpoint,
                             targetEndpoint.getPort(), httpHeaders, fluxBytes);

@@ -234,8 +234,7 @@ public final class BulkExecutor<TContext> {
                 return ((ItemBulkOperation<?>) itemOperation).getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
                         if (result.shouldRetry) {
-                            groupSink.next(itemOperation);
-                            return Mono.empty();
+                            return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation);
                         } else {
                             return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
                                 itemOperation, cosmosBulkItemResponse, this.batchContext));
@@ -264,33 +263,55 @@ public final class BulkExecutor<TContext> {
 
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
             // add it in the mainSink.
-            if (cosmosException.getStatusCode() == HttpResponseStatus.GONE.code() &&
-                itemBulkOperation.getRetryPolicy().shouldRetryForGone(
-                    cosmosException.getStatusCode(),
-                    cosmosException.getSubStatusCode())) {
 
-                mainSink.next(itemOperation);
-                return Mono.empty();
-            } else {
-                return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
-                    if (result.shouldRetry) {
-
-                        groupSink.next(itemOperation);
-                        return Mono.empty();
-                    } else {
-
-                        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
-                            itemOperation, exception, this.batchContext));
-                    }
-                });
-            }
+            return itemBulkOperation.getRetryPolicy()
+                       .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
+                       .flatMap(shouldRetryGone -> {
+                           if (shouldRetryGone) {
+                               mainSink.next(itemOperation);
+                               return Mono.empty();
+                           } else {
+                               return retryOtherExceptions(itemOperation, exception, groupSink, cosmosException,
+                                                           itemBulkOperation);
+                           }
+                       });
         }
 
         return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, this.batchContext));
     }
 
-    private Mono<TransactionalBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
+    private Mono<CosmosBulkOperationResponse<TContext>> enqueueForRetry(
+        Duration backOffTime,
+        FluxSink<CosmosItemOperation> groupSink,
+        CosmosItemOperation itemOperation) {
 
+        if (backOffTime == null || backOffTime.isZero()) {
+            groupSink.next(itemOperation);
+            return Mono.empty();
+        } else {
+            return Mono
+                .delay(backOffTime)
+                .flatMap((dumm) -> {
+                    groupSink.next(itemOperation);
+                    return Mono.empty();
+                });
+        }
+    }
+
+    private Mono<CosmosBulkOperationResponse<TContext>> retryOtherExceptions(
+        CosmosItemOperation itemOperation, Exception exception, FluxSink<CosmosItemOperation> groupSink,
+        CosmosException cosmosException, ItemBulkOperation<?> itemBulkOperation) {
+        return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
+            if (result.shouldRetry) {
+                return this.enqueueForRetry(result.backOffTime, groupSink, itemBulkOperation);
+            } else {
+                return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
+                    itemOperation, exception, this.batchContext));
+            }
+        });
+    }
+
+    private Mono<TransactionalBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
         return this.docClientWrapper.executeBatchRequest(
             BridgeInternal.getLink(this.container), serverRequest, null, false);
     }

@@ -9,7 +9,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/template/
+      - sdk/maps/
 
 pr:
   branches:
@@ -21,13 +21,18 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/template/
+      - sdk/maps/
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: template
+    ServiceDirectory: maps
     Artifacts:
       - name: azure-sdk-maps
         groupId: com.azure
         safeName: azuresdkmaps
+    ServiceDirectory: maps
+    Artifacts:
+      - name: azure-resourcemanager-maps
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermaps

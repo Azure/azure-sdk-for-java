@@ -20,6 +20,7 @@ import com.azure.storage.file.share.models.ShareStorageException
 import java.nio.ByteBuffer
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 
 class FileTestHelper {
     private static final ClientLogger logger = new ClientLogger(FileTestHelper.class)
@@ -150,14 +151,12 @@ class FileTestHelper {
         return randomFile.getPath()
     }
 
-    static void deleteFilesIfExists(String folder) {
+    static void deleteFileIfExists(String folder, String fileName) {
         // Clean up all temporary generated files
         def dir = new File(folder)
         if (dir.isDirectory()) {
-            File[] children = dir.listFiles()
-            for (int i = 0; i < children.length; i++) {
-                Files.delete(children[i].toPath())
-            }
+            def filePath = dir.toPath().resolve(fileName)
+            Files.deleteIfExists((filePath))
         }
     }
 

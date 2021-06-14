@@ -11,25 +11,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MongoDBParameter {
     /*
-     * MongoDB connection string
+     * The connection string of this MongoDB
      */
-    @JsonProperty(value = "connectionString", required = true)
+    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
-     * Database name
+     * A database name in this MongoDB
      */
-    @JsonProperty(value = "database", required = true)
+    @JsonProperty(value = "database")
     private String database;
 
     /*
-     * Query script
+     * The script to query this database
      */
     @JsonProperty(value = "command", required = true)
     private String command;
 
     /**
-     * Get the connectionString property: MongoDB connection string.
+     * Get the connectionString property: The connection string of this MongoDB.
      *
      * @return the connectionString value.
      */
@@ -38,7 +38,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Set the connectionString property: MongoDB connection string.
+     * Set the connectionString property: The connection string of this MongoDB.
      *
      * @param connectionString the connectionString value to set.
      * @return the MongoDBParameter object itself.
@@ -49,7 +49,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Get the database property: Database name.
+     * Get the database property: A database name in this MongoDB.
      *
      * @return the database value.
      */
@@ -58,7 +58,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Set the database property: Database name.
+     * Set the database property: A database name in this MongoDB.
      *
      * @param database the database value to set.
      * @return the MongoDBParameter object itself.
@@ -69,7 +69,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Get the command property: Query script.
+     * Get the command property: The script to query this database.
      *
      * @return the command value.
      */
@@ -78,7 +78,7 @@ public final class MongoDBParameter {
     }
 
     /**
-     * Set the command property: Query script.
+     * Set the command property: The script to query this database.
      *
      * @param command the command value to set.
      * @return the MongoDBParameter object itself.

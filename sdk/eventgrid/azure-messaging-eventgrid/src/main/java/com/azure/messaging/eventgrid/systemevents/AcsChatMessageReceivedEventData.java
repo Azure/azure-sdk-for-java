@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.ChatMessageReceived event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceived event. */
 @Fluent
 public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBaseProperties {
     /*

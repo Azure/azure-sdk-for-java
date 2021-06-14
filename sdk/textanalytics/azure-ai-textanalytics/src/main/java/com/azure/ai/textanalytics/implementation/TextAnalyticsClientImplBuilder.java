@@ -38,6 +38,22 @@ public final class TextAnalyticsClientImplBuilder {
     }
 
     /*
+     * Client Api Version.
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Client Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the TextAnalyticsClientImplBuilder.
+     */
+    public TextAnalyticsClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * Supported Cognitive Services endpoints (protocol and hostname, for
      * example: https://westus.api.cognitive.microsoft.com).
      */
@@ -181,7 +197,7 @@ public final class TextAnalyticsClientImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline, serializerAdapter, endpoint);
+        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline, serializerAdapter, apiVersion, endpoint);
         return client;
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
 import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.DeploymentSlotBase;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -79,5 +80,16 @@ class FunctionDeploymentSlotImpl
     Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
         // PATCH does not work for function app slot
         return submitSiteWithoutSiteConfig(this.innerModel());
+    }
+
+    @Override
+    public String getMasterKey() {
+        return this.getMasterKeyAsync().block();
+    }
+
+    @Override
+    public Mono<String> getMasterKeyAsync() {
+        return this.manager().serviceClient().getWebApps().listHostKeysSlotAsync(
+            this.resourceGroupName(), this.parent().name(), this.name()).map(HostKeysInner::masterKey);
     }
 }

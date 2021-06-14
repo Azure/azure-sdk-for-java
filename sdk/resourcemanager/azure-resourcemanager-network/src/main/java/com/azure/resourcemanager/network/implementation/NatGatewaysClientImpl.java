@@ -217,7 +217,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -231,7 +231,7 @@ public final class NatGatewaysClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -267,7 +267,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -449,7 +449,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -464,7 +464,7 @@ public final class NatGatewaysClientImpl
                             expand,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -501,7 +501,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -637,7 +637,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -652,7 +652,7 @@ public final class NatGatewaysClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -694,7 +694,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -896,7 +896,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
@@ -913,7 +913,7 @@ public final class NatGatewaysClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -950,7 +950,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
@@ -1071,7 +1071,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1087,7 +1087,7 @@ public final class NatGatewaysClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1113,7 +1113,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1209,7 +1209,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1231,7 +1231,7 @@ public final class NatGatewaysClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1263,7 +1263,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-08-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1378,7 +1378,7 @@ public final class NatGatewaysClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1449,7 +1449,7 @@ public final class NatGatewaysClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

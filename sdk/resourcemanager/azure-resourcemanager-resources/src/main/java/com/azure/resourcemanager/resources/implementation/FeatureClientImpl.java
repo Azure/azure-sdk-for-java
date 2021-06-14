@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -163,19 +164,25 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
     @Host("{$host}")
     @ServiceInterface(name = "FeatureClient")
     private interface FeatureClientService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Features/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResult>> listOperations(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResult>> listOperationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -191,8 +198,9 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(context -> service.listOperations(this.getEndpoint(), this.getApiVersion(), context))
+            .withContext(context -> service.listOperations(this.getEndpoint(), this.getApiVersion(), accept, context))
             .<PagedResponse<OperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -202,7 +210,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -220,9 +228,10 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.mergeContext(context);
         return service
-            .listOperations(this.getEndpoint(), this.getApiVersion(), context)
+            .listOperations(this.getEndpoint(), this.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -303,8 +312,13 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(context -> service.listOperationsNext(nextLink, context))
+            .withContext(context -> service.listOperationsNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<OperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -314,7 +328,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.getContext()).readOnly()));
     }
 
     /**
@@ -332,9 +346,14 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.mergeContext(context);
         return service
-            .listOperationsNext(nextLink, context)
+            .listOperationsNext(nextLink, this.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

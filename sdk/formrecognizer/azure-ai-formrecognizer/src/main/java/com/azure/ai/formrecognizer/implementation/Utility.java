@@ -8,7 +8,27 @@ import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,6 +39,9 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -31,9 +54,25 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
-    private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
-    // default time interval for polling
+
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
+    private static final String NAME = "name";
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+    private static final String VERSION = "version";
+
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders();
+    private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
+
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+    static {
+        Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
+        CLIENT_NAME = properties.getOrDefault(NAME, "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault(VERSION, "UnknownVersion");
+    }
+    
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     private Utility() {
@@ -209,5 +248,60 @@ public final class Utility {
                 return monoError(logger, ex);
             }
         };
+    }
+
+    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
+        Configuration configuration, RetryPolicy retryPolicy, AzureKeyCredential credential,
+        TokenCredential tokenCredential, List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
+
+        Configuration buildConfiguration = (configuration == null)
+                                               ? Configuration.getGlobalConfiguration()
+                                               : configuration;
+
+        ClientOptions buildClientOptions = (clientOptions == null) ? DEFAULT_CLIENT_OPTIONS : clientOptions;
+        HttpLogOptions buildLogOptions = (logOptions == null) ? DEFAULT_LOG_OPTIONS : logOptions;
+
+        String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
+        httpPipelinePolicies.add(new AddHeadersPolicy(DEFAULT_HTTP_HEADERS));
+        httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
+        httpPipelinePolicies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+        httpPipelinePolicies.add(new RequestIdPolicy());
+
+        httpPipelinePolicies.addAll(perCallPolicies);
+        HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
+        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+
+        httpPipelinePolicies.add(new AddDatePolicy());
+
+        // Authentications
+        if (tokenCredential != null) {
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+        } else if (credential != null) {
+            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+        } else {
+            // Throw exception that credential and tokenCredential cannot be null
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+        httpPipelinePolicies.addAll(perRetryPolicies);
+        HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
+
+        HttpHeaders headers = new HttpHeaders();
+        buildClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        }
+
+        httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
+
+        return new HttpPipelineBuilder()
+                   .clientOptions(buildClientOptions)
+                   .httpClient(httpClient)
+                   .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
+                   .build();
     }
 }

@@ -1,18 +1,19 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//layout/analyze",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "49af6fd7-d695-4ce3-b53d-e025211e47ae",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5b41d974-2f73-458e-a6a1-f8a4cd520584",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "224",
       "retry-after" : "0",
       "Content-Length" : "224",
       "StatusCode" : "401",
       "Body" : "{\"error\":{\"code\":\"401\",\"message\":\"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:41:34 GMT"
+      "Date" : "Tue, 11 May 2021 21:19:25 GMT"
     },
     "Exception" : null
   } ],

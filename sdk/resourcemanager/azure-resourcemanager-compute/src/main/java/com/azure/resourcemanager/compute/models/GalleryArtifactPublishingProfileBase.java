@@ -39,13 +39,13 @@ public class GalleryArtifactPublishingProfileBase {
     private Boolean excludeFromLatest;
 
     /*
-     * The timestamp for when the gallery Image Version is published.
+     * The timestamp for when the gallery image version is published.
      */
     @JsonProperty(value = "publishedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime publishedDate;
 
     /*
-     * The end of life date of the gallery Image Version. This property can be
+     * The end of life date of the gallery image version. This property can be
      * used for decommissioning purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
@@ -125,7 +125,7 @@ public class GalleryArtifactPublishingProfileBase {
     }
 
     /**
-     * Get the publishedDate property: The timestamp for when the gallery Image Version is published.
+     * Get the publishedDate property: The timestamp for when the gallery image version is published.
      *
      * @return the publishedDate value.
      */
@@ -134,7 +134,7 @@ public class GalleryArtifactPublishingProfileBase {
     }
 
     /**
-     * Get the endOfLifeDate property: The end of life date of the gallery Image Version. This property can be used for
+     * Get the endOfLifeDate property: The end of life date of the gallery image version. This property can be used for
      * decommissioning purposes. This property is updatable.
      *
      * @return the endOfLifeDate value.
@@ -144,7 +144,7 @@ public class GalleryArtifactPublishingProfileBase {
     }
 
     /**
-     * Set the endOfLifeDate property: The end of life date of the gallery Image Version. This property can be used for
+     * Set the endOfLifeDate property: The end of life date of the gallery image version. This property can be used for
      * decommissioning purposes. This property is updatable.
      *
      * @param endOfLifeDate the endOfLifeDate value to set.

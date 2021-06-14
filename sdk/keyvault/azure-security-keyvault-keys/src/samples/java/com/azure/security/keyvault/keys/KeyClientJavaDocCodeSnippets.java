@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -83,6 +84,15 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyVaultKey ecKey = keyClient.createEcKey(createEcKeyOptions);
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey octKey = keyClient.createOctKey(createOctKeyOptions);
+
+        System.out.printf("Key is created with name %s and id %s %n", octKey.getName(), octKey.getId());
+        // END: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions
     }
 
     /**
@@ -114,33 +124,6 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key is imported with name %s and id %s \n", importedKeyResp.getName(),
             importedKeyResp.getId());
         // END: com.azure.security.keyvault.keys.keyclient.importKeyWithResponse#options-response
-    }
-
-    /**
-     * Generates code samples for using {@link KeyClient#exportKey(String, String)},
-     * {@link KeyClient#exportKey(String, String, String)} and
-     * {@link KeyClient#exportKeyWithResponse(String, String, String, Context)}
-     */
-    public void exportKeySnippets() {
-        KeyClient keyClient = createClient();
-
-        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#String-String
-        KeyVaultKey exportedKey = keyClient.exportKey("keyName", "environment");
-        System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKey.getName(), exportedKey.getId());
-        // END: com.azure.security.keyvault.keys.keyclient.exportKey#String-String
-
-        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKey#String-String-String
-        KeyVaultKey exportKey = keyClient.exportKey("keyName", "version", "environment");
-        System.out.printf("Key was exported with name: %s and id: %s. \n", exportKey.getName(),
-            exportKey.getId());
-        // END: com.azure.security.keyvault.keys.keyclient.exportKey#String-String-String
-
-        // BEGIN: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#String-String-String-Context
-        KeyVaultKey exportedKeyFromResponse = keyClient.exportKeyWithResponse("keyName", "version", "environment",
-            new Context(key1, value1)).getValue();
-        System.out.printf("Key was exported with name: %s and id: %s. \n", exportedKeyFromResponse.getName(),
-            exportedKeyFromResponse.getId());
-        // END: com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#String-String-String-Context
     }
 
     /**
@@ -222,6 +205,16 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyVaultKey ecKey = keyClient.createEcKeyWithResponse(createEcKeyOptions, new Context(key1, value1)).getValue();
         System.out.printf("Key is created with name %s and id %s %n", ecKey.getName(), ecKey.getId());
         // END: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions-Context
+
+        // BEGIN: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions-Context
+        CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions("keyName")
+            .setNotBefore(OffsetDateTime.now().plusDays(1))
+            .setExpiresOn(OffsetDateTime.now().plusYears(1));
+        KeyVaultKey octKey =
+            keyClient.createOctKeyWithResponse(createOctKeyOptions, new Context(key1, value1)).getValue();
+
+        System.out.printf("Key is created with name %s and id %s %n", octKey.getName(), octKey.getId());
+        // END: com.azure.security.keyvault.keys.async.keyClient.createOctKey#CreateOctKeyOptions-Context
     }
 
     /**

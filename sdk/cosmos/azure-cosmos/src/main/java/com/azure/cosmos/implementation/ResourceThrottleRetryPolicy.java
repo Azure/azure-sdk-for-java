@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,12 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     // should we make this atomic int?
     private int currentAttemptCount;
     private Duration cumulativeRetryDelay;
+    private RetryContext retryContext;
+
+    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, RetryContext retryContext) {
+        this(maxAttemptCount, maxWaitTime);
+        this.retryContext = retryContext;
+    }
 
     public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime) {
         this(maxAttemptCount, maxWaitTime, 1);
@@ -50,8 +58,17 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         Duration retryDelay = Duration.ZERO;
 
+        CosmosException dce = Utils.as(exception, CosmosException.class);
+        if (dce == null || !Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS)) {
+            logger.debug(
+                "Operation will NOT be retried - not a throttled request. Current attempt {}",
+                this.currentAttemptCount,
+                exception);
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
+        }
+
         if (this.currentAttemptCount < this.maxAttemptCount &&
-                (retryDelay = checkIfRetryNeeded(exception)) != null) {
+                (retryDelay = checkIfRetryNeeded(dce)) != null) {
             this.currentAttemptCount++;
             logger.debug(
                     "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
@@ -82,6 +99,11 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         // no op
     }
 
+    @Override
+    public RetryContext getRetryContext() {
+        return this.retryContext;
+    }
+
     // if retry not needed reaturns null
     /// <summary>
     /// Returns True if the given exception <paramref name="exception"/> is retriable
@@ -89,13 +111,9 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     /// <param name="exception">Exception to examine</param>
     /// <param name="retryDelay">retryDelay</param>
     /// <returns>True if the exception is retriable; False otherwise</returns>
-    private Duration checkIfRetryNeeded(Exception exception) {
+    private Duration checkIfRetryNeeded(CosmosException dce) {
         Duration retryDelay = Duration.ZERO;
-
-        CosmosException dce = Utils.as(exception, CosmosException.class);
-
         if (dce != null){
-
             if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS))  {
                 retryDelay = dce.getRetryAfterDuration();
                 if (this.backoffDelayFactor > 1) {
@@ -107,7 +125,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 {
                     if (retryDelay == Duration.ZERO){
                         // we should never reach here as BE should turn non-zero of retryDelay
-                        logger.trace("Received retryDelay of 0 with Http 429", exception);
+                        logger.trace("Received retryDelay of 0 with Http 429", dce);
                         retryDelay = DEFAULT_RETRY_IN_SECONDS;
                     }
 

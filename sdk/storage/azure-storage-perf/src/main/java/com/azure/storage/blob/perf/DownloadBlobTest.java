@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.perf;
 
+import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -42,20 +43,6 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
         blobClient.download(DEV_NULL);
     }
 
-    static class NullOutputStream extends OutputStream {
-        @Override
-        public void write(int b) {
-
-        }
-
-        @Override
-        public void write(byte[] b) {
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
-        }
-    }
 
     @Override
     public Mono<Void> runAsync() {

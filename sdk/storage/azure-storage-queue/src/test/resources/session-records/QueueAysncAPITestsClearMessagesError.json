@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueaysncapitestsclearmessageserror57112b96e61f26/messages",
+    "Uri" : "https://REDACTED.queue.core.windows.net/9d353be99d353be9677455254f4dbc9fbde048e5b8/messages",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "52d6a0e0-6179-4f4e-bb39-4fdf5fcbc085"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "945ac91f-930d-4070-9ba7-f85411a75118"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "37a3a2ab-3003-009b-0503-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a3a2ab-3003-009b-0503-3a8ca5000000\nTime:2020-06-04T00:05:26.6073342Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:05:26 GMT",
-      "x-ms-client-request-id" : "52d6a0e0-6179-4f4e-bb39-4fdf5fcbc085",
+      "x-ms-request-id" : "d99b06ba-6003-004d-2a09-4139cd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d99b06ba-6003-004d-2a09-4139cd000000\nTime:2021-05-04T17:18:39.5653924Z</Message></Error>",
+      "x-ms-client-request-id" : "945ac91f-930d-4070-9ba7-f85411a75118",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsclearmessageserror57112b96e61f26" ]
+  "variables" : [ "9d353be99d353be9677455254f4dbc9fbde048e5b8" ]
 }

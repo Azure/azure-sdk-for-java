@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.*;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
@@ -45,7 +44,6 @@ public class PhoneNumbersClientBuilderTest {
     void setUp() {
         this.httpClient = mock(HttpClient.class);
         this.clientBuilder = Mockito.spy(new PhoneNumbersClientBuilder());
-        assumeTrue(Configuration.getGlobalConfiguration().get("TEST_PACKAGES_ENABLED", "all").matches("all|phonenumbers"));
     }
 
     @AfterEach
@@ -339,8 +337,8 @@ public class PhoneNumbersClientBuilderTest {
 
         // Validate HttpPipelinePolicy settings
         assertEquals(5, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
-        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
-        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
+        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
+        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(4));
 
@@ -392,8 +390,8 @@ public class PhoneNumbersClientBuilderTest {
         int customPolicyIndex = 4;
 
         assertEquals(expectedPolicyCount, phoneNumberManagementClient.getHttpPipeline().getPolicyCount());
-        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
-        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(1));
+        assertEquals(spyHelper.userAgentPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(0));
+        assertEquals(spyHelper.authenticationPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(2));
         assertEquals(spyHelper.cookiePolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(3));
         assertEquals(spyHelper.httpLoggingPolicyRef.get(), phoneNumberManagementClient.getHttpPipeline().getPolicy(lastPolicyIndex));
 

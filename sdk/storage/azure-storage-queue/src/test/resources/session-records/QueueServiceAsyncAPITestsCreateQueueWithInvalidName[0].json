@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/a_b",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "73c76bc4-9ef6-4b65-b3dc-643bc13a4421"
+    },
+    "Response" : {
+      "content-length" : "243",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidResourceName",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "66d7cef2-0003-0074-3409-41c2d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidResourceName</Code><Message>The specifed resource name contains invalid characters.\nRequestId:66d7cef2-0003-0074-3409-41c2d1000000\nTime:2021-05-04T17:18:36.7649897Z</Message></Error>",
+      "x-ms-client-request-id" : "73c76bc4-9ef6-4b65-b3dc-643bc13a4421",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

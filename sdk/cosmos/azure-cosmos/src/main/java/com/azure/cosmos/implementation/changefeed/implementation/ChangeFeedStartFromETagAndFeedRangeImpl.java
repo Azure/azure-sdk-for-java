@@ -82,19 +82,21 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
     public void populatePropertyBag() {
         super.populatePropertyBag();
 
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-            ChangeFeedStartFromTypes.LEASE);
+        synchronized(this) {
+            setProperty(
+                this,
+                Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
+                ChangeFeedStartFromTypes.LEASE);
 
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_START_FROM_ETAG,
-            this.eTag);
+            setProperty(
+                this,
+                Constants.Properties.CHANGE_FEED_START_FROM_ETAG,
+                this.eTag);
 
-        this.feedRange.setProperties(
-            this,
-            true);
+            this.feedRange.setProperties(
+                this,
+                true);
+        }
     }
 
     @Override

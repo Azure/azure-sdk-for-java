@@ -4,16 +4,15 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.AccountBackupsClient;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
-import com.azure.resourcemanager.netapp.fluent.models.BackupsListInner;
 import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Backup;
-import com.azure.resourcemanager.netapp.models.BackupsList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountBackupsImpl implements AccountBackups {
@@ -29,27 +28,14 @@ public final class AccountBackupsImpl implements AccountBackups {
         this.serviceManager = serviceManager;
     }
 
-    public BackupsList list(String resourceGroupName, String accountName) {
-        BackupsListInner inner = this.serviceClient().list(resourceGroupName, accountName);
-        if (inner != null) {
-            return new BackupsListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<Backup> list(String resourceGroupName, String accountName) {
+        PagedIterable<BackupInner> inner = this.serviceClient().list(resourceGroupName, accountName);
+        return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
     }
 
-    public Response<BackupsList> listWithResponse(String resourceGroupName, String accountName, Context context) {
-        Response<BackupsListInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BackupsListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<Backup> list(String resourceGroupName, String accountName, Context context) {
+        PagedIterable<BackupInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
+        return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
     }
 
     public Backup get(String resourceGroupName, String accountName, String backupName) {

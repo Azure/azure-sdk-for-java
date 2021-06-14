@@ -23,4 +23,18 @@ public class RoleController {
     public String group2() {
         return "group2 message";
     }
+
+    @GetMapping("group1Id")
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_<group1-id>')")
+    public String group1Id() {
+        return "group1Id message";
+    }
+
+    @GetMapping("group2Id")
+    @ResponseBody
+    @PreAuthorize("hasRole('ROLE_<group2-id>')")
+    public String group2Id() {
+        return "group2Id message";
+    }
 }

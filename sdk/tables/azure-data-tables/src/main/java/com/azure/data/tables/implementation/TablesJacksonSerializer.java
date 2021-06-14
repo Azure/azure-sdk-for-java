@@ -104,7 +104,11 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     @Override
     public <U> U deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
-        return deserialize(new ByteArrayInputStream(bytes), type, encoding);
+        if (bytes == null || bytes.length == 0) {
+            return super.deserialize(bytes, type, encoding);
+        } else {
+            return deserialize(new ByteArrayInputStream(bytes), type, encoding);
+        }
     }
 
     private static boolean shouldGetEntityFieldsAsMap(Type type) {

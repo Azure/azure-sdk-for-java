@@ -7,6 +7,7 @@ package com.azure.resourcemanager.confluent.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
@@ -23,6 +24,12 @@ public class OrganizationResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationResourceInner.class);
 
     /*
+     * Metadata pertaining to creation and last modification of the resource
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
      * The creation time of the resource.
      */
     @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
@@ -31,7 +38,7 @@ public class OrganizationResourceInner extends Resource {
     /*
      * Provision states for confluent RP
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisionState provisioningState;
 
     /*
@@ -49,14 +56,23 @@ public class OrganizationResourceInner extends Resource {
     /*
      * Confluent offer detail
      */
-    @JsonProperty(value = "properties.offerDetail")
+    @JsonProperty(value = "properties.offerDetail", required = true)
     private OfferDetail offerDetail;
 
     /*
      * Subscriber detail
      */
-    @JsonProperty(value = "properties.userDetail")
+    @JsonProperty(value = "properties.userDetail", required = true)
     private UserDetail userDetail;
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the createdTime property: The creation time of the resource.
@@ -74,17 +90,6 @@ public class OrganizationResourceInner extends Resource {
      */
     public ProvisionState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Provision states for confluent RP.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the OrganizationResourceInner object itself.
-     */
-    public OrganizationResourceInner withProvisioningState(ProvisionState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**
@@ -165,10 +170,20 @@ public class OrganizationResourceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (offerDetail() != null) {
+        if (offerDetail() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property offerDetail in model OrganizationResourceInner"));
+        } else {
             offerDetail().validate();
         }
-        if (userDetail() != null) {
+        if (userDetail() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property userDetail in model OrganizationResourceInner"));
+        } else {
             userDetail().validate();
         }
     }

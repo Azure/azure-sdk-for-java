@@ -45,9 +45,9 @@ public class CosmosEncryptionAsyncContainer {
     private final Scheduler encryptionScheduler;
     private final CosmosResponseFactory responseFactory = new CosmosResponseFactory();
     private final CosmosAsyncContainer container;
-    private EncryptionProcessor encryptionProcessor;
+    private final EncryptionProcessor encryptionProcessor;
 
-    private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
+    private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
@@ -70,7 +70,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -107,7 +107,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param itemId       id of the item.
      * @param partitionKey partitionKey of the item.
      * @param options      the request options.
-     * @return an {@link Mono} containing the Cosmos item resource response.
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosItemResponse<Object>> deleteItem(String itemId,
                                                        PartitionKey partitionKey,
@@ -123,7 +123,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item,
@@ -159,7 +159,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param partitionKey   the partition key.
      * @param requestOptions request option
      * @param <T>            serialization class type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> replaceItem(T item,
@@ -197,7 +197,7 @@ public class CosmosEncryptionAsyncContainer {
      * @param requestOptions request options
      * @param classType      deserialization class type
      * @param <T>            type
-     * @return result
+     * @return a {@link Mono} containing the Cosmos item resource response.
      */
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
                                                     PartitionKey partitionKey,
@@ -232,7 +232,7 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Query for items in the current container using a string.
+     * Query for items in the current container using a {@link SqlQuerySpec}.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
@@ -260,7 +260,7 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Query for items in the current container using a string.
+     * Query for items in the current container using a {@link SqlQuerySpecWithEncryption}.
      * <p>
      * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
      * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.

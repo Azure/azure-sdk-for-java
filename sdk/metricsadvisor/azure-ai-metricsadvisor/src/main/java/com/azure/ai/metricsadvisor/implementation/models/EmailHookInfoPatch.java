@@ -18,14 +18,14 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      * The hookParameter property.
      */
     @JsonProperty(value = "hookParameter")
-    private EmailHookParameter hookParameter;
+    private EmailHookParameterPatch hookParameter;
 
     /**
      * Get the hookParameter property: The hookParameter property.
      *
      * @return the hookParameter value.
      */
-    public EmailHookParameter getHookParameter() {
+    public EmailHookParameterPatch getHookParameter() {
         return this.hookParameter;
     }
 
@@ -35,7 +35,7 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
      * @param hookParameter the hookParameter value to set.
      * @return the EmailHookInfoPatch object itself.
      */
-    public EmailHookInfoPatch setHookParameter(EmailHookParameter hookParameter) {
+    public EmailHookInfoPatch setHookParameter(EmailHookParameterPatch hookParameter) {
         this.hookParameter = hookParameter;
         return this;
     }

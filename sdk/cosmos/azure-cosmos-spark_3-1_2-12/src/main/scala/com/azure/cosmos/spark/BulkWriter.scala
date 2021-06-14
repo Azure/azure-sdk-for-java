@@ -4,8 +4,8 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.spark.BulkWriter.MaxNumberOfThreadsPerCPUCore
-import com.azure.cosmos.{BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.spark.BulkWriter.DefaultMaxPendingOperationPerCore
+import com.azure.cosmos.{BulkItemRequestOptions, BulkOperations, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.Disposable
 import reactor.core.publisher.Sinks
@@ -16,6 +16,10 @@ import reactor.core.scheduler.Schedulers
 import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
+import com.azure.cosmos.spark.BulkWriter.emitFailureHandler
+import reactor.core.publisher.Sinks.EmitFailureHandler
+import reactor.core.publisher.Sinks.EmitResult
+
 import scala.collection.concurrent.TrieMap
 
 //scalastyle:off null
@@ -30,8 +34,8 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   // TODO: moderakh this requires tuning.
   // TODO: moderakh should we do a max on the max memory to ensure we don't run out of memory?
-  private val maxConcurrency = writeConfig.maxConcurrencyOpt
-    .getOrElse(SparkUtils.getNumberOfHostCPUCores * MaxNumberOfThreadsPerCPUCore)
+  private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
+    .getOrElse(SparkUtils.getNumberOfHostCPUCores * DefaultMaxPendingOperationPerCore)
 
   private val closed = new AtomicBoolean(false)
   private val lock = new ReentrantLock
@@ -39,6 +43,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
   private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+
   // TODO: moderakh discuss the context issue in the core SDK bulk api with the team.
   // public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
   //    Flux<CosmosItemOperation> operations,
@@ -52,7 +57,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   // TODO: moderakh once that is added in the core SDK, drop activeOperations and rely on the core SDK
   // context passing for bulk
   private val activeOperations = new TrieMap[CosmosItemOperation, OperationContext]()
-  private val semaphore = new Semaphore(maxConcurrency)
+  private val semaphore = new Semaphore(maxPendingOperations)
 
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
@@ -90,7 +95,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                   SMono.defer(() => {
                     scheduleWriteInternal(itemOperation.getPartitionKeyValue,
                       itemOperation.getItem.asInstanceOf[ObjectNode],
-                      OperationContext(context.itemId, context.partitionKeyValue, context.attemptNumber + 1))
+                      OperationContext(context.itemId, context.partitionKeyValue, context.eTag, context.attemptNumber + 1))
                     SMono.empty
                   }).subscribeOn(Schedulers.boundedElastic())
                     .subscribe()
@@ -153,7 +158,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     val cnt = totalScheduledMetrics.getAndIncrement()
     logDebug(s"total scheduled ${cnt}")
 
-    scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(getId(objectNode), partitionKeyValue, 1))
+    scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1))
   }
 
   private def scheduleWriteInternal(partitionKeyValue: PartitionKey, objectNode: ObjectNode, operationContext: OperationContext): Unit = {
@@ -167,12 +172,24 @@ class BulkWriter(container: CosmosAsyncContainer,
         BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue)
       case ItemWriteStrategy.ItemAppend =>
         BulkOperations.getCreateItemOperation(objectNode, partitionKeyValue)
+      case ItemWriteStrategy.ItemDelete =>
+        BulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue)
+      case ItemWriteStrategy.ItemDeleteIfNotModified =>
+        BulkOperations.getDeleteItemOperation(
+          operationContext.itemId,
+          partitionKeyValue,
+          operationContext.eTag match {
+            case Some(eTag) => new BulkItemRequestOptions().setIfMatchETag(eTag)
+            case _ =>  new BulkItemRequestOptions()
+          })
       case _ =>
         throw new RuntimeException(s"${writeConfig.itemWriteStrategy} not supported")
     }
 
     activeOperations.put(bulkItemOperation, operationContext)
-    bulkInputEmitter.tryEmitNext(bulkItemOperation)
+
+    // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
+    bulkInputEmitter.emitNext(bulkItemOperation, emitFailureHandler)
   }
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
@@ -213,7 +230,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
         assume(activeTasks.get() == 0)
         assume(activeOperations.isEmpty)
-        assume(semaphore.availablePermits() == maxConcurrency)
+        assume(semaphore.availablePermits() == maxPendingOperations)
 
         logInfo(s"flushAndClose completed with no error. " +
           s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, totalScheduled=${totalScheduledMetrics}")
@@ -252,9 +269,13 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private def shouldIgnore(cosmosException: CosmosException): Boolean = {
-    // ignore 409 on create-item
-    writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemAppend &&
-      Exceptions.isResourceExistsException(cosmosException)
+    writeConfig.itemWriteStrategy match {
+      case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(cosmosException)
+      case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(cosmosException)
+      case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(cosmosException) ||
+        Exceptions.isPreconditionFailedException(cosmosException)
+      case _ => false
+    }
   }
 
   private def shouldRetry(cosmosException: CosmosException, operationContext: OperationContext): Boolean = {
@@ -262,12 +283,21 @@ class BulkWriter(container: CosmosAsyncContainer,
       Exceptions.canBeTransientFailure(cosmosException)
   }
 
-  private case class OperationContext(itemId: String, partitionKeyValue: PartitionKey, attemptNumber: Int /** starts from 1 * */)
+  private case class OperationContext(itemId: String, partitionKeyValue: PartitionKey, eTag: Option[String], attemptNumber: Int /** starts from 1 * */)
 
   private def getId(objectNode: ObjectNode) = {
     val idField = objectNode.get(CosmosConstants.Properties.Id)
     assume(idField != null && idField.isTextual)
     idField.textValue()
+  }
+
+  private def getETag(objectNode: ObjectNode) = {
+    val eTagField = objectNode.get(CosmosConstants.Properties.ETag)
+    if (eTagField != null && eTagField.isTextual) {
+      Some(eTagField.textValue())
+    } else {
+      None
+    }
   }
 }
 
@@ -279,7 +309,10 @@ private object BulkWriter {
   // hence we want 2MB/ 1KB items per partition to be buffered
   // 2 * 1024 * 167 items should get buffered on a 16 CPU core VM
   // so per CPU core we want (2 * 1024 * 167 / 16) max items to be buffered
-  val MaxNumberOfThreadsPerCPUCore = 2 * 1024 * 167 / 16
+  val DefaultMaxPendingOperationPerCore = 2 * 1024 * 167 / 16
+
+  val emitFailureHandler: EmitFailureHandler =
+        (signalType, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
 }
 
 //scalastyle:on multiple.string.literals

@@ -395,6 +395,39 @@ ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
 
 ServiceBusReceiverClient receiverClient = sessionClient.acceptSession("my-session-id");
 ```
+
+## Working with Service Access Signature Token
+
+Previously, in `azure-servicebus`, you could create a new instance from the given connection string and entity path as
+shown below. 
+
+```java
+String SHARED_ACCESS_SIGNATURE_TOKEN = "<Shared Access Signatures for specific Resource>";
+String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessSignatureToken=" + SHARED_ACCESS_SIGNATURE_TOKEN;
+
+ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(connectionString, "<YOUR-QUEUE-NAME>");
+QueueClient receiveClient = new QueueClient(connectionStringBuilder, ReceiveMode.PEEKLOCK);
+```
+Now in `azure-messaging-servicebus`, the 'connectionString' should use the key as 'SharedAccessSignature' instead of 
+'SharedAccessSignatureToken'. Another change is when you specify 'SharedAccessSignature', you should not specify 
+'SharedAccessKeyName' and 'SharedAccessKey' because you want to use 'SharedAccessSignature' to access resources.
+
+Here is an example of how a 'ServiceBusReceiverClient' can be created.
+
+```java
+String SHARED_ACCESS_SIGNATURE_TOKEN = "<Shared Access Signatures for specific Resource>";
+String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessSignature=" + SHARED_ACCESS_SIGNATURE_TOKEN;
+
+ServiceBusClientBuilder builder = new ServiceBusClientBuilder().connectionString(connectionString);
+
+ServiceBusReceiverClient receiver = builder
+                    .receiver()
+                    .queueName("Your Queue Name")
+                    .buildClient();
+
+```
+You can read more about how to generate Shared Access Signatures [here](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas).
+
 ## Upcoming features
  - [Cross entity transactions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via) 
  to support transaction across different entities.

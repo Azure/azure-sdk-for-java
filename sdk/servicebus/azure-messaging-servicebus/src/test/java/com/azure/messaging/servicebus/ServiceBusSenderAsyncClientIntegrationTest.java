@@ -107,7 +107,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
         int count = 4;
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
@@ -126,7 +126,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
 
         final String messageId = UUID.randomUUID().toString();
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(1024);

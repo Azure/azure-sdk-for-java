@@ -7,21 +7,17 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-maps-service</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-preview</version><!-- Need not change for every release-->
+  <version>1.0.0</version><!-- Need not change for every release-->
+
   <profiles>
-    <!-- DO NOT CHANGE THE ORDER IN WHICH THESE PROFILES ARE DEFINED -->
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-maps</module>
       </modules>
+
       <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-maps-service</artifactId>
-          <version>2.0.0-preview</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
-        </dependency>
       </dependencies>
+
       <build>
         <plugins>
           <plugin>
@@ -51,6 +47,7 @@
       </activation>
       <modules>
         <module>azure-maps-service</module>
+        <module>azure-resourcemanager-maps</module>
       </modules>
     </profile>
   </profiles>

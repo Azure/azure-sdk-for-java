@@ -6,3 +6,6 @@ azure:
       tenant-id: ${your-tenant-id}
       app-id-uri: ${your-app-id-uri}         # If you are using v1.0 token, please configure app-id-uri for `aud` verification
       client-id: ${your-client-id}           # If you are using v2.0 token, please configure client-id for `aud` verification
+      base-uri: ${your-base-uri}             # Such as: https://xxxxb2c.b2clogin.com
+      user-flows:
+        sign-up-or-sign-in: ${sign-up-or-sign-in-user-flow-name}

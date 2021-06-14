@@ -1,5 +1,8 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+
 ## 1.0.0 (2021-02-26)
 
 This is the initial stable release of Azure Mixed Reality Authentication library. For more information, please see the [README][read_me] and [samples][samples].

@@ -1,7 +1,15 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.6.0-beta.1 (Unreleased)
 
+- Supported attach for output stream for container instance in `ContainerGroup`.
+
+## 2.5.0 (2021-05-28)
+- Updated core dependency from resources
+
+## 2.4.0 (2021-04-28)
+
+- Updated `api-version` to `2021-03-01`
 
 ## 2.3.0 (2021-03-30)
 

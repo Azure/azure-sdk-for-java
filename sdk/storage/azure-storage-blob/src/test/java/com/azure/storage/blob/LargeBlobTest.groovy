@@ -16,6 +16,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Ignore
@@ -44,22 +45,22 @@ class LargeBlobTest extends APISpec {
         blobName = generateBlobName()
         def basic = cc.getBlobClient(blobName)
         this.blobClient = getBlobClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             basic.getBlobUrl(),
             new PayloadDroppingPolicy(),
             // Regenerate auth header after body got substituted
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.primaryAccount.credential)
         )
         this.blobAsyncClient = getBlobAsyncClient(
-            primaryCredential,
+            env.primaryAccount.credential,
             basic.getBlobUrl(),
             new PayloadDroppingPolicy(),
             // Regenerate auth header after body got substituted
-            new StorageSharedKeyCredentialPolicy(primaryCredential)
+            new StorageSharedKeyCredentialPolicy(env.primaryAccount.credential)
         )
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test sends payload over the wire
     def "Stage Real Large Blob"() {
@@ -78,7 +79,7 @@ class LargeBlobTest extends APISpec {
         blockList.committedBlocks.get(0).getSizeLong() == maxBlockSize
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test sends payload over the wire
     def "Upload Real Large Blob in Single Upload"() {
@@ -101,7 +102,7 @@ class LargeBlobTest extends APISpec {
         properties.committedBlockCount == null
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test sends payload over the wire
     def "Upload Real Large Blob in Single Upload Async"() {
@@ -122,7 +123,7 @@ class LargeBlobTest extends APISpec {
         properties.committedBlockCount == null
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("IS mark/reset")
     // This test does not send large payload over the wire
     def "Upload Large Blob in Single Upload"() {
@@ -141,7 +142,7 @@ class LargeBlobTest extends APISpec {
         putBlobPayloadSizes.get(0) == size
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Upload Large Blob in Single Upload Async"() {
@@ -158,7 +159,7 @@ class LargeBlobTest extends APISpec {
         putBlobPayloadSizes.get(0) == size
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("IS mark/reset")
     // This test does not send large payload over the wire
     def "Stage Large Blob"() {
@@ -175,7 +176,7 @@ class LargeBlobTest extends APISpec {
         putBlockPayloadSizes[0] == maxBlockSize
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("OOM")
     // This test does not send large payload over the wire
     def "Upload Large Input"() {
@@ -194,7 +195,7 @@ class LargeBlobTest extends APISpec {
         putBlockPayloadSizes[1] == maxBlockSize
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test does not send large payload over the wire
     def "Upload Largest Input"() {
@@ -213,7 +214,7 @@ class LargeBlobTest extends APISpec {
         blocksCount.get() == blocks
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("IS mark/reset")
     // This test does not send large payload over the wire
     def "Upload Large Input Sync"() {
@@ -234,7 +235,7 @@ class LargeBlobTest extends APISpec {
         putBlockPayloadSizes[1] == maxBlockSize
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test does not send large payload over the wire
     def "Upload Largest Input Sync"() {
@@ -254,7 +255,7 @@ class LargeBlobTest extends APISpec {
         blocksCount.get() == blocks
     }
 
-    @Requires({ liveMode() })
+    @LiveOnly
     @Ignore("Takes really long time")
     // This test sends payload over the wire
     def "Upload Large File"() {

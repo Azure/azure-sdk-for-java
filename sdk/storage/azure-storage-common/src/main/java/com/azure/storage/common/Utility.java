@@ -271,9 +271,9 @@ public final class Utility {
                     int len = (int) count;
                     while (numOfBytes != -1 && offset < count) {
                         numOfBytes = data.read(cache, offset, len);
-                        offset += numOfBytes;
-                        len -= numOfBytes;
                         if (numOfBytes != -1) {
+                            offset += numOfBytes;
+                            len -= numOfBytes;
                             currentTotalLength[0] += numOfBytes;
                         }
                     }

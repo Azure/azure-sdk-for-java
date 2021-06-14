@@ -1,6 +1,44 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.3.0-beta.1 (Unreleased)
+
+## 2.2.0 (2021-06-11)
+
+### New Features
+
+- Exposing CbsAuthorizationType.
+- Exposing ManagementNode that can perform management and metadata operations on an AMQP message broker.
+- AmqpConnection, AmqpSession, AmqpSendLink, and AmqpReceiveLink extend from AsyncCloseable.
+- Delivery outcomes and delivery states are added.
+
+### Bug Fixes
+
+- Fixed a bug where connection and sessions would not be disposed when their endpoint closed.
+- Fixed a bug where ReactorExecutor did not dispose of its scheduler when "IO Sink was interrupted".
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+- Upgraded `proton-j` from `0.33.4` to `0.33.8`.
+- Upgraded `qpid-proton-j-extensions` from `1.2.3` to `1.2.4`.
+
+## 2.0.6 (2021-05-24)
+### Bug Fixes
+- Fixed a bug that caused amqp connection not to retry when network error happened.
+
+## 2.0.5 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
+- Upgraded Reactor from `3.4.3` to `3.4.5`.
+
+## 2.2.0-beta.1 (2021-04-14)
+### New Features
+- Adding support for AMQP data types SEQUENCE and VALUE.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.15.0`.
 
 ## 2.0.4 (2021-04-12)
 
@@ -135,7 +173,7 @@
 - Fixes AMQP link handlers not to close associated sessions when they are closed.
 - Move to use Schedulers.single() because pushing to Qpid's reactor is not thread-safe.
 
-## 1.0.0-beta.8 (12-03-2019)
+## 1.0.0-beta.8 (2019-12-03)
 
 - Changed preview to beta.
 - Fixes authorization when using client credentials.
@@ -158,6 +196,7 @@
 - Updated CBS -> Cbs.
 - Added `AmqpEndpointStateUtil`.
 - Closed ReactorReceiver on errors or closures in link.
+
 
 ## 1.0.0-preview.7 (2019-11-04)
 

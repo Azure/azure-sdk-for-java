@@ -76,6 +76,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -337,6 +338,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             }
 
+            this.diagnosticsClientConfig.withConnectionMode(this.getConnectionPolicy().getConnectionMode());
             this.diagnosticsClientConfig.withMultipleWriteRegionsEnabled(this.connectionPolicy.isMultipleWriteRegionsEnabled());
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
@@ -972,9 +974,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.DELETE)
             .flatMap(requestPopulated -> {
-                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                    documentClientRetryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated);
@@ -984,10 +985,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.GET)
             .flatMap(requestPopulated -> {
-                    if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                        documentClientRetryPolicy.updateEndTime();
-                        requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
-                    }
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
+                }
+
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated);
                 });
     }
@@ -1216,6 +1217,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
         }
 
+        if (options.getDedicatedGatewayRequestOptions() != null &&
+            options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(options.getDedicatedGatewayRequestOptions())));
+        }
+
         return headers;
     }
 
@@ -1303,20 +1310,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             InternalObjectNode document,
             PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition != null) {
-            String path = partitionKeyDefinition.getPaths().iterator().next();
-            List<String> parts = PathParser.getPathParts(path);
-            if (parts.size() >= 1) {
-                Object value = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, parts);
-                if (value == null || value.getClass() == ObjectNode.class) {
-                    value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
-                }
+            switch (partitionKeyDefinition.getKind()) {
+                case HASH:
+                    String path = partitionKeyDefinition.getPaths().iterator().next();
+                    List<String> parts = PathParser.getPathParts(path);
+                    if (parts.size() >= 1) {
+                        Object value = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, parts);
+                        if (value == null || value.getClass() == ObjectNode.class) {
+                            value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+                        }
 
-                if (value instanceof PartitionKeyInternal) {
-                    return (PartitionKeyInternal) value;
-                } else {
-                    return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
+                        if (value instanceof PartitionKeyInternal) {
+                            return (PartitionKeyInternal) value;
+                        } else {
+                            return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
+                        }
+                    }
+                    break;
+                case MULTI_HASH:
+                    Object[] partitionKeyValues = new Object[partitionKeyDefinition.getPaths().size()];
+                    for(int pathIter = 0 ; pathIter < partitionKeyDefinition.getPaths().size(); pathIter++){
+                        String partitionPath = partitionKeyDefinition.getPaths().get(pathIter);
+                        List<String> partitionPathParts = PathParser.getPathParts(partitionPath);
+                        partitionKeyValues[pathIter] = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, partitionPathParts);
+                    }
+                    return PartitionKeyInternal.fromObjectArray(partitionKeyValues, false);
+
+                default:
+                    throw new IllegalArgumentException("Unrecognized Partition kind: " + partitionKeyDefinition.getKind());
                 }
-            }
         }
 
         return null;
@@ -1583,13 +1605,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionContainer.setSessionToken(request, response.getResponseHeaders());
     }
 
-    private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request, DocumentClientRetryPolicy retryPolicy) {
+    private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.POST)
             .flatMap(requestPopulated -> {
                 RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
-                if (requestPopulated.requestContext != null && retryPolicy.getRetryCount() > 0) {
-                    retryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(retryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return storeProxy.processMessage(requestPopulated);
@@ -1607,9 +1628,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // method
                 assert (headers != null);
                 headers.put(HttpConstants.HttpHeaders.IS_UPSERT, "true");
-                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                    documentClientRetryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated)
@@ -1624,9 +1644,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.PUT)
             .flatMap(requestPopulated -> {
-                if (requestPopulated.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-                    documentClientRetryPolicy.updateEndTime();
-                    requestPopulated.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
                 }
 
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated);
@@ -1635,9 +1654,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         populateHeaders(request, RequestVerb.PATCH);
-        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
-            documentClientRetryPolicy.updateEndTime();
-            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+        if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+            documentClientRetryPolicy.getRetryContext().updateEndTime();
         }
 
         return getStoreProxy(request).processMessage(request);

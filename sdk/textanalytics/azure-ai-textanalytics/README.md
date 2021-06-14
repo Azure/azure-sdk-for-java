@@ -58,7 +58,7 @@ az cognitiveservices account create \
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.1.0-beta.6</version>
+    <version>5.1.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -119,7 +119,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.4</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -383,17 +383,17 @@ List<TextDocumentInput> documents = Arrays.asList(
             + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
 );
 
-SyncPoller<AnalyzeBatchActionsOperationDetail, PagedIterable<AnalyzeBatchActionsResult>> syncPoller =
-    textAnalyticsClient.beginAnalyzeBatchActions(documents,
+SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
+    textAnalyticsClient.beginAnalyzeActions(documents,
         new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
             .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
             .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
-        new AnalyzeBatchActionsOptions().setIncludeStatistics(false),
+        new AnalyzeActionsOptions().setIncludeStatistics(false),
         Context.NONE);
 syncPoller.waitForCompletion();
-syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
+syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
     System.out.println("Key phrases extraction action results:");
-    analyzeBatchActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
+    analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {
             for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
@@ -405,7 +405,7 @@ syncPoller.getFinalResult().forEach(analyzeBatchActionsResult -> {
         }
     });
     System.out.println("PII entities recognition action results:");
-    analyzeBatchActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
+    analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
         if (!actionResult.isError()) {
             for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {

@@ -20,12 +20,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.regex.Pattern;
 
 /**
  * Custom serializer for deserializing complex types with wrapped properties. For example, a property with annotation
@@ -34,6 +36,9 @@ import java.lang.reflect.Field;
  */
 final class FlatteningDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
     private static final long serialVersionUID = -2133095337545715498L;
+
+    private static final Pattern IS_FLATTENED_PATTERN = Pattern.compile(".+[^\\\\]\\..+");
+    private static final Pattern SPLIT_KEY_PATTERN = Pattern.compile("((?<!\\\\))\\.");
 
     /**
      * The default mapperAdapter for the current type.
@@ -44,6 +49,8 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
      * The object mapper for default deserializations.
      */
     private final ObjectMapper mapper;
+
+    private final boolean classHasJsonFlatten;
 
     /**
      * Creates an instance of FlatteningDeserializer.
@@ -56,6 +63,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         super(vc);
         this.defaultDeserializer = defaultDeserializer;
         this.mapper = mapper;
+        this.classHasJsonFlatten = vc.isAnnotationPresent(JsonFlatten.class);
     }
 
     /**
@@ -68,24 +76,29 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
-                BeanDescription beanDesc,
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
                 JsonDeserializer<?> deserializer) {
-                if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {
-                    // Register 'FlatteningDeserializer' for complex type so that 'deserializeWithType'
-                    // will get called for complex types and it can analyze typeId discriminator.
+                // If the class is annotated with @JsonFlatten add the deserializer.
+                // Else if any property is annotated with @JsonFlatten add the deserializer.
+                // Otherwise do not add the deserializer.
+                boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
+                boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
+                    .filter(BeanPropertyDefinition::hasField)
+                    .map(BeanPropertyDefinition::getField)
+                    .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
+
+                if (hasJsonFlattenOnClass || hasJsonFlattenOnProperty) {
                     return new FlatteningDeserializer(beanDesc.getBeanClass(), deserializer, mapper);
-                } else {
-                    return deserializer;
                 }
+
+                return deserializer;
             }
         });
         return module;
     }
 
     @Override
-    public Object deserializeWithType(JsonParser jp,
-        DeserializationContext cxt,
+    public Object deserializeWithType(JsonParser jp, DeserializationContext cxt,
         TypeDeserializer tDeserializer) throws IOException {
         // This method will be called from Jackson for each "Json object with TypeId" as it
         // process the input data. This enable us to pre-process then give it to the next
@@ -126,10 +139,10 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
             if (c.isAssignableFrom(Object.class)) {
                 continue;
-            } else {
-                for (Field classField : c.getDeclaredFields()) {
-                    handleFlatteningForField(classField, currentJsonNode);
-                }
+            }
+
+            for (Field classField : c.getDeclaredFields()) {
+                handleFlatteningForField(classField, currentJsonNode);
             }
         }
         return this.defaultDeserializer.deserialize(newJsonParserForNode(currentJsonNode), cxt);
@@ -150,7 +163,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
      * @param classField the field in a POJO class
      * @param jsonNode the json node corresponds to POJO class that field belongs to
      */
-    private static void handleFlatteningForField(Field classField, JsonNode jsonNode) {
+    private void handleFlatteningForField(Field classField, JsonNode jsonNode) {
         final JsonProperty jsonProperty = classField.getAnnotation(JsonProperty.class);
         if (jsonProperty != null) {
             final String jsonPropValue = jsonProperty.value();
@@ -160,7 +173,9 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 final String escapedJsonPropValue = jsonPropValue.replace(".", "\\.");
                 ((ObjectNode) jsonNode).set(escapedJsonPropValue, jsonNode.get(jsonPropValue));
             }
-            if (containsFlatteningDots(jsonPropValue)) {
+
+            if ((classHasJsonFlatten || classField.isAnnotationPresent(JsonFlatten.class))
+                && containsFlatteningDots(jsonPropValue)) {
                 // The jsonProperty value contains flattening dots, uplift the nested
                 // json node that this value resolving to the current level.
                 JsonNode childJsonNode = findNestedNode(jsonNode, jsonPropValue);
@@ -177,7 +192,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
      * @return true if the key has flattening dots, false otherwise.
      */
     private static boolean containsFlatteningDots(String key) {
-        return key.matches(".+[^\\\\]\\..+");
+        return IS_FLATTENED_PATTERN.matcher(key).matches();
     }
 
     /**
@@ -207,7 +222,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
      * @return the array of sub keys
      */
     private static String[] splitKeyByFlatteningDots(String key) {
-        return key.split("((?<!\\\\))\\.");
+        return SPLIT_KEY_PATTERN.split(key);
     }
 
     /**

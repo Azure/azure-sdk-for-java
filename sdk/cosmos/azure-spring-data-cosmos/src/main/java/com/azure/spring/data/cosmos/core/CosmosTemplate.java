@@ -27,6 +27,7 @@ import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
 import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
+import com.azure.spring.data.cosmos.core.query.CosmosSliceImpl;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
@@ -40,6 +41,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.parser.Part;
 import org.springframework.lang.NonNull;
@@ -472,8 +474,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties);
                 } else {
-                    ThroughputProperties throughputProperties =
-                        ThroughputProperties.createManualThroughput(information.getRequestUnit());
+                    ThroughputProperties throughputProperties = information.isAutoScale()
+                        ? ThroughputProperties.createAutoscaledThroughput(information.getRequestUnit())
+                        : ThroughputProperties.createManualThroughput(information.getRequestUnit());
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties,
                             throughputProperties);
@@ -661,9 +664,23 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return paginationQuery(querySpec, countQuerySpec, query.getPageable(), query.getSort(), domainType, containerName);
     }
 
+    @Override
+    public <T> Slice<T> sliceQuery(CosmosQuery query, Class<T> domainType, String containerName) {
+        final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        return sliceQuery(querySpec, query.getPageable(), query.getSort(), domainType, containerName);
+    }
+
     private <T> Page<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
                                        Pageable pageable, Sort sort,
                                        Class<T> returnType, String containerName) {
+        Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName);
+        final long total = getCountValue(countQuerySpec, containerName);
+        return new CosmosPageImpl<>(response.getContent(), response.getPageable(), total);
+    }
+
+    private <T> Slice<T> sliceQuery(SqlQuerySpec querySpec,
+                                   Pageable pageable, Sort sort,
+                                   Class<T> returnType, String containerName) {
         Assert.isTrue(pageable.getPageSize() > 0,
             "pageable should have page size larger than 0");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
@@ -712,7 +729,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             result.add(entity);
         }
 
-        final long total = getCountValue(countQuerySpec, containerName);
         final int contentSize = result.size();
 
         int pageSize;
@@ -735,7 +751,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             feedResponse.getContinuationToken(),
             sort);
 
-        return new CosmosPageImpl<>(result, pageRequest, total);
+        return new CosmosSliceImpl<>(result, pageRequest, feedResponse.getContinuationToken() != null);
     }
 
     @Override
@@ -753,6 +769,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container name should not be empty");
 
         final Long count = getCountValue(query, containerName);
+        assert count != null;
+        return count;
+    }
+
+    @Override
+    public <T> long count(SqlQuerySpec querySpec, String containerName) {
+        Assert.hasText(containerName, "container name should not be empty");
+
+        final Long count = getCountValue(querySpec, containerName);
         assert count != null;
         return count;
     }

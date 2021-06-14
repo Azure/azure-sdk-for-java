@@ -38,6 +38,12 @@ public final class IotHubProperties {
     private List<IpFilterRule> ipFilterRules;
 
     /*
+     * Network Rule Set Properties of IotHub
+     */
+    @JsonProperty(value = "networkRuleSets")
+    private NetworkRuleSetProperties networkRuleSets;
+
+    /*
      * Specifies the minimum TLS version to support for this hub. Can be set to
      * "1.2" to have clients that use a TLS version below 1.2 to be rejected.
      */
@@ -191,6 +197,26 @@ public final class IotHubProperties {
      */
     public IotHubProperties withIpFilterRules(List<IpFilterRule> ipFilterRules) {
         this.ipFilterRules = ipFilterRules;
+        return this;
+    }
+
+    /**
+     * Get the networkRuleSets property: Network Rule Set Properties of IotHub.
+     *
+     * @return the networkRuleSets value.
+     */
+    public NetworkRuleSetProperties networkRuleSets() {
+        return this.networkRuleSets;
+    }
+
+    /**
+     * Set the networkRuleSets property: Network Rule Set Properties of IotHub.
+     *
+     * @param networkRuleSets the networkRuleSets value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withNetworkRuleSets(NetworkRuleSetProperties networkRuleSets) {
+        this.networkRuleSets = networkRuleSets;
         return this;
     }
 
@@ -456,6 +482,9 @@ public final class IotHubProperties {
         }
         if (ipFilterRules() != null) {
             ipFilterRules().forEach(e -> e.validate());
+        }
+        if (networkRuleSets() != null) {
+            networkRuleSets().validate();
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
