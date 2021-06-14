@@ -4,8 +4,10 @@
 
 ### Features Added
 
-- Add `EventHubClientBuilder.credential(String, String, com.azure.core.credential.AzureNamedKeyCredential)` overload.
-- Add `EventHubClientBuilder.credential(String, String, com.azure.core.credential.AzureSasCredential)` overload.
+- Add `EventHubClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventHubClientBuilder.credential(String, String, AzureSasCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureSasCredential)` overload.
 - Add `EventHubConnectionStringProperties` to get connection string properties.
 
 ### Dependency Updates
