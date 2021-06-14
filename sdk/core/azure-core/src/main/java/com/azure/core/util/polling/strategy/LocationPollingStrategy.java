@@ -101,4 +101,17 @@ public class LocationPollingStrategy implements PollingStrategy {
                     serializer.deserialize(body, resultType, SerializerEncoding.JSON)));
         }
     }
+
+    private String normalizeUrl(String url) {
+        url = url.replace("http://", "https://");
+        if (!url.contains("api-version=")) {
+            String apiVersionQuery = "api-version=" + apiVersion;
+            if (!url.contains("?")) {
+                url += "?" + apiVersionQuery;
+            } else {
+                url += "&" + apiVersionQuery;
+            }
+        }
+        return url;
+    }
 }

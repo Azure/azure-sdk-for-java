@@ -42,9 +42,9 @@ public final class PollerFactory<U> {
             ctx -> activation.get()
                 .flatMap(r -> {
                     if (!strategy.canPoll(r)) {
-                        return Mono.<PollResult>error(new RuntimeException("Cannot poll with strategy " + strategy));
+                        return Mono.error(new RuntimeException("Cannot poll with strategy " + strategy));
                     }
-                    return Mono.just(strategy.onActivationResponse(r, ctx));
+                    return strategy.onActivationResponse(r, ctx);
                 }),
             ctx -> {
                 HttpRequest request = new HttpRequest(HttpMethod.GET, strategy.getPollingUrl(ctx));
