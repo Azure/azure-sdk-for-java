@@ -113,7 +113,7 @@ public final class CallingServerClient {
      * Get CallConnection object
      *
      * @param callConnectionId The call connection id.
-     * @return CallConnection
+     * @return CallConnection.
      */
     public CallConnection getCallConnection(String callConnectionId) {
         return callingServerAsyncClient.getCallConnectionInternal(callConnectionId);
