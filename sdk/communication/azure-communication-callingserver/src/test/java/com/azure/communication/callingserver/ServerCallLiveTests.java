@@ -3,14 +3,6 @@
 
 package com.azure.communication.callingserver;
 
-import static com.azure.communication.callingserver.CallingServerTestUtils.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.models.CallRecordingStateResult;
@@ -24,10 +16,19 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import static com.azure.communication.callingserver.CallingServerTestUtils.validateCallConnection;
+import static com.azure.communication.callingserver.CallingServerTestUtils.validatePlayAudioResponse;
+import static com.azure.communication.callingserver.CallingServerTestUtils.validatePlayAudioResult;
+import static com.azure.communication.callingserver.CallingServerTestUtils.validateResponse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ServerCallLiveTests extends CallingServerTestBase {
 
@@ -182,7 +183,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response =
-                serverCall.startRecordingWithResponse(CALLBACK_URI, Context.NONE);
+                serverCall.startRecordingWithResponse(CALLBACK_URI, null);
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
@@ -282,7 +283,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext, CALLBACK_URI,
-                    Context.NONE);
+                    null);
             validateResponse(addResponse);
 
             // Remove User
@@ -293,7 +294,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
               values needs to be used.
              */
             String participantId = "76b33acb-5097-4af0-a646-e07ccee48957";
-            Response<Void> removeResponse = serverCall.removeParticipantWithResponse(participantId, Context.NONE);
+            Response<Void> removeResponse = serverCall.removeParticipantWithResponse(participantId, null);
             validateResponse(removeResponse);
 
             // Hangup
@@ -344,7 +345,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         sleepIfRunningAgainstService(6000);
 
         Response<CallRecordingStateResult> response =
-            serverCall.getRecordingStateWithResponse(recordingId, Context.NONE);
+            serverCall.getRecordingStateWithResponse(recordingId, null);
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
         assertNotNull(response.getValue());

@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import java.util.UUID;
-
 import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -15,10 +13,10 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.UUID;
 
 public class CallConnectionLiveTests extends CallingServerTestBase {
 
@@ -92,7 +90,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
                     new CommunicationUserIdentifier(fromUser),
                     new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                     options,
-                    Context.NONE);
+                    null);
 
             CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
             CallConnection callConnection = callConnectionResponse.getValue();
@@ -106,17 +104,17 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
                     UUID.randomUUID().toString(),
                     null,
                     operationContext,
-                    Context.NONE);
+                    null);
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResult);
 
             // Cancel All Media Operations
             String cancelMediaOperationContext = UUID.randomUUID().toString();
             Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult =
-                callConnection.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext, Context.NONE);
+                callConnection.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext, null);
             CallingServerTestUtils.validateCancelAllMediaOperationsResult(cancelAllMediaOperationsResult);
 
             // Hang up
-            Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
+            Response<Void> hangupResponse = callConnection.hangupWithResponse(null);
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -189,7 +187,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
                     new CommunicationUserIdentifier(fromUser),
                     new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
                     options,
-                    Context.NONE);
+                    null);
 
             CallingServerTestUtils.validateCallConnectionResponse(callConnectionResponse);
             CallConnection callConnection = callConnectionResponse.getValue();
@@ -201,7 +199,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext,
-                    Context.NONE);
+                    null);
             CallingServerTestUtils.validateResponse(inviteParticipantResponse);
 
             // Remove Participant
@@ -213,11 +211,11 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
              */
             String participantId = "71ed956b-366e-450c-9a61-3bbccf42baa5";
             Response<Void> removeParticipantResponse =
-                callConnection.removeParticipantWithResponse(participantId, Context.NONE);
+                callConnection.removeParticipantWithResponse(participantId, null);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
-            Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
+            Response<Void> hangupResponse = callConnection.hangupWithResponse(null);
             CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -311,7 +309,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             CallConnection joinedCallConnection = joinedCallConnectionResponse.getValue();
 
             //Hangup
-            Response<Void> hangupResponse = callConnection.hangupWithResponse(Context.NONE);
+            Response<Void> hangupResponse = callConnection.hangupWithResponse(null);
             CallingServerTestUtils.validateResponse(hangupResponse);
             Response<Void> joinCallHangupResponse = joinedCallConnection.hangupWithResponse(null);
             CallingServerTestUtils.validateResponse(joinCallHangupResponse);

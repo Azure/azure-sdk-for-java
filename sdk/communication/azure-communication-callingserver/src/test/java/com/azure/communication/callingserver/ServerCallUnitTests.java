@@ -53,19 +53,6 @@ public class ServerCallUnitTests {
     }
 
     @Test
-    public void removeParticipantNullParticipantFails() {
-        ServerCall serverCall = new CallingServerClientBuilder()
-            .httpClient(new NoOpHttpClient())
-            .connectionString(MOCK_CONNECTION_STRING)
-            .buildClient()
-            .initializeServerCall(serverCallId);
-
-        assertThrows(
-            NullPointerException.class,
-            () -> serverCall.removeParticipant(null));
-    }
-
-    @Test
     public void startRecordingAsyncFails() {
         ServerCallAsync serverCall = new CallingServerClientBuilder()
             .httpClient(new NoOpHttpClient())
