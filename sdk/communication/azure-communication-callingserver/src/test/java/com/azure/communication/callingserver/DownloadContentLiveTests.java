@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -27,14 +28,14 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void downloadMetadata(HttpClient httpClient) {
+    public void downloadMetadata(HttpClient httpClient) throws UnsupportedEncodingException {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadMetadata");
 
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             conversationClient.downloadTo(METADATA_URL, byteArrayOutputStream, null);
-            String metadata = byteArrayOutputStream.toString(StandardCharsets.UTF_8);
+            String metadata = byteArrayOutputStream.toString(StandardCharsets.UTF_8.name());
             assertThat(metadata.contains("0-eus-d2-3cca2175891f21c6c9a5975a12c0141c"), is(true));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
