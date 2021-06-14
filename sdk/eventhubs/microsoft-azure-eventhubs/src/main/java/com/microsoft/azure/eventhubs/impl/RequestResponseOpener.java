@@ -61,6 +61,9 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
             // Need to start creating an inner channel.
             this.isOpening = true;
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info("opening inner channel client draft2");
+            }
         }
 
         final Session session = this.sessionProvider.getSession(
