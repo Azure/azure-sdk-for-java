@@ -3,9 +3,12 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 
 /** The Calling Server error. */
+@Immutable
 public final class CallingServerError {
     /*
      * The error code.

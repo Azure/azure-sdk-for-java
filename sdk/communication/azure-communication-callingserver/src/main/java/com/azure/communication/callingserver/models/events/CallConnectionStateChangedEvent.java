@@ -5,10 +5,12 @@ package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.models.CallConnectionStateChangedEventInternal;
 import com.azure.communication.callingserver.models.CallConnectionState;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 /** The call connection state changed event. */
-public final class CallConnectionStateChangedEvent {
+@Immutable
+public final class CallConnectionStateChangedEvent extends CallingServerEventBase {
     /*
      * The server call id.
      */

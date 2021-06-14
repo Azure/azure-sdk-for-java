@@ -3,12 +3,14 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with {@link CallingServerError} information.
  **/
+@Immutable
 public final class CallingServerErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the CallingServerResponseException class.

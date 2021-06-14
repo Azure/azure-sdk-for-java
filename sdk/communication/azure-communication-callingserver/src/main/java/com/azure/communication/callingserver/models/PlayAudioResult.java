@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** The response payload for play audio operation. */
+@Immutable
 public final class PlayAudioResult {
     /*
      * The identifier.
