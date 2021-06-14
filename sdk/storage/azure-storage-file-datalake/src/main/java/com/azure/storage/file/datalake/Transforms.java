@@ -96,9 +96,10 @@ import java.util.stream.Collectors;
 
 class Transforms {
 
-    private static String SERIALIZATION_MESSAGE = String.format("'serialization' must be one of %s, %s, %s or %s.",
-        FileQueryJsonSerialization.class.getSimpleName(), FileQueryDelimitedSerialization.class.getSimpleName(),
-        FileQueryArrowSerialization.class.getSimpleName(), FileQueryParquetSerialization.class.getSimpleName());
+    private static final String SERIALIZATION_MESSAGE = String.format("'serialization' must be one of %s, %s, %s or "
+            + "%s.", FileQueryJsonSerialization.class.getSimpleName(),
+        FileQueryDelimitedSerialization.class.getSimpleName(), FileQueryArrowSerialization.class.getSimpleName(),
+        FileQueryParquetSerialization.class.getSimpleName());
 
     static com.azure.storage.blob.models.PublicAccessType toBlobPublicAccessType(PublicAccessType
         fileSystemPublicAccessType) {
