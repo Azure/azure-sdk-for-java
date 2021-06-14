@@ -1,11 +1,17 @@
 ## Release History
 
-## 4.16.0-beta.2 (Unreleased)
+### 4.16.0 (2021-06-11)
+#### Key Bug Fixes
+* Fixed an issue on handling partition splits during bulk operations in Gateway Mode.
+* Fixed an issue with `NumberFormatException` happening on requests on large containers.
+* Fixed an issue with BackOff time in `ThroughputController`.
+* Fixed an issue with `ThroughputControl` calculation.
+* Improved behavior when `CosmosClientBuilder.userAgentSuffix` exceeds 64 characters. Now `userAgentSuffix` will be honored as long as total userAgent value is less than 256 characters or truncated to fit the 256 characters limited.
+* Fixed issue when using client-side throughput control in combination with bulk upserts, previously resulting in unnecessarily upserting documents multiple times in some cases when getting throttled.
 
 ### 4.16.0-beta.1 (2021-05-20)
 #### Key Bug Fixes
 * No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
-
 
 ### 4.15.0 (2021-05-12)
 #### New Features

@@ -25,7 +25,7 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
@@ -748,7 +748,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void recognizePiiDomainFilterRunner(BiConsumer<String, RecognizePiiEntitiesOptions> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS.get(0),
-            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION));
     }
 
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
@@ -1100,7 +1100,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setDisplayName("Test1")
                 .setRecognizePiiEntitiesOptions(
                     new RecognizePiiEntitiesOptions()
-                        .setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION)
+                        .setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION)
                 ));
     }
 
@@ -1663,7 +1663,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateCategorizedEntitiesResultCollection(showStatistics, expected.getResult(), actual.getResult());
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
         }
     }
 
@@ -1678,7 +1678,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateLinkedEntitiesResultCollection(showStatistics, expected.getResult(), actual.getResult());
+            validateLinkedEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
         }
     }
 
@@ -1693,7 +1693,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validatePiiEntitiesResultCollection(showStatistics, expected.getResult(), actual.getResult());
+            validatePiiEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
         }
     }
 
@@ -1708,7 +1708,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getResult(), actual.getResult());
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
         }
     }
 
@@ -1724,7 +1724,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             }
         } else {
             validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining,
-                expected.getResult(), actual.getResult());
+                expected.getDocumentResults(), actual.getDocumentResults());
         }
     }
 

@@ -28,7 +28,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 /**
- * A class containing utility methods for the Azure Data Tables library.
+ * A class containing utility methods for the Azure Tables library.
  */
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";

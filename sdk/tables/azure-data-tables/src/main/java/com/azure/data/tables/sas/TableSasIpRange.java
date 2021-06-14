@@ -16,8 +16,8 @@ public final class TableSasIpRange {
     /**
      * Creates a {@link TableSasIpRange} from the specified string.
      *
-     * @param rangeStr The {@link String} representation of the {@link TableSasIpRange}.
-     * @return The {@link TableSasIpRange} generated from the {@link String}.
+     * @param rangeStr The {@code String} representation of the {@link TableSasIpRange}.
+     * @return The {@link TableSasIpRange} generated from the {@code String}.
      */
     public static TableSasIpRange parse(String rangeStr) {
         String[] addrs = rangeStr.split("-");
@@ -70,11 +70,11 @@ public final class TableSasIpRange {
     }
 
     /**
-     * Output the single IP address or range of IP addresses formatted as a {@link String}. If {@code minIpRange} is set
+     * Output the single IP address or range of IP addresses formatted as a {@code String}. If {@code minIpRange} is set
      * to {@code null}, an empty string is returned from this method. Otherwise, if {@code maxIpRange} is set
      * to {@code null}, then this method returns the value of {@code minIpRange}.
      *
-     * @return The single IP address or range of IP addresses formatted as a {@link String}.
+     * @return The single IP address or range of IP addresses formatted as a {@code String}.
      */
     @Override
     public String toString() {

@@ -73,7 +73,11 @@
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
+# PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @joshfree @srnagar @lmolkova
+
+# PRLabel:  %Monitor
+/sdk/monitor/azure-monitor-query                    @srnagar @pallavit
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
