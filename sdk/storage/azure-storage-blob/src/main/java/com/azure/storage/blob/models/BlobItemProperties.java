@@ -244,16 +244,9 @@ public final class BlobItemProperties {
     private OffsetDateTime expiryTime;
 
     /*
-     * The ImmutabilityPolicyUntilDate property.
+     * The ImmutabilityPolicyUntilDate and ImmutabilityPolicyMode property.
      */
-    @JsonProperty(value = "ImmutabilityPolicyUntilDate")
-    private OffsetDateTime immutabilityPolicyExpiryTime;
-
-    /*
-     * The ImmutabilityPolicyMode property.
-     */
-    @JsonProperty(value = "ImmutabilityPolicyMode")
-    private BlobImmutabilityPolicyMode immutabilityPolicyMode;
+    private BlobImmutabilityPolicy immutabilityPolicy;
 
     /*
      * The LegalHold property.
@@ -1031,42 +1024,22 @@ public final class BlobItemProperties {
     }
 
     /**
-     * Get the immutabilityPolicyExpiryTime property: The ImmutabilityPolicyUntilDate property.
+     * Get the immutabilityPolicy property: The ImmutabilityPolicyUntilDate and ImmutabilityPolicyMode property.
      *
-     * @return the immutabilityPolicyExpiryTime value.
+     * @return the immutabilityPolicy value.
      */
-    public OffsetDateTime getImmutabilityPolicyExpiryTime() {
-        return this.immutabilityPolicyExpiryTime;
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return this.immutabilityPolicy;
     }
 
     /**
-     * Set the immutabilityPolicyExpiryTime property: The ImmutabilityPolicyUntilDate property.
+     * Set the immutabilityPolicy property: The ImmutabilityPolicyUntilDate and ImmutabilityPolicyMode property.
      *
-     * @param immutabilityPolicyExpiryTime the immutabilityPolicyExpiryTime value to set.
+     * @param immutabilityPolicy the immutabilityPolicy value to set.
      * @return the BlobItemProperties object itself.
      */
-    public BlobItemProperties setImmutabilityPolicyExpiryTime(OffsetDateTime immutabilityPolicyExpiryTime) {
-        this.immutabilityPolicyExpiryTime = immutabilityPolicyExpiryTime;
-        return this;
-    }
-
-    /**
-     * Get the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
-     *
-     * @return the immutabilityPolicyMode value.
-     */
-    public BlobImmutabilityPolicyMode getImmutabilityPolicyMode() {
-        return this.immutabilityPolicyMode;
-    }
-
-    /**
-     * Set the immutabilityPolicyMode property: The ImmutabilityPolicyMode property.
-     *
-     * @param immutabilityPolicyMode the immutabilityPolicyMode value to set.
-     * @return the BlobItemProperties object itself.
-     */
-    public BlobItemProperties setImmutabilityPolicyMode(BlobImmutabilityPolicyMode immutabilityPolicyMode) {
-        this.immutabilityPolicyMode = immutabilityPolicyMode;
+    public BlobItemProperties setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
         return this;
     }
 

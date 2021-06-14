@@ -339,8 +339,9 @@ public class ModelHelper {
         blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
         blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
         blobItemProperties.setExpiryTime(blobItemPropertiesInternal.getExpiresOn());
-        blobItemProperties.setImmutabilityPolicyExpiryTime(blobItemPropertiesInternal.getImmutabilityPolicyExpiresOn());
-        blobItemProperties.setImmutabilityPolicyMode(blobItemPropertiesInternal.getImmutabilityPolicyMode());
+        blobItemProperties.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setExpiryTime(blobItemPropertiesInternal.getImmutabilityPolicyExpiresOn())
+            .setPolicyMode(blobItemPropertiesInternal.getImmutabilityPolicyMode()));
         blobItemProperties.setHasLegalHold(blobItemPropertiesInternal.isLegalHold());
 
         return blobItemProperties;

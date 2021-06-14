@@ -198,8 +198,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         response = vlwBlob.getProperties()
 
         then:
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        policyMode.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        policyMode.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
 
         when: "list blob"
         def options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true))
@@ -209,8 +209,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         def blob = response.next()
         !response.hasNext()
         blob.getName() == vlwBlob.getBlobName()
-        policyMode.toString() == blob.getProperties().getImmutabilityPolicyMode().toString()
-        expectedImmutabilityPolicyExpiry == blob.getProperties().getImmutabilityPolicyExpiryTime()
+        expectedImmutabilityPolicyExpiry == blob.getProperties().getImmutabilityPolicy().getExpiryTime()
+        policyMode.toString() == blob.getProperties().getImmutabilityPolicy().getPolicyMode().toString()
 
 
         where:
@@ -306,8 +306,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def properties = vlwBlob.getProperties()
-        properties.getImmutabilityPolicyMode() == null
-        properties.getImmutabilityPolicyExpiresOn() == null
+        properties.getImmutabilityPolicy().getPolicyMode() == null
+        properties.getImmutabilityPolicy().getExpiryTime() == null
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
@@ -324,8 +324,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def properties = vlwBlob.getProperties()
-        properties.getImmutabilityPolicyMode() == null
-        properties.getImmutabilityPolicyExpiresOn() == null
+        properties.getImmutabilityPolicy().getPolicyMode() == null
+        properties.getImmutabilityPolicy().getExpiryTime() == null
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
@@ -435,8 +435,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def response = appendBlob.getProperties()
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
         response.hasLegalHold()
     }
 
@@ -458,8 +458,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def response = pageBlob.getProperties()
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
         response.hasLegalHold()
     }
 
@@ -481,8 +481,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def response = blockBlob.getProperties()
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
         response.hasLegalHold()
     }
 
@@ -504,8 +504,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def response = blockBlob.getProperties()
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
         response.hasLegalHold()
     }
 
@@ -529,8 +529,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def response = vlwBlob.getProperties()
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
         response.hasLegalHold()
 
         where:
@@ -558,8 +558,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def response = destination.getProperties()
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
         response.hasLegalHold()
 
         cleanup:
@@ -585,8 +585,8 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
         then:
         def response = destination.getProperties()
-        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicyExpiresOn()
-        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicyMode().toString()
+        expectedImmutabilityPolicyExpiry == response.getImmutabilityPolicy().getExpiryTime()
+        BlobImmutabilityPolicyMode.UNLOCKED.toString() == response.getImmutabilityPolicy().getPolicyMode().toString()
         response.hasLegalHold()
     }
 
