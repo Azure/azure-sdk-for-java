@@ -20,13 +20,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 /**
@@ -39,6 +39,8 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
 
     private static final Pattern IS_FLATTENED_PATTERN = Pattern.compile(".+[^\\\\]\\..+");
     private static final Pattern SPLIT_KEY_PATTERN = Pattern.compile("((?<!\\\\))\\.");
+
+    private final BeanDescription beanDescription;
 
     /**
      * The default mapperAdapter for the current type.
@@ -55,15 +57,17 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
     /**
      * Creates an instance of FlatteningDeserializer.
      *
-     * @param vc handled type
+     * @param beanDesc The {@link BeanDescription} of the class being deserialized.
      * @param defaultDeserializer the default JSON mapperAdapter
      * @param mapper the object mapper for default deserializations
      */
-    protected FlatteningDeserializer(Class<?> vc, JsonDeserializer<?> defaultDeserializer, ObjectMapper mapper) {
-        super(vc);
+    protected FlatteningDeserializer(BeanDescription beanDesc, JsonDeserializer<?> defaultDeserializer,
+        ObjectMapper mapper) {
+        super(beanDesc.getBeanClass());
+        this.beanDescription = beanDesc;
         this.defaultDeserializer = defaultDeserializer;
         this.mapper = mapper;
-        this.classHasJsonFlatten = vc.isAnnotationPresent(JsonFlatten.class);
+        this.classHasJsonFlatten = beanDesc.getClassAnnotations().has(JsonFlatten.class);
     }
 
     /**
@@ -88,7 +92,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                     .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
 
                 if (hasJsonFlattenOnClass || hasJsonFlattenOnProperty) {
-                    return new FlatteningDeserializer(beanDesc.getBeanClass(), deserializer, mapper);
+                    return new FlatteningDeserializer(beanDesc, deserializer, mapper);
                 }
 
                 return deserializer;
@@ -108,6 +112,7 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         //
         JsonNode currentJsonNode = mapper.readTree(jp);
         final Class<?> tClass = this.defaultDeserializer.handledType();
+
         for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
             final JsonTypeInfo typeInfo = c.getAnnotation(com.fasterxml.jackson.annotation.JsonTypeInfo.class);
             if (typeInfo != null) {
@@ -131,20 +136,19 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         //
         // The parameter 'jp' is the reader to read "Json object with TypeId"
         //
-        JsonNode currentJsonNode = mapper.readTree(jp);
+        JsonNode currentJsonNode = cxt.readTree(jp);
         if (currentJsonNode.isNull()) {
             currentJsonNode = mapper.getNodeFactory().objectNode();
         }
-        final Class<?> tClass = this.defaultDeserializer.handledType();
-        for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
-            if (c.isAssignableFrom(Object.class)) {
+
+        for (BeanPropertyDefinition beanPropertyDefinition : beanDescription.findProperties()) {
+            if (!beanPropertyDefinition.hasField()) {
                 continue;
             }
 
-            for (Field classField : c.getDeclaredFields()) {
-                handleFlatteningForField(classField, currentJsonNode);
-            }
+            handleFlatteningForField(beanPropertyDefinition.getField(), currentJsonNode);
         }
+
         return this.defaultDeserializer.deserialize(newJsonParserForNode(currentJsonNode), cxt);
     }
 
@@ -160,11 +164,11 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
      * has flattening dots in it if so flatten the nested child JsonNode corresponds to the field in the given
      * JsonNode.
      *
-     * @param classField the field in a POJO class
+     * @param annotatedField the field in a POJO class
      * @param jsonNode the json node corresponds to POJO class that field belongs to
      */
-    private void handleFlatteningForField(Field classField, JsonNode jsonNode) {
-        final JsonProperty jsonProperty = classField.getAnnotation(JsonProperty.class);
+    private void handleFlatteningForField(AnnotatedField annotatedField, JsonNode jsonNode) {
+        final JsonProperty jsonProperty = annotatedField.getAnnotation(JsonProperty.class);
         if (jsonProperty != null) {
             final String jsonPropValue = jsonProperty.value();
             if (jsonNode.has(jsonPropValue)) {
@@ -174,11 +178,13 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 ((ObjectNode) jsonNode).set(escapedJsonPropValue, jsonNode.get(jsonPropValue));
             }
 
-            if ((classHasJsonFlatten || classField.isAnnotationPresent(JsonFlatten.class))
+            if ((classHasJsonFlatten || annotatedField.hasAnnotation(JsonFlatten.class))
                 && containsFlatteningDots(jsonPropValue)) {
                 // The jsonProperty value contains flattening dots, uplift the nested
                 // json node that this value resolving to the current level.
                 JsonNode childJsonNode = findNestedNode(jsonNode, jsonPropValue);
+
+                // This should replace the JsonNode it is compacting.
                 ((ObjectNode) jsonNode).set(jsonPropValue, childJsonNode);
             }
         }

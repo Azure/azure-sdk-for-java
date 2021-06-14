@@ -58,6 +58,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
     private final ClientLogger logger = new ClientLogger(FlatteningSerializer.class);
 
+    private final BeanDescription beanDescription;
+
     /*
      * The default mapperAdapter for the current type.
      */
@@ -89,6 +91,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
      */
     FlatteningSerializer(BeanDescription beanDesc, JsonSerializer<?> defaultSerializer, ObjectMapper mapper) {
         super(beanDesc.getBeanClass(), false);
+        this.beanDescription = beanDesc;
         this.defaultSerializer = defaultSerializer;
         this.mapper = mapper;
         this.classHasJsonFlatten = beanDesc.getClassAnnotations().has(JsonFlatten.class);
@@ -206,9 +209,30 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     @Override
+    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
+        TypeSerializer typeSerializer) throws IOException {
+        if (!classHasJsonFlatten) {
+            ObjectNode objectNode = mapper.createObjectNode();
+
+            // Need to write JsonType information before serialization.
+            objectNode.put(typeSerializer.getPropertyName(), typeSerializer.getTypeIdResolver().idFromValue(value));
+
+            propertyOnlyFlattenSerialize(value, gen, objectNode);
+        } else {
+            serialize(value, gen, provider);
+        }
+    }
+
+    @Override
     public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         if (value == null) {
             jgen.writeNull();
+            return;
+        }
+
+        // Custom path for property only JsonFlattening.
+        if (!classHasJsonFlatten) {
+            propertyOnlyFlattenSerialize(value, jgen, mapper.createObjectNode());
             return;
         }
 
@@ -230,12 +254,6 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 ObjectNode node = resCurrent;
                 String key = field.getKey();
                 JsonNode outNode = resCurrent.get(key);
-
-                // If the class isn't annotated with @JsonFlatten and the JSON property isn't annotated with
-                // @JsonFlatten don't attempt flattening.
-                if (!classHasJsonFlatten && !jsonPropertiesWithJsonFlatten.contains(key)) {
-                    continue;
-                }
 
                 if (CHECK_IF_FLATTEN_PROPERTY_PATTERN.matcher(key).matches()) {
                     // Handle flattening properties
@@ -291,9 +309,25 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
     }
 
-    @Override
-    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-        TypeSerializer typeSerializer) throws IOException {
-        serialize(value, gen, provider);
+    private void propertyOnlyFlattenSerialize(Object value, JsonGenerator jgen, ObjectNode objNode) throws IOException {
+        for (BeanPropertyDefinition beanPropertyDefinition : beanDescription.findProperties()) {
+            if (jsonPropertiesWithJsonFlatten.contains(beanPropertyDefinition.getName())) {
+                String[] splitNames = SPLIT_FLATTEN_PROPERTY_PATTERN.split(beanPropertyDefinition.getName());
+                ObjectNode nodeToWriteTo = objNode;
+                for (int i = 0; i < splitNames.length - 1; i++) {
+                    nodeToWriteTo = (nodeToWriteTo.has(splitNames[i]))
+                        ? (ObjectNode) nodeToWriteTo.get(splitNames[i])
+                        : nodeToWriteTo.putObject(splitNames[i]);
+                }
+
+                nodeToWriteTo.putPOJO(splitNames[splitNames.length - 1],
+                    beanPropertyDefinition.getField().getValue(value));
+            } else {
+                objNode.putPOJO(beanPropertyDefinition.getName(),
+                    beanPropertyDefinition.getField().getValue(value));
+            }
+        }
+
+        jgen.writeTree(objNode);
     }
 }
