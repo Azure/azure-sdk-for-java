@@ -17,8 +17,6 @@ import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
-import java.time.Duration;
-
 /**
  * The SecretClient provides synchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The client
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring, and listing the {@link KeyVaultSecret
@@ -256,28 +254,6 @@ public final class SecretClient {
     }
 
     /**
-     * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the
-     * deleted state and for permanent deletion, needs to be purged. Otherwise, the secret is permanently deleted.
-     * All versions of a secret are deleted. This cannot be applied to individual versions of a secret.
-     * This operation requires the {@code secrets/delete} permission.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Deletes the secret from a soft-delete enabled key vault. Prints out the recovery id of the deleted secret
-     * returned in the response.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecret#String-Duration}
-     *
-     * @param name The name of the secret to be deleted.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link SyncPoller} to poll on and retrieve the {@link DeletedSecret deleted secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a secret with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name, Duration pollingInterval) {
-        return client.beginDeleteSecret(name, pollingInterval).getSyncPoller();
-    }
-
-    /**
      * Gets a secret that has been deleted for a soft-delete enabled key vault. This operation requires the
      * {@code secrets/list} permission.
      *
@@ -373,26 +349,6 @@ public final class SecretClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
         return client.beginRecoverDeletedSecret(name).getSyncPoller();
-    }
-
-    /**
-     * Recovers the deleted secret in the key vault to its latest version. Can only be performed on a <b>soft-delete
-     * enabled</b> vault. This operation requires the {@code secrets/recover} permission.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recovers the deleted secret from the key vault enabled for <b>soft-delete</b>. Prints out the details of the
-     * recovered secret returned in the response.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecret#String-Duration}
-     *
-     * @param name The name of the deleted secret to be recovered.
-     * @param pollingInterval The interval at which the operation status will be polled for.
-     * @return A {@link SyncPoller} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a secret with {@code name} is empty string.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name, Duration pollingInterval) {
-        return client.beginRecoverDeletedSecret(name, pollingInterval).getSyncPoller();
     }
 
     /**
