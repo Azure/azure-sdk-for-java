@@ -176,7 +176,6 @@ public final class CallingServerAsyncClient {
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal
@@ -202,7 +201,6 @@ public final class CallingServerAsyncClient {
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal.
@@ -220,7 +218,6 @@ public final class CallingServerAsyncClient {
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal
@@ -234,14 +231,12 @@ public final class CallingServerAsyncClient {
         }
     }
 
-
     Mono<Response<CallConnection>>joinWithResponseInternal(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions,
         Context context) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
 

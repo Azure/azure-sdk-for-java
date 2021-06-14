@@ -165,7 +165,7 @@ public final class CallConnectionAsync {
             audioFileId,
             callbackUri,
             operationContext,
-            Context.NONE);
+            null);
     }
 
     /**
@@ -181,7 +181,7 @@ public final class CallConnectionAsync {
     public Mono<Response<PlayAudioResult>> playAudioWithResponse(
         String audioFileUri,
         PlayAudioOptions playAudioOptions) {
-        return playAudioWithResponseInternal(audioFileUri, playAudioOptions, Context.NONE);
+        return playAudioWithResponseInternal(audioFileUri, playAudioOptions, null);
     }
 
     Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
@@ -267,7 +267,7 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupWithResponse() {
-        return hangupWithResponse(Context.NONE);
+        return hangupWithResponse(null);
     }
 
     Mono<Response<Void>> hangupWithResponse(Context context) {
@@ -311,7 +311,7 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String operationContext) {
-        return cancelAllMediaOperationsWithResponse(operationContext, Context.NONE);
+        return cancelAllMediaOperationsWithResponse(operationContext, null);
     }
 
     Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(
@@ -374,7 +374,7 @@ public final class CallConnectionAsync {
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext) {
-        return addParticipantWithResponse(participant, alternateCallerId, operationContext, Context.NONE);
+        return addParticipantWithResponse(participant, alternateCallerId, operationContext, null);
     }
 
     Mono<Response<Void>> addParticipantWithResponse(
@@ -407,7 +407,6 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeParticipant(String participantId) {
         try {
-            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return callConnectionInternal.removeParticipantAsync(callConnectionId, participantId)
                 .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
@@ -423,12 +422,11 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeParticipantWithResponse(String participantId) {
-        return removeParticipantWithResponse(participantId, Context.NONE);
+        return removeParticipantWithResponse(participantId, null);
     }
 
     Mono<Response<Void>> removeParticipantWithResponse(String participantId, Context context) {
         try {
-            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
