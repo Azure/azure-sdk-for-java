@@ -62,7 +62,7 @@ public final class ServerCallAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return response for a successful addParticipant request.
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addParticipant(
@@ -92,7 +92,7 @@ public final class ServerCallAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return response for a successful addParticipant request.
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addParticipantWithResponse(
@@ -135,7 +135,7 @@ public final class ServerCallAsync {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeParticipant(String participantId) {
@@ -152,7 +152,7 @@ public final class ServerCallAsync {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeParticipantWithResponse(String participantId) {
@@ -178,7 +178,7 @@ public final class ServerCallAsync {
      *
      * @param recordingStateCallbackUri The uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @return response for a successful startRecording request.
+     * @return response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri) {
@@ -204,7 +204,7 @@ public final class ServerCallAsync {
      *
      * @param recordingStateCallbackUri The uri to send state change callbacks.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @return response for a successful startRecording request.
+     * @return response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(String recordingStateCallbackUri) {
@@ -240,7 +240,7 @@ public final class ServerCallAsync {
      * Stop recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful stopRecording request.
+     * @return response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopRecording(String recordingId) {
@@ -257,7 +257,7 @@ public final class ServerCallAsync {
      * Stop recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful stopRecording request.
+     * @return response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopRecordingWithResponse(String recordingId) {
@@ -282,7 +282,7 @@ public final class ServerCallAsync {
      * Pause recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful pauseRecording request.
+     * @return response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> pauseRecording(String recordingId) {
@@ -299,7 +299,7 @@ public final class ServerCallAsync {
      * Pause recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful pauseRecording request.
+     * @return response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> pauseRecordingWithResponse(String recordingId) {
@@ -324,7 +324,7 @@ public final class ServerCallAsync {
      * Resume recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful resumeRecording request.
+     * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resumeRecording(String recordingId) {
@@ -341,7 +341,7 @@ public final class ServerCallAsync {
      * Resume recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful resumeRecording request.
+     * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeRecordingWithResponse(String recordingId) {
@@ -366,7 +366,7 @@ public final class ServerCallAsync {
      * Get recording state
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful getRecordingState request.
+     * @return response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallRecordingStateResult> getRecordingState(String recordingId) {
@@ -384,7 +384,7 @@ public final class ServerCallAsync {
      * Get recording state
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful getRecordingState request.
+     * @return response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallRecordingStateResult>> getRecordingStateWithResponse(String recordingId) {
@@ -525,9 +525,12 @@ public final class ServerCallAsync {
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PlayAudioResult>> playAudioWithResponse(String audioFileUri, PlayAudioOptions playAudioOptions) {
+    public Mono<Response<PlayAudioResult>> playAudioWithResponse(
+        String audioFileUri,
+        PlayAudioOptions playAudioOptions) {
         return playAudioWithResponseInternal(audioFileUri, playAudioOptions, Context.NONE);
     }
+
     Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
         String audioFileUri,
         String audioFileId,

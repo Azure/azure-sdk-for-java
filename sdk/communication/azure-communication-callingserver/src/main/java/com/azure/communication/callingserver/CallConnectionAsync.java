@@ -248,7 +248,7 @@ public final class CallConnectionAsync {
     /**
      * Hangup a call.
      *
-     * @return response for a successful Hangup request.
+     * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangup() {
@@ -263,7 +263,7 @@ public final class CallConnectionAsync {
     /**
      * Hangup a call.
      *
-     * @return response for a successful Hangup request.
+     * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupWithResponse() {
@@ -287,7 +287,7 @@ public final class CallConnectionAsync {
      *
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return the response payload of the cancel media operations.
+     * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperations(String operationContext) {
@@ -307,7 +307,7 @@ public final class CallConnectionAsync {
      *
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @return the response payload of the cancel media operations.
+     * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String operationContext) {
@@ -322,7 +322,8 @@ public final class CallConnectionAsync {
             request.setOperationContext(operationContext);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callConnectionInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
+                return callConnectionInternal
+                    .cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response, CancelAllMediaOperationsResultConverter.convert(response.getValue())));
@@ -337,8 +338,9 @@ public final class CallConnectionAsync {
      *
      * @param participant Invited participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext operationContext.
-     * @return response for a successful addParticipant request.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addParticipant(
@@ -363,8 +365,9 @@ public final class CallConnectionAsync {
      *
      * @param participant Invited participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
-     * @param operationContext operationContext.
-     * @return response for a successful addParticipant request.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addParticipantWithResponse(
@@ -381,10 +384,13 @@ public final class CallConnectionAsync {
         Context context) {
         try {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
-            InviteParticipantsRequest request = InviteParticipantRequestConverter.convert(participant, alternateCallerId, operationContext, null);
+            InviteParticipantsRequest request =
+                InviteParticipantRequestConverter
+                    .convert(participant, alternateCallerId, operationContext, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callConnectionInternal.inviteParticipantsWithResponseAsync(callConnectionId, request, contextValue)
+                return callConnectionInternal
+                    .inviteParticipantsWithResponseAsync(callConnectionId, request, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
@@ -396,7 +402,7 @@ public final class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeParticipant(String participantId) {
@@ -413,22 +419,20 @@ public final class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful removeParticipant request.
+     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeParticipantWithResponse(String participantId) {
         return removeParticipantWithResponse(participantId, Context.NONE);
     }
 
-    /**
-     * Remove participant from the call.
-     */
     Mono<Response<Void>> removeParticipantWithResponse(String participantId, Context context) {
         try {
             Objects.requireNonNull(participantId, "'participantId' cannot be null.");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
+                return callConnectionInternal
+                    .removeParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
                     .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {

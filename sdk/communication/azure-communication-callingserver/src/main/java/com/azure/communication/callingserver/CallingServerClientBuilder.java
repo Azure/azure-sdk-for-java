@@ -111,8 +111,8 @@ public final class CallingServerClientBuilder {
     /**
      * Set connectionString to use
      *
-     * @param connectionString connection string to set endpoint and initialize AzureKeyCredential
-     * @return CallingServerClientBuilder
+     * @param connectionString connection string to set
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
@@ -124,7 +124,7 @@ public final class CallingServerClientBuilder {
      * Sets the retry policy to use (using the RetryPolicy type).
      *
      * @param retryPolicy object to be applied
-     * @return CallingServerClientBuilder
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
@@ -137,7 +137,7 @@ public final class CallingServerClientBuilder {
      *
      * @param configuration Configuration store used to retrieve environment
      * configurations.
-     * @return the updated CallingServerClientBuilder object
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
@@ -149,7 +149,7 @@ public final class CallingServerClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving
      * HTTP requests/responses.
-     * @return the updated CallingServerClientBuilder object
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
@@ -180,7 +180,7 @@ public final class CallingServerClientBuilder {
      * Set httpClient to use
      *
      * @param httpClient httpClient to use, overridden by the pipeline field.
-     * @return CallingServerClientBuilder
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
@@ -191,9 +191,8 @@ public final class CallingServerClientBuilder {
      * Apply additional HttpPipelinePolicy
      *
      * @param customPolicy HttpPipelinePolicy object to be applied after
-     * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy,
-     * and CookiePolicy
-     * @return CallingServerClientBuilder
+     *                     AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
@@ -205,7 +204,7 @@ public final class CallingServerClientBuilder {
      * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
      * specified by additionalPolicies will be applied after them
      *
-     * @return CallingServerAsyncClient instance
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerAsyncClient buildAsyncClient() {
         return new CallingServerAsyncClient(createServiceImpl());
@@ -216,7 +215,7 @@ public final class CallingServerClientBuilder {
      * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
      * additionalPolicies will be applied after them
      *
-     * @return CallingServerClient instance
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClient buildClient() {
         return new CallingServerClient(buildAsyncClient());
@@ -276,7 +275,7 @@ public final class CallingServerClientBuilder {
      * user-agent string, headers, etc.
      *
      * @param clientOptions object to be applied
-     * @return CallingServerClientBuilder
+     * @return The updated {@link CallingServerClientBuilder} object.
      */
     public CallingServerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;

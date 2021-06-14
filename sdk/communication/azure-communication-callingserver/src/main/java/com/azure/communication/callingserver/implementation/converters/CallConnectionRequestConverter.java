@@ -32,13 +32,13 @@ public final class CallConnectionRequestConverter {
             return null;
         }
 
-        CreateCallRequest createCallRequest
-            = new CreateCallRequest()
-            .setSource(CommunicationIdentifierConverter.convert(source))
-            .setTargets(new ArrayList<>(Arrays.asList(targets))
-                .stream()
-                .map(CommunicationIdentifierConverter::convert)
-                .collect(Collectors.toList()));
+        CreateCallRequest createCallRequest =
+            new CreateCallRequest()
+                .setSource(CommunicationIdentifierConverter.convert(source))
+                .setTargets(new ArrayList<>(Arrays.asList(targets))
+                    .stream()
+                    .map(CommunicationIdentifierConverter::convert)
+                    .collect(Collectors.toList()));
 
         if (createCallOptions == null) {
             return createCallRequest;
