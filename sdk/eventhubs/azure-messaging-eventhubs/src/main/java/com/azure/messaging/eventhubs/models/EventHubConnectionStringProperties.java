@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 
 import java.net.URI;
 
