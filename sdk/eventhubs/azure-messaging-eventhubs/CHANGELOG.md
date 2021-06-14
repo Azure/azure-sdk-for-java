@@ -1,6 +1,12 @@
 # Release History
 
-## 5.7.2 (2021-06-14)
+## 5.8.0 (2021-06-14)
+
+### Features Added
+
+- Add `EventHubClientBuilder.credential(String, String, com.azure.core.credential.AzureNamedKeyCredential)` overload.
+- Add `EventHubClientBuilder.credential(String, String, com.azure.core.credential.AzureSasCredential)` overload.
+- Add `EventHubConnectionStringProperties` to get connection string properties.
 
 ### Dependency Updates
 

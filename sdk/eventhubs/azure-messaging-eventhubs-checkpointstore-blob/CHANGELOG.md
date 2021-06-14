@@ -4,7 +4,7 @@
 
 ### Dependency Updates
 
-- Update `azure-messaging-eventhubs` dependency to `5.7.2`.
+- Update `azure-messaging-eventhubs` dependency to `5.8.0`.
 - Update `azure-storage-blob` to `12.12.0`.
 
 ## 1.7.1 (2021-06-01)
