@@ -598,4 +598,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Fields are set via reflection using JCommander. Setting them to final fields will break it. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.messaging.eventhubs.perf[/\\].*Options\.java"/>
+
+  <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
 </suppressions>
