@@ -316,12 +316,12 @@ public final class CallingServerClientBuilder {
         }
 
         // Add required policies
-        policyList.add(createHttpPipelineAuthPolicy());
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policyList.add(new RequestIdPolicy());
         policyList.add((retryPolicy == null) ? new RetryPolicy() : retryPolicy);
+        policyList.add(createHttpPipelineAuthPolicy());
         policyList.add(new CookiePolicy());
 
         // Add additional policies

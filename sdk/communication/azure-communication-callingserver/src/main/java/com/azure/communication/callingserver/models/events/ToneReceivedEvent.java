@@ -5,10 +5,12 @@ package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.models.ToneReceivedEventInternal;
 import com.azure.communication.callingserver.models.ToneInfo;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 /** The subscribe to tone event. */
-public final class ToneReceivedEvent {
+@Immutable
+public final class ToneReceivedEvent extends CallingServerEventBase {
     /*
      * The tone info.
      */

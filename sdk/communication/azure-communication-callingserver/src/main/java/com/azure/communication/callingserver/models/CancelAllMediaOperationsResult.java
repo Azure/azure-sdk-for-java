@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** The response payload of the cancel all media operations. */
+@Immutable
 public final class CancelAllMediaOperationsResult {
     /*
      * The identifier.

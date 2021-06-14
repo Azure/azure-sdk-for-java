@@ -3,11 +3,11 @@
 
 package com.azure.communication.callingserver.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result payload of get call recording state operation. */
-@Fluent
+@Immutable
 public final class CallRecordingStateResult {
     /*
      * The state of the recording

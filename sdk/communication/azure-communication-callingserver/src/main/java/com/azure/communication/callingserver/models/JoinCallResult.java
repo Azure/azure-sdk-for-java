@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** The response payload of the join call operation. */
+@Immutable
 public final class JoinCallResult {
     /*
      * The call connection id.

@@ -7,10 +7,12 @@ import com.azure.communication.callingserver.implementation.converters.ResultInf
 import com.azure.communication.callingserver.implementation.models.InviteParticipantsResultEventInternal;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.ResultInfo;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 /** The invite participant result event. */
-public final class InviteParticipantResultEvent {
+@Immutable
+public final class InviteParticipantResultEvent extends CallingServerEventBase {
     /*
      * The result details.
      */

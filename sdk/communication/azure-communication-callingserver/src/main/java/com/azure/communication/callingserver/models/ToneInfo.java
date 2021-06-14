@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** The class to represent Tone info detail. */
+@Immutable
 public final class ToneInfo {
     /*
      * The sequence id. This id can be used to determine if the same tone

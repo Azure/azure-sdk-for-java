@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** The response payload of start call recording operation. */
+@Immutable
 public final class StartCallRecordingResult {
     /*
      * The recording id

@@ -3,7 +3,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Result info class to be used to report result status for actions/operations. */
+@Immutable
 public final class ResultInfo {
     /*
      * The result code

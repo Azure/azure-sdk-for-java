@@ -7,10 +7,12 @@ import com.azure.communication.callingserver.implementation.converters.ResultInf
 import com.azure.communication.callingserver.implementation.models.PlayAudioResultEventInternal;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.ResultInfo;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 /** The play audio result event. */
-public final class PlayAudioResultEvent {
+@Immutable
+public final class PlayAudioResultEvent extends CallingServerEventBase {
     /*
      * The result details.
      */

@@ -7,6 +7,7 @@ import com.azure.communication.callingserver.implementation.converters.Communica
 import com.azure.communication.callingserver.implementation.models.CommunicationParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
 import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 import java.util.LinkedList;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * The participants updated event.
  */
+@Immutable
 public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
     /**
      * The call connection id.

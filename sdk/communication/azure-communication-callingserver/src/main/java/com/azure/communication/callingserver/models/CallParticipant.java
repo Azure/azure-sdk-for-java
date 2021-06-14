@@ -4,10 +4,12 @@
 package com.azure.communication.callingserver.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The participant in a call.
  */
+@Immutable
 public final class CallParticipant {
 
     /**

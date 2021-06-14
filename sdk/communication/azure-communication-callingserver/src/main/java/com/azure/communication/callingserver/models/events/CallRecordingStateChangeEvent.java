@@ -5,12 +5,14 @@ package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.models.CallRecordingStateChangeEventInternal;
 import com.azure.communication.callingserver.models.CallRecordingState;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 import java.time.OffsetDateTime;
 
 /** The call recording state change event. */
-public final class CallRecordingStateChangeEvent {
+@Immutable
+public final class CallRecordingStateChangeEvent extends CallingServerEventBase {
     /*
      * The call recording id
      */
