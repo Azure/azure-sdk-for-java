@@ -4,8 +4,10 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BulkProcessingOptions;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.util.function.Tuple2;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -38,20 +40,17 @@ public class PartitionScopeThresholds<TContext> {
         return this.pkRangeId;
     }
 
-    private boolean shouldReevaluateThresholds(long totalSnapshot, long currentSnapshot) {
+    private Pair<Boolean, Boolean> shouldReevaluateThresholds(long totalSnapshot, long currentSnapshot) {
         if (totalSnapshot < 1_000) {
-            return currentSnapshot == 100;
+
+            return Pair.of(currentSnapshot == 100, false);
         }
 
         if (totalSnapshot < 10_000) {
-            return currentSnapshot == 1_000;
+            return Pair.of(currentSnapshot == 1_000, false);
         }
 
-        if (totalSnapshot < 1_000_000) {
-            return currentSnapshot == 10_000;
-        }
-
-        return currentSnapshot == 100_000;
+        return Pair.of(currentSnapshot % 1_000 == 0, currentSnapshot % 10_000 == 0);
     }
 
     private void recordOperation(boolean isRetry) {
@@ -66,10 +65,21 @@ public class PartitionScopeThresholds<TContext> {
         }
 
         double retryRate = (double)currentRetryCountSnapshot / currentTotalCountSnapshot;
-        if (this.shouldReevaluateThresholds(totalSnapshot, currentTotalCountSnapshot) &&
-            this.currentThresholds.compareAndSet(currentThresholdsSnapshot, new CurrentIntervalThresholds())) {
+        Pair<Boolean, Boolean> shouldReevaluateResult =
+            this.shouldReevaluateThresholds(totalSnapshot, currentTotalCountSnapshot);
+        boolean shouldReevaluate = shouldReevaluateResult.getLeft();
+        if (shouldReevaluate) {
+            boolean onlyUpscale = shouldReevaluateResult.getRight();
+            if (onlyUpscale ||
+                this.currentThresholds.compareAndSet(currentThresholdsSnapshot, new CurrentIntervalThresholds())) {
 
-            this.reevaluateThresholds(totalSnapshot, currentTotalCountSnapshot, currentRetryCountSnapshot, retryRate);
+                this.reevaluateThresholds(
+                    totalSnapshot,
+                    currentTotalCountSnapshot,
+                    currentRetryCountSnapshot,
+                    retryRate,
+                    shouldReevaluateResult.getRight());
+            }
         }
     }
 
@@ -77,17 +87,23 @@ public class PartitionScopeThresholds<TContext> {
         long totalCount,
         long currentCount,
         long retryCount,
-        double retryRate) {
+        double retryRate,
+        boolean onlyUpscale) {
 
         int microBatchSizeBefore = this.targetMicroBatchSize;
 
-        if (retryRate == 0 && this.targetMicroBatchSize < this.options.getMaxMicroBatchSize()) {
+        if (retryRate == 0 &&
+            this.targetMicroBatchSize < this.options.getMaxMicroBatchSize()) {
+
             this.targetMicroBatchSize = Math.min(
-                Math.max(
-                    this.targetMicroBatchSize + 1,
-                    (int)(this.targetMicroBatchSize * (1 + this.options.getMaxMicroBatchRetryRate()))),
+                Math.min(
+                    this.targetMicroBatchSize * 2,
+                    this.targetMicroBatchSize +
+                        (int)(this.options.getMaxMicroBatchSize() * this.options.getMaxMicroBatchRetryRate())),
                 this.options.getMaxMicroBatchSize());
-        } else if (retryRate > this.options.getMaxMicroBatchRetryRate() && this.targetMicroBatchSize > 1) {
+        } else if (!onlyUpscale && retryRate > this.options.getMaxMicroBatchRetryRate() &&
+            this.targetMicroBatchSize > 1) {
+
             double deltaRate = retryRate - this.options.getMaxMicroBatchRetryRate();
             this.targetMicroBatchSize = Math.max(1, (int) (this.targetMicroBatchSize * (1 - deltaRate)));
         }
@@ -95,7 +111,7 @@ public class PartitionScopeThresholds<TContext> {
         // TODO @fabianm - change to DEBUG after testing
         logger.info(
             "Reevaluated thresholds for PKRange '{}#{}' (TotalCount: {}, CurrentCount: {}, CurrentRetryCount: {}, " +
-                "CurrentRetryRate: {} - BatchSize {} -> {})",
+                "CurrentRetryRate: {} - BatchSize {} -> {}, OlyUpscale: {})",
             this.pkRangeId,
             this.identifier,
             totalCount,
@@ -103,7 +119,8 @@ public class PartitionScopeThresholds<TContext> {
             retryCount,
             retryRate,
             microBatchSizeBefore,
-            this.targetMicroBatchSize);
+            this.targetMicroBatchSize,
+            onlyUpscale);
     }
 
     public void recordSuccessfulOperation() {
