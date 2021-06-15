@@ -84,6 +84,10 @@
         <!-- Models Repository -->
         <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
 
+        <!-- Azure Monitor -->
+        <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
+        <module>sdk/monitor/azure-monitor-query</module>
+
         <!-- Purview -->
         <module>sdk/purview/azure-analytics-purview-catalog</module>
         <module>sdk/purview/azure-analytics-purview-scanning</module>
@@ -368,6 +372,14 @@
                   <group>
                     <title>Azure Confidential Ledger</title>
                     <packages>com.azure.security.confidentialledger.*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Monitor - OpenTelemetry Exporter</title>
+                    <packages>com.azure.monitor.opentelemetry.exporter.*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Monitor - Logs and Metrics query</title>
+                    <packages>com.azure.monitor.query.*</packages>
                   </group>
                 </groups>
                 <links combine.children="append">

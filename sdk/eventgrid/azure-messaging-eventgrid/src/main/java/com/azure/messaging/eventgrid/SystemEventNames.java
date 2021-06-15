@@ -103,6 +103,7 @@ import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnection
 import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobInventoryPolicyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
@@ -406,6 +407,10 @@ public final class SystemEventNames {
      */
     public static final String STORAGE_BLOB_DELETED = "Microsoft.Storage.BlobDeleted";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted event. */
+    public static final String STORAGE_BLOB_INVENTORY_POLICY_COMPLETED =
+        "Microsoft.Storage.BlobInventoryPolicyCompleted";
+
     /**
      * indicates an event of blob renaming.
      */
@@ -608,6 +613,7 @@ public final class SystemEventNames {
             // Storage events.
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
             put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
+            put(STORAGE_BLOB_INVENTORY_POLICY_COMPLETED, StorageBlobInventoryPolicyCompletedEventData.class);
             put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
             put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
             put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);

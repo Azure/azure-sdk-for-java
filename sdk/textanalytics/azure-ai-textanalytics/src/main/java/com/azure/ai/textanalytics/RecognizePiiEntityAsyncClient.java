@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
@@ -33,7 +34,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
@@ -217,7 +217,7 @@ class RecognizePiiEntityAsyncClient {
             options.isIncludeStatistics(),
             options.isServiceLogsDisabled(),
             options.getDomainFilter() != null ? options.getDomainFilter().toString() : null,
-            getNonNullStringIndexType(options.getStringIndexType()),
+            StringIndexType.UTF16CODE_UNIT,
             toCategoriesFilter(options.getCategoriesFilter()),
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                    .doOnSubscribe(ignoredValue -> logger.info(

@@ -19,7 +19,7 @@ import static com.azure.data.tables.implementation.TableSasUtils.formatQueryPara
 import static com.azure.data.tables.implementation.TableSasUtils.tryAppendQueryParameter;
 
 /**
- * A class containing utility methods for generating SAS tokens for the Azure Data Tables service.
+ * A class containing utility methods for generating SAS tokens for the Azure Tables service.
  */
 public class TableSasGenerator {
     private final ClientLogger logger = new ClientLogger(TableSasGenerator.class);

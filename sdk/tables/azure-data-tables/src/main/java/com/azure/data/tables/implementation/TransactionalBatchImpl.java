@@ -52,7 +52,7 @@ public final class TransactionalBatchImpl {
      */
     @Host("{url}")
     @ServiceInterface(name = "AzureTableServices")
-    private interface TransactionalBatchService {
+    public interface TransactionalBatchService {
         @Post("/$batch")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
