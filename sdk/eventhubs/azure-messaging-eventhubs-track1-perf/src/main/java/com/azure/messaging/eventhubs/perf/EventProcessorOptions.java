@@ -22,6 +22,9 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
     @Parameter(names = {"-e", "--eventsToSend"}, description = "Number of events to send per partition.")
     private int eventsToSend = 100000;
 
+    @Parameter(names = {"--publish"}, description = "Switch to indicate whether to publish messages or not.")
+    private boolean publishMessages = false;
+
     /**
      * Gets the connection string for the storage account.
      *
@@ -47,5 +50,14 @@ public class EventProcessorOptions extends EventHubsReceiveOptions {
      */
     public int getEventsToSend() {
         return eventsToSend;
+    }
+
+    /**
+     * Gets whether to publish messages or not.
+     *
+     * @return Gets whether to publish messages to the event hub before running the test.
+     */
+    public boolean publishMessages() {
+        return publishMessages;
     }
 }
