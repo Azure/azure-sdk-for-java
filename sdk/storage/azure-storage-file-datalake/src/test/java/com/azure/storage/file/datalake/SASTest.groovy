@@ -11,6 +11,7 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil
 import com.azure.storage.file.datalake.models.AccessControlType
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
@@ -81,10 +82,12 @@ class SASTest extends APISpec {
             .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
-            .setManageOwnershipPermission(true)
-            .setManageAccessControlPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2019_12_12.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
         def sasValues = generateValues(permissions)
 
@@ -103,6 +106,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "directory sas permission"() {
         setup:
         def pathName = generatePathName()
@@ -140,6 +144,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "directory sas permission fail"() {
         setup:
         def pathName = generatePathName()
@@ -179,10 +184,12 @@ class SASTest extends APISpec {
             .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
-            .setManageOwnershipPermission(true)
-            .setManageAccessControlPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2020_02_10.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
         def expiryTime = namer.getUtcNow().plusDays(1)
 
@@ -216,10 +223,12 @@ class SASTest extends APISpec {
             .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
-            .setManageOwnershipPermission(true)
-            .setManageAccessControlPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2019_12_12.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
         def sasValues = generateValues(permissions)
 
@@ -238,6 +247,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "directory user delegation"() {
         setup:
         def pathName = generatePathName()
@@ -293,10 +303,12 @@ class SASTest extends APISpec {
             .setCreatePermission(true)
             .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
-            .setManageOwnershipPermission(true)
-            .setManageAccessControlPermission(true)
+        if (Constants.SAS_SERVICE_VERSION >= DataLakeServiceVersion.V2020_02_10.version) {
+            permissions.setMovePermission(true)
+                .setExecutePermission(true)
+                .setManageOwnershipPermission(true)
+                .setManageAccessControlPermission(true)
+        }
 
         def expiryTime = namer.getUtcNow().plusDays(1)
 
@@ -319,6 +331,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "file user delegation saoid"() {
         setup:
         def saoid = namer.getRandomUuid()
@@ -377,6 +390,7 @@ class SASTest extends APISpec {
         accessControl.getOwner() == saoid
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "file user delegation suoid"() {
         setup:
         def suoid = namer.getRandomUuid()
@@ -486,6 +500,7 @@ class SASTest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     def "file system user delegation correlation id error"() {
         setup:
         def permissions = new FileSystemSasPermission()
@@ -716,6 +731,7 @@ class SASTest extends APISpec {
         null                                                      | null       | null             | null                   | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\ntype"
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
     @Unroll
     def "sas impl util string to sign user delegation key"() {
         when:
