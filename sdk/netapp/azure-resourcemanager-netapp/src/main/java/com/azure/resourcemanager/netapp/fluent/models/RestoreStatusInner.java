@@ -11,52 +11,40 @@ import com.azure.resourcemanager.netapp.models.RelationshipStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Backup status. */
+/** Restore status. */
 @Immutable
-public final class BackupStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupStatusInner.class);
+public final class RestoreStatusInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreStatusInner.class);
 
     /*
-     * Backup health status
+     * Restore health status
      */
     @JsonProperty(value = "healthy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean healthy;
 
     /*
-     * Status of the backup mirror relationship
+     * Status of the restore SnapMirror relationship
      */
     @JsonProperty(value = "relationshipStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RelationshipStatus relationshipStatus;
 
     /*
-     * The status of the backup
+     * The status of the restore
      */
     @JsonProperty(value = "mirrorState", access = JsonProperty.Access.WRITE_ONLY)
     private MirrorState mirrorState;
 
     /*
-     * Reason for the unhealthy backup relationship
+     * Reason for the unhealthy restore relationship
      */
     @JsonProperty(value = "unhealthyReason", access = JsonProperty.Access.WRITE_ONLY)
     private String unhealthyReason;
 
     /*
-     * Displays error message if the backup is in an error state
+     * Displays error message if the restore is in an error state
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
-
-    /*
-     * Displays the last transfer size
-     */
-    @JsonProperty(value = "lastTransferSize", access = JsonProperty.Access.WRITE_ONLY)
-    private Long lastTransferSize;
-
-    /*
-     * Displays the last transfer type
-     */
-    @JsonProperty(value = "lastTransferType", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastTransferType;
 
     /*
      * Displays the total bytes transferred
@@ -65,7 +53,7 @@ public final class BackupStatusInner {
     private Long totalTransferBytes;
 
     /**
-     * Get the healthy property: Backup health status.
+     * Get the healthy property: Restore health status.
      *
      * @return the healthy value.
      */
@@ -74,7 +62,7 @@ public final class BackupStatusInner {
     }
 
     /**
-     * Get the relationshipStatus property: Status of the backup mirror relationship.
+     * Get the relationshipStatus property: Status of the restore SnapMirror relationship.
      *
      * @return the relationshipStatus value.
      */
@@ -83,7 +71,7 @@ public final class BackupStatusInner {
     }
 
     /**
-     * Get the mirrorState property: The status of the backup.
+     * Get the mirrorState property: The status of the restore.
      *
      * @return the mirrorState value.
      */
@@ -92,7 +80,7 @@ public final class BackupStatusInner {
     }
 
     /**
-     * Get the unhealthyReason property: Reason for the unhealthy backup relationship.
+     * Get the unhealthyReason property: Reason for the unhealthy restore relationship.
      *
      * @return the unhealthyReason value.
      */
@@ -101,30 +89,12 @@ public final class BackupStatusInner {
     }
 
     /**
-     * Get the errorMessage property: Displays error message if the backup is in an error state.
+     * Get the errorMessage property: Displays error message if the restore is in an error state.
      *
      * @return the errorMessage value.
      */
     public String errorMessage() {
         return this.errorMessage;
-    }
-
-    /**
-     * Get the lastTransferSize property: Displays the last transfer size.
-     *
-     * @return the lastTransferSize value.
-     */
-    public Long lastTransferSize() {
-        return this.lastTransferSize;
-    }
-
-    /**
-     * Get the lastTransferType property: Displays the last transfer type.
-     *
-     * @return the lastTransferType value.
-     */
-    public String lastTransferType() {
-        return this.lastTransferType;
     }
 
     /**
