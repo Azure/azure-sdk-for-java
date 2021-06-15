@@ -35,7 +35,6 @@ import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 
-import static com.azure.security.keyvault.jca.test.PropertyConvertorUtils.SYSTEM_PROPERTIES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
