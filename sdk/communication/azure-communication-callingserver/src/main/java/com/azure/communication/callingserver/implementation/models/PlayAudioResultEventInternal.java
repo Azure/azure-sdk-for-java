@@ -24,7 +24,7 @@ public final class PlayAudioResultEventInternal {
     private String operationContext;
 
     /*
-     * Gets or sets the status of the operation
+     * The status of the operation
      */
     @JsonProperty(value = "status")
     private OperationStatus status;
@@ -70,7 +70,7 @@ public final class PlayAudioResultEventInternal {
     }
 
     /**
-     * Get the status property: Gets or sets the status of the operation.
+     * Get the status property: The status of the operation.
      *
      * @return the status value.
      */
@@ -79,7 +79,7 @@ public final class PlayAudioResultEventInternal {
     }
 
     /**
-     * Set the status property: Gets or sets the status of the operation.
+     * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
      * @return the PlayAudioResultEventInternal object itself.

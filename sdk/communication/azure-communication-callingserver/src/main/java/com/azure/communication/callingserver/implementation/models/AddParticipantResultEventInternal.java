@@ -8,9 +8,9 @@ import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InviteParticipantsResultEventInternal model. */
+/** The AddParticipantResultEventInternal model. */
 @Fluent
-public final class InviteParticipantsResultEventInternal {
+public final class AddParticipantResultEventInternal {
     /*
      * The result details.
      */
@@ -24,7 +24,7 @@ public final class InviteParticipantsResultEventInternal {
     private String operationContext;
 
     /*
-     * Gets or sets the status of the operation
+     * The status of the operation
      */
     @JsonProperty(value = "status")
     private OperationStatus status;
@@ -42,9 +42,9 @@ public final class InviteParticipantsResultEventInternal {
      * Set the resultInfo property: The result details.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the InviteParticipantsResultEventInternal object itself.
+     * @return the AddParticipantResultEventInternal object itself.
      */
-    public InviteParticipantsResultEventInternal setResultInfo(ResultInfoInternal resultInfo) {
+    public AddParticipantResultEventInternal setResultInfo(ResultInfoInternal resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
@@ -62,15 +62,15 @@ public final class InviteParticipantsResultEventInternal {
      * Set the operationContext property: The operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the InviteParticipantsResultEventInternal object itself.
+     * @return the AddParticipantResultEventInternal object itself.
      */
-    public InviteParticipantsResultEventInternal setOperationContext(String operationContext) {
+    public AddParticipantResultEventInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
 
     /**
-     * Get the status property: Gets or sets the status of the operation.
+     * Get the status property: The status of the operation.
      *
      * @return the status value.
      */
@@ -79,12 +79,12 @@ public final class InviteParticipantsResultEventInternal {
     }
 
     /**
-     * Set the status property: Gets or sets the status of the operation.
+     * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
-     * @return the InviteParticipantsResultEventInternal object itself.
+     * @return the AddParticipantResultEventInternal object itself.
      */
-    public InviteParticipantsResultEventInternal setStatus(OperationStatus status) {
+    public AddParticipantResultEventInternal setStatus(OperationStatus status) {
         this.status = status;
         return this;
     }

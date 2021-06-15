@@ -3,9 +3,9 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 
@@ -51,7 +51,7 @@ public class ReadmeSamples {
 
         String callbackUri = "<callback-uri-for-notification>";
 
-        CallModality[] requestedMediaTypes = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
+        MediaType[] requestedMediaTypes = new MediaType[] { MediaType.AUDIO, MediaType.VIDEO };
 
         EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
             EventSubscriptionType.DTMF_RECEIVED,

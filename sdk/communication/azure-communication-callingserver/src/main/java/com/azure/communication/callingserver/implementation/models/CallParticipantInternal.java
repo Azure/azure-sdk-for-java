@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A participant in a call. */
 @Fluent
-public final class CommunicationParticipantInternal {
+public final class CallParticipantInternal {
     /*
      * Communication identifier of the participant
      */
@@ -41,9 +41,9 @@ public final class CommunicationParticipantInternal {
      * Set the identifier property: Communication identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the CommunicationParticipantInternal object itself.
+     * @return the CallParticipantInternal object itself.
      */
-    public CommunicationParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
+    public CallParticipantInternal setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -61,9 +61,9 @@ public final class CommunicationParticipantInternal {
      * Set the participantId property: Participant id.
      *
      * @param participantId the participantId value to set.
-     * @return the CommunicationParticipantInternal object itself.
+     * @return the CallParticipantInternal object itself.
      */
-    public CommunicationParticipantInternal setParticipantId(String participantId) {
+    public CallParticipantInternal setParticipantId(String participantId) {
         this.participantId = participantId;
         return this;
     }
@@ -81,9 +81,9 @@ public final class CommunicationParticipantInternal {
      * Set the isMuted property: Is participant muted.
      *
      * @param isMuted the isMuted value to set.
-     * @return the CommunicationParticipantInternal object itself.
+     * @return the CallParticipantInternal object itself.
      */
-    public CommunicationParticipantInternal setIsMuted(Boolean isMuted) {
+    public CallParticipantInternal setIsMuted(Boolean isMuted) {
         this.isMuted = isMuted;
         return this;
     }
