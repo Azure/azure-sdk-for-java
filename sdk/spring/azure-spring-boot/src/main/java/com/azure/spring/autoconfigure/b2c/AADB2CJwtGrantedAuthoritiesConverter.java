@@ -36,7 +36,7 @@ public class AADB2CJwtGrantedAuthoritiesConverter implements Converter<Jwt, Coll
     private Collection<String> getAuthorities(Jwt jwt) {
         Collection<String> authoritiesList = new ArrayList<String>();
         for (String claimName : WELL_KNOWN_AUTHORITIES_CLAIM_NAMES) {
-            if (jwt.containsClaim(claimName)) {
+            if (jwt.hasClaim(claimName)) {
                 if (jwt.getClaim(claimName) instanceof String) {
                     if (StringUtils.hasText(jwt.getClaim(claimName))) {
                         authoritiesList.addAll(Arrays.asList(((String) jwt.getClaim(claimName)).split(" "))

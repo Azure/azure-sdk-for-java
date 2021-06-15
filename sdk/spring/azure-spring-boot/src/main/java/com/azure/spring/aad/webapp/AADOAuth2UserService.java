@@ -3,6 +3,8 @@
 
 package com.azure.spring.aad.webapp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import org.springframework.security.core.Authentication;
@@ -43,6 +45,8 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
  * GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2UserService.class);
 
     private final OidcUserService oidcUserService;
     private final List<String> allowedGroupNames;
@@ -95,6 +99,9 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
 
         if (authorities.isEmpty()) {
             authorities = DEFAULT_AUTHORITY_SET;
+        }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("User's authorities: {}.", authorities);
         }
         String nameAttributeKey =
             Optional.of(userRequest)

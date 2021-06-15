@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
  */
 public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtGrantedAuthoritiesConverter.class);
+
     private static final String DEFAULT_SCP_AUTHORITY_PREFIX = "SCOPE_";
 
     private static final String DEFAULT_ROLES_AUTHORITY_PREFIX = "APPROLE_";
@@ -30,13 +34,16 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
         for (String authority : getAuthorities(jwt)) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority));
         }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("User's authorities: {}.", grantedAuthorities);
+        }
         return grantedAuthorities;
     }
 
     private Collection<String> getAuthorities(Jwt jwt) {
         Collection<String> authoritiesList = new ArrayList<String>();
         for (String claimName : WELL_KNOWN_AUTHORITIES_CLAIM_NAMES) {
-            if (jwt.containsClaim(claimName)) {
+            if (jwt.hasClaim(claimName)) {
                 if (jwt.getClaim(claimName) instanceof String) {
                     if (StringUtils.hasText(jwt.getClaim(claimName))) {
                         authoritiesList.addAll(Arrays.asList(((String) jwt.getClaim(claimName)).split(" "))

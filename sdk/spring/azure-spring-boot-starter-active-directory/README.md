@@ -650,6 +650,34 @@ logging.level.org.hibernate=ERROR
 
 For more information about setting logging in spring, please refer to the [official doc].
 
+### Enable authority logging.
+
+Add the following logging settings, and you will see the user's authorities based on the log.
+
+```properties
+# logging settings for web application scenario.
+logging.level.com.azure.spring.aad.webapp.AADOAuth2UserService=DEBUG
+
+# logging settings for resource server scenario.
+logging.level.com.azure.spring.aad.webapi.AADJwtGrantedAuthoritiesConverter=DEBUG
+```
+
+The log output as a web application usage:
+
+```text
+...
+DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User's authorities: [ROLE_group1, ROLE_group2].
+...
+```
+
+The log output as a resource server usage:
+
+```text
+...
+DEBUG .s.a.w.AADJwtGrantedAuthoritiesConverter : User's authorities: [SCOPE_Obo.Graph.Read, SCOPE_Obo.WebApiA.ExampleScope].
+...
+```
+
 ## Next steps
 
 ## Contributing
