@@ -189,12 +189,13 @@ class FileSasClientTests extends APISpec {
      */
     def "Remember about string to sign deprecation"() {
         setup:
+        def client = shareBuilderHelper(shareName).credential(env.primaryAccount.credential).buildClient()
         def values = new ShareServiceSasSignatureValues(namer.getUtcNow(), new ShareSasPermission())
-        values.setShareName(primaryShareClient.getShareName())
+        values.setShareName(client.getShareName())
 
         when:
         def deprecatedStringToSign = values.generateSasQueryParameters(env.primaryAccount.credential).encode()
-        def stringToSign = primaryShareClient.generateSas(values)
+        def stringToSign = client.generateSas(values)
 
         then:
         deprecatedStringToSign == stringToSign
