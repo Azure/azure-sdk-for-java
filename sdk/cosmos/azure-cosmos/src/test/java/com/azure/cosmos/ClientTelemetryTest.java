@@ -6,22 +6,30 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -86,10 +94,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
             cosmosClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
-        Field backgroundRefreshLocationTimeIntervalInSecField = ClientTelemetry.class.getDeclaredField(
-            "clientTelemetrySchedulingSec");
-        backgroundRefreshLocationTimeIntervalInSecField.setAccessible(true);
-        backgroundRefreshLocationTimeIntervalInSecField.setInt(clientTelemetry, 5);
+        setClientTelemetrySchedulingInSec(clientTelemetry, 5);
         clientTelemetry.init();
 
         InternalObjectNode internalObjectNode = getInternalObjectNode();
@@ -205,6 +210,47 @@ public class ClientTelemetryTest extends TestSuiteBase {
         System.setProperty("COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS", "600");// setting it back for other tests
     }
 
+    @Test(groups = {"non-emulator"}, timeOut = TIMEOUT)
+    public void clientTelemetryWithStageJunoEndpoint() throws InterruptedException, NoSuchFieldException,
+        IllegalAccessException {
+        CosmosClient cosmosClient = null;
+        try {
+            cosmosClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .clientTelemetryEnabled(true)
+                .buildClient();
+            CosmosAsyncContainer asyncContainer =
+                getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
+            CosmosContainer cosmosContainer =
+                cosmosClient.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+            ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
+            setClientTelemetrySchedulingInSec(clientTelemetry, 5);
+            clientTelemetry.init();
+
+            HttpClient httpClient = ReflectionUtils.getHttpClient(clientTelemetry);
+            HttpClient spyHttpClient = Mockito.spy(httpClient);
+            ReflectionUtils.setHttpClient(clientTelemetry, spyHttpClient);
+
+            AtomicReference<Mono<HttpResponse>> httpResponseMono = new AtomicReference<>();
+            Mockito.doAnswer(invocationOnMock -> {
+                httpResponseMono.set((Mono<HttpResponse>) invocationOnMock.callRealMethod());
+                return httpResponseMono.get();
+            }).when(spyHttpClient).send(ArgumentMatchers.any(),
+                ArgumentMatchers.any());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            cosmosContainer.createItem(internalObjectNode);
+            cosmosContainer.readItem(internalObjectNode.getId(),
+                new PartitionKey(internalObjectNode.getId()),
+                InternalObjectNode.class);
+            Thread.sleep(5000);
+            StepVerifier.create(httpResponseMono.get()).expectNextMatches(httpResponse ->
+                httpResponse.statusCode() == HttpConstants.StatusCodes.OK).verifyComplete();
+        } finally {
+            safeCloseSyncClient(cosmosClient);
+        }
+    }
+
     private InternalObjectNode getInternalObjectNode() {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
@@ -217,5 +263,12 @@ public class ClientTelemetryTest extends TestSuiteBase {
         Method readHistogram = ClientTelemetry.class.getDeclaredMethod("readHistogram");
         readHistogram.setAccessible(true);
         readHistogram.invoke(telemetry);
+    }
+
+    private void setClientTelemetrySchedulingInSec(ClientTelemetry clientTelemetry, int backgroundScheduling) throws IllegalAccessException, NoSuchFieldException {
+        Field backgroundRefreshLocationTimeIntervalInSecField = ClientTelemetry.class.getDeclaredField(
+            "clientTelemetrySchedulingSec");
+        backgroundRefreshLocationTimeIntervalInSecField.setAccessible(true);
+        backgroundRefreshLocationTimeIntervalInSecField.setInt(clientTelemetry, backgroundScheduling);
     }
 }
