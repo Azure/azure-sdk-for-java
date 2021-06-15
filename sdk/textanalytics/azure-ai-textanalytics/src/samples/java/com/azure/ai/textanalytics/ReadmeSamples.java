@@ -264,7 +264,7 @@ public class ReadmeSamples {
             analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
-                    for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getResult()) {
+                    for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getDocumentResults()) {
                         System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                         System.out.println("Extracted phrases:");
                         extractKeyPhraseResult.getKeyPhrases()
@@ -276,7 +276,7 @@ public class ReadmeSamples {
             analyzeActionsResult.getRecognizePiiEntitiesActionResults().forEach(actionResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 if (!actionResult.isError()) {
-                    for (RecognizePiiEntitiesResult entitiesResult : actionResult.getResult()) {
+                    for (RecognizePiiEntitiesResult entitiesResult : actionResult.getDocumentResults()) {
                         System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                         PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
                         System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());

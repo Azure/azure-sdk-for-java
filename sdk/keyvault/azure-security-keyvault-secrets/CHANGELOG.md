@@ -2,6 +2,16 @@
 
 ## 4.3.0-beta.7 (Unreleased)
 
+### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+### Breaking Changes
+- Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+
+### Non-Breaking Changes
+- Renamed `secretId` to `sourceId` in `KeyVaultSecretIdentifier`.
+- `KeyVaultSecretIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `SecretClient` and `SecretAsyncClient`.
 
 ## 4.3.0-beta.6 (2021-05-15)
 

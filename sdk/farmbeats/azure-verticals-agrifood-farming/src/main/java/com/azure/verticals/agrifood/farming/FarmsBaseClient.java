@@ -85,7 +85,7 @@ public final class FarmsBaseClient {
      * }
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer.
+     * @param farmerId ID of the associated farmer.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -224,8 +224,8 @@ public final class FarmsBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @param farmerId Id of the associated farmer resource.
-     * @param farmId Id of the farm resource.
+     * @param farmerId ID of the associated farmer resource.
+     * @param farmId ID of the farm resource.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -244,8 +244,8 @@ public final class FarmsBaseClient {
     /**
      * Deletes a specified farm resource under a particular farmer.
      *
-     * @param farmerId Id of the farmer.
-     * @param farmId Id of the farm.
+     * @param farmerId ID of the farmer.
+     * @param farmId ID of the farm.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -273,7 +273,7 @@ public final class FarmsBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime
@@ -287,7 +287,7 @@ public final class FarmsBaseClient {
      * }
      * }</pre>
      *
-     * @param jobId Id of the job.
+     * @param jobId ID of the job.
      * @return a DynamicRequest where customizations can be made before sent to the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -314,7 +314,7 @@ public final class FarmsBaseClient {
      *     resourceType: String
      *     id: String
      *     status: String
-     *     durationInSeconds: String
+     *     durationInSeconds: Double
      *     message: String
      *     createdDateTime: OffsetDateTime
      *     lastActionDateTime: OffsetDateTime

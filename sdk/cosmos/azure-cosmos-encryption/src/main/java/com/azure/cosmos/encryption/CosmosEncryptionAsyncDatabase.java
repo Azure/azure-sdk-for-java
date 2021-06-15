@@ -82,6 +82,13 @@ public class CosmosEncryptionAsyncDatabase {
 
         EncryptionKeyStoreProvider encryptionKeyStoreProvider =
             this.cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider();
+
+        if (!encryptionKeyStoreProvider.getProviderName().equals(encryptionKeyWrapMetadata.getType())) {
+            throw new IllegalArgumentException("The EncryptionKeyWrapMetadata Type value does not match with the " +
+                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                ".ms/CosmosClientEncryption for more details.");
+        }
+
         try {
             KeyEncryptionKey keyEncryptionKey = KeyEncryptionKey.getOrCreate(encryptionKeyWrapMetadata.getName(),
                 encryptionKeyWrapMetadata.getValue(), encryptionKeyStoreProvider, false);
@@ -112,6 +119,13 @@ public class CosmosEncryptionAsyncDatabase {
 
         EncryptionKeyStoreProvider encryptionKeyStoreProvider =
             this.cosmosEncryptionAsyncClient.getEncryptionKeyStoreProvider();
+
+        if (!encryptionKeyStoreProvider.getProviderName().equals(newEncryptionKeyWrapMetadata.getType())) {
+            throw new IllegalArgumentException("The EncryptionKeyWrapMetadata Type value does not match with the " +
+                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                ".ms/CosmosClientEncryption for more details.");
+        }
+
         try {
             CosmosAsyncClientEncryptionKey clientEncryptionKey =
                 this.cosmosAsyncDatabase.getClientEncryptionKey(clientEncryptionKeyId);

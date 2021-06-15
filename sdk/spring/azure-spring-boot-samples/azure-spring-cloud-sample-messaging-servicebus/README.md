@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-service-bus
+description: "Azure Spring Cloud Sample project for Messaging Service Bus client library"
+urlFragment: "azure-spring-cloud-sample-messaging-service-bus"
+---
+
 # Spring Cloud Azure Messaging Service Bus Sample shared library for Java
 
 ## Key concepts
@@ -30,7 +40,7 @@ dependency `azure-spring-cloud-messaging`.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-messaging</artifactId>
-    <version>2.5.0-beta.1</version>
+    <version>2.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -41,7 +41,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The REST client specific to Azure Key Vault.
  */
-class KeyVaultClient extends DelegateRestClient {
+public class KeyVaultClient extends DelegateRestClient {
 
     /**
      * Stores the logger.
@@ -118,7 +118,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+    public KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
         this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
@@ -186,23 +186,30 @@ class KeyVaultClient extends DelegateRestClient {
      *
      * @return the list of aliases.
      */
-    List<String> getAliases() {
+    public List<String> getAliases() {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
         String url = String.format("%scertificates%s", keyVaultUrl, API_VERSION_POSTFIX);
-        String response = get(url, headers);
-        CertificateListResult certificateListResult = null;
-        if (response != null) {
-            JsonConverter converter = JsonConverterFactory.createJsonConverter();
-            certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
-        }
-        if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
-            for (CertificateItem certificateItem : certificateListResult.getValue()) {
-                String id = certificateItem.getId();
-                String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
-                result.add(alias);
+
+        while (url != null && url.length() != 0) {
+            String response = get(url, headers);
+            CertificateListResult certificateListResult = null;
+            if (response != null) {
+                JsonConverter converter = JsonConverterFactory.createJsonConverter();
+                certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
+            } else {
+                url = null;
             }
+            if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
+                for (CertificateItem certificateItem : certificateListResult.getValue()) {
+                    String id = certificateItem.getId();
+                    String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
+                    result.add(alias);
+                }
+                url = certificateListResult.getNextLink();
+            }
+
         }
         return result;
     }
@@ -232,7 +239,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param alias the alias.
      * @return the certificate, or null if not found.
      */
-    Certificate getCertificate(String alias) {
+    public Certificate getCertificate(String alias) {
         LOGGER.entering("KeyVaultClient", "getCertificate", alias);
         LOGGER.log(INFO, "Getting certificate for alias: {0}", alias);
         X509Certificate certificate = null;
@@ -261,7 +268,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @param password the password.
      * @return the key.
      */
-    Key getKey(String alias, char[] password) {
+    public Key getKey(String alias, char[] password) {
         LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
@@ -307,7 +314,7 @@ class KeyVaultClient extends DelegateRestClient {
             }
         }
 
-        // 
+        //
         // If the private key is not available the certificate cannot be
         // used for server side certificates or mTLS. Then we do not know
         // the intent of the usage at this stage we skip this key.
@@ -325,7 +332,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
      * */
-    private PrivateKey createPrivateKeyFromPem(String pemString) 
+    private PrivateKey createPrivateKeyFromPem(String pemString)
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {

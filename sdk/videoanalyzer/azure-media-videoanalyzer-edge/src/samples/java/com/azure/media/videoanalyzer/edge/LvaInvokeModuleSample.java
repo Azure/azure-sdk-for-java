@@ -1,4 +1,5 @@
-
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.media.videoanalyzer.edge;
 
 import com.azure.media.videoanalyzer.edge.models.*;
@@ -54,7 +55,9 @@ public class LvaInvokeModuleSample {
 
         NodeInput nodeInput = new NodeInput("inferenceClient");
 
-        IotHubMessageSink msgSink = new IotHubMessageSink("msgSink", Arrays.asList(nodeInput),"${hubSinkOutputName}");
+        IotHubMessageSink msgSink = new IotHubMessageSink("msgSink",
+            Arrays.asList(nodeInput),
+            "${hubSinkOutputName}");
 
         ParameterDeclaration userName = new ParameterDeclaration("rtspUserName", ParameterType.STRING);
 
@@ -104,8 +107,8 @@ public class LvaInvokeModuleSample {
      * @param methodName method name to invoke on module
      * @param payload payload to send to module
      * @return Result from invoke method call
-     * @throws IOException
-     * @throws IotHubException
+     * @throws IOException IOException
+     * @throws IotHubException IotHubException
      */
     private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String methodName, String payload) throws IOException, IotHubException {
         MethodResult result = null;
@@ -121,9 +124,9 @@ public class LvaInvokeModuleSample {
 
     /***
      * Main method to run sample
-     * @param args
-     * @throws IOException
-     * @throws IotHubException
+     * @param args args
+     * @throws IOException IOException
+     * @throws IotHubException IotHubException
      */
     public static void main(String[] args) throws IOException, IotHubException {
         PipelineTopology pipelineTopology = buildPipeLineTopology();

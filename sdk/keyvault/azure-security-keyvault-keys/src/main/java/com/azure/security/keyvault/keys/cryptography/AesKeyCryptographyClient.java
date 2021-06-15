@@ -110,8 +110,8 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
-        return Mono.just(new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
-            null));
+        return Mono.just(new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, null,
+            additionalAuthenticatedData));
     }
 
     @Override

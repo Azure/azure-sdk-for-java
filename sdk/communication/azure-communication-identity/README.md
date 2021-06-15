@@ -22,7 +22,7 @@ The identity package is used for managing users and tokens for Azure Communicati
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 

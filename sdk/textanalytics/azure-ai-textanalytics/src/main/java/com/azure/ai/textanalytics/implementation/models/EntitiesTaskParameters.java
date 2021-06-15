@@ -17,6 +17,12 @@ public final class EntitiesTaskParameters {
     private String modelVersion;
 
     /*
+     * The loggingOptOut property.
+     */
+    @JsonProperty(value = "loggingOptOut")
+    private Boolean loggingOptOut;
+
+    /*
      * The stringIndexType property.
      */
     @JsonProperty(value = "stringIndexType")
@@ -39,6 +45,26 @@ public final class EntitiesTaskParameters {
      */
     public EntitiesTaskParameters setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /**
+     * Get the loggingOptOut property: The loggingOptOut property.
+     *
+     * @return the loggingOptOut value.
+     */
+    public Boolean isLoggingOptOut() {
+        return this.loggingOptOut;
+    }
+
+    /**
+     * Set the loggingOptOut property: The loggingOptOut property.
+     *
+     * @param loggingOptOut the loggingOptOut value to set.
+     * @return the EntitiesTaskParameters object itself.
+     */
+    public EntitiesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        this.loggingOptOut = loggingOptOut;
         return this;
     }
 
