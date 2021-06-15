@@ -70,7 +70,7 @@ public final class CallingServerClient {
         CommunicationIdentifier source,
         CommunicationIdentifier[] targets,
         CreateCallOptions createCallOptions,
-        Context context) {
+        final Context context) {
         return callingServerAsyncClient
             .createCallConnectionWithResponseInternal(source, targets, createCallOptions, context).block();
     }
@@ -105,7 +105,7 @@ public final class CallingServerClient {
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions,
-        Context context) {
+        final Context context) {
         return callingServerAsyncClient.joinWithResponseInternal(serverCallId, source, joinCallOptions, context).block();
     }
 
@@ -156,7 +156,7 @@ public final class CallingServerClient {
     public Response<Void> downloadToWithResponse(String sourceEndpoint,
                                                  OutputStream destinationStream,
                                                  HttpRange httpRange,
-                                                 Context context) {
+                                                 final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
         return callingServerAsyncClient
@@ -197,7 +197,7 @@ public final class CallingServerClient {
                                                  Path destinationPath,
                                                  ParallelDownloadOptions parallelDownloadOptions,
                                                  boolean overwrite,
-                                                 Context context) {
+                                                 final Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,

@@ -254,7 +254,8 @@ public final class CallConnectionAsync {
     public Mono<Void> hangup() {
         try {
             return callConnectionInternal.hangupCallAsync(callConnectionId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -411,7 +412,8 @@ public final class CallConnectionAsync {
     public Mono<Void> removeParticipant(String participantId) {
         try {
             return callConnectionInternal.removeParticipantAsync(callConnectionId, participantId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
