@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -281,7 +282,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         aliasLists.forEach((key, value) -> {
             value.forEach(a -> {
                 if (allAliases.contains(a)) {
-                    LOGGER.log(WARNING, String.format("The certificate with alias %s under %s already exists", a, key));
+                    LOGGER.log(FINE, String.format("The certificate with alias %s under %s already exists", a, key));
                 } else {
                     allAliases.add(a);
                 }
