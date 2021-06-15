@@ -35,6 +35,7 @@ import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
@@ -238,10 +239,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26);
         CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34);
-        return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
+        return asList(categorizedEntity2, categorizedEntity3);
     }
 
     /**
@@ -681,7 +681,7 @@ final class TestUtils {
         // HealthcareEntity
         final HealthcareEntity healthcareEntity1 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity1, "54-year-old");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, "Age");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, HealthcareEntityCategory.AGE);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity1, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 17);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
@@ -690,7 +690,7 @@ final class TestUtils {
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "gentleman");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity2, "Male population group");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, "Gender");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, HealthcareEntityCategory.GENDER);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity2, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 29);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 9);
@@ -701,7 +701,7 @@ final class TestUtils {
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, "ConditionQualifier");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.fromString("Course"));
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 0.91);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 57);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 11);
@@ -710,7 +710,7 @@ final class TestUtils {
         final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "angina");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity4, "Angina Pectoris");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, "SymptomOrSign");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, HealthcareEntityCategory.SYMPTOM_OR_SIGN);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 0.81);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 69);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 6);
@@ -721,7 +721,7 @@ final class TestUtils {
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "past several months");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, "Time");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, HealthcareEntityCategory.TIME);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity5, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 85);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 19);
@@ -738,13 +738,13 @@ final class TestUtils {
         // HealthcareEntityRelations
         final HealthcareEntityRelation healthcareEntityRelation1 = new HealthcareEntityRelation();
         final HealthcareEntityRelationRole role1 = new HealthcareEntityRelationRole();
-        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Qualifier");
+        HealthcareEntityRelationRolePropertiesHelper.setName(role1, "Course");
         HealthcareEntityRelationRolePropertiesHelper.setEntity(role1, healthcareEntity3);
         final HealthcareEntityRelationRole role2 = new HealthcareEntityRelationRole();
         HealthcareEntityRelationRolePropertiesHelper.setName(role2, "Condition");
         HealthcareEntityRelationRolePropertiesHelper.setEntity(role2, healthcareEntity4);
         HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation1,
-            HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
+            HealthcareEntityRelationType.fromString("CourseOfCondition"));
         HealthcareEntityRelationPropertiesHelper.setRoles(healthcareEntityRelation1,
             IterableStream.of(asList(role1, role2)));
 
@@ -772,7 +772,7 @@ final class TestUtils {
         // HealthcareEntity
         final HealthcareEntity healthcareEntity1 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity1, "six minutes");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, "Time");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, HealthcareEntityCategory.TIME);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity1, 0.87);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 21);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity1, 11);
@@ -781,7 +781,7 @@ final class TestUtils {
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "minimal");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, "ConditionQualifier");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, HealthcareEntityCategory.CONDITION_QUALIFIER);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity2, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 38);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity2, 7);
@@ -791,7 +791,7 @@ final class TestUtils {
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity3, "ST segment depression (finding)");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, "SymptomOrSign");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, HealthcareEntityCategory.SYMPTOM_OR_SIGN);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 46);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity3, 14);
@@ -800,7 +800,7 @@ final class TestUtils {
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "anterior lateral");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, "Direction");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, HealthcareEntityCategory.DIRECTION);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 0.6);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 68);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity4, 16);
@@ -810,7 +810,7 @@ final class TestUtils {
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "fatigue");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity5, "Fatigue");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, "SymptomOrSign");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, HealthcareEntityCategory.SYMPTOM_OR_SIGN);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity5, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 108);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity5, 7);
@@ -820,7 +820,7 @@ final class TestUtils {
         final HealthcareEntity healthcareEntity6 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity6, "wrist pain");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity6, "Pain in wrist");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity6, "SymptomOrSign");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity6, HealthcareEntityCategory.SYMPTOM_OR_SIGN);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity6, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity6, 120);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity6, 10);
@@ -830,7 +830,7 @@ final class TestUtils {
         final HealthcareEntity healthcareEntity7 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity7, "anginal equivalent");
         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity7, "Anginal equivalent");
-        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity7, "SymptomOrSign");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity7, HealthcareEntityCategory.SYMPTOM_OR_SIGN);
         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity7, 1.0);
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity7, 137);
         HealthcareEntityPropertiesHelper.setLength(healthcareEntity7, 18);

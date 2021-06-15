@@ -50,6 +50,7 @@ import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
+import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
@@ -524,7 +525,10 @@ public final class Utility {
                         final HealthcareEntity healthcareEntity = new HealthcareEntity();
                         HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
                         HealthcareEntityPropertiesHelper.setNormalizedText(healthcareEntity, entity.getName());
-                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity, entity.getCategory());
+                        if (entity.getCategory() != null) {
+                            HealthcareEntityPropertiesHelper.setCategory(healthcareEntity,
+                                HealthcareEntityCategory.fromString(entity.getCategory().toString()));
+                        }
                         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
                             entity.getConfidenceScore());
                         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
