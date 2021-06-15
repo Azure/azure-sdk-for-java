@@ -47,8 +47,11 @@ public final class BlobServiceSasSignatureValues {
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobServiceSasSignatureValues.class);
 
+    /**
+     * Pin down to highest version that worked with string to sign defined here.
+     */
     private static final String VERSION = Configuration.getGlobalConfiguration()
-        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.getLatest().getVersion());
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2019_12_12.getVersion());
 
     private SasProtocol protocol;
 
@@ -701,8 +704,7 @@ public final class BlobServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            VERSION, /* Pin down to version so old string to sign works. This is reflected in the declaration of
-            version */
+            VERSION, /* Pin down to version so old string to sign works. See constant comments */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
@@ -727,8 +729,7 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            VERSION, /* Pin down to version so old string to sign works. This is reflected in the declaration of
-            version */
+            VERSION, /* Pin down to version so old string to sign works. See constant comments */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
