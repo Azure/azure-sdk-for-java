@@ -297,7 +297,6 @@ public final class IdentityClientOptions {
         return this.tokenCachePersistenceOptions;
     }
 
-
     /**
      * Check whether CP1 client capability should be disabled.
      *

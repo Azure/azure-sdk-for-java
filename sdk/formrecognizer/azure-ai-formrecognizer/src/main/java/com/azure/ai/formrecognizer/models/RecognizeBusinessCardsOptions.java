@@ -5,10 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Duration;
 import java.util.List;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 
 /**
  * Options that may be passed when using recognize business card APIs on Form Recognizer client.
@@ -17,7 +15,6 @@ import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_IN
 public final class RecognizeBusinessCardsOptions {
     private FormContentType contentType;
     private boolean includeFieldElements;
-    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private List<String> pages;
     private FormRecognizerLocale locale;
 
@@ -37,16 +34,6 @@ public final class RecognizeBusinessCardsOptions {
      */
     public boolean isFieldElementsIncluded() {
         return includeFieldElements;
-    }
-
-    /**
-     * Get the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @return the {@code pollInterval} value.
-     */
-    public Duration getPollInterval() {
-        return pollInterval;
     }
 
     /**
@@ -70,19 +57,6 @@ public final class RecognizeBusinessCardsOptions {
      */
     public RecognizeBusinessCardsOptions setFieldElementsIncluded(final boolean includeFieldElements) {
         this.includeFieldElements = includeFieldElements;
-        return this;
-    }
-
-    /**
-     * Set the duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
-     *
-     * @param pollInterval the duration to specify between each poll for the operation status.
-     *
-     * @return the updated {@code RecognizeBusinessCardOptions} value.
-     */
-    public RecognizeBusinessCardsOptions setPollInterval(final Duration pollInterval) {
-        this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }
 

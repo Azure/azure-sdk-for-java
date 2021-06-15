@@ -53,3 +53,6 @@ extends:
       - name: azure-monitor-opentelemetry-exporter
         groupId: com.azure
         safeName: azuremonitoropentelemetryexporter
+      - name: azure-monitor-query
+        groupId: com.azure
+        safeName: azuremonitorquery

@@ -78,6 +78,9 @@ import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingStreamsO
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIncomingVideoStreamsOutOfSyncEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventIngestHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventTrackDiscontinuityDetectedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.PolicyInsightsPolicyStateDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisExportRdbCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisImportRdbCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.RedisPatchingCompletedEventData;
@@ -100,6 +103,7 @@ import com.azure.messaging.eventgrid.systemevents.SignalRServiceClientConnection
 import com.azure.messaging.eventgrid.systemevents.StorageAsyncOperationInitiatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobInventoryPolicyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobTierChangedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventData;
@@ -403,6 +407,10 @@ public final class SystemEventNames {
      */
     public static final String STORAGE_BLOB_DELETED = "Microsoft.Storage.BlobDeleted";
 
+    /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.BlobInventoryPolicyCompleted event. */
+    public static final String STORAGE_BLOB_INVENTORY_POLICY_COMPLETED =
+        "Microsoft.Storage.BlobInventoryPolicyCompleted";
+
     /**
      * indicates an event of blob renaming.
      */
@@ -524,6 +532,11 @@ public final class SystemEventNames {
     public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED = "Microsoft.SignalRService.ClientConnectionConnected";
     public static final String SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED = "Microsoft.SignalRService.ClientConnectionDisconnected";
 
+    // Policy Insights
+    public static final String POLICY_INSIGHTS_POLICY_STATE_CREATED = "Microsoft.PolicyInsights.PolicyStateCreated";
+    public static final String POLICY_INSIGHTS_POLICY_STATE_CHANGED = "Microsoft.PolicyInsights.PolicyStateChanged";
+    public static final String POLICY_INSIGHTS_POLICY_STATE_DELETED = "Microsoft.PolicyInsights.PolicyStateDeleted";
+
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
             // AppConfiguration events.
@@ -600,6 +613,7 @@ public final class SystemEventNames {
             // Storage events.
             put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
             put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
+            put(STORAGE_BLOB_INVENTORY_POLICY_COMPLETED, StorageBlobInventoryPolicyCompletedEventData.class);
             put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
             put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
             put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
@@ -676,6 +690,11 @@ public final class SystemEventNames {
             // Signal R Service
             put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED, SignalRServiceClientConnectionConnectedEventData.class);
             put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED, SignalRServiceClientConnectionDisconnectedEventData.class);
+
+            // Policy Insights
+            put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
+            put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
+            put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
         }
     };
 

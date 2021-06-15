@@ -3,15 +3,8 @@
 
 package com.azure.storage.blob.batch
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.ProxyOptions
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
-import com.azure.core.test.utils.TestResourceNamer
-import com.azure.core.util.Configuration
-import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobContainerClientBuilder
@@ -24,29 +17,10 @@ import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
-import spock.lang.Shared
-
-import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
-import java.util.function.Supplier
 
 class APISpec extends StorageSpec {
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
-
-    // Fields used for conveniently creating blobs with data.
-    static final String defaultText = "default"
-
-    public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
-        @Override
-        InputStream get() {
-            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
-        }
-    }
-
-    static int defaultDataSize = defaultData.remaining()
 
     static final String receivedLeaseID = "received"
 
@@ -57,29 +31,18 @@ class APISpec extends StorageSpec {
     BlobServiceClient versionedBlobServiceClient
 
     def setup() {
-        primaryBlobServiceClient = setClient(env.primaryAccount)
+        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        versionedBlobServiceClient = setClient(env.versionedAccount)
-    }
-
-    BlobServiceClient setClient(TestAccount account) {
-        try {
-            return getServiceClient(account)
-        } catch (Exception ignore) {
-            return null
-        }
+        versionedBlobServiceClient = getServiceClient(env.versionedAccount)
     }
 
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(env.primaryAccount.blobEndpoint)
-            .httpClient(getHttpClient())
 
-
+        instrument(builder)
 
         if (env.testMode != TestMode.PLAYBACK) {
-            builder.addPolicy(getRecordPolicy())
-
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
@@ -110,13 +73,12 @@ class APISpec extends StorageSpec {
         HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
         }
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         if (credential != null) {
             builder.credential(credential)
@@ -132,9 +94,8 @@ class APISpec extends StorageSpec {
     BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
             .endpoint(endpoint)
-            .httpClient(getHttpClient())
 
-        builder.addPolicy(getRecordPolicy())
+        instrument(builder)
 
         return builder
     }

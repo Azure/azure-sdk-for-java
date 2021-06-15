@@ -7,14 +7,13 @@ package com.azure.resourcemanager.appconfiguration.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStoreInner;
 import com.azure.resourcemanager.appconfiguration.models.ApiKey;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStore;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStoreUpdateParameters;
 import com.azure.resourcemanager.appconfiguration.models.EncryptionProperties;
-import com.azure.resourcemanager.appconfiguration.models.KeyValue;
-import com.azure.resourcemanager.appconfiguration.models.ListKeyValueParameters;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnectionReference;
 import com.azure.resourcemanager.appconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.appconfiguration.models.PublicNetworkAccess;
@@ -65,6 +64,10 @@ public final class ConfigurationStoreImpl
         return this.innerModel().sku();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -92,6 +95,10 @@ public final class ConfigurationStoreImpl
 
     public PublicNetworkAccess publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
+    }
+
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
     }
 
     public Region region() {
@@ -219,18 +226,6 @@ public final class ConfigurationStoreImpl
             .regenerateKeyWithResponse(resourceGroupName, configStoreName, regenerateKeyParameters, context);
     }
 
-    public KeyValue listKeyValue(ListKeyValueParameters listKeyValueParameters) {
-        return serviceManager
-            .configurationStores()
-            .listKeyValue(resourceGroupName, configStoreName, listKeyValueParameters);
-    }
-
-    public Response<KeyValue> listKeyValueWithResponse(ListKeyValueParameters listKeyValueParameters, Context context) {
-        return serviceManager
-            .configurationStores()
-            .listKeyValueWithResponse(resourceGroupName, configStoreName, listKeyValueParameters, context);
-    }
-
     public ConfigurationStoreImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -282,11 +277,16 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStoreImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    public ConfigurationStoreImpl withDisableLocalAuth(Boolean disableLocalAuth) {
         if (isInCreateMode()) {
-            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            this.innerModel().withDisableLocalAuth(disableLocalAuth);
             return this;
         } else {
-            this.updateConfigStoreUpdateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            this.updateConfigStoreUpdateParameters.withDisableLocalAuth(disableLocalAuth);
             return this;
         }
     }

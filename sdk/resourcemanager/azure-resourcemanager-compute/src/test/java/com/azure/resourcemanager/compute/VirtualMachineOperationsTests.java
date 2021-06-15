@@ -789,7 +789,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
-                .withRootPassword("afh123RVS!")
+                .withRootPassword(password())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
@@ -818,7 +818,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
-                .withRootPassword("afh123RVS!")
+                .withRootPassword(password())
                 .create();
 
         List<String> installGit = new ArrayList<>();
@@ -843,7 +843,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("firstuser")
-            .withRootPassword("afh123RVS!")
+            .withRootPassword(password())
             .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .create();
@@ -947,7 +947,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername("tirekicker")
-                    .withRootPassword("BaR@12!#")
+                    .withRootPassword(password())
                     .withUnmanagedDisks()
                     .withNewStorageAccount(storageAccountCreatable);
 

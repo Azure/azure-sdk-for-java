@@ -84,7 +84,7 @@ public interface Volume {
     VolumePropertiesExportPolicy exportPolicy();
 
     /**
-     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+     * Gets the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
      *
      * @return the protocolTypes value.
      */
@@ -387,9 +387,9 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify protocolTypes. */
         interface WithProtocolTypes {
             /**
-             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+             * Specifies the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
              *
-             * @param protocolTypes Set of protocol types, default NFSv3, CIFS fro SMB protocol.
+             * @param protocolTypes Set of protocol types, default NFSv3, CIFS for SMB protocol.
              * @return the next definition stage.
              */
             WithCreate withProtocolTypes(List<String> protocolTypes);

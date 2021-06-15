@@ -357,11 +357,9 @@ class QueueSASTests extends APISpec {
         queueClient.create()
 
         when:
-        new QueueClientBuilder()
+        instrument(new QueueClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -369,11 +367,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueClientBuilder()
+        instrument(new QueueClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -381,10 +377,8 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new QueueClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -392,11 +386,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueServiceClientBuilder()
+        instrument(new QueueServiceClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -404,11 +396,9 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueServiceClientBuilder()
+        instrument(new QueueServiceClientBuilder()
             .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -416,10 +406,8 @@ class QueueSASTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new QueueServiceClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new QueueServiceClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 

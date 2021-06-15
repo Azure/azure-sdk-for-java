@@ -124,6 +124,12 @@ public class NetworkInterfaceInner extends Resource {
     private ProvisioningState provisioningState;
 
     /*
+     * WorkloadType of the NetworkInterface for BareMetal resources
+     */
+    @JsonProperty(value = "properties.workloadType")
+    private String workloadType;
+
+    /*
      * Type of Network Interface resource.
      */
     @JsonProperty(value = "properties.nicType")
@@ -356,6 +362,26 @@ public class NetworkInterfaceInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
+     *
+     * @return the workloadType value.
+     */
+    public String workloadType() {
+        return this.workloadType;
+    }
+
+    /**
+     * Set the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
+     *
+     * @param workloadType the workloadType value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withWorkloadType(String workloadType) {
+        this.workloadType = workloadType;
+        return this;
     }
 
     /**

@@ -12,6 +12,8 @@ import java.util.Locale;
  * General exception for AMQP related failures.
  *
  * @see AmqpErrorCondition
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error">Amqp
+ *     Error</a>
  * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging
  *     Exceptions</a>
  */

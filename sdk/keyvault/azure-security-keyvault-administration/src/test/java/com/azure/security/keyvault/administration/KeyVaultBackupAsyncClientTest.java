@@ -9,12 +9,19 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupAsyncClient asyncClient;
@@ -25,6 +32,14 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @Override
     protected void beforeTest() {
         beforeTestSetup();
+    }
+
+    private void createAsyncClient(HttpClient httpClient, boolean forCleanup) {
+        asyncClient = spy(getClientBuilder(httpClient, forCleanup).buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
     }
 
     /**
@@ -40,7 +55,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             return;
         }
 
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        createAsyncClient(httpClient, false);
 
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
             asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
@@ -64,7 +79,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             return;
         }
 
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        createAsyncClient(httpClient, false);
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
@@ -73,7 +88,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
         // Restore the backup
         String backupFolderUrl = backupPollResponse.getFinalResult().block();
 
-        AsyncPollResponse<KeyVaultRestoreOperation, Void> restorePollResponse =
+        AsyncPollResponse<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePollResponse =
             asyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
@@ -85,14 +100,14 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @SuppressWarnings("ConstantConditions")
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginSelectiveRestore(HttpClient httpClient) {
+    public void beginSelectiveKeyRestore(HttpClient httpClient) {
         if (getTestMode() != TestMode.PLAYBACK) {
             // Currently there is no Managed HSM environment for pipeline testing.
             // TODO: Remove once there is a proper cloud environment available.
             return;
         }
 
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        createAsyncClient(httpClient, false);
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
@@ -100,9 +115,9 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Restore the backup
         String backupFolderUrl = backupPollResponse.getFinalResult().block();
-        AsyncPollResponse<KeyVaultRestoreOperation, Void> selectiveRestorePollResponse =
-            asyncClient.beginSelectiveRestore("testKey", backupFolderUrl, sasToken).blockLast();
+        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePollResponse =
+            asyncClient.beginSelectiveKeyRestore("testKey", backupFolderUrl, sasToken).blockLast();
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveRestorePollResponse.getStatus());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveKeyRestorePollResponse.getStatus());
     }
 }

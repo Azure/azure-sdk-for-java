@@ -27,7 +27,6 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -104,31 +103,6 @@ public final class CertificateClient {
      * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
      * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Duration}
-     *
-     * @param certificateName The name of the certificate to be created.
-     * @param policy The policy of the certificate to be created.
-     * @param isEnabled The enabled status of the certificate.
-     * @param tags The application specific metadata to set.
-     * @param pollingInterval The interval at which the operation status will be polled.
-     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link SyncPoller} to poll on the create certificate operation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags, Duration pollingInterval) {
-        return client.beginCreateCertificate(certificateName, policy, isEnabled, tags, pollingInterval).getSyncPoller();
-    }
-
-    /**
-     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
-     * the certificates/create permission.
-     *
-     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to complete on service side.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
-     * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
-     *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy}
      *
      * @param certificateName The name of the certificate to be created.
@@ -158,26 +132,6 @@ public final class CertificateClient {
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
         return client.getCertificateOperation(certificateName).getSyncPoller();
     }
-
-    /**
-     * Gets a pending {@link CertificateOperation} from the key vault. This operation requires the certificates/get permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Geta a pending certificate operation. The {@link SyncPoller poller} allows users to automatically poll on the certificate
-     * operation status.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String-Duration}
-     *
-     * @param certificateName The name of the certificate.
-     * @param pollingInterval The interval at which the operation status will be polled.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
-     * @return A {@link SyncPoller} to poll on the certificate operation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName, Duration pollingInterval) {
-        return client.getCertificateOperation(certificateName, pollingInterval).getSyncPoller();
-    }
-
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
@@ -297,7 +251,6 @@ public final class CertificateClient {
         return client.updateCertificatePropertiesWithResponse(properties, context).block();
     }
 
-
     /**
      * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
      * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
@@ -318,29 +271,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
         return client.beginDeleteCertificate(certificateName).getSyncPoller();
-    }
-
-    /**
-     * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
-     * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
-     * purged for permanent deletion else the certificate is permanently deleted. The delete operation applies to any certificate stored in
-     * Azure Key Vault but it cannot be applied to an individual version of a certificate. This operation requires the certificates/delete permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the certificate in the Azure Key Vault. Prints out the
-     * deleted certificate details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String-Duration}
-     *
-     * @param certificateName The name of the certificate to be deleted.
-     * @param pollingInterval The interval at which the operation status will be polled.
-     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
-     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
-     * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedCertificate deleted certificate}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName, Duration pollingInterval) {
-        return client.beginDeleteCertificate(certificateName, pollingInterval).getSyncPoller();
     }
 
     /**
@@ -445,28 +375,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
         return client.beginRecoverDeletedCertificate(certificateName).getSyncPoller();
-    }
-
-    /**
-     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a soft-delete enabled vault.
-     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation and must be issued during the retention interval
-     * (available in the deleted certificate's attributes). This operation requires the certificates/recover permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
-     * recovered certificate details when a response has been received.</p>
-
-     * {@codesnippet com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String-Duration}
-     *
-     * @param certificateName The name of the deleted certificate to be recovered.
-     * @param pollingInterval The interval at which the operation status will be polled.
-     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.
-     * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
-     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificateWithPolicy recovered certificate}.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName, Duration pollingInterval) {
-        return client.beginRecoverDeletedCertificate(certificateName, pollingInterval).getSyncPoller();
     }
 
     /**
@@ -607,7 +515,6 @@ public final class CertificateClient {
         return listDeletedCertificates(false, Context.NONE);
     }
 
-
     /**
      * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
      * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
@@ -705,6 +612,7 @@ public final class CertificateClient {
      * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName, Context context) {
         return client.getCertificatePolicyWithResponse(certificateName, context).block();
     }
@@ -955,7 +863,6 @@ public final class CertificateClient {
         return client.updateIssuerWithResponse(issuer, context).block();
     }
 
-
     /**
      * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
@@ -1009,7 +916,6 @@ public final class CertificateClient {
     public PagedIterable<CertificateContact> listContacts() {
         return listContacts(Context.NONE);
     }
-
 
     /**
      * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts permission.
@@ -1099,6 +1005,7 @@ public final class CertificateClient {
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
         return client.deleteCertificateOperationWithResponse(certificateName, context).block();
     }
+
     /**
      * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
      *
@@ -1191,6 +1098,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy importCertificate(ImportCertificateOptions importCertificateOptions) {
         return importCertificateWithResponse(importCertificateOptions, Context.NONE).getValue();
     }
@@ -1209,6 +1117,7 @@ public final class CertificateClient {
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
         return client.importCertificateWithResponse(importCertificateOptions, context).block();
     }

@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.3//custom/models/00000000-0000-0000-0000-000000000000/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/00000000-0000-0000-0000-000000000000/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.3 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "52692062-8319-406f-9887-17c40a1883e3",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c76835d4-d40a-4eac-8c95-651c54d9dc24",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "42",
+      "content-length" : "124",
+      "x-envoy-upstream-service-time" : "96",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "05089b7f-af43-4111-b141-f4e0984e2c62",
+      "apim-request-id" : "f12e0654-a2d9-410c-bbac-168f12cb5619",
       "retry-after" : "0",
-      "Content-Length" : "124",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"1001\",\"message\":\"Specified model not found or not ready, Model Id: 00000000-0000-0000-0000-000000000000\"}}",
-      "Date" : "Fri, 26 Mar 2021 13:43:22 GMT",
+      "Date" : "Tue, 11 May 2021 21:18:04 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

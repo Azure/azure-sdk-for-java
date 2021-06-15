@@ -73,18 +73,18 @@ class BlobOutputStreamTest extends APISpec {
     @LiveOnly
     def "BlockBlob output stream overwrite"() {
         setup:
-        def data = getRandomByteArray(10 * Constants.MB)
+        def randomData = getRandomByteArray(10 * Constants.MB)
         def blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        blockBlobClient.upload(defaultInputStream.get(), defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def outputStream = blockBlobClient.getBlobOutputStream(true)
-        outputStream.write(data)
+        outputStream.write(randomData)
         outputStream.close()
 
         then:
-        blockBlobClient.getProperties().getBlobSize() == data.length
-        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+        blockBlobClient.getProperties().getBlobSize() == randomData.length
+        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == randomData
     }
 
     @Unroll

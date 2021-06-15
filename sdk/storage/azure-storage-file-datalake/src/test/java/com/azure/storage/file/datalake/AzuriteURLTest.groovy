@@ -21,9 +21,9 @@ class AzuriteURLTest extends APISpec {
     private DataLakeServiceClient getAzuriteServiceClient() {
         def builder = new DataLakeServiceClientBuilder()
             .endpoint(azuriteEndpoint)
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(azuriteCredential)
+
+        instrument(builder)
 
         return builder.buildClient()
     }

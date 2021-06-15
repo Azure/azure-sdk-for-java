@@ -4,7 +4,6 @@
 package com.azure.storage.blob
 
 import com.azure.core.credential.AzureSasCredential
-import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
@@ -30,8 +29,9 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import spock.lang.Retry
 import spock.lang.Unroll
-import spock.lang.Ignore
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -45,7 +45,7 @@ class SasClientTests extends APISpec {
     def setup() {
         blobName = generateBlobName()
         sasClient = getBlobClient(env.primaryAccount.credential, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
-        sasClient.upload(new ByteArrayInputStream(defaultData.array()), defaultDataSize)
+        sasClient.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
     def "blob sas read permissions"() {
@@ -72,7 +72,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -114,6 +114,8 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob sas user delegation"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -138,7 +140,7 @@ class SasClientTests extends APISpec {
         def properties = client.getProperties()
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
         notThrown(BlobStorageException)
     }
@@ -176,12 +178,14 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toByteArray() == defaultData.array()
+        os.toByteArray() == data.defaultBytes
 
         then:
         validateSasProperties(properties)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob sas snapshot user delegation"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
@@ -215,10 +219,12 @@ class SasClientTests extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
         validateSasProperties(properties)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "container sas user delegation"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -241,6 +247,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "blob sas tags"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -289,6 +296,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "container sas tags"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -341,6 +349,8 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "blob user delegation saoid"() {
         setup:
         def permissions = new BlobSasPermission()
@@ -371,6 +381,8 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "container user delegation correlation id"() {
         setup:
         def permissions = new BlobContainerSasPermission()
@@ -431,6 +443,7 @@ class SasClientTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "account sas tags and filter tags"() {
         setup:
         def service = new AccountSasService()
@@ -559,7 +572,7 @@ class SasClientTests extends APISpec {
         client.download(os)
 
         then:
-        os.toString() == new String(defaultData.array())
+        os.toString() == data.defaultText
     }
 
     def "account sas blob delete fails"() {
@@ -684,12 +697,10 @@ class SasClientTests extends APISpec {
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
 
         when:
-        new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .sasToken(sas)
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -697,12 +708,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(getRecordPolicy())
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -710,11 +719,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobClientBuilder()
+        instrument(new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .blobName(blobName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .blobName(blobName))
             .buildClient()
             .getProperties()
 
@@ -722,12 +729,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -735,12 +740,10 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -748,11 +751,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new SpecializedBlobClientBuilder()
+        instrument(new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .blobName(blobName)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .blobName(blobName))
             .buildBlockBlobClient()
             .getProperties()
 
@@ -760,11 +761,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobContainerClientBuilder()
+        instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -772,11 +771,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobContainerClientBuilder()
+        instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -784,10 +781,8 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new BlobContainerClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 
@@ -795,11 +790,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobServiceClientBuilder()
+        instrument(new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .sasToken(sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .sasToken(sas))
             .buildClient()
             .getProperties()
 
@@ -807,11 +800,9 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobServiceClientBuilder()
+        instrument(new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
-            .credential(new AzureSasCredential(sas))
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+            .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties()
 
@@ -819,10 +810,8 @@ class SasClientTests extends APISpec {
         noExceptionThrown()
 
         when:
-        new BlobServiceClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + sas)
-            .addPolicy(recordPolicy)
-            .httpClient(getHttpClient())
+        instrument(new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl() + "?" + sas))
             .buildClient()
             .getProperties()
 

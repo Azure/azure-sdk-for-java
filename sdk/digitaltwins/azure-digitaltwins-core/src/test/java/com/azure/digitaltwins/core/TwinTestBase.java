@@ -13,6 +13,9 @@ public abstract class TwinTestBase extends DigitalTwinsTestBase {
     public abstract void digitalTwinLifecycle(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 
     @Test
+    public abstract void digitalTwinWithNumericStringProperty(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
     public abstract void twinNotExistThrowsNotFoundException(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
     @Test

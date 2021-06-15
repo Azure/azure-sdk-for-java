@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.throughputControl.controller;
 
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -30,6 +31,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -144,6 +146,7 @@ public class PkRangesThroughputRequestControllerTests {
 
     private RxDocumentServiceRequest createMockRequest(PartitionKeyRange resolvedPkRange) {
         RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.doReturn(OperationType.Read).when(requestMock).getOperationType();
         DocumentServiceRequestContext requestContextMock = Mockito.mock(DocumentServiceRequestContext.class);
         requestContextMock.resolvedPartitionKeyRange = resolvedPkRange;
         requestMock.requestContext = requestContextMock;

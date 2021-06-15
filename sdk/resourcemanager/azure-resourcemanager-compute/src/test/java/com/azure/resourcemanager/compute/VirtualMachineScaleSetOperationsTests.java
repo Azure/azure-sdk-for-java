@@ -65,6 +65,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -474,7 +475,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .create();
         final InputStream embeddedJsonConfig =
             VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/myTest.txt");
-        String secretValue = IOUtils.toString(embeddedJsonConfig);
+        String secretValue = IOUtils.toString(embeddedJsonConfig, StandardCharsets.UTF_8);
         Secret secret = vault.secrets().define(secretName).withValue(secretValue).create();
         List<VaultCertificate> certs = new ArrayList<>();
         certs.add(new VaultCertificate().withCertificateUrl(secret.id()));
@@ -554,7 +555,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
@@ -805,7 +806,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .create();
 
         final String vmssName2 = generateRandomResourceName("vmss2", 10);
@@ -826,7 +827,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .create();
 
         // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
@@ -899,7 +900,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_1) // Zone redundant - zone 1 + zone 2
                 .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
                 .create();
@@ -962,7 +963,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withSystemAssignedManagedServiceIdentity()
                 .create();
 
@@ -1043,7 +1044,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
@@ -1142,7 +1143,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withoutPrimaryInternalLoadBalancer()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
-            .withRootPassword("123OData!@#123")
+            .withRootPassword(password())
             .withNewStorageAccount(generateRandomResourceName("stg", 15))
             .withNewStorageAccount(generateRandomResourceName("stg3", 15))
             .withUpgradeMode(UpgradeMode.MANUAL)
@@ -1198,7 +1199,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
-                .withRootPassword("123OData!@#123")
+                .withRootPassword(password())
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withNewStorageAccount(generateRandomResourceName("stg3", 15))
                 .withUpgradeMode(UpgradeMode.MANUAL)
@@ -1242,7 +1243,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withoutPrimaryInternalLoadBalancer()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
-            .withRootPassword("123OData!@#123")
+            .withRootPassword(password())
             .withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
             .create();
 

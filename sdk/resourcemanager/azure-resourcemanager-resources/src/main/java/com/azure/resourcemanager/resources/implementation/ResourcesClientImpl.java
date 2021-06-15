@@ -366,7 +366,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -623,7 +623,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -884,7 +884,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1174,7 +1174,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1439,7 +1439,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1707,7 +1707,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2150,7 +2150,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2624,7 +2624,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3091,7 +3091,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3310,7 +3310,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             .withContext(
                 context ->
                     service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3441,7 +3441,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         return FluxUtil
             .withContext(
                 context -> service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3665,7 +3665,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                     service
                         .createOrUpdateById(
                             this.client.getEndpoint(), resourceId, apiVersion, parameters, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3920,7 +3920,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
             .withContext(
                 context ->
                     service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4164,7 +4164,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getById(this.client.getEndpoint(), resourceId, apiVersion, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4293,7 +4293,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4365,7 +4365,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

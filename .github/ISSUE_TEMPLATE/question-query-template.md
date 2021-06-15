@@ -15,8 +15,8 @@ A clear explanation of why is this not a bug or a feature request?
 
 **Setup (please complete the following information if applicable):**
  - OS: [e.g. iOS]
- - IDE : [e.g. IntelliJ]
- - Version of the Library used
+ - IDE: [e.g. IntelliJ]
+ - Library/Libraries: [e.g. com.azure:azure-core:1.16.0 (groupId:artifactId:version)]
  
  **Information Checklist**
  Kindly make sure that you have added all the following information above and checkoff the required fields otherwise we will treat the issuer as an incomplete report

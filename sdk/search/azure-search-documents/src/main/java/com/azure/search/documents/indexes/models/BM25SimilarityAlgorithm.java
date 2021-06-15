@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,9 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * normalization (controlled by the 'b' parameter) as well as term frequency saturation (controlled by the 'k1'
  * parameter).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.BM25Similarity")
-@JsonFlatten
 @Fluent
 public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /*
