@@ -225,15 +225,16 @@ public final class HttpClientOptions extends ClientOptions {
      * Sets the maximum connection pool size used by the underlying HTTP client.
      * <p>
      * Modifying the maximum connection pool size may have effects on the performance of an application. Increasing the
-     * maximum connection pool will result in more connections being available for an application but may result in
-     * more contention for network resources. It is recommended to perform performance analysis on different maximum
+     * maximum connection pool will result in more connections being available for an application but may result in more
+     * contention for network resources. It is recommended to perform performance analysis on different maximum
      * connection pool sizes to find the right configuration for an application.
      * <p>
      * This maximum connection pool size is not a global configuration but an instance level configuration for each
      * {@link HttpClient} created using this {@link HttpClientOptions}.
      * <p>
      * By default the maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
-     * connection pool size resets the configuration to use the default determined by the underlying HTTP client.
+     * connection pool size to null resets the configuration to use the default determined by the underlying HTTP
+     * client.
      *
      * @param maximumConnectionPoolSize The maximum connection pool size.
      * @return The updated HttpClientOptions object.
@@ -253,15 +254,16 @@ public final class HttpClientOptions extends ClientOptions {
      * Gets the maximum connection pool size used by the underlying HTTP client.
      * <p>
      * Modifying the maximum connection pool size may have effects on the performance of an application. Increasing the
-     * maximum connection pool will result in more connections being available for an application but may result in
-     * more contention for network resources. It is recommended to perform performance analysis on different maximum
+     * maximum connection pool will result in more connections being available for an application but may result in more
+     * contention for network resources. It is recommended to perform performance analysis on different maximum
      * connection pool sizes to find the right configuration for an application.
      * <p>
      * This maximum connection pool size is not a global configuration but an instance level configuration for each
      * {@link HttpClient} created using this {@link HttpClientOptions}.
      * <p>
      * By default the maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
-     * connection pool size resets the configuration to use the default determined by the underlying HTTP client.
+     * connection pool size to null resets the configuration to use the default determined by the underlying HTTP
+     * client.
      *
      * @return The maximum connection pool size.
      */
