@@ -105,6 +105,7 @@ public class HttpLoggingPolicyTests {
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl), CONTEXT))
             .verifyComplete();
+
         String result = convertOutputStreamToString(logCaptureStream);
         assertTrue(convertOutputStreamToString(logCaptureStream).contains(expectedQueryString));
     }
