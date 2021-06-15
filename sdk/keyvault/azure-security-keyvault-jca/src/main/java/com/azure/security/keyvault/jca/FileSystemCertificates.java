@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -30,6 +31,8 @@ import static java.util.logging.Level.WARNING;
  * Store certificates loaded from file system.
  */
 public final class FileSystemCertificates implements AzureCertificates {
+
+    private static final ConcurrentHashMap<String, FileSystemCertificates> CACHE = new ConcurrentHashMap<>();
 
     /**
      * Stores the logger.
@@ -139,6 +142,7 @@ public final class FileSystemCertificates implements AzureCertificates {
 
     /**
      * Get alias from file
+     *
      * @param file File containing certificate information
      * @return certificate alias
      */
@@ -170,45 +174,17 @@ public final class FileSystemCertificates implements AzureCertificates {
     }
 
     /**
-     * Factory of FileSystemCertificate, to avoid loading files multiple times
+     * Get File System certificates by path
+     *
+     * @param path certificate path, which works only in first time
+     * @return file certificate
      */
-    public static class FileSystemCertificatesFactory {
-
-        private static volatile FileSystemCertificates customFileSystemCertificates;
-
-        /**
-         * Get Singleton custom file system certificates
-         * @param path custom certificate path, which works only in first time
-         * @return custom file certificate
-         */
-        public static FileSystemCertificates getCustomFileSystemCertificates(String path) {
-            if (customFileSystemCertificates == null) {
-                synchronized (FileSystemCertificatesFactory.class) {
-                    if (customFileSystemCertificates == null) {
-                        customFileSystemCertificates = new FileSystemCertificates(path);
-                    }
-                }
-            }
-            return customFileSystemCertificates;
+    public static synchronized FileSystemCertificates getFileSystemCertificates(String path) {
+        FileSystemCertificates result = CACHE.getOrDefault("path", null);
+        if (result == null) {
+            result = new FileSystemCertificates(path);
+            CACHE.put(path, result);
         }
-
-        private static volatile FileSystemCertificates wellKnownFileSystemCertificates;
-
-        /**
-         * Get Singleton well known file system certificates
-         * @param path well known certificate path, which works only in first time
-         * @return well known file certificate
-         */
-        public static FileSystemCertificates getWellKnownFileSystemCertificates(String path) {
-            if (wellKnownFileSystemCertificates == null) {
-                synchronized (FileSystemCertificatesFactory.class) {
-                    if (wellKnownFileSystemCertificates == null) {
-                        wellKnownFileSystemCertificates = new FileSystemCertificates(path);
-                    }
-                }
-            }
-            return wellKnownFileSystemCertificates;
-        }
+        return result;
     }
-
 }
