@@ -57,7 +57,7 @@ public class ServerSocketTest {
          */
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
 
         /**
          *  - Create an Azure Key Vault specific instance of a KeyStore.

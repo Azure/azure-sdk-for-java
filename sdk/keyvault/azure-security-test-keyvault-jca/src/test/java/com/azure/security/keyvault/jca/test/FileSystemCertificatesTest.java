@@ -20,7 +20,7 @@ public class FileSystemCertificatesTest {
     @BeforeAll
     public static void setEnvironmentProperty() {
         System.setProperty("azure.cert-path.custom", getFilePath());
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
     }
 
