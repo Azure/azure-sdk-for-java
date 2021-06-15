@@ -483,8 +483,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
         context = context == null ? Context.NONE : context;
-        String sourceAuth = options.getSourceBearerToken() == null
-            ? null : "Bearer " + options.getSourceBearerToken();
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getPageBlobs().uploadPagesFromURLWithResponseAsync(
             containerName, blobName, url, sourceRangeString, 0, rangeString, options.getSourceContentMd5(), null, null,

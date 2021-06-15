@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.CoreUtils
@@ -26,7 +27,6 @@ import com.azure.storage.blob.models.SequenceNumberActionType
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
-import com.azure.storage.blob.options.StageBlockFromUrlOptions
 import com.azure.storage.blob.options.UploadPagesFromUrlOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -613,7 +613,7 @@ class PageBlobAPITest extends APISpec {
         when:
         bc.uploadPagesFromUrlWithResponse(
             new UploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:
@@ -632,7 +632,7 @@ class PageBlobAPITest extends APISpec {
         when:
         bc.uploadPagesFromUrlWithResponse(
             new UploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:

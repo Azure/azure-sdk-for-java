@@ -4,6 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -16,7 +17,7 @@ public class ShareFileUploadRangeFromUrlOptions {
     private final String sourceUrl;
     private long destinationOffset;
     private long sourceOffset;
-    private String sourceBearerToken;
+    private HttpAuthorization sourceAuthorization;
     private ShareRequestConditions destinationRequestConditions;
 
     /**
@@ -77,18 +78,18 @@ public class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
-     * @return optional bearer token for access to source URL for this operation.
+     * @return optional auth header for access to source URL for this operation.
      */
-    public String getSourceBearerToken() {
-        return sourceBearerToken;
+    public HttpAuthorization getSourceAuthorization() {
+        return sourceAuthorization;
     }
 
     /**
-     * @param sourceAuthorization optional bearer token for access to source URL.
+     * @param sourceAuthorization optional auth header for access to source URL.
      * @return modified options.
      */
-    public ShareFileUploadRangeFromUrlOptions setSourceBearerToken(String sourceAuthorization) {
-        this.sourceBearerToken = sourceAuthorization;
+    public ShareFileUploadRangeFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+        this.sourceAuthorization = sourceAuthorization;
         return this;
     }
 

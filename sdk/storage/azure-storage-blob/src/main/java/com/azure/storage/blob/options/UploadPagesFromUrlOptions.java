@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -20,7 +21,7 @@ public class UploadPagesFromUrlOptions {
     private byte[] sourceContentMd5;
     private PageBlobRequestConditions destinationRequestConditions;
     private BlobRequestConditions sourceRequestConditions;
-    private String sourceBearerToken;
+    private HttpAuthorization sourceAuthorization;
 
     /**
      * @param range The destination page range. Pages must be aligned to 512 byte blocks.
@@ -110,18 +111,18 @@ public class UploadPagesFromUrlOptions {
     }
 
     /**
-     * @return Bearer token for accessing source content.
+     * @return auth header for accessing source content.
      */
-    public String getSourceBearerToken() {
-        return sourceBearerToken;
+    public HttpAuthorization getSourceAuthorization() {
+        return sourceAuthorization;
     }
 
     /**
-     * @param sourceBearerToken Bearer token for accessing source content.
+     * @param sourceAuthorization auth header for accessing source content.
      * @return The updated options.
      */
-    public UploadPagesFromUrlOptions setSourceBearerToken(String sourceBearerToken) {
-        this.sourceBearerToken = sourceBearerToken;
+    public UploadPagesFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+        this.sourceAuthorization = sourceAuthorization;
         return this;
     }
 }

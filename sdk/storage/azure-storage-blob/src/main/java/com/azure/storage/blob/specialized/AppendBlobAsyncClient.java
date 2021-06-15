@@ -382,8 +382,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
         context = context == null ? Context.NONE : context;
-        String sourceAuth = options.getSourceBearerToken() == null
-            ? null : "Bearer " + options.getSourceBearerToken();
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getAppendBlobs().appendBlockFromUrlWithResponseAsync(containerName, blobName, url, 0,
             sourceRange.toString(), options.getSourceContentMD5(), null, null, null, destRequestConditions.getLeaseId(),

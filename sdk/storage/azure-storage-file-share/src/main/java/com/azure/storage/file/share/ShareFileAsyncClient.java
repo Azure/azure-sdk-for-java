@@ -1679,8 +1679,8 @@ public class ShareFileAsyncClient {
             options.getSourceOffset() + options.getLength() - 1);
         context = context == null ? Context.NONE : context;
 
-        String sourceAuth = options.getSourceBearerToken() == null
-            ? null : "Bearer " + options.getSourceBearerToken();
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
         final String copySource = Utility.encodeUrlPath(options.getSourceUrl());
 

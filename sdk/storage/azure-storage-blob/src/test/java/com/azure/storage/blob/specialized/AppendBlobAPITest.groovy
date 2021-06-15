@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobServiceVersion
@@ -18,7 +19,6 @@ import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.AppendBlockFromUrlOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
-import com.azure.storage.blob.options.StageBlockFromUrlOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
@@ -589,7 +589,7 @@ class AppendBlobAPITest extends APISpec {
         when:
         bc.appendBlockFromUrlWithResponse(
             new AppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:
@@ -607,7 +607,7 @@ class AppendBlobAPITest extends APISpec {
         when:
         bc.appendBlockFromUrlWithResponse(
             new AppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:

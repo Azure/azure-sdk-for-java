@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -19,7 +20,7 @@ public class StageBlockFromUrlOptions {
     private byte[] sourceContentMd5;
     private String leaseId;
     private BlobRequestConditions sourceRequestConditions;
-    private String sourceBearerToken;
+    private HttpAuthorization sourceAuthorization;
 
     /**
      * @param base64BlockId The block ID to assign the new block.
@@ -109,18 +110,18 @@ public class StageBlockFromUrlOptions {
     }
 
     /**
-     * @return Bearer token to access source.
+     * @return auth header to access source.
      */
-    public String getSourceBearerToken() {
-        return sourceBearerToken;
+    public HttpAuthorization getSourceAuthorization() {
+        return sourceAuthorization;
     }
 
     /**
-     * @param sourceBearerToken Bearer token to access source.
+     * @param sourceAuthorization auth header to access source.
      * @return The updated options.
      */
-    public StageBlockFromUrlOptions setSourceBearerToken(String sourceBearerToken) {
-        this.sourceBearerToken = sourceBearerToken;
+    public StageBlockFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+        this.sourceAuthorization = sourceAuthorization;
         return this;
     }
 }

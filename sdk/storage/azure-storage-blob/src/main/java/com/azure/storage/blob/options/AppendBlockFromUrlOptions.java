@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobRange;
@@ -19,7 +20,7 @@ public class AppendBlockFromUrlOptions {
     private byte[] sourceContentMD5;
     private AppendBlobRequestConditions destinationRequestConditions;
     private BlobRequestConditions sourceRequestConditions;
-    private String sourceBearerToken;
+    private HttpAuthorization sourceAuthorization;
 
     /**
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -100,18 +101,18 @@ public class AppendBlockFromUrlOptions {
     }
 
     /**
-     * @return Bearer token for accessing source.
+     * @return auth header for accessing source.
      */
-    public String getSourceBearerToken() {
-        return sourceBearerToken;
+    public HttpAuthorization getSourceAuthorization() {
+        return sourceAuthorization;
     }
 
     /**
-     * @param sourceBearerToken Bearer token for accessing source.
+     * @param sourceAuthorization auth header for accessing source.
      * @return The updated options.
      */
-    public AppendBlockFromUrlOptions setSourceBearerToken(String sourceBearerToken) {
-        this.sourceBearerToken = sourceBearerToken;
+    public AppendBlockFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+        this.sourceAuthorization = sourceAuthorization;
         return this;
     }
 }

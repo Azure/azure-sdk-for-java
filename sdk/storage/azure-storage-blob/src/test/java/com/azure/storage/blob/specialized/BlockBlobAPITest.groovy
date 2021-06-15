@@ -8,6 +8,7 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -45,7 +46,6 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
 
@@ -326,7 +326,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         blockBlobClient.stageBlockFromUrlWithResponse(
             new StageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
         blockBlobClient.commitBlockList([blockId], true)
 
@@ -346,7 +346,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         blockBlobClient.stageBlockFromUrlWithResponse(
             new StageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:
@@ -2118,7 +2118,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         blockBlobClient.uploadFromUrlWithResponse(
             new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:
@@ -2136,7 +2136,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         blockBlobClient.uploadFromUrlWithResponse(
             new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:

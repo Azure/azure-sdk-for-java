@@ -4,11 +4,10 @@
 package com.azure.storage.file.share
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.util.Context
 import com.azure.core.util.polling.SyncPoller
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobServiceClientBuilder
-import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -769,7 +768,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.uploadRangeFromUrlWithResponse(
             new ShareFileUploadRangeFromUrlOptions(data.defaultDataSize, blob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader),
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
         then:
@@ -796,7 +795,7 @@ class FileAPITests extends APISpec {
         when:
         primaryFileClient.uploadRangeFromUrlWithResponse(
             new ShareFileUploadRangeFromUrlOptions(data.defaultDataSize, blob.getBlobUrl())
-                .setSourceBearerToken(oauthHeader), null, Context.NONE)
+                .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)), null, Context.NONE)
 
         then:
         thrown(ShareStorageException)

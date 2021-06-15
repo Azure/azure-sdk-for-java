@@ -369,8 +369,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             options.getSourceRequestConditions() == null ? new BlobRequestConditions()
             : options.getSourceRequestConditions();
         context = context == null ? Context.NONE : context;
-        String sourceAuth = options.getSourceBearerToken() == null
-            ? null : "Bearer " + options.getSourceBearerToken();
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
         URL url;
         try {
@@ -575,8 +575,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
         context = context == null ? Context.NONE : context;
-        String sourceAuth = options.getSourceBearerToken() == null
-            ? null : "Bearer " + options.getSourceBearerToken();
+        String sourceAuth = options.getSourceAuthorization() == null
+            ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLWithResponseAsync(containerName, blobName,
             options.getBase64BlockId(), 0, url, sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -22,7 +23,7 @@ public class BlobCopyFromUrlOptions {
     private AccessTier tier;
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
-    private String sourceBearerToken;
+    private HttpAuthorization sourceAuthorization;
 
     /**
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -121,18 +122,18 @@ public class BlobCopyFromUrlOptions {
     }
 
     /**
-     * @return Bearer token for access to source.
+     * @return auth header for access to source.
      */
-    public String getSourceBearerToken() {
-        return sourceBearerToken;
+    public HttpAuthorization getSourceAuthorization() {
+        return sourceAuthorization;
     }
 
     /**
-     * @param sourceBearerToken Bearer token for access to source.
+     * @param sourceAuthorization auth header for access to source.
      * @return The updated options.
      */
-    public BlobCopyFromUrlOptions setSourceBearerToken(String sourceBearerToken) {
-        this.sourceBearerToken = sourceBearerToken;
+    public BlobCopyFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+        this.sourceAuthorization = sourceAuthorization;
         return this;
     }
 }
