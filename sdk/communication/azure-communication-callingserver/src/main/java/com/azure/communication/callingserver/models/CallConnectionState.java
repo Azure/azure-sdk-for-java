@@ -10,38 +10,20 @@ import java.util.Collection;
 
 /** Defines values for CallConnectionState. */
 public final class CallConnectionState extends ExpandableStringEnum<CallConnectionState> {
-    /** Static value unknown for CallConnectionState. */
-    public static final CallConnectionState UNKNOWN = fromString("unknown");
-
-    /** Static value idle for CallConnectionState. */
-    public static final CallConnectionState IDLE = fromString("idle");
-
     /** Static value incoming for CallConnectionState. */
     public static final CallConnectionState INCOMING = fromString("incoming");
 
-    /** Static value establishing for CallConnectionState. */
-    public static final CallConnectionState ESTABLISHING = fromString("establishing");
+    /** Static value connecting for CallConnectionState. */
+    public static final CallConnectionState CONNECTING = fromString("connecting");
 
-    /** Static value established for CallConnectionState. */
-    public static final CallConnectionState ESTABLISHED = fromString("established");
+    /** Static value connected for CallConnectionState. */
+    public static final CallConnectionState CONNECTED = fromString("connected");
 
-    /** Static value hold for CallConnectionState. */
-    public static final CallConnectionState HOLD = fromString("hold");
+    /** Static value disconnecting for CallConnectionState. */
+    public static final CallConnectionState DISCONNECTING = fromString("disconnecting");
 
-    /** Static value unhold for CallConnectionState. */
-    public static final CallConnectionState UNHOLD = fromString("unhold");
-
-    /** Static value transferring for CallConnectionState. */
-    public static final CallConnectionState TRANSFERRING = fromString("transferring");
-
-    /** Static value redirecting for CallConnectionState. */
-    public static final CallConnectionState REDIRECTING = fromString("redirecting");
-
-    /** Static value terminating for CallConnectionState. */
-    public static final CallConnectionState TERMINATING = fromString("terminating");
-
-    /** Static value terminated for CallConnectionState. */
-    public static final CallConnectionState TERMINATED = fromString("terminated");
+    /** Static value disconnected for CallConnectionState. */
+    public static final CallConnectionState DISCONNECTED = fromString("disconnected");
 
     /**
      * Creates or finds a CallConnectionState from its string representation.

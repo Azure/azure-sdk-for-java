@@ -2,17 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -26,6 +30,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenario(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
 
@@ -33,7 +45,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -72,6 +84,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
@@ -80,7 +100,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -125,6 +145,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenario(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
 
@@ -132,7 +160,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -167,8 +195,17 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     }
 
     @ParameterizedTest
+    @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
@@ -177,7 +214,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -194,13 +231,13 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<Void> inviteParticipantResponse = callConnection
+            Response<AddParticipantResult> inviteParticipantResponse = callConnection
                 .addParticipantWithResponse(
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext,
                     null);
-            CallingServerTestUtils.validateResponse(inviteParticipantResponse);
+            CallingServerTestUtils.validateAddParticipantResponse(inviteParticipantResponse);
 
             // Remove Participant
             /*
@@ -226,6 +263,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateJoinHangupScenario(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenario");
 
@@ -233,7 +278,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -253,7 +298,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             CallConnection joinedCallConnection =
                 callingServerClient.join(serverCallId, new CommunicationUserIdentifier(toUser), joinCallOptions);
@@ -271,6 +316,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateJoinHangupScenarioWithResponse(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreateJoinHangupScenarioWithResponse");
@@ -279,7 +332,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -297,7 +350,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             Response<CallConnection> joinedCallConnectionResponse =
                 callingServerClient.joinWithResponse(

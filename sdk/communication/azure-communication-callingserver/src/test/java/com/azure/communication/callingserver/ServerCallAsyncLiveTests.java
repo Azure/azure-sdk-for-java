@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.communication.callingserver.models.CallRecordingStateResult;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -24,7 +25,9 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -208,6 +211,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAddRemoveScenarioAsync");
@@ -216,7 +227,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -266,8 +277,17 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     }
 
     @ParameterizedTest
+    @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioWithResponseAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAddRemoveScenarioWithResponseAsync");
 
@@ -275,7 +295,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -297,7 +317,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<Void> addResponse =
+            Response<AddParticipantResult> addResponse =
                 serverCallAsync
                     .addParticipantWithResponse(
                         new CommunicationUserIdentifier(toUser),
@@ -305,7 +325,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
                         operationContext,
                         CALLBACK_URI)
                     .block();
-            CallingServerTestUtils.validateResponse(addResponse);
+            CallingServerTestUtils.validateAddParticipantResponse(addResponse);
 
             // Remove User
             /*
@@ -348,7 +368,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         // against a live service.
         sleepIfRunningAgainstService(6000);
 
-        CallRecordingStateResult callRecordingStateResult = serverCallAsync.getRecordingState(recordingId).block();
+        CallRecordingProperties callRecordingStateResult = serverCallAsync.getRecordingState(recordingId).block();
         assert callRecordingStateResult != null;
         assertEquals(callRecordingStateResult.getRecordingState(), expectedCallRecordingState);
     }
@@ -367,7 +387,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         // against a live service.
         sleepIfRunningAgainstService(6000);
 
-        Response<CallRecordingStateResult> response =
+        Response<CallRecordingProperties> response =
             serverCallAsync.getRecordingStateWithResponse(recordingId).block();
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);

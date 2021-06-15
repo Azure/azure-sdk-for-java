@@ -8,17 +8,17 @@ import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response payload of get call recording state operation. */
+/** The response payload of get call recording properties operation. */
 @Fluent
-public final class CallRecordingStateResultInternal {
+public final class CallRecordingPropertiesInternal {
     /*
-     * The recording state of the recording
+     * The state of the recording
      */
     @JsonProperty(value = "recordingState")
     private CallRecordingState recordingState;
 
     /**
-     * Get the recordingState property: The recording state of the recording.
+     * Get the recordingState property: The state of the recording.
      *
      * @return the recordingState value.
      */
@@ -27,12 +27,12 @@ public final class CallRecordingStateResultInternal {
     }
 
     /**
-     * Set the recordingState property: The recording state of the recording.
+     * Set the recordingState property: The state of the recording.
      *
      * @param recordingState the recordingState value to set.
-     * @return the CallRecordingStateResultInternal object itself.
+     * @return the CallRecordingPropertiesInternal object itself.
      */
-    public CallRecordingStateResultInternal setRecordingState(CallRecordingState recordingState) {
+    public CallRecordingPropertiesInternal setRecordingState(CallRecordingState recordingState) {
         this.recordingState = recordingState;
         return this;
     }

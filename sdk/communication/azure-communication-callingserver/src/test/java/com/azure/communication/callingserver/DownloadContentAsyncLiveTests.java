@@ -7,6 +7,7 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,6 +36,14 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadMetadataAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
 
@@ -53,6 +62,14 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
 
@@ -71,6 +88,14 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadVideoAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadVideoAsync");
 
@@ -89,6 +114,14 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadToFileAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
@@ -120,6 +153,14 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);

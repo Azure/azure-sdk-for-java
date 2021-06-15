@@ -3,7 +3,8 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallRecordingStateResult;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
@@ -43,7 +44,7 @@ public final class ServerCall {
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void addParticipant(
+    public AddParticipantResult addParticipant(
         CommunicationIdentifier participant,
         String callBackUri,
         String alternateCallerId,
@@ -63,7 +64,7 @@ public final class ServerCall {
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(
+    public Response<AddParticipantResult> addParticipantWithResponse(
         CommunicationIdentifier participant,
         String callBackUri,
         String alternateCallerId,
@@ -201,7 +202,7 @@ public final class ServerCall {
      * @return response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingStateResult getRecordingState(String recordingId) {
+    public CallRecordingProperties getRecordingState(String recordingId) {
         return serverCallAsync.getRecordingState(recordingId).block();
     }
 
@@ -213,7 +214,7 @@ public final class ServerCall {
      * @return response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallRecordingStateResult> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<CallRecordingProperties> getRecordingStateWithResponse(String recordingId, Context context) {
         return serverCallAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 

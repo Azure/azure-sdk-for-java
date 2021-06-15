@@ -3,9 +3,9 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -39,7 +39,7 @@ public class CallingServerTestBase extends TestBase {
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
-            "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+            "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
 
     protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
@@ -176,7 +176,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
@@ -184,7 +184,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions);
@@ -221,7 +221,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
@@ -229,7 +229,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions).block();
