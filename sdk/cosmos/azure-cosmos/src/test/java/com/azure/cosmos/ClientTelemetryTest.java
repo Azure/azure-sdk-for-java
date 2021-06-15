@@ -210,6 +210,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         System.setProperty("COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS", "600");// setting it back for other tests
     }
 
+    @SuppressWarnings("unchecked")
     @Test(groups = {"non-emulator"}, timeOut = TIMEOUT)
     public void clientTelemetryWithStageJunoEndpoint() throws InterruptedException, NoSuchFieldException,
         IllegalAccessException {
@@ -227,6 +228,12 @@ public class ClientTelemetryTest extends TestSuiteBase {
             ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
             setClientTelemetrySchedulingInSec(clientTelemetry, 5);
             clientTelemetry.init();
+
+            // If this test need to run on local machine please add below env property,
+            // in test env we add the env property with cosmos-client-telemetry-endpoint variable in tests.yml,
+            // which gets its value from key vault TestSecrets-Cosmos
+
+            // System.setProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT", "https://tools-staging.cosmos.azure.com/api/clienttelemetry/trace");
 
             HttpClient httpClient = ReflectionUtils.getHttpClient(clientTelemetry);
             HttpClient spyHttpClient = Mockito.spy(httpClient);
