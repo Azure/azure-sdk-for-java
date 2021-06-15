@@ -27,6 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
 
+    static final int PREFETCH = 500;
+
     protected final List<EventData> events;
 
     /**
@@ -101,6 +103,8 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
             builder.transportType(options.getTransportType());
         }
 
+        builder.prefetchCount(PREFETCH);
+
         return builder;
     }
 
@@ -114,7 +118,11 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
             .flatMap(batch -> {
                 EventData event = events.get(0);
                 while (batch.tryAdd(event)) {
-                    int index = number.getAndDecrement() % events.size();
+                    final int index = number.getAndDecrement() % events.size();
+                    if (index < 0) {
+                        break;
+                    }
+
                     event = events.get(index);
                 }
 

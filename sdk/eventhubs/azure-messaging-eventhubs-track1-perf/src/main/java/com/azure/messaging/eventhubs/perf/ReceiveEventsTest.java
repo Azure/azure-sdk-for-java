@@ -7,6 +7,7 @@ import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -67,8 +68,11 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
             clientFuture = createEventHubClientAsync();
             receiverAsync = clientFuture.thenComposeAsync(client -> {
                 try {
+                    final ReceiverOptions receiverOptions = new ReceiverOptions();
+                    receiverOptions.setPrefetchCount(ServiceTest.PREFETCH);
+
                     return client.createReceiver(options.getConsumerGroup(),
-                        options.getPartitionId(), EventPosition.fromStartOfStream());
+                        options.getPartitionId(), EventPosition.fromStartOfStream(), receiverOptions);
                 } catch (EventHubException e) {
                     final CompletableFuture<PartitionReceiver> future = new CompletableFuture<>();
                     future.completeExceptionally(new RuntimeException("Unable to create PartitionReceiver", e));
@@ -107,24 +111,23 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     @Override
     public Mono<Void> runAsync() {
-        final CompletableFuture<Void> receiveEvents = receiverAsync.thenApplyAsync(receiver -> {
-            final AtomicInteger number = new AtomicInteger();
-            while (true) {
+        final CompletableFuture<Void> receiveEvents = receiverAsync.thenAccept(receiver -> {
+            final AtomicInteger number = new AtomicInteger(options.getCount());
+            while (number.get() > 0) {
                 try {
-                    final Iterable<EventData> receivedEvents = receiver.receive(options.getCount()).get();
-                    for (EventData eventData : receivedEvents) {
-                        number.incrementAndGet();
+                    final Iterable<EventData> receivedEvents = receiver.receive(ServiceTest.PREFETCH).get();
+                    if (receivedEvents == null) {
+                        System.err.println("Did not receive events.");
+                        break;
                     }
 
-                    if (number.get() >= options.getCount()) {
-                        break;
+                    for (EventData eventData : receivedEvents) {
+                        number.getAndDecrement();
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException("Unable to get more events", e);
                 }
             }
-
-            return null;
         });
 
         return Mono.fromCompletionStage(receiveEvents);

@@ -31,6 +31,8 @@ import java.util.concurrent.ScheduledExecutorService;
  * Base class that tests Event Hubs.
  */
 abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
+    static final int PREFETCH = 500;
+
     private final ScheduledExecutorService scheduler;
 
     protected final List<EventData> events;
