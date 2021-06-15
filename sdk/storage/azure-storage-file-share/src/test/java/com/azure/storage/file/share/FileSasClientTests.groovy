@@ -1,5 +1,6 @@
 package com.azure.storage.file.share
 
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
@@ -180,5 +181,22 @@ class FileSasClientTests extends APISpec {
 
         then:
         notThrown(ShareStorageException)
+    }
+
+    /**
+     * If this test fails it means that non-deprecated string to sign has new components.
+     * In that case we should hardcode version used for deprecated string to sign like we did for blobs.
+     */
+    def "Remember about string to sign deprecation"() {
+        setup:
+        def values = new ShareServiceSasSignatureValues(namer.getUtcNow(), new ShareSasPermission())
+        values.setShareName(primaryShareClient.getShareName())
+
+        when:
+        def deprecatedStringToSign = values.generateSasQueryParameters(env.primaryAccount.credential).encode()
+        def stringToSign = primaryShareClient.generateSas(values)
+
+        then:
+        deprecatedStringToSign == stringToSign
     }
 }
