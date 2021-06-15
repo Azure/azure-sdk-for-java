@@ -16,6 +16,7 @@ import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
@@ -24,6 +25,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,13 +33,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
-    private final String groupId = getGroupId();
     private final String fromUser = getNewUserId();
     private final String toUser = getNewUserId();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAllClientFunctionsAsync");
@@ -78,6 +80,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponseAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsWithResponseAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
@@ -127,6 +130,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runPlayAudioFunctionAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runPlayAudioFunctionAsync");
@@ -154,6 +158,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponseAsync(HttpClient httpClient) {
+        String groupId = getGroupId("runPlayAudioFunctionWithResponseAsync");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
@@ -166,12 +171,15 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             callConnections = createAsyncCall(callingServerAsyncClient, groupId, fromUser, toUser, CALLBACK_URI);
             serverCallAsync = callingServerAsyncClient.initializeServerCall(groupId);
 
+            PlayAudioOptions options = new PlayAudioOptions();
+            options.setAudioFileId(UUID.randomUUID().toString());
+            options.setCallbackUri(CALLBACK_URI);
+            options.setOperationContext(operationContext);
+
             Response<PlayAudioResult> playAudioResult =
                 serverCallAsync.playAudioWithResponse(
                     AUDIO_FILE_URI,
-                    operationContext,
-                    CALLBACK_URI,
-                    operationContext).block();
+                    options).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
@@ -203,6 +211,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAddRemoveScenarioAsync");
@@ -264,6 +280,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioWithResponseAsync(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAddRemoveScenarioWithResponseAsync");
 

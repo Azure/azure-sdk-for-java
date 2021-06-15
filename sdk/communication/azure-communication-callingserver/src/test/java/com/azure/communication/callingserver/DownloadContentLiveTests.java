@@ -6,6 +6,8 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -29,6 +31,14 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadMetadata(HttpClient httpClient) throws UnsupportedEncodingException {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }        
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadMetadata");
 
@@ -46,6 +56,14 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadVideo(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }        
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadVideo");
 

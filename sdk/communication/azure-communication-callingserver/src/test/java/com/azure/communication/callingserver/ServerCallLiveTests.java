@@ -9,6 +9,7 @@ import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
@@ -17,6 +18,9 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -34,13 +38,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ServerCallLiveTests extends CallingServerTestBase {
 
-    private final String groupId = getGroupId();
     private final String fromUser = getNewUserId();
     private final String toUser = getNewUserId();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctions(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctions");
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctions");
         String recordingId = "";
@@ -79,6 +83,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponse(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsWithResponse");
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctionsWithResponse");
         String recordingId = "";
@@ -96,11 +101,11 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             recordingId = startCallRecordingResult.getRecordingId();
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
 
-            Response<Void> pauseResponse = serverCall.pauseRecordingWithResponse(recordingId, null);
+            Response<Void> pauseResponse = serverCall.pauseRecordingWithResponse(recordingId, Context.NONE);
             assertEquals(pauseResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.INACTIVE);
 
-            Response<Void> resumeResponse = serverCall.resumeRecordingWithResponse(recordingId, null);
+            Response<Void> resumeResponse = serverCall.resumeRecordingWithResponse(recordingId, Context.NONE);
             assertEquals(resumeResponse.getStatusCode(), 200);
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
@@ -109,7 +114,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         } finally {
             if (serverCall != null) {
                 try {
-                    Response<Void> stopResponse = serverCall.stopRecordingWithResponse(recordingId, null);
+                    Response<Void> stopResponse = serverCall.stopRecordingWithResponse(recordingId, Context.NONE);
                     assertEquals(stopResponse.getStatusCode(), 200);
                 } catch (Exception e) {
                     System.out.println("Error stopping recording: " + e.getMessage());
@@ -123,6 +128,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunction(HttpClient httpClient) {
+        String groupId = getGroupId("runPlayAudioFunction");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunction");
         ServerCall serverCall;
@@ -133,9 +139,13 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         try {
             callConnections = createCall(callingServerClient, groupId, fromUser, toUser, CALLBACK_URI);
             serverCall = callingServerClient.initializeServerCall(groupId);
+            PlayAudioOptions options = new PlayAudioOptions();
+            options.setAudioFileId(UUID.randomUUID().toString());
+            options.setCallbackUri(CALLBACK_URI);
+            options.setOperationContext(operationContext);
 
             PlayAudioResult playAudioResult =
-                serverCall.playAudio(AUDIO_FILE_URI, UUID.randomUUID().toString(), CALLBACK_URI, operationContext);
+                serverCall.playAudio(AUDIO_FILE_URI, options);
             validatePlayAudioResult(playAudioResult);
 
         } catch (Exception e) {
@@ -149,6 +159,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponse(HttpClient httpClient) {
+        String groupId = getGroupId("runPlayAudioFunctionWithResponse");
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunctionWithResponse");
         ServerCall serverCall;
@@ -164,7 +175,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
                 serverCall.playAudioWithResponse(
                     AUDIO_FILE_URI, operationContext,
                     CALLBACK_URI, operationContext,
-                    null);
+                    Context.NONE);
             validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
@@ -185,7 +196,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response =
-                serverCall.startRecordingWithResponse(CALLBACK_URI, null);
+                serverCall.startRecordingWithResponse(CALLBACK_URI, Context.NONE);
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
@@ -195,6 +206,14 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenario(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }        
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenario");
         try {
@@ -252,6 +271,14 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioWithResponse(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }        
+
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenarioWithResponse");
 

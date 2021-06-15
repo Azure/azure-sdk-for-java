@@ -14,6 +14,8 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,6 +30,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenario(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
 
@@ -74,6 +84,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
@@ -127,6 +145,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenario(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
 
@@ -172,6 +198,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
@@ -229,6 +263,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateJoinHangupScenario(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenario");
 
@@ -274,6 +316,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateJoinHangupScenarioWithResponse(HttpClient httpClient) {
+
+        // This test requires human intervention to record and
+        // will not function in live mode.
+        if (this.getTestMode() == TestMode.LIVE) {
+            System.out.println("Warning: Test is skipped, does not support live mode.");
+            return;
+        }
+
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreateJoinHangupScenarioWithResponse");
