@@ -39,7 +39,7 @@ public class CallingServerTestBase extends TestBase {
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
-            "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
