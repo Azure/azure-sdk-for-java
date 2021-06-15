@@ -3,20 +3,16 @@
 
 package com.azure.communication.callingserver;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
-
-import java.util.Objects;
-
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
-import com.azure.communication.callingserver.implementation.converters.InviteParticipantRequestConverter;
-import com.azure.communication.callingserver.implementation.converters.CancelAllMediaOperationsResultConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
+import com.azure.communication.callingserver.implementation.converters.CancelAllMediaOperationsResultConverter;
+import com.azure.communication.callingserver.implementation.converters.InviteParticipantRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorException;
+import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
-import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -27,8 +23,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
+
+import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Async client that supports call connection operations.
@@ -132,7 +132,7 @@ public final class CallConnectionAsync {
     Mono<PlayAudioResult> playAudioInternal(PlayAudioRequest playAudioRequest) {
         try {
             return callConnectionInternal.playAudioAsync(callConnectionId, playAudioRequest)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -236,7 +236,7 @@ public final class CallConnectionAsync {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
                     .playAudioWithResponseAsync(callConnectionId, playAudioRequest, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
             });
@@ -254,7 +254,7 @@ public final class CallConnectionAsync {
     public Mono<Void> hangup() {
         try {
             return callConnectionInternal.hangupCallAsync(callConnectionId)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -275,7 +275,7 @@ public final class CallConnectionAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -295,7 +295,7 @@ public final class CallConnectionAsync {
             CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
             request.setOperationContext(operationContext);
             return callConnectionInternal.cancelAllMediaOperationsAsync(callConnectionId, request)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(CancelAllMediaOperationsResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -324,7 +324,7 @@ public final class CallConnectionAsync {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
                     .cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response, CancelAllMediaOperationsResultConverter.convert(response.getValue())));
             });
@@ -343,18 +343,19 @@ public final class CallConnectionAsync {
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addParticipant(
+    public Mono<AddParticipantResult> addParticipant(
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext) {
         try {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
-            InviteParticipantsRequest request = InviteParticipantRequestConverter.convert(participant,
+            AddParticipantRequest request = InviteParticipantRequestConverter.convert(participant,
                 alternateCallerId,
                 operationContext,
                 null);
-            return callConnectionInternal.inviteParticipantsAsync(callConnectionId, request)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+            return callConnectionInternal.addParticipantAsync(callConnectionId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(new AddParticipantResult(result.getParticipantId())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -370,28 +371,30 @@ public final class CallConnectionAsync {
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addParticipantWithResponse(
+    public Mono<Response<AddParticipantResult>> addParticipantWithResponse(
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext) {
         return addParticipantWithResponse(participant, alternateCallerId, operationContext, null);
     }
 
-    Mono<Response<Void>> addParticipantWithResponse(
+    Mono<Response<AddParticipantResult>> addParticipantWithResponse(
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext,
         Context context) {
         try {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
-            InviteParticipantsRequest request =
+            AddParticipantRequest request =
                 InviteParticipantRequestConverter
                     .convert(participant, alternateCallerId, operationContext, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
-                    .inviteParticipantsWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                    .addParticipantWithResponseAsync(callConnectionId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, new AddParticipantResult(response.getValue().getParticipantId())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -408,7 +411,7 @@ public final class CallConnectionAsync {
     public Mono<Void> removeParticipant(String participantId) {
         try {
             return callConnectionInternal.removeParticipantAsync(callConnectionId, participantId)
-                .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -431,7 +434,7 @@ public final class CallConnectionAsync {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
                     .removeParticipantWithResponseAsync(callConnectionId, participantId, contextValue)
-                    .onErrorMap(CommunicationErrorException.class, CallingServerErrorConverter::translateException);
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
