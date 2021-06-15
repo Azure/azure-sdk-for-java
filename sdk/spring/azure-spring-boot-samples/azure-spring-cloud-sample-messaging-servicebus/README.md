@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-service-bus
+description: "Azure Spring Cloud Sample project for Messaging Service Bus client library"
+urlFragment: "azure-spring-cloud-sample-messaging-service-bus"
+---
+
 # Spring Cloud Azure Messaging Service Bus Sample shared library for Java
 
 ## Key concepts

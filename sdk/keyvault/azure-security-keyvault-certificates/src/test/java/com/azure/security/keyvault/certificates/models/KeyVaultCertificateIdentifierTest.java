@@ -45,12 +45,6 @@ class KeyVaultCertificateIdentifierTest {
     }
 
     @Test
-    void parseInvalidIdentifierForDeletedCertificate() {
-        String sourceId = "https://test-key-vault.vault.azure.net/deletedcertificates/test-certificate/version";
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultCertificateIdentifier(sourceId));
-    }
-
-    @Test
     void parseNullIdentifier() {
         assertThrows(NullPointerException.class, () -> new KeyVaultCertificateIdentifier(null));
     }

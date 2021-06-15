@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ServiceBusUtilsTest {
 
@@ -12,11 +12,11 @@ public class ServiceBusUtilsTest {
     public void testGetNamespace() {
         String connectionString = "Endpoint=sb://namespace.servicebus.windows.net/;"
             + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
-        Assert.assertEquals("namespace", ServiceBusUtils.getNamespace(connectionString));
+        Assertions.assertEquals("namespace", ServiceBusUtils.getNamespace(connectionString));
     }
 
     @Test
     public void testGetNamespaceWithInvalidConnectionString() {
-        Assert.assertNull(ServiceBusUtils.getNamespace("fake-connection-str"));
+        Assertions.assertNull(ServiceBusUtils.getNamespace("fake-connection-str"));
     }
 }

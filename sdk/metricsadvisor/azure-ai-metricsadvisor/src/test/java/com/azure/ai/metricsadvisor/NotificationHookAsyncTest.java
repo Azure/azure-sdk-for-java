@@ -4,9 +4,8 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.TestBase;
@@ -115,7 +114,7 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList = new ArrayList<>();
-        StepVerifier.create(client.listHooks(new ListHookOptions().setTop(ListHookInput.INSTANCE.pageSize)).byPage())
+        StepVerifier.create(client.listHooks(new ListHookOptions().setMaxPageSize(ListHookInput.INSTANCE.pageSize)).byPage())
             .thenConsumeWhile(hookPageList::add)
             .verifyComplete();
 
