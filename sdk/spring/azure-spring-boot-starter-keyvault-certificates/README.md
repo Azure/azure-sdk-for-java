@@ -316,6 +316,17 @@ You can also manually refresh the certificate by calling this method:
 KeyVaultCertificates.refreshCertsInfo();
 ```
 
+### File-System certificates
+This starter also allows you to load the certificate in the file system as
+trusted certificates if following property is configured.
+
+```yaml
+azure:
+  cert-path:
+    well-known:     # The file location where you store the well-known certificate
+    custom:         # The file location where you store the custom certificate
+```
+
 ### Side-loading certificates
 
 This starter allows you to side-load certificates by supplying them as part of
@@ -327,8 +338,9 @@ Notes:
 1. The alias (certificate name) is constructed from the filename of the 
 certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
-2. Certificates coming from Azure Key Vault take precedence over 
-side-loaded certificates.
+2. The priority order of the certificates is: 
+Certificates in jre -> Certificates in well-known file path -> Certificates in custom file path 
+-> Certificates from Azure key vault -> side-loaded Certificates.
 
 
 ## Troubleshooting
