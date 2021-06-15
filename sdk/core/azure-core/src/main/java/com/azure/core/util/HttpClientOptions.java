@@ -28,7 +28,7 @@ public final class HttpClientOptions extends ClientOptions {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
-    private int maximumConnectionPoolSize;
+    private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
 
     @Override
@@ -224,14 +224,23 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Sets the maximum connection pool size used by the underlying HTTP client.
      * <p>
-     * By default the maximum connection pool size is determined by the underlying HTTP client.
+     * Modifying the maximum connection pool size may have effects on the performance of an application. Increasing the
+     * maximum connection pool will result in more connections being available for an application but may result in
+     * more contention for network resources. It is recommended to perform performance analysis on different maximum
+     * connection pool sizes to find the right configuration for an application.
+     * <p>
+     * This maximum connection pool size is not a global configuration but an instance level configuration for each
+     * {@link HttpClient} created using this {@link HttpClientOptions}.
+     * <p>
+     * By default the maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
+     * connection pool size resets the configuration to use the default determined by the underlying HTTP client.
      *
      * @param maximumConnectionPoolSize The maximum connection pool size.
      * @return The updated HttpClientOptions object.
-     * @throws IllegalArgumentException If {@code maximumConnectionPoolSize} is less than {@code 1}.
+     * @throws IllegalArgumentException If {@code maximumConnectionPoolSize} is not null and is less than {@code 1}.
      */
-    public HttpClientOptions setMaximumConnectionPoolSize(int maximumConnectionPoolSize) {
-        if (maximumConnectionPoolSize <= 0) {
+    public HttpClientOptions setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
+        if (maximumConnectionPoolSize != null && maximumConnectionPoolSize <= 0) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'maximumConnectionPoolSize' cannot be less than 1."));
         }
@@ -243,11 +252,20 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the maximum connection pool size used by the underlying HTTP client.
      * <p>
-     * By default the maximum connection pool size is determined by the underlying HTTP client.
+     * Modifying the maximum connection pool size may have effects on the performance of an application. Increasing the
+     * maximum connection pool will result in more connections being available for an application but may result in
+     * more contention for network resources. It is recommended to perform performance analysis on different maximum
+     * connection pool sizes to find the right configuration for an application.
+     * <p>
+     * This maximum connection pool size is not a global configuration but an instance level configuration for each
+     * {@link HttpClient} created using this {@link HttpClientOptions}.
+     * <p>
+     * By default the maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
+     * connection pool size resets the configuration to use the default determined by the underlying HTTP client.
      *
      * @return The maximum connection pool size.
      */
-    public int getMaximumConnectionPoolSize() {
+    public Integer getMaximumConnectionPoolSize() {
         return maximumConnectionPoolSize;
     }
 
@@ -276,7 +294,7 @@ public final class HttpClientOptions extends ClientOptions {
      * <p>
      * By default the connection idle timeout is 60 seconds.
      *
-     * @return The connection idel timeout duration.
+     * @return The connection idle timeout duration.
      */
     public Duration getConnectionIdleTimeout() {
         return getTimeout(connectionIdleTimeout);

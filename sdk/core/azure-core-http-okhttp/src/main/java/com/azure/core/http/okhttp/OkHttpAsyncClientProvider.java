@@ -4,8 +4,8 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.HttpClientOptions;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.HttpClientOptions;
 import okhttp3.ConnectionPool;
 
 import java.util.concurrent.TimeUnit;
