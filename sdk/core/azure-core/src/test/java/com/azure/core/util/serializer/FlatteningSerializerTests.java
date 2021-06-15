@@ -35,7 +35,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,9 +47,7 @@ public class FlatteningSerializerTests {
         Foo foo = new Foo();
         foo.bar("hello.world");
         //
-        List<String> baz = new ArrayList<>();
-        baz.add("hello");
-        baz.add("hello.world");
+        List<String> baz = Arrays.asList("hello", "hello.world");
         foo.baz(baz);
 
         HashMap<String, String> qux = new HashMap<>();
@@ -110,11 +107,7 @@ public class FlatteningSerializerTests {
      */
     @Test
     public void canHandleTypeWithTypeIdContainingDot0() {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         String serialized = serialize(animalToSerialize);
@@ -141,11 +134,7 @@ public class FlatteningSerializerTests {
      */
     @Test
     public void canHandleTypeWithTypeIdContainingDot1() {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         RabbitWithTypeIdContainingDot rabbitToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         String serialized = serialize(rabbitToSerialize);
@@ -172,7 +161,9 @@ public class FlatteningSerializerTests {
      */
     @Test
     public void canHandleTypeWithFlattenablePropertyAndTypeIdContainingDot0() {
-        AnimalWithTypeIdContainingDot animalToSerialize = new DogWithTypeIdContainingDot().withBreed("AKITA").withCuteLevel(10);
+        AnimalWithTypeIdContainingDot animalToSerialize = new DogWithTypeIdContainingDot()
+            .withBreed("AKITA")
+            .withCuteLevel(10);
 
         // serialization
         String serialized = serialize(animalToSerialize);
@@ -230,11 +221,7 @@ public class FlatteningSerializerTests {
      */
     @Test
     public void canHandleArrayOfTypeWithTypeIdContainingDot0() {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         List<AnimalWithTypeIdContainingDot> animalsToSerialize = new ArrayList<>();
@@ -266,11 +253,7 @@ public class FlatteningSerializerTests {
      */
     @Test
     public void canHandleArrayOfTypeWithTypeIdContainingDot1() {
-        // Serialize
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+        List<String> meals = Arrays.asList("carrot", "apple");
         //
         RabbitWithTypeIdContainingDot rabbitToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         List<RabbitWithTypeIdContainingDot> rabbitsToSerialize = new ArrayList<>();
@@ -300,11 +283,7 @@ public class FlatteningSerializerTests {
      */
     @Test
     public void canHandleComposedTypeWithTypeIdContainingDot0() {
-        // serialization
-        //
-        List<String> meals = new ArrayList<>();
-        meals.add("carrot");
-        meals.add("apple");
+        List<String> meals = Arrays.asList("carrot", "apple");
         AnimalWithTypeIdContainingDot animalToSerialize = new RabbitWithTypeIdContainingDot().withMeals(meals);
         FlattenableAnimalInfo animalInfoToSerialize = new FlattenableAnimalInfo().withAnimal(animalToSerialize);
         List<FlattenableAnimalInfo> animalsInfoSerialized = ImmutableList.of(animalInfoToSerialize);
@@ -561,7 +540,7 @@ public class FlatteningSerializerTests {
     @Test
     public void jsonFlattenOnArrayType() {
         JsonFlattenOnArrayType expected = new JsonFlattenOnArrayType()
-            .setJsonFlattenArray(new String[] { "hello", "goodbye", null });
+            .setJsonFlattenArray(new String[]{"hello", "goodbye", null});
 
         String expectedSerialization = "{\"jsonflatten\":{\"array\":[\"hello\",\"goodbye\",null]}}";
         String actualSerialization = serialize(expected);
