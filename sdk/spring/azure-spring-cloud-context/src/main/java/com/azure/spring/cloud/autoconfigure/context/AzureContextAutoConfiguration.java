@@ -82,8 +82,7 @@ public class AzureContextAutoConfiguration {
         ResourceGroupManager resourceGroupManager = new ResourceGroupManager(azureResourceManager, azureProperties);
         if (azureProperties.isAutoCreateResources()
             && !resourceGroupManager.exists(azureProperties.getResourceGroup())) {
-            Assert.notNull(resourceGroupManager.getOrCreate(azureProperties.getResourceGroup()),
-                "Unable to obtain the resource group.");
+            resourceGroupManager.create(azureProperties.getResourceGroup());
         }
         return resourceGroupManager;
     }

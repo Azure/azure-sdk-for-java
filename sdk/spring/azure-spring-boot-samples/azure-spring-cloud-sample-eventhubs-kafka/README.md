@@ -66,14 +66,14 @@ Running this sample will be charged by Azure. You can check the usage and bill a
 
 ## Troubleshooting
 
-- `Creating topics with default partitions/replication factor are only supported in CreateTopicRequest version 4+`
+- Meet with  `Creating topics with default partitions/replication factor are only supported in CreateTopicRequest version 4+` error.
   
-  ```
+  ```text
   o.s.c.s.b.k.p.KafkaTopicProvisioner      : Failed to create topics
     org.apache.kafka.common.errors.UnsupportedVersionException: Creating topics with default partitions/replication factor are only supported in CreateTopicRequest version 4+. The following topics need values for partitions and replicas
   ```
 
-  When this error is found, add this configuration item `spring.cloud.stream.kafka.binder.replicationFactor`.
+  When this error is found, add this configuration item `spring.cloud.stream.kafka.binder.replicationFactor`, with the value set to at least 1. For more information, see [Spring Cloud Stream Kafka Binder Reference Guide](https://docs.spring.io/spring-cloud-stream-binder-kafka/docs/current/reference/html/spring-cloud-stream-binder-kafka.html).
 
 ## Next steps
 
