@@ -1,5 +1,5 @@
-# Azure Storage Common shared library for Java
-Azure Storage Common is a library that has common dependencies for all Azure Storage packages.
+# Azure Storage Common Data Movement shared library for Java
+Azure Storage Common Data Movement is a library that has common dependencies for all Azure Storage Data Movement packages.
 
 [Source code][source] | [API reference documentation][docs]
 
@@ -13,12 +13,12 @@ Azure Storage Common is a library that has common dependencies for all Azure Sto
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-storage-common;current})
+[//]: # ({x-version-update-start;com.azure:azure-storage-common-data-movement;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-storage-common</artifactId>
-    <version>12.12.0</version>
+    <artifactId>azure-storage-common-data-movement</artifactId>
+    <version>12.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
