@@ -18,7 +18,7 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -2276,7 +2276,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> client.beginAnalyzeActions(documents,
-                    new TextAnalyticsActions().setRecognizeEntitiesOptions(new RecognizeEntitiesOptions()),
+                    new TextAnalyticsActions().setRecognizeEntitiesActions(new RecognizeEntitiesAction()),
                     null, Context.NONE)
                     .getFinalResult());
             assertEquals(errorMessage, exception.getMessage());

@@ -9,7 +9,14 @@
 - Removed `StringIndexType`, the type will be shared in the Azure Core.
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
-  `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`.
+  `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
+- `TextAnalyticsActions` now takes `***Action` types, instead of `***Options` types. Renamed The getter and setter method names
+  based on the new type names. Replacing types show as follows:
+  - `ExtractKeyPhrasesOption` changed to new type `ExtractKeyPhrasesAction`.
+  - `RecognizeEntitiesOption` changed to new type `RecognizeEntitiesAction`.
+  - `RecognizePiiEntitiesOption` changed to new type `RecognizePiiEntitiesAction`.
+  - `RecognizeLinkedEntitiesOption` changed to new type `RecognizeLinkedEntitiesAction`.
+  - `AnalyzeSentimentOption` changed to new type `AnalyzeSentimentAction`.
 
 ## 5.1.0-beta.7 (2021-05-19)
 ### Features Added

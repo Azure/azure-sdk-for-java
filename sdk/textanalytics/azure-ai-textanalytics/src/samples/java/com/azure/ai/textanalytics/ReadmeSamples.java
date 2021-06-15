@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -13,10 +13,10 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -254,8 +254,8 @@ public class ReadmeSamples {
         SyncPoller<AnalyzeActionsOperationDetail, PagedIterable<AnalyzeActionsResult>> syncPoller =
             textAnalyticsClient.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
-                    .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
+                    .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                    .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction()),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
