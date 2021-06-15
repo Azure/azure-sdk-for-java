@@ -28,11 +28,6 @@ import org.springframework.core.env.Environment;
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
 public class AzureContextAutoConfiguration {
 
-    private static final String PROJECT_VERSION = AzureContextAutoConfiguration.class.getPackage()
-                                                                                     .getImplementationVersion();
-    private static final String SPRING_CLOUD_USER_AGENT = "spring-cloud-azure/" + PROJECT_VERSION;
-
-
     /**
      * Create an {@link AzureResourceManager} bean.
      *

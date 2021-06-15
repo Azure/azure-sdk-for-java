@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
+import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
 import com.azure.storage.queue.QueueServiceClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -24,14 +25,14 @@ public class AzureStorageQueueAutoConfigurationTest {
             .withUserConfiguration(TestConfiguration.class);
 
     @Test
-    public void testAzureStorageDisabled() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.storage.queue.enabled=false")
+    public void testAzureStoragePropertiesWhenMissingQueueServiceClient() {
+        this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClient.class))
                           .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Test
-    public void testWithoutCloudQueueClient() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClient.class))
+    public void testAzureStoragePropertiesWhenMissingStorageQueueClientFactoryClass() {
+        this.contextRunner.withClassLoader(new FilteredClassLoader(StorageQueueClientFactory.class))
                           .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
@@ -48,6 +49,11 @@ public class AzureStorageQueueAutoConfigurationTest {
             assertThat(context).hasSingleBean(AzureStorageProperties.class);
             assertThat(context.getBean(AzureStorageProperties.class).getAccount()).isEqualTo("squeue");
         });
+    }
+
+    @Test
+    public void testAzureStoragePropertiesNotConfigured() {
+        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Configuration

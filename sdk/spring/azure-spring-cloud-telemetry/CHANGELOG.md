@@ -2,7 +2,7 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 ### Breaking Changes
--- Deprecate the telemetry endpoint and use HTTP header User Agent instead.
+- Deprecate the telemetry endpoint and use HTTP header User Agent instead.
 
 ## 2.5.0 (2021-05-24)
 ### New Features
