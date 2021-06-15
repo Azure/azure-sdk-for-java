@@ -25,7 +25,7 @@ public class AppConfigurationBusRefreshEventListener implements ApplicationListe
     @Override
     public void onApplicationEvent(AppConfigurationBusRefreshEvent event) {
         try {
-            appConfigurationRefresh.resetCache(event.getEndpoint());
+            appConfigurationRefresh.expireRefreshInterval(event.getEndpoint());
         } catch (Exception e) {
             LOGGER.error("Refresh failed with unexpected exception.", e);
         }

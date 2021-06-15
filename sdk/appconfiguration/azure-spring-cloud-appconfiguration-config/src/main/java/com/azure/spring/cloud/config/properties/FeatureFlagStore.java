@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.properties;
 
-import java.time.Duration;
-
 public class FeatureFlagStore {
     
     private static final String EMPTY_LABEL = "\0";
@@ -13,8 +11,6 @@ public class FeatureFlagStore {
     private Boolean enabled = false;    
 
     private String labelFilter = EMPTY_LABEL;
-
-    private Duration cacheExpiration = Duration.ofSeconds(30);
 
     public Boolean getEnabled() {
         return enabled;
@@ -34,14 +30,6 @@ public class FeatureFlagStore {
 
     public void setLabelFilter(String labelFilter) {
         this.labelFilter = labelFilter;
-    }
-
-    public Duration getCacheExpiration() {
-        return cacheExpiration;
-    }
-
-    public void setCacheExpiration(Duration cacheExpiration) {
-        this.cacheExpiration = cacheExpiration;
     }
 
 }
