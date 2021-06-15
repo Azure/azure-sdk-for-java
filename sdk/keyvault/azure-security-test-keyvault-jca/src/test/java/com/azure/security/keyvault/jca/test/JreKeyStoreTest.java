@@ -43,7 +43,7 @@ public class JreKeyStoreTest {
          */
 
         PropertyConvertorUtils.putEnvironmentPropertyToSystemProperty(
-            Arrays.asList("AZURE_KEYVAULT_URI",
+            Arrays.asList("AZURE_KEYVAULT_ENDPOINT",
                 "AZURE_KEYVAULT_TENANT_ID",
                 "AZURE_KEYVAULT_CLIENT_ID",
                 "AZURE_KEYVAULT_CLIENT_SECRET")

@@ -26,7 +26,7 @@ public class PropertyConvertorUtils {
         );
     }
 
-    public static final List<String> SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_URI",
+    public static final List<String> SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_ENDPOINT",
         "AZURE_KEYVAULT_TENANT_ID",
         "AZURE_KEYVAULT_CLIENT_ID",
         "AZURE_KEYVAULT_CLIENT_SECRET");
@@ -34,7 +34,7 @@ public class PropertyConvertorUtils {
     public static KeyStore getKeyVaultKeyStore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
         KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
             System.getenv("AZURE_KEYVAULT_TENANT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
