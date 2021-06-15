@@ -22,7 +22,6 @@ package com.azure.identity.implementation.intellij;
  * Implementation of Daniel J. Bernstein's Salsa20 stream cipher, Snuffle 2005
  * Taken from Bouncycastle
  */
-
 public class Salsa20
 {
 

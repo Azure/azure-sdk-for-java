@@ -1,5 +1,6 @@
 package com.azure.identity.implementation.intellij;
 
+import com.azure.identity.CredentialUnavailableException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -16,17 +17,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 public class IntelliJKdbxDatabase {
 
-    private static XPath xpath = XPathFactory.newInstance().newXPath();
-    private Document document;
+    private static XPath XPATH = XPathFactory.newInstance().newXPath();
 
-    IntelliJKdbxDatabase(Document document) {
+    private static String STANDARD_PROPERTY_NAME_USER_NAME = "UserName";
+    private static String STANDARD_PROPERTY_NAME_PASSWORD = "Password";
+    private static String STANDARD_PROPERTY_NAME_URL = "URL";
+    private static String STANDARD_PROPERTY_NAME_TITLE = "Title";
+    private static String STANDARD_PROPERTY_NAME_NOTES = "Notes";
+
+    private Document document;
+    private Element rootElement;
+
+    IntelliJKdbxDatabase(Document document, Element rootElement) {
         this.document = document;
+        this.rootElement = rootElement;
     }
 
     public static IntelliJKdbxDatabase parse(InputStream encryptedDatabaseStream, String databasePassword) throws IOException {
@@ -39,7 +51,13 @@ public class IntelliJKdbxDatabase {
         Salsa20 salsa20 = IntelliJCryptoUtil.createSalsa20CryptoEngine(kdbxMetadata.getEncryptionKey());
         Document document = loadDatabase(decryptedInputStream, salsa20);
 
-        return new IntelliJKdbxDatabase(document);
+        Element rootElement;
+        try {
+            rootElement = (Element) XPATH.evaluate("/KeePassFile/Root/Group", document, XPathConstants.NODE);
+        } catch (XPathExpressionException e) {
+            throw new CredentialUnavailableException("Error loading the database", e);
+        }
+        return new IntelliJKdbxDatabase(document, rootElement);
     }
 
     private static byte[] getDatabaseKey(String databasePassword) {
@@ -49,15 +67,17 @@ public class IntelliJKdbxDatabase {
     }
 
 
-    static InputStream decryptInputStream(byte[] key, IntelliJKdbxMetadata kdbxMetadata, InputStream inputStream) throws IOException {
+    private static InputStream decryptInputStream(byte[] key, IntelliJKdbxMetadata kdbxMetadata, InputStream inputStream)
+        throws IOException {
         parseDatabaseMetadata(kdbxMetadata, inputStream);
-        InputStream decryptedInputStream = kdbxMetadata.createDecryptedStream(key, inputStream);
+        InputStream decryptedInputStream = IntelliJCryptoUtil.createDecryptedStream(key, inputStream, kdbxMetadata);
         validateInitialBytes(kdbxMetadata, decryptedInputStream);
         HashedBlockInputStream blockInputStream = new HashedBlockInputStream(decryptedInputStream, true);
-        return (InputStream)(kdbxMetadata.getDatabaseCompressionFlags().equals(IntelliJKdbxMetadata.DatabaseCompressionFlags.NONE) ? blockInputStream : new GZIPInputStream(blockInputStream));
+        return kdbxMetadata.getDatabaseCompressionFlags().equals(IntelliJKdbxMetadata.DatabaseCompressionFlags.NONE)
+            ? blockInputStream : new GZIPInputStream(blockInputStream);
     }
 
-    static IntelliJKdbxMetadata parseDatabaseMetadata(IntelliJKdbxMetadata kdbxMetadata, InputStream inputStream) throws IOException {
+    private static IntelliJKdbxMetadata parseDatabaseMetadata(IntelliJKdbxMetadata kdbxMetadata, InputStream inputStream) throws IOException {
         MessageDigest digest = IntelliJCryptoUtil.getMessageDigestSHA256();
         DigestInputStream digestInputStream = new DigestInputStream(inputStream, digest);
         LittleEndianDataInputStream littleEndianDataInputStream = new LittleEndianDataInputStream(digestInputStream);
@@ -73,47 +93,47 @@ public class IntelliJKdbxDatabase {
             while((headerType = littleEndianDataInputStream.readByte()) != 0) {
                 switch(headerType) {
                     case 1:
-                        getByteArray(littleEndianDataInputStream);
+                        readByteArray(littleEndianDataInputStream);
                         break;
                     case 2:
-                        kdbxMetadata.setCipherUuid(getByteArray(littleEndianDataInputStream));
+                        kdbxMetadata.setCipherUuid(readByteArray(littleEndianDataInputStream));
                         break;
                     case 3:
-                        kdbxMetadata.setDatabaseCompressionFlags(getInt(littleEndianDataInputStream));
+                        kdbxMetadata.setDatabaseCompressionFlags(readInt(littleEndianDataInputStream));
                         break;
                     case 4:
-                        kdbxMetadata.setBaseSeed(getByteArray(littleEndianDataInputStream));
+                        kdbxMetadata.setBaseSeed(readByteArray(littleEndianDataInputStream));
                         break;
                     case 5:
-                        kdbxMetadata.setTransformSeed(getByteArray(littleEndianDataInputStream));
+                        kdbxMetadata.setTransformSeed(readByteArray(littleEndianDataInputStream));
                         break;
                     case 6:
-                        kdbxMetadata.setTransformRounds(getLong(littleEndianDataInputStream));
+                        kdbxMetadata.setTransformRounds(readLong(littleEndianDataInputStream));
                         break;
                     case 7:
-                        kdbxMetadata.setEncryptionIv(getByteArray(littleEndianDataInputStream));
+                        kdbxMetadata.setEncryptionIv(readByteArray(littleEndianDataInputStream));
                         break;
                     case 8:
-                        kdbxMetadata.setEncryptionKey(getByteArray(littleEndianDataInputStream));
+                        kdbxMetadata.setEncryptionKey(readByteArray(littleEndianDataInputStream));
                         break;
                     case 9:
-                        kdbxMetadata.setInitBytes(getByteArray(littleEndianDataInputStream));
+                        kdbxMetadata.setInitBytes(readByteArray(littleEndianDataInputStream));
                         break;
                     case 10:
-                        kdbxMetadata.setInnerRandomStreamId(getInt(littleEndianDataInputStream));
+                        kdbxMetadata.setEncryptionAlgorithm(readInt(littleEndianDataInputStream));
                         break;
                     default:
                         throw new IllegalStateException("Unknown File Header");
                 }
             }
 
-            getByteArray(littleEndianDataInputStream);
+            readByteArray(littleEndianDataInputStream);
             kdbxMetadata.setHeaderHash(digest.digest());
             return kdbxMetadata;
         }
     }
 
-    private static byte[] getByteArray(LittleEndianDataInputStream ledis) throws IOException {
+    private static byte[] readByteArray(LittleEndianDataInputStream ledis) throws IOException {
         short fieldLength = ledis.readShort();
         byte[] value = new byte[fieldLength];
         ledis.readFully(value);
@@ -129,7 +149,7 @@ public class IntelliJKdbxDatabase {
         }
     }
 
-    private static int getInt(LittleEndianDataInputStream ledis) throws IOException {
+    private static int readInt(LittleEndianDataInputStream ledis) throws IOException {
         short length = ledis.readShort();
         if (length != 4) {
             throw new IllegalStateException("Int required but length was " + length);
@@ -138,7 +158,7 @@ public class IntelliJKdbxDatabase {
         }
     }
 
-    private static long getLong(LittleEndianDataInputStream ledis) throws IOException {
+    private static long readLong(LittleEndianDataInputStream ledis) throws IOException {
         short length = ledis.readShort();
         if (length != 8) {
             throw new IllegalStateException("Long required but length was " + length);
@@ -153,7 +173,7 @@ public class IntelliJKdbxDatabase {
         try {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputStream);
-            NodeList protectedContent = (NodeList) xpath.evaluate("//*[@Protected='True']", doc, XPathConstants.NODESET);
+            NodeList protectedContent = (NodeList) XPATH.evaluate("//*[@Protected='True']", doc, XPathConstants.NODESET);
 
             for(int i = 0; i < protectedContent.getLength(); ++i) {
                 Element element = (Element)protectedContent.item(i);
@@ -175,36 +195,36 @@ public class IntelliJKdbxDatabase {
         }
     }
 
-    static Element getElement(String elementPath, Element parentElement, boolean create) {
+    private static Element getElement(String elementPath, Element parentElement, boolean create) {
         try {
-            Element result = (Element)xpath.evaluate(elementPath, parentElement, XPathConstants.NODE);
-            if (result == null && create) {
-                result = createHierarchically(elementPath, parentElement);
+            Element output = (Element) XPATH.evaluate(elementPath, parentElement, XPathConstants.NODE);
+            if (output == null && create) {
+                output = buildHierarchialPath(elementPath, parentElement);
             }
 
-            return result;
-        } catch (XPathExpressionException var4) {
-            throw new IllegalStateException(var4);
+            return output;
+        } catch (XPathExpressionException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private static Element createHierarchically(String elementPath, Element startElement) {
+    private static Element buildHierarchialPath(String elementPath, Element startElement) {
         Element currentElement = startElement;
-        String[] var3 = elementPath.split("/");
-        int var4 = var3.length;
+        String[] pathTokens = elementPath.split("/");
 
-        for(int var5 = 0; var5 < var4; ++var5) {
-            String elementName = var3[var5];
+        for(int i = 0; i < pathTokens.length; ++i) {
+            String elementName = pathTokens[i];
 
             try {
-                Element nextElement = (Element)xpath.evaluate(elementName, currentElement, XPathConstants.NODE);
+                Element nextElement = (Element) XPATH.evaluate(elementName, currentElement, XPathConstants.NODE);
                 if (nextElement == null) {
-                    nextElement = (Element)currentElement.appendChild(currentElement.getOwnerDocument().createElement(elementName));
+                    nextElement = (Element)currentElement.appendChild(currentElement.getOwnerDocument()
+                        .createElement(elementName));
                 }
 
                 currentElement = nextElement;
-            } catch (XPathExpressionException var8) {
-                throw new IllegalStateException(var8);
+            } catch (XPathExpressionException e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -215,5 +235,67 @@ public class IntelliJKdbxDatabase {
         Element result = getElement(elementPath, parentElement, true);
         result.setTextContent(value);
         return result;
+    }
+
+    public static boolean match(Element baseEntry, String text) {
+        String title = getProperty(baseEntry, STANDARD_PROPERTY_NAME_TITLE);
+        String notes = getProperty(baseEntry, STANDARD_PROPERTY_NAME_NOTES);
+        String url = getProperty(baseEntry, STANDARD_PROPERTY_NAME_URL);
+        String username = getProperty(baseEntry, STANDARD_PROPERTY_NAME_USER_NAME);
+
+        return matchString(title, text) || matchString(notes, text) || matchString(url, text) || matchString(username, text);
+    }
+
+    public static boolean matchString(String property, String toMatch) {
+        return property != null && property.toLowerCase().contains(toMatch.toLowerCase());
+    }
+
+    private String getDatabaseEntryValue(Element dbRootGroup, String toMatch) {
+
+        for (Element entry: getElements("Entry", dbRootGroup)){
+            if (match(entry, toMatch)) {
+                return getProperty(entry, STANDARD_PROPERTY_NAME_PASSWORD);
+            }
+        }
+        for (Element group : getGroups(dbRootGroup)) {
+            getDatabaseEntryValue(group, toMatch);
+        }
+
+        return null;
+    }
+
+    public String getDatabaseEntryValue(String toMatch) {
+        return getDatabaseEntryValue(rootElement, toMatch);
+    }
+
+
+    static String getElementContent(String elementPath, Element parentElement) {
+        Element result = getElement(elementPath, parentElement, false);
+        return result == null ? null : result.getTextContent();
+    }
+
+    public static String getProperty(Element element, String name) {
+        Element property = getElement(String.format("String[Key/text()='%s']", name), element, false);
+        return property == null ? null : getElementContent("Value", property);
+    }
+
+    static List<Element> getElements(String elementPath, Element parentElement) {
+        try {
+            NodeList nodes = (NodeList) XPATH.evaluate(elementPath, parentElement, XPathConstants.NODESET);
+            ArrayList<Element> result = new ArrayList<>(nodes.getLength());
+
+            for(int i = 0; i < nodes.getLength(); ++i) {
+                result.add((Element)nodes.item(i));
+            }
+
+            return result;
+        } catch (XPathExpressionException var5) {
+            throw new IllegalStateException(var5);
+        }
+    }
+
+    public static List<Element> getGroups(Element rootGroup) {
+        List<Element> elements = getElements("Group", rootGroup);
+        return elements;
     }
 }

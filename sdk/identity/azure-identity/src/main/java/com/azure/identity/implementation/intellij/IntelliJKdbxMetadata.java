@@ -101,8 +101,8 @@ public class IntelliJKdbxMetadata {
         this.initBytes = initBytes;
     }
 
-    public void setInnerRandomStreamId(int innerRandomStreamId) {
-        this.databaseEncryptionAlgorithm = DatabaseEncryptionAlgorithm.values()[innerRandomStreamId];
+    public void setEncryptionAlgorithm(int encryptionAlgorithmId) {
+        this.databaseEncryptionAlgorithm = DatabaseEncryptionAlgorithm.values()[encryptionAlgorithmId];
     }
 
     public void setHeaderHash(byte[] headerHash) {

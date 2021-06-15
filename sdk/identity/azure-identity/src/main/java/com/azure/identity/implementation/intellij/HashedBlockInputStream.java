@@ -19,8 +19,6 @@
 
 package com.azure.identity.implementation.intellij;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -51,9 +49,6 @@ import java.util.Arrays;
  * number and length fields are low order byte first.
  *
  * @author Jo
- */
-/*
- * Portions Copyright (c) Microsoft Corporation
  */
 public class HashedBlockInputStream extends InputStream {
 
@@ -93,7 +88,7 @@ public class HashedBlockInputStream extends InputStream {
     }
 
     @Override
-    public int read(@NotNull byte[] b, int offset, int length) throws IOException {
+    public int read(byte[] b, int offset, int length) throws IOException {
         return get(b, offset, length);
     }
 
