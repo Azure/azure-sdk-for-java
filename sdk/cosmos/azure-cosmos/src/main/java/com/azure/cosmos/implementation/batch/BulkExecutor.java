@@ -15,6 +15,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +27,18 @@ import reactor.core.publisher.GroupedFlux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.UnicastProcessor;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -61,6 +66,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class BulkExecutor<TContext> {
 
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
+    private final static AtomicLong instanceCount = new AtomicLong(0);
 
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
@@ -68,9 +74,7 @@ public final class BulkExecutor<TContext> {
     private final Flux<CosmosItemOperation> inputOperations;
 
     // Options for bulk execution.
-    private final int maxMicroBatchSize;
-    private final int maxMicroBatchConcurrency;
-    private final Duration maxMicroBatchInterval;
+    private final Long maxMicroBatchIntervalInMs;
     private final TContext batchContext;
     private final ConcurrentMap<String, PartitionScopeThresholds<TContext>> partitionScopeThresholds;
     private final BulkProcessingOptions<TContext> bulkOptions;
@@ -81,6 +85,9 @@ public final class BulkExecutor<TContext> {
     private final FluxProcessor<CosmosItemOperation, CosmosItemOperation> mainFluxProcessor;
     private final FluxSink<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
+    private final ScheduledExecutorService executorService =
+        Executors.newSingleThreadScheduledExecutor(
+            new CosmosDaemonThreadFactory("BulkExecutor-" + instanceCount.incrementAndGet()));
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -98,9 +105,7 @@ public final class BulkExecutor<TContext> {
 
         // Fill the option first, to make the BulkProcessingOptions immutable, as if accessed directly, we might get
         // different values when a new group is created.
-        maxMicroBatchSize = bulkOptions.getMaxMicroBatchSize();
-        maxMicroBatchConcurrency = bulkOptions.getMaxMicroBatchConcurrency();
-        maxMicroBatchInterval = bulkOptions.getMaxMicroBatchInterval();
+        maxMicroBatchIntervalInMs = bulkOptions.getMaxMicroBatchInterval().toMillis();
         batchContext = bulkOptions.getBatchContext();
         this.partitionScopeThresholds = BridgeInternal.getPartitionScopeThresholds(bulkOptions.getThresholds());
 
@@ -131,12 +136,28 @@ public final class BulkExecutor<TContext> {
             .doOnComplete(() -> {
                 mainSourceCompleted.set(true);
 
-                if (totalCount.get() == 0) {
+                long totalCountSnapshot = totalCount.get();
+                logger.debug("Main source completed - # left items " + totalCountSnapshot);
+                if (totalCountSnapshot == 0) {
                     // This is needed as there can be case that onComplete was called after last element was processed
                     // So complete the sink here also if count is 0, if source has completed and count isn't zero,
                     // then the last element in the doOnNext will close it. Sink doesn't mind in case of a double close.
 
                     completeAllSinks();
+                } else {
+                    // The evaluation whether a micro batch should be flushed to the backend happens whenever
+                    // a new ItemOperation arrives. If the batch size is exceeded or the oldest buffered ItemOperation
+                    // exceeds the MicroBatchInterval, the micro batch gets flushed to the backend.
+                    // So when the input Flux of ItemOperations gets closed this evaluation wouldn't happen anymore
+                    // and buffered ItemOperations would be stuck in the buffer.
+                    // To avoid this we start a timer on closure of the input Flux that will trigger artificial
+                    // ItemOperations that are only used to flush the buffers (and will be filtered out before sending
+                    // requests to the backend)
+                    executorService.scheduleWithFixedDelay(
+                        () -> this.onFlush(),
+                        0,
+                        this.maxMicroBatchIntervalInMs,
+                        TimeUnit.MILLISECONDS);
                 }
             })
             .mergeWith(mainFluxProcessor)
@@ -175,13 +196,52 @@ public final class BulkExecutor<TContext> {
         final FluxSink<CosmosItemOperation> groupSink = groupFluxProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
         groupSinks.add(groupSink);
 
+        AtomicLong firstRecordTimeStamp = new AtomicLong(-1);
+        AtomicLong currentMicroBatchSize = new AtomicLong(0);
+
         return partitionedGroupFluxOfInputOperations
             .mergeWith(groupFluxProcessor)
-            // replace here
-            .bufferTimeout(this.maxMicroBatchSize, this.maxMicroBatchInterval)
             .onBackpressureBuffer()
-            .flatMap((List<CosmosItemOperation> cosmosItemOperations) ->
-                executeOperations(cosmosItemOperations, thresholds, groupSink), this.maxMicroBatchConcurrency);
+            .timestamp()
+            .bufferUntil(timeStampItemOperationTuple -> {
+                long timestamp = timeStampItemOperationTuple.getT1();
+                CosmosItemOperation itemOperation = timeStampItemOperationTuple.getT2();
+
+                if (itemOperation instanceof FlushBuffersItemOperation) {
+                    logger.debug("Flushing PKRange {} due to FlushItemOperation", thresholds.getPartitionKeyRangeId());
+                    firstRecordTimeStamp.set(-1);
+                    currentMicroBatchSize.set(0);
+                    return true;
+                }
+
+                firstRecordTimeStamp.compareAndSet(-1, timestamp);
+                long age = timestamp - firstRecordTimeStamp.get();
+                long batchSize = currentMicroBatchSize.incrementAndGet();
+                if (batchSize >= thresholds.getTargetMicroBatchSizeSnapshot() ||
+                    age >=  this.maxMicroBatchIntervalInMs) {
+
+                    firstRecordTimeStamp.set(-1);
+                    currentMicroBatchSize.set(0);
+                    return true;
+                }
+                return false;
+            })
+            .flatMap(
+                (List<Tuple2<Long, CosmosItemOperation>> timeStampAndItemOperationTuples) -> {
+                    List<CosmosItemOperation> operations = new ArrayList<>(timeStampAndItemOperationTuples.size());
+                    for (Tuple2<Long, CosmosItemOperation> timeStampAndItemOperationTuple :
+                        timeStampAndItemOperationTuples) {
+
+                        CosmosItemOperation itemOperation = timeStampAndItemOperationTuple.getT2();
+                        if (itemOperation instanceof FlushBuffersItemOperation) {
+                            continue;
+                        }
+                        operations.add(itemOperation);
+                    }
+
+                    return executeOperations(operations, thresholds, groupSink);
+                },
+                this.bulkOptions.getMaxMicroBatchConcurrency());
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executeOperations(
@@ -276,22 +336,22 @@ public final class BulkExecutor<TContext> {
             // add it in the mainSink.
 
             return itemBulkOperation.getRetryPolicy()
-                       .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
-                       .flatMap(shouldRetryGone -> {
-                           if (shouldRetryGone) {
-                               // retry - but don't mark as enqueued for retry in thresholds
-                               mainSink.next(itemOperation);
-                               return Mono.empty();
-                           } else {
-                               return retryOtherExceptions(
-                                   itemOperation,
-                                   exception,
-                                   groupSink,
-                                   cosmosException,
-                                   itemBulkOperation,
-                                   thresholds);
-                           }
-                       });
+                .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode())
+                .flatMap(shouldRetryGone -> {
+                    if (shouldRetryGone) {
+                        // retry - but don't mark as enqueued for retry in thresholds
+                        mainSink.next(itemOperation);
+                        return Mono.empty();
+                    } else {
+                        return retryOtherExceptions(
+                            itemOperation,
+                            exception,
+                            groupSink,
+                            cosmosException,
+                            itemBulkOperation,
+                            thresholds);
+                    }
+                });
         }
 
         return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, this.batchContext));
@@ -343,7 +403,12 @@ public final class BulkExecutor<TContext> {
     private void completeAllSinks() {
         logger.info("Closing all sinks");
 
+        executorService.shutdown();
         mainSink.complete();
         groupSinks.forEach(FluxSink::complete);
+    }
+
+    private void onFlush() {
+        this.groupSinks.forEach(sink -> sink.next(new FlushBuffersItemOperation()));
     }
 }

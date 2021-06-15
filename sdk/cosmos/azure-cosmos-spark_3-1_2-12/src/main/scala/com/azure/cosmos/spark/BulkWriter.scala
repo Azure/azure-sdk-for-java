@@ -91,7 +91,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
           if (resp.getException != null) {
             Option(resp.getException) match {
-              case Some(cosmosException: CosmosException) => {
+              case Some(cosmosException: CosmosException) =>
                 logDebug(s"encountered ${cosmosException.getStatusCode}")
                 if (shouldIgnore(cosmosException)) {
                   logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
@@ -122,7 +122,6 @@ class BulkWriter(container: CosmosAsyncContainer,
                   captureIfFirstFailure(cosmosException)
                   cancelWork()
                 }
-              }
               case _ =>
                 logWarning(s"unexpected failure: itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
                   s"encountered , attemptNumber=${context.attemptNumber}, exceptionMessage=${resp.getException.getMessage}", resp.getException)
@@ -170,7 +169,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     semaphore.acquire()
     val cnt = totalScheduledMetrics.getAndIncrement()
-    logDebug(s"total scheduled ${cnt}")
+    logDebug(s"total scheduled $cnt")
 
     scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1))
   }
@@ -208,7 +207,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   override def flushAndClose(): Unit = {
-    this.synchronized{
+    this.synchronized {
       try {
         if (closed.get()) {
           // scalastyle:off return
@@ -219,6 +218,11 @@ class BulkWriter(container: CosmosAsyncContainer,
         logInfo("flushAndClose invoked")
 
         logInfo(s"completed so far ${totalSuccessfulIngestionMetrics.get()}, pending tasks ${activeOperations.size}")
+
+        // Closing the input flux will cause the BulkExecutor to flush all buffered
+        // item operations and start a timer that would flush regularly
+        logInfo("invoking bulkInputEmitter.onComplete()")
+        bulkInputEmitter.tryEmitComplete()
 
         // error handling, if there is any error and the subscription is cancelled
         // the remaining tasks will not be processed hence we never reach activeTasks = 0
@@ -232,9 +236,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           lock.unlock()
         }
 
-        logInfo("invoking bulkInputEmitter.onComplete()")
         semaphore.release(activeTasks.get())
-        bulkInputEmitter.tryEmitComplete()
 
         // which error to report?
         if (errorCaptureFirstException.get() != null) {
@@ -247,7 +249,7 @@ class BulkWriter(container: CosmosAsyncContainer,
         assume(semaphore.availablePermits() == maxPendingOperations)
 
         logInfo(s"flushAndClose completed with no error. " +
-          s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, totalScheduled=${totalScheduledMetrics}")
+          s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, totalScheduled=$totalScheduledMetrics")
         assume(totalScheduledMetrics.get() == totalSuccessfulIngestionMetrics.get)
       } finally {
         closed.set(true)
@@ -266,7 +268,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
   }
 
-  private def captureIfFirstFailure(throwable: Throwable) = {
+  private def captureIfFirstFailure(throwable: Throwable): Unit = {
     logError("capture failure", throwable)
     lock.lock()
     try {
@@ -323,10 +325,10 @@ private object BulkWriter {
   // hence we want 2MB/ 1KB items per partition to be buffered
   // 2 * 1024 * 167 items should get buffered on a 16 CPU core VM
   // so per CPU core we want (2 * 1024 * 167 / 16) max items to be buffered
-  val DefaultMaxPendingOperationPerCore = 2 * 1024 * 167 / 16
+  val DefaultMaxPendingOperationPerCore: Int = 2 * 1024 * 167 / 16
 
   val emitFailureHandler: EmitFailureHandler =
-        (signalType, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
+        (_, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
 
   val bulkProcessingThresholds = new BulkProcessingThresholds[Object]()
 }
