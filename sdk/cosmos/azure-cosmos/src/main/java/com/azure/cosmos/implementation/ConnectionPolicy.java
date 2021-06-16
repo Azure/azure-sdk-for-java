@@ -92,8 +92,22 @@ public final class ConnectionPolicy {
         return this.tcpConnectionEndpointRediscoveryEnabled;
     }
 
+    /**
+     * Gets a value that indicates if Direct TCP Channel Multiplexing is enabled.
+     * @return true if channel multiplexing is enabled.
+     */
     public boolean isChannelMultiplexingEnabled() {
         return this.channelMultiplexingEnabled;
+    }
+
+    /**
+     * Sets a value that indicates if Direct TCP Channel Multiplexing is enabled.
+     * Returns:
+     * the ConnectionPolicy.
+     */
+    public ConnectionPolicy setChannelMultiplexingEnabled(boolean channelMultiplexingEnabled) {
+        this.channelMultiplexingEnabled = channelMultiplexingEnabled;
+        return this;
     }
 
     /**
