@@ -25,7 +25,9 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.web.filter.RequestContextFilter;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -51,6 +53,9 @@ public class AADWebAppConfiguration {
 
     @Autowired
     private AADAuthenticationProperties properties;
+
+    @Autowired
+    private RequestContextFilter requestContextFilter;
 
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AADWebAppClientRegistrationRepository.class })
@@ -200,6 +205,11 @@ public class AADWebAppConfiguration {
         result.providerConfigurationMetadata(configurationMetadata);
 
         return result;
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        requestContextFilter.setThreadContextInheritable(true);
     }
 
     /**
