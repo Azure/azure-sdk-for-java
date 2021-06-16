@@ -89,7 +89,7 @@ public class BackCompatTest extends IntegrationTestBase {
         applicationProperties.put(MESSAGE_ID, messageTrackingValue);
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
-        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), "100");
+        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), 100L);
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), Date.from(Instant.now()));
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), 15L);
 

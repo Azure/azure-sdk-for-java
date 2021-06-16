@@ -202,7 +202,7 @@ public class EventData {
     public Long getOffset() {
         Object value = amqpAnnotatedMessage.getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue());
         return value != null
-            ? value instanceof String ? Long.parseLong((String) value) : (Long) value
+            ? (Long) value
             : null;
     }
 
@@ -747,12 +747,11 @@ public class EventData {
             super(map);
             this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
 
-            final String offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
-            if (offset == null) {
+            this.offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
+            if (this.offset == null) {
                 throw new IllegalStateException(String.format(Locale.US,
                     "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
             }
-            this.offset = Long.valueOf(offset);
             put(OFFSET_ANNOTATION_NAME.getValue(), this.offset);
 
             final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());

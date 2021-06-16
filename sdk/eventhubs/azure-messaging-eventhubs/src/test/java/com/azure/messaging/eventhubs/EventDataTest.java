@@ -88,7 +88,7 @@ public class EventDataTest {
     public void testSystemProperties() {
         EventData eventData = constructMessage(5);
         Assertions.assertEquals(4, eventData.getRawAmqpMessage().getMessageAnnotations().size());
-        Assertions.assertEquals(OFFSET, Long.parseLong((String) eventData.getRawAmqpMessage().getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue())));
+        Assertions.assertEquals(OFFSET, (Long) eventData.getRawAmqpMessage().getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(5L, (Long) eventData.getRawAmqpMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
         Assertions.assertEquals(ENQUEUED_TIME, eventData.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
     }
@@ -99,7 +99,7 @@ public class EventDataTest {
     private static EventData constructMessage(long sequenceNumber) {
         final HashMap<Symbol, Object> properties = new HashMap<>();
         properties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
-        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), String.valueOf(OFFSET));
+        properties.put(getSymbol(OFFSET_ANNOTATION_NAME.getValue()), OFFSET);
         properties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME.getValue()), PARTITION_KEY);
         properties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), ENQUEUED_TIME);
 

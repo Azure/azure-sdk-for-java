@@ -101,7 +101,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         expectedAnnotations.put(Symbol.getSymbol("message-annotation-1"), "messageAnnotationValue");
 
         final Map<Symbol, Object> messageAnnotations = new HashMap<>(expectedAnnotations);
-        messageAnnotations.put(getSymbol(OFFSET_ANNOTATION_NAME), "100");
+        messageAnnotations.put(getSymbol(OFFSET_ANNOTATION_NAME), 100L);
         messageAnnotations.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), Date.from(Instant.now()));
         messageAnnotations.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), 15L);
 

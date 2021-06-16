@@ -182,9 +182,9 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final String secondOffset = "54";
-        final String lastOffset = "65";
-        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties("25", 14),
+        final Long secondOffset = 54L;
+        final Long lastOffset = 65L;
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties(25L, 14),
             Context.NONE);
         final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()),
             getSystemProperties(secondOffset, 21), Context.NONE);
@@ -217,7 +217,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Assert that we have the current offset.
         final EventPosition firstPosition = currentPosition.get().get();
         Assertions.assertNotNull(firstPosition);
-        Assertions.assertEquals(secondOffset, firstPosition.getOffset());
+        Assertions.assertEquals(secondOffset, Long.parseLong(firstPosition.getOffset()));
         Assertions.assertFalse(firstPosition.isInclusive());
 
         StepVerifier.create(consumer.receive())
@@ -241,9 +241,9 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final String secondOffset = "54";
-        final String lastOffset = "65";
-        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties("25", 14),
+        final Long secondOffset = 54L;
+        final Long lastOffset = 65L;
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties(25L, 14),
             Context.NONE);
         final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()), getSystemProperties(secondOffset,
             21), Context.NONE);
@@ -326,7 +326,7 @@ class EventHubPartitionAsyncConsumerTest {
         }, FluxSink.OverflowStrategy.BUFFER);
     }
 
-    private static EventData.SystemProperties getSystemProperties(String offset, long sequenceNumber) {
+    private static EventData.SystemProperties getSystemProperties(Long offset, long sequenceNumber) {
         Map<String, Object> properties = new HashMap<>();
         properties.put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
         properties.put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);

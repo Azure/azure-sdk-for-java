@@ -219,7 +219,7 @@ public final class EventDataBatch {
                 message.setMessageId(properties.getMessageId());
             }
 
-            if (properties.getUserId() != null) {
+            if (properties.getUserId() != null && properties.getUserId().length > 0) {
                 message.setUserId(properties.getUserId());
             }
 
