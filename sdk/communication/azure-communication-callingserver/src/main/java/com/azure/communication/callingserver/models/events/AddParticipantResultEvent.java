@@ -56,7 +56,7 @@ public final class AddParticipantResultEvent extends CallingServerEventBase {
     }
 
     /**
-     * Initializes a new instance of InviteParticipantResultEvent.
+     * Initializes a new instance of AddParticipantResultEvent.
      *
      * @param resultInfo the resultInfo value.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other

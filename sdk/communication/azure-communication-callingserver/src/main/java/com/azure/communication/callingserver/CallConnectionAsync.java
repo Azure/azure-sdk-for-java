@@ -6,7 +6,7 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.CancelAllMediaOperationsResultConverter;
-import com.azure.communication.callingserver.implementation.converters.InviteParticipantRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.AddParticipantRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
@@ -337,7 +337,7 @@ public final class CallConnectionAsync {
     /**
      * Add a participant to the call.
      *
-     * @param participant Invited participant.
+     * @param participant Added participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
@@ -350,7 +350,7 @@ public final class CallConnectionAsync {
         String operationContext) {
         try {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
-            AddParticipantRequest request = InviteParticipantRequestConverter.convert(participant,
+            AddParticipantRequest request = AddParticipantRequestConverter.convert(participant,
                 alternateCallerId,
                 operationContext,
                 null);
@@ -365,7 +365,7 @@ public final class CallConnectionAsync {
     /**
      * Add a participant to the call.
      *
-     * @param participant Invited participant.
+     * @param participant Added participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
@@ -387,7 +387,7 @@ public final class CallConnectionAsync {
         try {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
             AddParticipantRequest request =
-                InviteParticipantRequestConverter
+                AddParticipantRequestConverter
                     .convert(participant, alternateCallerId, operationContext, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;

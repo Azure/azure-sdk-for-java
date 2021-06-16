@@ -93,7 +93,7 @@ public class CallingServerTestUtils {
 
     protected static void validateAddParticipantResponse(Response<AddParticipantResult> response) {
         assertNotNull(response);
-        Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(202, response.getStatusCode());
         assertNotNull(response.getValue());
         validateAddParticipantResult(response.getValue());
     }

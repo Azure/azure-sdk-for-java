@@ -11,7 +11,7 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 /**
  * A converter for {@link AddParticipantRequest}
  */
-public final class InviteParticipantRequestConverter {
+public final class AddParticipantRequestConverter {
 
     /**
      * Converts to {@link AddParticipantRequest}.
@@ -37,6 +37,6 @@ public final class InviteParticipantRequestConverter {
             .setCallbackUri(callBackUri);
     }
 
-    private InviteParticipantRequestConverter() {
+    private AddParticipantRequestConverter() {
     }
 }

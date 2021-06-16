@@ -4,13 +4,13 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
+import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.MediaType;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -20,8 +20,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
-
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -212,7 +210,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         if (this.getTestMode() == TestMode.LIVE) {
             System.out.println("Warning: Test is skipped, does not support live mode.");
             return;
-        }        
+        }
 
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenario");
@@ -237,26 +235,19 @@ public class ServerCallLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L1ktWjZ5dzFzWVVTUUdWX2xPQWk1X2c_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L1VDRl9RMVVlUGsyb0Y1YlJSMXliVXc_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3";
             ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            serverCall
+            AddParticipantResult addParticipantResult = serverCall
                 .addParticipant(
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext,
                     CALLBACK_URI);
 
-            // Remove User
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "72647661-033a-4d1a-b858-465375977be0";
+            String participantId = addParticipantResult.getParticipantId();
             serverCall.removeParticipant(participantId);
 
             // Hangup
@@ -268,7 +259,6 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     }
 
     @ParameterizedTest
-    @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAddRemoveScenarioWithResponse(HttpClient httpClient) {
 
@@ -277,7 +267,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         if (this.getTestMode() == TestMode.LIVE) {
             System.out.println("Warning: Test is skipped, does not support live mode.");
             return;
-        }        
+        }
 
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenarioWithResponse");
@@ -303,27 +293,20 @@ public class ServerCallLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L1lXS2R2TTNRc0Vpc0VNYVUtNlhvSlE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0Z1MENEVF9lLWtPalRtdjlXMDFuSXc_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<AddParticipantResult> addResponse =
+            Response<AddParticipantResult> addParticipantResultResponse =
                 serverCall.addParticipantWithResponse(
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext, CALLBACK_URI,
                     null);
-            CallingServerTestUtils.validateAddParticipantResponse(addResponse);
+            CallingServerTestUtils.validateAddParticipantResponse(addParticipantResultResponse);
 
-            // Remove User
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              values needs to be used.
-             */
-            String participantId = "76b33acb-5097-4af0-a646-e07ccee48957";
+            String participantId = addParticipantResultResponse.getValue().getParticipantId();
             Response<Void> removeResponse = serverCall.removeParticipantWithResponse(participantId, null);
             validateResponse(removeResponse);
 
