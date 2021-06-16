@@ -95,6 +95,13 @@ public final class RelationalSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RelationalSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

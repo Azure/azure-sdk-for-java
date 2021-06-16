@@ -21,6 +21,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -111,6 +112,27 @@ public class BlobClientBase {
      */
     public BlobClientBase getVersionClient(String versionId) {
         return new BlobClientBase(client.getVersionClient(versionId));
+    }
+
+    /**
+     * Creates a new {@link BlobClientBase} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlobClientBase} with the specified {@code encryptionScope}.
+     */
+    public BlobClientBase getEncryptionScopeClient(String encryptionScope) {
+        return new BlobClientBase(client.getEncryptionScopeClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link BlobClientBase} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlobClientBase} with the specified {@code customerProvidedKey}.
+     */
+    public BlobClientBase getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new BlobClientBase(client.getCustomerProvidedKeyClient(customerProvidedKey));
     }
 
     /**

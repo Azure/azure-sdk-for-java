@@ -829,7 +829,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString();
+            : TestUtils.getConnectionString(false);
 
         final String connectionStringUpdated = connectionString.replace("SharedAccessKey=",
             "SharedAccessKey=fake-key-");
@@ -990,7 +990,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString();
+            : TestUtils.getConnectionString(false);
 
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

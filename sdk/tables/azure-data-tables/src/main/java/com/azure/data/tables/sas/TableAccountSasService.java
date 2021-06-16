@@ -25,9 +25,9 @@ public final class TableAccountSasService {
      * Creates an {@link TableAccountSasService} from the specified services string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid service.
      *
-     * @param servicesString A {@link String} which represents the {@link TableAccountSasService account services}.
+     * @param servicesString A {@code String} which represents the {@link TableAccountSasService account services}.
      *
-     * @return A {@link TableAccountSasService} generated from the given {@link String}.
+     * @return A {@link TableAccountSasService} generated from the given {@code String}.
      *
      * @throws IllegalArgumentException If {@code servicesString} contains a character other than b, f, q, or t.
      */
@@ -140,10 +140,10 @@ public final class TableAccountSasService {
     }
 
     /**
-     * Converts the given services to a {@link String}. Using this method will guarantee the services are in an order
+     * Converts the given services to a {@code String}. Using this method will guarantee the services are in an order
      * accepted by the service. If all services are set to false, an empty string is returned from this method.
      *
-     * @return A {@link String} which represents the {@link TableAccountSasService account services}.
+     * @return A {@code String} which represents the {@link TableAccountSasService account services}.
      */
     @Override
     public String toString() {
