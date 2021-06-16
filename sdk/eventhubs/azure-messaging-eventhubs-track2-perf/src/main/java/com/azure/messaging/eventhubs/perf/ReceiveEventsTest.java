@@ -48,6 +48,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
         if (receiver == null) {
             receiver = createEventHubClientBuilder()
+                .prefetchCount(options.getPrefetch())
                 .consumerGroup(options.getConsumerGroup())
                 .buildConsumerClient();
         }
@@ -74,6 +75,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
         if (receiverAsync == null) {
             receiverAsync = createEventHubClientBuilder()
+                .prefetchCount(options.getPrefetch())
                 .consumerGroup(options.getConsumerGroup())
                 .buildAsyncConsumerClient();
         }
@@ -88,6 +90,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         if (receiver != null) {
             receiver.close();
         }
+
         if (receiverAsync != null) {
             receiverAsync.close();
         }
