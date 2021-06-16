@@ -13,6 +13,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.RequestOptions;
+import com.azure.core.http.ResponseStatusOption;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -134,11 +136,17 @@ public final class RestProxy implements InvocationHandler {
                 request.setBody(validateLength(request));
             }
 
+            RequestOptions options = methodParser.setRequestOptions(args);
+            if (options != null) {
+                options.getRequestCallback().accept(request);
+            }
+
             final Mono<HttpResponse> asyncResponse = send(request, context);
 
             Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
 
-            return handleRestReturnType(asyncDecodedResponse, methodParser, methodParser.getReturnType(), context);
+            return handleRestReturnType(asyncDecodedResponse, methodParser,
+                methodParser.getReturnType(), context, options);
         } catch (IOException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
@@ -318,9 +326,9 @@ public final class RestProxy implements InvocationHandler {
     }
 
     private Mono<HttpDecodedResponse> ensureExpectedStatus(final Mono<HttpDecodedResponse> asyncDecodedResponse,
-        final SwaggerMethodParser methodParser) {
+        final SwaggerMethodParser methodParser, RequestOptions options) {
         return asyncDecodedResponse
-            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser));
+            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, options));
     }
 
     private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
@@ -365,10 +373,11 @@ public final class RestProxy implements InvocationHandler {
      * @return An async-version of the provided decodedResponse.
      */
     private Mono<HttpDecodedResponse> ensureExpectedStatus(final HttpDecodedResponse decodedResponse,
-        final SwaggerMethodParser methodParser) {
+        final SwaggerMethodParser methodParser, RequestOptions options) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
         final Mono<HttpDecodedResponse> asyncResult;
-        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)
+                && (options == null || options.getStatusOption() != ResponseStatusOption.NO_THROW)) {
             Mono<byte[]> bodyAsBytes = decodedResponse.getSourceResponse().getBodyAsByteArray();
 
             asyncResult = bodyAsBytes.flatMap((Function<byte[], Mono<HttpDecodedResponse>>) responseContent -> {
@@ -490,9 +499,10 @@ public final class RestProxy implements InvocationHandler {
     private Object handleRestReturnType(final Mono<HttpDecodedResponse> asyncHttpDecodedResponse,
         final SwaggerMethodParser methodParser,
         final Type returnType,
-        final Context context) {
+        final Context context,
+        final RequestOptions options) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
-            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
+            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options)
                 .doOnEach(RestProxy::endTracingSpan)
                 .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 

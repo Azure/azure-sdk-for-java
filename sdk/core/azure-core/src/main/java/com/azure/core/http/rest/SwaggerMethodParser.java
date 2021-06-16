@@ -24,6 +24,7 @@ import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.RequestOptions;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -345,6 +346,16 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         Context context = CoreUtils.findFirstOfType(swaggerMethodArguments, Context.class);
 
         return (context != null) ? context : Context.NONE;
+    }
+
+    /**
+     * Get the {@link RequestOptions} passed into the proxy method.
+     *
+     * @param swaggerMethodArguments the arguments passed to the proxy method
+     * @return the request options
+     */
+    public RequestOptions setRequestOptions(Object[] swaggerMethodArguments) {
+        return CoreUtils.findFirstOfType(swaggerMethodArguments, RequestOptions.class);
     }
 
     /**
