@@ -38,12 +38,8 @@ public class PartitionScopeThresholds<TContext> {
         this.targetMicroBatchSize = new AtomicInteger(options.getMaxMicroBatchSize());
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
-        this.minRetryRate = Math.min(
-            options.getMinTargetedMicroBatchRetryRate(),
-            options.getMaxTargetedMicroBatchRetryRate());
-        this.maxRetryRate = Math.max(
-            options.getMinTargetedMicroBatchRetryRate(),
-            options.getMaxTargetedMicroBatchRetryRate());
+        this.minRetryRate = options.getMinTargetedMicroBatchRetryRate();
+        this.maxRetryRate = options.getMaxTargetedMicroBatchRetryRate();
         this.avgRetryRate = ((this.maxRetryRate + this.minRetryRate)/2);
     }
 
