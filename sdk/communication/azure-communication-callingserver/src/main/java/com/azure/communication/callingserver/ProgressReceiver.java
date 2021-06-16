@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callingserver.models;
+package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import reactor.core.publisher.Flux;
 
 /**
