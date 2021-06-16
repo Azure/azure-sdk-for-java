@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * Extended options for a directory listing operation.
  */
-public class ShareDirectoryListFilesAndDirectoriesOptions {
-    private final ClientLogger logger = new ClientLogger(ShareDirectoryListFilesAndDirectoriesOptions.class);
+public class ShareListFilesAndDirectoriesOptions {
+    private final ClientLogger logger = new ClientLogger(ShareListFilesAndDirectoriesOptions.class);
 
     private String prefix;
     private Integer maxResultsPerPage;
@@ -17,7 +17,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
     private boolean includeETag;
     private boolean includeAttributes;
     private boolean includePermissionKey;
-    private boolean includeExtendedInfo;
+    private Boolean includeExtendedInfo;
 
     /**
      * @return prefix for this listing operation.
@@ -32,7 +32,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @param prefix the prefix.
      * @return updated options.
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setPrefix(String prefix) {
+    public ShareListFilesAndDirectoriesOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -50,7 +50,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @param maxResultsPerPage the max results per page.
      * @return updated options.
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
+    public ShareListFilesAndDirectoriesOptions setMaxResultsPerPage(Integer maxResultsPerPage) {
         this.maxResultsPerPage = maxResultsPerPage;
         return this;
     }
@@ -64,7 +64,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      *
      * @return whether to include extended info on this listing operation.
      */
-    public boolean includeExtendedInfo() {
+    public Boolean includeExtendedInfo() {
         return includeExtendedInfo;
     }
 
@@ -79,9 +79,9 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      *
      * @param includeExtendedInfo whether to include extended info.
      * @return updated options.
-     * @throws IllegalStateException Throws when attempting to set false when other parameters require it to be true.
+     * @throws IllegalStateException Throws when attempting to set null when other parameters require it to be true.
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeExtendedInfo(boolean includeExtendedInfo) {
+    public ShareListFilesAndDirectoriesOptions setIncludeExtendedInfo(Boolean includeExtendedInfo) {
         if (includeTimestamps || includeETag || includeAttributes || includePermissionKey) {
             throw logger.logExceptionAsError(
                 new IllegalStateException("includeExtendedInfo must be true in the current state."));
@@ -101,7 +101,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @param includeTimestamps whether to include timestamps on this listing operation.
      * @return updated options
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeTimestamps(boolean includeTimestamps) {
+    public ShareListFilesAndDirectoriesOptions setIncludeTimestamps(boolean includeTimestamps) {
         this.includeTimestamps = includeTimestamps;
         if (includeTimestamps) {
             this.includeExtendedInfo = true;
@@ -120,7 +120,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @param includeETag whether to include the etag on this listing operation.
      * @return updated options
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeETag(boolean includeETag) {
+    public ShareListFilesAndDirectoriesOptions setIncludeETag(boolean includeETag) {
         this.includeETag = includeETag;
         if (includeETag) {
             this.includeExtendedInfo = true;
@@ -139,7 +139,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @param includeAttributes whether to include file attributes on this listing operation.
      * @return updated options
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setIncludeAttributes(boolean includeAttributes) {
+    public ShareListFilesAndDirectoriesOptions setIncludeAttributes(boolean includeAttributes) {
         this.includeAttributes = includeAttributes;
         if (includeAttributes) {
             this.includeExtendedInfo = true;
@@ -158,7 +158,7 @@ public class ShareDirectoryListFilesAndDirectoriesOptions {
      * @param includePermissionKey whether to include the permission key on this listing operation.
      * @return updated options
      */
-    public ShareDirectoryListFilesAndDirectoriesOptions setIncludePermissionKey(boolean includePermissionKey) {
+    public ShareListFilesAndDirectoriesOptions setIncludePermissionKey(boolean includePermissionKey) {
         this.includePermissionKey = includePermissionKey;
         if (includePermissionKey) {
             this.includeExtendedInfo = true;

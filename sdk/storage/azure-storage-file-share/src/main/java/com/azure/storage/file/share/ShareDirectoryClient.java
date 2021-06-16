@@ -23,7 +23,7 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
-import com.azure.storage.file.share.options.ShareDirectoryListFilesAndDirectoriesOptions;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -439,7 +439,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileItem> listFilesAndDirectories(String prefix, Integer maxResultsPerPage,
                                                                 Duration timeout, Context context) {
-        return listFilesAndDirectories(new ShareDirectoryListFilesAndDirectoriesOptions().setPrefix(prefix)
+        return listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions().setPrefix(prefix)
             .setMaxResultsPerPage(maxResultsPerPage), timeout, context);
     }
 
@@ -465,7 +465,7 @@ public class ShareDirectoryClient {
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ShareFileItem> listFilesAndDirectories(ShareDirectoryListFilesAndDirectoriesOptions options,
+    public PagedIterable<ShareFileItem> listFilesAndDirectories(ShareListFilesAndDirectoriesOptions options,
         Duration timeout, Context context) {
         return new PagedIterable<>(shareDirectoryAsyncClient
             .listFilesAndDirectoriesWithOptionalTimeout(options, timeout, context));

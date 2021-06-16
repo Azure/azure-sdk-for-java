@@ -13,7 +13,7 @@ import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareRequestConditions;
-import com.azure.storage.file.share.options.ShareDirectoryListFilesAndDirectoriesOptions;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -268,12 +268,12 @@ public class ShareDirectoryJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryClient#listFilesAndDirectories(
-     * ShareDirectoryListFilesAndDirectoriesOptions, Duration, Context)}
+     * ShareListFilesAndDirectoriesOptions, Duration, Context)}
      */
     public void listDirectoriesAndFilesOptionsBagOverload() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareDirectoryListFilesAndDirectoriesOptions-duration-context
-        shareDirectoryClient.listFilesAndDirectories(new ShareDirectoryListFilesAndDirectoriesOptions()
+        shareDirectoryClient.listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions()
                 .setPrefix("subdir").setMaxResultsPerPage(10), Duration.ofSeconds(1), new Context(key1, value1))
             .forEach(fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
                 fileRef.isDirectory(), fileRef.getName()));

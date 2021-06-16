@@ -11,10 +11,9 @@ import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.ShareFileItem
-import com.azure.storage.file.share.models.ShareFileItemProperties
 import com.azure.storage.file.share.models.ShareSnapshotInfo
 import com.azure.storage.file.share.models.ShareStorageException
-import com.azure.storage.file.share.options.ShareDirectoryListFilesAndDirectoriesOptions
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -401,7 +400,7 @@ class DirectoryAPITests extends APISpec {
         }
 
         when:
-        def options = new ShareDirectoryListFilesAndDirectoriesOptions()
+        def options = new ShareListFilesAndDirectoriesOptions()
             .setPrefix(namer.getResourcePrefix() + extraPrefix)
             .setMaxResultsPerPage(maxResults)
             .setIncludeExtendedInfo(includeExtendedInfo) // set FIRST since subsequent can autoset this one
@@ -422,14 +421,14 @@ class DirectoryAPITests extends APISpec {
 
         where:
         extraPrefix | maxResults | timestamps | etag  | attributes | permissionKey | includeExtendedInfo || includeExtendedInfoIsTrue | expectingResults
-        ""          | null       | false      | false | false      | false         | false               || false                     | true
-        ""          | 1          | false      | false | false      | false         | false               || false                     | true
-        "noOp"      | 3          | false      | false | false      | false         | false               || false                     | false
-        ""          | null       | true       | false | false      | false         | false               || true                      | true
-        ""          | null       | false      | true  | false      | false         | false               || true                      | true
-        ""          | null       | false      | false | true       | false         | false               || true                      | true
-        ""          | null       | false      | false | false      | true          | false               || true                      | true
-        ""          | null       | true       | true  | true       | true          | false               || true                      | true
+        ""          | null       | false      | false | false      | false         | null                || null                      | true
+        ""          | 1          | false      | false | false      | false         | null                || null                      | true
+        "noOp"      | 3          | false      | false | false      | false         | null                || null                      | false
+        ""          | null       | true       | false | false      | false         | null                || true                      | true
+        ""          | null       | false      | true  | false      | false         | null                || true                      | true
+        ""          | null       | false      | false | true       | false         | null                || true                      | true
+        ""          | null       | false      | false | false      | true          | null                || true                      | true
+        ""          | null       | true       | true  | true       | true          | null                || true                      | true
         ""          | null       | false      | false | false      | false         | true                || true                      | true
     }
 
@@ -442,7 +441,7 @@ class DirectoryAPITests extends APISpec {
 
         when:
         def listResults = parentDir.listFilesAndDirectories(
-            new ShareDirectoryListFilesAndDirectoriesOptions()
+            new ShareListFilesAndDirectoriesOptions()
                 .setIncludeExtendedInfo(true).setIncludeTimestamps(true).setIncludePermissionKey(true).setIncludeETag(true)
                 .setIncludeAttributes(true),
             null, null)
