@@ -7,18 +7,16 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Generates n-grams of the given size(s). This token filter is implemented using Apache Lucene. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.NGramTokenFilterV2")
-@JsonFlatten
 @Fluent
-public class NGramTokenFilterV2 extends TokenFilter {
+public final class NGramTokenFilterV2 extends TokenFilter {
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less
      * than the value of maxGram.

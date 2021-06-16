@@ -12,8 +12,7 @@ import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class KeyVaultCertificatesTest {
 
@@ -27,6 +26,7 @@ public class KeyVaultCertificatesTest {
 
     @BeforeEach
     public void beforeEach() {
+
         List<String> aliases = new ArrayList<>();
         aliases.add("myalias");
         when(keyVaultClient.getAliases()).thenReturn(aliases);

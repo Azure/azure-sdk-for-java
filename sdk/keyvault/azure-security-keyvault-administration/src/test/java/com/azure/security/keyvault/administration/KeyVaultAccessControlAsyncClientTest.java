@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
@@ -166,11 +167,11 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         assertNotNull(createdRoleDefinition);
 
         // Delete the role definition.
-        KeyVaultRoleDefinition deletedRoleDefinition =
-            asyncClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName).block();
+        Response<Void> deleteResponse =
+            asyncClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, roleDefinitionName).block();
 
-        assertNotNull(deletedRoleDefinition);
-        assertRoleDefinitionEquals(createdRoleDefinition, deletedRoleDefinition);
+        assertNotNull(deleteResponse);
+        assertEquals(200, deleteResponse.getStatusCode());
     }
 
     /**
@@ -441,11 +442,11 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         assertNotNull(createdRoleAssignment);
 
         // Delete the role assignment.
-        KeyVaultRoleAssignment deletedRoleAssignment =
-            asyncClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName).block();
+        Response<Void> deleteResponse =
+            asyncClient.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignmentName).block();
 
-        assertNotNull(deletedRoleAssignment);
-        assertRoleAssignmentEquals(createdRoleAssignment, deletedRoleAssignment);
+        assertNotNull(deleteResponse);
+        assertEquals(200, deleteResponse.getStatusCode());
     }
 
     /**

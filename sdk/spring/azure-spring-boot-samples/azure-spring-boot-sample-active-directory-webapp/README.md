@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-active-directory
+description: "OAuth 2.0 Sample project for Azure AD Spring Boot Starter client library"
+urlFragment: "azure-spring-boot-sample-active-directory-webapp"
+---
+
 # OAuth 2.0 Sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts
@@ -79,9 +89,8 @@ azure:
     client-secret: <client-secret>
     tenant-id: <tenant-id>
     user-group:
-      allowed-group-names: group1,group2
-      allowed-group-ids: <group1-id>,<group2-id>
-      enable-full-list: false  
+      allowed-group-names: <group1>,<group2>
+      allowed-group-ids: <group1-id>,<group2-id>   # When 'all' is used, all group id can be obtained.
     post-logout-redirect-uri: http://localhost:8080
     authorization-clients:
       arm:

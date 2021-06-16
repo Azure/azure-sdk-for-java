@@ -325,7 +325,7 @@ private object CosmosRowConverter
             jsonNode.fields().asScala
                 .map(element => (
                     element.getKey,
-                    convertToSparkDataType(map.valueType, element.getValue, schemaConversionMode)))
+                    convertToSparkDataType(map.valueType, element.getValue, schemaConversionMode))).toMap
         case (arrayNode: ArrayNode, array: ArrayType) =>
             arrayNode.elements().asScala
               .map(convertToSparkDataType(array.elementType, _, schemaConversionMode)).toArray
