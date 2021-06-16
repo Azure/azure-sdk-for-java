@@ -20,8 +20,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -102,33 +100,20 @@ public class EventData {
      * @param body The {@link BinaryData} payload for this event.
      */
     public EventData(BinaryData body) {
-        this(body, new SystemProperties(), Context.NONE);
+        this(body, Context.NONE);
     }
 
     /**
      * Creates an event with the given {@code body}, system properties and context.
      *
      * @param body The data to set for this event.
-     * @param systemProperties System properties set by message broker for this event.
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(BinaryData body, SystemProperties systemProperties, Context context) {
+    EventData(BinaryData body, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
-        if (systemProperties.getOffset() != null) {
-            amqpAnnotatedMessage.getMessageAnnotations().put(OFFSET_ANNOTATION_NAME.getValue(), systemProperties.getOffset());
-        }
-        if (systemProperties.getEnqueuedTime() != null) {
-            amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), systemProperties.getEnqueuedTime());
-        }
-        if (systemProperties.getPartitionKey() != null) {
-            amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), systemProperties.getPartitionKey());
-        }
-        if (systemProperties.getSequenceNumber() != null) {
-            amqpAnnotatedMessage.getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), systemProperties.getSequenceNumber());
-        }
     }
 
     /**
@@ -207,6 +192,19 @@ public class EventData {
     }
 
     /**
+     * Sets the offset of the event when it was received from the associated Event Hub partition.
+     *
+     * @param offset Offset value of this message
+     *
+     * @return The updated {@link EventData}.
+     * @see #getOffset()
+     */
+    public EventData setOffset(Long offset) {
+        amqpAnnotatedMessage.getMessageAnnotations().put(OFFSET_ANNOTATION_NAME.getValue(), offset);
+        return this;
+    }
+
+    /**
      * Gets the partition hashing key if it was set when originally publishing the event. If it exists, this value was
      * used to compute a hash to select a partition to send the message to. This is only present on a <b>received</b>
      * {@link EventData}.
@@ -216,6 +214,19 @@ public class EventData {
      */
     public String getPartitionKey() {
         return (String) amqpAnnotatedMessage.getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue());
+    }
+
+    /**
+     *  Sets the instant, in UTC, of when the event was enqueued in the Event Hub partition.
+     *
+     * @param enqueuedTime Enqueued time of this message
+     *
+     * @return The updated {@link EventData}.
+     * @see #getEnqueuedTime()
+     */
+    public EventData setEnqueuedTime(Instant enqueuedTime) {
+        amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+        return this;
     }
 
     /**
@@ -245,6 +256,19 @@ public class EventData {
         return value != null
             ? (Long) value
             : null;
+    }
+
+    /**
+     * Sets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition.
+     *
+     * @param sequenceNumber Sequence number of this message
+     *
+     * @return The updated {@link EventData}.
+     * @see #getSequenceNumber()
+     */
+    public EventData setSequenceNumber(Long sequenceNumber) {
+        amqpAnnotatedMessage.getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        return this;
     }
 
     /**
@@ -722,102 +746,6 @@ public class EventData {
                 this.getSessionId());
 
             throw logger.logExceptionAsError(new IllegalArgumentException(message));
-        }
-    }
-
-    /**
-     * A collection of properties populated by Azure Event Hubs service.
-     */
-    static class SystemProperties extends HashMap<String, Object> {
-        private static final long serialVersionUID = -2827050124966993723L;
-        private final Long offset;
-        private final String partitionKey;
-        private final Instant enqueuedTime;
-        private final Long sequenceNumber;
-
-        SystemProperties() {
-            super();
-            offset = null;
-            partitionKey = null;
-            enqueuedTime = null;
-            sequenceNumber = null;
-        }
-
-        SystemProperties(final Map<String, Object> map) {
-            super(map);
-            this.partitionKey = removeSystemProperty(PARTITION_KEY_ANNOTATION_NAME.getValue());
-
-            this.offset = removeSystemProperty(OFFSET_ANNOTATION_NAME.getValue());
-            if (this.offset == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "offset: %s should always be in map.", OFFSET_ANNOTATION_NAME.getValue()));
-            }
-            put(OFFSET_ANNOTATION_NAME.getValue(), this.offset);
-
-            final Date enqueuedTimeValue = removeSystemProperty(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-            if (enqueuedTimeValue == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "enqueuedTime: %s should always be in map.", ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
-            }
-            this.enqueuedTime = enqueuedTimeValue.toInstant();
-            put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), this.enqueuedTime);
-
-            final Long sequenceNumber = removeSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-            if (sequenceNumber == null) {
-                throw new IllegalStateException(String.format(Locale.US,
-                    "sequenceNumber: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-            }
-            this.sequenceNumber = sequenceNumber;
-            put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), this.sequenceNumber);
-        }
-
-        /**
-         * Gets the offset within the Event Hubs stream.
-         *
-         * @return The offset within the Event Hubs stream.
-         */
-        private Long getOffset() {
-            return offset;
-        }
-
-        /**
-         * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to
-         * select a partition to send the message to.
-         *
-         * @return A partition key for this Event Data.
-         */
-        private String getPartitionKey() {
-            return partitionKey;
-        }
-
-        /**
-         * Gets the time this event was enqueued in the Event Hub.
-         *
-         * @return The time this was enqueued in the service.
-         */
-        private Instant getEnqueuedTime() {
-            return enqueuedTime;
-        }
-
-        /**
-         * Gets the sequence number in the event stream for this event. This is unique for every message received in the
-         * Event Hub.
-         *
-         * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
-         * event.
-         */
-        private Long getSequenceNumber() {
-            return sequenceNumber;
-        }
-
-        @SuppressWarnings("unchecked")
-        private <T> T removeSystemProperty(final String key) {
-            if (this.containsKey(key)) {
-                return (T) (this.remove(key));
-            }
-
-            return null;
         }
     }
 

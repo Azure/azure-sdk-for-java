@@ -4,7 +4,6 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
@@ -38,8 +37,6 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -60,7 +57,6 @@ class EventHubPartitionAsyncConsumerTest {
     private static final String EVENT_HUB_NAME = "event-hub-name";
     private static final String CONSUMER_GROUP = "consumer-group-test";
     private static final String PARTITION_ID = "a-partition-id";
-    private static final Date TEST_DATE = Date.from(Instant.ofEpochSecond(1578643343));
 
     @Mock
     private AmqpReceiveLink link1;
@@ -184,12 +180,17 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final Long secondOffset = 54L;
         final Long lastOffset = 65L;
-        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties(25L, 14),
-            Context.NONE);
-        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()),
-            getSystemProperties(secondOffset, 21), Context.NONE);
-        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()),
-            getSystemProperties(lastOffset, 53), Context.NONE);
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), Context.NONE);
+        event1.setOffset(25L);
+        event1.setSequenceNumber(14L);
+
+        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()), Context.NONE);
+        event2.setOffset(secondOffset);
+        event2.setSequenceNumber(21L);
+
+        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()), Context.NONE);
+        event3.setOffset(lastOffset);
+        event3.setSequenceNumber(53L);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -243,12 +244,17 @@ class EventHubPartitionAsyncConsumerTest {
         final Message message3 = mock(Message.class);
         final Long secondOffset = 54L;
         final Long lastOffset = 65L;
-        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), getSystemProperties(25L, 14),
-            Context.NONE);
-        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()), getSystemProperties(secondOffset,
-            21), Context.NONE);
-        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()), getSystemProperties(lastOffset,
-            53), Context.NONE);
+        final EventData event1 = new EventData(BinaryData.fromBytes("Foo".getBytes()), Context.NONE);
+        event1.setOffset(25L);
+        event1.setSequenceNumber(14L);
+
+        final EventData event2 = new EventData(BinaryData.fromBytes("Bar".getBytes()), Context.NONE);
+        event2.setOffset(secondOffset);
+        event2.setSequenceNumber(21L);
+
+        final EventData event3 = new EventData(BinaryData.fromBytes("Baz".getBytes()), Context.NONE);
+        event3.setOffset(lastOffset);
+        event3.setSequenceNumber(53L);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -324,14 +330,5 @@ class EventHubPartitionAsyncConsumerTest {
                 }
             });
         }, FluxSink.OverflowStrategy.BUFFER);
-    }
-
-    private static EventData.SystemProperties getSystemProperties(Long offset, long sequenceNumber) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
-        properties.put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
-        properties.put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
-
-        return new EventData.SystemProperties(properties);
     }
 }
