@@ -5,7 +5,6 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.Constants;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
-import com.azure.communication.callingserver.models.ProgressReporter;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;

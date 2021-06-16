@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.ProgressReceiver;
 import com.azure.communication.callingserver.implementation.Constants.ContentDownloader;
 import com.azure.core.annotation.Fluent;
 
