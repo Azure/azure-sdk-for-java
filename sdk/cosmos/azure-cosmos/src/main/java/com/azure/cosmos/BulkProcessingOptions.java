@@ -25,7 +25,7 @@ public final class BulkProcessingOptions<TContext> {
     private final TContext batchContext;
     private final BulkProcessingThresholds<TContext> thresholds;
 
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions(TContext batchContext, BulkProcessingThresholds<TContext> thresholds) {
         this.batchContext = batchContext;
         if (thresholds == null) {
@@ -108,7 +108,7 @@ public final class BulkProcessingOptions<TContext> {
         return this;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
@@ -125,7 +125,7 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingOptions<TContext> setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
@@ -140,7 +140,7 @@ public final class BulkProcessingOptions<TContext> {
         return this;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getMinTargetedMicroBatchRetryRate() {
         return this.minMicroBatchRetryRate;
     }
@@ -150,7 +150,7 @@ public final class BulkProcessingOptions<TContext> {
         return batchContext;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingThresholds<TContext> getThresholds() {
         return this.thresholds;
     }
