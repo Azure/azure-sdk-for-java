@@ -113,8 +113,10 @@
         <module>sdk/storage/azure-storage-blob-batch</module>
         <module>sdk/storage/azure-storage-blob-changefeed</module>
         <module>sdk/storage/azure-storage-blob-cryptography</module>
+        <module>sdk/storage/azure-storage-blob-data-movement</module>
         <module>sdk/storage/azure-storage-blob-nio</module>
         <module>sdk/storage/azure-storage-common</module>
+        <module>sdk/storage/azure-storage-common-data-movement</module>
         <module>sdk/storage/azure-storage-file-datalake</module>
         <module>sdk/storage/azure-storage-file-share</module>
         <module>sdk/storage/azure-storage-internal-avro</module>
@@ -318,6 +320,10 @@
                     <packages>com.azure.storage.common*</packages>
                   </group>
                   <group>
+                    <title>Azure Storage - Common Data Movement</title>
+                    <packages>com.azure.storage.common.data.movement*</packages>
+                  </group>
+                  <group>
                     <title>Azure Storage - Blobs</title>
                     <packages>com.azure.storage.blob*</packages>
                   </group>
@@ -332,6 +338,10 @@
                   <group>
                     <title>Azure Storage Blobs - Cryptography</title>
                     <packages>com.azure.storage.blob.cryptography*</packages>
+                  </group>
+                  <group>
+                    <title>Azure Storage Blobs - Data Movement</title>
+                    <packages>com.azure.storage.blob.data.movement*</packages>
                   </group>
                   <group>
                     <title>Azure Storage Blobs - NIO</title>

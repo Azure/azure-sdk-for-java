@@ -13,10 +13,12 @@
       <id>coverage</id>
       <modules>
         <module>azure-storage-common</module>
+        <module>azure-storage-common-data-movement</module>
         <module>azure-storage-blob</module>
         <module>azure-storage-blob-batch</module>
         <module>azure-storage-blob-changefeed</module>
         <module>azure-storage-blob-cryptography</module>
+        <module>azure-storage-blob-data-movement</module>
         <module>azure-storage-blob-nio</module>
         <module>azure-storage-file-share</module>
         <module>azure-storage-file-datalake</module>
@@ -28,6 +30,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-common</artifactId>
           <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-common-data-movement</artifactId>
+          <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common-data-movement;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -48,6 +55,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-cryptography</artifactId>
           <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob-data-movement</artifactId>
+          <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-data-movement;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -105,10 +117,12 @@
       </activation>
       <modules>
         <module>azure-storage-common</module>
+        <module>azure-storage-common-data-movement</module>
         <module>azure-storage-blob</module>
         <module>azure-storage-blob-batch</module>
         <module>azure-storage-blob-changefeed</module>
         <module>azure-storage-blob-cryptography</module>
+        <module>azure-storage-blob-data-movement</module>
         <module>azure-storage-blob-nio</module>
         <module>azure-storage-file-share</module>
         <module>azure-storage-file-datalake</module>
