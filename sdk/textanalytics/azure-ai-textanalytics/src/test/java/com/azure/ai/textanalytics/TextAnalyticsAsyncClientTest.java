@@ -14,7 +14,7 @@ import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -2381,7 +2381,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         emptyListRunner((documents, errorMessage) ->
             StepVerifier.create(client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions()
-                    .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions()), null))
+                    .setRecognizeEntitiesActions(new RecognizeEntitiesAction()), null))
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify());

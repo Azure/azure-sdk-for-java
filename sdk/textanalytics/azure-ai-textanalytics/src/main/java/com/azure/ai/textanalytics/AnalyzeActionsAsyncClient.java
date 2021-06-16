@@ -192,8 +192,8 @@ class AnalyzeActionsAsyncClient {
 
     private JobManifestTasks getJobManifestTasks(TextAnalyticsActions actions) {
         return new JobManifestTasks()
-            .setEntityRecognitionTasks(actions.getRecognizeEntitiesOptions() == null ? null
-                : StreamSupport.stream(actions.getRecognizeEntitiesOptions().spliterator(), false).map(
+            .setEntityRecognitionTasks(actions.getRecognizeEntitiesActions() == null ? null
+                : StreamSupport.stream(actions.getRecognizeEntitiesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
@@ -205,8 +205,8 @@ class AnalyzeActionsAsyncClient {
                                 .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
-            .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
-                : StreamSupport.stream(actions.getRecognizePiiEntitiesOptions().spliterator(), false).map(
+            .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesActions() == null ? null
+                : StreamSupport.stream(actions.getRecognizePiiEntitiesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
@@ -223,8 +223,8 @@ class AnalyzeActionsAsyncClient {
                         );
                         return piiTask;
                     }).collect(Collectors.toList()))
-            .setKeyPhraseExtractionTasks(actions.getExtractKeyPhrasesOptions() == null ? null
-                : StreamSupport.stream(actions.getExtractKeyPhrasesOptions().spliterator(), false).map(
+            .setKeyPhraseExtractionTasks(actions.getExtractKeyPhrasesActions() == null ? null
+                : StreamSupport.stream(actions.getExtractKeyPhrasesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
@@ -236,8 +236,8 @@ class AnalyzeActionsAsyncClient {
                         );
                         return keyPhrasesTask;
                     }).collect(Collectors.toList()))
-            .setEntityLinkingTasks(actions.getRecognizeLinkedEntitiesOptions() == null ? null
-                : StreamSupport.stream(actions.getRecognizeLinkedEntitiesOptions().spliterator(), false).map(
+            .setEntityLinkingTasks(actions.getRecognizeLinkedEntitiesActions() == null ? null
+                : StreamSupport.stream(actions.getRecognizeLinkedEntitiesActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;
@@ -249,8 +249,8 @@ class AnalyzeActionsAsyncClient {
                         );
                         return entityLinkingTask;
                     }).collect(Collectors.toList()))
-            .setSentimentAnalysisTasks(actions.getAnalyzeSentimentOptions() == null ? null
-                : StreamSupport.stream(actions.getAnalyzeSentimentOptions().spliterator(), false).map(
+            .setSentimentAnalysisTasks(actions.getAnalyzeSentimentActions() == null ? null
+                : StreamSupport.stream(actions.getAnalyzeSentimentActions().spliterator(), false).map(
                     action -> {
                         if (action == null) {
                             return null;

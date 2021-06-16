@@ -14,10 +14,11 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
@@ -946,8 +947,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         );
         textAnalyticsAsyncClient.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
             "en",
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -990,8 +991,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         );
         textAnalyticsAsyncClient.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(

@@ -4,12 +4,22 @@
 #### Feature Added
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
+- Added the new types, `ExtractKeyPhrasesAction`, `RecognizeEntitiesAction`, `RecognizePiiEntitiesAction`,
+  `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`. These types should include all the properties in the
+  `***Options` option bags but also could have additional properties, such as `actionName`.
 
 ### Breaking Changes
 - Removed `StringIndexType`, the type will be shared in the Azure Core.
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
-  `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`.
+  `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
+- `TextAnalyticsActions` now takes `***Action` types, instead of `***Options` types. Renamed The getter and setter method names
+  based on the new type names. Replacing types show as follows:
+  - `ExtractKeyPhrasesOption` changed to new type `ExtractKeyPhrasesAction`.
+  - `RecognizeEntitiesOption` changed to new type `RecognizeEntitiesAction`.
+  - `RecognizePiiEntitiesOption` changed to new type `RecognizePiiEntitiesAction`.
+  - `RecognizeLinkedEntitiesOption` changed to new type `RecognizeLinkedEntitiesAction`.
+  - `AnalyzeSentimentOption` changed to new type `AnalyzeSentimentAction`.
 
 ## 5.1.0-beta.7 (2021-05-19)
 ### Features Added

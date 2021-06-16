@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
@@ -14,8 +15,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -26,10 +27,13 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
@@ -1028,9 +1032,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
-                .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()));
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction()));
     }
 
     void analyzeBatchActionsPaginationRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner,
@@ -1041,9 +1045,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
         testRunner.accept(documents,
             new TextAnalyticsActions().setDisplayName("Test1")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
-                .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()));
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction()));
     }
 
     void analyzeBatchActionsPartialCompletedRunner(
@@ -1054,11 +1058,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setExtractKeyPhrasesOptions(
-                    new ExtractKeyPhrasesOptions().setModelVersion("latest"))
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions().setModelVersion("invalidVersion"),
-                    new RecognizePiiEntitiesOptions().setModelVersion("latest")));
+                .setExtractKeyPhrasesActions(
+                    new ExtractKeyPhrasesAction().setModelVersion("latest"))
+                .setRecognizePiiEntitiesActions(
+                    new RecognizePiiEntitiesAction().setModelVersion("invalidVersion"),
+                    new RecognizePiiEntitiesAction().setModelVersion("latest")));
     }
 
     void analyzeBatchActionsAllFailedRunner(
@@ -1069,11 +1073,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions().setModelVersion("invalidVersion"))
-                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"))
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions().setModelVersion("invalidaVersion"),
-                    new RecognizePiiEntitiesOptions().setModelVersion("2929")));
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setModelVersion("invalidVersion"))
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setModelVersion("invalidVersion"))
+                .setRecognizePiiEntitiesActions(
+                    new RecognizePiiEntitiesAction().setModelVersion("invalidaVersion"),
+                    new RecognizePiiEntitiesAction().setModelVersion("2929")));
     }
 
     void analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
@@ -1084,8 +1088,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions()
+                .setRecognizePiiEntitiesActions(
+                    new RecognizePiiEntitiesAction()
                         .setCategoriesFilter(PiiEntityCategory.USSOCIAL_SECURITY_NUMBER)
                 ));
     }
@@ -1098,8 +1102,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(1))),
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizePiiEntitiesOptions(
-                    new RecognizePiiEntitiesOptions()
+                .setRecognizePiiEntitiesActions(
+                    new RecognizePiiEntitiesAction()
                         .setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION)
                 ));
     }
@@ -1109,14 +1113,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LINKED_ENTITY_INPUTS,
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
-                .setRecognizeLinkedEntitiesOptions(new RecognizeLinkedEntitiesOptions()));
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction()));
     }
 
     void analyzeSentimentRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
             SENTIMENT_INPUTS,
             new TextAnalyticsActions()
-                .setAnalyzeSentimentOptions(new AnalyzeSentimentOptions()));
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
     }
 
     String getEndpoint() {

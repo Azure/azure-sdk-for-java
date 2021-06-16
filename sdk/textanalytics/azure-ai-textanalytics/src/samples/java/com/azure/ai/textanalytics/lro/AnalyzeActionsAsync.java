@@ -5,15 +5,15 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -54,10 +54,10 @@ public class AnalyzeActionsAsync {
 
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                .setExtractKeyPhrasesOptions(
-                    new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"),
-                    new ExtractKeyPhrasesOptions().setModelVersion("latest")),
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                .setExtractKeyPhrasesActions(
+                    new ExtractKeyPhrasesAction().setModelVersion("invalidVersion"),
+                    new ExtractKeyPhrasesAction().setModelVersion("latest")),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();

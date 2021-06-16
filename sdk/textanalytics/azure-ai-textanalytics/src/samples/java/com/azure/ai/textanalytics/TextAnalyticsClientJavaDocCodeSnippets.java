@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
+import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -16,11 +16,12 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
-import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
@@ -994,8 +995,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             textAnalyticsClient.beginAnalyzeActions(
                 documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                    .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
+                    .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                    .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
                 "en",
                 new AnalyzeActionsOptions().setIncludeStatistics(false));
         syncPoller.waitForCompletion();
@@ -1044,8 +1045,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             textAnalyticsClient.beginAnalyzeActions(
                 documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                   .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
-                   .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
+                   .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
+                   .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
         syncPoller.waitForCompletion();
