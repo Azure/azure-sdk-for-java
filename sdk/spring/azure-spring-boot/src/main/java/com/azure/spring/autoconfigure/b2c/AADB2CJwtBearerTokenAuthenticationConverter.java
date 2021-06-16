@@ -2,33 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.common.AbstractJwtBearerTokenAuthenticationConverter;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.util.Assert;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
  */
-public class AADB2CJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
-
-    private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
-
-    private Converter<Jwt, Collection<GrantedAuthority>> converter;
-
-    private String principalClaimName;
+public class AADB2CJwtBearerTokenAuthenticationConverter extends AbstractJwtBearerTokenAuthenticationConverter {
 
     /**
-     * Use AADB2CJwtGrantedAuthoritiesConverter, it can resolve the access token of scp and roles.
+     * Use AADJwtGrantedAuthoritiesConverter, it can resolve the access token of scp and roles.
      */
     public AADB2CJwtBearerTokenAuthenticationConverter() {
-        this.converter = new AADB2CJwtGrantedAuthoritiesConverter();
+        super();
     }
 
     /**
@@ -40,41 +33,18 @@ public class AADB2CJwtBearerTokenAuthenticationConverter implements Converter<Jw
     }
 
     public AADB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName, String authorityPrefix) {
-        Assert.notNull(authoritiesClaimName, "authoritiesClaimName cannot be null");
-        Assert.notNull(authorityPrefix, "authorityPrefix cannot be null");
-        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName(authoritiesClaimName);
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(authorityPrefix);
-        this.converter = jwtGrantedAuthoritiesConverter;
-    }
-
-    protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-        return this.converter.convert(jwt);
+        super(authoritiesClaimName, authorityPrefix);
     }
 
     @Override
-    public AbstractAuthenticationToken convert(Jwt jwt) {
-        OAuth2AccessToken accessToken = new OAuth2AccessToken(
-            OAuth2AccessToken.TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt());
-        Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
+    protected OAuth2AuthenticatedPrincipal getAuthenticatedPrincipal(Map<String, Object> headers,
+                                                                     Map<String, Object> claims, Collection<GrantedAuthority> authorities, String tokenValue) {
         if (this.principalClaimName == null) {
-            AADB2COAuth2AuthenticatedPrincipal principal = new AADB2COAuth2AuthenticatedPrincipal(
-                jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
-            return new BearerTokenAuthentication(principal, accessToken, authorities);
+            return new AADB2COAuth2AuthenticatedPrincipal(
+                headers, claims, authorities, tokenValue);
         }
-        String name = jwt.getClaim(this.principalClaimName);
-        AADB2COAuth2AuthenticatedPrincipal principal = new AADB2COAuth2AuthenticatedPrincipal(jwt.getHeaders(),
-            jwt.getClaims(), authorities, jwt.getTokenValue(), name);
-        return new BearerTokenAuthentication(principal, accessToken, authorities);
-    }
-
-    public void setJwtGrantedAuthoritiesConverter(
-        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
-        this.converter = jwtGrantedAuthoritiesConverter;
-    }
-
-    public void setPrincipalClaimName(String principalClaimName) {
-        Assert.hasText(principalClaimName, "principalClaimName cannot be empty");
-        this.principalClaimName = principalClaimName;
+        String name = (String) claims.get(this.principalClaimName);
+        return new AADB2COAuth2AuthenticatedPrincipal(headers,
+            claims, authorities, tokenValue, name);
     }
 }

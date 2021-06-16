@@ -88,6 +88,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         HttpSession session = attr.getRequest().getSession(true);
 
         if (authentication != null) {
+            LOGGER.debug("User {}'s authorities saved from session: {}.", authentication.getName(), authentication.getAuthorities());
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
@@ -100,9 +101,6 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         if (authorities.isEmpty()) {
             authorities = DEFAULT_AUTHORITY_SET;
         }
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("User's authorities: {}.", authorities);
-        }
         String nameAttributeKey =
             Optional.of(userRequest)
                     .map(OAuth2UserRequest::getClientRegistration)
@@ -111,6 +109,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
                     .filter(StringUtils::hasText)
                     .orElse(AADTokenClaim.NAME);
+        LOGGER.debug("User {}'s authorities extracted by id token and access token: {}.", oidcUser.getClaim(nameAttributeKey), authorities);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, idToken, nameAttributeKey);
 

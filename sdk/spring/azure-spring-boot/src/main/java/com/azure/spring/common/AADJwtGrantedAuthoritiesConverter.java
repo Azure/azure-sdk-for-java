@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.autoconfigure.b2c;
+package com.azure.spring.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +18,9 @@ import java.util.stream.Collectors;
 /**
  * Extracts the {@link GrantedAuthority}s from scope attributes typically found in a {@link Jwt}.
  */
-public class AADB2CJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtGrantedAuthoritiesConverter.class);
 
     private static final String DEFAULT_SCP_AUTHORITY_PREFIX = "SCOPE_";
 
@@ -30,6 +34,7 @@ public class AADB2CJwtGrantedAuthoritiesConverter implements Converter<Jwt, Coll
         for (String authority : getAuthorities(jwt)) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority));
         }
+        LOGGER.debug("User {}'s authorities created from jwt token: {}.", jwt.getSubject(), grantedAuthorities);
         return grantedAuthorities;
     }
 
