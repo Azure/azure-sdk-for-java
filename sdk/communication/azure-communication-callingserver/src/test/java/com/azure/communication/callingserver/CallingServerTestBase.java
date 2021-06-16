@@ -23,6 +23,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -176,18 +177,18 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
-            fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions);
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            fromCallConnection = callingServerClient.joinCall(groupId, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-            toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions);
+            toCallConnection = callingServerClient.joinCall(groupId, toParticipant, joinCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(toCallConnection);
 
@@ -221,18 +222,18 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
-            fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions).block();
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            fromCallConnection = callingServerClient.joinCall(groupId, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-            toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions).block();
+            toCallConnection = callingServerClient.joinCall(groupId, toParticipant, joinCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(toCallConnection);
 
