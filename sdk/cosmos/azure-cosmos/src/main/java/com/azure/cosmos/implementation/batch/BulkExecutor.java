@@ -301,10 +301,6 @@ public final class BulkExecutor<TContext> {
                         if (result.shouldRetry) {
                             return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
-                            // Treat 408 RequestTimeout as being retried - need to minimize throughput
-                            if (operationResult.getStatusCode() == 408) {
-                                thresholds.recordEnqueuedRetry();
-                            }
                             return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
                                 itemOperation, cosmosBulkItemResponse, this.batchContext));
                         }
