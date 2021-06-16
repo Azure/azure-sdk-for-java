@@ -129,6 +129,13 @@ public final class ODataSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ODataSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
