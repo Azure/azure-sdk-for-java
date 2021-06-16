@@ -199,9 +199,18 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp) {
+        addEvent(eventName, traceEventAttributes, timestamp, Context.NONE);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp,
+                         Context context) {
         Objects.requireNonNull(eventName, "'eventName' cannot be null.");
 
-        Span currentSpan = Span.current();
+        Span currentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
         if (currentSpan == null) {
             logger.info("Failed to find a starting span to associate the {} with.", eventName);
             return;

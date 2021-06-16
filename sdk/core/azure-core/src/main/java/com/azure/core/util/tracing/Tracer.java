@@ -251,4 +251,22 @@ public interface Tracer {
      */
     default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
     }
+
+    /**
+     * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
+     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline</p>
+     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.</p>
+     *
+     * @param name the name of the event.
+     * @param attributes the additional attributes to be set for the event.
+     * @param timestamp The instant, in UTC, at which the event will be associated to the span.
+     * @param context the call metadata containing information of the span to which the event should be associated with.
+     * @throws NullPointerException if {@code eventName} is {@code null}.
+     */
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp,
+                          Context context) {
+
+    }
 }
