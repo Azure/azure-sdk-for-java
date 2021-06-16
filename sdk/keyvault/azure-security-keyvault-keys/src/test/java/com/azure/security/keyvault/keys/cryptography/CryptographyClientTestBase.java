@@ -57,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class CryptographyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    protected boolean isManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -85,13 +86,17 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
+
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential,
+                isManagedHsmTest ? CryptographyAsyncClient.MHSM_SCOPE : CryptographyAsyncClient.KEY_VAULT_SCOPE));
         }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
@@ -213,10 +218,13 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
+        final String endpoint = interceptorManager.isPlaybackMode() ? "http://localhost:8080"
+            : isManagedHsmTest
+            ? System.getenv("AZURE_MANAGEDHSM_ENDPOINT")
             : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+
         Objects.requireNonNull(endpoint);
+
         return endpoint;
     }
 
