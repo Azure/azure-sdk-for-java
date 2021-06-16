@@ -24,6 +24,9 @@ public class PartitionScopeThresholds<TContext> {
     private final AtomicLong totalOperationCount;
     private final AtomicReference<CurrentIntervalThresholds> currentThresholds;
     private final String identifier = UUID.randomUUID().toString();
+    private final double minRetryRate;
+    private final double maxRetryRate;
+    private final double avgRetryRate;
 
     public PartitionScopeThresholds(String pkRangeId, BulkProcessingOptions<TContext> options) {
         checkNotNull(pkRangeId, "expected non-null pkRangeId");
@@ -34,6 +37,13 @@ public class PartitionScopeThresholds<TContext> {
         this.targetMicroBatchSize = options.getMaxMicroBatchSize();
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
+        this.minRetryRate = Math.min(
+            options.getMinTargetedMicroBatchRetryRate(),
+            options.getMaxTargetedMicroBatchRetryRate());
+        this.maxRetryRate = Math.max(
+            options.getMinTargetedMicroBatchRetryRate(),
+            options.getMaxTargetedMicroBatchRetryRate());
+        this.avgRetryRate = ((this.maxRetryRate + this.minRetryRate)/2);
     }
 
     public String getPartitionKeyRangeId() {
@@ -92,26 +102,22 @@ public class PartitionScopeThresholds<TContext> {
 
         int microBatchSizeBefore = this.targetMicroBatchSize;
 
-        if (retryRate == 0 &&
-            this.targetMicroBatchSize < this.options.getMaxMicroBatchSize()) {
-
+        if (retryRate < this.minRetryRate && this.targetMicroBatchSize < this.options.getMaxMicroBatchSize()) {
             this.targetMicroBatchSize = Math.min(
                 Math.min(
                     this.targetMicroBatchSize * 2,
                     this.targetMicroBatchSize +
-                        (int)(this.options.getMaxMicroBatchSize() * this.options.getMaxMicroBatchRetryRate())),
+                        (int)(this.options.getMaxMicroBatchSize() * this.avgRetryRate)),
                 this.options.getMaxMicroBatchSize());
-        } else if (!onlyUpscale && retryRate > this.options.getMaxMicroBatchRetryRate() &&
-            this.targetMicroBatchSize > 1) {
-
-            double deltaRate = retryRate - this.options.getMaxMicroBatchRetryRate();
+        } else if (!onlyUpscale && retryRate > this.maxRetryRate && this.targetMicroBatchSize > 1) {
+            double deltaRate = retryRate - this.avgRetryRate;
             this.targetMicroBatchSize = Math.max(1, (int) (this.targetMicroBatchSize * (1 - deltaRate)));
         }
 
         // TODO @fabianm - change to DEBUG after testing
         logger.info(
             "Reevaluated thresholds for PKRange '{}#{}' (TotalCount: {}, CurrentCount: {}, CurrentRetryCount: {}, " +
-                "CurrentRetryRate: {} - BatchSize {} -> {}, OlyUpscale: {})",
+                "CurrentRetryRate: {} - BatchSize {} -> {}, OnlyUpscale: {})",
             this.pkRangeId,
             this.identifier,
             totalCount,

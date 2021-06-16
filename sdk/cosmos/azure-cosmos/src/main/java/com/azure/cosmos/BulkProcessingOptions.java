@@ -19,6 +19,7 @@ public final class BulkProcessingOptions<TContext> {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
+    private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
     private Duration maxMicroBatchInterval = Duration.ofMillis(
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final TContext batchContext;
@@ -108,7 +109,7 @@ public final class BulkProcessingOptions<TContext> {
     }
 
     @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public double getMaxMicroBatchRetryRate() {
+    public double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
 
@@ -123,11 +124,36 @@ public final class BulkProcessingOptions<TContext> {
      * @return the bulk processing options.
      */
     @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkProcessingOptions<TContext> setMaxMicroBatchRetryRate(double maxRetryRate) {
+    public BulkProcessingOptions<TContext> setMaxTargetedMicroBatchRetryRate(double maxRetryRate) {
         if (maxRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
         }
         this.maxMicroBatchRetryRate = maxRetryRate;
+        return this;
+    }
+
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public double getMinTargetedMicroBatchRetryRate() {
+        return this.minMicroBatchRetryRate;
+    }
+
+    /**
+     * The minimum targeted retry rate. This value determines how aggressively the actual micro batch size
+     * gets increased if throttling rate is below this threshold. Even client-side throttling due to enabled
+     * throughput control counts as throttled request - so it is healthy to have a certain throttling rate
+     * to be able to saturate the available throughput (backend or client-side reserved throughput)
+     *
+     * @param minRetryRate minimum targeted retry rate of batch requests. If the retry rate is
+     *                     lower than this threshold the micro batch size will be dynamically increased over time
+     *
+     * @return the bulk processing options.
+     */
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public BulkProcessingOptions<TContext> setMinTargetedMicroBatchRetryRate(double minRetryRate) {
+        if (minRetryRate < 0) {
+            throw new IllegalArgumentException("The minRetryRate must not be a negative value");
+        }
+        this.minMicroBatchRetryRate = minRetryRate;
         return this;
     }
 
