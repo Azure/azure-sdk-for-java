@@ -4,6 +4,9 @@ package com.azure.spring.cloud.config.properties;
 
 import java.time.Duration;
 
+/**
+ * Properties for what needs to be requested from Azure App Configuration for Feature Flags.
+ */
 public class FeatureFlagStore {
     
     private static final String EMPTY_LABEL = "\0";

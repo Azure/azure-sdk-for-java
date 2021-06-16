@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Context used for checking if a Feature Filter is enabled.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureFilterEvaluationContext {
 
