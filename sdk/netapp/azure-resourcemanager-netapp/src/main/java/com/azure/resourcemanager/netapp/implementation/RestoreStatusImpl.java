@@ -4,18 +4,18 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
-import com.azure.resourcemanager.netapp.models.BackupStatus;
+import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
+import com.azure.resourcemanager.netapp.models.RestoreStatus;
 
-public final class BackupStatusImpl implements BackupStatus {
-    private BackupStatusInner innerObject;
+public final class RestoreStatusImpl implements RestoreStatus {
+    private RestoreStatusInner innerObject;
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    BackupStatusImpl(
-        BackupStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    RestoreStatusImpl(
+        RestoreStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -40,19 +40,11 @@ public final class BackupStatusImpl implements BackupStatus {
         return this.innerModel().errorMessage();
     }
 
-    public Long lastTransferSize() {
-        return this.innerModel().lastTransferSize();
-    }
-
-    public String lastTransferType() {
-        return this.innerModel().lastTransferType();
-    }
-
     public Long totalTransferBytes() {
         return this.innerModel().totalTransferBytes();
     }
 
-    public BackupStatusInner innerModel() {
+    public RestoreStatusInner innerModel() {
         return this.innerObject;
     }
 
