@@ -112,14 +112,11 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     @Override
     public Mono<Void> runAsync() {
         final EventsHandler handler = new EventsHandler(options.getCount(), options.getPrefetch());
-        final CompletableFuture<Void> receiveOptions = receiverAsync.thenComposeAsync(receiver -> {
-            receiver.setReceiveHandler(handler);
-            return handler.isCompleteReceiving()
-                .thenRun(() -> {
-                    System.out.println("Completed. Removing Handler.");
-                    receiver.setReceiveHandler(null);
-                });
-        });
+        final CompletableFuture<Void> receiveOptions = receiverAsync
+            .thenComposeAsync(receiver -> receiver.setReceiveHandler(handler)
+            .thenApplyAsync(unused -> handler.isCompleteReceiving())
+            .thenApplyAsync(unused -> receiver.setReceiveHandler(null)))
+            .thenRun(() -> {});
 
         return Mono.fromCompletionStage(receiveOptions);
     }
