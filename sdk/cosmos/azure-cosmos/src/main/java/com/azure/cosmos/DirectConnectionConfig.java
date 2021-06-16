@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.util.Beta;
 import io.netty.channel.ChannelOption;
 
 import java.time.Duration;
@@ -16,13 +15,16 @@ import java.time.Duration;
  */
 public final class DirectConnectionConfig {
     //  Constants
-    private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = false;
+    private static final boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = false;
+    private static final boolean DEFAULT_CONNECTION_MULTIPLEXING_ENABLED = true;
+
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(1l);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
 
+    private boolean connectionMultiplexingEnabled;
     private boolean connectionEndpointRediscoveryEnabled;
     private Duration connectTimeout;
     private Duration idleConnectionTimeout;
@@ -42,6 +44,7 @@ public final class DirectConnectionConfig {
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
         this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+        this.connectionMultiplexingEnabled = DEFAULT_CONNECTION_MULTIPLEXING_ENABLED;
     }
 
     /**
@@ -74,6 +77,35 @@ public final class DirectConnectionConfig {
         return this;
     }
 
+    /**
+     * Sets a value indicating whether Direct TCP connection multiplexing is enabled.
+     * <p>
+     * The connection multiplexing feature is designed to reduce the latency of the requests.
+     *
+     * By default, channel multiplexing is enabled.
+     *
+     * @param connectionMultiplexingEnabled {@code true} if connection multiplexing is enabled; {@code
+     *                                             false} otherwise.
+     *
+     * @return the {@linkplain DirectConnectionConfig}.
+     */
+    public DirectConnectionConfig setConnectionMultiplexingEnabled(boolean connectionMultiplexingEnabled) {
+        this.connectionMultiplexingEnabled = connectionMultiplexingEnabled;
+        return this;
+    }
+
+    /**
+     * Gets a value indicating whether Direct TCP connection multiplexing is enabled.
+     * <p>
+     * The connection multiplexing feature is designed to reduce the latency of the requests.
+     *
+     * By default, connection multiplexing is enabled.
+     *
+     * Returns: true if Direct TCP connection multiplexing is enabled; false otherwise.
+     */
+    public boolean isConnectionMultiplexingEnabled() {
+        return this.connectionMultiplexingEnabled;
+    }
 
     /**
      * Gets the default DIRECT connection configuration.
@@ -262,6 +294,7 @@ public final class DirectConnectionConfig {
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", connectionMultiplexingEnabled=" + connectionMultiplexingEnabled +
             '}';
     }
 }

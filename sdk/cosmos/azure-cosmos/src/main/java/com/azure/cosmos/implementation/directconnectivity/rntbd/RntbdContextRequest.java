@@ -29,8 +29,8 @@ public final class RntbdContextRequest {
     @JsonProperty
     private final Headers headers;
 
-    RntbdContextRequest(final UUID activityId, final UserAgentContainer userAgent) {
-        this(activityId, new Headers(userAgent));
+    RntbdContextRequest(final UUID activityId, final UserAgentContainer userAgent, final boolean channelMultiplexingEnabled) {
+        this(activityId, new Headers(userAgent, channelMultiplexingEnabled));
     }
 
     private RntbdContextRequest(final UUID activityId, final Headers headers) {
@@ -114,11 +114,15 @@ public final class RntbdContextRequest {
         @JsonProperty
         RntbdToken userAgent;
 
-        Headers(final UserAgentContainer container) {
+        @JsonProperty
+        RntbdToken channelMultiplexingEnabled;
+
+        Headers(final UserAgentContainer container, final boolean channelMultiplexingEnabled) {
             this(Unpooled.EMPTY_BUFFER);
             this.clientVersion.setValue(ClientVersion);
             this.userAgent.setValue(container.getUserAgent());
             this.protocolVersion.setValue(CURRENT_PROTOCOL_VERSION);
+            this.channelMultiplexingEnabled.setValue(channelMultiplexingEnabled);
         }
 
         private Headers(ByteBuf in) {
@@ -128,6 +132,7 @@ public final class RntbdContextRequest {
             this.clientVersion = this.get(RntbdContextRequestHeader.ClientVersion);
             this.protocolVersion = this.get(RntbdContextRequestHeader.ProtocolVersion);
             this.userAgent = this.get(RntbdContextRequestHeader.UserAgent);
+            this.channelMultiplexingEnabled = this.get(RntbdContextRequestHeader.ChannelMultiplexingEnabled);
         }
 
         static Headers decode(final ByteBuf in) {

@@ -221,6 +221,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
+        public boolean isChannelMultiplexingEnabled() {
+            return this.options.isChannelMultiplexingEnabled();
+        }
+
+        @JsonProperty
         public LogLevel wireLogLevel() {
             return this.wireLogLevel;
         }

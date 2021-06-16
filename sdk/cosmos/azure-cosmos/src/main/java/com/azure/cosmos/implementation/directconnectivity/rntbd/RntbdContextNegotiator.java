@@ -25,10 +25,11 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
     private static final Logger logger = LoggerFactory.getLogger(RntbdContextNegotiator.class);
     private final RntbdRequestManager manager;
     private final UserAgentContainer userAgent;
+    private final boolean channelMultiplexingEnabled;
 
     private volatile boolean pendingRntbdContextRequest = true;
 
-    public RntbdContextNegotiator(final RntbdRequestManager manager, final UserAgentContainer userAgent) {
+    public RntbdContextNegotiator(final RntbdRequestManager manager, final UserAgentContainer userAgent, final boolean channelMultiplexingEnabled) {
 
         super(new RntbdContextDecoder(), new RntbdContextRequestEncoder());
 
@@ -37,6 +38,7 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
 
         this.manager = manager;
         this.userAgent = userAgent;
+        this.channelMultiplexingEnabled = channelMultiplexingEnabled;
     }
 
     /**
@@ -74,7 +76,7 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
         logger.debug("{} START CONTEXT REQUEST", context.channel());
 
         final Channel channel = context.channel();
-        final RntbdContextRequest request = new RntbdContextRequest(Utils.randomUUID(), this.userAgent);
+        final RntbdContextRequest request = new RntbdContextRequest(Utils.randomUUID(), this.userAgent, channelMultiplexingEnabled);
         final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.rntbdContextRequestFuture();
 
         super.write(context, request, channel.newPromise().addListener((ChannelFutureListener)future -> {

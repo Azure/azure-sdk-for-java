@@ -106,7 +106,8 @@ public final class RntbdConstants {
 
         ProtocolVersion((short) 0x0000, RntbdTokenType.ULong, true),
         ClientVersion((short) 0x0001, RntbdTokenType.SmallString, true),
-        UserAgent((short) 0x0002, RntbdTokenType.SmallString, true);
+        UserAgent((short) 0x0002, RntbdTokenType.SmallString, true),
+        ChannelMultiplexingEnabled((short) 0x0004, RntbdTokenType.Byte, true);
 
         public static final ImmutableMap<Short, RntbdContextRequestHeader> map;
         public static final ImmutableSet<RntbdContextRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdContextRequestHeader.class));

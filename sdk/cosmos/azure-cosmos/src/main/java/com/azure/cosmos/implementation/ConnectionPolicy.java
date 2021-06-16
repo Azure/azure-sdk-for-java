@@ -22,6 +22,8 @@ public final class ConnectionPolicy {
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();
 
+    private boolean channelMultiplexingEnabled;
+
     private ConnectionMode connectionMode;
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
@@ -44,8 +46,6 @@ public final class ConnectionPolicy {
     private int maxRequestsPerConnection;
 
     private boolean tcpConnectionEndpointRediscoveryEnabled;
-
-
     private boolean clientTelemetryEnabled;
 
     /**
@@ -69,6 +69,7 @@ public final class ConnectionPolicy {
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
+        this.channelMultiplexingEnabled = directConnectionConfig.isConnectionMultiplexingEnabled();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -91,6 +92,10 @@ public final class ConnectionPolicy {
         return this.tcpConnectionEndpointRediscoveryEnabled;
     }
 
+    public boolean isChannelMultiplexingEnabled() {
+        return this.channelMultiplexingEnabled;
+    }
+
     /**
      * Sets a value that indicates whether Direct TCP connection endpoint rediscovery is enabled.
      *
@@ -100,7 +105,6 @@ public final class ConnectionPolicy {
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         return this;
     }
-
 
     /**
      * Gets the default connection policy.
