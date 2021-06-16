@@ -51,6 +51,8 @@
     <azure.identity.version>1.3.1</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     <azure.eventhub.version>5.7.1</azure.eventhub.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     <azure.eventhub.checkpoint.version>1.7.1</azure.eventhub.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+    <azure.eventhub.version>5.8.0</azure.eventhub.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+    <azure.eventhub.checkpoint.version>1.8.0</azure.eventhub.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     <azure.servicebus.version>3.6.1</azure.servicebus.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;external_dependency} -->
     <azure.core.serializer.json.jackson.version>1.2.4</azure.core.serializer.json.jackson.version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
     <azure.storage.queue.version>12.10.0</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
