@@ -121,8 +121,7 @@ public class PartitionScopeThresholds<TContext> {
             }
         }
 
-        // TODO @fabianm - change to DEBUG after testing
-        logger.info(
+        logger.debug(
             "Reevaluated thresholds for PKRange '{}#{}' (TotalCount: {}, CurrentCount: {}, CurrentRetryCount: {}, " +
                 "CurrentRetryRate: {} - BatchSize {} -> {}, OnlyUpscale: {})",
             this.pkRangeId,
