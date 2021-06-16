@@ -143,8 +143,8 @@ receiving [`ServiceBusMessage`][ServiceBusMessage] from a specific queue or topi
 
 ## Examples
  - [Send messages](#send-messages)
- - [Receive messages and renew lock](#receive-messages-and-renew-lock)
- - [Settle messages](#settle-messages)
+ - [Receive messages and renew lock](#receive-messages)
+ - [Settle messages](#send-and-receive-from-session-enabled-queues-or-topics)
  - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics)
  - [Create a dead-letter queue Receiver](#create-a-dead-letter-queue-receiver)
  - [Sharing a connection between clients](#sharing-of-connection-between-clients)
