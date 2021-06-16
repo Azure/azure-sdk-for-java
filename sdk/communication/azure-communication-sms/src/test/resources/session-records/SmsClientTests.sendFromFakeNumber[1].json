@@ -3,18 +3,20 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/sms?api-version=2021-03-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-sms/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93c611f5-945c-4d98-a16d-5c0092193737",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Processing-Time" : "15ms",
-      "MS-CV" : "A/rjWyxBNkCQmzAg3as6ow.0",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "X-Processing-Time" : "16ms",
+      "MS-CV" : "/Z4B9LL2tECOTLDcpbc4yA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0OsSVYAAAAAA89MgfAlUhS5N3eAY1b1N0TEFYRURHRTEyMDgAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0jL/DYAAAAAApMvA7vIwJQbt3oe4iATexWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "400",
       "Body" : "{\"From\":[\"Invalid From phone number format\"]}",
-      "Date" : "Fri, 07 May 2021 22:50:33 GMT",
+      "Date" : "Fri, 11 Jun 2021 19:54:52 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

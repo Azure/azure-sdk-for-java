@@ -10,6 +10,9 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.util.Assert;
 
+/**
+ * Properties for Monitoring an Azure App Configuratin Store.
+ */
 public class AppConfigurationStoreMonitoring {
 
     private boolean enabled = false;
@@ -107,6 +110,9 @@ public class AppConfigurationStoreMonitoring {
         Assert.isTrue(featureFlagRefreshInterval.getSeconds() >= 1, "Minimum Feature Flag refresh interval time is 1 Second.");
     }
 
+    /**
+     * Push Notification tokens for setting watch interval to 0.
+     */
     public static class PushNotification {
 
         private AccessToken primaryToken = new AccessToken();
@@ -142,6 +148,9 @@ public class AppConfigurationStoreMonitoring {
         }
     }
 
+    /**
+     * Token used to verifying Push Refresh Requests
+     */
     public static class AccessToken {
 
         private String name;

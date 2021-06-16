@@ -18,6 +18,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -292,6 +293,7 @@ public final class CommunicationIdentityClientBuilder {
         }
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
+        policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
         // auth policy is per request, should be after retry

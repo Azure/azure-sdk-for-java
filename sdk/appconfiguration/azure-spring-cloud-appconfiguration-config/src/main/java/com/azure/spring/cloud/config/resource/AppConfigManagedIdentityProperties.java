@@ -4,6 +4,9 @@ package com.azure.spring.cloud.config.resource;
 
 import org.springframework.lang.Nullable;
 
+/**
+ * Managed Identity information for connecting to Azure App Configuration Stores.
+ */
 public class AppConfigManagedIdentityProperties {
 
     @Nullable

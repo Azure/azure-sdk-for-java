@@ -82,6 +82,13 @@ public final class AzureMySqlSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureMySqlSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
