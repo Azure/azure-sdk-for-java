@@ -40,7 +40,7 @@ public class SpecificPathCertificatesTest {
     }
 
     @Test
-    public void testGetFileSystemCertificate() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    public void testGetSpecificPathCertificate() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         System.setProperty("azure.cert-path.custom", getFilePath("custom"));
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         Assertions.assertNotNull(keyStore.getCertificate("sideload"));
@@ -63,9 +63,9 @@ public class SpecificPathCertificatesTest {
         System.setProperty("azure.cert-path.custom", getFilePath("custom\\"));
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
         ks.engineLoad(null);
-        X509Certificate fileSystemCertificate = getCertificateByFile(new File(getFilePath("custom\\sideload2.pem")));
+        X509Certificate specificPathCertificate = getCertificateByFile(new File(getFilePath("custom\\sideload2.pem")));
         X509Certificate classPathCertificate = getCertificateByFile(new File(getFilePath("keyvault\\sideload2.pem")));
-        assertEquals(fileSystemCertificate, ks.engineGetCertificate("sideload2"));
+        assertEquals(specificPathCertificate, ks.engineGetCertificate("sideload2"));
         assertNotEquals(classPathCertificate, ks.engineGetCertificate("sideload2"));
 
     }

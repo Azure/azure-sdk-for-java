@@ -84,6 +84,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
      */
     private SpecificPathCertificates(String certificatePath) {
         this.certificatePath = certificatePath;
+        loadCertificatesFromSpecificPath();
     }
 
     /**
@@ -128,7 +129,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
     /**
      * Load certificates in the file directory
      */
-    void loadCertificatesFromFileSystem() {
+    private void loadCertificatesFromSpecificPath() {
         try {
             List<File> files = getFiles();
             for (File file : files) {
@@ -178,7 +179,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
      * @param path certificate path, which works only in first time
      * @return file certificate
      */
-    public static synchronized SpecificPathCertificates getFileSystemCertificates(String path) {
+    public static synchronized SpecificPathCertificates getSpecificPathCertificates(String path) {
         SpecificPathCertificates result = CACHE.getOrDefault(path, null);
         if (result == null) {
             result = new SpecificPathCertificates(path);

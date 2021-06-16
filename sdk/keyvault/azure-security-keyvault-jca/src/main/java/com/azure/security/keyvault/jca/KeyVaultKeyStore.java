@@ -132,8 +132,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .map(Boolean::parseBoolean)
             .orElse(false);
         jreCertificates = JreCertificates.getInstance();
-        wellKnowCertificates = SpecificPathCertificates.getFileSystemCertificates(wellKnowPath);
-        customCertificates = SpecificPathCertificates.getFileSystemCertificates(customPath);
+        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
+        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
@@ -256,17 +256,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             }
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
-        loadCertificates();
+        classpathCertificates.loadCertificatesFromClasspath();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
-        loadCertificates();
-    }
-
-    private void loadCertificates() {
-        wellKnowCertificates.loadCertificatesFromFileSystem();
-        customCertificates.loadCertificatesFromFileSystem();
         classpathCertificates.loadCertificatesFromClasspath();
     }
 

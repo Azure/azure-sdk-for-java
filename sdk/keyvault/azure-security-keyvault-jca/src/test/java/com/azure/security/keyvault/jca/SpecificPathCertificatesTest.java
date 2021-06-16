@@ -17,8 +17,7 @@ public class SpecificPathCertificatesTest {
 
     @Test
     public void testSetCertificateEntry() {
-        specificPathCertificates = SpecificPathCertificates.getFileSystemCertificates(getFilePath("custom\\"));
-        specificPathCertificates.loadCertificatesFromFileSystem();
+        specificPathCertificates = SpecificPathCertificates.getSpecificPathCertificates(getFilePath("custom\\"));
         Assertions.assertTrue(specificPathCertificates.getAliases().contains("sideload"));
     }
 }
