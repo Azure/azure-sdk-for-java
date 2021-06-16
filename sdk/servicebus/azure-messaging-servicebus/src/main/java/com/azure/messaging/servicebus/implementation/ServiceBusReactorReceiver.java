@@ -250,7 +250,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
                     error, handler.getErrorContext(receiver)));
             }
-        });
+        }).cache().then(Mono.empty());  // cache because closeAsync use `when` to subscribe this Mono again.
 
         workItem.setMono(result);
 
@@ -362,7 +362,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         });
     }
 
-    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error) {
+    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Object> sink, Throwable error) {
         final boolean isSettled = delivery != null && delivery.remotelySettled();
         if (isSettled) {
             delivery.settle();
@@ -392,7 +392,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
         private Mono<Void> mono;
         private Instant expirationTime;
-        private MonoSink<Void> sink;
+        private MonoSink<Object> sink;
         private Throwable throwable;
 
         private UpdateDispositionWorkItem(String lockToken, DeliveryState state, Duration timeout) {
@@ -429,11 +429,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             return mono;
         }
 
-        private MonoSink<Void> getSink() {
+        private MonoSink<Object> getSink() {
             return sink;
         }
 
-        private void start(MonoSink<Void> sink) {
+        private void start(MonoSink<Object> sink) {
             Objects.requireNonNull(sink, "'sink' cannot be null.");
             this.sink = sink;
             this.sink.onDispose(() -> isDisposed.set(true));
