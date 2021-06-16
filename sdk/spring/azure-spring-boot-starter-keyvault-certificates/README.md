@@ -317,8 +317,11 @@ KeyVaultCertificates.refreshCertsInfo();
 ```
 
 ### Specific path certificates
-This starter also allows you to load the certificate in the specific path as
-trusted certificates if following property is configured.
+AzureKeyVault keystore will load certificates in the specific path:
+
+well-know path: /etc/certs/well-known/
+custom path: /etc/certs/custom/
+The 2 paths can be configured by these propreties:
 
 ```yaml
 azure:
@@ -329,8 +332,7 @@ azure:
 
 ### Classpath certificates
 
-This starter allows you to load certificates as classpath certificates by supplying them as part of
-the application. 
+AzureKeyVault keystore will load certificates in the classpath.
 
 Add the certificates to `src/main/resources/keyvault` as classpath certificates.
 
