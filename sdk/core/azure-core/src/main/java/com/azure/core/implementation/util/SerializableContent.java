@@ -16,6 +16,8 @@ public final class SerializableContent extends RequestContent {
     private final Object serializable;
     private final ObjectSerializer objectSerializer;
 
+    private byte[] serializedObject;
+
     /**
      * Creates a new instance of {@link SerializableContent}.
      *
@@ -29,7 +31,15 @@ public final class SerializableContent extends RequestContent {
 
     @Override
     public Flux<ByteBuffer> asFluxByteBuffer() {
-        return Flux.defer(() -> objectSerializer.serializeToBytesAsync(serializable).map(ByteBuffer::wrap));
+        if (serializedObject == null) {
+            synchronized (serializable) {
+                if (serializedObject == null) {
+                    serializedObject = objectSerializer.serializeToBytes(serializable);
+                }
+            }
+        }
+
+        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(serializedObject)));
     }
 
     @Override
