@@ -34,6 +34,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlContainerGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentGetResultsInner;
@@ -42,6 +43,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlStoredProcedureGetResul
 import com.azure.resourcemanager.cosmos.fluent.models.SqlTriggerGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlUserDefinedFunctionGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerListResult;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
@@ -712,6 +714,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
+                + "/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
+                + "/retrieveContinuousBackupInformation")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ContinuousBackupRestoreLocation location,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -10362,5 +10383,373 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(
         String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(listSqlRoleAssignmentsAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        } else {
+            location.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .retrieveContinuousBackupInformation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            location,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        } else {
+            location.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .retrieveContinuousBackupInformation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                location,
+                accept,
+                context);
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, location);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                context);
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location) {
+        return retrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location)
+            .block();
+    }
+
+    /**
+     * Retrieves continuous backup information for a container resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return retrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context)
+            .block();
     }
 }
