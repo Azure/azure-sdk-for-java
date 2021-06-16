@@ -82,6 +82,13 @@ public final class OdbcSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OdbcSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
