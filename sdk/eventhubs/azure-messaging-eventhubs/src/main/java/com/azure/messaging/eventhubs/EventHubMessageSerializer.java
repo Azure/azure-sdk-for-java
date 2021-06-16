@@ -5,6 +5,11 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.models.AmqpAddress;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpMessageHeader;
+import com.azure.core.amqp.models.AmqpMessageId;
+import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -18,11 +23,16 @@ import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Footer;
+import org.apache.qpid.proton.amqp.messaging.Header;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC;
@@ -39,6 +51,8 @@ import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MAN
  * Utility class for converting {@link EventData} to {@link Message}.
  */
 class EventHubMessageSerializer implements MessageSerializer {
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+
     private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
     private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
         Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
@@ -107,14 +121,93 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         final EventData eventData = (EventData) object;
         final Message message = Proton.message();
+        final byte[] body = eventData.getBody();
+
+        //TODO (conniey): support AMQP sequence and AMQP value.
+        message.setBody(new Data(new Binary(body)));
 
         if (eventData.getProperties() != null && !eventData.getProperties().isEmpty()) {
             message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
         }
 
-        setSystemProperties(eventData, message);
+        if (eventData.getTimeToLive() != null) {
+            message.setTtl(eventData.getTimeToLive().toMillis());
+        }
 
-        message.setBody(new Data(new Binary(eventData.getBody())));
+        if (message.getProperties() == null) {
+            message.setProperties(new Properties());
+        }
+
+        message.setMessageId(eventData.getMessageId());
+        message.setContentType(eventData.getContentType());
+        message.setCorrelationId(eventData.getCorrelationId());
+        message.setSubject(eventData.getSubject());
+        message.setReplyTo(eventData.getReplyTo());
+        message.setReplyToGroupId(eventData.getReplyToSessionId());
+        message.setGroupId(eventData.getSessionId());
+
+        final AmqpMessageProperties brokeredProperties = eventData.getRawAmqpMessage().getProperties();
+
+        message.setContentEncoding(brokeredProperties.getContentEncoding());
+        if (brokeredProperties.getGroupSequence() != null) {
+            message.setGroupSequence(brokeredProperties.getGroupSequence());
+        }
+        message.getProperties().setTo(eventData.getTo());
+        message.getProperties().setUserId(new Binary(brokeredProperties.getUserId()));
+
+        if (brokeredProperties.getAbsoluteExpiryTime() != null) {
+            message.getProperties().setAbsoluteExpiryTime(Date.from(brokeredProperties.getAbsoluteExpiryTime()
+                .toInstant()));
+        }
+        if (brokeredProperties.getCreationTime() != null) {
+            message.getProperties().setCreationTime(Date.from(brokeredProperties.getCreationTime().toInstant()));
+        }
+
+        //set footer
+        message.setFooter(new Footer(eventData.getRawAmqpMessage().getFooter()));
+
+        //set header
+        AmqpMessageHeader header = eventData.getRawAmqpMessage().getHeader();
+        if (header.getDeliveryCount() != null) {
+            message.setDeliveryCount(header.getDeliveryCount());
+        }
+        if (header.getPriority() != null) {
+            message.setPriority(header.getPriority());
+        }
+        if (header.isDurable() != null) {
+            message.setDurable(header.isDurable());
+        }
+        if (header.isFirstAcquirer() != null) {
+            message.setFirstAcquirer(header.isFirstAcquirer());
+        }
+        if (header.getTimeToLive() != null) {
+            message.setTtl(header.getTimeToLive().toMillis());
+        }
+
+        final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
+        if (eventData.getScheduledEnqueueTime() != null) {
+            messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue()),
+                Date.from(eventData.getScheduledEnqueueTime().toInstant()));
+        }
+
+        final String partitionKey = eventData.getPartitionKey();
+        if (partitionKey != null && !partitionKey.isEmpty()) {
+            messageAnnotationsMap.put(Symbol.valueOf(PARTITION_KEY_ANNOTATION_NAME.getValue()),
+                eventData.getPartitionKey());
+        }
+
+        message.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
+
+        // Set Delivery Annotations.
+        final Map<Symbol, Object> deliveryAnnotationsMap = new HashMap<>();
+
+        final Map<String, Object> deliveryAnnotations = eventData.getRawAmqpMessage()
+            .getDeliveryAnnotations();
+        for (Map.Entry<String, Object> deliveryEntry : deliveryAnnotations.entrySet()) {
+            deliveryAnnotationsMap.put(Symbol.valueOf(deliveryEntry.getKey()), deliveryEntry.getValue());
+        }
+
+        message.setDeliveryAnnotations(new DeliveryAnnotations(deliveryAnnotationsMap));
 
         return message;
     }
@@ -192,51 +285,114 @@ class EventHubMessageSerializer implements MessageSerializer {
     }
 
     private EventData deserializeEventData(Message message) {
-        final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
-        final HashMap<String, Object> receiveProperties = new HashMap<>();
-
-        for (Map.Entry<Symbol, Object> annotation : messageAnnotations.entrySet()) {
-            receiveProperties.put(annotation.getKey().toString(), annotation.getValue());
-        }
-
-        if (message.getProperties() != null) {
-            addMapEntry(receiveProperties, AmqpMessageConstant.MESSAGE_ID, message.getMessageId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.USER_ID, message.getUserId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.TO, message.getAddress());
-            addMapEntry(receiveProperties, AmqpMessageConstant.SUBJECT, message.getSubject());
-            addMapEntry(receiveProperties, AmqpMessageConstant.REPLY_TO, message.getReplyTo());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CORRELATION_ID, message.getCorrelationId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CONTENT_TYPE, message.getContentType());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CONTENT_ENCODING, message.getContentEncoding());
-            addMapEntry(receiveProperties, AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CREATION_TIME, message.getCreationTime());
-            addMapEntry(receiveProperties, AmqpMessageConstant.GROUP_ID, message.getGroupId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
-            addMapEntry(receiveProperties, AmqpMessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
-        }
-
-        final Section bodySection = message.getBody();
-        byte[] body;
-        if (bodySection instanceof Data) {
-            Data bodyData = (Data) bodySection;
-            body = bodyData.getValue().getArray();
+        final byte[] bytes;
+        final Section body = message.getBody();
+        if (body != null) {
+            //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
+            if (body instanceof Data) {
+                final Binary messageData = ((Data) body).getValue();
+                bytes = messageData.getArray();
+            } else {
+                logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
+                bytes = EMPTY_BYTE_ARRAY;
+            }
         } else {
-            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE,
-                bodySection != null ? bodySection.getType() : "null"));
-
-            body = new byte[0];
+            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
+            bytes = EMPTY_BYTE_ARRAY;
         }
 
-        final EventData.SystemProperties systemProperties = new EventData.SystemProperties(receiveProperties);
-        final EventData eventData = new EventData(BinaryData.fromBytes(body), systemProperties, Context.NONE);
-        final Map<String, Object> properties = message.getApplicationProperties() == null
-            ? new HashMap<>()
-            : message.getApplicationProperties().getValue();
+        final EventData brokeredMessage = new EventData(BinaryData.fromBytes(bytes));
+        AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getRawAmqpMessage();
 
-        properties.forEach((key, value) -> eventData.getProperties().put(key, value));
+        // Application properties
+        ApplicationProperties applicationProperties = message.getApplicationProperties();
+        if (applicationProperties != null) {
+            final Map<String, Object> propertiesValue = applicationProperties.getValue();
+            brokeredAmqpAnnotatedMessage.getApplicationProperties().putAll(propertiesValue);
+        }
 
-        message.clear();
-        return eventData;
+        // Header
+        // Footer
+        final Header header = message.getHeader();
+        if (header != null) {
+            final AmqpMessageHeader brokeredHeader = brokeredAmqpAnnotatedMessage.getHeader();
+            brokeredHeader.setTimeToLive(Duration.ofMillis(message.getTtl()));
+            brokeredHeader.setDeliveryCount(message.getDeliveryCount());
+            brokeredHeader.setDurable(message.getHeader().getDurable());
+            brokeredHeader.setFirstAcquirer(message.getHeader().getFirstAcquirer());
+            brokeredHeader.setPriority(message.getPriority());
+        }
+
+        // Footer
+        final Footer footer = message.getFooter();
+        if (footer != null && footer.getValue() != null) {
+            @SuppressWarnings("unchecked") final Map<Symbol, Object> footerValue = footer.getValue();
+            setValues(footerValue, brokeredAmqpAnnotatedMessage.getFooter());
+
+        }
+
+        // Properties
+        final AmqpMessageProperties brokeredProperties = brokeredAmqpAnnotatedMessage.getProperties();
+        brokeredProperties.setReplyToGroupId(message.getReplyToGroupId());
+        final String replyTo = message.getReplyTo();
+        if (replyTo != null) {
+            brokeredProperties.setReplyTo(new AmqpAddress(message.getReplyTo()));
+        }
+        final Object messageId = message.getMessageId();
+        if (messageId != null) {
+            brokeredProperties.setMessageId(new AmqpMessageId(messageId.toString()));
+        }
+
+        brokeredProperties.setContentType(message.getContentType());
+        final Object correlationId = message.getCorrelationId();
+        if (correlationId != null) {
+            brokeredProperties.setCorrelationId(new AmqpMessageId(correlationId.toString()));
+        }
+
+        final Properties amqpProperties = message.getProperties();
+        if (amqpProperties != null) {
+            final String to = amqpProperties.getTo();
+            if (to != null) {
+                brokeredProperties.setTo(new AmqpAddress(amqpProperties.getTo()));
+            }
+
+            if (amqpProperties.getAbsoluteExpiryTime() != null) {
+                brokeredProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()
+                    .atOffset(ZoneOffset.UTC));
+            }
+            if (amqpProperties.getCreationTime() != null) {
+                brokeredProperties.setCreationTime(amqpProperties.getCreationTime().toInstant()
+                    .atOffset(ZoneOffset.UTC));
+            }
+        }
+
+        brokeredProperties.setSubject(message.getSubject());
+        brokeredProperties.setGroupId(message.getGroupId());
+        brokeredProperties.setContentEncoding(message.getContentEncoding());
+        brokeredProperties.setGroupSequence(message.getGroupSequence());
+        brokeredProperties.setUserId(message.getUserId());
+
+        // DeliveryAnnotations
+        final DeliveryAnnotations deliveryAnnotations = message.getDeliveryAnnotations();
+        if (deliveryAnnotations != null) {
+            setValues(deliveryAnnotations.getValue(), brokeredAmqpAnnotatedMessage.getDeliveryAnnotations());
+        }
+
+        // Message Annotations
+        final MessageAnnotations messageAnnotations = message.getMessageAnnotations();
+        if (messageAnnotations != null) {
+            setValues(messageAnnotations.getValue(), brokeredAmqpAnnotatedMessage.getMessageAnnotations());
+        }
+
+        return brokeredMessage;
+    }
+
+    private void setValues(Map<Symbol, Object> sourceMap, Map<String, Object> targetMap) {
+        if (sourceMap != null) {
+            for (Map.Entry<Symbol, Object> entry : sourceMap.entrySet()) {
+                targetMap.put(entry.getKey().toString(), entry.getValue());
+            }
+        }
     }
 
     private EventHubProperties toEventHubProperties(Map<?, ?> amqpBody) {
@@ -292,78 +448,6 @@ class EventHubMessageSerializer implements MessageSerializer {
     private Instant getDate(Map<?, ?> amqpBody, String key) {
         final Date value = getValue(amqpBody, key, Date.class);
         return value.toInstant();
-    }
-
-    /*
-     * Sets AMQP protocol header values on the AMQP message.
-     */
-    private static void setSystemProperties(EventData eventData, Message message) {
-        if (eventData.getSystemProperties() == null || eventData.getSystemProperties().isEmpty()) {
-            return;
-        }
-
-        eventData.getSystemProperties().forEach((key, value) -> {
-            if (EventData.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
-                return;
-            }
-
-            final AmqpMessageConstant constant = AmqpMessageConstant.fromString(key);
-
-            if (constant != null) {
-                switch (constant) {
-                    case MESSAGE_ID:
-                        message.setMessageId(value);
-                        break;
-                    case USER_ID:
-                        message.setUserId((byte[]) value);
-                        break;
-                    case TO:
-                        message.setAddress((String) value);
-                        break;
-                    case SUBJECT:
-                        message.setSubject((String) value);
-                        break;
-                    case REPLY_TO:
-                        message.setReplyTo((String) value);
-                        break;
-                    case CORRELATION_ID:
-                        message.setCorrelationId(value);
-                        break;
-                    case CONTENT_TYPE:
-                        message.setContentType((String) value);
-                        break;
-                    case CONTENT_ENCODING:
-                        message.setContentEncoding((String) value);
-                        break;
-                    case ABSOLUTE_EXPIRY_TIME:
-                        message.setExpiryTime((long) value);
-                        break;
-                    case CREATION_TIME:
-                        message.setCreationTime((long) value);
-                        break;
-                    case GROUP_ID:
-                        message.setGroupId((String) value);
-                        break;
-                    case GROUP_SEQUENCE:
-                        message.setGroupSequence((long) value);
-                        break;
-                    case REPLY_TO_GROUP_ID:
-                        message.setReplyToGroupId((String) value);
-                        break;
-                    default:
-                        throw new IllegalArgumentException(
-                            String.format(
-                                "Property is not a recognized reserved property name: %s",
-                                key));
-                }
-            } else {
-                final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                message.setMessageAnnotations(messageAnnotations);
-            }
-        });
     }
 
     private static int getPayloadSize(Message msg) {
@@ -437,13 +521,6 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,
             obj.getClass()));
-    }
 
-    private static void addMapEntry(Map<String, Object> map, AmqpMessageConstant key, Object content) {
-        if (content == null) {
-            return;
-        }
-
-        map.put(key.getValue(), content);
     }
 }

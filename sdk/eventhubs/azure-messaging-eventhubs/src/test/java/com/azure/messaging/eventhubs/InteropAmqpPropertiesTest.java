@@ -125,47 +125,47 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
     private void validateAmqpProperties(Message message, Map<Symbol, Object> messageAnnotations,
                                         Map<String, Object> applicationProperties, EventData actual) {
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.MESSAGE_ID.getValue()));
-        Assertions.assertEquals(message.getMessageId(), actual.getSystemProperties().get(AmqpMessageConstant.MESSAGE_ID.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.MESSAGE_ID.getValue()));
+        Assertions.assertEquals(message.getMessageId(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.MESSAGE_ID.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.USER_ID.getValue()));
-        Assertions.assertEquals(new String(message.getUserId()), new String((byte[]) actual.getSystemProperties().get(AmqpMessageConstant.USER_ID.getValue())));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.USER_ID.getValue()));
+        Assertions.assertEquals(new String(message.getUserId()), new String((byte[]) actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.USER_ID.getValue())));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.TO.getValue()));
-        Assertions.assertEquals(message.getAddress(), actual.getSystemProperties().get(AmqpMessageConstant.TO.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.TO.getValue()));
+        Assertions.assertEquals(message.getAddress(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.TO.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CONTENT_TYPE.getValue()));
-        Assertions.assertEquals(message.getContentType(), actual.getSystemProperties().get(AmqpMessageConstant.CONTENT_TYPE.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.CONTENT_TYPE.getValue()));
+        Assertions.assertEquals(message.getContentType(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.CONTENT_TYPE.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CONTENT_ENCODING.getValue()));
-        Assertions.assertEquals(message.getContentEncoding(), actual.getSystemProperties().get(AmqpMessageConstant.CONTENT_ENCODING.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.CONTENT_ENCODING.getValue()));
+        Assertions.assertEquals(message.getContentEncoding(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.CONTENT_ENCODING.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CORRELATION_ID.getValue()));
-        Assertions.assertEquals(message.getCorrelationId(), actual.getSystemProperties().get(AmqpMessageConstant.CORRELATION_ID.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.CORRELATION_ID.getValue()));
+        Assertions.assertEquals(message.getCorrelationId(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.CORRELATION_ID.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.CREATION_TIME.getValue()));
-        Assertions.assertEquals(message.getCreationTime(), actual.getSystemProperties().get(AmqpMessageConstant.CREATION_TIME.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.CREATION_TIME.getValue()));
+        Assertions.assertEquals(message.getCreationTime(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.CREATION_TIME.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.SUBJECT.getValue()));
-        Assertions.assertEquals(message.getSubject(), actual.getSystemProperties().get(AmqpMessageConstant.SUBJECT.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.SUBJECT.getValue()));
+        Assertions.assertEquals(message.getSubject(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.SUBJECT.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.GROUP_ID.getValue()));
-        Assertions.assertEquals(message.getGroupId(), actual.getSystemProperties().get(AmqpMessageConstant.GROUP_ID.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.GROUP_ID.getValue()));
+        Assertions.assertEquals(message.getGroupId(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.GROUP_ID.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue()));
-        Assertions.assertEquals(message.getReplyToGroupId(), actual.getSystemProperties().get(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue()));
+        Assertions.assertEquals(message.getReplyToGroupId(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.REPLY_TO_GROUP_ID.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.REPLY_TO.getValue()));
-        Assertions.assertEquals(message.getReplyTo(), actual.getSystemProperties().get(AmqpMessageConstant.REPLY_TO.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.REPLY_TO.getValue()));
+        Assertions.assertEquals(message.getReplyTo(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.REPLY_TO.getValue()));
 
-        Assertions.assertTrue(actual.getSystemProperties().containsKey(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
-        Assertions.assertEquals(message.getExpiryTime(), actual.getSystemProperties().get(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
+        Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
+        Assertions.assertEquals(message.getExpiryTime(), actual.getRawAmqpMessage().getMessageAnnotations().get(AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
 
         Assertions.assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
 
         messageAnnotations.forEach((key, value) -> {
-            Assertions.assertTrue(actual.getSystemProperties().containsKey(key.toString()));
-            Assertions.assertEquals(value, actual.getSystemProperties().get(key.toString()));
+            Assertions.assertTrue(actual.getRawAmqpMessage().getMessageAnnotations().containsKey(key.toString()));
+            Assertions.assertEquals(value, actual.getRawAmqpMessage().getMessageAnnotations().get(key.toString()));
         });
 
         Assertions.assertEquals(applicationProperties.size(), actual.getProperties().size());

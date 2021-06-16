@@ -3,19 +3,18 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -23,6 +22,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;
+import java.time.temporal.ChronoField;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -213,67 +213,60 @@ public final class EventDataBatch {
             message.setApplicationProperties(applicationProperties);
         }
 
-        if (event.getSystemProperties() != null) {
-            event.getSystemProperties().forEach((key, value) -> {
-                if (EventData.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
-                    return;
-                }
+        if (event.getRawAmqpMessage().getProperties()!= null) {
+            AmqpMessageProperties properties = event.getRawAmqpMessage().getProperties();
+            if (properties.getMessageId() != null) {
+                message.setMessageId(properties.getMessageId());
+            }
 
-                final AmqpMessageConstant constant = AmqpMessageConstant.fromString(key);
+            if (properties.getUserId() != null) {
+                message.setUserId(properties.getUserId());
+            }
 
-                if (constant != null) {
-                    switch (constant) {
-                        case MESSAGE_ID:
-                            message.setMessageId(value);
-                            break;
-                        case USER_ID:
-                            message.setUserId((byte[]) value);
-                            break;
-                        case TO:
-                            message.setAddress((String) value);
-                            break;
-                        case SUBJECT:
-                            message.setSubject((String) value);
-                            break;
-                        case REPLY_TO:
-                            message.setReplyTo((String) value);
-                            break;
-                        case CORRELATION_ID:
-                            message.setCorrelationId(value);
-                            break;
-                        case CONTENT_TYPE:
-                            message.setContentType((String) value);
-                            break;
-                        case CONTENT_ENCODING:
-                            message.setContentEncoding((String) value);
-                            break;
-                        case ABSOLUTE_EXPIRY_TIME:
-                            message.setExpiryTime((long) value);
-                            break;
-                        case CREATION_TIME:
-                            message.setCreationTime((long) value);
-                            break;
-                        case GROUP_ID:
-                            message.setGroupId((String) value);
-                            break;
-                        case GROUP_SEQUENCE:
-                            message.setGroupSequence((long) value);
-                            break;
-                        case REPLY_TO_GROUP_ID:
-                            message.setReplyToGroupId((String) value);
-                            break;
-                        default:
-                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
-                                "Property is not a recognized reserved property name: %s", key)));
-                    }
-                } else {
-                    final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                        ? new MessageAnnotations(new HashMap<>())
-                        : message.getMessageAnnotations();
-                    messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                    message.setMessageAnnotations(messageAnnotations);
-                }
-            });
+            if (properties.getTo() != null) {
+                message.setAddress(properties.getTo().toString());
+            }
+
+            if (properties.getSubject() != null) {
+                message.setSubject(properties.getSubject());
+            }
+
+            if (properties.getReplyTo() != null) {
+                message.setReplyTo(properties.getReplyTo().toString());
+            }
+
+            if (properties.getCorrelationId() != null) {
+                message.setCorrelationId(properties.getCorrelationId());
+            }
+
+            if (properties.getContentType() != null) {
+                message.setContentType(properties.getContentType());
+            }
+
+            if (properties.getContentEncoding() != null) {
+                message.setContentEncoding(properties.getContentEncoding());
+            }
+
+            if (properties.getAbsoluteExpiryTime() != null) {
+                message.setExpiryTime(properties.getAbsoluteExpiryTime().getLong(ChronoField.MILLI_OF_SECOND));
+            }
+
+            if (properties.getCreationTime() != null) {
+                message.setCreationTime(properties.getCreationTime().getLong(ChronoField.MILLI_OF_SECOND));
+            }
+
+            if (properties.getGroupId() != null) {
+                message.setGroupId(properties.getGroupId());
+            }
+
+            if (properties.getGroupSequence() != null) {
+                message.setGroupSequence(properties.getGroupSequence());
+            }
+
+            if (properties.getReplyToGroupId() != null) {
+                message.setReplyToGroupId(properties.getReplyToGroupId());
+            }
+
         }
 
         if (partitionKey != null) {

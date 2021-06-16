@@ -90,8 +90,8 @@ public class EventHubMessageSerializerTest {
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
 
-        Assertions.assertTrue(eventData.getSystemProperties().containsKey(OTHER_SYSTEM_PROPERTY));
-        final Object otherPropertyValue = eventData.getSystemProperties().get(OTHER_SYSTEM_PROPERTY);
+        Assertions.assertTrue(eventData.getRawAmqpMessage().getMessageAnnotations().containsKey(OTHER_SYSTEM_PROPERTY));
+        final Object otherPropertyValue = eventData.getRawAmqpMessage().getMessageAnnotations().get(OTHER_SYSTEM_PROPERTY);
         Assertions.assertTrue(otherPropertyValue instanceof Boolean);
         Assertions.assertTrue((Boolean) otherPropertyValue);
 

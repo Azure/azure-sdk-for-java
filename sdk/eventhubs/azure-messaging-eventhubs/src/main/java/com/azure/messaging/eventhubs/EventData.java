@@ -3,25 +3,32 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.models.AmqpAddress;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
+import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -48,26 +55,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see EventHubProducerAsyncClient
  */
 public class EventData {
-    /*
-     * These are properties owned by the service and set when a message is received.
-     */
-    static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
-    private final Map<String, Object> properties;
+    private static final int MAX_MESSAGE_ID_LENGTH = 128;
+    private static final int MAX_PARTITION_KEY_LENGTH = 128;
+    private static final int MAX_SESSION_ID_LENGTH = 128;
+
     private final BinaryData body;
-    private final SystemProperties systemProperties;
+    private final AmqpAnnotatedMessage amqpAnnotatedMessage;
+    private final ClientLogger logger = new ClientLogger(EventData.class);
+
     private Context context;
-
-    static {
-        final Set<String> properties = new HashSet<>();
-        properties.add(OFFSET_ANNOTATION_NAME.getValue());
-        properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
-        properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
-        properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-        properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
-
-        RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
-    }
 
     /**
      * Creates an event containing the {@code body}.
@@ -119,8 +116,19 @@ public class EventData {
     EventData(BinaryData body, SystemProperties systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
-        this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
-        this.properties = new HashMap<>();
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
+        if (systemProperties.getOffset() != null) {
+            amqpAnnotatedMessage.getMessageAnnotations().put(OFFSET_ANNOTATION_NAME.getValue(), systemProperties.getOffset());
+        }
+        if (systemProperties.getEnqueuedTime()!= null) {
+            amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), systemProperties.getEnqueuedTime());
+        }
+        if (systemProperties.getPartitionKey() != null) {
+            amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), systemProperties.getPartitionKey());
+        }
+        if (systemProperties.getSequenceNumber() != null) {
+            amqpAnnotatedMessage.getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), systemProperties.getSequenceNumber());
+        }
     }
 
     /**
@@ -136,18 +144,7 @@ public class EventData {
      * @return Application properties associated with this {@link EventData}.
      */
     public Map<String, Object> getProperties() {
-        return properties;
-    }
-
-    /**
-     * Properties that are populated by Event Hubs service. As these are populated by the Event Hubs service, they are
-     * only present on a <b>received</b> {@link EventData}.
-     *
-     * @return An encapsulation of all system properties appended by EventHubs service into {@link EventData}.
-     *     {@code null} if the {@link EventData} is not received from the Event Hubs service.
-     */
-    public Map<String, Object> getSystemProperties() {
-        return systemProperties;
+        return amqpAnnotatedMessage.getApplicationProperties();
     }
 
     /**
@@ -162,8 +159,20 @@ public class EventData {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
-        return body.toBytes();
+        final AmqpMessageBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
+        switch (type) {
+            case DATA:
+                return amqpAnnotatedMessage.getBody().getFirstData();
+            case SEQUENCE:
+            case VALUE:
+                throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
+                    + type.toString()));
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
+                    + type.toString()));
+        }
     }
+
 
     /**
      * Returns event data as UTF-8 decoded string.
@@ -191,7 +200,10 @@ public class EventData {
      *     was not received from Event Hubs service.
      */
     public Long getOffset() {
-        return systemProperties.getOffset();
+        Object value = amqpAnnotatedMessage.getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue());
+        return value != null
+            ? value instanceof String ? Long.parseLong((String)value) : (Long) value
+            : null;
     }
 
     /**
@@ -203,7 +215,7 @@ public class EventData {
      *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
      */
     public String getPartitionKey() {
-        return systemProperties.getPartitionKey();
+        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue());
     }
 
     /**
@@ -214,7 +226,10 @@ public class EventData {
      *     was not received from Event Hubs service.
      */
     public Instant getEnqueuedTime() {
-        return systemProperties.getEnqueuedTime();
+        Object value = amqpAnnotatedMessage.getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+        return value != null
+            ? ((Date) value).toInstant()
+            : null;
     }
 
     /**
@@ -226,7 +241,10 @@ public class EventData {
      *     Hubs service.
      */
     public Long getSequenceNumber() {
-        return systemProperties.getSequenceNumber();
+        Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+        return value != null
+            ? (Long) value
+            : null;
     }
 
     /**
@@ -276,6 +294,435 @@ public class EventData {
         this.context = context.addData(key, value);
 
         return this;
+    }
+
+    /**
+     * Gets the content type of the message.
+     *
+     * <p>
+     * Optionally describes the payload of the message, with a descriptor following the format of RFC2045, Section 5,
+     * for example "application/json".
+     * </p>
+     * @return The content type of the {@link EventData}.
+     */
+    public String getContentType() {
+        return amqpAnnotatedMessage.getProperties().getContentType();
+    }
+
+    /**
+     * Sets the content type of the {@link EventData}.
+     *
+     * <p>
+     * Optionally describes the payload of the message, with a descriptor following the format of RFC2045, Section 5,
+     * for example "application/json".
+     * </p>
+     *
+     * @param contentType RFC2045 Content-Type descriptor of the message.
+     *
+     * @return The updated {@link EventData}.
+     */
+    public EventData setContentType(String contentType) {
+        amqpAnnotatedMessage.getProperties().setContentType(contentType);
+        return this;
+    }
+
+    /**
+     * Gets a correlation identifier.
+     * <p>
+     * Allows an application to specify a context for the message for the purposes of correlation, for example
+     * reflecting the MessageId of a message that is being replied to.
+     * </p>
+     *
+     * @return The correlation id of this message.
+     */
+    public String getCorrelationId() {
+        String correlationId = null;
+        AmqpMessageId amqpCorrelationId = amqpAnnotatedMessage.getProperties().getCorrelationId();
+        if (amqpCorrelationId != null) {
+            correlationId = amqpCorrelationId.toString();
+        }
+        return correlationId;
+    }
+
+    /**
+     * Sets a correlation identifier.
+     *
+     * @param correlationId correlation id of this message
+     *
+     * @return The updated {@link EventData}.
+     * @see #getCorrelationId()
+     */
+    public EventData setCorrelationId(String correlationId) {
+        AmqpMessageId id = null;
+        if (correlationId != null) {
+            id = new AmqpMessageId(correlationId);
+        }
+        amqpAnnotatedMessage.getProperties().setCorrelationId(id);
+        return this;
+    }
+
+    /**
+     * Gets the message id.
+     *
+     * <p>
+     * The message identifier is an application-defined value that uniquely identifies the message and its payload. The
+     * identifier is a free-form string and can reflect a GUID or an identifier derived from the application context.
+     * </p>
+     *
+     * @return Id of the {@link EventData}.
+     */
+    public byte[] getUserId() {
+        return amqpAnnotatedMessage.getProperties().getUserId();
+    }
+
+    /**
+     * Sets the message id.
+     *
+     * @param userId The message id to be set.
+     *
+     * @return The updated {@link EventData}.
+     * @throws IllegalArgumentException if {@code messageId} is too long.
+     */
+    public EventData setUserId(byte[] userId) {
+        amqpAnnotatedMessage.getProperties().setUserId(userId);
+        return this;
+    }
+
+    /**
+     * Gets the message id.
+     *
+     * <p>
+     * The message identifier is an application-defined value that uniquely identifies the message and its payload. The
+     * identifier is a free-form string and can reflect a GUID or an identifier derived from the application context.
+     * </p>
+     *
+     * @return Id of the {@link EventData}.
+     */
+    public String getMessageId() {
+        String messageId = null;
+        AmqpMessageId amqpMessageId = amqpAnnotatedMessage.getProperties().getMessageId();
+        if (amqpMessageId != null) {
+            messageId = amqpMessageId.toString();
+        }
+        return messageId;
+    }
+
+    /**
+     * Sets the message id.
+     *
+     * @param messageId The message id to be set.
+     *
+     * @return The updated {@link EventData}.
+     * @throws IllegalArgumentException if {@code messageId} is too long.
+     */
+    public EventData setMessageId(String messageId) {
+        checkIdLength("messageId", messageId, MAX_MESSAGE_ID_LENGTH);
+        AmqpMessageId id = null;
+        if (messageId != null) {
+            id = new AmqpMessageId(messageId);
+        }
+        amqpAnnotatedMessage.getProperties().setMessageId(id);
+        return this;
+    }
+
+    /**
+     * Gets the subject for the message.
+     *
+     * <p>
+     * This property enables the application to indicate the purpose of the message to the receiver in a standardized
+     * fashion, similar to an email subject line. The mapped AMQP property is "subject".
+     * </p>
+     *
+     * @return The subject for the message.
+     */
+    public String getSubject() {
+        return amqpAnnotatedMessage.getProperties().getSubject();
+    }
+
+    /**
+     * Sets the subject for the message.
+     *
+     * @param subject The application specific subject.
+     *
+     * @return The updated {@link EventData} object.
+     */
+    public EventData setSubject(String subject) {
+        amqpAnnotatedMessage.getProperties().setSubject(subject);
+        return this;
+    }
+
+    /**
+     * Gets the "to" address.
+     *
+     * <p>
+     * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
+     * Applications can use this value in rule-driven
+     * auto-forward scenarios to indicate the intended logical destination of the message.
+     * </p>
+     *
+     * @return "To" property value of this message
+     */
+    public String getTo() {
+        String to = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getTo();
+        if (amqpAddress != null) {
+            to = amqpAddress.toString();
+        }
+        return to;
+    }
+
+    /**
+     * Sets the "to" address.
+     *
+     * <p>
+     * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
+     * Applications can use this value in rule-driven
+     * auto-forward chaining scenarios to indicate the intended logical destination of the message.
+     * </p>
+     *
+     * @param to To property value of this message.
+     *
+     * @return The updated {@link EventData}.
+     */
+    public EventData setTo(String to) {
+        AmqpAddress toAddress = null;
+        if (to != null) {
+            toAddress = new AmqpAddress(to);
+        }
+        amqpAnnotatedMessage.getProperties().setTo(toAddress);
+        return this;
+    }
+
+    /**
+     * Gets the address of an entity to send replies to.
+     * <p>
+     * This optional and application-defined value is a standard way to express a reply path to the receiver of the
+     * message. When a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
+     * it expects the reply to be sent to.
+     *
+     * @return ReplyTo property value of this message
+     */
+    public String getReplyTo() {
+        String replyTo = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getReplyTo();
+        if (amqpAddress != null) {
+            replyTo = amqpAddress.toString();
+        }
+        return replyTo;
+    }
+
+    /**
+     * Sets the address of an entity to send replies to.
+     *
+     * @param replyTo ReplyTo property value of this message
+     *
+     * @return The updated {@link EventData}.
+     * @see #getReplyTo()
+     */
+    public EventData setReplyTo(String replyTo) {
+        AmqpAddress replyToAddress = null;
+        if (replyTo != null) {
+            replyToAddress = new AmqpAddress(replyTo);
+        }
+        amqpAnnotatedMessage.getProperties().setReplyTo(replyToAddress);
+        return this;
+    }
+
+    /**
+     * Gets the duration before this message expires.
+     * <p>
+     * This value is the relative duration after which the message expires, starting from the instant the message has
+     * been accepted and stored by the broker, as captured in {@link #getScheduledEnqueueTime()}. When not set
+     * explicitly, the assumed value is the DefaultTimeToLive set for the respective queue or topic. A message-level
+     * TimeToLive value cannot be longer than the entity's DefaultTimeToLive setting and it is silently adjusted if it
+     * does.
+     *
+     * @return Time to live duration of this message
+     */
+    public Duration getTimeToLive() {
+        return amqpAnnotatedMessage.getHeader().getTimeToLive();
+    }
+
+    /**
+     * Sets the duration of time before this message expires.
+     *
+     * @param timeToLive Time to Live duration of this message
+     *
+     * @return The updated {@link EventData}.
+     * @see #getTimeToLive()
+     */
+    public EventData setTimeToLive(Duration timeToLive) {
+        amqpAnnotatedMessage.getHeader().setTimeToLive(timeToLive);
+        return this;
+    }
+
+    /**
+     * Gets the session identifier for a session-aware entity.
+     *
+     * <p>
+     * For session-aware entities, this application-defined value specifies the session affiliation of the message.
+     * Messages with the same session identifier are subject to summary locking and enable exact in-order processing and
+     * demultiplexing. For session-unaware entities, this value is ignored. See <a
+     * </p>
+     *
+     * @return The session id of the {@link EventData}.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sessions">Message Sessions</a>
+     */
+    public String getSessionId() {
+        return amqpAnnotatedMessage.getProperties().getGroupId();
+    }
+
+    /**
+     * Sets the session identifier for a session-aware entity.
+     *
+     * @param sessionId The session identifier to be set.
+     *
+     * @return The updated {@link EventData}.
+     * @throws IllegalArgumentException if {@code sessionId} is too long or if the {@code sessionId} does not match
+     *     the {@code partitionKey}.
+     */
+    public EventData setSessionId(String sessionId) {
+        checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);
+        checkSessionId(sessionId);
+
+        amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
+        return this;
+    }
+
+    /**
+     * Gets the scheduled enqueue time of this message.
+     * <p>
+     * This value is used for delayed message availability. The message is safely added to the queue, but is not
+     * considered active and therefore not retrievable until the scheduled enqueue time. Mind that the message may not
+     * be activated (enqueued) at the exact given datetime; the actual activation time depends on the queue's workload
+     * and its state.
+     * </p>
+     *
+     * @return the datetime at which the message will be enqueued in Azure Service Bus
+     */
+    public OffsetDateTime getScheduledEnqueueTime() {
+        Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue());
+        return value != null
+            ? ((OffsetDateTime) value).toInstant().atOffset(ZoneOffset.UTC)
+            : null;
+    }
+
+    /**
+     * Sets the scheduled enqueue time of this message. A {@code null} will not be set. If this value needs to be unset
+     * it could be done by value removing from {@link AmqpAnnotatedMessage#getMessageAnnotations()} using key {@link
+     * AmqpMessageConstant#SCHEDULED_ENQUEUE_UTC_TIME_NAME}.
+     *
+     * @param scheduledEnqueueTime the datetime at which this message should be enqueued in Azure Service Bus.
+     *
+     * @return The updated {@link EventData}.
+     * @see #getScheduledEnqueueTime()
+     */
+    public EventData setScheduledEnqueueTime(OffsetDateTime scheduledEnqueueTime) {
+        if (scheduledEnqueueTime != null) {
+            amqpAnnotatedMessage.getMessageAnnotations().put(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue(),
+                scheduledEnqueueTime);
+        }
+        return this;
+    }
+
+    /**
+     * Sets a partition key for sending a message to a partitioned entity
+     *
+     * @param partitionKey The partition key of this message.
+     *
+     * @return The updated {@link EventData}.
+     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey} does not
+     *     match the {@code sessionId}.
+     * @see #getPartitionKey()
+     */
+    public EventData setPartitionKey(String partitionKey) {
+        checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
+        checkPartitionKey(partitionKey);
+
+        amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
+        return this;
+    }
+
+    /**
+     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
+     * <p>
+     * This value augments the {@link #getReplyTo() reply to} information and specifies which {@code sessionId} should
+     * be set for the reply when sent to the reply entity.
+     *
+     * @return The {@code getReplyToGroupId} property value of this message.
+     */
+    public String getReplyToSessionId() {
+        return amqpAnnotatedMessage.getProperties().getReplyToGroupId();
+    }
+
+    /**
+     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
+     *
+     * @param replyToSessionId The ReplyToGroupId property value of this message.
+     *
+     * @return The updated {@link EventData}.
+     */
+    public EventData setReplyToSessionId(String replyToSessionId) {
+        amqpAnnotatedMessage.getProperties().setReplyToGroupId(replyToSessionId);
+        return this;
+    }
+
+    /**
+     * Gets the {@link AmqpAnnotatedMessage}.
+     *
+     * @return The raw AMQP message.
+     */
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
+        return amqpAnnotatedMessage;
+    }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID. (this will
+     * eventually migrate to a service-side check)
+     */
+    private void checkSessionId(String proposedSessionId) {
+        if (proposedSessionId == null) {
+            return;
+        }
+
+        if (this.getPartitionKey() != null && this.getPartitionKey().compareTo(proposedSessionId) != 0) {
+            final String message = String.format(
+                "sessionId:%s cannot be set to a different value than partitionKey:%s.",
+                proposedSessionId,
+                this.getPartitionKey());
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
+    /**
+     * Checks the length of ID fields.
+     *
+     * Some fields within the message will cause a failure in the service without enough context information.
+     */
+    private void checkIdLength(String fieldName, String value, int maxLength) {
+        if (value != null && value.length() > maxLength) {
+            final String message = String.format("%s cannot be longer than %d characters.", fieldName, maxLength);
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID. (this will
+     * eventually migrate to a service-side check)
+     */
+    private void checkPartitionKey(String proposedPartitionKey) {
+        if (proposedPartitionKey == null) {
+            return;
+        }
+
+        if (this.getSessionId() != null && this.getSessionId().compareTo(proposedPartitionKey) != 0) {
+            final String message = String.format(
+                "partitionKey:%s cannot be set to a different value than sessionId:%s.",
+                proposedPartitionKey,
+                this.getSessionId());
+
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
     }
 
     /**
@@ -374,4 +821,5 @@ public class EventData {
             return null;
         }
     }
+
 }
