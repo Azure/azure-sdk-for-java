@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.perf;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.ReceiverOptions;
 import reactor.core.publisher.Mono;
@@ -13,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -69,7 +69,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
             receiverAsync = clientFuture.thenComposeAsync(client -> {
                 try {
                     final ReceiverOptions receiverOptions = new ReceiverOptions();
-                    receiverOptions.setPrefetchCount(ServiceTest.PREFETCH);
+                    receiverOptions.setPrefetchCount(options.getPrefetch());
 
                     return client.createReceiver(options.getConsumerGroup(),
                         options.getPartitionId(), EventPosition.fromStartOfStream(), receiverOptions);
@@ -111,26 +111,17 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     @Override
     public Mono<Void> runAsync() {
-        final CompletableFuture<Void> receiveEvents = receiverAsync.thenAccept(receiver -> {
-            final AtomicInteger number = new AtomicInteger(options.getCount());
-            while (number.get() > 0) {
-                try {
-                    final Iterable<EventData> receivedEvents = receiver.receive(ServiceTest.PREFETCH).get();
-                    if (receivedEvents == null) {
-                        System.err.println("Did not receive events.");
-                        break;
-                    }
-
-                    for (EventData eventData : receivedEvents) {
-                        number.getAndDecrement();
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException("Unable to get more events", e);
-                }
-            }
+        final EventsHandler handler = new EventsHandler(options.getCount(), options.getPrefetch());
+        final CompletableFuture<Void> receiveOptions = receiverAsync.thenComposeAsync(receiver -> {
+            receiver.setReceiveHandler(handler);
+            return handler.isCompleteReceiving()
+                .thenRun(() -> {
+                    System.out.println("Completed. Removing Handler.");
+                    receiver.setReceiveHandler(null);
+                });
         });
 
-        return Mono.fromCompletionStage(receiveEvents);
+        return Mono.fromCompletionStage(receiveOptions);
     }
 
     /**
@@ -153,6 +144,51 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
                 }));
         } else {
             return super.cleanupAsync();
+        }
+    }
+
+    private static final class EventsHandler implements PartitionReceiveHandler {
+        private final CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        private final AtomicInteger numberOfEvents;
+        private final int prefetch;
+
+        private EventsHandler(int numberOfEvents, int prefetch) {
+            this.numberOfEvents = new AtomicInteger(numberOfEvents);
+            this.prefetch = prefetch;
+        }
+
+        @Override
+        public int getMaxEventCount() {
+            return prefetch;
+        }
+
+        @Override
+        public void onReceive(Iterable<EventData> events) {
+            if (events == null) {
+                return;
+            }
+
+            for (EventData event : events) {
+                numberOfEvents.decrementAndGet();
+            }
+
+            if (numberOfEvents.get() <= 0) {
+                completableFuture.complete(null);
+            }
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            completableFuture.completeExceptionally(error);
+        }
+
+        /**
+         * Completes when the total number of events are received.
+         *
+         * @return A future that completes when all items are received.
+         */
+        public CompletableFuture<Void> isCompleteReceiving() {
+            return completableFuture;
         }
     }
 }
