@@ -6,7 +6,7 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -28,7 +28,7 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -49,7 +49,7 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
