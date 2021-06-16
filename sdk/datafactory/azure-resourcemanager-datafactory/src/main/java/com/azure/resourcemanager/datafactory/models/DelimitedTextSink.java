@@ -105,6 +105,13 @@ public final class DelimitedTextSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

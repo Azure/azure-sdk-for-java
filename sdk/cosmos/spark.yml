@@ -1,4 +1,5 @@
 trigger: none
+pr: none
 
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
@@ -6,7 +7,7 @@ variables:
     value: ''
 
 stages:
-  - template: /sdk/cosmos/ci.spark.databricks.yml
+  - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
