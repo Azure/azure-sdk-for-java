@@ -562,7 +562,7 @@ public class EventData {
      * <p>
      * For session-aware entities, this application-defined value specifies the session affiliation of the message.
      * Messages with the same session identifier are subject to summary locking and enable exact in-order processing and
-     * demultiplexing. For session-unaware entities, this value is ignored. See <a
+     * demultiplexing. For session-unaware entities, this value is ignored.
      * </p>
      *
      * @return The session id of the {@link EventData}.
