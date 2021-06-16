@@ -24,7 +24,6 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultAccessC
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.DataAction;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Permission;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
@@ -34,8 +33,8 @@ import com.azure.security.keyvault.administration.implementation.models.RoleDefi
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties;
 import com.azure.security.keyvault.administration.implementation.models.RoleScope;
-import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
+import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
