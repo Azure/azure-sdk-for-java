@@ -120,7 +120,7 @@ public class EventData {
         if (systemProperties.getOffset() != null) {
             amqpAnnotatedMessage.getMessageAnnotations().put(OFFSET_ANNOTATION_NAME.getValue(), systemProperties.getOffset());
         }
-        if (systemProperties.getEnqueuedTime()!= null) {
+        if (systemProperties.getEnqueuedTime() != null) {
             amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), systemProperties.getEnqueuedTime());
         }
         if (systemProperties.getPartitionKey() != null) {
@@ -202,7 +202,7 @@ public class EventData {
     public Long getOffset() {
         Object value = amqpAnnotatedMessage.getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue());
         return value != null
-            ? value instanceof String ? Long.parseLong((String)value) : (Long) value
+            ? value instanceof String ? Long.parseLong((String) value) : (Long) value
             : null;
     }
 

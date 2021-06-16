@@ -213,7 +213,7 @@ public final class EventDataBatch {
             message.setApplicationProperties(applicationProperties);
         }
 
-        if (event.getRawAmqpMessage().getProperties()!= null) {
+        if (event.getRawAmqpMessage().getProperties() != null) {
             AmqpMessageProperties properties = event.getRawAmqpMessage().getProperties();
             if (properties.getMessageId() != null) {
                 message.setMessageId(properties.getMessageId());

@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
-import java.util.Date;
 import java.util.HashMap;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -89,10 +88,9 @@ public class EventDataTest {
     public void testSystemProperties() {
         EventData eventData = constructMessage(5);
         Assertions.assertEquals(4, eventData.getRawAmqpMessage().getMessageAnnotations().size());
-        Assertions.assertEquals(OFFSET, Long.parseLong((String)eventData.getRawAmqpMessage().getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue())));
-        Assertions.assertEquals(5L, (Long)eventData.getRawAmqpMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        Assertions.assertEquals(ENQUEUED_TIME,
-            eventData.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(OFFSET, Long.parseLong((String) eventData.getRawAmqpMessage().getMessageAnnotations().get(OFFSET_ANNOTATION_NAME.getValue())));
+        Assertions.assertEquals(5L, (Long) eventData.getRawAmqpMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        Assertions.assertEquals(ENQUEUED_TIME, eventData.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
     }
 
     /**

@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
@@ -12,7 +11,6 @@ import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
