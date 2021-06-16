@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import reactor.util.function.Tuple2;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -20,7 +21,7 @@ public class PartitionScopeThresholds<TContext> {
 
     private final String pkRangeId;
     private final BulkProcessingOptions<TContext> options;
-    private int targetMicroBatchSize;
+    private final AtomicInteger targetMicroBatchSize;
     private final AtomicLong totalOperationCount;
     private final AtomicReference<CurrentIntervalThresholds> currentThresholds;
     private final String identifier = UUID.randomUUID().toString();
@@ -34,7 +35,7 @@ public class PartitionScopeThresholds<TContext> {
 
         this.pkRangeId = pkRangeId;
         this.options = options;
-        this.targetMicroBatchSize = options.getMaxMicroBatchSize();
+        this.targetMicroBatchSize = new AtomicInteger(options.getMaxMicroBatchSize());
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
         this.minRetryRate = Math.min(
@@ -93,25 +94,31 @@ public class PartitionScopeThresholds<TContext> {
         }
     }
 
-    private synchronized void reevaluateThresholds(
+    private void reevaluateThresholds(
         long totalCount,
         long currentCount,
         long retryCount,
         double retryRate,
         boolean onlyUpscale) {
 
-        int microBatchSizeBefore = this.targetMicroBatchSize;
+        int microBatchSizeBefore = this.targetMicroBatchSize.get();
+        int microBatchSizeAfter = microBatchSizeBefore;
 
-        if (retryRate < this.minRetryRate && this.targetMicroBatchSize < this.options.getMaxMicroBatchSize()) {
-            this.targetMicroBatchSize = Math.min(
+        if (retryRate < this.minRetryRate && microBatchSizeBefore < this.options.getMaxMicroBatchSize()) {
+            int targetedNewBatchSize = Math.min(
                 Math.min(
-                    this.targetMicroBatchSize * 2,
-                    this.targetMicroBatchSize +
-                        (int)(this.options.getMaxMicroBatchSize() * this.avgRetryRate)),
+                    microBatchSizeBefore * 2,
+                    microBatchSizeBefore + (int)(this.options.getMaxMicroBatchSize() * this.avgRetryRate)),
                 this.options.getMaxMicroBatchSize());
-        } else if (!onlyUpscale && retryRate > this.maxRetryRate && this.targetMicroBatchSize > 1) {
+            if (this.targetMicroBatchSize.compareAndSet(microBatchSizeBefore, targetedNewBatchSize)) {
+                microBatchSizeAfter = targetedNewBatchSize;
+            }
+        } else if (!onlyUpscale && retryRate > this.maxRetryRate && microBatchSizeBefore > 1) {
             double deltaRate = retryRate - this.avgRetryRate;
-            this.targetMicroBatchSize = Math.max(1, (int) (this.targetMicroBatchSize * (1 - deltaRate)));
+            int targetedNewBatchSize = Math.max(1, (int) (microBatchSizeBefore * (1 - deltaRate)));
+            if (this.targetMicroBatchSize.compareAndSet(microBatchSizeBefore, targetedNewBatchSize)) {
+                microBatchSizeAfter = targetedNewBatchSize;
+            }
         }
 
         // TODO @fabianm - change to DEBUG after testing
@@ -125,7 +132,7 @@ public class PartitionScopeThresholds<TContext> {
             retryCount,
             retryRate,
             microBatchSizeBefore,
-            this.targetMicroBatchSize,
+            microBatchSizeAfter,
             onlyUpscale);
     }
 
@@ -138,7 +145,7 @@ public class PartitionScopeThresholds<TContext> {
     }
 
     public int  getTargetMicroBatchSizeSnapshot() {
-        return this.targetMicroBatchSize;
+        return this.targetMicroBatchSize.get();
     }
 
     private static class CurrentIntervalThresholds {
