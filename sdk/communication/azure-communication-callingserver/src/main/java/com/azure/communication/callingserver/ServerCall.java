@@ -69,7 +69,7 @@ public final class ServerCall {
         String callBackUri,
         String alternateCallerId,
         String operationContext,
-        Context context) {
+        final Context context) {
         return serverCallAsync.addParticipantWithResponse(
                 participant,
                 callBackUri,
@@ -82,11 +82,10 @@ public final class ServerCall {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void removeParticipant(String participantId) {
-        return serverCallAsync.removeParticipant(participantId).block();
+    public void removeParticipant(String participantId) {
+        serverCallAsync.removeParticipant(participantId).block();
     }
 
     /**
@@ -97,7 +96,7 @@ public final class ServerCall {
      * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
+    public Response<Void> removeParticipantWithResponse(String participantId, final Context context) {
         return serverCallAsync.removeParticipantWithResponse(participantId, context).block();
     }
 
@@ -122,7 +121,7 @@ public final class ServerCall {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResult> startRecordingWithResponse(
         String recordingStateCallbackUri,
-        Context context) {
+        final Context context) {
         return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context).block();
     }
 
@@ -130,11 +129,10 @@ public final class ServerCall {
      * Stop recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void stopRecording(String recordingId) {
-        return serverCallAsync.stopRecording(recordingId).block();
+    public void stopRecording(String recordingId) {
+        serverCallAsync.stopRecording(recordingId).block();
     }
 
     /**
@@ -145,7 +143,7 @@ public final class ServerCall {
      * @return response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
+    public Response<Void> stopRecordingWithResponse(String recordingId, final Context context) {
         return serverCallAsync.stopRecordingWithResponse(recordingId, context).block();
     }
 
@@ -153,11 +151,10 @@ public final class ServerCall {
      * Pause recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void pauseRecording(String recordingId) {
-        return serverCallAsync.pauseRecording(recordingId).block();
+    public void pauseRecording(String recordingId) {
+        serverCallAsync.pauseRecording(recordingId).block();
     }
 
     /**
@@ -168,7 +165,7 @@ public final class ServerCall {
      * @return response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
+    public Response<Void> pauseRecordingWithResponse(String recordingId, final Context context) {
         return serverCallAsync.pauseRecordingWithResponse(recordingId, context).block();
     }
 
@@ -176,11 +173,10 @@ public final class ServerCall {
      * Resume recording
      *
      * @param recordingId The recording id to stop.
-     * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void resumeRecording(String recordingId) {
-        return serverCallAsync.resumeRecording(recordingId).block();
+    public void resumeRecording(String recordingId) {
+        serverCallAsync.resumeRecording(recordingId).block();
     }
 
     /**
@@ -191,7 +187,7 @@ public final class ServerCall {
      * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
+    public Response<Void> resumeRecordingWithResponse(String recordingId, final Context context) {
         return serverCallAsync.resumeRecordingWithResponse(recordingId, context).block();
     }
 
@@ -214,7 +210,7 @@ public final class ServerCall {
      * @return response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallRecordingProperties> getRecordingStateWithResponse(String recordingId, Context context) {
+    public Response<CallRecordingProperties> getRecordingStateWithResponse(String recordingId, final Context context) {
         return serverCallAsync.getRecordingStateWithResponse(recordingId, context).block();
     }
 
@@ -272,7 +268,7 @@ public final class ServerCall {
         String audioFileId,
         String callbackUri,
         String operationContext,
-        Context context) {
+        final Context context) {
         return serverCallAsync
             .playAudioWithResponseInternal(
                 audioFileUri,
@@ -296,7 +292,7 @@ public final class ServerCall {
     public Response<PlayAudioResult> playAudioWithResponse(
         String audioFileUri,
         PlayAudioOptions playAudioOptions,
-        Context context) {
+        final Context context) {
         return serverCallAsync.playAudioWithResponseInternal(audioFileUri, playAudioOptions, context).block();
     }
 }

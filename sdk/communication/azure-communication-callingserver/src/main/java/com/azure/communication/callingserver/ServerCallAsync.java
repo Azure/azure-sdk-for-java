@@ -145,7 +145,8 @@ public final class ServerCallAsync {
     public Mono<Void> removeParticipant(String participantId) {
         try {
             return serverCallInternal.removeParticipantAsync(serverCallId, participantId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -248,7 +249,8 @@ public final class ServerCallAsync {
     public Mono<Void> stopRecording(String recordingId) {
         try {
             return serverCallInternal.stopRecordingAsync(serverCallId, recordingId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -288,7 +290,8 @@ public final class ServerCallAsync {
     public Mono<Void> pauseRecording(String recordingId) {
         try {
             return serverCallInternal.pauseRecordingAsync(serverCallId, recordingId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -328,7 +331,8 @@ public final class ServerCallAsync {
     public Mono<Void> resumeRecording(String recordingId) {
         try {
             return serverCallInternal.resumeRecordingAsync(serverCallId, recordingId)
-                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
