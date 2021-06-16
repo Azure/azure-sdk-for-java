@@ -21,7 +21,7 @@ public final class ParticipantsUpdatedEventInternal {
      * The list of participants.
      */
     @JsonProperty(value = "participants")
-    private List<CommunicationParticipantInternal> participants;
+    private List<CallParticipantInternal> participants;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -48,7 +48,7 @@ public final class ParticipantsUpdatedEventInternal {
      *
      * @return the participants value.
      */
-    public List<CommunicationParticipantInternal> getParticipants() {
+    public List<CallParticipantInternal> getParticipants() {
         return this.participants;
     }
 
@@ -58,7 +58,7 @@ public final class ParticipantsUpdatedEventInternal {
      * @param participants the participants value to set.
      * @return the ParticipantsUpdatedEventInternal object itself.
      */
-    public ParticipantsUpdatedEventInternal setParticipants(List<CommunicationParticipantInternal> participants) {
+    public ParticipantsUpdatedEventInternal setParticipants(List<CallParticipantInternal> participants) {
         this.participants = participants;
         return this;
     }

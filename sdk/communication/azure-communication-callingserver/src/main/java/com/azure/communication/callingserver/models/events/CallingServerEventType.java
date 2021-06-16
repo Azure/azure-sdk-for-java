@@ -16,8 +16,8 @@ public final class CallingServerEventType extends ExpandableStringEnum<CallingSe
     /** The call connection state change event type. */
     public static final CallingServerEventType CALL_CONNECTION_STATE_CHANGED_EVENT = fromString("Microsoft.Communication.CallConnectionStateChanged");
 
-    /** The invited participants result event type. */
-    public static final CallingServerEventType INVITE_PARTICIPANT_RESULT_EVENT = fromString("Microsoft.Communication.InviteParticipantResult");
+    /** The add participant result event type. */
+    public static final CallingServerEventType ADD_PARTICIPANT_RESULT_EVENT = fromString("Microsoft.Communication.AddParticipantResult");
 
     /** The call recording state change event type. */
     public static final CallingServerEventType CALL_RECORDING_STATE_CHANGED_EVENT = fromString("Microsoft.Communication.CallRecordingStateChanged");
@@ -42,7 +42,7 @@ public final class CallingServerEventType extends ExpandableStringEnum<CallingSe
         return fromString(name, CallingServerEventType.class);
     }
 
-    /** @return known CallModality values. */
+    /** @return known CallingServerEventType values. */
     public static Collection<CallingServerEventType> values() {
         return values(CallingServerEventType.class);
     }

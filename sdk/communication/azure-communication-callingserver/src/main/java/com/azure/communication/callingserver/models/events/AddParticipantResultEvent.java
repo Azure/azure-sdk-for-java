@@ -4,15 +4,15 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.converters.ResultInfoConverter;
-import com.azure.communication.callingserver.implementation.models.InviteParticipantsResultEventInternal;
+import com.azure.communication.callingserver.implementation.models.AddParticipantResultEventInternal;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.ResultInfo;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
-/** The invite participant result event. */
+/** The add participant result event. */
 @Immutable
-public final class InviteParticipantResultEvent extends CallingServerEventBase {
+public final class AddParticipantResultEvent extends CallingServerEventBase {
     /*
      * The result details.
      */
@@ -56,35 +56,35 @@ public final class InviteParticipantResultEvent extends CallingServerEventBase {
     }
 
     /**
-     * Initializes a new instance of InviteParticipantResultEvent.
+     * Initializes a new instance of AddParticipantResultEvent.
      *
      * @param resultInfo the resultInfo value.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @param status the status value.
      */
-    public InviteParticipantResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
+    public AddParticipantResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
         this.resultInfo = resultInfo;
         this.operationContext = operationContext;
         this.status = status;
     }
 
     /**
-     * Deserialize {@link InviteParticipantResultEvent} event.
+     * Deserialize {@link AddParticipantResultEvent} event.
      *
      * @param eventData binary data for event
-     * @return {@link InviteParticipantResultEvent} event.
+     * @return {@link AddParticipantResultEvent} event.
      */
-    public static InviteParticipantResultEvent deserialize(BinaryData eventData) {
+    public static AddParticipantResultEvent deserialize(BinaryData eventData) {
         if (eventData == null) {
             return null;
         }
-        InviteParticipantsResultEventInternal inviteParticipantsResultEventInternal =
-            eventData.toObject(InviteParticipantsResultEventInternal.class);
+        AddParticipantResultEventInternal addParticipantResultEventInternal =
+            eventData.toObject(AddParticipantResultEventInternal.class);
 
-        return new InviteParticipantResultEvent(
-            ResultInfoConverter.convert(inviteParticipantsResultEventInternal.getResultInfo()),
-            inviteParticipantsResultEventInternal.getOperationContext(),
-            inviteParticipantsResultEventInternal.getStatus());
+        return new AddParticipantResultEvent(
+            ResultInfoConverter.convert(addParticipantResultEventInternal.getResultInfo()),
+            addParticipantResultEventInternal.getOperationContext(),
+            addParticipantResultEventInternal.getStatus());
     }
 }
