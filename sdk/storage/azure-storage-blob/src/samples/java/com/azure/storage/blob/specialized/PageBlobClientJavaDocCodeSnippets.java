@@ -192,7 +192,7 @@ public class PageBlobClientJavaDocCodeSnippets {
      * PageBlobRequestConditions, BlobRequestConditions, Duration, Context)}
      */
     public void uploadPagesFromUrlWithResponseOptionsBagCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#UploadPagesFromUrlOptions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context
         PageRange pageRange = new PageRange()
             .setStart(0)
             .setEnd(511);
@@ -209,7 +209,7 @@ public class PageBlobClientJavaDocCodeSnippets {
                 .setSourceRequestConditions(sourceRequestConditions), timeout, context).getValue();
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#UploadPagesFromUrlOptions-Duration-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context
     }
 
     /**

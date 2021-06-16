@@ -150,7 +150,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link AppendBlobAsyncClient#appendBlockFromUrlWithResponse(String, BlobRange, byte[], AppendBlobRequestConditions, BlobRequestConditions)}
      */
     public void appendBlockFromUrlOptionBag() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlockFromUrlOptions
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions
         AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions()
             .setAppendPosition(POSITION)
             .setMaxSize(maxSize);
@@ -163,7 +163,7 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             .setDestinationRequestConditions(appendBlobRequestConditions)
             .setSourceRequestConditions(modifiedRequestConditions)).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlockFromUrlOptions
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions
     }
 
     /**

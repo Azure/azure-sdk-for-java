@@ -167,7 +167,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
      * AppendBlobRequestConditions, BlobRequestConditions, Duration, Context)}
      */
     public void appendBlockFromUrlOptionsBagWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlockFromUrlOptions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context
         AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions()
             .setAppendPosition(POSITION)
             .setMaxSize(maxSize);
@@ -183,7 +183,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
                 .setDestinationRequestConditions(appendBlobRequestConditions)
                 .setSourceRequestConditions(modifiedRequestConditions), timeout,
                 context).getValue().getBlobCommittedBlockCount());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlockFromUrlOptions-Duration-Context
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context
     }
 
     /**

@@ -229,7 +229,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions)}
      */
     public void stageBlockFromUrlOptionsBag() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#StageBlockFromUrlOptions
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions
         BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
@@ -237,7 +237,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             .setSourceRange(new BlobRange(offset, count)).setLeaseId(leaseId)
             .setSourceRequestConditions(sourceRequestConditions)).subscribe(response ->
             System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));
-        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#StageBlockFromUrlOptions
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions
     }
 
     /**

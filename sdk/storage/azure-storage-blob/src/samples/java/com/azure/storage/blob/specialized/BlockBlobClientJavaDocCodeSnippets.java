@@ -241,7 +241,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
      * Code snippet for {@link BlockBlobClient#stageBlockFromUrlWithResponse(String, String, BlobRange, byte[], String, BlobRequestConditions, Duration, Context)}
      */
     public void stageBlockFromUrlOptionsBag() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#StageBlockFromUrlOptions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context
         BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Context context = new Context("key", "value");
@@ -250,7 +250,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
             client.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
                 .setSourceRange(new BlobRange(offset, count)).setLeaseId(leaseId)
                 .setSourceRequestConditions(sourceRequestConditions), timeout, context).getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#StageBlockFromUrlOptions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions-Duration-Context
     }
 
     /**
