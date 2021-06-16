@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.7 (Unreleased)
+
+
 ### 1.0.0-beta.6 (2021-06-11)
 #### New Features
 * Signed and moved AAP cryptography jars to Azure dev-ops feed from Azure blob storage.

@@ -10,13 +10,19 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
@@ -27,6 +33,16 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
+    }
+
+    private void createClient(HttpClient httpClient, boolean forCleanup) {
+        KeyVaultBackupAsyncClient asyncClient = spy(getClientBuilder(httpClient, forCleanup).buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
+
+        client = new KeyVaultBackupClient(asyncClient);
     }
 
     /**
@@ -41,7 +57,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
             return;
         }
 
-        client = getClientBuilder(httpClient, false).buildClient();
+        createClient(httpClient, false);
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
@@ -65,7 +81,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
             return;
         }
 
-        client = getClientBuilder(httpClient, false).buildClient();
+        createClient(httpClient, false);
 
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
@@ -74,7 +90,8 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller = client.beginRestore(backupFolderUrl, sasToken);
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
+            client.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
 
@@ -95,7 +112,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
             return;
         }
 
-        client = getClientBuilder(httpClient, false).buildClient();
+        createClient(httpClient, false);
 
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
@@ -104,7 +121,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, Void> selectiveKeyRestorePoller =
+        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller =
             client.beginSelectiveKeyRestore("testKey", backupFolderUrl, sasToken);
 
         selectiveKeyRestorePoller.waitForCompletion();

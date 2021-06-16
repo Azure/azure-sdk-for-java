@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+/**
+ * Constants used for processing Azure App Configuration Config info.
+ */
 public class Constants {
 
     public static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";

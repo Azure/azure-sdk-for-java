@@ -9,12 +9,15 @@ import org.springframework.stereotype.Component;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 
+/**
+ * Listens for AppConfigurationRefreshEvents and sets the App Configuration watch interval to zero.
+ */
 @Component
 public class AppConfigurationRefreshEventListener implements ApplicationListener<AppConfigurationRefreshEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEventListener.class);
 
-    private AppConfigurationRefresh appConfigurationRefresh;
+    private final AppConfigurationRefresh appConfigurationRefresh;
 
     public AppConfigurationRefreshEventListener(AppConfigurationRefresh appConfigurationRefresh) {
         this.appConfigurationRefresh = appConfigurationRefresh;
@@ -23,7 +26,7 @@ public class AppConfigurationRefreshEventListener implements ApplicationListener
     @Override
     public void onApplicationEvent(AppConfigurationRefreshEvent event) {
         try {
-            appConfigurationRefresh.resetCache(event.getEndpoint());
+            appConfigurationRefresh.expireRefreshInterval(event.getEndpoint());
         } catch (Exception e) {
             LOGGER.error("Refresh failed with unexpected exception.", e);
         }

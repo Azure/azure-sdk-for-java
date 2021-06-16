@@ -105,6 +105,13 @@ public final class OrcSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OrcSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
