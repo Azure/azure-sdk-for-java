@@ -22,8 +22,6 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -268,38 +266,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
     }
 
-    /**
-     * Code snippet for
-     * {@link TextAnalyticsClient#recognizeEntitiesBatchWithResponse(Iterable, RecognizeEntitiesOptions, Context)}
-     */
-    public void recognizeBatchEntitiesMaxOverloadWithRecognizeEntitiesOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-RecognizeEntitiesOptions-Context
-        List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
-            new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en")
-        );
-
-        Response<RecognizeEntitiesResultCollection> response =
-            textAnalyticsClient.recognizeEntitiesBatchWithResponse(textDocumentInputs,
-                new RecognizeEntitiesOptions().setIncludeStatistics(true), Context.NONE);
-
-        // Response's status code
-        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = response.getValue();
-
-        // Batch statistics
-        TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();
-        System.out.printf(
-            "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-        recognizeEntitiesResultCollection.forEach(
-            recognizeEntitiesResult -> recognizeEntitiesResult.getEntities().forEach(
-                entity -> System.out.printf("Recognized entity: %s, entity category: %s, confidence score: %f.%n",
-                    entity.getText(), entity.getCategory(), entity.getConfidenceScore())));
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-RecognizeEntitiesOptions-Context
-    }
-
     // Personally Identifiable Information Entity
 
     /**
@@ -517,45 +483,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     entityMatch.getText(), entityMatch.getConfidenceScore()));
             }));
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
-    }
-
-    /**
-     * Code snippet for
-     * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, RecognizeLinkedEntitiesOptions, Context)}
-     */
-    public void recognizeLinkedEntitiesBatchMaxOverloadWithRecognizeLinkedEntitiesOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions-Context
-        List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
-            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.").setLanguage("en")
-        );
-
-        Response<RecognizeLinkedEntitiesResultCollection> response =
-            textAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs,
-                new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true), Context.NONE);
-
-        // Response's status code
-        System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        RecognizeLinkedEntitiesResultCollection resultCollection = response.getValue();
-
-        // Batch statistics
-        TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
-        System.out.printf(
-            "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-        resultCollection.forEach(
-            recognizeLinkedEntitiesResult -> recognizeLinkedEntitiesResult.getEntities().forEach(
-                linkedEntity -> {
-                    System.out.println("Linked Entities:");
-                    System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                        linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
-                        linkedEntity.getDataSource());
-                    linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
-                        "Matched entity: %s, confidence score: %.2f.%n",
-                        entityMatch.getText(), entityMatch.getConfidenceScore()));
-                }));
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions-Context
     }
 
     // Key Phrases

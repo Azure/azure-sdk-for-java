@@ -29,10 +29,8 @@ import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
@@ -189,10 +187,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeEntitiesForBatchInputShowStatistics(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -365,10 +359,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizeLinkedEntitiesForBatchInputShowStatistics(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(
-        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient,
@@ -733,13 +723,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, options);
     }
 
-    void recognizeBatchCategorizedEntitiesShowStatsWithRecognizeEntitiesOptionRunner(
-        BiConsumer<List<TextDocumentInput>, RecognizeEntitiesOptions> testRunner) {
-        final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(CATEGORIZED_ENTITY_INPUTS);
-        RecognizeEntitiesOptions options = new RecognizeEntitiesOptions().setIncludeStatistics(true);
-        testRunner.accept(textDocumentInputs, options);
-    }
-
     void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
@@ -809,13 +792,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
-
-        testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
-    }
-
-    void recognizeBatchLinkedEntitiesShowStatsWithRecognizeLinkedEntitiesOptionsRunner(
-        BiConsumer<List<TextDocumentInput>, RecognizeLinkedEntitiesOptions> testRunner) {
-        RecognizeLinkedEntitiesOptions options = new RecognizeLinkedEntitiesOptions().setIncludeStatistics(true);
 
         testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
     }

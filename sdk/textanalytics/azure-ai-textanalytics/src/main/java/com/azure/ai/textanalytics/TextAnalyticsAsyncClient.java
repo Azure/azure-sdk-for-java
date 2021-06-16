@@ -19,8 +19,6 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -385,40 +383,6 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        final RecognizeEntitiesOptions recognizeEntitiesOptions = new RecognizeEntitiesOptions();
-        String modelVersion = null;
-        boolean includeStatistics = false;
-        if (options != null) {
-            modelVersion = options.getModelVersion();
-            includeStatistics = options.isIncludeStatistics();
-        }
-        return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents,
-            recognizeEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics));
-    }
-
-    /**
-     * Returns a list of general categorized entities for the provided list of {@link TextDocumentInput document} with
-     * provided request options.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize entities in a list of {@link TextDocumentInput document}. Subscribes to the call asynchronously
-     * and prints out the entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-RecognizeEntitiesOptions}
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The {@link RecognizeEntitiesResultCollection options} to configure the scoring model for
-     * documents, show statistics, and {@link StringIndexType}.
-     *
-     * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizeEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options) {
         return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
     }
 
@@ -696,43 +660,6 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        final RecognizeLinkedEntitiesOptions recognizeLinkedEntitiesOptions = new RecognizeLinkedEntitiesOptions();
-        String modelVersion = null;
-        boolean includeStatistics = false;
-        if (options != null) {
-            modelVersion = options.getModelVersion();
-            includeStatistics = options.isIncludeStatistics();
-        }
-        return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents,
-            recognizeLinkedEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics));
-    }
-
-    /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of
-     * {@link TextDocumentInput document} with provided request options.
-     *
-     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
-     *
-     * <p>Recognize linked  entities in a list of {@link TextDocumentInput document} and provided request options to
-     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
-     * received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions}
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The {@link RecognizeLinkedEntitiesOptions options} to configure the scoring model for documents,
-     * show statistics, and {@link StringIndexType}.
-     *
-     * @return A {@link Mono} contains a {@link Response} which contains a
-     * {@link RecognizeLinkedEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options) {
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents, options);
     }
 
