@@ -23,6 +23,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
     private final AmqpConnection eventDispatcher;
     private final ScheduledExecutorService executor;
 
+    private final String instanceName = StringUtil.getRandomString("RRO");
+
     private RequestResponseChannel currentChannel = null;
     private final Object isOpenedSynchronizer = new Object();
     private volatile boolean isOpening = false;
@@ -44,7 +46,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             if (this.currentChannel != null) {
                 if ((this.currentChannel.getState() == IOObjectState.OPENED) || (this.currentChannel.getState() == IOObjectState.OPENING)) {
                     if (TRACE_LOGGER.isInfoEnabled()) {
-                        TRACE_LOGGER.info("inner channel currently open, no need to recreate");
+                        TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] inner channel rrc[%s] currently [%s], no need to recreate debug [%s]",
+                            this.clientId, this.instanceName, this.currentChannel.getId(), this.currentChannel.getState().toString(), this.currentChannel.getStateDebug()));
                     }
                     return;
                 }
@@ -54,7 +57,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             // or is that already in progress?
             if (this.isOpening) {
                 if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info("inner channel creation already in progress");
+                    TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] inner channel creation already in progress",
+                        this.clientId, this.instanceName));
                 }
                 return;
             }
@@ -62,7 +66,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             // Need to start creating an inner channel.
             this.isOpening = true;
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info("opening inner channel client draft2");
+                TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] opening inner channel",
+                    this.clientId, this.instanceName));
             }
         }
 
@@ -79,7 +84,13 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
         if (session == null) {
             if (TRACE_LOGGER.isErrorEnabled()) {
-                TRACE_LOGGER.error("got a null session, inner channel recreation cannot continue");
+                TRACE_LOGGER.error(String.format(Locale.US, "clientId[%s] rro[%s] got a null session, inner channel recreation cannot continue",
+                    this.clientId, this.instanceName));
+            }
+            synchronized (RequestResponseOpener.this.isOpenedSynchronizer) {
+                // Inner channel creation failed.
+                // The next time run() is called should try again.
+                isOpening = false;
             }
             return;
         }
@@ -104,8 +115,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         }
 
                         if (TRACE_LOGGER.isInfoEnabled()) {
-                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onOpen complete clientId[%s], session[%s], link[%s], endpoint[%s]",
-                                    clientId, sessionName, linkName, endpointAddress));
+                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onOpen complete clientId[%s], session[%s], link[%s], endpoint[%s], rrc[%s]",
+                                    clientId, sessionName, linkName, endpointAddress, requestResponseChannel.getId()));
                         }
                     }
 
@@ -121,7 +132,7 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 
                         if (TRACE_LOGGER.isWarnEnabled()) {
                             TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onOpen error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
-                                    clientId, sessionName, linkName, endpointAddress, error));
+                                    clientId, sessionName, linkName, endpointAddress, error.toString()));
                         }
                     }
                 },
@@ -132,8 +143,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
                         if (TRACE_LOGGER.isInfoEnabled()) {
-                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onClose complete clientId[%s], session[%s], link[%s], endpoint[%s]",
-                                    clientId, sessionName, linkName, endpointAddress));
+                            TRACE_LOGGER.info(String.format(Locale.US, "requestResponseChannel.onClose complete clientId[%s], session[%s], link[%s], endpoint[%s], rrc[%s]",
+                                    clientId, sessionName, linkName, endpointAddress, requestResponseChannel.getId()));
                         }
                     }
 
@@ -143,8 +154,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
                         if (TRACE_LOGGER.isWarnEnabled()) {
-                            TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
-                                    clientId, sessionName, linkName, endpointAddress, error));
+                            TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], rrc[%s], error %s",
+                                    clientId, sessionName, linkName, endpointAddress, requestResponseChannel.getId(), error.toString()));
                         }
                     }
                 });

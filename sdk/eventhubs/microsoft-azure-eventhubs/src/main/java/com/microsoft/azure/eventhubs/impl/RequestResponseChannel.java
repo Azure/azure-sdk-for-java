@@ -20,6 +20,7 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,6 +37,8 @@ public class RequestResponseChannel implements IOObject {
     private final AtomicLong requestId;
     private final AtomicInteger openRefCount;
     private final AtomicInteger closeRefCount;
+
+    private final String instanceName = StringUtil.getRandomString("RRC");
 
     private OperationResult<Void, Exception> onOpen;
     private OperationResult<Void, Exception> onClose; // handles closeLink due to failures
@@ -192,6 +195,17 @@ public class RequestResponseChannel implements IOObject {
             return IOObjectState.CLOSED;
         }
         return IOObjectState.CLOSING; // only left cases are if some are active and some are closed
+    }
+
+    public String getStateDebug() {
+        return String.format(Locale.US, "sendLink local[%s] remote[%s]  receiveLink local[%s] remote[%s]",
+            sendLink.getLocalState().toString(), sendLink.getRemoteState().toString(),
+            receiveLink.getLocalState().toString(), receiveLink.getRemoteState().toString());
+    }
+
+    @Override
+    public String getId() {
+        return this.instanceName;
     }
 
     private class RequestHandler implements AmqpSender {
