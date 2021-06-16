@@ -10,11 +10,11 @@ import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
  * The {@link RecognizeEntitiesActionResult} model.
  */
 public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResult {
-    private RecognizeEntitiesResultCollection documentResults;
+    private RecognizeEntitiesResultCollection documentsResults;
 
     static {
         RecognizeEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, documentResults) -> actionsResult.setDocumentResults(documentResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**
@@ -25,12 +25,12 @@ public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResu
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public RecognizeEntitiesResultCollection getDocumentResults() {
+    public RecognizeEntitiesResultCollection getDocumentsResults() {
         throwExceptionIfError();
-        return documentResults;
+        return documentsResults;
     }
 
-    private void setDocumentResults(RecognizeEntitiesResultCollection documentResults) {
-        this.documentResults = documentResults;
+    private void setDocumentsResults(RecognizeEntitiesResultCollection documentsResults) {
+        this.documentsResults = documentsResults;
     }
 }

@@ -9,7 +9,7 @@
   `***Options` option bags but also could have additional properties, such as `actionName`.
 
 ### Breaking Changes
-- Removed `StringIndexType`, the type will be shared in the Azure Core.
+- Removed `StringIndexType`. This SDK will keep using UTF-16 code unit as the default encoding.
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
   `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 

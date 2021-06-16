@@ -952,7 +952,7 @@ final class TestUtils {
     static RecognizeEntitiesActionResult getExpectedRecognizeEntitiesActionResult(boolean isError,
         OffsetDateTime completeAt, RecognizeEntitiesResultCollection resultCollection, TextAnalyticsError actionError) {
         RecognizeEntitiesActionResult recognizeEntitiesActionResult = new RecognizeEntitiesActionResult();
-        RecognizeEntitiesActionResultPropertiesHelper.setDocumentResults(recognizeEntitiesActionResult, resultCollection);
+        RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(recognizeEntitiesActionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizeEntitiesActionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(recognizeEntitiesActionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(recognizeEntitiesActionResult, actionError);
@@ -963,7 +963,7 @@ final class TestUtils {
         OffsetDateTime completedAt, RecognizePiiEntitiesResultCollection resultCollection,
         TextAnalyticsError actionError) {
         RecognizePiiEntitiesActionResult recognizePiiEntitiesActionResult = new RecognizePiiEntitiesActionResult();
-        RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentResults(recognizePiiEntitiesActionResult, resultCollection);
+        RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentsResults(recognizePiiEntitiesActionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(recognizePiiEntitiesActionResult, completedAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(recognizePiiEntitiesActionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(recognizePiiEntitiesActionResult, actionError);
@@ -985,7 +985,7 @@ final class TestUtils {
         OffsetDateTime completeAt, RecognizeLinkedEntitiesResultCollection resultCollection,
         TextAnalyticsError actionError) {
         RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
-        RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult, resultCollection);
+        RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
@@ -995,7 +995,7 @@ final class TestUtils {
     static AnalyzeSentimentActionResult getExpectedAnalyzeSentimentActionResult(boolean isError,
         OffsetDateTime completeAt, AnalyzeSentimentResultCollection resultCollection, TextAnalyticsError actionError) {
         AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
-        AnalyzeSentimentActionResultPropertiesHelper.setDocumentResults(actionResult, resultCollection);
+        AnalyzeSentimentActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);

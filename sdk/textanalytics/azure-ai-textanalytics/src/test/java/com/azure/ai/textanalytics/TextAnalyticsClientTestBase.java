@@ -1667,7 +1667,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateCategorizedEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1682,7 +1682,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateLinkedEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validateLinkedEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1697,7 +1697,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validatePiiEntitiesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validatePiiEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1712,7 +1712,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 validateErrorDocument(expected.getError(), actual.getError());
             }
         } else {
-            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getDocumentResults(), actual.getDocumentResults());
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1728,7 +1728,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             }
         } else {
             validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining,
-                expected.getDocumentResults(), actual.getDocumentResults());
+                expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 

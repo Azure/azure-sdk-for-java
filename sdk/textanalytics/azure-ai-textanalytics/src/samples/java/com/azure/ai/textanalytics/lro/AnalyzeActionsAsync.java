@@ -77,7 +77,7 @@ public class AnalyzeActionsAsync {
                         System.out.println("Entities recognition action results:");
                         for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
                             if (!actionResult.isError()) {
-                                for (RecognizeEntitiesResult documentResult : actionResult.getDocumentResults()) {
+                                for (RecognizeEntitiesResult documentResult : actionResult.getDocumentsResults()) {
                                     if (!documentResult.isError()) {
                                         for (CategorizedEntity entity : documentResult.getEntities()) {
                                             System.out.printf("\tText: %s, category: %s, confidence score: %f.%n",
@@ -97,7 +97,7 @@ public class AnalyzeActionsAsync {
                         System.out.println("Key phrases extraction action results:");
                         for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesActionResults()) {
                             if (!actionResult.isError()) {
-                                for (ExtractKeyPhraseResult documentResult : actionResult.getDocumentResults()) {
+                                for (ExtractKeyPhraseResult documentResult : actionResult.getDocumentsResults()) {
                                     if (!documentResult.isError()) {
                                         System.out.println("\tExtracted phrases:");
                                         for (String keyPhrases : documentResult.getKeyPhrases()) {
