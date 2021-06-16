@@ -144,7 +144,8 @@ private object CosmosConfig {
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
     if (accountDataResolverCls != null) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
-
+        println("Account Data Config")
+        println(accountDataConfig)
         effectiveUserConfig += (CosmosConfigNames.AccountEndpoint -> accountDataConfig(CosmosConfigNames.AccountEndpoint))
         effectiveUserConfig += (CosmosConfigNames.AccountKey -> accountDataConfig(CosmosConfigNames.AccountKey))
         effectiveUserConfig += (CosmosConfigNames.Database -> accountDataConfig(CosmosConfigNames.Database))
