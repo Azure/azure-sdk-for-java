@@ -46,13 +46,6 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
 
-        if (receiver == null) {
-            receiver = createEventHubClientBuilder()
-                .prefetchCount(options.getPrefetch())
-                .consumerGroup(options.getConsumerGroup())
-                .buildConsumerClient();
-        }
-
         final IterableStream<PartitionEvent> partitionEvents = receiver.receiveFromPartition(
             options.getPartitionId(), options.getCount(), EventPosition.earliest());
 
@@ -69,16 +62,26 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     }
 
     @Override
-    public Mono<Void> runAsync() {
-        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
-        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
-
-        if (receiverAsync == null) {
+    public Mono<Void> setupAsync() {
+        if (receiver == null) {
+            receiver = createEventHubClientBuilder()
+                .prefetchCount(options.getPrefetch())
+                .consumerGroup(options.getConsumerGroup())
+                .buildConsumerClient();
+        } else {
             receiverAsync = createEventHubClientBuilder()
                 .prefetchCount(options.getPrefetch())
                 .consumerGroup(options.getConsumerGroup())
                 .buildAsyncConsumerClient();
         }
+
+        return Mono.empty();
+    }
+
+    @Override
+    public Mono<Void> runAsync() {
+        Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
+        Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
 
         return receiverAsync.receiveFromPartition(options.getPartitionId(), EventPosition.earliest())
             .take(options.getCount())
