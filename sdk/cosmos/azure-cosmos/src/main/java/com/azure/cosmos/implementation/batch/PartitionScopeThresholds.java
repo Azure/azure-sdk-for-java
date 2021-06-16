@@ -71,7 +71,6 @@ public class PartitionScopeThresholds<TContext> {
             currentRetryCountSnapshot = currentThresholdsSnapshot.currentRetriedOperationCount.get();
         }
 
-        double retryRate = (double)currentRetryCountSnapshot / currentTotalCountSnapshot;
         Pair<Boolean, Boolean> shouldReevaluateResult =
             this.shouldReevaluateThresholds(totalSnapshot, currentTotalCountSnapshot);
         boolean shouldReevaluate = shouldReevaluateResult.getLeft();
@@ -84,7 +83,6 @@ public class PartitionScopeThresholds<TContext> {
                     totalSnapshot,
                     currentTotalCountSnapshot,
                     currentRetryCountSnapshot,
-                    retryRate,
                     shouldReevaluateResult.getRight());
             }
         }
@@ -94,9 +92,9 @@ public class PartitionScopeThresholds<TContext> {
         long totalCount,
         long currentCount,
         long retryCount,
-        double retryRate,
         boolean onlyUpscale) {
 
+        double retryRate = currentCount == 0 ? 0 : (double)retryCount / currentCount;
         int microBatchSizeBefore = this.targetMicroBatchSize.get();
         int microBatchSizeAfter = microBatchSizeBefore;
 
