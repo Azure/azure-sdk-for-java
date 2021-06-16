@@ -15,8 +15,6 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -174,16 +172,9 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            callConnection.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext);
+            AddParticipantResult addParticipantResult = callConnection.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext);
 
-            // Remove Participant
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "f29f70e3-1eaf-44c0-839c-b4e8a74ffec3";
+            String participantId = addParticipantResult.getParticipantId();
             callConnection.removeParticipant(participantId);
 
             // Hang up
@@ -195,7 +186,6 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
     }
 
     @ParameterizedTest
-    @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) {
 
@@ -231,22 +221,15 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<AddParticipantResult> inviteParticipantResponse = callConnection
+            Response<AddParticipantResult> addParticipantResponse = callConnection
                 .addParticipantWithResponse(
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext,
                     null);
-            CallingServerTestUtils.validateAddParticipantResponse(inviteParticipantResponse);
+            CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
 
-            // Remove Participant
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "71ed956b-366e-450c-9a61-3bbccf42baa5";
+            String participantId = addParticipantResponse.getValue().getParticipantId();
             Response<Void> removeParticipantResponse =
                 callConnection.removeParticipantWithResponse(participantId, null);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);

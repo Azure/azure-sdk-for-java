@@ -11,7 +11,7 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 - Play audio in the call.
 - Outbound APIs for call recording including start, pause, resume and stop.
 - Subscribe to tone and receive tone selections via events.
-- Invite and remove participants from the call.
+- Add and remove participants from the call.
 
 <!-- LINKS -->
 [read_me]: https://github.com/Azure/azure-sdk-for-java/blob/feature/communication-ServerCalling/sdk/communication/azure-communication-callingserver/README.md

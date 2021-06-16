@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import java.util.UUID;
-
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -17,10 +15,10 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.UUID;
 
 public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
@@ -36,7 +34,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         if (this.getTestMode() == TestMode.LIVE) {
             System.out.println("Warning: Test is skipped, does not support live mode.");
             return;
-        }        
+        }
 
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
@@ -174,22 +172,16 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
-            // Invite User
+            // Add User
             String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
-            callConnectionAsync.addParticipant(
+            AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(
                 new CommunicationUserIdentifier(toUser),
                 null,
                 operationContext).block();
 
-            // Remove Participant
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "e3560385-776f-41d1-bf04-07ef738f2fc1";
+            assert addParticipantResult != null;
+            String participantId = addParticipantResult.getParticipantId();
             callConnectionAsync.removeParticipant(participantId).block();
 
             // Hang up
@@ -201,7 +193,6 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
     }
 
     @ParameterizedTest
-    @Disabled
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runCreateAddRemoveHangupScenarioWithResponseAsync(HttpClient httpClient) {
 
@@ -235,23 +226,17 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             assert callConnectionAsyncResponse != null;
             CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
 
-            // Invite User
+            // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<AddParticipantResult> inviteParticipantResponse =
+            Response<AddParticipantResult> addParticipantResponse =
                 callConnectionAsync.addParticipantWithResponse(
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext).block();
-            CallingServerTestUtils.validateAddParticipantResponse(inviteParticipantResponse);
+            CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
 
-            // Remove Participant
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "80238d5f-9eda-481a-b911-e2e12eba9eda";
+            assert addParticipantResponse != null;
+            String participantId = addParticipantResponse.getValue().getParticipantId();
             Response<Void> removeParticipantResponse =
                 callConnectionAsync.removeParticipantWithResponse(participantId).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);

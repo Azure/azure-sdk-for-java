@@ -70,11 +70,12 @@ CommunicationIdentifier[] targets = new CommunicationIdentifier[] { firstCallee,
 
 String callbackUri = "<callback-uri-for-notification>";
 
-CallModality[] requestedMediaTypes = new CallModality[] { CallModality.AUDIO, CallModality.VIDEO };
+MediaType[] requestedMediaTypes = new MediaType[] { MediaType.AUDIO, MediaType.VIDEO };
 
 EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
-        EventSubscriptionType.DTMF_RECEIVED,
-        EventSubscriptionType.PARTICIPANTS_UPDATED };
+    EventSubscriptionType.DTMF_RECEIVED,
+    EventSubscriptionType.PARTICIPANTS_UPDATED
+};
 
 CreateCallOptions createCallOptions = new CreateCallOptions(
     callbackUri,
