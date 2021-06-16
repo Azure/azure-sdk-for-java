@@ -10,6 +10,7 @@
 
 ### Breaking Changes
 - Removed `StringIndexType`, the type will be shared in the Azure Core.
+- Removed type `ExtractKeyPhrasesOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions` and respective exposures.
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
   `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
