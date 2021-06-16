@@ -99,6 +99,13 @@ public final class DynamicsCrmSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DynamicsCrmSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

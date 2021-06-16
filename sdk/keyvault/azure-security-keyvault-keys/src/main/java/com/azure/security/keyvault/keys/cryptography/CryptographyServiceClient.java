@@ -145,8 +145,8 @@ class CryptographyServiceClient {
                 KeyOperationResult keyOperationResult = keyOperationResultResponse.getValue();
 
                 return new EncryptResult(keyOperationResult.getResult(), algorithm, keyId,
-                    keyOperationResult.getIv(), keyOperationResult.getAdditionalAuthenticatedData(),
-                    keyOperationResult.getAuthenticationTag());
+                    keyOperationResult.getIv(), keyOperationResult.getAuthenticationTag(),
+                    keyOperationResult.getAdditionalAuthenticatedData());
             });
     }
 

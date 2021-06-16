@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- * Define values for FormContentType.
+ * Define values for content type supported for local files.
  */
 public final class FormContentType extends ExpandableStringEnum<FormContentType> {
 

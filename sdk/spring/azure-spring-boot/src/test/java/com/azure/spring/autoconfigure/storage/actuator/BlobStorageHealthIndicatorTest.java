@@ -12,8 +12,8 @@ import com.azure.storage.blob.models.SkuName;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.apache.http.HttpException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -29,7 +29,7 @@ public class BlobStorageHealthIndicatorTest {
 
     private static final String MOCK_URL = "https://example.org/bigly_fake_url";
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testWithNoStorageConfiguration() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
@@ -37,7 +37,9 @@ public class BlobStorageHealthIndicatorTest {
             .withBean(ShareServiceClientBuilder.class)
             .withConfiguration(AutoConfigurations.of(StorageHealthConfiguration.class));
 
-        contextRunner.run(context -> context.getBean(BlobStorageHealthIndicator.class).getHealth(true));
+        contextRunner.run(context ->
+            Assertions.assertThrows(IllegalStateException.class,
+                () -> context.getBean(BlobStorageHealthIndicator.class).getHealth(true)));
     }
 
     @Test
@@ -51,8 +53,8 @@ public class BlobStorageHealthIndicatorTest {
         contextRunner.run(context -> {
             Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class)
                                    .getHealth(true);
-            Assert.assertEquals(Status.UP, health.getStatus());
-            Assert.assertEquals(MOCK_URL, health.getDetails().get(Constants.URL_FIELD));
+            Assertions.assertEquals(Status.UP, health.getStatus());
+            Assertions.assertEquals(MOCK_URL, health.getDetails().get(Constants.URL_FIELD));
         });
     }
 
@@ -67,8 +69,8 @@ public class BlobStorageHealthIndicatorTest {
         contextRunner.run(context -> {
             Health health = context.getBean("blobStorageHealthIndicator", BlobStorageHealthIndicator.class)
                                    .getHealth(true);
-            Assert.assertEquals(Status.DOWN, health.getStatus());
-            Assert.assertEquals(MOCK_URL, health.getDetails().get(Constants.URL_FIELD));
+            Assertions.assertEquals(Status.DOWN, health.getStatus());
+            Assertions.assertEquals(MOCK_URL, health.getDetails().get(Constants.URL_FIELD));
         });
     }
 

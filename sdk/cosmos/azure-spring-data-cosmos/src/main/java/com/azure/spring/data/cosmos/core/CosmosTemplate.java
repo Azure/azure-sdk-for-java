@@ -474,8 +474,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties);
                 } else {
-                    ThroughputProperties throughputProperties =
-                        ThroughputProperties.createManualThroughput(information.getRequestUnit());
+                    ThroughputProperties throughputProperties = information.isAutoScale()
+                        ? ThroughputProperties.createAutoscaledThroughput(information.getRequestUnit())
+                        : ThroughputProperties.createManualThroughput(information.getRequestUnit());
                     cosmosContainerResponseMono =
                         cosmosAsyncDatabase.createContainerIfNotExists(cosmosContainerProperties,
                             throughputProperties);
@@ -768,6 +769,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container name should not be empty");
 
         final Long count = getCountValue(query, containerName);
+        assert count != null;
+        return count;
+    }
+
+    @Override
+    public <T> long count(SqlQuerySpec querySpec, String containerName) {
+        Assert.hasText(containerName, "container name should not be empty");
+
+        final Long count = getCountValue(querySpec, containerName);
         assert count != null;
         return count;
     }

@@ -1,5 +1,22 @@
 # Release History
 
+## 7.2.3 (2021-06-14)
+### Fixed
+Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is stuck when connection is broken.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.17.0`.
+- Upgraded `azure-core-amqp` dependency to `2.2.0`.
+- Upgraded `azure-core-http-netty` to `1.10.0`.
+
+## 7.2.2 (2021-05-26)
+### Fixed
+- Fixed some connection retry issues when network errors happen.
+- Fixed an issue that caused `ServiceBusSenderClient` to keep running after it's already closed.
+
+### Dependency Updates
+- Upgraded `azure-core-amqp` dependency to `2.0.6`.
+
 ## 7.2.1 (2021-05-12)
 ### Fixed
 - Fixed an issue: When 'ServiceBusProcessorClient:maxConcurrentCalls' is set, this will result in SDK cache more 

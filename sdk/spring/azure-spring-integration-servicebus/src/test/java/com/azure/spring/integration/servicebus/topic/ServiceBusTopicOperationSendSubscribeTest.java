@@ -3,49 +3,43 @@
 
 package com.azure.spring.integration.servicebus.topic;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.topic.support.ServiceBusTopicTestOperation;
-import com.microsoft.azure.servicebus.IMessageHandler;
-import com.microsoft.azure.servicebus.SubscriptionClient;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.integration.test.support.SendSubscribeByGroupOperationTest;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
+import com.azure.spring.integration.test.support.SendSubscribeWithGroupOperationTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
+import org.springframework.messaging.Message;
 
-import java.util.concurrent.CompletableFuture;
+import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusTopicOperationSendSubscribeTest
-    extends SendSubscribeByGroupOperationTest<ServiceBusTopicOperation> {
+    extends SendSubscribeWithGroupOperationTest<ServiceBusTopicOperation> {
 
     @Mock
     ServiceBusTopicClientFactory clientFactory;
 
-    @Mock
-    SubscriptionClient subscriptionClient;
+    private AutoCloseable closeable;
 
-    @Before
-    @Override
+    @BeforeEach
     public void setUp() {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        future.complete(null);
-        when(this.clientFactory.getOrCreateSubscriptionClient(anyString(), anyString()))
-            .thenReturn(this.subscriptionClient);
-        whenRegisterMessageHandler(subscriptionClient);
-        when(this.subscriptionClient.completeAsync(any())).thenReturn(future);
-        when(this.subscriptionClient.abandonAsync(any())).thenReturn(future);
+        this.closeable = MockitoAnnotations.openMocks(this);
         this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override
     protected void verifyCheckpointSuccessCalled(int times) {
-        verify(this.subscriptionClient, times(times)).completeAsync(any());
+        verifyCompleteCalledTimes(times);
     }
 
     @Override
@@ -55,14 +49,39 @@ public class ServiceBusTopicOperationSendSubscribeTest
 
     @Override
     protected void verifyCheckpointFailureCalled(int times) {
-        verify(this.subscriptionClient, times(times)).abandonAsync(any());
+        verifyAbandonCalledTimes(times);
     }
 
-    private void whenRegisterMessageHandler(SubscriptionClient subscriptionClient) {
-        try {
-            doNothing().when(subscriptionClient).registerMessageHandler(isA(IMessageHandler.class));
-        } catch (InterruptedException | ServiceBusException e) {
-            fail("Exception should not throw" + e);
+    @Override
+    protected void manualCheckpointHandler(Message<?> message) {
+        assertTrue(message.getHeaders().containsKey(RECEIVED_MESSAGE_CONTEXT));
+        final ServiceBusReceivedMessageContext receivedMessageContext = message.getHeaders()
+                                                                               .get(RECEIVED_MESSAGE_CONTEXT,
+                                                                                   ServiceBusReceivedMessageContext.class);
+        assertNotNull(receivedMessageContext);
+
+        receivedMessageContext.complete();
+        verifyCompleteCalledTimes(1);
+
+        receivedMessageContext.abandon();
+        verifyAbandonCalledTimes(1);
+    }
+
+    protected void verifyCompleteCalledTimes(int times) {
+        waitMillis(250);
+        final int actualTimes = ((ServiceBusTopicTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
+
+        if (actualTimes != times) {
+            assertEquals(times, actualTimes, "Complete called times");
+        }
+    }
+
+    protected void verifyAbandonCalledTimes(int times) {
+        waitMillis(250);
+        final int actualTimes = ((ServiceBusTopicTestOperation) sendSubscribeOperation).getCompleteCalledTimes();
+
+        if (actualTimes != times) {
+            assertEquals(times, actualTimes, "Complete called times");
         }
     }
 }

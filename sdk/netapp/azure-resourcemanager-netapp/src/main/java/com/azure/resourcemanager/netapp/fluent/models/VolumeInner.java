@@ -173,6 +173,31 @@ public class VolumeInner extends Resource {
     @JsonProperty(value = "properties.ldapEnabled")
     private Boolean ldapEnabled;
 
+    /*
+     * Specifies whether Cool Access(tiering) is enabled for the volume.
+     */
+    @JsonProperty(value = "properties.coolAccess")
+    private Boolean coolAccess;
+
+    /*
+     * Specifies the number of days after which data that is not accessed by
+     * clients will be tiered.
+     */
+    @JsonProperty(value = "properties.coolnessPeriod")
+    private Integer coolnessPeriod;
+
+    /*
+     * UNIX permissions for NFS volume accepted in octal 4 digit format. First
+     * digit selects the set user ID(4), set group ID (2) and sticky (1)
+     * attributes. Second digit selects permission for the owner of the file:
+     * read (4), write (2) and execute (1). Third selects permissions for other
+     * users in the same group. the fourth for other users not in the group.
+     * 0755 - gives read/write/execute permissions to owner and read/execute to
+     * group and other users.
+     */
+    @JsonProperty(value = "properties.unixPermissions")
+    private String unixPermissions;
+
     /**
      * Get the fileSystemId property: Unique FileSystem Identifier.
      *
@@ -602,6 +627,76 @@ public class VolumeInner extends Resource {
      */
     public VolumeInner withLdapEnabled(Boolean ldapEnabled) {
         this.ldapEnabled = ldapEnabled;
+        return this;
+    }
+
+    /**
+     * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @return the coolAccess value.
+     */
+    public Boolean coolAccess() {
+        return this.coolAccess;
+    }
+
+    /**
+     * Set the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
+     *
+     * @param coolAccess the coolAccess value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withCoolAccess(Boolean coolAccess) {
+        this.coolAccess = coolAccess;
+        return this;
+    }
+
+    /**
+     * Get the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @return the coolnessPeriod value.
+     */
+    public Integer coolnessPeriod() {
+        return this.coolnessPeriod;
+    }
+
+    /**
+     * Set the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
+     * will be tiered.
+     *
+     * @param coolnessPeriod the coolnessPeriod value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withCoolnessPeriod(Integer coolnessPeriod) {
+        this.coolnessPeriod = coolnessPeriod;
+        return this;
+    }
+
+    /**
+     * Get the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+     * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
+     * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
+     * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
+     * read/execute to group and other users.
+     *
+     * @return the unixPermissions value.
+     */
+    public String unixPermissions() {
+        return this.unixPermissions;
+    }
+
+    /**
+     * Set the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+     * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
+     * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
+     * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
+     * read/execute to group and other users.
+     *
+     * @param unixPermissions the unixPermissions value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withUnixPermissions(String unixPermissions) {
+        this.unixPermissions = unixPermissions;
         return this;
     }
 

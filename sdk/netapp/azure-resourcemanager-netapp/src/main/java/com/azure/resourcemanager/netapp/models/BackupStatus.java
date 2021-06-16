@@ -44,6 +44,27 @@ public interface BackupStatus {
     String errorMessage();
 
     /**
+     * Gets the lastTransferSize property: Displays the last transfer size.
+     *
+     * @return the lastTransferSize value.
+     */
+    Long lastTransferSize();
+
+    /**
+     * Gets the lastTransferType property: Displays the last transfer type.
+     *
+     * @return the lastTransferType value.
+     */
+    String lastTransferType();
+
+    /**
+     * Gets the totalTransferBytes property: Displays the total bytes transferred.
+     *
+     * @return the totalTransferBytes value.
+     */
+    Long totalTransferBytes();
+
+    /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner object.
      *
      * @return the inner object.

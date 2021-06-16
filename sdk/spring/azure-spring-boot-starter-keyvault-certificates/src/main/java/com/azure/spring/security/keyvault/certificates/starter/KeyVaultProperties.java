@@ -92,10 +92,35 @@ public class KeyVaultProperties {
          */
         private String overrideTrustManagerFactory;
         /**
+         * To configure refresh certificate when get untrusted certificate.
+         */
+        private String refreshCertificatesWhenHaveUnTrustCertificate;
+
+        public String getRefreshCertificatesWhenHaveUnTrustCertificate() {
+            return refreshCertificatesWhenHaveUnTrustCertificate;
+        }
+
+        public void setRefreshCertificatesWhenHaveUnTrustCertificate(String refreshCertificatesWhenHaveUnTrustCertificate) {
+            this.refreshCertificatesWhenHaveUnTrustCertificate = refreshCertificatesWhenHaveUnTrustCertificate;
+        }
+
+        /**
          * If you are developing you can completely disable the certificate and hostname validation altogether by
          * setting disableHostnameVerification = true. Note: this is NOT recommended for production!
          */
         private String disableHostnameVerification;
+        /**
+         * To enable auto refresh certificate, set certificatesRefreshInterval as refresh interval. The unit of time is milliseconds.
+         */
+        private long certificatesRefreshInterval;
+
+        public long getCertificatesRefreshInterval() {
+            return certificatesRefreshInterval;
+        }
+
+        public void setCertificatesRefreshInterval(long certificatesRefreshInterval) {
+            this.certificatesRefreshInterval = certificatesRefreshInterval;
+        }
 
         public String getOverrideTrustManagerFactory() {
             return overrideTrustManagerFactory;

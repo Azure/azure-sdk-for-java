@@ -13,6 +13,14 @@ import java.util.UUID;
 @Fluent
 public final class IncidentResult {
     /*
+     * data feed unique id
+     *
+     * only return for alerting anomaly result
+     */
+    @JsonProperty(value = "dataFeedId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID dataFeedId;
+
+    /*
      * metric unique id
      *
      * only return for alerting incident result
@@ -57,6 +65,17 @@ public final class IncidentResult {
      */
     @JsonProperty(value = "property", required = true)
     private IncidentProperty property;
+
+    /**
+     * Get the dataFeedId property: data feed unique id
+     *
+     * <p>only return for alerting anomaly result.
+     *
+     * @return the dataFeedId value.
+     */
+    public UUID getDataFeedId() {
+        return this.dataFeedId;
+    }
 
     /**
      * Get the metricId property: metric unique id

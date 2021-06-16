@@ -855,7 +855,7 @@ class BlockBlobAPITest extends APISpec {
 
         @Override
         void reportProgress(long bytesTransferred) {
-            this.reportedByteCount += bytesTransferred
+            this.reportedByteCount = bytesTransferred
         }
 
         long getReportedByteCount() {
@@ -865,7 +865,6 @@ class BlockBlobAPITest extends APISpec {
 
     @Unroll
     @LiveOnly
-    @Ignore("Failing in live test run with unexpected reported byte count")
     def "Upload from file reporter"() {
         when:
         def uploadReporter = new FileUploadReporter()
@@ -885,12 +884,12 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
 
         where:
-        size              | blockSize         | bufferCount | maxSingleUploadSize
-        10 * Constants.MB | 10 * Constants.MB | 8           | 10 * Constants.MB - 1 // Variable number of buffers and reports
-        20 * Constants.MB | 1 * Constants.MB  | 5           | 1 * Constants.MB - 1
-        10 * Constants.MB | 5 * Constants.MB  | 2           | 5 * Constants.MB - 1
-        10 * Constants.MB | 10 * Constants.KB | 100         | 10 * Constants.KB - 1 // Reporting with many buffers/reports
-        100               | 1 * Constants.MB  | 2           | 256 * Constants.MB // Progress on small files
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+        100               | 1 * Constants.MB  | 2
     }
 
     @Unroll

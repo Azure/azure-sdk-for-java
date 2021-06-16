@@ -18,14 +18,14 @@ public final class MySqlDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private SqlSourceParameter dataSourceParameter;
+    private SQLSourceParameterPatch dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public SqlSourceParameter getDataSourceParameter() {
+    public SQLSourceParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -35,7 +35,7 @@ public final class MySqlDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the MySqlDataFeedPatch object itself.
      */
-    public MySqlDataFeedPatch setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
+    public MySqlDataFeedPatch setDataSourceParameter(SQLSourceParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

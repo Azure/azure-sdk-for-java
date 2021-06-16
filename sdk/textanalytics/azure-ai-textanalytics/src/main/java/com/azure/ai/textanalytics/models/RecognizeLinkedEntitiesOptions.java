@@ -10,8 +10,6 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOptions {
-    private StringIndexType stringIndexType;
-
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
@@ -43,24 +41,18 @@ public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOp
     }
 
     /**
-     * Get the value of {@code stringIndexType}.
+     * Set the value of {@code disableServiceLogs}.
      *
-     * @return The value of {@code stringIndexType}.
-     */
-    public StringIndexType getStringIndexType() {
-        return stringIndexType;
-    }
-
-    /**
-     * Set the value of {@code stringIndexType}.
-     * The {@link StringIndexType#UTF16CODE_UNIT} will be used as default type if there is no value assign to it.
-     *
-     * @param stringIndexType It used to set the value of string indexing type.
+     * @param disableServiceLogs The default value of this property is 'false', except for methods like
+     * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
+     * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
+     * disables input logging and may limit our ability to investigate issues that occur.
      *
      * @return the {@link RecognizeLinkedEntitiesOptions} object itself.
      */
-    public RecognizeLinkedEntitiesOptions setStringIndexType(StringIndexType stringIndexType) {
-        this.stringIndexType = stringIndexType;
+    @Override
+    public RecognizeLinkedEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+        super.setServiceLogsDisabled(disableServiceLogs);
         return this;
     }
 }
