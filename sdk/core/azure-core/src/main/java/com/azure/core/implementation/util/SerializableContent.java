@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A {@link RequestContent} implementation which is backed by a serializable object.
@@ -16,7 +17,7 @@ public final class SerializableContent extends RequestContent {
     private final Object serializable;
     private final ObjectSerializer objectSerializer;
 
-    private byte[] serializedObject;
+    private final AtomicReference<byte[]> serializedObject = new AtomicReference<>();
 
     /**
      * Creates a new instance of {@link SerializableContent}.
@@ -31,15 +32,9 @@ public final class SerializableContent extends RequestContent {
 
     @Override
     public Flux<ByteBuffer> asFluxByteBuffer() {
-        if (serializedObject == null) {
-            synchronized (serializable) {
-                if (serializedObject == null) {
-                    serializedObject = objectSerializer.serializeToBytes(serializable);
-                }
-            }
-        }
+        serializedObject.compareAndSet(null, objectSerializer.serializeToBytes(serializable));
 
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(serializedObject)));
+        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(serializedObject.get())));
     }
 
     @Override
