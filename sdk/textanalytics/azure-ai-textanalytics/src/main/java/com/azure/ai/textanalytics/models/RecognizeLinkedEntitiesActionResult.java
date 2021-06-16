@@ -14,7 +14,7 @@ public final class RecognizeLinkedEntitiesActionResult extends TextAnalyticsActi
 
     static {
         RecognizeLinkedEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionsResult.setDocumentsResults(documentsResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

@@ -19,7 +19,7 @@ public final class ExtractKeyPhrasesActionResultPropertiesHelper {
      * instance.
      */
     public interface ExtractKeyPhrasesActionResultAccessor {
-        void setDocumentResults(ExtractKeyPhrasesActionResult actionsResult,
+        void setDocumentResults(ExtractKeyPhrasesActionResult actionResult,
             ExtractKeyPhrasesResultCollection documentResults);
     }
 

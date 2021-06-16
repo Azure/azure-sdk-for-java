@@ -14,7 +14,7 @@ public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResul
 
     static {
         AnalyzeSentimentActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionsResult.setDocumentsResults(documentsResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

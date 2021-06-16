@@ -14,7 +14,7 @@ public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionR
 
     static {
         RecognizePiiEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, documentsResults) -> actionsResult.setDocumentsResults(documentsResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

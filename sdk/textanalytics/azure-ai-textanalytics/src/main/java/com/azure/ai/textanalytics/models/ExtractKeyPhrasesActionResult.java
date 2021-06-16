@@ -15,7 +15,7 @@ public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResu
 
     static {
         ExtractKeyPhrasesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, documentsResults) -> actionsResult.setDocumentsResults(documentsResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**
