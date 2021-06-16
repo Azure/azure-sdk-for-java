@@ -5,6 +5,9 @@ package com.azure.spring.cloud.config;
 
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 
+/**
+ * Creates Custom CustomClientBuilder for connecting to Azure App Configuration.
+ */
 public interface ConfigurationClientBuilderSetup {
 
     void setup(ConfigurationClientBuilder builder, String endpoint);

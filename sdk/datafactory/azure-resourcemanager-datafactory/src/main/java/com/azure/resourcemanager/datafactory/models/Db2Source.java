@@ -80,6 +80,13 @@ public final class Db2Source extends TabularSource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public Db2Source withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

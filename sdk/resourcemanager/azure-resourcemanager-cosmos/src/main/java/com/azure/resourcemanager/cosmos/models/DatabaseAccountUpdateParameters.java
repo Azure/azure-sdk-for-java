@@ -185,6 +185,13 @@ public class DatabaseAccountUpdateParameters {
     @JsonProperty(value = "properties.networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
 
+    /*
+     * Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
     /**
      * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
      * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
@@ -708,6 +715,28 @@ public class DatabaseAccountUpdateParameters {
      */
     public DatabaseAccountUpdateParameters withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
         this.networkAclBypassResourceIds = networkAclBypassResourceIds;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
         return this;
     }
 

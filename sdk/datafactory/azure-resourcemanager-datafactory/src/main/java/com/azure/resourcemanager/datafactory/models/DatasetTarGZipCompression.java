@@ -22,14 +22,14 @@ public final class DatasetTarGZipCompression extends DatasetCompression {
      * The TarGZip compression level.
      */
     @JsonProperty(value = "level")
-    private DatasetCompressionLevel level;
+    private Object level;
 
     /**
      * Get the level property: The TarGZip compression level.
      *
      * @return the level value.
      */
-    public DatasetCompressionLevel level() {
+    public Object level() {
         return this.level;
     }
 
@@ -39,7 +39,7 @@ public final class DatasetTarGZipCompression extends DatasetCompression {
      * @param level the level value to set.
      * @return the DatasetTarGZipCompression object itself.
      */
-    public DatasetTarGZipCompression withLevel(DatasetCompressionLevel level) {
+    public DatasetTarGZipCompression withLevel(Object level) {
         this.level = level;
         return this;
     }
