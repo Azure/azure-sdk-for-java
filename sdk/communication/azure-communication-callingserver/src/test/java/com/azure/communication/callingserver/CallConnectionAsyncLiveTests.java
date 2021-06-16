@@ -14,7 +14,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -27,7 +27,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -79,7 +79,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -135,7 +135,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -182,7 +182,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -236,7 +236,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -291,7 +291,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")

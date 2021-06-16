@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -35,7 +35,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -57,7 +57,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -79,7 +79,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -101,7 +101,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
@@ -136,7 +136,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @EnabledIfEnvironmentVariable(
+    @DisabledIfEnvironmentVariable(
         named = "RUN_CALLINGSERVER_TEST_RECORD",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
