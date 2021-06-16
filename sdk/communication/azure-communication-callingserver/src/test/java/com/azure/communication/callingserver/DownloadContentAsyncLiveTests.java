@@ -7,8 +7,8 @@ import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -21,10 +21,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -35,15 +35,10 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
+        matches = "(?i)(true)")
     public void downloadMetadataAsync(HttpClient httpClient) {
-
-        // This test requires human intervention to record and
-        // will not function in live mode.
-        if (this.getTestMode() == TestMode.LIVE) {
-            System.out.println("Warning: Test is skipped, does not support live mode.");
-            return;
-        }
-
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
 
@@ -61,15 +56,10 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
+        matches = "(?i)(true)")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
-
-        // This test requires human intervention to record and
-        // will not function in live mode.
-        if (this.getTestMode() == TestMode.LIVE) {
-            System.out.println("Warning: Test is skipped, does not support live mode.");
-            return;
-        }
-
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
 
@@ -87,15 +77,10 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
+        matches = "(?i)(true)")
     public void downloadVideoAsync(HttpClient httpClient) {
-
-        // This test requires human intervention to record and
-        // will not function in live mode.
-        if (this.getTestMode() == TestMode.LIVE) {
-            System.out.println("Warning: Test is skipped, does not support live mode.");
-            return;
-        }
-
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadVideoAsync");
 
@@ -113,15 +98,10 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
+        matches = "(?i)(true)")
     public void downloadToFileAsync(HttpClient httpClient) {
-
-        // This test requires human intervention to record and
-        // will not function in live mode.
-        if (this.getTestMode() == TestMode.LIVE) {
-            System.out.println("Warning: Test is skipped, does not support live mode.");
-            return;
-        }
-
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
@@ -152,15 +132,10 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
+        matches = "(?i)(true)")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
-
-        // This test requires human intervention to record and
-        // will not function in live mode.
-        if (this.getTestMode() == TestMode.LIVE) {
-            System.out.println("Warning: Test is skipped, does not support live mode.");
-            return;
-        }
-
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
