@@ -210,7 +210,6 @@ public class DataLakeFileClient extends DataLakePathClient {
 
     /**
      * Creates a new file.
-     * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
@@ -501,9 +500,8 @@ public class DataLakeFileClient extends DataLakePathClient {
 
     /**
      * Opens a file input stream to download the file.
-     * <p>
      *
-     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @return An {@link InputStream} object that represents the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileInputStream openInputStream() {
@@ -513,8 +511,9 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Opens a file input stream to download the specified range of the file.
      *
+     *
      * @param options {@link DataLakeFileInputStreamOptions}
-     * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
+     * @return An {@link InputStream} object that represents the stream to use for reading from the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileInputStream openInputStream(DataLakeFileInputStreamOptions options) {

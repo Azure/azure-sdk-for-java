@@ -6,8 +6,6 @@ package com.azure.storage.file.datalake.models;
 /**
  * Defines values to indicate what strategy the SDK should use when reading from a blob to ensure the view of the data
  * is consistent and not changed during the read.
- * {@link #NONE}
- * {@link #ETAG}
  */
 public enum ConsistentReadControl {
     /**
