@@ -149,6 +149,7 @@ private object CosmosConfig {
         effectiveUserConfig += (CosmosConfigNames.AccountEndpoint -> accountDataConfig(CosmosConfigNames.AccountEndpoint))
         effectiveUserConfig += (CosmosConfigNames.AccountKey -> accountDataConfig(CosmosConfigNames.AccountKey))
         effectiveUserConfig += (CosmosConfigNames.Database -> accountDataConfig(CosmosConfigNames.Database))
+        effectiveUserConfig += (CosmosConfigNames.PreferredRegionsList -> accountDataConfig(CosmosConfigNames.PreferredRegionsList))
     }
 
     if (databaseName.isDefined) {
