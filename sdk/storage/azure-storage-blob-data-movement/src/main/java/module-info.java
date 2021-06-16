@@ -3,4 +3,6 @@
 
 module com.azure.storage.blob.data.movement {
     requires transitive com.azure.storage.common.data.movement;
+
+    exports com.azure.storage.blob.data.movement;
 }
