@@ -63,7 +63,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
     @Override
     public Mono<Void> setupAsync() {
-        if (receiver == null) {
+        if (options.isSync()) {
             receiver = createEventHubClientBuilder()
                 .prefetchCount(options.getPrefetch())
                 .consumerGroup(options.getConsumerGroup())
