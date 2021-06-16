@@ -14,7 +14,7 @@ import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.options.UploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
@@ -176,7 +176,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrlWithResponse(com.azure.storage.blob.options.UploadPagesFromUrlOptions)}
+     * Code snippets for {@link PageBlobAsyncClient#uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions)}
      */
     public void uploadPagesFromUrlWithResponseOptionsBagCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesFromUrlWithResponse#UploadPagesFromUrlOptions
@@ -189,7 +189,7 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.uploadPagesFromUrlWithResponse(new UploadPagesFromUrlOptions(pageRange, url).setSourceOffset(sourceOffset)
+        client.uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url).setSourceOffset(sourceOffset)
             .setSourceContentMd5(sourceContentMD5).setDestinationRequestConditions(pageBlobRequestConditions)
             .setSourceRequestConditions(sourceRequestConditions))
             .subscribe(response -> System.out.printf(

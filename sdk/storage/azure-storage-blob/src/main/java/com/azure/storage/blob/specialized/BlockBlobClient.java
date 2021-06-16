@@ -29,7 +29,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.options.StageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -541,7 +541,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl, BlobRange sourceRange,
             byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions, Duration timeout,
             Context context) {
-        return stageBlockFromUrlWithResponse(new StageBlockFromUrlOptions(base64BlockId, sourceUrl)
+        return stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
             .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
             .setSourceRequestConditions(sourceRequestConditions), timeout, context);
     }
@@ -563,7 +563,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stageBlockFromUrlWithResponse(StageBlockFromUrlOptions options, Duration timeout,
+    public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);

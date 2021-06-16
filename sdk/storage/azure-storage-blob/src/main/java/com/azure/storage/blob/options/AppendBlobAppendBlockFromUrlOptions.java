@@ -14,10 +14,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  * Extended options that may be passed when appending a block from a source URL.
  */
 @Fluent
-public class AppendBlockFromUrlOptions {
+public class AppendBlobAppendBlockFromUrlOptions {
     private final String sourceUrl;
     private BlobRange sourceRange;
-    private byte[] sourceContentMD5;
+    private byte[] sourceContentMd5;
     private AppendBlobRequestConditions destinationRequestConditions;
     private BlobRequestConditions sourceRequestConditions;
     private HttpAuthorization sourceAuthorization;
@@ -25,7 +25,7 @@ public class AppendBlockFromUrlOptions {
     /**
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
-    public AppendBlockFromUrlOptions(String sourceUrl) {
+    public AppendBlobAppendBlockFromUrlOptions(String sourceUrl) {
         this.sourceUrl = sourceUrl;
     }
 
@@ -47,7 +47,7 @@ public class AppendBlockFromUrlOptions {
      * @param sourceRange Range of bytes to read from the source.
      * @return The updated options.
      */
-    public AppendBlockFromUrlOptions setSourceRange(BlobRange sourceRange) {
+    public AppendBlobAppendBlockFromUrlOptions setSourceRange(BlobRange sourceRange) {
         this.sourceRange = sourceRange;
         return this;
     }
@@ -55,16 +55,16 @@ public class AppendBlockFromUrlOptions {
     /**
      * @return MD5 of the source content to be appended.
      */
-    public byte[] getSourceContentMD5() {
-        return CoreUtils.clone(sourceContentMD5);
+    public byte[] getSourceContentMd5() {
+        return CoreUtils.clone(sourceContentMd5);
     }
 
     /**
-     * @param sourceContentMD5 MD5 of the source content to be appended.
+     * @param sourceContentMd5 MD5 of the source content to be appended.
      * @return The updated options.
      */
-    public AppendBlockFromUrlOptions setSourceContentMD5(byte[] sourceContentMD5) {
-        this.sourceContentMD5 = CoreUtils.clone(sourceContentMD5);
+    public AppendBlobAppendBlockFromUrlOptions setSourceContentMd5(byte[] sourceContentMd5) {
+        this.sourceContentMd5 = CoreUtils.clone(sourceContentMd5);
         return this;
     }
 
@@ -79,7 +79,7 @@ public class AppendBlockFromUrlOptions {
      * @param destinationRequestConditions {@link AppendBlobRequestConditions} for writing to destination.
      * @return The updated options.
      */
-    public AppendBlockFromUrlOptions setDestinationRequestConditions(AppendBlobRequestConditions destinationRequestConditions) {
+    public AppendBlobAppendBlockFromUrlOptions setDestinationRequestConditions(AppendBlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
@@ -95,7 +95,7 @@ public class AppendBlockFromUrlOptions {
      * @param sourceRequestConditions {@link BlobRequestConditions} for accessing source.
      * @return The updated options.
      */
-    public AppendBlockFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
+    public AppendBlobAppendBlockFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }
@@ -111,7 +111,7 @@ public class AppendBlockFromUrlOptions {
      * @param sourceAuthorization auth header for accessing source.
      * @return The updated options.
      */
-    public AppendBlockFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+    public AppendBlobAppendBlockFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
         this.sourceAuthorization = sourceAuthorization;
         return this;
     }

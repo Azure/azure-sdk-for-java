@@ -13,7 +13,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  * Extended options that may be passed when staging a block from a source URL.
  */
 @Fluent
-public class StageBlockFromUrlOptions {
+public class BlockBlobStageBlockFromUrlOptions {
     private final String base64BlockId;
     private final String sourceUrl;
     private BlobRange sourceRange;
@@ -26,7 +26,7 @@ public class StageBlockFromUrlOptions {
      * @param base64BlockId The block ID to assign the new block.
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
-    public StageBlockFromUrlOptions(String base64BlockId, String sourceUrl) {
+    public BlockBlobStageBlockFromUrlOptions(String base64BlockId, String sourceUrl) {
         this.base64BlockId = base64BlockId;
         this.sourceUrl = sourceUrl;
     }
@@ -56,7 +56,7 @@ public class StageBlockFromUrlOptions {
      * @param sourceRange Range of bytes to read from the source.
      * @return The updated options.
      */
-    public StageBlockFromUrlOptions setSourceRange(BlobRange sourceRange) {
+    public BlockBlobStageBlockFromUrlOptions setSourceRange(BlobRange sourceRange) {
         this.sourceRange = sourceRange;
         return this;
     }
@@ -72,7 +72,7 @@ public class StageBlockFromUrlOptions {
      * @param sourceContentMd5 MD5 of the source content.
      * @return The updated options.
      */
-    public StageBlockFromUrlOptions setSourceContentMd5(byte[] sourceContentMd5) {
+    public BlockBlobStageBlockFromUrlOptions setSourceContentMd5(byte[] sourceContentMd5) {
         this.sourceContentMd5 = CoreUtils.clone(sourceContentMd5);
         return this;
     }
@@ -88,7 +88,7 @@ public class StageBlockFromUrlOptions {
      * @param leaseId Lease ID for accessing source content.
      * @return The updated options.
      */
-    public StageBlockFromUrlOptions setLeaseId(String leaseId) {
+    public BlockBlobStageBlockFromUrlOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -104,7 +104,7 @@ public class StageBlockFromUrlOptions {
      * @param sourceRequestConditions {@link BlobRequestConditions} for accessing source content.
      * @return The updated options.
      */
-    public StageBlockFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
+    public BlockBlobStageBlockFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }
@@ -120,7 +120,7 @@ public class StageBlockFromUrlOptions {
      * @param sourceAuthorization auth header to access source.
      * @return The updated options.
      */
-    public StageBlockFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+    public BlockBlobStageBlockFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
         this.sourceAuthorization = sourceAuthorization;
         return this;
     }

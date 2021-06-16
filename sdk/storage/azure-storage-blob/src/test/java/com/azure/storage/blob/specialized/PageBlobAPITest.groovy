@@ -27,7 +27,7 @@ import com.azure.storage.blob.models.SequenceNumberActionType
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
-import com.azure.storage.blob.options.UploadPagesFromUrlOptions
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Ignore
@@ -612,7 +612,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesFromUrlWithResponse(
-            new UploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
+            new PageBlobUploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
                 .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
@@ -631,7 +631,7 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bc.uploadPagesFromUrlWithResponse(
-            new UploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
+            new PageBlobUploadPagesFromUrlOptions(pageRange, sourceBlob.getBlobUrl())
                 .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 

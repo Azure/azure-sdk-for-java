@@ -14,7 +14,7 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
-import com.azure.storage.blob.options.StageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -247,7 +247,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("Staging block from URL completed with status %d%n",
-            client.stageBlockFromUrlWithResponse(new StageBlockFromUrlOptions(base64BlockId, sourceUrl)
+            client.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
                 .setSourceRange(new BlobRange(offset, count)).setLeaseId(leaseId)
                 .setSourceRequestConditions(sourceRequestConditions), timeout, context).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlockBlobClient.stageBlockFromUrlWithResponse#StageBlockFromUrlOptions-Duration-Context

@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
-import com.azure.storage.blob.options.AppendBlockFromUrlOptions
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.IgnoreIf
@@ -588,7 +588,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.appendBlockFromUrlWithResponse(
-            new AppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
+            new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
                 .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 
@@ -606,7 +606,7 @@ class AppendBlobAPITest extends APISpec {
 
         when:
         bc.appendBlockFromUrlWithResponse(
-            new AppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
+            new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl())
                 .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 

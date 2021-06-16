@@ -21,7 +21,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
-import com.azure.storage.blob.options.AppendBlockFromUrlOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -280,8 +280,8 @@ public final class AppendBlobClient extends BlobClientBase {
         byte[] sourceContentMd5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
-            new AppendBlockFromUrlOptions(sourceUrl).setSourceRange(sourceRange)
-                .setSourceContentMD5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
+            new AppendBlobAppendBlockFromUrlOptions(sourceUrl).setSourceRange(sourceRange)
+                .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions), context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
@@ -299,7 +299,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return The information of the append blob operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(AppendBlockFromUrlOptions options, Duration timeout,
+    public Response<AppendBlobItem> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options, Duration timeout,
         Context context) {
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
             options, context);

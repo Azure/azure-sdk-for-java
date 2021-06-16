@@ -36,7 +36,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
-import com.azure.storage.blob.options.StageBlockFromUrlOptions
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions
 import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
@@ -325,7 +325,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blockBlobClient.stageBlockFromUrlWithResponse(
-            new StageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
+            new BlockBlobStageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
                 .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
         blockBlobClient.commitBlockList([blockId], true)
@@ -345,7 +345,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blockBlobClient.stageBlockFromUrlWithResponse(
-            new StageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
+            new BlockBlobStageBlockFromUrlOptions(blockId, sourceBlob.getBlobUrl())
                 .setSourceAuthorization(new HttpAuthorization("Bearer", oauthHeader)),
             null, Context.NONE)
 

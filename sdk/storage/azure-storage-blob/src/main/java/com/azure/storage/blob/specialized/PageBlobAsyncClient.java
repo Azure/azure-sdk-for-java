@@ -37,7 +37,7 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
-import com.azure.storage.blob.options.UploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -424,7 +424,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions,
             BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> uploadPagesFromUrlWithResponse(new UploadPagesFromUrlOptions(range, sourceUrl)
+            return withContext(context -> uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(range, sourceUrl)
                 .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMd5)
                 .setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions), context));
@@ -448,7 +448,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @throws IllegalArgumentException If {@code range} is {@code null}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(UploadPagesFromUrlOptions options) {
+    public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions options) {
         try {
             return withContext(context -> uploadPagesFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
@@ -456,7 +456,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(UploadPagesFromUrlOptions options, Context context) {
+    Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions options, Context context) {
         if (options.getRange() == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.

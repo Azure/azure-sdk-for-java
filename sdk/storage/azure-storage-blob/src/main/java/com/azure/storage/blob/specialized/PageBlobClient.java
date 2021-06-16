@@ -24,7 +24,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.options.UploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -322,7 +322,7 @@ public final class PageBlobClient extends BlobClientBase {
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
 
         return uploadPagesFromUrlWithResponse(
-            new UploadPagesFromUrlOptions(range, sourceUrl).setSourceOffset(sourceOffset)
+            new PageBlobUploadPagesFromUrlOptions(range, sourceUrl).setSourceOffset(sourceOffset)
                 .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions),
             timeout, context);
@@ -344,7 +344,7 @@ public final class PageBlobClient extends BlobClientBase {
      * @throws IllegalArgumentException If {@code sourceUrl} is a malformed {@link URL}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(UploadPagesFromUrlOptions options, Duration timeout,
+    public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageBlobUploadPagesFromUrlOptions options, Duration timeout,
         Context context) {
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromUrlWithResponse(options, context);

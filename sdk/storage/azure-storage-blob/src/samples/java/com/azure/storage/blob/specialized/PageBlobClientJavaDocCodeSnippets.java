@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import com.azure.storage.blob.options.UploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -204,7 +204,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
-            .uploadPagesFromUrlWithResponse(new UploadPagesFromUrlOptions(pageRange, url).setSourceOffset(sourceOffset)
+            .uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url).setSourceOffset(sourceOffset)
                 .setSourceContentMd5(sourceContentMD5).setDestinationRequestConditions(pageBlobRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions), timeout, context).getValue();
 

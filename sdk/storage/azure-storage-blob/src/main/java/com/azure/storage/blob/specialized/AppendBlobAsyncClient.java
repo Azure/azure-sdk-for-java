@@ -29,7 +29,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
-import com.azure.storage.blob.options.AppendBlockFromUrlOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -338,8 +338,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
         try {
-            return appendBlockFromUrlWithResponse(new AppendBlockFromUrlOptions(sourceUrl)
-                .setSourceRange(sourceRange).setSourceContentMD5(sourceContentMD5)
+            return appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+                .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMD5)
                 .setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions));
         } catch (RuntimeException ex) {
@@ -359,7 +359,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * blob operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlockFromUrlOptions options) {
+    public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options) {
         try {
             return withContext(context ->
                 appendBlockFromUrlWithResponse(options, context));
@@ -368,7 +368,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlockFromUrlOptions options, Context context) {
+    Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options, Context context) {
         BlobRange sourceRange = (options.getSourceRange() == null) ? new BlobRange(0) : options.getSourceRange();
         AppendBlobRequestConditions destRequestConditions = (options.getDestinationRequestConditions() == null)
             ? new AppendBlobRequestConditions() : options.getDestinationRequestConditions();
@@ -386,7 +386,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             ? null : options.getSourceAuthorization().toString();
 
         return this.azureBlobStorage.getAppendBlobs().appendBlockFromUrlWithResponseAsync(containerName, blobName, url, 0,
-            sourceRange.toString(), options.getSourceContentMD5(), null, null, null, destRequestConditions.getLeaseId(),
+            sourceRange.toString(), options.getSourceContentMd5(), null, null, null, destRequestConditions.getLeaseId(),
             destRequestConditions.getMaxSize(), destRequestConditions.getAppendPosition(),
             destRequestConditions.getIfModifiedSince(), destRequestConditions.getIfUnmodifiedSince(),
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),

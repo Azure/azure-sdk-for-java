@@ -31,7 +31,7 @@ import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
-import com.azure.storage.blob.options.StageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -534,7 +534,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
-            return this.stageBlockFromUrlWithResponse(new StageBlockFromUrlOptions(base64BlockId, sourceUrl)
+            return this.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
                 .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
                 .setSourceRequestConditions(sourceRequestConditions));
         } catch (RuntimeException ex) {
@@ -555,7 +555,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stageBlockFromUrlWithResponse(StageBlockFromUrlOptions options) {
+    public Mono<Response<Void>> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options) {
         try {
             return withContext(context -> stageBlockFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
@@ -563,7 +563,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    Mono<Response<Void>> stageBlockFromUrlWithResponse(StageBlockFromUrlOptions options, Context context) {
+    Mono<Response<Void>> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Context context) {
         BlobRange sourceRange = (options.getSourceRange() == null) ? new BlobRange(0) : options.getSourceRange();
         BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
             ? new BlobRequestConditions() : options.getSourceRequestConditions();

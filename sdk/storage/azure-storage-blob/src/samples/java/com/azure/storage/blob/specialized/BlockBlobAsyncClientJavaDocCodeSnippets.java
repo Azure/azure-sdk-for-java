@@ -13,7 +13,7 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
-import com.azure.storage.blob.options.StageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -233,7 +233,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.stageBlockFromUrlWithResponse(new StageBlockFromUrlOptions(base64BlockID, sourceUrl)
+        client.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockID, sourceUrl)
             .setSourceRange(new BlobRange(offset, count)).setLeaseId(leaseId)
             .setSourceRequestConditions(sourceRequestConditions)).subscribe(response ->
             System.out.printf("Staging block from URL completed with status %d%n", response.getStatusCode()));

@@ -10,7 +10,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
-import com.azure.storage.blob.options.AppendBlockFromUrlOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -178,7 +178,7 @@ public class AppendBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("AppendBlob has %d committed blocks%n",
-            client.appendBlockFromUrlWithResponse(new AppendBlockFromUrlOptions(sourceUrl)
+            client.appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
                 .setSourceRange(new BlobRange(offset, count))
                 .setDestinationRequestConditions(appendBlobRequestConditions)
                 .setSourceRequestConditions(modifiedRequestConditions), timeout,

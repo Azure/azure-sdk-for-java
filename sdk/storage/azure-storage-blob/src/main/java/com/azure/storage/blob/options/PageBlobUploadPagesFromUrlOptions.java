@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.PageRange;
  * Extended options that may be passed when uploading a page range from a source URL.
  */
 @Fluent
-public class UploadPagesFromUrlOptions {
+public class PageBlobUploadPagesFromUrlOptions {
     private final PageRange range;
     private final String sourceUrl;
     private Long sourceOffset;
@@ -27,7 +27,7 @@ public class UploadPagesFromUrlOptions {
      * @param range The destination page range. Pages must be aligned to 512 byte blocks.
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
-    public UploadPagesFromUrlOptions(PageRange range, String sourceUrl) {
+    public PageBlobUploadPagesFromUrlOptions(PageRange range, String sourceUrl) {
         this.range = range;
         this.sourceUrl = sourceUrl;
     }
@@ -57,7 +57,7 @@ public class UploadPagesFromUrlOptions {
      * @param sourceOffset Offset at source to copy from.
      * @return The updated options.
      */
-    public UploadPagesFromUrlOptions setSourceOffset(Long sourceOffset) {
+    public PageBlobUploadPagesFromUrlOptions setSourceOffset(Long sourceOffset) {
         this.sourceOffset = sourceOffset;
         return this;
     }
@@ -73,7 +73,7 @@ public class UploadPagesFromUrlOptions {
      * @param sourceContentMd5 Content MD5 of source content to copy.
      * @return The updated options.
      */
-    public UploadPagesFromUrlOptions setSourceContentMd5(byte[] sourceContentMd5) {
+    public PageBlobUploadPagesFromUrlOptions setSourceContentMd5(byte[] sourceContentMd5) {
         this.sourceContentMd5 = CoreUtils.clone(sourceContentMd5);
         return this;
     }
@@ -89,7 +89,7 @@ public class UploadPagesFromUrlOptions {
      * @param destinationRequestConditions {@link PageBlobRequestConditions} for writing to destination.
      * @return The updated options.
      */
-    public UploadPagesFromUrlOptions setDestinationRequestConditions(PageBlobRequestConditions destinationRequestConditions) {
+    public PageBlobUploadPagesFromUrlOptions setDestinationRequestConditions(PageBlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
@@ -105,7 +105,7 @@ public class UploadPagesFromUrlOptions {
      * @param sourceRequestConditions {@link BlobRequestConditions} for accessing source content.
      * @return The updated options.
      */
-    public UploadPagesFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
+    public PageBlobUploadPagesFromUrlOptions setSourceRequestConditions(BlobRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }
@@ -121,7 +121,7 @@ public class UploadPagesFromUrlOptions {
      * @param sourceAuthorization auth header for accessing source content.
      * @return The updated options.
      */
-    public UploadPagesFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
+    public PageBlobUploadPagesFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
         this.sourceAuthorization = sourceAuthorization;
         return this;
     }
