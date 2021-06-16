@@ -6,9 +6,9 @@ package com.azure.security.keyvault.jca;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class FileSystemCertificatesTest {
+public class SpecificPathCertificatesTest {
 
-    FileSystemCertificates fileSystemCertificates;
+    SpecificPathCertificates specificPathCertificates;
 
     public static String getFilePath(String packageName) {
         String filepath = "\\src\\test\\resources\\" + packageName;
@@ -17,8 +17,8 @@ public class FileSystemCertificatesTest {
 
     @Test
     public void testSetCertificateEntry() {
-        fileSystemCertificates = FileSystemCertificates.getFileSystemCertificates(getFilePath("custom\\"));
-        fileSystemCertificates.loadCertificatesFromFileSystem();
-        Assertions.assertTrue(fileSystemCertificates.getAliases().contains("sideload"));
+        specificPathCertificates = SpecificPathCertificates.getFileSystemCertificates(getFilePath("custom\\"));
+        specificPathCertificates.loadCertificatesFromFileSystem();
+        Assertions.assertTrue(specificPathCertificates.getAliases().contains("sideload"));
     }
 }

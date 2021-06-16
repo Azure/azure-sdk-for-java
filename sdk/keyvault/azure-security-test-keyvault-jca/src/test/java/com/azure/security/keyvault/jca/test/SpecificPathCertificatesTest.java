@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
-public class FileSystemCertificatesTest {
+public class SpecificPathCertificatesTest {
 
     @BeforeAll
     public static void setEnvironmentProperty() {

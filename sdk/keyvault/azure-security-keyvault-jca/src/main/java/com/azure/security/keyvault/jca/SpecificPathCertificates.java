@@ -29,27 +29,27 @@ import static java.util.logging.Level.WARNING;
 /**
  * Store certificates loaded from file system.
  */
-public final class FileSystemCertificates implements AzureCertificates {
+public final class SpecificPathCertificates implements AzureCertificates {
 
-    private static final Map<String, FileSystemCertificates> CACHE = new HashMap<>();
+    private static final Map<String, SpecificPathCertificates> CACHE = new HashMap<>();
 
     /**
      * Stores the logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FileSystemCertificates.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SpecificPathCertificates.class.getName());
 
     /**
-     * Stores the jre key store aliases.
+     * Stores the specific path aliases.
      */
     private final List<String> aliases = new ArrayList<>();
 
     /**
-     * Stores the file system certificates by alias.
+     * Stores the specific path certificates by alias.
      */
     private final Map<String, Certificate> certificates = new HashMap<>();
 
     /**
-     * Stores the file system certificate keys by alias.
+     * Stores the specific path certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
 
@@ -82,7 +82,7 @@ public final class FileSystemCertificates implements AzureCertificates {
      *
      * @param certificatePath Store the file path where certificates are placed
      */
-    private FileSystemCertificates(String certificatePath) {
+    private SpecificPathCertificates(String certificatePath) {
         this.certificatePath = certificatePath;
     }
 
@@ -95,7 +95,7 @@ public final class FileSystemCertificates implements AzureCertificates {
     public void setCertificateEntry(String alias, Certificate certificate) {
         //Add verification to avoid certificate files with the same file name but different suffixes
         if (aliases.contains(alias)) {
-            LOGGER.log(WARNING, "Cannot load certificates with the same alias in file system", alias);
+            LOGGER.log(WARNING, "Cannot load certificates with the same alias in specific path", alias);
             return;
         }
         aliases.add(alias);
@@ -121,7 +121,7 @@ public final class FileSystemCertificates implements AzureCertificates {
                     new Object[]{alias, file.getName()});
             }
         } catch (CertificateException e) {
-            LOGGER.log(WARNING, "Unable to load file system certificate from: " + file.getName(), e);
+            LOGGER.log(WARNING, "Unable to load specific path certificate from: " + file.getName(), e);
         }
     }
 
@@ -135,7 +135,7 @@ public final class FileSystemCertificates implements AzureCertificates {
                 setCertificateByFile(file);
             }
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to determine certificates to file system", ioe);
+            LOGGER.log(WARNING, "Unable to determine certificates to specific path", ioe);
         }
     }
 
@@ -178,10 +178,10 @@ public final class FileSystemCertificates implements AzureCertificates {
      * @param path certificate path, which works only in first time
      * @return file certificate
      */
-    public static synchronized FileSystemCertificates getFileSystemCertificates(String path) {
-        FileSystemCertificates result = CACHE.getOrDefault(path, null);
+    public static synchronized SpecificPathCertificates getFileSystemCertificates(String path) {
+        SpecificPathCertificates result = CACHE.getOrDefault(path, null);
         if (result == null) {
-            result = new FileSystemCertificates(path);
+            result = new SpecificPathCertificates(path);
             CACHE.put(path, result);
         }
         return result;

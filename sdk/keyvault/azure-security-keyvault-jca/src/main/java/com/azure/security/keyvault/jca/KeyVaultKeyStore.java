@@ -51,14 +51,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final JreCertificates jreCertificates;
 
     /**
-     * Store well Know certificates loaded from file system.
+     * Store well Know certificates loaded from specific path.
      */
-    private final FileSystemCertificates wellKnowCertificates;
+    private final SpecificPathCertificates wellKnowCertificates;
 
     /**
-     * Store custom certificates loaded from file system.
+     * Store custom certificates loaded from specific path.
      */
-    private final FileSystemCertificates customCertificates;
+    private final SpecificPathCertificates customCertificates;
 
     /**
      * Store certificates loaded from KeyVault.
@@ -132,8 +132,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .map(Boolean::parseBoolean)
             .orElse(false);
         jreCertificates = JreCertificates.getInstance();
-        wellKnowCertificates = FileSystemCertificates.getFileSystemCertificates(wellKnowPath);
-        customCertificates = FileSystemCertificates.getFileSystemCertificates(customPath);
+        wellKnowCertificates = SpecificPathCertificates.getFileSystemCertificates(wellKnowPath);
+        customCertificates = SpecificPathCertificates.getFileSystemCertificates(customPath);
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
