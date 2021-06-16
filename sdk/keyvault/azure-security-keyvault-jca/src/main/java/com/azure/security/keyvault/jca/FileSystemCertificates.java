@@ -20,7 +20,6 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Arrays;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -32,7 +31,7 @@ import static java.util.logging.Level.WARNING;
  */
 public final class FileSystemCertificates implements AzureCertificates {
 
-    private static final ConcurrentHashMap<String, FileSystemCertificates> CACHE = new ConcurrentHashMap<>();
+    private static final Map<String, FileSystemCertificates> CACHE = new HashMap<>();
 
     /**
      * Stores the logger.
@@ -180,7 +179,7 @@ public final class FileSystemCertificates implements AzureCertificates {
      * @return file certificate
      */
     public static synchronized FileSystemCertificates getFileSystemCertificates(String path) {
-        FileSystemCertificates result = CACHE.getOrDefault("path", null);
+        FileSystemCertificates result = CACHE.getOrDefault(path, null);
         if (result == null) {
             result = new FileSystemCertificates(path);
             CACHE.put(path, result);

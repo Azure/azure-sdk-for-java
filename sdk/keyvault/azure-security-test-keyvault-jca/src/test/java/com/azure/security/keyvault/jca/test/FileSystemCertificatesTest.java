@@ -47,7 +47,7 @@ public class FileSystemCertificatesTest {
     }
 
     @Test
-    public void testCertificateLevelBetweenFileSystems() {
+    public void testCertificatePriority1() {
         System.setProperty("azure.cert-path.well-known", getFilePath("well-known\\"));
         System.setProperty("azure.cert-path.custom", getFilePath("custom\\"));
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
@@ -59,18 +59,18 @@ public class FileSystemCertificatesTest {
     }
 
     @Test
-    public void testCertificateLevelBetweenFileSystemAndClassPath() {
+    public void testCertificatePriority2() {
         System.setProperty("azure.cert-path.custom", getFilePath("custom\\"));
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
         ks.engineLoad(null);
-        X509Certificate customCertificateCompareWithClassPath = getCertificateByFile(new File(getFilePath("custom\\sideload2.pem")));
+        X509Certificate fileSystemCertificate = getCertificateByFile(new File(getFilePath("custom\\sideload2.pem")));
         X509Certificate classPathCertificate = getCertificateByFile(new File(getFilePath("keyvault\\sideload2.pem")));
-        assertEquals(customCertificateCompareWithClassPath, ks.engineGetCertificate("sideload2"));
+        assertEquals(fileSystemCertificate, ks.engineGetCertificate("sideload2"));
         assertNotEquals(classPathCertificate, ks.engineGetCertificate("sideload2"));
 
     }
 
-    public X509Certificate getCertificateByFile(File file) {
+    private X509Certificate getCertificateByFile(File file) {
         X509Certificate certificate;
         try (InputStream inputStream = new FileInputStream(file);
              BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
