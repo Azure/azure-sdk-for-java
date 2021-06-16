@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.perf;
 
 import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
@@ -11,7 +12,6 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.ReceiverOptions;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     private PartitionReceiver receiver;
-    private CompletableFuture<PartitionReceiver> receiverAsync;
 
     /**
      * Creates an instance of performance test.
@@ -56,7 +55,7 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     @Override
     public Mono<Void> setupAsync() {
-        if (options.isSync() && receiver == null) {
+        if (options.isSync()) {
             try {
                 client = createEventHubClient();
                 receiver = client.createReceiverSync(options.getConsumerGroup(),
@@ -64,22 +63,10 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
             } catch (EventHubException e) {
                 throw new RuntimeException("Unable to create PartitionReceiver.", e);
             }
-        } else if (!options.isSync() && receiverAsync == null) {
+        } else {
             clientFuture = createEventHubClientAsync();
-            receiverAsync = clientFuture.thenComposeAsync(client -> {
-                try {
-                    final ReceiverOptions receiverOptions = new ReceiverOptions();
-                    receiverOptions.setPrefetchCount(options.getPrefetch());
-
-                    return client.createReceiver(options.getConsumerGroup(),
-                        options.getPartitionId(), EventPosition.fromStartOfStream(), receiverOptions);
-                } catch (EventHubException e) {
-                    final CompletableFuture<PartitionReceiver> future = new CompletableFuture<>();
-                    future.completeExceptionally(new RuntimeException("Unable to create PartitionReceiver", e));
-                    return future;
-                }
-            });
         }
+
         return Mono.empty();
     }
 
@@ -112,13 +99,14 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     @Override
     public Mono<Void> runAsync() {
         final EventsHandler handler = new EventsHandler(options.getCount(), options.getPrefetch());
-        final CompletableFuture<Void> receiveOptions = receiverAsync
-            .thenComposeAsync(receiver -> receiver.setReceiveHandler(handler)
-            .thenApplyAsync(unused -> handler.isCompleteReceiving())
-            .thenApplyAsync(unused -> receiver.setReceiveHandler(null)))
-            .thenRun(() -> {});
+        final CompletableFuture<PartitionReceiver> partitionReceiver = createReceiver();
+        final CompletableFuture<Void> receiveOperation = partitionReceiver
+            .thenCompose(receiver -> receiver.setReceiveHandler(handler))
+            .thenCompose(unused -> handler.isCompleteReceiving());
 
-        return Mono.fromCompletionStage(receiveOptions);
+        return Mono.fromCompletionStage(receiveOperation
+            .thenCompose(unused -> partitionReceiver)
+            .thenCompose(PartitionReceiver::close));
     }
 
     /**
@@ -128,20 +116,30 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
      */
     @Override
     public Mono<Void> cleanupAsync() {
-        if (receiver != null) {
+        if (options.isSync()) {
             return Mono.whenDelayError(
-                Mono.fromCompletionStage(receiver.close()), super.cleanupAsync());
-        } else if (receiverAsync != null) {
-            return Mono.whenDelayError(
-                Mono.fromCompletionStage(receiverAsync.thenComposeAsync(r -> r.close())).doFinally(signal -> {
-                    System.out.println("Done async receiver clean. Signal: " + signal);
-                }).timeout(Duration.ofSeconds(45)),
-                super.cleanupAsync().doFinally(signal -> {
-                    System.out.println("Done super.clean() clean. Signal: " + signal);
-                }));
+                Mono.fromCompletionStage(client.close()), super.cleanupAsync());
         } else {
-            return super.cleanupAsync();
+            return Mono.whenDelayError(
+                Mono.fromCompletionStage(clientFuture.thenCompose(EventHubClient::close)),
+                super.cleanupAsync());
         }
+    }
+
+    private CompletableFuture<PartitionReceiver> createReceiver() {
+        return clientFuture.thenComposeAsync(client -> {
+            try {
+                final ReceiverOptions receiverOptions = new ReceiverOptions();
+                receiverOptions.setPrefetchCount(options.getPrefetch());
+
+                return client.createReceiver(options.getConsumerGroup(),
+                    options.getPartitionId(), EventPosition.fromStartOfStream(), receiverOptions);
+            } catch (EventHubException e) {
+                final CompletableFuture<PartitionReceiver> future = new CompletableFuture<>();
+                future.completeExceptionally(new RuntimeException("Unable to create PartitionReceiver", e));
+                return future;
+            }
+        });
     }
 
     private static final class EventsHandler implements PartitionReceiveHandler {
