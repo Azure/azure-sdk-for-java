@@ -14,7 +14,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -27,9 +27,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
-        matches = "(?i)(true)")
+    @EnabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
@@ -76,9 +77,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
-        matches = "(?i)(true)")
+    @EnabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
@@ -132,9 +134,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
-        matches = "(?i)(true)")
+    @EnabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
@@ -172,9 +175,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
-        matches = "(?i)(true)")
+    @EnabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
@@ -225,9 +229,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
-        matches = "(?i)(true)")
+    @EnabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenario");
@@ -273,9 +278,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "COMMUNICATION_SKIP_INT_CALLINGSERVER_TEST",
-        matches = "(?i)(true)")
+    @EnabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
