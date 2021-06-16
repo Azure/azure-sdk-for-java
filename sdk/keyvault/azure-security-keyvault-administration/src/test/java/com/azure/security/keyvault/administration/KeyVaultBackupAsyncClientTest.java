@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
@@ -12,6 +11,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperatio
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -49,11 +49,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginBackup(HttpClient httpClient) {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // Currently there is no Managed HSM environment for pipeline testing.
-            // TODO: Remove once there is a proper cloud environment available.
-            return;
-        }
+        Assumptions.assumeTrue(isHsmDeployed);
 
         createAsyncClient(httpClient, false);
 
@@ -73,11 +69,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginRestore(HttpClient httpClient) {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // Currently there is no Managed HSM environment for pipeline testing.
-            // TODO: Remove once there is a proper cloud environment available.
-            return;
-        }
+        Assumptions.assumeTrue(isHsmDeployed);
 
         createAsyncClient(httpClient, false);
 
@@ -101,11 +93,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // Currently there is no Managed HSM environment for pipeline testing.
-            // TODO: Remove once there is a proper cloud environment available.
-            return;
-        }
+        Assumptions.assumeTrue(isHsmDeployed);
 
         createAsyncClient(httpClient, false);
 

@@ -18,6 +18,8 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.time.Duration;
@@ -26,9 +28,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.CoreUtils.isNullOrEmpty;
+
 public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    protected boolean isHsmDeployed;
     static final String DISPLAY_NAME = "{displayName}";
 
     @Override
@@ -36,7 +41,9 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
         return "";
     }
 
-    void beforeTestSetup() {
+    protected void beforeTestSetup() {
+        isHsmDeployed =
+            interceptorManager.isPlaybackMode() || !isNullOrEmpty(System.getenv("AZURE_MANAGEDHSM_ENDPOINT"));
     }
 
     protected List<HttpPipelinePolicy> getPolicies() {
@@ -79,7 +86,8 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode() ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+            : System.getenv("AZURE_MANAGEDHSM_ENDPOINT");
+
         Objects.requireNonNull(endpoint);
 
         return endpoint;
