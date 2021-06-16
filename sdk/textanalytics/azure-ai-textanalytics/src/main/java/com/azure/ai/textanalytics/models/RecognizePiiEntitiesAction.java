@@ -8,13 +8,13 @@ import com.azure.core.annotation.Fluent;
 import java.util.Arrays;
 
 /**
- * The option bags to use when recognizing Personally Identifiable Information(PII) entities as an action.
+ * Configurations that allow callers to specify details about how to execute a Personally Identifiable Information(PII)
+ * entities recognition action in a set of documents.
  */
 @Fluent
 public final class RecognizePiiEntitiesAction {
     private String actionName;
     private String modelVersion;
-    private boolean includeStatistics;
     private boolean disableServiceLogs;
     private PiiEntityDomain domainFilter;
     private Iterable<PiiEntityCategory> categoriesFilter;
@@ -63,30 +63,6 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Get the value of {@code includeStatistics}.
-     *
-     * @return The value of {@code includeStatistics}.
-     */
-    public boolean isIncludeStatistics() {
-        return includeStatistics;
-    }
-
-    /**
-     * Set the value of {@code includeStatistics}. The default value is false by default.
-     * If set to true, indicates that the service should return document and document batch statistics
-     * with the results of the operation.
-     *
-     * @param includeStatistics If a boolean value was specified in the request this field will contain
-     * information about the document payload.
-     *
-     * @return The {@link RecognizePiiEntitiesAction} object itself.
-     */
-    public RecognizePiiEntitiesAction setIncludeStatistics(boolean includeStatistics) {
-        this.includeStatistics = includeStatistics;
-        return this;
-    }
-
-    /**
      * Get the value of {@code disableServiceLogs}.
      *
      * @return The value of {@code disableServiceLogs}. The default value of this property is 'false'. This means,
@@ -100,10 +76,9 @@ public final class RecognizePiiEntitiesAction {
     /**
      * Set the value of {@code disableServiceLogs}.
      *
-     * @param disableServiceLogs The default value of this property is 'false', except for methods like
-     * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
-     * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
-     * disables input logging and may limit our ability to investigate issues that occur.
+     * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service won't
+     * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
+     * solely to allow for troubleshooting issues.
      *
      * @return The {@link RecognizePiiEntitiesAction} object itself.
      */

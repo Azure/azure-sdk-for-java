@@ -6,13 +6,13 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The option bags to use when analyzing sentiment as an action.
+ * Configurations that allow callers to specify details about how to execute an sentiment analysis action in a set of
+ * documents.
  */
 @Fluent
 public final class AnalyzeSentimentAction {
     private String actionName;
     private String modelVersion;
-    private boolean includeStatistics;
     private boolean disableServiceLogs;
     private boolean includeOpinionMining;
 
@@ -60,30 +60,6 @@ public final class AnalyzeSentimentAction {
     }
 
     /**
-     * Get the value of {@code includeStatistics}.
-     *
-     * @return The value of {@code includeStatistics}.
-     */
-    public boolean isIncludeStatistics() {
-        return includeStatistics;
-    }
-
-    /**
-     * Set the value of {@code includeStatistics}. The default value is false by default.
-     * If set to true, indicates that the service should return document and document batch statistics
-     * with the results of the operation.
-     *
-     * @param includeStatistics If a boolean value was specified in the request this field will contain
-     * information about the document payload.
-     *
-     * @return the {@link AnalyzeSentimentAction} object itself.
-     */
-    public AnalyzeSentimentAction setIncludeStatistics(boolean includeStatistics) {
-        this.includeStatistics = includeStatistics;
-        return this;
-    }
-
-    /**
      * Get the value of {@code disableServiceLogs}.
      *
      * @return The value of {@code disableServiceLogs}. The default value of this property is 'false'. This means,
@@ -97,8 +73,7 @@ public final class AnalyzeSentimentAction {
     /**
      * Set the value of {@code disableServiceLogs}.
      *
-     * @param disableServiceLogs The default value of this property is 'false', except for methods like
-     * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs
+     * @param disableServiceLogs The default value of this property is 'false'. This means, Text Analytics service logs
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
@@ -112,7 +87,7 @@ public final class AnalyzeSentimentAction {
     /**
      * Get the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
-     * It is provided by service v3.1-preview.1 and later.
+     * It is provided by service v3.1 and later.
      *
      * @return the value of {@code includeOpinionMining}.
      */
@@ -123,7 +98,7 @@ public final class AnalyzeSentimentAction {
     /**
      * Set the value of {@code includeOpinionMining}. The boolean indicator to include opinion mining data in the
      * returned result. If this flag is specified, you'll get a {@code opinions} property on SentenceSentiment.
-     * It is provided by service v3.1-preview.1 and later.
+     * It is provided by service v3.1 and later.
      *
      * @param includeOpinionMining The boolean indicator to include opinion mining data in the returned result.
      *
