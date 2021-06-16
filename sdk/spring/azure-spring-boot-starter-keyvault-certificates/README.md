@@ -40,7 +40,7 @@ To create a self-signed certificate use the command line below:
 ```
 
 ## Key concepts
-This starter allows you to securely manage and tightly control your certificates by using Azure Key Vault or side-load certificates by supplying them as part of the application.
+This starter allows you to securely manage and tightly control your certificates by using Azure Key Vault or load certificates as classpath certificates by supplying them as part of the application. 
 
 ## Examples
 ### Server side SSL
@@ -327,12 +327,12 @@ azure:
     custom:         # The file location where you store the custom certificate
 ```
 
-### Side-loading certificates
+### ClassPath certificates
 
-This starter allows you to side-load certificates by supplying them as part of
+This starter allows you to load certificates as classpath certificates by supplying them as part of
 the application. 
 
-To side-load add your certificates to the `src/main/resources/keyvault` folder.
+Add the certificate to `src/main/resources/keyvault` as classpath certificates.
 
 Notes: 
 1. The alias (certificate name) is constructed from the filename of the 
@@ -340,7 +340,7 @@ certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
 2. The priority order of the certificates is: 
 Certificates in jre -> Certificates in well-known file path -> Certificates in custom file path 
--> Certificates from Azure key vault -> side-loaded Certificates.
+-> Certificates from Azure Key Vault -> classpath Certificates.
 
 
 ## Troubleshooting
