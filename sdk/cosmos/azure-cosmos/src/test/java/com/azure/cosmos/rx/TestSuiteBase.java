@@ -534,7 +534,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
         return new CosmosContainerProperties(collectionId, partitionKeyDefinition);
     }
-    
+
     static protected CosmosContainerProperties getCollectionDefinitionForHashV2(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
@@ -1068,7 +1068,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static Object[][] clientBuildersWithDirectAllConsistencies(boolean contentResponseOnWriteEnabled, boolean retryOnThrottledRequests, Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
-        return clientBuildersWithDirect(desiredConsistencies, contentResponseOnWriteEnabled, retryOnThrottledRequests);
+        return clientBuildersWithDirect(desiredConsistencies, contentResponseOnWriteEnabled, retryOnThrottledRequests, protocols);
     }
 
     static List<ConsistencyLevel> parseDesiredConsistencies(String consistencies) {
