@@ -4,6 +4,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest {
     public KeyAsyncClientManagedHsmTest() {
-        this.isManagedHsmTest = true;
+        this.isManagedHsmTest = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
     }
 
     @Override

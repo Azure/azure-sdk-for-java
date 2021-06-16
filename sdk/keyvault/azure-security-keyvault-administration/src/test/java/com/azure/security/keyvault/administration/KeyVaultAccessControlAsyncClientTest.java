@@ -77,7 +77,6 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
             // Create a role definition.
             StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName))
                 .assertNext(roleDefinition -> {
-                    assertNotNull(roleDefinition);
                     assertNotNull(roleDefinition.getId());
                     assertEquals(roleDefinitionName, roleDefinition.getName());
                     assertEquals(KeyVaultRoleDefinitionType.MICROSOFT_AUTHORIZATION_ROLE_DEFINITIONS,
@@ -156,10 +155,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .flatMap(createdRoleDefinition ->
                     asyncClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL,
                         createdRoleDefinition.getName())))
-                .assertNext(deleteResponse -> {
-                    assertNotNull(deleteResponse);
-                    assertEquals(200, deleteResponse.getStatusCode());
-                })
+                .assertNext(deleteResponse -> assertEquals(200, deleteResponse.getStatusCode()))
                 .expectComplete()
                 .verify();
         } finally {
@@ -190,10 +186,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         // Try to delete a non-existent role definition.
         StepVerifier.create(asyncClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL, roleDefinitionName))
-            .assertNext(deleteResponse -> {
-                assertNotNull(deleteResponse);
-                assertEquals(404, deleteResponse.getStatusCode());
-            })
+            .assertNext(deleteResponse -> assertEquals(404, deleteResponse.getStatusCode()))
             .expectComplete()
             .verify();
     }
@@ -247,8 +240,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .take(1)
                 .flatMap(roleDefinition -> Mono.zip(Mono.just(roleDefinition),
                     asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
-                        roleAssignmentName)))
-                .map(tuple -> {
+                        roleAssignmentName))))
+                .assertNext(tuple -> {
                     KeyVaultRoleAssignment roleAssignment = tuple.getT2();
 
                     assertNotNull(roleAssignment);
@@ -265,10 +258,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                     KeyVaultRoleDefinition roleDefinition = tuple.getT1();
 
                     assertEquals(roleDefinition.getId(), properties.getRoleDefinitionId());
-
-                    return tuple;
                 })
-                .then())
                 .expectComplete()
                 .verify();
         } finally {
@@ -342,17 +332,14 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                     asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
                         servicePrincipalId, roleAssignmentName))
                 .flatMap(roleAssignment -> Mono.zip(Mono.just(roleAssignment),
-                    asyncClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignment.getName())))
-                .map(tuple -> {
+                    asyncClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignment.getName()))))
+                .assertNext(tuple -> {
                     KeyVaultRoleAssignment createdRoleAssignment = tuple.getT1();
                     KeyVaultRoleAssignment retrievedRoleAssignment = tuple.getT2();
 
                     assertNotNull(retrievedRoleAssignment);
                     assertRoleAssignmentEquals(createdRoleAssignment, retrievedRoleAssignment);
-
-                    return tuple;
                 })
-                .then())
                 .expectComplete()
                 .verify();
         } finally {
@@ -388,14 +375,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                     asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
                         roleAssignmentName))
                 .flatMap(roleAssignment ->
-                    asyncClient.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignment.getName()))
-                .map(deleteResponse -> {
-                    assertNotNull(deleteResponse);
-                    assertEquals(200, deleteResponse.getStatusCode());
-
-                    return deleteResponse;
-                })
-                .then())
+                    asyncClient.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignment.getName())))
+                .assertNext(deleteResponse -> assertEquals(200, deleteResponse.getStatusCode()))
                 .expectComplete()
                 .verify();
         } finally {
@@ -425,10 +406,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         // Try to delete a non-existent role assignment.
         StepVerifier.create(asyncClient.deleteRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, roleAssignmentName))
-            .assertNext(deleteResponse -> {
-                assertNotNull(deleteResponse);
-                assertEquals(404, deleteResponse.getStatusCode());
-            })
+            .assertNext(deleteResponse -> assertEquals(404, deleteResponse.getStatusCode()))
             .expectComplete()
             .verify();
     }

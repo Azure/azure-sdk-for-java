@@ -3,11 +3,12 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assumptions;
 
 public class CryptographyClientManagedHsmTest extends CryptographyClientTest {
     public CryptographyClientManagedHsmTest() {
-        this.isManagedHsmTest = true;
+        this.isManagedHsmTest = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
     }
 
     @Override

@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
-
 public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
@@ -40,17 +38,17 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
     }
 
     protected void beforeTestSetup() {
-        isHsmDeployed =
-            interceptorManager.isPlaybackMode() || !isNullOrEmpty(System.getenv("AZURE_MANAGEDHSM_ENDPOINT"));
+        isHsmDeployed = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
+            || interceptorManager.isPlaybackMode();
     }
 
     protected List<HttpPipelinePolicy> getPolicies() {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
 
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
@@ -84,7 +82,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode() ? "http://localhost:8080"
-            : System.getenv("AZURE_MANAGEDHSM_ENDPOINT");
+            : Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT");
 
         Objects.requireNonNull(endpoint);
 
