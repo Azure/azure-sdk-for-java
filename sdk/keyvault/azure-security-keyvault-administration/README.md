@@ -595,7 +595,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal
-[azure_keyvault_mhsm]: https://docs.microsoft.com/en-us/azure/key-vault/managed-hsm/quick-create-cli
+[azure_keyvault_mhsm]: https://docs.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [rest_api]: https://docs.microsoft.com/rest/api/keyvault/
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
