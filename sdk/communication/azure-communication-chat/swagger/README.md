@@ -33,7 +33,7 @@ To update generated files for chat service, run the following command
 ``` yaml
 tag: package-chat-2021-04-05-preview6
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/2737ef83c687cd61721ece7af713921d0df2485a/specification/communication/data-plane/Chat/preview/2021-04-05-preview6/communicationserviceschat.json
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/29e0c9624a8e60138127457f2e863bb4a9ba1419/specification/communication/data-plane/Chat/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
