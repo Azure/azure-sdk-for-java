@@ -412,7 +412,7 @@ class AnalyzeActionsAsyncClient {
                 final ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
                 final KeyPhraseResult results = taskItem.getResults();
                 if (results != null) {
-                    ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentResults(actionResult,
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toExtractKeyPhrasesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,

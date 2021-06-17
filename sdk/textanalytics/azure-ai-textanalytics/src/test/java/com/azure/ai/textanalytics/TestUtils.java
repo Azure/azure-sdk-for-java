@@ -974,7 +974,7 @@ final class TestUtils {
         OffsetDateTime completedAt, ExtractKeyPhrasesResultCollection resultCollection,
         TextAnalyticsError actionError) {
         ExtractKeyPhrasesActionResult extractKeyPhrasesActionResult = new ExtractKeyPhrasesActionResult();
-        ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentResults(extractKeyPhrasesActionResult, resultCollection);
+        ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentsResults(extractKeyPhrasesActionResult, resultCollection);
         TextAnalyticsActionResultPropertiesHelper.setCompletedAt(extractKeyPhrasesActionResult, completedAt);
         TextAnalyticsActionResultPropertiesHelper.setIsError(extractKeyPhrasesActionResult, isError);
         TextAnalyticsActionResultPropertiesHelper.setError(extractKeyPhrasesActionResult, actionError);
