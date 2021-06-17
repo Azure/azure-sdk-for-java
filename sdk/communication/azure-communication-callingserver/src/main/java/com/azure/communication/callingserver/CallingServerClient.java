@@ -16,6 +16,7 @@ import com.azure.core.util.Context;
 
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -51,7 +52,7 @@ public final class CallingServerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection createCallConnection(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         return callingServerAsyncClient.createCallConnectionInternal(source, targets, createCallOptions).block();
     }
@@ -68,7 +69,7 @@ public final class CallingServerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnection> createCallConnectionWithResponse(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions,
         final Context context) {
         return callingServerAsyncClient
@@ -84,7 +85,7 @@ public final class CallingServerClient {
      * @return CallConnection for a successful Join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnection join(
+    public CallConnection joinCall(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
@@ -101,7 +102,7 @@ public final class CallingServerClient {
      * @return response for a successful Join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnection> joinWithResponse(
+    public Response<CallConnection> joinCallWithResponse(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions,

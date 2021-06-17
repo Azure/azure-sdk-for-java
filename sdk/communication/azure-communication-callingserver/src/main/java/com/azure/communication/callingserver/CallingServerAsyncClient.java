@@ -34,6 +34,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -82,7 +83,7 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionAsync> createCallConnection(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -108,7 +109,7 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionAsync>> createCallConnectionWithResponse(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -125,7 +126,7 @@ public final class CallingServerAsyncClient {
 
     Mono<CallConnection> createCallConnectionInternal(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
@@ -142,7 +143,7 @@ public final class CallingServerAsyncClient {
 
     Mono<Response<CallConnection>> createCallConnectionWithResponseInternal(
         CommunicationIdentifier source,
-        CommunicationIdentifier[] targets,
+        List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions,
         Context context) {
         try {
@@ -171,7 +172,7 @@ public final class CallingServerAsyncClient {
      * @return response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionAsync> join(
+    public Mono<CallConnectionAsync> joinCall(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
@@ -196,7 +197,7 @@ public final class CallingServerAsyncClient {
      * @return response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionAsync>>joinWithResponse(
+    public Mono<Response<CallConnectionAsync>> joinCallWithResponse(
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {

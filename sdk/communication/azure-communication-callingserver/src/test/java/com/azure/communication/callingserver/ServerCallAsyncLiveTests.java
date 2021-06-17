@@ -13,7 +13,6 @@ import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
@@ -23,6 +22,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -221,14 +221,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options).block();
 
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
@@ -278,14 +278,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options).block();
 
             CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);

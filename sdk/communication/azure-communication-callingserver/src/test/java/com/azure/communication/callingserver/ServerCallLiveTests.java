@@ -13,7 +13,6 @@ import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
@@ -24,6 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -167,13 +167,16 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             callConnections = createCall(callingServerClient, groupId, fromUser, toUser, CALLBACK_URI);
+            PlayAudioOptions playAudioOptions =
+                new PlayAudioOptions()
+                    .setLoop(false)
+                    .setAudioFileId(UUID.randomUUID().toString())
+                    .setCallbackUri(CALLBACK_URI)
+                    .setOperationContext(operationContext);
             serverCall = callingServerClient.initializeServerCall(groupId);
 
             Response<PlayAudioResult> playAudioResult =
-                serverCall.playAudioWithResponse(
-                    AUDIO_FILE_URI, operationContext,
-                    CALLBACK_URI, operationContext,
-                    Context.NONE);
+                serverCall.playAudioWithResponse(AUDIO_FILE_URI, playAudioOptions, Context.NONE);
             validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
@@ -214,14 +217,14 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options);
 
             validateCallConnection(callConnection);
@@ -268,14 +271,14 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new MediaType[] { MediaType.AUDIO },
-                new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
+                Collections.singletonList(MediaType.AUDIO),
+                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
             CallConnection callConnection = callingServerClient.createCallConnection(
                 new CommunicationUserIdentifier(fromUser),
-                new CommunicationIdentifier[] { new PhoneNumberIdentifier(TO_PHONE_NUMBER) },
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
                 options);
 
             validateCallConnection(callConnection);
