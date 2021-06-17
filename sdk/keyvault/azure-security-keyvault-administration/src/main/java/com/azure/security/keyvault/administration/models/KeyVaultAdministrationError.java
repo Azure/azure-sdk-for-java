@@ -9,10 +9,10 @@ import com.azure.core.annotation.Immutable;
  * A class that represents an error occurred in a Key Vault operation.
  */
 @Immutable
-public final class KeyVaultError {
+public final class KeyVaultAdministrationError {
     private final String code;
     private final String message;
-    private final KeyVaultError innerError;
+    private final KeyVaultAdministrationError innerError;
 
     /**
      * Creates an object that represents an error occurred in a Key Vault operation.
@@ -21,7 +21,7 @@ public final class KeyVaultError {
      * @param message The error message.
      * @param innerError An Key Vault server-side error.
      */
-    public KeyVaultError(String code, String message, KeyVaultError innerError) {
+    public KeyVaultAdministrationError(String code, String message, KeyVaultAdministrationError innerError) {
         this.code = code;
         this.message = message;
         this.innerError = innerError;
@@ -50,7 +50,7 @@ public final class KeyVaultError {
      *
      * @return The Key Vault server-side error.
      */
-    public KeyVaultError getInnerError() {
+    public KeyVaultAdministrationError getInnerError() {
         return this.innerError;
     }
 }
