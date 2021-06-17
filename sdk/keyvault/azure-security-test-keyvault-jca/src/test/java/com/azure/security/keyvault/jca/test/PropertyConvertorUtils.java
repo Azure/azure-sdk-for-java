@@ -17,8 +17,8 @@ import java.util.List;
 
 public class PropertyConvertorUtils {
 
-    public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca(List<String> key) {
-        key.forEach(
+    public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca() {
+        KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(
             environmentPropertyKey -> {
                 String value = System.getenv(environmentPropertyKey);
                 String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
@@ -28,7 +28,7 @@ public class PropertyConvertorUtils {
         );
     }
 
-    public static final List<String> SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_URI",
+    public static final List<String> KEYVAULT_JCA_SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_URI",
         "AZURE_KEYVAULT_TENANT_ID",
         "AZURE_KEYVAULT_CLIENT_ID",
         "AZURE_KEYVAULT_CLIENT_SECRET");

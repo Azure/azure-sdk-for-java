@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -50,14 +51,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     private final JreCertificates jreCertificates;
 
     /**
-     * Store well Know certificates loaded from file system.
+     * Store well Know certificates loaded from specific path.
      */
-    private final FileSystemCertificates wellKnowCertificates;
+    private final SpecificPathCertificates wellKnowCertificates;
 
     /**
-     * Store custom certificates loaded from file system.
+     * Store custom certificates loaded from specific path.
      */
-    private final FileSystemCertificates customCertificates;
+    private final SpecificPathCertificates customCertificates;
 
     /**
      * Store certificates loaded from KeyVault.
@@ -131,8 +132,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .map(Boolean::parseBoolean)
             .orElse(false);
         jreCertificates = JreCertificates.getInstance();
-        wellKnowCertificates = FileSystemCertificates.FileSystemCertificatesFactory.getWellKnownFileSystemCertificates(wellKnowPath);
-        customCertificates = FileSystemCertificates.FileSystemCertificatesFactory.getCustomFileSystemCertificates(customPath);
+        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
+        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultClient);
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
@@ -255,17 +256,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             }
             keyVaultCertificates.setKeyVaultClient(keyVaultClient);
         }
-        loadCertificates();
+        classpathCertificates.loadCertificatesFromClasspath();
     }
 
     @Override
     public void engineLoad(InputStream stream, char[] password) {
-        loadCertificates();
-    }
-
-    private void loadCertificates() {
-        wellKnowCertificates.loadCertificatesFromFileSystem();
-        customCertificates.loadCertificatesFromFileSystem();
         classpathCertificates.loadCertificatesFromClasspath();
     }
 
@@ -281,7 +276,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         aliasLists.forEach((key, value) -> {
             value.forEach(a -> {
                 if (allAliases.contains(a)) {
-                    LOGGER.log(WARNING, String.format("The certificate with alias %s under %s already exists", a, key));
+                    LOGGER.log(FINE, String.format("The certificate with alias %s under %s already exists", a, key));
                 } else {
                     allAliases.add(a);
                 }
