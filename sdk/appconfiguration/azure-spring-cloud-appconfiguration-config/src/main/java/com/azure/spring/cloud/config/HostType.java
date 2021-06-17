@@ -15,7 +15,7 @@ public enum HostType {
     private final String text;
 
     /**
-     * @param text
+     * @param text Host that is connecting to Azure App Configuration.
      */
     HostType(final String text) {
         this.text = text;

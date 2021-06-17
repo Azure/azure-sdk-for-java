@@ -1,5 +1,7 @@
 ## Release History
 
+### 3.9.0-beta.1 (Unreleased)
+
 ### 3.8.0 (2021-06-11)
 #### New Features
 * Updated `Spring Boot` to version 2.5.0.

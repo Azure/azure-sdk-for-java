@@ -14,6 +14,9 @@ import org.springframework.web.context.support.ServletRequestHandledEvent;
 
 import com.azure.spring.cloud.config.AppConfigurationRefresh;
 
+/**
+ * Listens for ServletRequestHandledEvents to check if the configurations need to be updated.
+ */
 @Component
 public class AppConfigurationEventListener implements ApplicationListener<ServletRequestHandledEvent> {
 

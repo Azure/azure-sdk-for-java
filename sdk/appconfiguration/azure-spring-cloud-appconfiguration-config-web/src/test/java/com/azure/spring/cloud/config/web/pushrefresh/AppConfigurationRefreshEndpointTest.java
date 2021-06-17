@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -28,14 +30,12 @@ import org.springframework.http.HttpStatus;
 
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
-import com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEndpoint;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.azure.spring.cloud.config.properties.ConfigStore;
 
 public class AppConfigurationRefreshEndpointTest {
-
 
     @Mock
     private HttpServletRequest request;
