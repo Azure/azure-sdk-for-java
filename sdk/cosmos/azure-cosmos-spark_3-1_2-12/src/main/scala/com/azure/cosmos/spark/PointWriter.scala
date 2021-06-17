@@ -29,7 +29,7 @@ import scala.util.{Failure, Success, Try}
 import scala.compat.java8.FutureConverters._
 // scalastyle:on underscore.import
 
-class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWriteConfig, diagnosticsConfig: DiagnosticsConfig)
+class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWriteConfig, diagnosticsConfig: DiagnosticsConfig, taskContext: TaskContext)
   extends AsyncItemWriter {
 
   @transient private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
@@ -57,10 +57,8 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   private val closed = new AtomicBoolean(false)
 
   private val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID().toString, "PointWriter")
-  val taskContext = TaskContext.get
-  assert(taskContext != null)
 
-  val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+  private  val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
     taskContext.stageId(),
     taskContext.partitionId(),
     "PointWriter")

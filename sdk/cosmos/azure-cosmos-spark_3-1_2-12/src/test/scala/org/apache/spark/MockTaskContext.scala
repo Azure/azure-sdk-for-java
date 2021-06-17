@@ -5,12 +5,7 @@ package org.apache.spark
 import org.mockito.Mockito
 
 object MockTaskContext  {
-  def setTaskContext(taskContext: TaskContext) : Unit = {
-    TaskContext.setTaskContext(taskContext)
-  }
-
-  def setAndCreateTaskContext() : Unit = {
-    val taskContext = Mockito.mock(classOf[TaskContext])
-    TaskContext.setTaskContext(taskContext)
+  def mockTaskContext(): TaskContext = {
+    Mockito.mock(classOf[TaskContext])
   }
 }

@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import org.apache.spark.{SparkContext, TaskContext}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.streaming.StreamingDataWriterFactory
@@ -80,7 +81,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val writer = if (cosmosWriteConfig.bulkEnabled) {
       new BulkWriter(container, cosmosWriteConfig, diagnosticsConfig)
     } else {
-      new PointWriter(container, cosmosWriteConfig, diagnosticsConfig)
+      new PointWriter(container, cosmosWriteConfig, diagnosticsConfig, TaskContext.get())
     }
 
     override def write(internalRow: InternalRow): Unit = {
