@@ -45,9 +45,10 @@ public class PerfStressProgram {
     /**
      * Runs the performance tests passed to be executed.
      *
-     * @throws RuntimeException if the execution fails.
      * @param classes the performance test classes to execute.
      * @param args the command line arguments ro run performance tests with.
+     *
+     * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?>[] classes, String[] args) {
         List<Class<?>> classList = new ArrayList<>(Arrays.asList(classes));
@@ -61,13 +62,13 @@ public class PerfStressProgram {
         }
 
         String[] commands = classList.stream().map(c -> getCommandName(c.getSimpleName()))
-                .toArray(i -> new String[i]);
+            .toArray(i -> new String[i]);
 
         PerfStressOptions[] options = classList.stream().map(c -> {
             try {
                 return c.getConstructors()[0].getParameterTypes()[0].getConstructors()[0].newInstance();
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException | SecurityException e) {
+                | InvocationTargetException | SecurityException e) {
                 throw new RuntimeException(e);
             }
         }).toArray(i -> new PerfStressOptions[i]);
@@ -98,9 +99,10 @@ public class PerfStressProgram {
     /**
      * Run the performance test passed to be executed.
      *
-     * @throws RuntimeException if the execution fails.
      * @param testClass the performance test class to execute.
      * @param options the configuration ro run performance test with.
+     *
+     * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?> testClass, PerfStressOptions options) {
         System.out.println("=== Options ===");
@@ -124,7 +126,7 @@ public class PerfStressProgram {
             try {
                 tests[i] = (PerfStressTest<?>) testClass.getConstructor(options.getClass()).newInstance(options);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException | SecurityException | NoSuchMethodException e) {
+                | InvocationTargetException | SecurityException | NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -171,12 +173,13 @@ public class PerfStressProgram {
     /**
      * Runs the performance tests passed to be executed.
      *
-     * @throws RuntimeException if the execution fails.
      * @param tests the performance tests to be executed.
      * @param sync indicate if synchronous test should be run.
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
+     *
+     * @throws RuntimeException if the execution fails.
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfStressTest<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
@@ -185,9 +188,9 @@ public class PerfStressProgram {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
-        int[] lastCompleted = new int[] { 0 };
+        int[] lastCompleted = new int[]{0};
         Disposable progressStatus = printStatus(
-                "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
+            "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
                 int totalCompleted = getCompletedOperations();
                 int currentCompleted = totalCompleted - lastCompleted[0];
                 double averageCompleted = getOperationsPerSecond();
@@ -199,13 +202,10 @@ public class PerfStressProgram {
         try {
             if (sync) {
                 ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
-                try {
-                    forkJoinPool.submit(() -> {
-                        IntStream.range(0, parallel).parallel().forEach(i -> runLoop(tests[i], i, endNanoTime));
-                    }).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
-                }
+                forkJoinPool.submit(() -> {
+                    IntStream.range(0, parallel).parallel().forEach(i -> runLoop(tests[i], i, endNanoTime));
+                }).get();
+
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -223,6 +223,9 @@ public class PerfStressProgram {
                     .then()
                     .block();
             }
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+            throw new RuntimeException(e);
         } catch (Exception e) {
             System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
         } finally {
@@ -240,7 +243,7 @@ public class PerfStressProgram {
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
 
         System.out.printf("Completed %,d operations in a weighted-average of %,.2fs (%,.2f ops/s, %,.3f s/op)%n",
-                totalOperations, weightedAverageSeconds, operationsPerSecond, secondsPerOperation);
+            totalOperations, weightedAverageSeconds, operationsPerSecond, secondsPerOperation);
         System.out.println();
     }
 
@@ -270,7 +273,7 @@ public class PerfStressProgram {
     private static Disposable printStatus(String header, Supplier<Object> status, boolean newLine, boolean printFinalStatus) {
         System.out.println(header);
 
-        boolean[] needsExtraNewline = new boolean[] { false };
+        boolean[] needsExtraNewline = new boolean[]{false};
 
         return Flux.interval(Duration.ofSeconds(1)).doFinally(s -> {
             if (printFinalStatus) {
