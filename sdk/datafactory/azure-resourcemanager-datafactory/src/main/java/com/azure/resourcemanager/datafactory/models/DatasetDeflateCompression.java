@@ -22,14 +22,14 @@ public final class DatasetDeflateCompression extends DatasetCompression {
      * The Deflate compression level.
      */
     @JsonProperty(value = "level")
-    private DatasetCompressionLevel level;
+    private Object level;
 
     /**
      * Get the level property: The Deflate compression level.
      *
      * @return the level value.
      */
-    public DatasetCompressionLevel level() {
+    public Object level() {
         return this.level;
     }
 
@@ -39,7 +39,7 @@ public final class DatasetDeflateCompression extends DatasetCompression {
      * @param level the level value to set.
      * @return the DatasetDeflateCompression object itself.
      */
-    public DatasetDeflateCompression withLevel(DatasetCompressionLevel level) {
+    public DatasetDeflateCompression withLevel(Object level) {
         this.level = level;
         return this;
     }

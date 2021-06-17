@@ -4,12 +4,10 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.queue.models.QueueAccessPolicy
 import com.azure.storage.queue.models.QueueSignedIdentifier
 import com.azure.storage.queue.models.QueueStorageException
-import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
 
@@ -195,5 +193,23 @@ class QueueSasClientTests extends APISpec {
 
         then:
         notThrown(QueueStorageException)
+    }
+
+    /**
+     * If this test fails it means that non-deprecated string to sign has new components.
+     * In that case we should hardcode version used for deprecated string to sign like we did for blobs.
+     */
+    def "Remember about string to sign deprecation"() {
+        setup:
+        def client = queueBuilderHelper().credential(env.primaryAccount.credential).buildClient()
+        def values = new QueueServiceSasSignatureValues(namer.getUtcNow(), new QueueSasPermission())
+        values.setQueueName(client.getQueueName())
+
+        when:
+        def deprecatedStringToSign = values.generateSasQueryParameters(env.primaryAccount.credential).encode()
+        def stringToSign = client.generateSas(values)
+
+        then:
+        deprecatedStringToSign == stringToSign
     }
 }

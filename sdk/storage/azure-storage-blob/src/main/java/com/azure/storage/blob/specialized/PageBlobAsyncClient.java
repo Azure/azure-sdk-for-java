@@ -29,6 +29,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -101,6 +102,44 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         EncryptionScope encryptionScope, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
+    }
+
+    /**
+     * Creates a new {@link PageBlobAsyncClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link PageBlobAsyncClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public PageBlobAsyncClient getEncryptionScopeClient(String encryptionScope) {
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new PageBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
+            getVersionId());
+    }
+
+    /**
+     * Creates a new {@link PageBlobAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link PageBlobAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public PageBlobAsyncClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new PageBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
+            getVersionId());
     }
 
     private static String pageRangeToString(PageRange pageRange) {
