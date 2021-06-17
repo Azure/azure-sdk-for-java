@@ -1006,7 +1006,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getDocumentResults().forEach(
+                        actionResult.getDocumentsResults().forEach(
                             entitiesResult -> entitiesResult.getEntities().forEach(
                                 entity -> System.out.printf(
                                     "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -1019,7 +1019,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getDocumentResults().forEach(extractKeyPhraseResult -> {
+                        actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {
                             System.out.println("Extracted phrases:");
                             extractKeyPhraseResult.getKeyPhrases()
                                 .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
@@ -1056,7 +1056,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getDocumentResults().forEach(
+                        actionResult.getDocumentsResults().forEach(
                             entitiesResult -> entitiesResult.getEntities().forEach(
                                 entity -> System.out.printf(
                                     "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -1069,7 +1069,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getDocumentResults().forEach(extractKeyPhraseResult -> {
+                        actionResult.getDocumentsResults().forEach(extractKeyPhraseResult -> {
                             System.out.println("Extracted phrases:");
                             extractKeyPhraseResult.getKeyPhrases()
                                 .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));

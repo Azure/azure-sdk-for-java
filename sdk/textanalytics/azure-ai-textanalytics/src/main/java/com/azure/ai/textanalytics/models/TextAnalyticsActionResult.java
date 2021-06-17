@@ -23,8 +23,8 @@ public class TextAnalyticsActionResult {
         TextAnalyticsActionResultPropertiesHelper.setAccessor(
             new TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor() {
                 @Override
-                public void setCompletedAt(TextAnalyticsActionResult actionsResult, OffsetDateTime completedAt) {
-                    actionsResult.setCompletedAt(completedAt);
+                public void setCompletedAt(TextAnalyticsActionResult actionResult, OffsetDateTime completedAt) {
+                    actionResult.setCompletedAt(completedAt);
                 }
 
                 @Override
