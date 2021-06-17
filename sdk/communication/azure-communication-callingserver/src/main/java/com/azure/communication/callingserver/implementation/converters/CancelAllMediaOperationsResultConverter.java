@@ -20,7 +20,7 @@ public class CancelAllMediaOperationsResultConverter {
         }
 
         return new CancelAllMediaOperationsResult(
-            resultInternal.getId(),
+            resultInternal.getOperationId(),
             resultInternal.getStatus(),
             resultInternal.getOperationContext(),
             ResultInfoConverter.convert(resultInternal.getResultInfo()));

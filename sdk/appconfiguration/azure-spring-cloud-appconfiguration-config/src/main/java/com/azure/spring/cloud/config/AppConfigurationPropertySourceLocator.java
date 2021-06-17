@@ -238,11 +238,11 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 watchKey.setKey(store.getFeatureFlags().getKeyFilter());
                 watchKeysFeatures.add(watchKey);
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
-                    store.getFeatureFlags().getCacheExpiration());
+                    store.getMonitoring().getFeatureFlagRefreshInterval());
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
             }
 
-            StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getCacheExpiration());
+            StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getRefreshInterval());
             StateHolder.setLoadState(store.getEndpoint(), true);
         } catch (RuntimeException e) {
             delayException();

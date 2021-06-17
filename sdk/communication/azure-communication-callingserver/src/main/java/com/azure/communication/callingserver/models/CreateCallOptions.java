@@ -30,7 +30,7 @@ public final class CreateCallOptions {
     /**
      * The requested media types.
      */
-    private final CallModality[] requestedMediaTypes;
+    private final MediaType[] requestedMediaTypes;
 
     /**
      * The requested call events to subscribe to.
@@ -91,8 +91,8 @@ public final class CreateCallOptions {
      *
      * @return the requested modalities object itself.
      */
-    public CallModality[] getRequestedMediaTypes() {
-        return this.requestedMediaTypes == null ? new CallModality[0] : this.requestedMediaTypes.clone();
+    public MediaType[] getRequestedMediaTypes() {
+        return this.requestedMediaTypes == null ? new MediaType[0] : this.requestedMediaTypes.clone();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions(
         String callbackUri,
-        CallModality[] requestedMediaTypes,
+        MediaType[] requestedMediaTypes,
         EventSubscriptionType[] requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");

@@ -20,7 +20,7 @@ public final class PlayAudioResultConverter {
         }
 
         return new PlayAudioResult(
-            playAudioResultInternal.getId(),
+            playAudioResultInternal.getOperationId(),
             playAudioResultInternal.getStatus(),
             playAudioResultInternal.getOperationContext(),
             ResultInfoConverter.convert(playAudioResultInternal.getResultInfo()));

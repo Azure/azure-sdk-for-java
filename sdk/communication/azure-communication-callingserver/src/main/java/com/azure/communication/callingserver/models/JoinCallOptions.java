@@ -25,7 +25,7 @@ public final class JoinCallOptions {
      * The requested MediaTypes.
      */
     @JsonProperty(value = "requestedMediaTypes", required = true)
-    private CallModality[] requestedMediaTypes;
+    private MediaType[] requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
@@ -78,8 +78,8 @@ public final class JoinCallOptions {
      *
      * @return the requestedMediaTypes value.
      */
-    public CallModality[] getRequestedMediaTypes() {
-        return requestedMediaTypes == null ? new CallModality[0] : requestedMediaTypes.clone();
+    public MediaType[] getRequestedMediaTypes() {
+        return requestedMediaTypes == null ? new MediaType[0] : requestedMediaTypes.clone();
     }
 
     /**
@@ -88,8 +88,8 @@ public final class JoinCallOptions {
      * @param requestedMediaTypes the requestedModalities value to set.
      * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedMediaTypes(CallModality[] requestedMediaTypes) {
-        this.requestedMediaTypes = requestedMediaTypes == null ? new CallModality[0] : requestedMediaTypes.clone();
+    public JoinCallOptions setRequestedMediaTypes(MediaType[] requestedMediaTypes) {
+        this.requestedMediaTypes = requestedMediaTypes == null ? new MediaType[0] : requestedMediaTypes.clone();
         return this;
     }
 
@@ -123,9 +123,10 @@ public final class JoinCallOptions {
      * @param requestedCallEvents the requested call events to subscribe to.
      * @throws IllegalArgumentException if any parameters are null.
      */
-    public JoinCallOptions(String callbackUri,
-                                 CallModality[] requestedMediaTypes,
-                                 EventSubscriptionType[] requestedCallEvents) {
+    public JoinCallOptions(
+        String callbackUri,
+        MediaType[] requestedMediaTypes,
+        EventSubscriptionType[] requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }

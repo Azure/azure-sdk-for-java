@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result payload of get call recording state operation. */
 @Immutable
-public final class CallRecordingStateResult {
+public final class CallRecordingProperties {
     /*
      * The state of the recording
      */
@@ -29,7 +29,7 @@ public final class CallRecordingStateResult {
      *
      * @param recordingState the recordingState value.
      */
-    public CallRecordingStateResult(CallRecordingState recordingState) {
+    public CallRecordingProperties(CallRecordingState recordingState) {
         this.recordingState = recordingState;
     }
 }
