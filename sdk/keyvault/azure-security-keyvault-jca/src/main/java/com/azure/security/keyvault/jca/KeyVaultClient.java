@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyStore;
@@ -57,7 +58,7 @@ public class KeyVaultClient extends DelegateRestClient {
     /**
      * Stores the Key Vault cloud URI.
      */
-    private String keyVaultBaseUri;
+    private final String keyVaultBaseUri;
 
     /**
      * Stores the Azure Key Vault URL.
@@ -68,37 +69,28 @@ public class KeyVaultClient extends DelegateRestClient {
      * Stores the AAD authentication URL (or null to default to Azure Public
      * Cloud).
      */
-    private String aadAuthenticationUrl;
+    private final String aadAuthenticationUrl;
 
     /**
      * Stores the tenant ID.
      */
-    private String tenantId;
+    private final String tenantId;
 
     /**
      * Stores the client ID.
      */
-    private String clientId;
+    private final String clientId;
 
     /**
      * Stores the client secret.
      */
-    private String clientSecret;
+    private final String clientSecret;
 
     /**
      * Stores the managed identity (either the user-assigned managed identity
      * object ID or null if system-assigned)
      */
     private String managedIdentity;
-
-    /**
-     * Constructor for authentication with system-assigned managed identity.
-     *
-     * @param keyVaultUri the Azure Key Vault URI.
-     */
-    KeyVaultClient(String keyVaultUri) {
-        this(keyVaultUri, null, null, null, null);
-    }
 
     /**
      * Constructor for authentication with user-assigned managed identity.
@@ -118,7 +110,7 @@ public class KeyVaultClient extends DelegateRestClient {
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    public KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
         this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
@@ -139,11 +131,11 @@ public class KeyVaultClient extends DelegateRestClient {
             keyVaultUri = keyVaultUri + "/";
         }
         this.keyVaultUrl = keyVaultUri;
-        //Base Uri shouldn't end with a slash.
+        // Base Uri shouldn't end with a slash.
         String domainNameSuffix = Optional.of(keyVaultUri)
                                           .map(uri -> uri.split("\\.", 2)[1])
                                           .map(suffix -> suffix.substring(0, suffix.length() - 1))
-                                          .get();
+                                          .orElse(null);
         keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
         aadAuthenticationUrl = getAADLoginURIByKeyVaultBaseUri(keyVaultBaseUri);
 
@@ -164,9 +156,9 @@ public class KeyVaultClient extends DelegateRestClient {
         try {
             AuthClient authClient = new AuthClient();
 
-            String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
+            String resource = URLEncoder.encode(keyVaultBaseUri, StandardCharsets.UTF_8);
             if (managedIdentity != null) {
-                managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
+                managedIdentity = URLEncoder.encode(managedIdentity, StandardCharsets.UTF_8);
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
