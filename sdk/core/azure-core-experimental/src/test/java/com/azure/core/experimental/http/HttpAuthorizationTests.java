@@ -11,14 +11,16 @@ import org.junit.jupiter.api.Test;
  */
 public class HttpAuthorizationTests {
     @Test
-    public void NullOrWhiteSpaceParameters()
+    public void nullOrWhiteSpaceParameters()
     {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new HttpAuthorization(null, "parameter"));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new HttpAuthorization("scheme", null));
+        Assertions.assertThrows(NullPointerException.class, () -> new HttpAuthorization(null, "parameter"));
+        Assertions.assertThrows(NullPointerException.class, () -> new HttpAuthorization("scheme", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new HttpAuthorization("", "parameter"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new HttpAuthorization("scheme", ""));
     }
 
     @Test
-    public void ToStringTest()
+    public void toStringTest()
     {
         String scheme = "scheme";
         String parameter = "parameter";

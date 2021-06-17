@@ -3,14 +3,17 @@
 
 package com.azure.core.experimental.http;
 
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+
+import java.util.Objects;
 
 /**
  * Represents the value of an HTTP Authorization header.
  */
-public class HttpAuthorization {
-    private final ClientLogger logger = new ClientLogger(DynamicRequest.class);
+@Immutable
+public final class HttpAuthorization {
+    private final ClientLogger logger = new ClientLogger(HttpAuthorization.class);
     private final String scheme;
     private final String parameter;
 
@@ -19,13 +22,17 @@ public class HttpAuthorization {
      *
      * @param scheme Scheme component of an authorization header value.
      * @param parameter The credentials used for the authorization header value.
+     * @throws NullPointerException if any argument is null.
+     * @throws IllegalArgumentException if any argument is an empty string.
      */
     public HttpAuthorization(String scheme, String parameter) {
-        if (CoreUtils.isNullOrEmpty(scheme)) {
+        Objects.requireNonNull(scheme);
+        Objects.requireNonNull(parameter);
+        if (scheme.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("scheme must be a nonempty string."));
         }
-        if (CoreUtils.isNullOrEmpty(parameter)) {
-            throw logger.logExceptionAsError(new NullPointerException("parameter must be a nonempty string."));
+        if (parameter.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("parameter must be a nonempty string."));
         }
         this.scheme = scheme;
         this.parameter = parameter;
