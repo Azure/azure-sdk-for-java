@@ -42,6 +42,23 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     }
 
     @Override
+    public Mono<Void> setupAsync() {
+        if (options.isSync()) {
+            receiver = createEventHubClientBuilder()
+                .prefetchCount(options.getPrefetch())
+                .consumerGroup(options.getConsumerGroup())
+                .buildConsumerClient();
+        } else {
+            receiverAsync = createEventHubClientBuilder()
+                .prefetchCount(options.getPrefetch())
+                .consumerGroup(options.getConsumerGroup())
+                .buildAsyncConsumerClient();
+        }
+
+        return Mono.empty();
+    }
+
+    @Override
     public void run() {
         Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
@@ -59,23 +76,6 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
                 "Did not receive correct number of events. Expected: %d. Actual: %d.", options.getCount(),
                 results.size()));
         }
-    }
-
-    @Override
-    public Mono<Void> setupAsync() {
-        if (options.isSync()) {
-            receiver = createEventHubClientBuilder()
-                .prefetchCount(options.getPrefetch())
-                .consumerGroup(options.getConsumerGroup())
-                .buildConsumerClient();
-        } else {
-            receiverAsync = createEventHubClientBuilder()
-                .prefetchCount(options.getPrefetch())
-                .consumerGroup(options.getConsumerGroup())
-                .buildAsyncConsumerClient();
-        }
-
-        return Mono.empty();
     }
 
     @Override
