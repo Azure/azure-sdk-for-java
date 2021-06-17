@@ -50,7 +50,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.implementation.clientTelemetry to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.clienttelemetry to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.throughputControl to com.fasterxml.jackson.databind;
