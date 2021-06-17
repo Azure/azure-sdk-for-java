@@ -47,7 +47,7 @@ public final class ParallelDownloadOptions {
      * @param blockSize The block size.
      * @return The ParallelDownloadOptions object itself.
      */
-    public ParallelDownloadOptions setBlockSizeLong(Long blockSize) {
+    public ParallelDownloadOptions setBlockSize(Long blockSize) {
         if (blockSize != null) {
             assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
         }
