@@ -3,6 +3,15 @@
 
 package com.azure.perf.test.core;
 
+import com.beust.jcommander.JCommander;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
@@ -13,16 +22,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
-
-import com.beust.jcommander.JCommander;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * Represents the main program class which reflectively runs and manages the performance tests.
@@ -149,9 +148,7 @@ public class PerfStressProgram {
                 }
             } finally {
                 if (!options.isNoCleanup()) {
-                    if (cleanupStatus == null) {
-                        cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
-                    }
+                    cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
 
                     Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
                 }
@@ -199,34 +196,38 @@ public class PerfStressProgram {
                 return String.format("%d\t\t%d\t\t%.2f", currentCompleted, totalCompleted, averageCompleted);
             }, true, true);
 
-        if (sync) {
-            ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
-            try {
-                forkJoinPool.submit(() -> {
-                    IntStream.range(0, parallel).parallel().forEach(i -> runLoop(tests[i], i, endNanoTime));
-                }).get();
-            } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
+        try {
+            if (sync) {
+                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
+                try {
+                    forkJoinPool.submit(() -> {
+                        IntStream.range(0, parallel).parallel().forEach(i -> runLoop(tests[i], i, endNanoTime));
+                    }).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
+                // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
+                // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
+                Schedulers.onHandleError((t, e) -> {
+                    System.err.print(t + " threw exception: ");
+                    e.printStackTrace();
+                    System.exit(1);
+                });
+
+                Flux.range(0, parallel)
+                    .parallel()
+                    .runOn(Schedulers.boundedElastic())
+                    .flatMap(i -> runLoopAsync(tests[i], i, endNanoTime))
+                    .then()
+                    .block();
             }
-        } else {
-            // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
-            // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
-            // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
-            Schedulers.onHandleError((t, e) -> {
-                System.err.print(t + " threw exception: ");
-                e.printStackTrace();
-                System.exit(1);
-            });
-
-            Flux.range(0, parallel)
-                .parallel()
-                .runOn(Schedulers.boundedElastic())
-                .flatMap(i -> runLoopAsync(tests[i], i, endNanoTime))
-                .then()
-                .block();
+        } catch (Exception e) {
+            System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
+        } finally {
+            progressStatus.dispose();
         }
-
-        progressStatus.dispose();
 
         System.out.println("=== Results ===");
 
