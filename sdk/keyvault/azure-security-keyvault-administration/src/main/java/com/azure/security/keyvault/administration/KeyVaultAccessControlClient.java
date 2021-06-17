@@ -99,7 +99,7 @@ public final class KeyVaultAccessControlClient {
     }
 
     /**
-     * Creates or updates a {@link KeyVaultRoleDefinition} with a given name. If no name is provided, then a 
+     * Creates or updates a {@link KeyVaultRoleDefinition} with a given name. If no name is provided, then a
      * {@link KeyVaultRoleDefinition} will be created with a randomly generated name.
      *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}. Managed HSM
@@ -184,8 +184,7 @@ public final class KeyVaultAccessControlClient {
      * only supports '/'.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -203,8 +202,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return A {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -365,8 +363,7 @@ public final class KeyVaultAccessControlClient {
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
      * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -384,8 +381,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return A {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */

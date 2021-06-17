@@ -66,7 +66,7 @@ public class KeyVaultKeyStoreTest {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
+            System.getenv("AZURE_KEYVAULT_ENDPOINT"),
             System.getenv("AZURE_KEYVAULT_TENANT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
             System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
