@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage;
 
+import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
 import com.azure.storage.queue.QueueServiceClient;
@@ -37,6 +38,11 @@ public class AzureStorageQueueAutoConfigurationTest {
     }
 
     @Test
+    public void testAzureStoragePropertiesNotConfigured() {
+        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+    }
+
+    @Test
     public void testAzureStoragePropertiesIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=a")
                           .run(context -> assertThrows(IllegalStateException.class,
@@ -52,8 +58,32 @@ public class AzureStorageQueueAutoConfigurationTest {
     }
 
     @Test
-    public void testAzureStoragePropertiesNotConfigured() {
-        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+    public void testAzureStoragePropertiesOtherItemsConfigured() {
+        this.contextRunner.withPropertyValues(
+            "spring.cloud.azure.storage.account=squeue",
+            "spring.cloud.azure.storage.access-key=fake-access-key",
+            "spring.cloud.azure.storage.resource-group=fake-resource-group"
+        ).run(context -> {
+            assertThat(context).hasSingleBean(AzureStorageProperties.class);
+            assertThat(context.getBean(AzureStorageProperties.class).getAccessKey()).isEqualTo("fake-access-key");
+            assertThat(context.getBean(AzureStorageProperties.class).getResourceGroup()).isEqualTo("fake-resource-group");
+        });
+    }
+
+    @Test
+    public void testStorageQueueClientFactoryBean() {
+        this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=squeue").run(c -> {
+            final StorageQueueClientFactory storageQueueClientFactory = c.getBean(StorageQueueClientFactory.class);
+            assertThat(storageQueueClientFactory).isNotNull();
+        });
+    }
+
+    @Test
+    public void testStorageQueueOperationBean() {
+        this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=squeue").run(c -> {
+            final StorageQueueOperation storageQueueOperation = c.getBean(StorageQueueOperation.class);
+            assertThat(storageQueueOperation).isNotNull();
+        });
     }
 
     @Configuration
