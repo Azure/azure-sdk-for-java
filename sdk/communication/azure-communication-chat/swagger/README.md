@@ -33,13 +33,13 @@ To update generated files for chat service, run the following command
 ``` yaml
 tag: package-chat-2021-04-05-preview6
 require:
-    -  https://raw.githubusercontent.com/Azure/azure-rest-api-specs/896d05e37dbb00712726620b8d679cc3c3be09fb/specification/communication/data-plane/Chat/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/2737ef83c687cd61721ece7af713921d0df2485a/specification/communication/data-plane/Chat/preview/2021-04-05-preview6/communicationserviceschat.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult
+custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,SendTypingNotificationOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
@@ -142,6 +142,25 @@ directive:
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("UpdateChatThreadRequest")) {
         const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/UpdateChatThreadOptions");
+        $.schema = { "$ref": path };
+    }
+```
+
+### Rename SendTypingNotificationRequest to SendTypingNotificationOptions
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.SendTypingNotificationOptions) {
+      $.SendTypingNotificationOptions = $.SendTypingNotificationRequest;
+      delete $.SendTypingNotificationRequest;
+    }
+- from: swagger-document
+  where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]
+  transform: >
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendTypingNotificationRequest")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/SendTypingNotificationOptions");
         $.schema = { "$ref": path };
     }
 ```
