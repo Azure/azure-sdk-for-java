@@ -90,7 +90,7 @@ public final class BlobContainerItemProperties {
      * Indicates if version level worm is enabled on this container.
      */
     @JsonProperty(value = "VersionLevelWormEnabled")
-    private Boolean isVersionLevelWormEnabled;
+    private Boolean isImmutableStorageWithVersioningEnabled;
 
     /**
      * Get the lastModified property: The Last-Modified property.
@@ -352,18 +352,19 @@ public final class BlobContainerItemProperties {
      *
      * @return the isVersionLevelWormEnabled value.
      */
-    public Boolean isVersionLevelWormEnabled() {
-        return this.isVersionLevelWormEnabled;
+    public Boolean isImmutableStorageWithVersioningEnabled() {
+        return this.isImmutableStorageWithVersioningEnabled;
     }
 
     /**
      * Set the isVersionLevelWormEnabled property: Indicates if version level worm is enabled on this container.
      *
-     * @param isVersionLevelWormEnabled the isVersionLevelWormEnabled value to set.
+     * @param isImmutableStorageWithVersioningEnabled the isVersionLevelWormEnabled value to set.
      * @return the BlobContainerItemProperties object itself.
      */
-    public BlobContainerItemProperties setIsVersionLevelWormEnabled(Boolean isVersionLevelWormEnabled) {
-        this.isVersionLevelWormEnabled = isVersionLevelWormEnabled;
+    public BlobContainerItemProperties setImmutableStorageWithVersioningEnabled(
+            Boolean isImmutableStorageWithVersioningEnabled) {
+        this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
         return this;
     }
 }

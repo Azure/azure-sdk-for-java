@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -24,6 +25,8 @@ public class BlobCopyFromUrlOptions {
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
     private HttpAuthorization sourceAuthorization;
+    private BlobImmutabilityPolicy immutabilityPolicy;
+    private Boolean legalHold;
 
     /**
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -134,6 +137,42 @@ public class BlobCopyFromUrlOptions {
      */
     public BlobCopyFromUrlOptions setSourceAuthorization(HttpAuthorization sourceAuthorization) {
         this.sourceAuthorization = sourceAuthorization;
+        return this;
+    }
+
+    /**
+     * @return {@link BlobImmutabilityPolicy}
+     */
+    public BlobImmutabilityPolicy getImmutabilityPolicy() {
+        return immutabilityPolicy;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
+     * @return The updated options.
+     */
+    public BlobCopyFromUrlOptions setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        this.immutabilityPolicy = immutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * @return If a legal hold should be placed on the blob.
+     */
+    public Boolean isLegalHold() {
+        return legalHold;
+    }
+
+    /**
+     * Note that this parameter is only applicable to a blob within a container that has immutable storage with
+     * versioning enabled.
+     * @param legalHold Indicates if a legal hold should be placed on the blob.
+     * @return The updated options.
+     */
+    public BlobCopyFromUrlOptions setLegalHold(Boolean legalHold) {
+        this.legalHold = legalHold;
         return this;
     }
 }
