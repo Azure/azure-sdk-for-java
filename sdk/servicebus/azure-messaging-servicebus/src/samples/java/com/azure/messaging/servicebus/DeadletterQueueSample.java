@@ -64,7 +64,7 @@ public class DeadletterQueueSample {
      * @Param senderAsyncClient Service Bus Sender Client
      * @Param maxMessages Maximum Number Of Messages
      */
-    void sendMessagesAsync(ServiceBusSenderClient senderAsyncClient, int maxMessages) {
+    void sendMessagesAsync(ServiceBusSenderClient senderClient, int maxMessages) {
         List<ServiceBusMessage> messageList = new ArrayList<ServiceBusMessage>();
         messageList.add(createServiceBusMessage("{\"name\" : \"Einstein\", \"firstName\" : \"Albert\"}"));
         messageList.add(createServiceBusMessage("{\"name\" : \"Heisenberg\", \"firstName\" : \"Werner\"}"));
@@ -85,7 +85,7 @@ public class DeadletterQueueSample {
             message.setMessageId(messageId);
             message.setTimeToLive(Duration.ofMinutes(2));
             System.out.printf("\tMessage sending: Id = %s\n", message.getMessageId());
-            senderAsyncClient.sendMessage(message);
+            senderClient.sendMessage(message);
             System.out.printf("\tMessage acknowledged: Id = %s\n", message.getMessageId());
         }
     }
