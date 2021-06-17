@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class SignTest extends CryptographyTest<PerfStressOptions> {
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.RS256;
@@ -19,7 +19,7 @@ public class SignTest extends CryptographyTest<PerfStressOptions> {
         super(options);
 
         byte[] plaintext = new byte[100];
-        new Random(0x1234567L).nextBytes(plaintext);
+        new SecureRandom().nextBytes(plaintext);
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(plaintext);
         digest = md.digest();

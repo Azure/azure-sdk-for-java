@@ -8,7 +8,7 @@ import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.perf.core.CryptographyTest;
 import reactor.core.publisher.Mono;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class UnwrapTest extends CryptographyTest<PerfStressOptions> {
     private final KeyWrapAlgorithm keyWrapAlgorithm = KeyWrapAlgorithm.RSA_OAEP;
@@ -18,7 +18,7 @@ public class UnwrapTest extends CryptographyTest<PerfStressOptions> {
         super(options);
 
         byte[] plaintext = new byte[100];
-        new Random(0x1234567L).nextBytes(plaintext);
+        new SecureRandom().nextBytes(plaintext);
 
         wrapResult = cryptographyClient.wrapKey(keyWrapAlgorithm, plaintext);
     }

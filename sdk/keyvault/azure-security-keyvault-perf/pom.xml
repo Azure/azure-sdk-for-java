@@ -72,7 +72,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.azure.data.tables.App
+                    com.azure.security.keyvault.App
                   </mainClass>
                 </manifest>
               </archive>

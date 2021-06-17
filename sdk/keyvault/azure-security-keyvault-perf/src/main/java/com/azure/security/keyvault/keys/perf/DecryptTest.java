@@ -7,7 +7,7 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.perf.core.CryptographyTest;
 import reactor.core.publisher.Mono;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class DecryptTest extends CryptographyTest<PerfStressOptions> {
     private final EncryptionAlgorithm encryptionAlgorithm = EncryptionAlgorithm.RSA_OAEP;
@@ -17,7 +17,7 @@ public class DecryptTest extends CryptographyTest<PerfStressOptions> {
         super(options);
 
         plaintext = new byte[100];
-        new Random(0x1234567L).nextBytes(plaintext);
+        new SecureRandom().nextBytes(plaintext);
     }
 
     @Override
