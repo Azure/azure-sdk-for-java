@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/chat/threads/19:4b72178530934b7790135dd9359205e0@thread.v2/readReceipts?api-version=2021-04-05-preview6",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0-beta.1 (1.8.0_262; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3ead657f-2d2c-425a-9f58-36a31d6d4909"
+      "x-ms-client-request-id" : "d214cd8a-e88b-46ba-a915-5d118cab0bee"
     },
     "Response" : {
       "retry-after" : "0",
