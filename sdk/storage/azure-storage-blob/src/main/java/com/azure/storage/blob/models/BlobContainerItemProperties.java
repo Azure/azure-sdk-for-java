@@ -364,7 +364,7 @@ public final class BlobContainerItemProperties {
      * @param isImmutableStorageWithVersioningEnabled the isImmutableStorageWithVersioningEnabled value to set.
      * @return the BlobContainerItemProperties object itself.
      */
-    public BlobContainerItemProperties setIsImmutableStorageWithVersioningEnabled(
+    public BlobContainerItemProperties setImmutableStorageWithVersioningEnabled(
             Boolean isImmutableStorageWithVersioningEnabled) {
         this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
         return this;

@@ -18,6 +18,8 @@ import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
@@ -239,6 +241,13 @@ public class ModelHelper {
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
         headers.setSealed(internalHeaders.isXMsBlobSealed());
         headers.setLastAccessedTime(internalHeaders.getXMsLastAccessTime());
+        headers.setCurrentVersion(internalHeaders.isXMsIsCurrentVersion());
+
+        headers.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setPolicyMode(internalHeaders.getXMsImmutabilityPolicyMode() == null ? null
+            : BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()))
+            .setExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate()));
+        headers.setHasLegalHold(internalHeaders.isXMsLegalHold());
 
         return headers;
     }
@@ -329,6 +338,11 @@ public class ModelHelper {
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
         blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
         blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
+        blobItemProperties.setExpiryTime(blobItemPropertiesInternal.getExpiresOn());
+        blobItemProperties.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setExpiryTime(blobItemPropertiesInternal.getImmutabilityPolicyExpiresOn())
+            .setPolicyMode(blobItemPropertiesInternal.getImmutabilityPolicyMode()));
+        blobItemProperties.setHasLegalHold(blobItemPropertiesInternal.isLegalHold());
 
         return blobItemProperties;
     }
