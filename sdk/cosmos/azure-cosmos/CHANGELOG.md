@@ -302,4 +302,5 @@
 * Response Headers optimizations by removing unnecessary copying back and forth. 
 * Optimized `ByteBuffer` serialization / deserialization by removing intermediate String instantiations.
 #### Key Bug Fixes
-* Fixed race condition causing `ArrayIndexOutOfBound` exception in StoreReader
+* Fixed race condition causing `ArrayIndexOutOfBound` exception in StoreReader.
+

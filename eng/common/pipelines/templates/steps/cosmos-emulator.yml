@@ -1,5 +1,5 @@
 parameters:
-  EmulatorMsiUrl: "https://aka.ms/cosmosdb-emulator"
+  EmulatorMsiUrl: "https://cosmosdbportalstorage.azureedge.net/emulator/2021_06_17_2.14.1-08dca53e/azure-cosmosdb-emulator-2.14.1-08dca53e.msi"
   StartParameters: ''
 
 steps:
