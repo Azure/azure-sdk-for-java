@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class contains code samples for generating javadocs through doclets for {@link KeyVaultAccessControlAsyncClient}.
+ * This class contains code samples for generating javadocs through doclets for
+ * {@link KeyVaultAccessControlAsyncClient}.
  */
 public class KeyVaultAccessControlAsyncClientJavaDocCodeSnippets {
     /**
@@ -35,7 +36,7 @@ public class KeyVaultAccessControlAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code samples for using {@link KeyVaultAccessControlAsyncClient#listRoleDefinitions(KeyVaultRoleScope)}..
+     * Generates code samples for using {@link KeyVaultAccessControlAsyncClient#listRoleDefinitions(KeyVaultRoleScope)}.
      */
     public void listRoleDefinitions() {
         KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = createAsyncClient();
@@ -105,8 +106,9 @@ public class KeyVaultAccessControlAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code samples for using {@link KeyVaultAccessControlAsyncClient#getRoleDefinition(KeyVaultRoleScope, String)}
-     * and {@link KeyVaultAccessControlAsyncClient#getRoleDefinitionWithResponse(KeyVaultRoleScope, String)}.
+     * Generates code samples for using
+     * {@link KeyVaultAccessControlAsyncClient#getRoleDefinition(KeyVaultRoleScope, String)} and
+     * {@link KeyVaultAccessControlAsyncClient#getRoleDefinitionWithResponse(KeyVaultRoleScope, String)}.
      */
     public void getRoleDefinition() {
         KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = createAsyncClient();
@@ -204,20 +206,21 @@ public class KeyVaultAccessControlAsyncClientJavaDocCodeSnippets {
         String someServicePrincipalId = "345ec980-904b-4238-aafc-1eaeed3e23cf";
         String someRoleAssignmentName = "1c79927c-6e08-4e5c-8a6c-f58c13c9bbb5";
 
-        keyVaultAccessControlAsyncClient.createRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL, someRoleDefinitionId,
-            someServicePrincipalId, someRoleAssignmentName).subscribe(response -> {
+        keyVaultAccessControlAsyncClient.createRoleAssignmentWithResponse(KeyVaultRoleScope.GLOBAL,
+            someRoleDefinitionId, someServicePrincipalId, someRoleAssignmentName).subscribe(response -> {
                 KeyVaultRoleAssignment createdRoleAssignment = response.getValue();
 
                 System.out.printf("Response successful with status code: %d. Role assignment with name '%s' for"
                     + " principal with id '%s' was created.%n", response.getStatusCode(),
                     createdRoleAssignment.getName(), createdRoleAssignment.getProperties().getPrincipalId());
-        });
+            });
         // END: com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String
     }
 
     /**
-     * Generates code samples for using {@link KeyVaultAccessControlAsyncClient#getRoleAssignment(KeyVaultRoleScope, String)}
-     * and {@link KeyVaultAccessControlAsyncClient#getRoleAssignmentWithResponse(KeyVaultRoleScope, String)}.
+     * Generates code samples for using
+     * {@link KeyVaultAccessControlAsyncClient#getRoleAssignment(KeyVaultRoleScope, String)} and
+     * {@link KeyVaultAccessControlAsyncClient#getRoleAssignmentWithResponse(KeyVaultRoleScope, String)}.
      */
     public void getRoleAssignment() {
         KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = createAsyncClient();
