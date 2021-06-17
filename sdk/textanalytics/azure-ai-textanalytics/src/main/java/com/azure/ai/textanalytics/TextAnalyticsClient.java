@@ -18,8 +18,6 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -301,44 +299,6 @@ public final class TextAnalyticsClient {
     public Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        final RecognizeEntitiesOptions recognizeEntitiesOptions = new RecognizeEntitiesOptions();
-        String modelVersion = null;
-        boolean includeStatistics = false;
-        if (options != null) {
-            modelVersion = options.getModelVersion();
-            includeStatistics = options.isIncludeStatistics();
-            recognizeEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics);
-        }
-        return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents,
-            recognizeEntitiesOptions,
-            context).block();
-    }
-
-    /**
-     * Returns a list of general categorized entities for the provided list of {@link TextDocumentInput document} with
-     * provided request options.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the entities with http response in a list of {@link TextDocumentInput document} with provided
-     * request options.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-RecognizeEntitiesOptions-Context}
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The {@link RecognizeEntitiesOptions options} to configure the scoring model for documents
-     * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A {@link Response} that contains a {@link RecognizeEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, RecognizeEntitiesOptions options, Context context) {
-        inputDocumentsValidation(documents);
         return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options, context).block();
     }
 
@@ -597,47 +557,8 @@ public final class TextAnalyticsClient {
     public Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        final RecognizeLinkedEntitiesOptions recognizeLinkedEntitiesOptions = new RecognizeLinkedEntitiesOptions();
-        String modelVersion = null;
-        boolean includeStatistics = false;
-        if (options != null) {
-            modelVersion = options.getModelVersion();
-            includeStatistics = options.isIncludeStatistics();
-        }
         return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithContext(documents,
-            recognizeLinkedEntitiesOptions.setModelVersion(modelVersion).setIncludeStatistics(includeStatistics),
-            context).block();
-    }
-
-    /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of
-     * {@link TextDocumentInput document} and request options.
-     *
-     * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the linked entities with http response in a list of {@link TextDocumentInput} with request options.
-     * </p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-RecognizeLinkedEntitiesOptions-Context}
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The {@link RecognizeLinkedEntitiesOptions options} to configure the scoring model for documents
-     * , and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A {@link Response} that contains a {@link RecognizeLinkedEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, RecognizeLinkedEntitiesOptions options, Context context) {
-        inputDocumentsValidation(documents);
-        return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithContext(
-            documents, options, context).block();
+            options, context).block();
     }
 
     // Key Phrase

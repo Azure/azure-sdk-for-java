@@ -356,18 +356,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeEntitiesForBatchInputShowStatisticsWithRecognizeEntitiesOption(
-        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizeBatchCategorizedEntitiesShowStatsWithRecognizeEntitiesOptionRunner(
-            (inputs, options) -> validateCategorizedEntitiesResultCollectionWithResponse(true,
-                getExpectedBatchCategorizedEntities(), 200,
-                client.recognizeEntitiesBatchWithResponse(inputs, options, Context.NONE))
-        );
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeCategorizedEntityStringInputRunner((inputs) ->
@@ -966,17 +954,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         recognizeBatchLinkedEntitiesShowStatsRunner((inputs, options) ->
             validateLinkedEntitiesResultCollectionWithResponse(true, getExpectedBatchLinkedEntities(), 200,
                 client.recognizeLinkedEntitiesBatchWithResponse(inputs, options, Context.NONE)));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void recognizeLinkedEntitiesForBatchInputShowStatisticsWithRecognizeLinkedEntitiesOption(
-        HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        recognizeBatchLinkedEntitiesShowStatsWithRecognizeLinkedEntitiesOptionsRunner(
-            (inputs, options) ->
-                validateLinkedEntitiesResultCollectionWithResponse(true, getExpectedBatchLinkedEntities(), 200,
-                    client.recognizeLinkedEntitiesBatchWithResponse(inputs, options, Context.NONE)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -10,6 +10,7 @@
 
 ### Breaking Changes
 - Removed `StringIndexType`. This SDK will keep using UTF-16 code unit as the default encoding.
+- Removed type `ExtractKeyPhrasesOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions` and respective exposures.
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
   `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
