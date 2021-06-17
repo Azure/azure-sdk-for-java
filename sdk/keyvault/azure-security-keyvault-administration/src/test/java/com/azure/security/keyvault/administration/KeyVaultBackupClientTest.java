@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
@@ -12,11 +11,16 @@ import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperatio
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
-import org.junit.jupiter.api.Assumptions;
+import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,15 +31,7 @@ import static org.mockito.Mockito.when;
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
 
-    private final String blobStorageUrl = "https://testaccount.blob.core.windows.net/backup";
-    private final String sasToken = "someSasToken";
-
-    @Override
-    protected void beforeTest() {
-        beforeTestSetup();
-    }
-
-    private void createClient(HttpClient httpClient, boolean forCleanup) {
+    private void getClient(HttpClient httpClient, boolean forCleanup) {
         KeyVaultBackupAsyncClient asyncClient = spy(getClientBuilder(httpClient, forCleanup).buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
@@ -51,9 +47,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginBackup(HttpClient httpClient) {
-        Assumptions.assumeTrue(isHsmDeployed);
-
-        createClient(httpClient, false);
+        getClient(httpClient, false);
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
@@ -71,9 +65,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginRestore(HttpClient httpClient) {
-        Assumptions.assumeTrue(isHsmDeployed);
-
-        createClient(httpClient, false);
+        getClient(httpClient, false);
 
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
@@ -98,9 +90,21 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
-        Assumptions.assumeTrue(isHsmDeployed);
+        KeyClient keyClient = new KeyClientBuilder()
+            .vaultUrl(getEndpoint())
+            .pipeline(getPipeline(httpClient, false))
+            .buildClient();
 
-        createClient(httpClient, false);
+        String keyName = interceptorManager.isPlaybackMode()
+            ? "testKey"
+            : testResourceNamer.randomName("backupKey", 20);
+        CreateRsaKeyOptions rsaKeyOptions = new CreateRsaKeyOptions(keyName)
+            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
+
+        KeyVaultKey createdKey = keyClient.createRsaKey(rsaKeyOptions);
+
+        getClient(httpClient, false);
 
         // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
@@ -110,7 +114,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller =
-            client.beginSelectiveKeyRestore("testKey", backupFolderUrl, sasToken);
+            client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken);
 
         selectiveKeyRestorePoller.waitForCompletion();
 

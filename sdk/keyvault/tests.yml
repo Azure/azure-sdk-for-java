@@ -45,9 +45,3 @@ stages:
         - name: azure-security-keyvault-secrets
           groupId: com.azure
           safeName: azuresecuritykeyvaultsecrets
-      EnvVars:
-        AZURE_KEYVAULT_TENANT_ID: $(AZURE_KEYVAULT_TENANT_ID)
-        AZURE_KEYVAULT_CLIENT_ID: $(AZURE_KEYVAULT_CLIENT_ID)
-        AZURE_KEYVAULT_CLIENT_SECRET: $(AZURE_KEYVAULT_CLIENT_SECRET)
-        AZURE_KEYVAULT_ENDPOINT: $(AZURE_KEYVAULT_ENDPOINT)
-        AZURE_MANAGEDHSM_ENDPOINT: $(AZURE_MANAGEDHSM_ENDPOINT)

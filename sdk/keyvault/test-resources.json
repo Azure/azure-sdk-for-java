@@ -60,13 +60,6 @@
         "description": "Whether to enable deployment of Managed HSM. The default is false."
       }
     },
-    "enableSoftDelete": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Whether to enable soft delete for the Key Vault. The default is true."
-      }
-    },
     "keyVaultSku": {
       "type": "string",
       "defaultValue": "Premium",
@@ -297,7 +290,7 @@
         "enabledForDeployment": "[parameters('enabledForDeployment')]",
         "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
         "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
-        "enableSoftDelete": "[parameters('enableSoftDelete')]",
+        "enableSoftDelete": true,
         "networkAcls": "[variables('networkAcls')]"
       }
     },
@@ -317,7 +310,7 @@
           "[parameters('testApplicationOid')]"
         ],
         "enablePurgeProtection": false,
-        "enableSoftDelete": "[parameters('enableSoftDelete')]"
+        "enableSoftDelete": true
       }
     },
     {
