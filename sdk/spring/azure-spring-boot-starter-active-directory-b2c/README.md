@@ -501,7 +501,7 @@ Add the following logging settings, and you will see the user's authorities base
 
 ```properties
 # logging settings for resource server scenario.
-logging.level.com.azure.spring.common.AADJwtGrantedAuthoritiesConverter=DEBUG
+logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
 ```
 
 The log output as a resource server usage:

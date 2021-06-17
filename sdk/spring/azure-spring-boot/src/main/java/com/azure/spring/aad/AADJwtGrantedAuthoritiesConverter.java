@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.common;
+package com.azure.spring.aad;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +25,13 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtGrantedAuthoritiesConverter.class);
     public static final Map<String, String> DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
+    public static final String DEFAULT_PRINCIPAL_CLAIM_NAME = "scp";
 
     static {
-        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP = new HashMap<>();
-        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.put("scp", "SCOPE_");
-        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.put("roles", "APPROLE_");
+        Map<String, String> claimAuthorityMap = new HashMap<>();
+        claimAuthorityMap.put(DEFAULT_PRINCIPAL_CLAIM_NAME, "SCOPE_");
+        claimAuthorityMap.put("roles", "APPROLE_");
+        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP = Collections.unmodifiableMap(claimAuthorityMap);
     }
 
     private final Map<String, String> claimToAuthorityPrefixMap;
@@ -62,7 +64,7 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
 
     private Collection<?> getClaimValueAsCollection(Object claimValue) {
         if (claimValue instanceof String) {
-            return Arrays.asList(((String) claimValue).split(""));
+            return Arrays.asList(((String) claimValue).split(" "));
         } else if (claimValue instanceof Collection) {
             return (Collection<?>) claimValue;
         } else {

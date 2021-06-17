@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.common;
+package com.azure.spring.aad;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.server.resource.authentication.Bearer
 import org.springframework.util.Assert;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,9 +21,25 @@ import java.util.Map;
 public abstract class AbstractJwtBearerTokenAuthenticationConverter implements Converter<Jwt,
     AbstractAuthenticationToken> {
 
-    public static final String DEFAULT_PRINCIPAL_CLAIM_NAME = "sub";
     protected Converter<Jwt, Collection<GrantedAuthority>> converter;
     protected String principalClaimName;
+
+    /**
+     * Structure converter.
+     * @param principalClaimName principal claim name
+     * @param authorityPrefix the prefix name of the authority
+     * @deprecated Recommended to use another constructor.
+     */
+    @Deprecated
+    public AbstractJwtBearerTokenAuthenticationConverter(String principalClaimName,
+                                                         String authorityPrefix) {
+        Assert.notNull(principalClaimName, "principalClaimName cannot be null");
+        Assert.notNull(authorityPrefix, "authorityPrefix cannot be null");
+        Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
+        claimToAuthorityPrefixMap.put(principalClaimName, authorityPrefix);
+        this.principalClaimName = principalClaimName;
+        this.converter = new AADJwtGrantedAuthoritiesConverter(claimToAuthorityPrefixMap);
+    }
 
     public AbstractJwtBearerTokenAuthenticationConverter(String principalClaimName,
                                                          Map<String, String> claimToAuthorityPrefixMap) {

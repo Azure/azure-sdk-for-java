@@ -659,7 +659,7 @@ Add the following logging settings, and you will see the user's authorities base
 logging.level.com.azure.spring.aad.webapp.AADOAuth2UserService=DEBUG
 
 # logging settings for resource server scenario.
-logging.level.com.azure.spring.common.AADJwtGrantedAuthoritiesConverter=DEBUG
+logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
 ```
 
 The log output as a web application usage:
