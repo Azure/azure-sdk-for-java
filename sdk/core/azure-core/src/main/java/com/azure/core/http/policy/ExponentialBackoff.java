@@ -47,8 +47,8 @@ public class ExponentialBackoff implements RetryStrategy {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
 
-        if (baseDelay.isZero()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be 0."));
+        if (baseDelay.isZero() || baseDelay.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
         }
 
         if (baseDelay.compareTo(maxDelay) > 0) {
