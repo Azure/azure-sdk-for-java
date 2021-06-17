@@ -6,11 +6,10 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** The invite participants request. */
+/** The add participant request. */
 @Fluent
-public final class InviteParticipantsRequest {
+public final class AddParticipantRequest {
     /*
      * The alternate identity of source participant.
      */
@@ -18,10 +17,10 @@ public final class InviteParticipantsRequest {
     private PhoneNumberIdentifierModel alternateCallerId;
 
     /*
-     * The list of participants to be added to the call.
+     * The participant to be added to the call.
      */
-    @JsonProperty(value = "participants", required = true)
-    private List<CommunicationIdentifierModel> participants;
+    @JsonProperty(value = "participant")
+    private CommunicationIdentifierModel participant;
 
     /*
      * The operation context.
@@ -48,30 +47,30 @@ public final class InviteParticipantsRequest {
      * Set the alternateCallerId property: The alternate identity of source participant.
      *
      * @param alternateCallerId the alternateCallerId value to set.
-     * @return the InviteParticipantsRequest object itself.
+     * @return the AddParticipantRequest object itself.
      */
-    public InviteParticipantsRequest setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+    public AddParticipantRequest setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
         this.alternateCallerId = alternateCallerId;
         return this;
     }
 
     /**
-     * Get the participants property: The list of participants to be added to the call.
+     * Get the participant property: The participant to be added to the call.
      *
-     * @return the participants value.
+     * @return the participant value.
      */
-    public List<CommunicationIdentifierModel> getParticipants() {
-        return this.participants;
+    public CommunicationIdentifierModel getParticipant() {
+        return this.participant;
     }
 
     /**
-     * Set the participants property: The list of participants to be added to the call.
+     * Set the participant property: The participant to be added to the call.
      *
-     * @param participants the participants value to set.
-     * @return the InviteParticipantsRequest object itself.
+     * @param participant the participant value to set.
+     * @return the AddParticipantRequest object itself.
      */
-    public InviteParticipantsRequest setParticipants(List<CommunicationIdentifierModel> participants) {
-        this.participants = participants;
+    public AddParticipantRequest setParticipant(CommunicationIdentifierModel participant) {
+        this.participant = participant;
         return this;
     }
 
@@ -88,9 +87,9 @@ public final class InviteParticipantsRequest {
      * Set the operationContext property: The operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the InviteParticipantsRequest object itself.
+     * @return the AddParticipantRequest object itself.
      */
-    public InviteParticipantsRequest setOperationContext(String operationContext) {
+    public AddParticipantRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -108,9 +107,9 @@ public final class InviteParticipantsRequest {
      * Set the callbackUri property: The callback URI.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the InviteParticipantsRequest object itself.
+     * @return the AddParticipantRequest object itself.
      */
-    public InviteParticipantsRequest setCallbackUri(String callbackUri) {
+    public AddParticipantRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

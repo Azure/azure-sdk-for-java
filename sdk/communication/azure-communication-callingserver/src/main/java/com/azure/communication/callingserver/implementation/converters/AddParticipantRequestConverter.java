@@ -3,23 +3,20 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.implementation.models.InviteParticipantsRequest;
+import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 
-import java.util.Collections;
-import java.util.LinkedList;
-
 /**
- * A converter for {@link InviteParticipantsRequest}
+ * A converter for {@link AddParticipantRequest}
  */
-public final class InviteParticipantRequestConverter {
+public final class AddParticipantRequestConverter {
 
     /**
-     * Converts to {@link InviteParticipantsRequest}.
+     * Converts to {@link AddParticipantRequest}.
      */
-    public static InviteParticipantsRequest convert(
+    public static AddParticipantRequest convert(
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext,
@@ -33,14 +30,13 @@ public final class InviteParticipantRequestConverter {
                 : CommunicationIdentifierConverter
                     .convert(new PhoneNumberIdentifier(alternateCallerId)).getPhoneNumber();
 
-        return new InviteParticipantsRequest()
-            .setParticipants(new LinkedList<>(Collections
-                .singletonList(CommunicationIdentifierConverter.convert(participant))))
+        return new AddParticipantRequest()
+            .setParticipant(CommunicationIdentifierConverter.convert(participant))
             .setAlternateCallerId(phoneNumberIdentifierModel)
             .setOperationContext(operationContext)
             .setCallbackUri(callBackUri);
     }
 
-    private InviteParticipantRequestConverter() {
+    private AddParticipantRequestConverter() {
     }
 }
