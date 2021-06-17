@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.MediaType;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
@@ -109,13 +110,14 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             // Play Audio
             String operationContext = UUID.randomUUID().toString();
+            PlayAudioOptions playAudioOptions =
+                new PlayAudioOptions()
+                    .setLoop(false)
+                    .setAudioFileId(UUID.randomUUID().toString())
+                    .setCallbackUri(null)
+                    .setOperationContext(operationContext);
             Response<PlayAudioResult> playAudioResponse =
-                callConnectionAsync.playAudioWithResponse(
-                    AUDIO_FILE_URI,
-                    false,
-                    UUID.randomUUID().toString(),
-                    null,
-                    operationContext).block();
+                callConnectionAsync.playAudioWithResponse(AUDIO_FILE_URI, playAudioOptions).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse);
 
             // Cancel All Media Operations

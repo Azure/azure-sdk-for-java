@@ -78,39 +78,6 @@ public final class CallConnection {
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @param context A {@link Context} representing the request context.
-     * @return the response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> playAudioWithResponse(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext,
-        final Context context) {
-        return callConnectionAsync
-            .playAudioWithResponseInternal(
-                audioFileUri,
-                loop,
-                audioFileId,
-                callbackUri,
-                operationContext,
-                context)
-            .block();
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @param context A {@link Context} representing the request context.
      * @return the response payload for play audio operation.

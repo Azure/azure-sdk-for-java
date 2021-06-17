@@ -167,13 +167,16 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             callConnections = createCall(callingServerClient, groupId, fromUser, toUser, CALLBACK_URI);
+            PlayAudioOptions playAudioOptions =
+                new PlayAudioOptions()
+                    .setLoop(false)
+                    .setAudioFileId(UUID.randomUUID().toString())
+                    .setCallbackUri(CALLBACK_URI)
+                    .setOperationContext(operationContext);
             serverCall = callingServerClient.initializeServerCall(groupId);
 
             Response<PlayAudioResult> playAudioResult =
-                serverCall.playAudioWithResponse(
-                    AUDIO_FILE_URI, operationContext,
-                    CALLBACK_URI, operationContext,
-                    Context.NONE);
+                serverCall.playAudioWithResponse(AUDIO_FILE_URI, playAudioOptions, Context.NONE);
             validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
