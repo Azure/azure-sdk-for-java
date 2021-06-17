@@ -8,12 +8,15 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Extracts the {@link GrantedAuthority}s from scope attributes typically found in a {@link Jwt}.
@@ -21,43 +24,49 @@ import java.util.stream.Collectors;
 public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtGrantedAuthoritiesConverter.class);
+    public static final Map<String, String> DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
 
-    private static final String DEFAULT_SCP_AUTHORITY_PREFIX = "SCOPE_";
+    static {
+        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP = new HashMap<>();
+        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.put("scp", "SCOPE_");
+        DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.put("roles", "APPROLE_");
+    }
 
-    private static final String DEFAULT_ROLES_AUTHORITY_PREFIX = "APPROLE_";
+    private final Map<String, String> claimToAuthorityPrefixMap;
 
-    private static final Collection<String> WELL_KNOWN_AUTHORITIES_CLAIM_NAMES = Arrays.asList("scp", "roles");
+    public AADJwtGrantedAuthoritiesConverter() {
+        claimToAuthorityPrefixMap = DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
+    }
+
+    public AADJwtGrantedAuthoritiesConverter(Map<String, String> claimToAuthorityPrefixMap) {
+        this.claimToAuthorityPrefixMap = claimToAuthorityPrefixMap;
+    }
 
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (String authority : getAuthorities(jwt)) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(authority));
-        }
+        claimToAuthorityPrefixMap.forEach((authoritiesClaimName, authorityPrefix) -> {
+            Optional.of(authoritiesClaimName)
+                    .map(jwt::getClaim)
+                    .map(this::getClaimValueAsCollection)
+                    .map(Collection::stream)
+                    .orElseGet(Stream::empty)
+                    .map(authority -> authorityPrefix + authority)
+                    .map(SimpleGrantedAuthority::new)
+                    .forEach(grantedAuthorities::add);
+
+        });
         LOGGER.debug("User {}'s authorities created from jwt token: {}.", jwt.getSubject(), grantedAuthorities);
         return grantedAuthorities;
     }
 
-    private Collection<String> getAuthorities(Jwt jwt) {
-        Collection<String> authoritiesList = new ArrayList<String>();
-        for (String claimName : WELL_KNOWN_AUTHORITIES_CLAIM_NAMES) {
-            if (jwt.hasClaim(claimName)) {
-                if (jwt.getClaim(claimName) instanceof String) {
-                    if (StringUtils.hasText(jwt.getClaim(claimName))) {
-                        authoritiesList.addAll(Arrays.asList(((String) jwt.getClaim(claimName)).split(" "))
-                                                     .stream()
-                                                     .map(s -> DEFAULT_SCP_AUTHORITY_PREFIX + s)
-                                                     .collect(Collectors.toList()));
-                    }
-                } else if (jwt.getClaim(claimName) instanceof Collection) {
-                    authoritiesList.addAll(((Collection<?>) jwt.getClaim(claimName))
-                        .stream()
-                        .filter(s -> StringUtils.hasText((String) s))
-                        .map(s -> DEFAULT_ROLES_AUTHORITY_PREFIX + s)
-                        .collect(Collectors.toList()));
-                }
-            }
+    private Collection<?> getClaimValueAsCollection(Object claimValue) {
+        if (claimValue instanceof String) {
+            return Arrays.asList(((String) claimValue).split(""));
+        } else if (claimValue instanceof Collection) {
+            return (Collection<?>) claimValue;
+        } else {
+            return Collections.emptyList();
         }
-        return authoritiesList;
     }
 }

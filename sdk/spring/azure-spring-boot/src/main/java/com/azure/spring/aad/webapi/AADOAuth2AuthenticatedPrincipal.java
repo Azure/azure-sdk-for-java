@@ -33,22 +33,22 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
 
     private final String tokenValue;
 
-    private final String name;
-
     private JWTClaimsSet jwtClaimsSet;
+
+    private final String name;
 
     public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers,
                                            Map<String, Object> attributes,
                                            Collection<GrantedAuthority> authorities,
                                            String tokenValue,
-                                           String principalClaimName) {
+                                           String name) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;
         this.tokenValue = tokenValue;
         this.attributes = Collections.unmodifiableMap(attributes);
         this.authorities = authorities == null ? NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
-        this.name = (String) this.attributes.get(principalClaimName);
+        this.name = name;
         toJwtClaimsSet(attributes);
     }
 

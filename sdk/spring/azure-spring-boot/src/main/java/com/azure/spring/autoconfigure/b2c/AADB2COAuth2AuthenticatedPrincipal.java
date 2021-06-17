@@ -19,6 +19,7 @@ import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTH
 /**
  * entity class of AADB2COAuth2AuthenticatedPrincipal
  */
+// TODO (Moary delete it, use AADOAuth2AuthenticatedPrincipal instead)
 public class AADB2COAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
 
     private static final long serialVersionUID = -3625690847771476854L;
@@ -38,21 +39,15 @@ public class AADB2COAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPr
     public AADB2COAuth2AuthenticatedPrincipal(Map<String, Object> headers,
                                               Map<String, Object> attributes,
                                               Collection<GrantedAuthority> authorities,
-                                              String tokenValue) {
-        this(headers, attributes, authorities, tokenValue, null);
-    }
-
-    public AADB2COAuth2AuthenticatedPrincipal(Map<String, Object> headers,
-                                              Map<String, Object> attributes,
-                                              Collection<GrantedAuthority> authorities,
-                                              String tokenValue, String name) {
+                                              String tokenValue,
+                                              String name) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;
         this.tokenValue = tokenValue;
         this.attributes = Collections.unmodifiableMap(attributes);
         this.authorities = authorities == null ? NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
-        this.name = (name != null) ? name : (String) this.attributes.get("sub");
+        this.name = name;
         toJwtClaimsSet(attributes);
     }
 

@@ -11,6 +11,9 @@ import org.springframework.security.oauth2.server.resource.authentication.Bearer
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
+
+import static com.azure.spring.common.AADJwtGrantedAuthoritiesConverter.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
@@ -21,30 +24,22 @@ public class AADB2CJwtBearerTokenAuthenticationConverter extends AbstractJwtBear
      * Use AADJwtGrantedAuthoritiesConverter, it can resolve the access token of scp and roles.
      */
     public AADB2CJwtBearerTokenAuthenticationConverter() {
-        super();
+        this(DEFAULT_PRINCIPAL_CLAIM_NAME, DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP);
     }
 
-    /**
-     * Use JwtGrantedAuthoritiesConverter, it can resolve the access token of scp or roles.
-     * @param authoritiesClaimName authorities claim name
-     */
-    public AADB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
-        this(authoritiesClaimName, DEFAULT_AUTHORITY_PREFIX);
-    }
-
-    public AADB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName, String authorityPrefix) {
-        super(authoritiesClaimName, authorityPrefix);
+    public AADB2CJwtBearerTokenAuthenticationConverter(String principalClaimName,
+                                                       Map<String, String> claimToAuthorityPrefixMap) {
+        super(principalClaimName, claimToAuthorityPrefixMap);
     }
 
     @Override
     protected OAuth2AuthenticatedPrincipal getAuthenticatedPrincipal(Map<String, Object> headers,
-                                                                     Map<String, Object> claims, Collection<GrantedAuthority> authorities, String tokenValue) {
-        if (this.principalClaimName == null) {
-            return new AADB2COAuth2AuthenticatedPrincipal(
-                headers, claims, authorities, tokenValue);
-        }
-        String name = (String) claims.get(this.principalClaimName);
-        return new AADB2COAuth2AuthenticatedPrincipal(headers,
-            claims, authorities, tokenValue, name);
+                                                                     Map<String, Object> claims,
+                                                                     Collection<GrantedAuthority> authorities,
+                                                                     String tokenValue) {
+        String name = Optional.ofNullable(principalClaimName)
+                              .map(n -> (String) claims.get(n))
+                              .orElseGet(() -> (String) claims.get("sub"));
+        return new AADB2COAuth2AuthenticatedPrincipal(headers, claims, authorities, tokenValue, name);
     }
 }
