@@ -230,8 +230,7 @@ public final class KeyVaultAccessControlClient {
      * Managed HSM only supports '/'.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition role definition}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -254,8 +253,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return A {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -460,8 +458,7 @@ public final class KeyVaultAccessControlClient {
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
      * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -484,8 +481,7 @@ public final class KeyVaultAccessControlClient {
      *
      * @return A {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */

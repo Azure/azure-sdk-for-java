@@ -25,7 +25,7 @@ public class KeyVaultKeyManagerTest {
     @BeforeAll
     public static void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca(PropertyConvertorUtils.SYSTEM_PROPERTIES);
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         manager = new KeyVaultKeyManager(keyStore, null);

@@ -14,12 +14,12 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "404",
-      "x-ms-request-id" : "7ece1070-aecd-11eb-8fdc-000d3a31c437",
-      "Body" : "{\"error\":{\"code\":\"RoleDefinitionNotFound\",\"message\":\"Requested role definition not found (Activity ID: 7ece1070-aecd-11eb-8fdc-000d3a31c437)\"}}",
+      "x-ms-request-id" : "ae14f644-aec0-11eb-b929-000d3a31c437",
+      "Body" : "{\"error\":{\"code\":\"RoleDefinitionNotFound\",\"message\":\"Requested role definition not found (Activity ID: ae14f644-aec0-11eb-b929-000d3a31c437)\"}}",
       "x-ms-server-latency" : "0",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "475ed505-5835-48ce-b257-cdb8fa153e67" ]
 }

@@ -24,7 +24,6 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultAccessC
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.DataAction;
-import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Permission;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
@@ -34,8 +33,8 @@ import com.azure.security.keyvault.administration.implementation.models.RoleDefi
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties;
 import com.azure.security.keyvault.administration.implementation.models.RoleScope;
-import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
+import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
@@ -498,8 +497,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} of a {@link Void}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -521,8 +519,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -541,8 +538,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -565,7 +561,8 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnError(error -> logger.warning("Failed to delete role assignment - {}", roleDefinitionName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
-                .onErrorResume(KeyVaultErrorException.class, e -> swallowExceptionForStatusCode(404, e, logger));
+                .onErrorResume(KeyVaultAdministrationException.class, e ->
+                    swallowExceptionForStatusCode(404, e, logger));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -922,8 +919,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} of a {@link Void}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -945,8 +941,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -965,8 +960,7 @@ public final class KeyVaultAccessControlAsyncClient {
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
-     * cannot be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -988,7 +982,8 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnError(error -> logger.warning("Failed to delete role assignment - {}", roleAssignmentName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
-                .onErrorResume(KeyVaultErrorException.class, e -> swallowExceptionForStatusCode(404, e, logger));
+                .onErrorResume(KeyVaultAdministrationException.class, e ->
+                    swallowExceptionForStatusCode(404, e, logger));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

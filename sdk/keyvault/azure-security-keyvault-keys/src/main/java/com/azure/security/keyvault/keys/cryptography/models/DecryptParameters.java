@@ -1,17 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys.cryptography;
+package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
 import java.util.Objects;
 
 /**
  * A class containing various configuration parameters that can be applied when performing decryption operations.
  */
-public class DecryptParameters {
+public final class DecryptParameters {
     /**
      * The algorithm to be used for decryption.
      */

@@ -25,7 +25,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/ee830d79-e3dc-4ac5-8581-b6f650aa7831?api-version=7.2",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/ef2f0b3c-66d6-4ce5-bee0-38d7b0b65c65?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
@@ -45,5 +45,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "ef2f0b3c-66d6-4ce5-bee0-38d7b0b65c65" ]
 }
