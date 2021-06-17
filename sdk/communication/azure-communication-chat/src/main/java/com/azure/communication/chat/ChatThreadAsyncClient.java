@@ -31,7 +31,7 @@ import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
-import com.azure.communication.chat.models.SendTypingNotificationOptions;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -735,7 +735,7 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendTypingNotification() {
         try {
-            SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+            TypingNotificationOptions options = new TypingNotificationOptions();
             return withContext(context -> sendTypingNotification(options, context)
                 .flatMap((Response<Void> res) -> {
                     return Mono.empty();
@@ -755,7 +755,7 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTypingNotificationWithResponse() {
         try {
-            SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+            TypingNotificationOptions options = new TypingNotificationOptions();
             return withContext(context -> sendTypingNotification(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -771,7 +771,7 @@ public final class ChatThreadAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTypingNotification(SendTypingNotificationOptions options) {
+    public Mono<Void> sendTypingNotification(TypingNotificationOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
             return withContext(context -> sendTypingNotification(options, context)
@@ -792,7 +792,7 @@ public final class ChatThreadAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendTypingNotificationWithResponse(SendTypingNotificationOptions options) {
+    public Mono<Response<Void>> sendTypingNotificationWithResponse(TypingNotificationOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
             return withContext(context -> sendTypingNotification(options, context));
@@ -808,7 +808,7 @@ public final class ChatThreadAsyncClient {
      * @param context The context to associate with this operation.
      * @return the completion.
      */
-    Mono<Response<Void>> sendTypingNotification(SendTypingNotificationOptions options, Context context) {
+    Mono<Response<Void>> sendTypingNotification(TypingNotificationOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");

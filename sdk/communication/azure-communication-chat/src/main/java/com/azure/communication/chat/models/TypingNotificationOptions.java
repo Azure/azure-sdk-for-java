@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request payload for typing notifications. */
 @Fluent
-public final class SendTypingNotificationOptions {
+public final class TypingNotificationOptions {
     /*
      * The display name of the typing notification sender. This property is
      * used to populate sender name for push notifications.
@@ -32,9 +32,9 @@ public final class SendTypingNotificationOptions {
      * populate sender name for push notifications.
      *
      * @param senderDisplayName the senderDisplayName value to set.
-     * @return the SendTypingNotificationOptions object itself.
+     * @return the TypingNotificationOptions object itself.
      */
-    public SendTypingNotificationOptions setSenderDisplayName(String senderDisplayName) {
+    public TypingNotificationOptions setSenderDisplayName(String senderDisplayName) {
         this.senderDisplayName = senderDisplayName;
         return this;
     }

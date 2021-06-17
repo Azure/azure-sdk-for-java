@@ -460,7 +460,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Arrange
         setupTest(httpClient, "canSendTypingNotificationWithOptions");
 
-        SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+        TypingNotificationOptions options = new TypingNotificationOptions();
         options.setSenderDisplayName("Sender");
 
         // Action & Assert
@@ -473,7 +473,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         // Arrange
         setupTest(httpClient, "canSendTypingNotificationWithResponseWithOptions");
 
-        SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+        TypingNotificationOptions options = new TypingNotificationOptions();
         options.setSenderDisplayName("Sender");
 
         // Action & Assert

@@ -18,7 +18,7 @@ import com.azure.communication.chat.implementation.models.CommunicationIdentifie
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
-import com.azure.communication.chat.models.SendTypingNotificationOptions;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.core.annotation.BodyParam;
@@ -215,7 +215,7 @@ public final class ChatThreadsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendTypingNotificationOptions sendTypingNotificationRequest,
+                @BodyParam("application/json") TypingNotificationOptions sendTypingNotificationRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1880,7 +1880,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(
-            String chatThreadId, SendTypingNotificationOptions sendTypingNotificationRequest) {
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1906,7 +1906,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(
-            String chatThreadId, SendTypingNotificationOptions sendTypingNotificationRequest, Context context) {
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
         final String accept = "application/json";
         return service.sendTypingNotification(
                 this.client.getEndpoint(),
@@ -1929,7 +1929,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendTypingNotificationAsync(
-            String chatThreadId, SendTypingNotificationOptions sendTypingNotificationRequest) {
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
         return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -1945,7 +1945,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendTypingNotificationAsync(String chatThreadId) {
-        final SendTypingNotificationOptions sendTypingNotificationRequest = null;
+        final TypingNotificationOptions sendTypingNotificationRequest = null;
         return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -1963,7 +1963,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendTypingNotificationAsync(
-            String chatThreadId, SendTypingNotificationOptions sendTypingNotificationRequest, Context context) {
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
         return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -1978,8 +1978,7 @@ public final class ChatThreadsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendTypingNotification(
-            String chatThreadId, SendTypingNotificationOptions sendTypingNotificationRequest) {
+    public void sendTypingNotification(String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
         sendTypingNotificationAsync(chatThreadId, sendTypingNotificationRequest).block();
     }
 
@@ -1993,7 +1992,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendTypingNotification(String chatThreadId) {
-        final SendTypingNotificationOptions sendTypingNotificationRequest = null;
+        final TypingNotificationOptions sendTypingNotificationRequest = null;
         sendTypingNotificationAsync(chatThreadId, sendTypingNotificationRequest).block();
     }
 
@@ -2010,7 +2009,7 @@ public final class ChatThreadsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendTypingNotificationWithResponse(
-            String chatThreadId, SendTypingNotificationOptions sendTypingNotificationRequest, Context context) {
+            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
         return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context).block();
     }
 

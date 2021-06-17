@@ -14,7 +14,7 @@ import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
-import com.azure.communication.chat.models.SendTypingNotificationOptions;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -351,7 +351,7 @@ public final class ChatThreadClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendTypingNotificationWithResponse(Context context) {
-        SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+        TypingNotificationOptions options = new TypingNotificationOptions();
         return this.client.sendTypingNotification(options, context).block();
     }
 
@@ -376,7 +376,7 @@ public final class ChatThreadClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendTypingNotificationWithResponse(SendTypingNotificationOptions options, Context context) {
+    public Response<Void> sendTypingNotificationWithResponse(TypingNotificationOptions options, Context context) {
         return this.client.sendTypingNotification(options, context).block();
     }
 
@@ -388,7 +388,7 @@ public final class ChatThreadClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendTypingNotification(SendTypingNotificationOptions options) {
+    public void sendTypingNotification(TypingNotificationOptions options) {
         this.client.sendTypingNotification(options).block();
     }
 

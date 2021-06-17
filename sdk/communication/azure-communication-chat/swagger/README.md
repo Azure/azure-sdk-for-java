@@ -39,7 +39,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,SendTypingNotificationOptions
+custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,TypingNotificationOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
@@ -146,21 +146,21 @@ directive:
     }
 ```
 
-### Rename SendTypingNotificationRequest to SendTypingNotificationOptions
+### Rename SendTypingNotificationRequest to TypingNotificationOptions
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.SendTypingNotificationOptions) {
-      $.SendTypingNotificationOptions = $.SendTypingNotificationRequest;
-      delete $.SendTypingNotificationRequest;
+    if (!$.TypingNotificationOptions) {
+      $.TypingNotificationOptions = $.SendTypingNotificationRequest;
+      delete $.TypingNotificationRequest;
     }
 - from: swagger-document
   where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendTypingNotificationRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/SendTypingNotificationOptions");
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/TypingNotificationOptions");
         $.schema = { "$ref": path };
     }
 ```

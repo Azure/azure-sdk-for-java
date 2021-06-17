@@ -353,13 +353,13 @@ readReceiptsResponse.iterableByPage().forEach(resp -> {
 #### Send typing notification
 
 Use `sendTypingNotification` method to post a typing notification event to a chat thread, on behalf of a user.
-`sendTypingNotificationOptions` is used to describe the typing notification request.
+`typingNotificationOptions` is used to describe the typing notification request.
 
 - Use `senderDisplayName` to set the display name of the notification sender;
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L276-L278 -->
 ```Java
-SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+TypingNotificationOptions options = new TypingNotificationOptions();
 options.setSenderDisplayName("Sender Display Name");
 chatThreadClient.sendTypingNotification(options);
 ```

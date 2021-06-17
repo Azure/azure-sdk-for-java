@@ -767,7 +767,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendTypingNotificationWithOptions(HttpClient httpClient) {
         // Action & Assert
-        SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+        TypingNotificationOptions options = new TypingNotificationOptions();
         options.setSenderDisplayName("Sender");
 
         setupTest(httpClient, "canSendTypingNotificationWithOptions");
@@ -779,7 +779,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendTypingNotificationWithResponseWithOptions(HttpClient httpClient) {
         // Action & Assert
-        SendTypingNotificationOptions options = new SendTypingNotificationOptions();
+        TypingNotificationOptions options = new TypingNotificationOptions();
         options.setSenderDisplayName("Sender");
 
         setupTest(httpClient, "canSendTypingNotificationWithResponseWithOptions");
