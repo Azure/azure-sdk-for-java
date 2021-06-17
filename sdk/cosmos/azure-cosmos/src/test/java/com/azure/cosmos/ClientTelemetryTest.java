@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
@@ -233,7 +234,10 @@ public class ClientTelemetryTest extends TestSuiteBase {
             // in test env we add the env property with cosmos-client-telemetry-endpoint variable in tests.yml,
             // which gets its value from key vault TestSecrets-Cosmos
 
-            // System.setProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT", "https://tools-staging.cosmos.azure.com/api/clienttelemetry/trace");
+            logger.info("clientTelemetryWithStageJunoEndpoint client telemetry endpoint {}",  System.getProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT").split("/")[2]);
+            logger.info("clientTelemetryWithStageJunoEndpoint cosmos account name  {}",
+                ReflectionUtils.getGlobalEndpointManager((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient)).getLatestDatabaseAccount().getResourceId());
+
 
             HttpClient httpClient = ReflectionUtils.getHttpClient(clientTelemetry);
             HttpClient spyHttpClient = Mockito.spy(httpClient);
@@ -251,8 +255,10 @@ public class ClientTelemetryTest extends TestSuiteBase {
                 new PartitionKey(internalObjectNode.getId()),
                 InternalObjectNode.class);
             Thread.sleep(5000);
-            StepVerifier.create(httpResponseMono.get()).expectNextMatches(httpResponse ->
-                httpResponse.statusCode() == HttpConstants.StatusCodes.OK).verifyComplete();
+            StepVerifier.create(httpResponseMono.get()).expectNextMatches(httpResponse -> {
+                logger.info("clientTelemetryWithStageJunoEndpoint statusCode from juno {}",  httpResponse.statusCode());
+                return httpResponse.statusCode() == HttpConstants.StatusCodes.OK;
+            }).verifyComplete();
         } finally {
             safeCloseSyncClient(cosmosClient);
         }
