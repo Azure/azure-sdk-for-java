@@ -11,6 +11,7 @@ package com.azure.communication.callingserver.models;
  * the {@code ProgressReceiver} specified there and will handle the logic to coordinate the reporting between parallel
  * operations.
  */
+@FunctionalInterface
 public interface ProgressReceiver {
 
     /**
