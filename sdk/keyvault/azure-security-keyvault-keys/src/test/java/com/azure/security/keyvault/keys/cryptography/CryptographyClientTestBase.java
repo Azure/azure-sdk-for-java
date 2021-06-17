@@ -24,7 +24,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -175,17 +177,30 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
     }
 
-    static void encryptDecryptAesCbc(int keySize, EncryptionAlgorithm algorithm) throws NoSuchAlgorithmException {
+    static void encryptDecryptAesCbc(int keySize, EncryptParameters encryptParameters) throws NoSuchAlgorithmException {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My16BytesTestIv.".getBytes();
         CryptographyClient cryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptParameters encryptParameters = new EncryptParameters(algorithm, plaintext, iv, null);
         EncryptResult encryptResult =
             cryptographyClient.encrypt(encryptParameters, Context.NONE);
-        DecryptParameters decryptParameters =
-            new DecryptParameters(algorithm, encryptResult.getCipherText(), iv, null, null);
-        DecryptResult decryptResult =
-            cryptographyClient.decrypt(decryptParameters, Context.NONE);
+        EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
+        DecryptParameters decryptParameters = null;
+
+        if (algorithm == EncryptionAlgorithm.A128CBC) {
+            decryptParameters = DecryptParameters.createA128CbcParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A192CBC) {
+            decryptParameters = DecryptParameters.createA192CbcParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A256CBC) {
+            decryptParameters = DecryptParameters.createA256CbcParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A128CBCPAD) {
+            decryptParameters = DecryptParameters.createA128CbcPadParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A192CBCPAD) {
+            decryptParameters = DecryptParameters.createA192CbcPadParameters(encryptResult.getCipherText(), iv);
+        } else if (algorithm == EncryptionAlgorithm.A256CBCPAD) {
+            decryptParameters = DecryptParameters.createA256CbcPadParameters(encryptResult.getCipherText(), iv);
+        }
+
+        DecryptResult decryptResult = cryptographyClient.decrypt(decryptParameters, Context.NONE);
 
         assertArrayEquals(plaintext, decryptResult.getPlainText());
     }
