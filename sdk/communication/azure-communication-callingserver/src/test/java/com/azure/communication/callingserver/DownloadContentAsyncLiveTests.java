@@ -127,7 +127,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
             .downloadToWithResponse(METADATA_URL,
                 Paths.get("dummyPath"),
                 channel,
-                new ParallelDownloadOptions().setBlockSizeLong(479L),
+                new ParallelDownloadOptions().setBlockSize(479L),
                 null).block();
 
         Mockito.verify(channel, times(2)).write(any(ByteBuffer.class), anyLong(),
