@@ -7,14 +7,16 @@ import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfigurati
 import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Async sample demonstrates how to create, get, update, delete and list anomaly alert configurations.
@@ -35,13 +37,13 @@ public class MetricsAnomalyAlertConfigOperationsAsyncSample {
         String hookId2 = "8i48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         final Mono<AnomalyAlertConfiguration> createdAnomalyAlertConfigMono =
-            advisorAdministrationAsyncClient.createAnomalyAlertConfig(
+            advisorAdministrationAsyncClient.createAlertConfig(
                 new AnomalyAlertConfiguration("My Anomaly Alert config name")
                 .setDescription("alert config description")
                 .setMetricAlertConfigurations(Arrays.asList(
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId1,
+                    new MetricAlertConfiguration(detectionConfigurationId1,
                         MetricAnomalyAlertScope.forWholeSeries()),
-                    new MetricAnomalyAlertConfiguration(detectionConfigurationId2,
+                    new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
                             .setSeverityRangeCondition(new SeverityCondition().setMinAlertSeverity(AnomalySeverity.LOW)))))
@@ -57,7 +59,7 @@ public class MetricsAnomalyAlertConfigOperationsAsyncSample {
         // Retrieve the anomaly alert config that just created.
         Mono<AnomalyAlertConfiguration> fetchAnomalyAlertConfig =
             createdAnomalyAlertConfigMono.flatMap(createdConfig -> {
-                return advisorAdministrationAsyncClient.getAnomalyAlertConfig(createdConfig.getId())
+                return advisorAdministrationAsyncClient.getAlertConfig(createdConfig.getId())
                     .doOnSubscribe(__ ->
                         System.out.printf("Fetching DataPoint Anomaly alert config: %s%n", createdConfig.getId()))
                     .doOnSuccess(config ->
@@ -86,9 +88,11 @@ public class MetricsAnomalyAlertConfigOperationsAsyncSample {
         // Update the anomaly alert config.
         Mono<AnomalyAlertConfiguration> updatedAlertConfigMono = fetchAnomalyAlertConfig
             .flatMap(anomalyAlertConfig -> {
-                return advisorAdministrationAsyncClient.updateAnomalyAlertConfig(
+                List<String> hookIds = new ArrayList<>(anomalyAlertConfig.getIdOfHooksToAlert());
+                hookIds.remove(hookId2);
+                return advisorAdministrationAsyncClient.updateAlertConfig(
                     anomalyAlertConfig
-                        .removeHookToAlert(hookId2)
+                        .setIdOfHooksToAlert(hookIds)
                         .setDescription("updated to remove hookId2"))
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating anomaly alert config: %s%n", anomalyAlertConfig.getId()))
@@ -101,7 +105,7 @@ public class MetricsAnomalyAlertConfigOperationsAsyncSample {
 
         // Delete the anomaly alert config.
         Mono<Void> deletedAnomalyAlertConfigMono = updatedAlertConfigMono.flatMap(anomalyAlertConfig -> {
-            return advisorAdministrationAsyncClient.deleteAnomalyAlertConfig(anomalyAlertConfig.getId())
+            return advisorAdministrationAsyncClient.deleteAlertConfig(anomalyAlertConfig.getId())
                 .doOnSubscribe(__ ->
                     System.out.printf("Deleting anomaly alert config: %s%n", anomalyAlertConfig.getId()))
                 .doOnSuccess(config ->
@@ -117,7 +121,7 @@ public class MetricsAnomalyAlertConfigOperationsAsyncSample {
 
         // List DataPointAnomaly alert configs.
         System.out.printf("Listing DataPoint Anomaly alert configs for a detection configurations%n");
-        advisorAdministrationAsyncClient.listAnomalyAlertConfigs(detectionConfigurationId1, new ListAnomalyAlertConfigsOptions())
+        advisorAdministrationAsyncClient.listAlertConfigs(detectionConfigurationId1, new ListAnomalyAlertConfigsOptions())
             .doOnNext(anomalyAlertConfigurationItem -> {
                 System.out.printf("DataPoint Anomaly alert config Id : %s%n", anomalyAlertConfigurationItem.getId());
                 System.out.printf("DataPoint Anomaly alert config name : %s%n", anomalyAlertConfigurationItem.getName());

@@ -8,13 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The logical operator to apply across multiple {@link MetricAnomalyAlertConfiguration}.
+ * The logical operator to apply across multiple {@link MetricAlertConfiguration}.
  */
 public final class MetricAnomalyAlertConfigurationsOperator
     extends ExpandableStringEnum<MetricAnomalyAlertConfigurationsOperator> {
     /**
      * Indicate that anomaly should be included in an alert when time series with the same
-     * dimension combination exist in every {@link MetricAnomalyAlertConfiguration} and
+     * dimension combination exist in every {@link MetricAlertConfiguration} and
      * the result based on anomaly detection is true.
      */
     public static final MetricAnomalyAlertConfigurationsOperator AND = fromString("AND");
@@ -23,7 +23,7 @@ public final class MetricAnomalyAlertConfigurationsOperator
      */
     public static final MetricAnomalyAlertConfigurationsOperator OR = fromString("OR");
     /**
-     * This operator can be applied only if exactly two {@link MetricAnomalyAlertConfiguration}
+     * This operator can be applied only if exactly two {@link MetricAlertConfiguration}
      * are specified. When the detection result on the series of one configuration is True then
      * anomaly will be included in an alert only if the detection result on the series of another
      * configuration is False, both series should have the same dimension combination.

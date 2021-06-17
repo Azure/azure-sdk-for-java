@@ -6,7 +6,7 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
@@ -69,7 +69,7 @@ public class AnomalyDetectionConfigurationSample {
 
     private static AnomalyDetectionConfiguration prepareDetectionConfigurationObject() {
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
+            .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(50)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
@@ -123,7 +123,7 @@ public class AnomalyDetectionConfigurationSample {
             = detectionConfig.getWholeSeriesDetectionCondition();
 
         System.out.printf("- Use %s operator for multiple detection conditions:%n",
-            wholeSeriesDetectionCondition.getCrossConditionsOperator());
+            wholeSeriesDetectionCondition.getConditionOperator());
 
         System.out.printf("- Smart Detection Condition:%n");
         System.out.printf(" - Sensitivity: %s%n",
@@ -176,7 +176,7 @@ public class AnomalyDetectionConfigurationSample {
                 = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
             System.out.printf("- Series Key:%n", seriesKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesDetectionCondition.getCrossConditionsOperator());
+                seriesDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
             System.out.printf("  - Sensitivity: %s%n",
@@ -231,7 +231,7 @@ public class AnomalyDetectionConfigurationSample {
                 = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
             System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesGroupDetectionCondition.getCrossConditionsOperator());
+                seriesGroupDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
             System.out.printf("  - Sensitivity: %s%n",

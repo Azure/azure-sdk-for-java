@@ -5,12 +5,13 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
 import com.azure.core.util.Configuration;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -39,13 +40,13 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
     }
 
     private AnomalyAlertConfiguration getAnomalyAlertConfiguration() {
-        final MetricAnomalyAlertConfiguration metricAnomalyAlertConfiguration
-            = new MetricAnomalyAlertConfiguration(DETECTION_CONFIGURATION_ID, MetricAnomalyAlertScope.forWholeSeries());
+        final MetricAlertConfiguration metricAnomalyAlertConfiguration
+            = new MetricAlertConfiguration(DETECTION_CONFIGURATION_ID, MetricAnomalyAlertScope.forWholeSeries());
 
         return new AnomalyAlertConfiguration("test_alert_configuration")
             .setDescription("testing_alert_configuration_description")
             .addMetricAlertConfiguration(metricAnomalyAlertConfiguration)
-            .addIdOfHookToAlert(ALERT_HOOK_ID);
+            .setIdOfHooksToAlert(new ArrayList<String>() {{ add(ALERT_HOOK_ID); }});
     }
 
     void validateAnomalyAlertResult(AnomalyAlertConfiguration expectedAnomalyAlertConfiguration,
@@ -58,12 +59,12 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
     }
 
     private void validateMetricAnomalyDetectionConfiguration(
-        List<MetricAnomalyAlertConfiguration> expectedConfiguration,
-        List<MetricAnomalyAlertConfiguration> actualAlertConfiguration) {
+        List<MetricAlertConfiguration> expectedConfiguration,
+        List<MetricAlertConfiguration> actualAlertConfiguration) {
         assertEquals(expectedConfiguration.size(), actualAlertConfiguration.size());
         for (int i = 0; i < expectedConfiguration.size(); i++) {
-            final MetricAnomalyAlertConfiguration expectedConfig = expectedConfiguration.get(i);
-            final MetricAnomalyAlertConfiguration actualConfig = actualAlertConfiguration.get(i);
+            final MetricAlertConfiguration expectedConfig = expectedConfiguration.get(i);
+            final MetricAlertConfiguration actualConfig = actualAlertConfiguration.get(i);
             validateAlertConditions(expectedConfig.getAlertConditions(), actualConfig.getAlertConditions());
             validateAlertScope(expectedConfig.getAlertScope(), actualConfig.getAlertScope());
             validateSnoozeCondition(expectedConfig.getAlertSnoozeCondition(), actualConfig.getAlertSnoozeCondition());

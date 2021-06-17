@@ -10,35 +10,35 @@ import java.util.Collection;
 /**
  * The logical operator to apply across anomaly detection conditions.
  */
-public final class DetectionConditionsOperator
-    extends ExpandableStringEnum<DetectionConditionsOperator> {
+public final class DetectionConditionOperator
+    extends ExpandableStringEnum<DetectionConditionOperator> {
     /**
      * The logical operator AND, indicate that all conditions should be satisfied
      * to detect a data point as anomaly.
      */
-    public static final DetectionConditionsOperator AND = fromString("AND");
+    public static final DetectionConditionOperator AND = fromString("AND");
     /**
      * The logical operator OR, indicate that at least one conditions should be
      * satisfied to detect a data point as anomaly.
      */
-    public static final DetectionConditionsOperator OR = fromString("OR");
+    public static final DetectionConditionOperator OR = fromString("OR");
 
     /**
-     * Create {@link DetectionConditionsOperator} from a string value.
+     * Create {@link DetectionConditionOperator} from a string value.
      *
      * @param name The string value.
-     * @return The {@link DetectionConditionsOperator}.
+     * @return The {@link DetectionConditionOperator}.
      */
-    public static DetectionConditionsOperator fromString(String name) {
-        return fromString(name, DetectionConditionsOperator.class);
+    public static DetectionConditionOperator fromString(String name) {
+        return fromString(name, DetectionConditionOperator.class);
     }
 
     /**
-     * Get all values of {@link DetectionConditionsOperator}.
+     * Get all values of {@link DetectionConditionOperator}.
      *
      * @return All valid values.
      */
-    public static Collection<DetectionConditionsOperator> values() {
-        return values(DetectionConditionsOperator.class);
+    public static Collection<DetectionConditionOperator> values() {
+        return values(DetectionConditionOperator.class);
     }
 }

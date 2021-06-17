@@ -727,7 +727,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.wholeSeriesCondition} is null
      *   or {@code seriesKey} is missing for any {@code MetricSingleSeriesDetectionCondition} in the configuration
      *   or {@code seriesGroupKey} is missing for any {@code MetricSeriesGroupDetectionCondition} in the configuration
-     *   or {@code crossConditionsOperator} is missing when multiple nested conditions are set in a
+     *   or {@code conditionOperator} is missing when multiple nested conditions are set in a
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -755,7 +755,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *   or {@code detectionConfiguration.wholeSeriesCondition} is null
      *   or {@code seriesKey} is missing for any {@code MetricSingleSeriesDetectionCondition} in the configuration
      *   or {@code seriesGroupKey} is missing for any {@code MetricSeriesGroupDetectionCondition} in the configuration
-     *   or {@code crossConditionsOperator} is missing when multiple nested conditions are set in a
+     *   or {@code conditionOperator} is missing when multiple nested conditions are set in a
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1360,7 +1360,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfig#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfig#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alerting configuration.
      *
@@ -1369,16 +1369,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> createAnomalyAlertConfig(
+    public Mono<AnomalyAlertConfiguration> createAlertConfig(
         AnomalyAlertConfiguration alertConfiguration) {
-        return createAnomalyAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
+        return createAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfigWithResponse#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alerting configuration.
      *
@@ -1387,16 +1387,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> createAnomalyAlertConfigWithResponse(
+    public Mono<Response<AnomalyAlertConfiguration>> createAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration) {
         try {
-            return withContext(context -> createAnomalyAlertConfigWithResponse(alertConfiguration, context));
+            return withContext(context -> createAlertConfigWithResponse(alertConfiguration, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> createAnomalyAlertConfigWithResponse(
+    Mono<Response<AnomalyAlertConfiguration>> createAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration, Context context) {
         Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required.");
         if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
@@ -1420,7 +1420,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
                 innerAlertConfiguration, error))
             .flatMap(response -> {
                 final String configurationId = parseOperationId(response.getDeserializedHeaders().getLocation());
-                return getAnomalyAlertConfigWithResponse(configurationId, context)
+                return getAlertConfigWithResponse(configurationId, context)
                     .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
@@ -1433,7 +1433,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfig#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1443,16 +1443,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> getAnomalyAlertConfig(
+    public Mono<AnomalyAlertConfiguration> getAlertConfig(
         String alertConfigurationId) {
-        return getAnomalyAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
+        return getAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyAlertConfigWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfigWithResponse#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1463,16 +1463,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> getAnomalyAlertConfigWithResponse(
+    public Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(
         String alertConfigurationId) {
         try {
-            return withContext(context -> getAnomalyAlertConfigWithResponse(alertConfigurationId, context));
+            return withContext(context -> getAlertConfigWithResponse(alertConfigurationId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> getAnomalyAlertConfigWithResponse(
+    Mono<Response<AnomalyAlertConfiguration>> getAlertConfigWithResponse(
         String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
@@ -1493,7 +1493,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfig#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfig#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      *
@@ -1502,16 +1502,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnomalyAlertConfiguration> updateAnomalyAlertConfig(
+    public Mono<AnomalyAlertConfiguration> updateAlertConfig(
         AnomalyAlertConfiguration alertConfiguration) {
-        return updateAnomalyAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
+        return updateAlertConfigWithResponse(alertConfiguration).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyAlertConfigWithResponse#AnomalyAlertConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration}
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      *
@@ -1520,16 +1520,16 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * {@code alertConfiguration.metricAnomalyAlertConfigurations} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnomalyAlertConfiguration>> updateAnomalyAlertConfigWithResponse(
+    public Mono<Response<AnomalyAlertConfiguration>> updateAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration) {
         try {
-            return withContext(context -> updateAnomalyAlertConfigWithResponse(alertConfiguration, context));
+            return withContext(context -> updateAlertConfigWithResponse(alertConfiguration, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<AnomalyAlertConfiguration>> updateAnomalyAlertConfigWithResponse(
+    Mono<Response<AnomalyAlertConfiguration>> updateAlertConfigWithResponse(
         AnomalyAlertConfiguration alertConfiguration, Context context) {
         Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required");
         if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
@@ -1549,7 +1549,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
             .doOnSuccess(response -> logger.info("Updated AnomalyAlertConfiguration - {}", response))
             .doOnError(error -> logger.warning("Failed to update AnomalyAlertConfiguration - {}",
                 innerAlertConfiguration, error))
-            .flatMap(response -> getAnomalyAlertConfigWithResponse(alertConfiguration.getId(), context)
+            .flatMap(response -> getAlertConfigWithResponse(alertConfiguration.getId(), context)
                 .map(getResponse -> new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
@@ -1561,7 +1561,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfig#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1571,15 +1571,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAnomalyAlertConfig(String alertConfigurationId) {
-        return deleteAnomalyAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
+    public Mono<Void> deleteAlertConfig(String alertConfigurationId) {
+        return deleteAlertConfigWithResponse(alertConfigurationId).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyAlertConfigWithResponse#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfigWithResponse#String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1589,15 +1589,15 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAnomalyAlertConfigWithResponse(String alertConfigurationId) {
+    public Mono<Response<Void>> deleteAlertConfigWithResponse(String alertConfigurationId) {
         try {
-            return withContext(context -> deleteAnomalyAlertConfigWithResponse(alertConfigurationId, context));
+            return withContext(context -> deleteAlertConfigWithResponse(alertConfigurationId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteAnomalyAlertConfigWithResponse(String alertConfigurationId, Context context) {
+    Mono<Response<Void>> deleteAlertConfigWithResponse(String alertConfigurationId, Context context) {
         Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
         final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE);
 
@@ -1613,7 +1613,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyAlertConfigs#String-ListAnomalyAlertConfigsOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions}
      *
      * @param detectionConfigurationId The id of the detection configuration.
      * @param options th e additional configurable options to specify when querying the result.
@@ -1625,7 +1625,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
+    public PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(
         String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
         try {
             return new PagedFlux<>(() ->
@@ -1641,7 +1641,7 @@ public final class MetricsAdvisorAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<AnomalyAlertConfiguration> listAnomalyAlertConfigs(
+    PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(
         String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
         return new PagedFlux<>(() ->
             listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
