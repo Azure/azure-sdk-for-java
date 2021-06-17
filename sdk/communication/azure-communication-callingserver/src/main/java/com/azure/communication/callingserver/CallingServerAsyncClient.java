@@ -11,6 +11,7 @@ import com.azure.communication.callingserver.implementation.converters.CallingSe
 import com.azure.communication.callingserver.implementation.converters.JoinCallRequestConverter;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequest;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
@@ -76,6 +77,8 @@ public final class CallingServerAsyncClient {
      * @param source The source of the call.
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful CreateCallConnection request.
      *
      * {@codesnippet com.azure.communication.callingserver.CallingServerAsyncClient.create.call.connection.async}
@@ -104,6 +107,8 @@ public final class CallingServerAsyncClient {
      * @param source The source of the call.
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -169,6 +174,8 @@ public final class CallingServerAsyncClient {
      * @param serverCallId The server call id.
      * @param source to Join Call.
      * @param joinCallOptions join call options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -194,6 +201,8 @@ public final class CallingServerAsyncClient {
      * @param serverCallId The server call id.
      * @param source to Join Call.
      * @param joinCallOptions join call options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

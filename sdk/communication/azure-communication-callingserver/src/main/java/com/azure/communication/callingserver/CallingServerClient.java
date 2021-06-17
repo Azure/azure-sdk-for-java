@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
@@ -45,6 +46,8 @@ public final class CallingServerClient {
      * @param source The source of the call.
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful CreateCallConnection request.
      *
      * {@codesnippet com.azure.communication.callingserver.CallingServerClient.create.call.connection}
@@ -64,6 +67,8 @@ public final class CallingServerClient {
      * @param targets The targets of the call.
      * @param createCallOptions The call Options.
      * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -82,6 +87,8 @@ public final class CallingServerClient {
      * @param serverCallId The server call id.
      * @param source of Join Call request.
      * @param joinCallOptions to Join Call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return CallConnection for a successful Join request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -98,6 +105,8 @@ public final class CallingServerClient {
      * @param serverCallId The server call id.
      * @param source of Join Call request.
      * @param joinCallOptions to Join Call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @param context A {@link Context} representing the request context.
      * @return response for a successful Join request.
      */
