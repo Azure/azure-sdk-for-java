@@ -39,6 +39,8 @@ public class ExponentialBackoff implements RetryStrategy {
      * @param maxRetries The max retry attempts that can be made.
      * @param baseDelay The base delay duration for retry.
      * @param maxDelay The max delay duration for retry.
+     * @throws IllegalArgumentException if {@code maxRetries} is less than 0 or {@code baseDelay} is less than or
+     * equal to 0 or {@code maxDelay} is less than {@code baseDelay}.
      */
     public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
         if (maxRetries < 0) {
