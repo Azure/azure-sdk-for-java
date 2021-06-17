@@ -22,6 +22,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
   val objectMapper = new ObjectMapper()
 
   "Point Writer" can "upsert item" in  {
+    org.apache.spark.MockTaskContext.setAndCreateTaskContext()
+
     val container = getContainer
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
@@ -49,6 +51,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
   }
 
   "Point Writer" can "delete items" in  {
+    org.apache.spark.MockTaskContext.setAndCreateTaskContext()
+
     val container = getContainer
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
@@ -90,6 +94,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
   }
 
   "Point Writer" can "delete only unmodified items" in  {
+    org.apache.spark.MockTaskContext.setAndCreateTaskContext()
+
     val container = getContainer
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
@@ -156,6 +162,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
   }
 
   "Point Writer" can "create item with duplicates" in {
+    org.apache.spark.MockTaskContext.setAndCreateTaskContext()
+
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, Some(100))
     val pointWriter = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
