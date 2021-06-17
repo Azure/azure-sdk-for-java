@@ -11,11 +11,11 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
  * The {@link ExtractKeyPhrasesActionResult} model.
  */
 public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResult {
-    private ExtractKeyPhrasesResultCollection documentResults;
+    private ExtractKeyPhrasesResultCollection documentsResults;
 
     static {
         ExtractKeyPhrasesActionResultPropertiesHelper.setAccessor(
-            (actionsResult, documentResults) -> actionsResult.setDocumentResults(documentResults));
+            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**
@@ -26,12 +26,12 @@ public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResu
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ExtractKeyPhrasesResultCollection getDocumentResults() {
+    public ExtractKeyPhrasesResultCollection getDocumentsResults() {
         throwExceptionIfError();
-        return documentResults;
+        return documentsResults;
     }
 
-    private void setDocumentResults(ExtractKeyPhrasesResultCollection documentResults) {
-        this.documentResults = documentResults;
+    private void setDocumentsResults(ExtractKeyPhrasesResultCollection documentsResults) {
+        this.documentsResults = documentsResults;
     }
 }
