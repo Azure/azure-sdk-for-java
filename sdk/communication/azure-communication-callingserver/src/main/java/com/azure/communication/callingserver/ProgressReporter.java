@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.ProgressReceiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
