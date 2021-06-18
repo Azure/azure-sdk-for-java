@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
 
@@ -16,6 +17,7 @@ import java.net.URL;
  */
 @Immutable
 public final class KeyVaultKeyIdentifier {
+    private final ClientLogger clientLogger = new ClientLogger(KeyVaultKeyIdentifier.class);
     private final String sourceId, vaultUrl, name, version;
 
     /**
@@ -37,7 +39,7 @@ public final class KeyVaultKeyIdentifier {
      */
     public KeyVaultKeyIdentifier(String sourceId) {
         if (sourceId == null) {
-            throw new NullPointerException("'sourceId' cannot be null.");
+            throw clientLogger.logExceptionAsError(new NullPointerException("'sourceId' cannot be null."));
         }
 
         try {
@@ -55,7 +57,8 @@ public final class KeyVaultKeyIdentifier {
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e);
+            throw clientLogger.logExceptionAsError(
+                new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e));
         }
     }
 
