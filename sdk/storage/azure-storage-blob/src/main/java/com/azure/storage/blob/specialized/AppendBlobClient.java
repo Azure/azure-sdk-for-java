@@ -13,6 +13,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -71,6 +72,29 @@ public final class AppendBlobClient extends BlobClientBase {
     AppendBlobClient(AppendBlobAsyncClient appendBlobAsyncClient) {
         super(appendBlobAsyncClient);
         this.appendBlobAsyncClient = appendBlobAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link AppendBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link AppendBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public AppendBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new AppendBlobClient(appendBlobAsyncClient.getEncryptionScopeClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link AppendBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link AppendBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public AppendBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new AppendBlobClient(appendBlobAsyncClient.getCustomerProvidedKeyClient(customerProvidedKey));
     }
 
     /**

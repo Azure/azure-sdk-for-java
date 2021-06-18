@@ -14,6 +14,7 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -186,6 +187,44 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public BlobAsyncClient getVersionClient(String versionId) {
         return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), encryptionScope, versionId);
+    }
+
+    /**
+     * Creates a new {@link BlobAsyncClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlobAsyncClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public BlobAsyncClient getEncryptionScopeClient(String encryptionScope) {
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
+            getVersionId());
+    }
+
+    /**
+     * Creates a new {@link BlobAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlobAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public BlobAsyncClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
+            getVersionId());
     }
 
     /**
@@ -515,16 +554,19 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             final BlobRequestConditions requestConditions = options.getRequestConditions() == null
                 ? new BlobRequestConditions() : options.getRequestConditions();
             final boolean computeMd5 = options.isComputeMd5();
+            final BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
+                ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+            final Boolean legalHold = options.isLegalHold();
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
                 uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata, tags,
-                    tier, requestConditions, computeMd5);
+                    tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction =
                 (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
-                    headers, metadata, tags, tier, requestConditions, computeMd5);
+                    headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
 
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(),
@@ -541,7 +583,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Response<BlockBlobItem>> uploadFullBlob(BlockBlobAsyncClient blockBlobAsyncClient,
         Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
-        BlobRequestConditions requestConditions, boolean computeMd5) {
+        BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
+        Boolean legalHold) {
 
         /*
         Note that there is no need to buffer here as the flux returned by the size gate in this case is created
@@ -559,14 +602,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 .setTags(tags)
                 .setTier(tier)
                 .setRequestConditions(requestConditions)
-                .setContentMd5(fluxMd5Wrapper.getMd5()))
+                .setContentMd5(fluxMd5Wrapper.getMd5())
+                .setImmutabilityPolicy(immutabilityPolicy)
+                .setLegalHold(legalHold))
             .flatMap(blockBlobAsyncClient::uploadWithResponse);
     }
 
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
-        BlobRequestConditions requestConditions, boolean computeMd5) {
+        BlobRequestConditions requestConditions, boolean computeMd5, BlobImmutabilityPolicy immutabilityPolicy,
+        Boolean legalHold) {
         // TODO: Sample/api reference
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
@@ -609,7 +655,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .flatMap(ids ->
                 blockBlobAsyncClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(ids)
                     .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
-                        .setRequestConditions(requestConditions)));
+                    .setRequestConditions(requestConditions).setImmutabilityPolicy(immutabilityPolicy)
+                    .setLegalHold(legalHold)));
     }
 
     /**

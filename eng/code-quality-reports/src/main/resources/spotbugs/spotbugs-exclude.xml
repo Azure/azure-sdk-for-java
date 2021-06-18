@@ -2278,21 +2278,12 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
-      <Class name="com.azure.spring.cloud.telemetry.GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.spring.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
-    </Or>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <Match>
@@ -2486,7 +2477,7 @@
 
   <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
   <Match>
-    <Class name="~com\.azure\.data\.confidentialledger\.\w+BaseClient"/>
+    <Class name="~com\.azure\.security\.confidentialledger\.\w+BaseClient"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 

@@ -140,12 +140,15 @@ class EventHubProducerAsyncClientTest {
 
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, testScheduler,
+            CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME,
             "client-product", "client-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
+
+        when(connection.closeAsync()).thenReturn(Mono.empty());
 
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
@@ -162,7 +165,8 @@ class EventHubProducerAsyncClientTest {
     void teardown(TestInfo testInfo) {
         testScheduler.dispose();
         Mockito.framework().clearInlineMocks();
-        Mockito.reset(sendLink, connection);
+        Mockito.reset(sendLink);
+        Mockito.reset(connection);
         singleMessageCaptor = null;
         messagesCaptor = null;
     }

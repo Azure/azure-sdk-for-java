@@ -27,6 +27,8 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -47,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -764,6 +767,40 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void crudMultiHashContainer() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/city");
+        paths.add("/zipcode");
+        partitionKeyDefinition.setPaths(paths);
+
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName, partitionKeyDefinition);
+
+        //MultiHash collection create
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getKind() == PartitionKind.MULTI_HASH);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().size() == paths.size());
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(0) == paths.get(0));
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(1) == paths.get(1));
+
+        //MultiHash collection read
+        CosmosContainer multiHashContainer = createdDatabase.getContainer(collectionName);
+        containerResponse = multiHashContainer.read();
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getKind() == PartitionKind.MULTI_HASH);
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().size() == paths.size());
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(0) == paths.get(0));
+        assertThat(containerResponse.getProperties().getPartitionKeyDefinition().getPaths().get(1) == paths.get(1));
+
+        //MultiHash collection delete
+        CosmosContainerResponse deleteResponse = multiHashContainer.delete();
+    }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void queryContainer() throws Exception{

@@ -24,6 +24,8 @@ public final class BlobListDetails {
     private boolean retrieveDeletedBlobs;
     private boolean retrieveVersions;
     private boolean retrieveDeletedWithVersions;
+    private boolean retrieveImmutabilityPolicy;
+    private boolean retrieveLegalHold;
 
     /**
      * Constructs an unpopulated {@link BlobListDetails}.
@@ -194,6 +196,46 @@ public final class BlobListDetails {
     }
 
     /**
+     * Whether immutability policy for the blob should be returned.
+     *
+     * @return a flag indicating if immutability policy for the blob will be returned in the listing
+     */
+    public boolean getRetrieveImmutabilityPolicy() {
+        return retrieveImmutabilityPolicy;
+    }
+
+    /**
+     * Whether immutability policy for the blob should be returned.
+     *
+     * @param retrieveImmutabilityPolicy Flag indicating whether immutability policy for the blob should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveImmutabilityPolicy(boolean retrieveImmutabilityPolicy) {
+        this.retrieveImmutabilityPolicy = retrieveImmutabilityPolicy;
+        return this;
+    }
+
+    /**
+     * Whether legal hold for the blob should be returned.
+     *
+     * @return a flag indicating if legal hold for the blob will be returned in the listing
+     */
+    public boolean getRetrieveLegalHold() {
+        return retrieveLegalHold;
+    }
+
+    /**
+     * Whether legal hold for the blob should be returned.
+     *
+     * @param retrieveLegalHold Flag indicating whetherlegal hold for the blob  should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveLegalHold(boolean retrieveLegalHold) {
+        this.retrieveLegalHold = retrieveLegalHold;
+        return this;
+    }
+
+    /**
      * @return a list of the flag set to true
      */
     public ArrayList<ListBlobsIncludeItem> toList() {
@@ -221,6 +263,12 @@ public final class BlobListDetails {
         }
         if (this.retrieveDeletedWithVersions) {
             details.add(ListBlobsIncludeItem.DELETEDWITHVERSIONS);
+        }
+        if (this.retrieveImmutabilityPolicy) {
+            details.add(ListBlobsIncludeItem.IMMUTABILITYPOLICY);
+        }
+        if (this.retrieveLegalHold) {
+            details.add(ListBlobsIncludeItem.LEGALHOLD);
         }
         return details;
     }

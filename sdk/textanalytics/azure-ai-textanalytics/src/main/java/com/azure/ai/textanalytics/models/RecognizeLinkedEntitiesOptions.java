@@ -10,8 +10,6 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOptions {
-    private StringIndexType stringIndexType;
-
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
@@ -55,28 +53,6 @@ public final class RecognizeLinkedEntitiesOptions extends TextAnalyticsRequestOp
     @Override
     public RecognizeLinkedEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
         super.setServiceLogsDisabled(disableServiceLogs);
-        return this;
-    }
-
-    /**
-     * Get the value of {@code stringIndexType}.
-     *
-     * @return The value of {@code stringIndexType}.
-     */
-    public StringIndexType getStringIndexType() {
-        return stringIndexType;
-    }
-
-    /**
-     * Set the value of {@code stringIndexType}.
-     * The {@link StringIndexType#UTF16CODE_UNIT} will be used as default type if there is no value assign to it.
-     *
-     * @param stringIndexType It used to set the value of string indexing type.
-     *
-     * @return the {@link RecognizeLinkedEntitiesOptions} object itself.
-     */
-    public RecognizeLinkedEntitiesOptions setStringIndexType(StringIndexType stringIndexType) {
-        this.stringIndexType = stringIndexType;
         return this;
     }
 }

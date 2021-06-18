@@ -24,10 +24,10 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockResponse;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateResponse;
 import com.azure.storage.blob.implementation.models.AppendBlobsSealResponse;
-import com.azure.storage.blob.implementation.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import java.net.URL;

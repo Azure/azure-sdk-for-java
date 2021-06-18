@@ -42,18 +42,13 @@ import java.util.Map;
  * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build an
  * an {@link KeyVaultAccessControlAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
  *
- * <p>The {@link HttpLogDetailLevel}, multiple custom {@link HttpLoggingPolicy policies} and custom
- * {@link HttpClient} can be optionally configured in the {@link KeyVaultAccessControlClientBuilder}.</p>
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation}
+ * <p><strong>Samples to construct an async client</strong></p>
+ * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation}
  *
- * <p>Alternatively, a custom {@link HttpPipeline} with custom {@link HttpPipelinePolicy} policies and {@link String
- * vaultUrl} can be specified. It provides finer control over the construction of
- * {@link KeyVaultAccessControlAsyncClient} and {@link KeyVaultAccessControlClient} instances.</p>
- *
- * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build an
- * {@link KeyVaultAccessControlClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
- *
- * @see KeyVaultAccessControlAsyncClient
  * @see KeyVaultAccessControlClient
+ * @see KeyVaultAccessControlAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
 public final class KeyVaultAccessControlClientBuilder {

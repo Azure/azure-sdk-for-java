@@ -20,7 +20,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
@@ -339,7 +339,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-RecognizePiiEntitiesOptions
         PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(
             "My SSN is 859-98-0987", "en",
-            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION));
         System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
         piiEntityCollection.forEach(entity -> System.out.printf(
             "Recognized Personally Identifiable Information entity: %s, entity category: %s,"
@@ -1005,7 +1005,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(
+                        actionResult.getDocumentResults().forEach(
                             entitiesResult -> entitiesResult.getEntities().forEach(
                                 entity -> System.out.printf(
                                     "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -1018,7 +1018,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(extractKeyPhraseResult -> {
+                        actionResult.getDocumentResults().forEach(extractKeyPhraseResult -> {
                             System.out.println("Extracted phrases:");
                             extractKeyPhraseResult.getKeyPhrases()
                                 .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
@@ -1055,7 +1055,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(
+                        actionResult.getDocumentResults().forEach(
                             entitiesResult -> entitiesResult.getEntities().forEach(
                                 entity -> System.out.printf(
                                     "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -1068,7 +1068,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                 actionResult -> {
                     if (!actionResult.isError()) {
-                        actionResult.getResult().forEach(extractKeyPhraseResult -> {
+                        actionResult.getDocumentResults().forEach(extractKeyPhraseResult -> {
                             System.out.println("Extracted phrases:");
                             extractKeyPhraseResult.getKeyPhrases()
                                 .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));

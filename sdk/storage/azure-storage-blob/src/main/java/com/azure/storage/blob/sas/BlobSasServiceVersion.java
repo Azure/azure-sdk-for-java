@@ -7,7 +7,9 @@ import com.azure.core.util.ServiceVersion;
 
 /**
  * The versions of Azure Storage Blob Sas supported by this client library.
+ * @deprecated The version is set to the latest version of sas.
  */
+@Deprecated
 public enum BlobSasServiceVersion implements ServiceVersion {
     V2019_02_02("2019-02-02"),
     V2019_07_07("2019-07-07"),

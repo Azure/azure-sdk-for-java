@@ -35,6 +35,9 @@ public class BlobStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("undelete"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setExpiry"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setHttpHeaders"));
+        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setImmutabilityPolicy"));
+        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("deleteImmutabilityPolicy"));
+        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setLegalHold"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setMetadata"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("acquireLease"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("releaseLease"));
@@ -132,6 +135,7 @@ public class BlobStorageCustomization extends Customization {
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented").setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
+        blobContainerItemProperties.getMethod("setIsImmutableStorageWithVersioningEnabled").rename("setImmutableStorageWithVersioningEnabled");
 
         // Block - Generator
         ClassCustomization block = models.getClass("Block");

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.data.tables.TableAsyncClient;
@@ -13,7 +14,8 @@ import java.util.List;
 /**
  * Exception thrown for an invalid response on a transactional operation with {@link TableServiceError} information.
  */
-public class TableTransactionFailedException extends TableServiceException {
+@Immutable
+public final class TableTransactionFailedException extends TableServiceException {
     private final Integer failedTransactionActionIndex;
 
     /**
