@@ -1,7 +1,8 @@
 # Release History
 
 ## 2.6.0-beta.1 (Unreleased)
-
+### Breaking Changes
+- Remove `azure-spring-cloud-telemetry` module dependency.
 
 ## 2.5.0 (2021-05-24)
 ### New Features

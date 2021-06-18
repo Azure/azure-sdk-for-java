@@ -13,7 +13,6 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
@@ -29,8 +28,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
-
 /**
  * @author Warren Zhu
  */
@@ -44,14 +41,6 @@ import javax.annotation.PostConstruct;
 })
 @EnableConfigurationProperties({ AzureEventHubProperties.class, EventHubExtendedBindingProperties.class })
 public class EventHubBinderConfiguration {
-
-    private static final String EVENT_HUB_BINDER = "EventHubBinder";
-    private static final String NAMESPACE = "Namespace";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(EVENT_HUB_BINDER);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -84,7 +73,6 @@ public class EventHubBinderConfiguration {
         if (namespace == null) {
             namespace = EventHubUtils.getNamespace(connectionString);
         }
-        TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE, namespace);
 
         if (consumerGroupManager != null) {
             return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager,

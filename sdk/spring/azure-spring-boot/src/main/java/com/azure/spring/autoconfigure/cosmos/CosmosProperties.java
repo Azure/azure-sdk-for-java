@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
@@ -102,6 +103,9 @@ public class CosmosProperties {
         this.consistencyLevel = consistencyLevel;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }

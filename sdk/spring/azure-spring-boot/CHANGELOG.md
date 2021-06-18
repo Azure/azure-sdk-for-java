@@ -3,6 +3,7 @@
 ## 3.6.0-beta.1 (Unreleased)
 ### Breaking Changes
 - Deprecate aad.group.enable-full-list, use aad.group.allowed-group-ids=all instead.
+- Deprecated `allowTelemetry` configuration item in each module property class.
 
 ### New Features
 - Support domain_hint in aad-starter.([#21517](https://github.com/Azure/azure-sdk-for-java/issues/21517))
