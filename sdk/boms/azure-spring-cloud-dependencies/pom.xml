@@ -175,11 +175,6 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-telemetry</artifactId>
-        <version>${azure.spring.cloud.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
         <artifactId>azure-identity-spring</artifactId>
         <version>${azure.spring.identity.version}</version>
       </dependency>

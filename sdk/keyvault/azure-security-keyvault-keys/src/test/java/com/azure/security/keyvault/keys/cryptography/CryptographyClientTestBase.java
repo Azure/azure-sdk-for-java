@@ -59,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class CryptographyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    protected boolean isManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -72,9 +73,9 @@ public abstract class CryptographyClientTestBase extends TestBase {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = System.getenv("ARM_CLIENTID");
-            String clientKey = System.getenv("ARM_CLIENTKEY");
-            String tenantId = System.getenv("AZURE_TENANT_ID");
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
             Objects.requireNonNull(tenantId, "The tenant id cannot be null");
@@ -87,13 +88,17 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
+
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential,
+                isManagedHsmTest ? CryptographyAsyncClient.MHSM_SCOPE : CryptographyAsyncClient.KEY_VAULT_SCOPE));
         }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
@@ -228,10 +233,12 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     public String getEndpoint() {
-        final String endpoint = interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
-            : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+        final String endpoint = isManagedHsmTest
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+
         Objects.requireNonNull(endpoint);
+
         return endpoint;
     }
 
