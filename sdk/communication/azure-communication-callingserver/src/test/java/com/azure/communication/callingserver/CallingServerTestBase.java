@@ -99,7 +99,7 @@ public class CallingServerTestBase extends TestBase {
         return getRandomUserId();
     }
 
-    private String getRandomUserId() {
+    protected String getRandomUserId() {
         return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID();
     }
 

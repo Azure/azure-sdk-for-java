@@ -31,8 +31,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
-    private final String fromUser = getNewUserId();
-    private final String toUser = getNewUserId();
+    private final String fromUser = getRandomUserId();
+    private final String toUser = getRandomUserId();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
