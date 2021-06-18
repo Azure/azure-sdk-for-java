@@ -189,8 +189,9 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
         BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url).setSourceOffset(sourceOffset)
-            .setSourceContentMd5(sourceContentMD5).setDestinationRequestConditions(pageBlobRequestConditions)
+        client.uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url)
+            .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMD5)
+            .setDestinationRequestConditions(pageBlobRequestConditions)
             .setSourceRequestConditions(sourceRequestConditions))
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob from URL with sequence number %s%n", response.getValue().getBlobSequenceNumber()));

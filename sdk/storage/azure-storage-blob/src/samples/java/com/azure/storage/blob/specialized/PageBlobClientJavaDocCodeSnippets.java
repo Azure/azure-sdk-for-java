@@ -204,8 +204,9 @@ public class PageBlobClientJavaDocCodeSnippets {
         Context context = new Context(key, value);
 
         PageBlobItem pageBlob = client
-            .uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url).setSourceOffset(sourceOffset)
-                .setSourceContentMd5(sourceContentMD5).setDestinationRequestConditions(pageBlobRequestConditions)
+            .uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url)
+                .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMD5)
+                .setDestinationRequestConditions(pageBlobRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions), timeout, context).getValue();
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
