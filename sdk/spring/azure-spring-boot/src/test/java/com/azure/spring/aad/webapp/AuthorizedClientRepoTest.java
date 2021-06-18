@@ -49,7 +49,7 @@ public class AuthorizedClientRepoTest {
                 .getContextRunnerWithRequiredProperties()
                 .withPropertyValues(
                     "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                    "azure.activedirectory.base-uri = fake-uri")
+                    "azure.activedirectory.base-uri = fake-uri1")
                 .run(context -> {
                     getBeans(context);
                     ServletRequestAttributes attributes = mock(ServletRequestAttributes.class);
