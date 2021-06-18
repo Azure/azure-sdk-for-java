@@ -14,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyStore;
@@ -66,8 +65,7 @@ public class KeyVaultClient extends DelegateRestClient {
     private final String keyVaultUrl;
 
     /**
-     * Stores the AAD authentication URL (or null to default to Azure Public
-     * Cloud).
+     * Stores the AAD authentication URL (or null to default to Azure Public Cloud).
      */
     private final String aadAuthenticationUrl;
 
@@ -87,8 +85,7 @@ public class KeyVaultClient extends DelegateRestClient {
     private final String clientSecret;
 
     /**
-     * Stores the managed identity (either the user-assigned managed identity
-     * object ID or null if system-assigned)
+     * Stores the managed identity (either the user-assigned managed identity object ID or null if system-assigned)
      */
     private String managedIdentity;
 
@@ -162,7 +159,8 @@ public class KeyVaultClient extends DelegateRestClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = authClient.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret);
+                accessToken = authClient.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId,
+                    clientSecret);
             } else {
                 accessToken = authClient.getAccessToken(resource, managedIdentity);
             }
@@ -189,7 +187,8 @@ public class KeyVaultClient extends DelegateRestClient {
             CertificateListResult certificateListResult = null;
             if (response != null) {
                 JsonConverter converter = JsonConverterFactory.createJsonConverter();
-                certificateListResult = (CertificateListResult) converter.fromJson(response, CertificateListResult.class);
+                certificateListResult = (CertificateListResult) converter.fromJson(response,
+                    CertificateListResult.class);
             } else {
                 url = null;
             }
@@ -242,7 +241,7 @@ public class KeyVaultClient extends DelegateRestClient {
                 try {
                     CertificateFactory cf = CertificateFactory.getInstance("X.509");
                     certificate = (X509Certificate) cf.generateCertificate(
-                            new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
+                        new ByteArrayInputStream(Base64.getDecoder().decode(certificateString))
                     );
                 } catch (CertificateException ce) {
                     LOGGER.log(WARNING, "Certificate error", ce);
@@ -261,15 +260,15 @@ public class KeyVaultClient extends DelegateRestClient {
      * @return the key.
      */
     public Key getKey(String alias, char[] password) {
-        LOGGER.entering("KeyVaultClient", "getKey", new Object[]{alias, password});
+        LOGGER.entering("KeyVaultClient", "getKey", new Object[] { alias, password });
         LOGGER.log(INFO, "Getting key for alias: {0}", alias);
         Key key = null;
         CertificateBundle certificateBundle = getCertificateBundle(alias);
         boolean isExportable = Optional.ofNullable(certificateBundle)
-                .map(CertificateBundle::getPolicy)
-                .map(CertificatePolicy::getKeyProperties)
-                .map(KeyProperties::isExportable)
-                .orElse(false);
+                                       .map(CertificateBundle::getPolicy)
+                                       .map(CertificatePolicy::getKeyProperties)
+                                       .map(KeyProperties::isExportable)
+                                       .orElse(false);
         if (isExportable) {
             //
             // Because the certificate is exportable the private key is
@@ -287,8 +286,8 @@ public class KeyVaultClient extends DelegateRestClient {
                     try {
                         KeyStore keyStore = KeyStore.getInstance("PKCS12");
                         keyStore.load(
-                                new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
-                                "".toCharArray()
+                            new ByteArrayInputStream(Base64.getDecoder().decode(secretBundle.getValue())),
+                            "".toCharArray()
                         );
                         alias = keyStore.aliases().nextElement();
                         key = keyStore.getKey(alias, "".toCharArray());
@@ -323,9 +322,9 @@ public class KeyVaultClient extends DelegateRestClient {
      * @throws IOException when an I/O error occurs.
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
-     * */
+     */
     private PrivateKey createPrivateKeyFromPem(String pemString)
-            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
             String line = reader.readLine();
