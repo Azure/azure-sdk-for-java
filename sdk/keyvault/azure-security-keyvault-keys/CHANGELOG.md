@@ -1,23 +1,36 @@
 # Release History
 
-## 4.3.0-beta.9 (Unreleased)
+## 4.3.0 (2021-06-17)
 
-### Bug Fixes
+### Features Added
+- Changed default service version to `7.2`.
+- Added `KeyVaultKeyIdentifier` to parse key URLs.
+- Added local-only support for `CryptographyClient` and `CryptographyAsyncClient` by providing a `JsonWebKey` during client creation.
+- Added `KeyType.OCT-HSM` to support oct-HSM key operations to support Managed HSM.
+- Added the `CreateOctKeyOptions` class and associated `createOctKey()` methods.
+- Added AES-GCM and AES-CBC support for encrypting and decrypting, including new `Encrypt` and `Decrypt` overloads.
+- Added the ability to set a public exponent on RSA keys during creation.
+- Made all getters for properties of a `JsonWebKey` public.
+
+### Changes since 4.3.0-beta.8
+
+#### Bug Fixes
 - Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
 
-### New Features
+#### New Features
 - Added `createOctKey()` and `createOctKeyWithResponse()` to `KeyClient` and `KeyAsyncClient`.
 - Added factory methods for RSA algorithms in `DecryptParameters` and `EncryptParameters`:
     - `createRsa15Parameters()`
     - `createRsaOaepParameters()`
     - `createRsaOaep256Parameters()`
 
-### Breaking Changes
+#### Breaking Changes
 - Removed `EXPORT` from the `KeyOperation` enum.
 - Re-ordered parameters in the `EncryptResult` constructor to show `authenticationTag` before `additionalAuthenticatedData` to align with classes like `DecryptParameters`.
 - Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+- Moved `EncryptParameters` and `DecryptParameters` from the `cryptography` package to the `cryptography.models` package and made them both `final`.
 
-### Non-Breaking Changes
+#### Non-Breaking
 - Renamed `keyId` to `sourceId` in `KeyVaultKeyIdentifier`.
 - `KeyVaultKeyIdentifier` can now be used to parse any Key Vault identifier.
 - Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `KeyClient`, `KeyAsyncClient`, `CryptographyClient` and `CryptographyAsyncClient`.

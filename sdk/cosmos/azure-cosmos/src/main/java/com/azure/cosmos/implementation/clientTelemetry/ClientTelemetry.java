@@ -194,7 +194,7 @@ public class ClientTelemetry {
                             this.globalDatabaseAccountName);
                         httpHeaders.set(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
                         String envName = Configs.getEnvironmentName();
-                        if (StringUtils.isEmpty(envName)) {
+                        if (StringUtils.isNotEmpty(envName)) {
                             httpHeaders.set(HttpConstants.HttpHeaders.ENVIRONMENT_NAME, envName);
                         }
 

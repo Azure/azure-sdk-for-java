@@ -67,6 +67,7 @@ public final class KeyAsyncClient {
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
