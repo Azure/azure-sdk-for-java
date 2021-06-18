@@ -11,6 +11,7 @@ import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode,
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
+import com.azure.cosmos.spark.diagnostics.SimpleDiagnosticsProvider
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -379,7 +380,7 @@ private object DiagnosticsConfig {
     mandatory = false,
     parseFromStringFunction = diagnostics => {
       if (diagnostics == "simple") {
-        classOf[SimpleDiagnostics].getName
+        classOf[SimpleDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
         Class.forName(diagnostics).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
@@ -533,7 +534,7 @@ private object CosmosSchemaInferenceConfig {
   private val inferSchemaForceNullableProperties = CosmosConfigEntry[Boolean](
     key = CosmosConfigNames.ReadInferSchemaForceNullableProperties,
     mandatory = false,
-    defaultValue = Some(false),
+    defaultValue = Some(true),
     parseFromStringFunction = include => include.toBoolean,
     helpMessage = "Whether schema inference should enforce inferred properties to be nullable - even when no null-values are contained in the sample set")
 
@@ -549,7 +550,7 @@ private object CosmosSchemaInferenceConfig {
     parseFromStringFunction = query => query,
     helpMessage = "When schema inference is enabled, used as custom query to infer it")
 
-  def parseCosmosReadConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
+  def parseCosmosInferenceConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
     val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
     val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
     val query = CosmosConfigEntry.parse(cfg, inferSchemaQuery)

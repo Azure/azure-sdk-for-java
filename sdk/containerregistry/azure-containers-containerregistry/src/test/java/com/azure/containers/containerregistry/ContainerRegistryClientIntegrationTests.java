@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry;
 
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.implementation.ImplUtils;
@@ -19,6 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.AZURE_GLOBAL_AUTHENTICATION_SCOPE;
+import static com.azure.containers.containerregistry.TestUtils.AZURE_GOV_AUTHENTICATION_SCOPE;
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
@@ -167,6 +170,25 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
 
         assertEquals(registryEndpoint, registryAsyncClient.getEndpoint());
         assertEquals(registryEndpoint, registryClient.getEndpoint());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void authenticationScopeTest(HttpClient httpClient) {
+        ContainerRegistryClient registryClient = getContainerRegistryBuilder(httpClient)
+            .authenticationScope(AZURE_GLOBAL_AUTHENTICATION_SCOPE)
+            .buildClient();
+
+        List<String> repositories = registryClient.listRepositoryNames().stream().collect(Collectors.toList());
+        validateRepositories(repositories);
+
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // Now doing the same should fail with the separate registryClient;
+            ContainerRegistryClient throwableRegistryClient = getContainerRegistryBuilder(httpClient)
+                .authenticationScope(AZURE_GOV_AUTHENTICATION_SCOPE)
+                .buildClient();
+            assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
+        }
     }
 }
 

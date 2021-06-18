@@ -15,15 +15,15 @@ import com.azure.ai.metricsadvisor.implementation.models.SmartDetectionCondition
 import com.azure.ai.metricsadvisor.implementation.models.SuppressConditionPatch;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfigurationPatch;
-import com.azure.ai.metricsadvisor.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
-import com.azure.ai.metricsadvisor.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.models.MetricWholeSeriesDetectionCondition;
-import com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.models.MetricSeriesGroupDetectionCondition;
-import com.azure.ai.metricsadvisor.models.MetricSingleSeriesDetectionCondition;
-import com.azure.ai.metricsadvisor.models.SmartDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.MetricSingleSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Expose transformation methods to transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration}
+ * Expose transformation methods to transform {@link AnomalyDetectionConfiguration}
  * model to REST API wire model and vice-versa.
  */
 public final class DetectionConfigurationTransforms {
@@ -175,7 +175,7 @@ public final class DetectionConfigurationTransforms {
     }
 
     /**
-     * Transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration} to create API wire model.
+     * Transform {@link AnomalyDetectionConfiguration} to create API wire model.
      *
      * @param metricId The metric id.
      * @param detectionConfiguration The custom model instance.
@@ -222,7 +222,7 @@ public final class DetectionConfigurationTransforms {
     }
 
     /**
-     * Transform {@link com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration} to update API wire model.
+     * Transform {@link AnomalyDetectionConfiguration} to update API wire model.
      *
      * @param detectionConfiguration The custom model instance.
      * @return The wire model instance.

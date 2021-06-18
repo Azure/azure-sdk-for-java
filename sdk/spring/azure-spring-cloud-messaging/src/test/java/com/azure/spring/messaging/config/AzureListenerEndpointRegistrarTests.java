@@ -4,27 +4,24 @@
 package com.azure.spring.messaging.config;
 
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerEndpoint;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Warren Zhu
  */
 public class AzureListenerEndpointRegistrarTests {
 
-    @Rule
-    public final ExpectedException thrown = ExpectedException.none();
     private final AzureListenerEndpointRegistrar registrar = new AzureListenerEndpointRegistrar();
     private final AzureListenerEndpointRegistry registry = new AzureListenerEndpointRegistry();
     private final AzureListenerContainerTestFactory containerFactory = new AzureListenerContainerTestFactory();
 
-    @Before
+    @BeforeEach
     public void setup() {
         this.registrar.setEndpointRegistry(this.registry);
         this.registrar.setBeanFactory(new StaticListableBeanFactory());
@@ -32,14 +29,14 @@ public class AzureListenerEndpointRegistrarTests {
 
     @Test
     public void registerNullEndpoint() {
-        this.thrown.expect(IllegalArgumentException.class);
-        this.registrar.registerEndpoint(null, this.containerFactory);
+        assertThrows(IllegalArgumentException.class,
+            () -> this.registrar.registerEndpoint(null, this.containerFactory));
     }
 
     @Test
     public void registerNullEndpointId() {
-        this.thrown.expect(IllegalArgumentException.class);
-        this.registrar.registerEndpoint(new SimpleAzureListenerEndpoint(), this.containerFactory);
+        assertThrows(IllegalArgumentException.class,
+            () -> this.registrar.registerEndpoint(new SimpleAzureListenerEndpoint(), this.containerFactory));
     }
 
     @Test
@@ -47,8 +44,8 @@ public class AzureListenerEndpointRegistrarTests {
         SimpleAzureListenerEndpoint endpoint = new SimpleAzureListenerEndpoint();
         endpoint.setId("");
 
-        this.thrown.expect(IllegalArgumentException.class);
-        this.registrar.registerEndpoint(endpoint, this.containerFactory);
+        assertThrows(IllegalArgumentException.class,
+            () -> this.registrar.registerEndpoint(endpoint, this.containerFactory));
     }
 
     @Test
@@ -69,9 +66,8 @@ public class AzureListenerEndpointRegistrarTests {
         endpoint.setId("some id");
         this.registrar.registerEndpoint(endpoint, null);
 
-        this.thrown.expect(IllegalStateException.class);
-        this.thrown.expectMessage(endpoint.toString());
-        this.registrar.afterPropertiesSet();
+        assertThrows(IllegalStateException.class,
+            () -> this.registrar.afterPropertiesSet(), endpoint.toString());
     }
 
     @Test

@@ -1,7 +1,13 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
+
+## 2.6.0 (2021-06-18)
+
+- Updated core dependency from resources
+
+## 2.5.0 (2021-05-28)
 - Updated `api-version` to `2019-09-01`
 - Soft-delete protection in `Vault` is enabled by default. A soft-deleted `Vault` can be purged via `Vaults.purgeDeleted`.
 - Supported `withRoleBasedAccessControl` for `Vault`

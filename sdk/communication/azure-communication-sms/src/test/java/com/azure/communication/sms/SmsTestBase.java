@@ -38,9 +38,6 @@ public class SmsTestBase extends TestBase {
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
 
-    private static final String TEST_PACKAGES_ENABLED = Configuration.getGlobalConfiguration()
-        .get("TEST_PACKAGES_ENABLED", "all");
-
     private static final String SKIP_INT_SMS_TEST = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SKIP_INT_SMS_TEST", "False");
 
@@ -153,6 +150,6 @@ public class SmsTestBase extends TestBase {
     }
 
     protected boolean shouldEnableSmsTests() {
-        return TEST_PACKAGES_ENABLED.matches("(all|sms)") && !Boolean.parseBoolean(SKIP_INT_SMS_TEST);
+        return !Boolean.parseBoolean(SKIP_INT_SMS_TEST);
     }
 }

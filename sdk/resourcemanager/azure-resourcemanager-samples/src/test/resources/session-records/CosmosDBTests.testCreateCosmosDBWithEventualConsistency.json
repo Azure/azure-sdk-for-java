@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b0bf4d40-3b47-4a02-9558-987ea9dddd78",
@@ -47,16 +47,16 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210226T015512Z:21eb4fd9-c0ee-4af3-b4cf-9a7c5097d305",
       "x-ms-gatewayversion" : "version=2.11.0",
       "Content-Length" : "1814",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-03-15",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-06-15",
       "x-ms-request-id" : "5c83bf42-eecb-44ef-974b-ba0c825d2d3f",
       "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822\",\"name\":\"docdb42822\",\"location\":\"West US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{},\"systemData\":{\"createdAt\":\"2021-02-26T01:55:09.4565744Z\"},\"properties\":{\"provisioningState\":\"Creating\",\"publicNetworkAccess\":\"Enabled\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Sql\",\"disableKeyBasedMetadataWriteAccess\":false,\"enableFreeTier\":false,\"enableAnalyticalStorage\":false,\"instanceId\":\"325b9c32-c920-43de-a942-ec063ad83086\",\"createMode\":\"Default\",\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":false,\"connectorOffer\":\"\",\"networkAclBypass\":\"None\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Eventual\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"docdb42822-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"docdb42822-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"docdb42822-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"docdb42822-eastus\",\"locationName\":\"East US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[],\"ipRules\":[],\"backupPolicy\":{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":240,\"backupRetentionIntervalInHours\":8,\"backupStorageRedundancy\":1}},\"networkAclBypassResourceIds\":[]},\"identity\":{\"type\":\"None\"}}",
       "Content-Type" : "application/json",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/operationResults/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-03-15"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/operationResults/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-06-15"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "00c2cc01-08af-4122-8e6a-b8cb771fabd3"
@@ -82,7 +82,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "32d3251b-ed99-4503-a4aa-17c066c4c934"
@@ -108,7 +108,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cf7bfbea-6603-4b84-9fe6-3a75f415df15"
@@ -134,7 +134,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/5c83bf42-eecb-44ef-974b-ba0c825d2d3f?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6a6540f1-8c1c-4ffe-bc5f-7ba49348a56f"
@@ -160,7 +160,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "71288b8f-c945-48c4-930d-a50bec009c40"
@@ -186,7 +186,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8d3f31d7-3e0d-41d4-90c4-b50fd78edefc",
@@ -213,7 +213,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/listKeys?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/listKeys?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7277f676-a2b2-46d1-86f5-3539443b8fc1",
@@ -240,7 +240,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/readonlykeys?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/readonlykeys?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "27c7a281-9304-417b-8f43-5fb8cc4c5328",
@@ -267,7 +267,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/listKeys?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822/listKeys?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c5e9895e-7170-4102-ab06-95c2b99a49f6",
@@ -294,7 +294,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv7521718fa39/providers/Microsoft.DocumentDB/databaseAccounts/docdb42822?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.3.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6f1ba216-7c21-4479-82cf-c9693f41ab86",
@@ -314,16 +314,16 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210226T015726Z:b7dfac29-16c2-4070-afa6-501d22f4cd61",
       "x-ms-gatewayversion" : "version=2.11.0",
       "Content-Length" : "21",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
       "x-ms-request-id" : "658c35cb-eaa5-4c6c-beeb-1c7c3b004f09",
       "Body" : "{\"status\":\"Enqueued\"}",
       "Content-Type" : "application/json",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationResults/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationResults/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "09287bc4-167c-4e9e-b8a7-dee3ebf0f780"
@@ -349,7 +349,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "08ba89af-e3f1-4cd5-8294-cdd4c803bedf"
@@ -375,7 +375,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c6431040-1970-41bb-a0c3-84fc54aaf843"
@@ -401,7 +401,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2c450b02-ab3e-4d39-90f4-f16ea4ab74bc"
@@ -427,7 +427,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "38d28e46-b4d2-4ab7-8d18-826c2fc2a416"
@@ -453,7 +453,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f486829b-9ff1-4ea1-8d1e-80164dd0b762"
@@ -479,7 +479,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "10629fca-d18d-44cd-810b-a00fd266d6b7"
@@ -505,7 +505,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3c9540a0-47c5-4bf3-8ba7-2a21ae921450"
@@ -531,7 +531,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a4dc5a59-b945-43f7-bc84-210710bb9546"
@@ -557,7 +557,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "672b7437-f1c7-4fd0-a946-17aa7ad9b9ac"
@@ -583,7 +583,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ed81e2e8-4b47-43c3-be6c-29d426f3c2e7"
@@ -609,7 +609,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "852f07cc-541e-4d70-9a09-1048c305baf4"
@@ -635,7 +635,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2b1b0b48-d5fa-4908-94f4-a8b6d9ff2083"
@@ -661,7 +661,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "05cb6f56-f6d1-4a56-ae09-dcb3912e0dd5"
@@ -687,7 +687,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f45fbc8c-dce4-4a40-a2a9-36bb52ab98c6"
@@ -713,7 +713,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "56ba4ab2-db39-4c66-b2c3-4d56b1de05e4"
@@ -739,7 +739,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "98b8519d-f51e-448a-ac2e-b0cf9026dfb2"
@@ -765,7 +765,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8c875d0c-43e8-494e-acd0-8aa33add1bcd"
@@ -791,7 +791,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cbce41ed-6db5-4af0-85a2-eafa4f061617"
@@ -817,7 +817,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "671a7ba2-a3b5-49a6-8f70-44dc965b8ee1"
@@ -843,7 +843,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "470b8b54-b4d1-4872-ae9a-6dd5dd112488"
@@ -869,7 +869,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "66a75f50-b2ab-4ed2-8e3e-e98a0e7496fa"
@@ -895,7 +895,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ea4f2d53-44a7-4e6c-b9a3-c158399ec1da"
@@ -921,7 +921,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b70aa4c8-9ade-4e0d-803b-4414e151d738"
@@ -947,7 +947,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1efbfdd6-e974-4349-9807-ca9262a339b8"
@@ -973,7 +973,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1dfee719-3352-4472-bddc-1d37903c9094"
@@ -999,7 +999,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "805f5221-741a-4646-98eb-2a4bc328f438"
@@ -1025,7 +1025,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "227d46a9-7b9d-4feb-816b-16e56f6a97c4"
@@ -1051,7 +1051,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "445624f6-3fe7-4255-9023-9fb521f86037"
@@ -1077,7 +1077,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c34efc87-5e0f-4e8f-b1e8-fd7a8d3bd2fb"
@@ -1103,7 +1103,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8e592879-5995-409e-ab7c-92ecc352ae10"
@@ -1129,7 +1129,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "25119ace-c4e9-4d8a-949b-4649a7b0fdce"
@@ -1155,7 +1155,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c6546549-5e0d-444e-9023-e7ac130c6dc3"
@@ -1181,7 +1181,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f9f8d1cf-742e-4d59-b8c8-790c93095e3e"
@@ -1207,7 +1207,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationsStatus/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f9e943c6-b78e-41b8-aca0-0d2d9cf67a47"
@@ -1233,7 +1233,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationResults/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus/operationResults/658c35cb-eaa5-4c6c-beeb-1c7c3b004f09?api-version=2021-06-15",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1d67cbbb-5b0f-4da8-b70e-d1dd9d87cddb"

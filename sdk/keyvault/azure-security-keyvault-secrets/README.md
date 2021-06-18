@@ -16,7 +16,7 @@ Maven dependency for the Azure Key Vault Secrets client library. Add it to your 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.3.0-beta.6</version>
+    <version>4.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,6 +75,8 @@ Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
 
     > --secret-permissions:
     > Accepted values: backup, delete, get, list, purge, recover, restore, set
+
+    If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
 
 * Use the aforementioned Key Vault name to retrieve details of your Vault, which also contain your Key Vault URL:
 
@@ -320,5 +322,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azure_cloud_shell]: https://shell.azure.com/bash
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)

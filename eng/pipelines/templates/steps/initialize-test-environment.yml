@@ -10,6 +10,9 @@ parameters:
   - name: CheckoutRecordings
     type: boolean
     default: false
+  - name: SDKType
+    type: string
+    default: client
 
 steps:
   - checkout: self
@@ -49,6 +52,9 @@ steps:
     parameters:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
+      JobType: 'test'
+      SDKType: ${{ parameters.SDKType }}
+      ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
   # - task: PythonScript@0
   #   displayName: 'Generate directories variable for sparse checkout'

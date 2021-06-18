@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
@@ -143,6 +144,13 @@ public class PublicIpAddressInner extends Resource {
      */
     @JsonProperty(value = "properties.linkedPublicIPAddress")
     private PublicIpAddressInner linkedPublicIpAddress;
+
+    /*
+     * Specify what happens to the public IP address when the VM using it is
+     * deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
 
     /*
      * Resource ID.
@@ -485,6 +493,26 @@ public class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
         this.linkedPublicIpAddress = linkedPublicIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

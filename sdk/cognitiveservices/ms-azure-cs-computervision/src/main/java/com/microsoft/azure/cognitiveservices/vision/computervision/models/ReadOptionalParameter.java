@@ -45,6 +45,13 @@ public class ReadOptionalParameter {
     private String modelVersion;
 
     /**
+     * Optional parameter to specify which reading order algorithm should be
+     * applied when ordering the extract text elements. Can be either 'basic'
+     * or 'natural'. Will default to 'basic' if not specified.
+     */
+    private String readingOrder;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -106,6 +113,26 @@ public class ReadOptionalParameter {
      */
     public ReadOptionalParameter withModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
+        return this;
+    }
+
+    /**
+     * Get the readingOrder value.
+     *
+     * @return the readingOrder value
+     */
+    public String readingOrder() {
+        return this.readingOrder;
+    }
+
+    /**
+     * Set the readingOrder value.
+     *
+     * @param readingOrder the readingOrder value to set
+     * @return the ReadOptionalParameter object itself.
+     */
+    public ReadOptionalParameter withReadingOrder(String readingOrder) {
+        this.readingOrder = readingOrder;
         return this;
     }
 

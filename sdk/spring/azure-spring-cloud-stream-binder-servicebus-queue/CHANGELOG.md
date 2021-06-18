@@ -1,6 +1,8 @@
 # Release History
 
 ## 2.6.0-beta.1 (Unreleased)
+### Breaking Changes
+- Removed `TelemetryCollector` usage.
 
 
 ## 2.5.0 (2021-05-24)

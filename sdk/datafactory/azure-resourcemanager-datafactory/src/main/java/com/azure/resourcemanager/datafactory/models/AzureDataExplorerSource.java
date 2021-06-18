@@ -156,6 +156,13 @@ public final class AzureDataExplorerSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

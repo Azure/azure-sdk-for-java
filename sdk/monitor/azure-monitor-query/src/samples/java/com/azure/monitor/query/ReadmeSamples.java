@@ -7,15 +7,15 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.monitor.query.models.AggregationType;
-import com.azure.monitor.query.models.LogsQueryBatch;
-import com.azure.monitor.query.models.LogsQueryBatchResult;
-import com.azure.monitor.query.models.LogsQueryBatchResultCollection;
+import com.azure.monitor.query.models.LogsBatchQuery;
+import com.azure.monitor.query.models.LogsBatchQueryResult;
+import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.LogsTableRow;
-import com.azure.monitor.query.models.Metrics;
+import com.azure.monitor.query.models.Metric;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeSpan;
@@ -38,11 +38,11 @@ public class ReadmeSamples {
     public void createLogsClients() {
         TokenCredential tokenCredential = null;
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        LogsAsyncClient logsAsyncClient = new LogsClientBuilder()
+        LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
             .credential(tokenCredential)
             .buildAsyncClient();
     }
@@ -53,11 +53,11 @@ public class ReadmeSamples {
     public void createMetricsClients() {
         TokenCredential tokenCredential = null;
 
-        MetricsClient metricsClient = new MetricsClientBuilder()
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
+        MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
             .credential(tokenCredential)
             .buildAsyncClient();
     }
@@ -68,11 +68,11 @@ public class ReadmeSamples {
     public void getLogsQuery() {
         TokenCredential tokenCredential = null;
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
+        LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
             new QueryTimeSpan(Duration.ofDays(2)));
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 
@@ -90,20 +90,20 @@ public class ReadmeSamples {
     public void getLogsQueryBatch() {
         TokenCredential tokenCredential = null;
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        LogsQueryBatch logsQueryBatch = new LogsQueryBatch()
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
             .addQuery("{workspace-id}", "{query-1}", new QueryTimeSpan(Duration.ofDays(2)))
             .addQuery("{workspace-id}", "{query-2}", new QueryTimeSpan(Duration.ofDays(30)));
 
-        LogsQueryBatchResultCollection batchResultCollection = logsClient
-            .queryLogsBatchWithResponse(logsQueryBatch, Context.NONE).getValue();
+        LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
+            .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-        List<LogsQueryBatchResult> responses = batchResultCollection.getBatchResults();
+        List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
-        for (LogsQueryBatchResult response : responses) {
+        for (LogsBatchQueryResult response : responses) {
             LogsQueryResult queryResult = response.getQueryResult();
 
             // Sample to iterate by row
@@ -125,7 +125,7 @@ public class ReadmeSamples {
     public void getLogsWithServerTimeout() {
         TokenCredential tokenCredential = null;
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
@@ -135,7 +135,7 @@ public class ReadmeSamples {
             .setServerTimeout(Duration.ofMinutes(10));
 
         // make service call with these request options set as filter header
-        Response<LogsQueryResult> response = logsClient.queryLogsWithResponse(options, Context.NONE);
+        Response<LogsQueryResult> response = logsQueryClient.queryLogsWithResponse(options, Context.NONE);
         LogsQueryResult logsQueryResult = response.getValue();
 
         // Sample to iterate by row
@@ -154,24 +154,24 @@ public class ReadmeSamples {
     public void getMetrics() {
         TokenCredential tokenCredential = null;
 
-        MetricsClient metricsClient = new MetricsClientBuilder()
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        Response<MetricsQueryResult> metricsResponse = metricsClient
+        Response<MetricsQueryResult> metricsResponse = metricsQueryClient
             .queryMetricsWithResponse(
                 "{resource-id}",
                 Arrays.asList("SuccessfulCalls"),
                 new MetricsQueryOptions()
                     .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimespan(Duration.ofDays(30).toString())
+                    .setTimeSpan(new QueryTimeSpan(Duration.ofDays(30)))
                     .setInterval(Duration.ofHours(1))
                     .setTop(100)
                     .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-        List<Metrics> metrics = metricsQueryResult.getMetrics();
+        List<Metric> metrics = metricsQueryResult.getMetrics();
         metrics.stream()
             .forEach(metric -> {
                 System.out.println(metric.getMetricsName());
@@ -194,11 +194,11 @@ public class ReadmeSamples {
     public void getLogsQueryWithColumnNameAccess() {
         TokenCredential tokenCredential = null;
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(tokenCredential)
             .buildClient();
 
-        LogsQueryResult queryResults = logsClient.queryLogs("{workspace-id}", "{kusto-query}",
+        LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
             new QueryTimeSpan(Duration.ofDays(2)));
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 

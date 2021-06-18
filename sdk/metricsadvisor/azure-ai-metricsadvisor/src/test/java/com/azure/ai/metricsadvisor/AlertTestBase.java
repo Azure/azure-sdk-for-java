@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.AlertQueryTimeMode;
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
         final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
         final ListAlertOptions options = new ListAlertOptions()
             .setAlertQueryTimeMode(timeMode)
-            .setTop(10);
+            .setMaxPageSize(10);
         final String alertConfigurationId = ALERT_CONFIG_ID;
     }
 

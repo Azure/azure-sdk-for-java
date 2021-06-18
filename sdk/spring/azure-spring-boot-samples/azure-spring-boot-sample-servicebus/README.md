@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-service-bus
+description: "Azure Spring Boot Sample project for Service Bus client library"
+urlFragment: "azure-spring-boot-sample-service-bus"
+---
+
 # Sample for Azure Service Bus Spring Boot client library for Java
 
 ## Key concepts

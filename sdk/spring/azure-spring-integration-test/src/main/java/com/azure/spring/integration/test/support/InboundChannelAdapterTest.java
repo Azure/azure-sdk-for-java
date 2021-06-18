@@ -4,8 +4,8 @@
 package com.azure.spring.integration.test.support;
 
 import com.azure.spring.integration.core.AbstractInboundChannelAdapter;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -17,8 +17,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannelAdapter> {
 
@@ -49,14 +49,14 @@ public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannel
         });
 
         this.messages.forEach(this.adapter::receiveMessage);
-        assertTrue("Failed to receive message", latch.await(5L, TimeUnit.SECONDS));
+        assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
         for (int i = 0; i < receivedMessages.size(); i++) {
             assertEquals(receivedMessages.get(i), payloads[i]);
         }
     }
 
-    @Before
+    @BeforeEach
     public abstract void setUp();
 
     public A getAdapter() {
