@@ -11,7 +11,6 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorization
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
-import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -25,7 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 
@@ -48,12 +46,6 @@ public class AzureEventHubKafkaAutoConfiguration {
     private static final String SASL_MECHANISM = "sasl.mechanism";
     private static final String SASL_MECHANISM_PLAIN = "PLAIN";
     private static final int PORT = 9093;
-    private static final String EVENT_HUB_KAFKA = "EventHubKafka";
-
-    @PostConstruct
-    public void collectTelemetry() {
-        TelemetryCollector.getInstance().addService(EVENT_HUB_KAFKA);
-    }
 
     @SuppressWarnings("rawtypes")
     @Primary

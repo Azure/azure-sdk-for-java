@@ -19,6 +19,9 @@ public final class IntegrationRuntimeEntityReferenceType
     public static final IntegrationRuntimeEntityReferenceType LINKED_SERVICE_REFERENCE =
         fromString("LinkedServiceReference");
 
+    /** Static value CredentialReference for IntegrationRuntimeEntityReferenceType. */
+    public static final IntegrationRuntimeEntityReferenceType CREDENTIAL_REFERENCE = fromString("CredentialReference");
+
     /**
      * Creates or finds a IntegrationRuntimeEntityReferenceType from its string representation.
      *

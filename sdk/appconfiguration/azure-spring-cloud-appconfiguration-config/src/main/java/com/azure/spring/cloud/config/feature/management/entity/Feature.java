@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Azure App Configuration Feature Flag.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
 
