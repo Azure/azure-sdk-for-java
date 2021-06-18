@@ -374,7 +374,7 @@ public final class BulkExecutor<TContext> {
         } else {
             return Mono
                 .delay(backOffTime)
-                .flatMap((dumm) -> {
+                .flatMap((dummy) -> {
                     groupSink.next(itemOperation);
                     return Mono.empty();
                 });
