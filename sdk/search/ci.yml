@@ -26,6 +26,9 @@ pr:
     exclude:
       - sdk/search/mgmt-v2015_02_28
 
+
+
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
