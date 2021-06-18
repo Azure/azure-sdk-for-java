@@ -1,7 +1,7 @@
 # Release History
 
 ## 4.0.0 (2021-06-17)
-- Initial release of `KeyVaultAccessControlClient` and `KeyVaultAccessControlAsyncClient` to managed role assignments and definitions for Managed HSM.
+- Initial release of `KeyVaultAccessControlClient` and `KeyVaultAccessControlAsyncClient` to manage role assignments and definitions for Managed HSM.
 - Initial release of `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient` to backup and restore Managed HSM.
 
 ### Features Added
