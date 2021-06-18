@@ -70,9 +70,7 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
-        Thread.sleep(10);
-        KeyVaultCertificates.updateLastForceRefreshTime();
-        Assertions.assertTrue(keyVaultCertificates.certificatesNeedRefresh());
+        KeyVaultCertificates.updateForceRefreshTime();
         keyVaultCertificates.getAliases();
         Assertions.assertFalse(keyVaultCertificates.certificatesNeedRefresh());
         Thread.sleep(2000);

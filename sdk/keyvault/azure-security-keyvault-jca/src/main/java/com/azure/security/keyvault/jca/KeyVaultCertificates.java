@@ -42,7 +42,7 @@ public class KeyVaultCertificates implements AzureCertificates {
     /**
      * Stores the last force refresh time.
      */
-    private static volatile Date lastForceRefreshTime = new Date();
+    private static volatile Date forceRefreshTime = new Date();
 
     private KeyVaultClient keyVaultClient;
 
@@ -58,7 +58,7 @@ public class KeyVaultCertificates implements AzureCertificates {
     }
 
     boolean certificatesNeedRefresh() {
-        if (lastRefreshTime == null || lastForceRefreshTime.after(lastRefreshTime)) {
+        if (lastRefreshTime == null || forceRefreshTime.after(lastRefreshTime)) {
             return true;
         }
         if (refreshInterval > 0) {
@@ -128,7 +128,7 @@ public class KeyVaultCertificates implements AzureCertificates {
      * @return certificate' alias if exist.
      */
     String refreshAndGetAliasByCertificate(Certificate certificate) {
-        updateLastForceRefreshTime();
+        updateForceRefreshTime();
         return getCertificates().entrySet()
                                 .stream()
                                 .filter(entry -> certificate.equals(entry.getValue()))
@@ -154,8 +154,8 @@ public class KeyVaultCertificates implements AzureCertificates {
     /**
      * Overall refresh certificates' info
      */
-    public static void updateLastForceRefreshTime() {
-        lastForceRefreshTime = new Date();
+    public static void updateForceRefreshTime() {
+        forceRefreshTime = new Date();
     }
 
 }

@@ -169,7 +169,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .orElse(null);
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificate == null) {
-            KeyVaultCertificates.updateLastForceRefreshTime();
+            KeyVaultCertificates.updateForceRefreshTime();
             certificate = keyVaultCertificates.getCertificates().get(alias);
         }
         return certificate;
