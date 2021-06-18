@@ -61,6 +61,14 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * The {@link KeyVaultAccessControlAsyncClient} provides asynchronous methods to view and manage Role Based Access
  * for the Azure Key Vault. The client supports creating, listing, updating, and deleting
  * {@link KeyVaultRoleDefinition role definitions} and {@link KeyVaultRoleAssignment role assignments}.
+ *
+ * <p>Instances of this client are obtained by calling the {@link KeyVaultAccessControlClientBuilder#buildAsyncClient()}
+ * method on a {@link KeyVaultAccessControlClientBuilder} object.</p>
+ *
+ * <p><strong>Samples to construct an async client</strong></p>
+ * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation}
+ *
+ * @see KeyVaultAccessControlClientBuilder
  */
 @ServiceClient(builder = KeyVaultAccessControlClientBuilder.class, isAsync = true)
 public final class KeyVaultAccessControlAsyncClient {
@@ -133,6 +141,11 @@ public final class KeyVaultAccessControlAsyncClient {
      * Lists all {@link KeyVaultRoleDefinition role definitions} that are applicable at the given
      * {@link KeyVaultRoleScope role scope} and above.
      *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Lists all {@link KeyVaultRoleDefinition role definitions}. Prints out the details of the retrieved
+     * {@link KeyVaultRoleDefinition role definitions}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.listRoleDefinitions#KeyVaultRoleScope}
+     *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definitions}.
      *
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleDefinition role definitions} for the given
@@ -172,7 +185,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * {@link KeyVaultRoleScope role scope} and above.
      *
      * @param vaultUrl The URL for the Key Vault this client is associated with.
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleDefinition role definitions}
@@ -237,12 +250,17 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates or updates a {@link KeyVaultRoleDefinition} with a randomly generated {@link String name}.
+     * Creates or updates a {@link KeyVaultRoleDefinition role definition} with a randomly generated name.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}. Managed HSM
-     * only supports '/'.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a {@link KeyVaultRoleDefinition role definition} with a randomly generated name. Prints out the
+     * details of the created {@link KeyVaultRoleDefinition role definition}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.setRoleDefinition#KeyVaultRoleScope}
      *
-     * @return A {@link Mono} containing the created {@link KeyVaultRoleDefinition}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * Managed HSM only supports '/'.
+     *
+     * @return A {@link Mono} containing the created {@link KeyVaultRoleDefinition role definition}.
      *
      * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} is {@code null}.
@@ -253,15 +271,20 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates or updates a {@link KeyVaultRoleDefinition}. If no name is provided, then a
-     * {@link KeyVaultRoleDefinition} will be created with a randomly generated name.
+     * Creates or updates a {@link KeyVaultRoleDefinition role definition}. If no name is provided, then a
+     * {@link KeyVaultRoleDefinition role definition} will be created with a randomly generated name.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}. Managed HSM only
-     * supports '/'.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}. It can be any valid UUID. If
-     * {@code null} is provided, a name will be randomly generated.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates or updates a {@link KeyVaultRoleDefinition role definition} with a given generated name. Prints out
+     * the details of the created {@link KeyVaultRoleDefinition role definition}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.setRoleDefinition#KeyVaultRoleScope-String}
      *
-     * @return A {@link Mono} containing the created {@link KeyVaultRoleDefinition}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition role definition}. It can be any valid\
+     * UUID. If {@code null} is provided, a name will be randomly generated.
+     *
+     * @return A {@link Mono} containing the created {@link KeyVaultRoleDefinition role definition}.
      *
      * @throws KeyVaultAdministrationException If the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
@@ -274,13 +297,18 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates or updates a {@link KeyVaultRoleDefinition}.
+     * Creates or updates a {@link KeyVaultRoleDefinition role definition}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates or updates a {@link KeyVaultRoleDefinition role definition}. Prints out the details of the
+     * {@link Response HTTP response} and the created {@link KeyVaultRoleDefinition role definition}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions}
      *
      * @param options Object representing the configurable options to create or update a
      * {@link KeyVaultRoleDefinition role definition}.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * created or updated {@link KeyVaultRoleDefinition}.
+     * created or updated {@link KeyVaultRoleDefinition role definition}.
      *
      * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
@@ -292,14 +320,14 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates or updates a {@link KeyVaultRoleDefinition}.
+     * Creates or updates a {@link KeyVaultRoleDefinition role definition}.
      *
      * @param options Object representing the configurable options to create or update a
      * {@link KeyVaultRoleDefinition role definition}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * created or updated {@link KeyVaultRoleDefinition}.
+     * created or updated {@link KeyVaultRoleDefinition role definition}.
      *
      * @throws KeyVaultAdministrationException If any parameter in {@code options} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName}
@@ -369,12 +397,17 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets a {@link KeyVaultRoleDefinition}.
+     * Gets a {@link KeyVaultRoleDefinition role definition}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
-     * @param roleDefinitionName The name used of the {@link KeyVaultRoleDefinition}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a {@link KeyVaultRoleDefinition role definition}. Prints out the details of the retrieved
+     * {@link KeyVaultRoleDefinition role definition}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.getRoleDefinition#KeyVaultRoleScope-String}
      *
-     * @return A {@link Mono} containing the {@link KeyVaultRoleDefinition}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * @param roleDefinitionName The name used of the {@link KeyVaultRoleDefinition role definition}.
+     *
+     * @return A {@link Mono} containing the {@link KeyVaultRoleDefinition role definition}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
      * cannot be found or if the given {@code roleScope} is invalid.
@@ -387,13 +420,18 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets a {@link KeyVaultRoleDefinition}.
+     * Gets a {@link KeyVaultRoleDefinition role definition}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a {@link KeyVaultRoleDefinition role definition}. Prints out the details of the
+     * {@link Response HTTP response} and the retrieved {@link KeyVaultRoleDefinition role definition}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition role definition}.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultRoleDefinition}.
+     * {@link KeyVaultRoleDefinition role definition}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
      * cannot be found or if the given {@code roleScope} is invalid.
@@ -407,14 +445,14 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets a {@link KeyVaultRoleDefinition}.
+     * Gets a {@link KeyVaultRoleDefinition role definition}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition role definition}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultRoleDefinition}.
+     * {@link KeyVaultRoleDefinition role definition}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
      * cannot be found or if the given {@code roleScope} is invalid.
@@ -447,11 +485,15 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Deletes a {@link KeyVaultRoleDefinition}.
+     * Deletes a {@link KeyVaultRoleDefinition role definition}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}. Managed HSM
-     * only supports '/'.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a {@link KeyVaultRoleDefinition role definition}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.deleteRoleDefinition#KeyVaultRoleScope-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * Managed HSM only supports '/'.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition role definition}.
      *
      * @return A {@link Mono} of a {@link Void}.
      *
@@ -465,10 +507,15 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Deletes a {@link KeyVaultRoleDefinition}.
+     * Deletes a {@link KeyVaultRoleDefinition role definition}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a {@link KeyVaultRoleDefinition role definition}. Prints out the details of the
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition role definition}.
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
      *
@@ -483,10 +530,10 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Deletes a {@link KeyVaultRoleDefinition}.
+     * Deletes a {@link KeyVaultRoleDefinition role definition}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition role definition}.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition role definition}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
@@ -525,7 +572,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * Lists all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
      * {@link KeyVaultRoleScope role scope} and above.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
      *
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleAssignment role assignments} for the given
      * {@link KeyVaultRoleScope role scope}.
@@ -544,7 +591,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * Lists all {@link KeyVaultRoleAssignment role assignments} that are applicable at the given
      * {@link KeyVaultRoleScope role scope} and above.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link PagedFlux} containing the {@link KeyVaultRoleAssignment role assignments} for the given
@@ -564,7 +611,7 @@ public final class KeyVaultAccessControlAsyncClient {
      * {@link KeyVaultRoleScope role scope} and above.
      *
      * @param vaultUrl The URL for the Key Vault this client is associated with.
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link PagedResponse} of {@link KeyVaultRoleAssignment role assignments}
@@ -628,13 +675,19 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates a {@link KeyVaultRoleAssignment} with a randomly generated name.
+     * Creates a {@link KeyVaultRoleAssignment role assignment} with a randomly generated name.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a {@link KeyVaultRoleAssignment role assignment} with a randomly generated name. Prints out the
+     * details of the created {@link KeyVaultRoleAssignment role assignment}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.createRoleAssignment#KeyVaultRoleScope-String-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}
+     * to create.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      *
-     * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
+     * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment role assignment}.
      *
      * @throws KeyVaultAdministrationException If the given {@code roleScope}, {@code roleDefinitionId} or
      * {@code principalId} are invalid.
@@ -648,14 +701,21 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates a {@link KeyVaultRoleAssignment}.
+     * Creates a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a {@link KeyVaultRoleAssignment role assignment}. Prints out the details of the created
+     * {@link KeyVaultRoleAssignment role assignment}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.createRoleAssignment#KeyVaultRoleScope-String-String-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}
+     * to create.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
-     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
+     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment role assignment}. It can be
+     * any valid UUID.
      *
-     * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
+     * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment role assignment}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
      * already or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
@@ -670,15 +730,22 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates a {@link KeyVaultRoleAssignment}.
+     * Creates a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
-     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a {@link KeyVaultRoleAssignment role assignment}. Prints out details of the
+     * {@link Response HTTP response} and the created {@link KeyVaultRoleAssignment role assignment}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}
+     * to create.
+     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment role assignment}. It can be
+     * any valid UUID.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
-     * {@link KeyVaultRoleAssignment}.
+     * {@link KeyVaultRoleAssignment role assignment}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
      * already exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
@@ -695,16 +762,18 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Creates a {@link KeyVaultRoleAssignment}.
+     * Creates a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment} to create.
-     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment}. It can be any valid UUID.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}
+     * to create.
+     * @param roleAssignmentName The name used to create the {@link KeyVaultRoleAssignment role assignment}. It can be
+     * any valid UUID.
      * @param roleDefinitionId The {@link KeyVaultRoleDefinition role definition} ID for the role assignment.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
-     * {@link KeyVaultRoleAssignment}.
+     * {@link KeyVaultRoleAssignment role assignment}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
      * already exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
@@ -751,12 +820,17 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets a {@link KeyVaultRoleAssignment}.
+     * Gets a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The name used of the {@link KeyVaultRoleAssignment}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a {@link KeyVaultRoleAssignment role assignment}. Prints out details of the retrieved
+     * {@link KeyVaultRoleAssignment role assignment}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.getRoleAssignment#KeyVaultRoleScope-String}
      *
-     * @return A {@link Mono} containing the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleAssignmentName The name used of the {@link KeyVaultRoleAssignment role assignment}.
+     *
+     * @return A {@link Mono} containing the {@link KeyVaultRoleAssignment role assignment}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
      * cannot be found or if the given {@code roleScope} is invalid.
@@ -769,13 +843,18 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets a {@link KeyVaultRoleAssignment}.
+     * Gets a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a {@link KeyVaultRoleAssignment role assignment}. Prints out details of the
+     * {@link Response HTTP response} and the retrieved {@link KeyVaultRoleAssignment role assignment}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment role assignment}.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultRoleAssignment}.
+     * {@link KeyVaultRoleAssignment role assignment}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
      * cannot be found or if the given {@code roleScope} is invalid.
@@ -789,14 +868,14 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Gets a {@link KeyVaultRoleAssignment}.
+     * Gets a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment role assignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultRoleAssignment}.
+     * {@link KeyVaultRoleAssignment role assignment}.
      *
      * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
      * cannot be found or if the given {@code roleScope} is invalid.
@@ -829,10 +908,14 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Deletes a {@link KeyVaultRoleAssignment}.
+     * Deletes a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a {@link KeyVaultRoleAssignment role assignment}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.deleteRoleAssignment#KeyVaultRoleScope-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment role assignment}.
      *
      * @return A {@link Mono} of a {@link Void}.
      *
@@ -846,10 +929,15 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Deletes a {@link KeyVaultRoleAssignment}.
+     * Deletes a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a {@link KeyVaultRoleAssignment role assignment}. Prints out details of the
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String}
+     *
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment role assignment}.
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
      *
@@ -864,10 +952,10 @@ public final class KeyVaultAccessControlAsyncClient {
     }
 
     /**
-     * Deletes a {@link KeyVaultRoleAssignment}.
+     * Deletes a {@link KeyVaultRoleAssignment role assignment}.
      *
-     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
-     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
+     * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment role assignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Mono} containing a {@link Response} with a {@link Void} value.
@@ -1054,7 +1142,8 @@ public final class KeyVaultAccessControlAsyncClient {
      * @return A {@link Mono} that contains the deserialized response.
      */
     static <E extends HttpResponseException> Mono<Response<Void>> swallowExceptionForStatusCode(int statusCode,
-                                                                                                E httpResponseException, ClientLogger logger) {
+                                                                                                E httpResponseException,
+                                                                                                ClientLogger logger) {
         HttpResponse httpResponse = httpResponseException.getResponse();
 
         if (httpResponse.getStatusCode() == statusCode) {
