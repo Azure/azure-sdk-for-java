@@ -49,7 +49,8 @@ public final class KeyVaultCertificateIdentifier {
 
             // More or less segments in the URI than expected.
             if (pathSegments.length != 3 && pathSegments.length != 4) {
-                throw new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.");
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier."));
             }
 
             this.sourceId = sourceId;
