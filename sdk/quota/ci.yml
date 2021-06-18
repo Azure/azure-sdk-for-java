@@ -1,0 +1,33 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - master
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/quota/
+
+pr:
+  branches:
+    include:
+      - master
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/quota/
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: quota
+    Artifacts:
+      - name: azure-resourcemanager-quota
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerquota
