@@ -6,6 +6,3 @@ stages:
       PackageName: azure-communication-callingserver
       SafeName: azurecommunicationcallingserver
 
-      EnvVars:
-        # RUN_CALLINGSERVER_TEST_RECORD skips certain tests that require human intervention
-        RUN_CALLINGSERVER_TEST_RECORD: TRUE

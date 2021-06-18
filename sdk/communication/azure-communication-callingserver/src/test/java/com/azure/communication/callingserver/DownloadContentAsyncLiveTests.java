@@ -36,7 +36,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataAsync(HttpClient httpClient) {
@@ -58,7 +58,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
@@ -80,7 +80,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadVideoAsync(HttpClient httpClient) {
@@ -102,7 +102,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadToFileAsync(HttpClient httpClient) {
@@ -137,7 +137,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
-        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
