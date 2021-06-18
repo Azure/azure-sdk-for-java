@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.catalog.{Table, TableProvider}
 import org.apache.spark.sql.connector.expressions.Transform
@@ -21,7 +22,7 @@ import scala.collection.JavaConverters._
 class CosmosChangeFeedDataSource
   extends DataSourceRegister
     with TableProvider
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
