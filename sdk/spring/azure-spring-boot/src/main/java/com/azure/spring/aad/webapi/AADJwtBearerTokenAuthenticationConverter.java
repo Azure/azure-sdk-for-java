@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
-import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_PRINCIPAL_CLAIM_NAME;
+import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_AUTHORITY_CLAIM_NAME;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
@@ -23,31 +23,31 @@ import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_PRI
 public class AADJwtBearerTokenAuthenticationConverter extends AbstractJwtBearerTokenAuthenticationConverter {
 
     /**
-     * Use AADJwtGrantedAuthoritiesConverter, it can resolve the access token of scp and roles.
+     * Construct AADJwtBearerTokenAuthenticationConverter by DEFAULT_PRINCIPAL_CLAIM_NAME and DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.
      */
     public AADJwtBearerTokenAuthenticationConverter() {
         this(DEFAULT_PRINCIPAL_CLAIM_NAME, DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP);
     }
 
     /**
-     * Structure AADJwtBearerTokenAuthenticationConverter with the authority claim.
-     * @param principalClaimName principal claim name
+     * Construct AADJwtBearerTokenAuthenticationConverter with the authority claim.
+     * @param authoritiesClaimName authority claim name
      * @deprecated Recommended to use others constructor.
      */
     @Deprecated
-    public AADJwtBearerTokenAuthenticationConverter(String principalClaimName) {
-        super(principalClaimName, DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.get(DEFAULT_PRINCIPAL_CLAIM_NAME));
+    public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
+        this(authoritiesClaimName, DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.get(DEFAULT_AUTHORITY_CLAIM_NAME));
     }
 
     /**
-     * Structure AADJwtBearerTokenAuthenticationConverter with the authority claim name and prefix.
-     * @param principalClaimName principal claim name
+     * Construct AADJwtBearerTokenAuthenticationConverter with the authority claim name and prefix.
+     * @param authoritiesClaimName authority claim name
      * @param authorityPrefix the prefix name of the authority
      * @deprecated Recommended to use others constructor.
      */
     @Deprecated
-    public AADJwtBearerTokenAuthenticationConverter(String principalClaimName, String authorityPrefix) {
-        super(principalClaimName, authorityPrefix);
+    public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName, String authorityPrefix) {
+        super(authoritiesClaimName, authorityPrefix);
     }
 
     /**

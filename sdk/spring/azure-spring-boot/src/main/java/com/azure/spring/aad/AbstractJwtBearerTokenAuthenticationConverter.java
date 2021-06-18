@@ -15,29 +15,35 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
+
 /**
  * An abstract {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
  */
 public abstract class AbstractJwtBearerTokenAuthenticationConverter implements Converter<Jwt,
     AbstractAuthenticationToken> {
 
+    public static final String DEFAULT_PRINCIPAL_CLAIM_NAME = "sub";
     protected Converter<Jwt, Collection<GrantedAuthority>> converter;
     protected String principalClaimName;
 
+    public AbstractJwtBearerTokenAuthenticationConverter() {
+        this.converter = new AADJwtGrantedAuthoritiesConverter(DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP);
+    }
+
     /**
-     * Structure converter.
-     * @param principalClaimName principal claim name
+     * Construct jwt token converter.
+     * @param authoritiesClaimName authority claim name
      * @param authorityPrefix the prefix name of the authority
-     * @deprecated Recommended to use another constructor.
+     * @deprecated Recommended to use others constructor.
      */
     @Deprecated
-    public AbstractJwtBearerTokenAuthenticationConverter(String principalClaimName,
+    public AbstractJwtBearerTokenAuthenticationConverter(String authoritiesClaimName,
                                                          String authorityPrefix) {
-        Assert.notNull(principalClaimName, "principalClaimName cannot be null");
+        Assert.notNull(authoritiesClaimName, "authoritiesClaimName cannot be null");
         Assert.notNull(authorityPrefix, "authorityPrefix cannot be null");
         Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
-        claimToAuthorityPrefixMap.put(principalClaimName, authorityPrefix);
-        this.principalClaimName = principalClaimName;
+        claimToAuthorityPrefixMap.put(authoritiesClaimName, authorityPrefix);
         this.converter = new AADJwtGrantedAuthoritiesConverter(claimToAuthorityPrefixMap);
     }
 

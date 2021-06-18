@@ -70,7 +70,8 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testNoArgumentsConstructorExtractScopeAuthorities() {
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("scp");
+        when(jwt.getClaim("roles")).thenReturn(null);
+        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
@@ -98,7 +99,7 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
         when(jwt.getClaim("scp")).thenReturn(null);
         Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
         claimToAuthorityPrefixMap.put("roles", "APPROLE_");
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("sub", claimToAuthorityPrefixMap);
+        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("scp", claimToAuthorityPrefixMap);
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken

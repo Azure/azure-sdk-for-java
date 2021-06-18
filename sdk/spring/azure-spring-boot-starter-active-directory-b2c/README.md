@@ -497,14 +497,14 @@ For more information about setting logging in spring, please refer to the [offic
 
 ### Enable authority logging.
 
-Add the following logging settings, and you will see the user's authorities based on the log.
+Add the following logging settings:
 
 ```properties
 # logging settings for resource server scenario.
 logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
 ```
 
-The log output as a resource server usage:
+Then you will see logs like this:
 
 ```text
 ...

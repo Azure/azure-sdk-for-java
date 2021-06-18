@@ -652,7 +652,7 @@ For more information about setting logging in spring, please refer to the [offic
 
 ### Enable authority logging.
 
-Add the following logging settings, and you will see the user's authorities based on the log.
+Add the following logging settings:
 
 ```properties
 # logging settings for web application scenario.
@@ -662,7 +662,7 @@ logging.level.com.azure.spring.aad.webapp.AADOAuth2UserService=DEBUG
 logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
 ```
 
-The log output as a web application usage:
+Then you will see log like this in web application:
 
 ```text
 ...
@@ -672,7 +672,7 @@ DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User TestUser's authorities sav
 ...
 ```
 
-The log output as a resource server usage:
+Or log like this in resource server:
 
 ```text
 ...
