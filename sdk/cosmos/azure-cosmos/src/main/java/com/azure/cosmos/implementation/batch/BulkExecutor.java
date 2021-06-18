@@ -209,9 +209,17 @@ public final class BulkExecutor<TContext> {
 
                 if (itemOperation instanceof FlushBuffersItemOperation) {
                     logger.debug("Flushing PKRange {} due to FlushItemOperation", thresholds.getPartitionKeyRangeId());
-                    firstRecordTimeStamp.set(-1);
-                    currentMicroBatchSize.set(0);
-                    return true;
+
+                    if (currentMicroBatchSize.get() > 0) {
+                        firstRecordTimeStamp.set(-1);
+                        currentMicroBatchSize.set(0);
+                        return true;
+                    } else {
+                        // we don't want to include flush operations in the count to avoid
+                        // ever trying to flush batch request without any operation to the backend
+                        // which would result in a 400 - Bad Request (with SubStatusCode 0)
+                        return false;
+                    }
                 }
 
                 firstRecordTimeStamp.compareAndSet(-1, timestamp);
