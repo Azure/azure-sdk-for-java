@@ -65,18 +65,6 @@ jobs:
 
       - template: ../steps/install-reporting-tools.yml
 
-      - task: Maven@3
-        displayName: 'Print security providers'
-        inputs:
-          mavenPomFile: 'java-security/demo/pom.xml'
-          goals: 'compile exec:java'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '11'
-          jdkArchitectureOption: 'x64'
-          options: '-Dexec.mainClass="com.example.App"'
-          publishJUnitResults: false
-
-
       - ${{ parameters.PreTestSteps }}
 
       - task: PythonScript@0
