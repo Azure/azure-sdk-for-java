@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
@@ -92,7 +93,7 @@ public final class CallConnection {
         String audioFileId,
         String callbackUri,
         String operationContext,
-        Context context) {
+        final Context context) {
         return callConnectionAsync
             .playAudioWithResponseInternal(
                 audioFileUri,
@@ -118,7 +119,7 @@ public final class CallConnection {
     public Response<PlayAudioResult> playAudioWithResponse(
         String audioFileUri,
         PlayAudioOptions playAudioOptions,
-        Context context) {
+        final Context context) {
         return callConnectionAsync
             .playAudioWithResponseInternal(audioFileUri, playAudioOptions, context)
             .block();
@@ -126,12 +127,10 @@ public final class CallConnection {
 
     /**
      * Disconnect the current caller in a group-call or end a p2p-call.
-     *
-     * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void hangup() {
-        return callConnectionAsync.hangup().block();
+    public void hangup() {
+        callConnectionAsync.hangup().block();
     }
 
     /**
@@ -141,7 +140,7 @@ public final class CallConnection {
      * @return response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> hangupWithResponse(Context context) {
+    public Response<Void> hangupWithResponse(final Context context) {
         return callConnectionAsync.hangupWithResponse(context).block();
     }
 
@@ -168,21 +167,21 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
         String operationContext,
-        Context context) {
+        final Context context) {
         return callConnectionAsync.cancelAllMediaOperationsWithResponse(operationContext, context).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param participant Invited participant.
+     * @param participant Added participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void addParticipant(
+    public AddParticipantResult addParticipant(
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext) {
@@ -192,7 +191,7 @@ public final class CallConnection {
     /**
      * Add a participant to the call.
      *
-     * @param participant Invited participant.
+     * @param participant Added participant.
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
@@ -200,11 +199,11 @@ public final class CallConnection {
      * @return response for a successful add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(
+    public Response<AddParticipantResult> addParticipantWithResponse(
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext,
-        Context context) {
+        final Context context) {
         return callConnectionAsync
             .addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
     }
@@ -213,11 +212,10 @@ public final class CallConnection {
      * Remove a participant from the call.
      *
      * @param participantId Participant id.
-     * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void removeParticipant(String participantId) {
-        return callConnectionAsync.removeParticipant(participantId).block();
+    public void removeParticipant(String participantId) {
+        callConnectionAsync.removeParticipant(participantId).block();
     }
 
     /**
@@ -228,7 +226,7 @@ public final class CallConnection {
      * @return response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
+    public Response<Void> removeParticipantWithResponse(String participantId, final Context context) {
         return callConnectionAsync.removeParticipantWithResponse(participantId, context).block();
     }
 }

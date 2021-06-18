@@ -40,7 +40,7 @@ To create a self-signed certificate use the command line below:
 ```
 
 ## Key concepts
-This starter allows you to securely manage and tightly control your certificates by using Azure Key Vault or side-load certificates by supplying them as part of the application.
+This starter provides a KeyStore (`AzureKeyVault`) which can get certificates from `JRE` / `specific path` / `Azure Key Vault` / `classpath` .
 
 ## Examples
 ### Server side SSL
@@ -316,19 +316,36 @@ You can also manually refresh the certificate by calling this method:
 KeyVaultCertificates.refreshCertsInfo();
 ```
 
-### Side-loading certificates
+### Specific path certificates
+AzureKeyVault keystore will load certificates in the specific path:
 
-This starter allows you to side-load certificates by supplying them as part of
-the application. 
+well-know path: /etc/certs/well-known/
+custom path: /etc/certs/custom/
+The 2 paths can be configured by these propreties:
 
-To side-load add your certificates to the `src/main/resources/keyvault` folder.
+```yaml
+azure:
+  cert-path:
+    well-known:     # The file location where you store the well-known certificate
+    custom:         # The file location where you store the custom certificate
+```
+
+### Classpath certificates
+
+AzureKeyVault keystore will load certificates in the classpath.
+
+Add the certificates to `src/main/resources/keyvault` as classpath certificates.
 
 Notes: 
 1. The alias (certificate name) is constructed from the filename of the 
 certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
-2. Certificates coming from Azure Key Vault take precedence over 
-side-loaded certificates.
+2. The priority order of the certificates is: 
+    1. Certificates from JRE.
+    2. Certificates from well-known file path.
+    3. Certificates from custom file path.
+    4. Certificates from Azure Key Vault. 
+    5. Certificates from classpath.
 
 
 ## Troubleshooting

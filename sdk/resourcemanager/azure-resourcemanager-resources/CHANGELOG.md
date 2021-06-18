@@ -1,6 +1,9 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
+
+
+## 2.6.0 (2021-06-18)
 
 - Added support for Challenge Based Authentication in `AuthenticationPolicy`.
 - Added support for `parameters` in `PolicyDefinition` and `PolicyAssignment`.

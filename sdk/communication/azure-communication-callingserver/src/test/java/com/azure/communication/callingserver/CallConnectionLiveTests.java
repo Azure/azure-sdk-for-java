@@ -2,17 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallModality;
+import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -25,6 +27,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
@@ -33,7 +39,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -71,6 +77,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
@@ -80,7 +90,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -124,6 +134,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
@@ -132,7 +146,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -146,16 +160,9 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            callConnection.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext);
+            AddParticipantResult addParticipantResult = callConnection.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext);
 
-            // Remove Participant
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "f29f70e3-1eaf-44c0-839c-b4e8a74ffec3";
+            String participantId = addParticipantResult.getParticipantId();
             callConnection.removeParticipant(participantId);
 
             // Hang up
@@ -168,6 +175,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
@@ -177,7 +188,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -194,22 +205,15 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            Response<Void> inviteParticipantResponse = callConnection
+            Response<AddParticipantResult> addParticipantResponse = callConnection
                 .addParticipantWithResponse(
                     new CommunicationUserIdentifier(toUser),
                     null,
                     operationContext,
                     null);
-            CallingServerTestUtils.validateResponse(inviteParticipantResponse);
+            CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
 
-            // Remove Participant
-            /*
-              There is an update that we require to be able to get
-              the participantId from the service when a user is
-              added to a call. Until that is fixed this recorded
-              value needs to be used.
-             */
-            String participantId = "71ed956b-366e-450c-9a61-3bbccf42baa5";
+            String participantId = addParticipantResponse.getValue().getParticipantId();
             Response<Void> removeParticipantResponse =
                 callConnection.removeParticipantWithResponse(participantId, null);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
@@ -225,6 +229,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenario");
@@ -233,7 +241,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -253,7 +261,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             CallConnection joinedCallConnection =
                 callingServerClient.join(serverCallId, new CommunicationUserIdentifier(toUser), joinCallOptions);
@@ -270,6 +278,10 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenarioWithResponse(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
@@ -279,7 +291,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             createCallOptions.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
@@ -297,7 +309,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 CALLBACK_URI,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             Response<CallConnection> joinedCallConnectionResponse =
                 callingServerClient.joinWithResponse(
