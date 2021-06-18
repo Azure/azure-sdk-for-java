@@ -19,6 +19,7 @@ Licensed under the MIT License.
   <packaging>jar</packaging>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+    
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
