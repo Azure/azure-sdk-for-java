@@ -30,12 +30,13 @@ public final class KeyVaultRoleScope extends ExpandableStringEnum<KeyVaultRoleSc
      *
      * @param url A string representing a URL containing the name of the scope to look for.
      * @return The corresponding {@link KeyVaultRoleScope}.
+     * @throws IllegalArgumentException If the given {@link String URL String} is malformed.
      */
     public static KeyVaultRoleScope fromUrl(String url) {
         try {
             return fromString(new URL(url).getPath(), KeyVaultRoleScope.class);
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
     }
 
