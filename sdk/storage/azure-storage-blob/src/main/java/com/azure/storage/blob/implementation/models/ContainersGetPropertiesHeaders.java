@@ -87,10 +87,10 @@ public final class ContainersGetPropertiesHeaders {
     private Boolean xMsHasImmutabilityPolicy;
 
     /*
-     * The x-ms-version-level-worm-enabled property.
+     * The x-ms-immutable-storage-with-versioning-enabled property.
      */
-    @JsonProperty(value = "x-ms-version-level-worm-enabled")
-    private Boolean xMsVersionLevelWormEnabled;
+    @JsonProperty(value = "x-ms-immutable-storage-with-versioning-enabled")
+    private Boolean xMsImmutableStorageWithVersioningEnabled;
 
     /*
      * The x-ms-lease-duration property.
@@ -351,22 +351,25 @@ public final class ContainersGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsVersionLevelWormEnabled property: The x-ms-version-level-worm-enabled property.
+     * Get the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
+     * property.
      *
-     * @return the xMsVersionLevelWormEnabled value.
+     * @return the xMsImmutableStorageWithVersioningEnabled value.
      */
-    public Boolean isXMsVersionLevelWormEnabled() {
-        return this.xMsVersionLevelWormEnabled;
+    public Boolean isXMsImmutableStorageWithVersioningEnabled() {
+        return this.xMsImmutableStorageWithVersioningEnabled;
     }
 
     /**
-     * Set the xMsVersionLevelWormEnabled property: The x-ms-version-level-worm-enabled property.
+     * Set the xMsImmutableStorageWithVersioningEnabled property: The x-ms-immutable-storage-with-versioning-enabled
+     * property.
      *
-     * @param xMsVersionLevelWormEnabled the xMsVersionLevelWormEnabled value to set.
+     * @param xMsImmutableStorageWithVersioningEnabled the xMsImmutableStorageWithVersioningEnabled value to set.
      * @return the ContainersGetPropertiesHeaders object itself.
      */
-    public ContainersGetPropertiesHeaders setXMsVersionLevelWormEnabled(Boolean xMsVersionLevelWormEnabled) {
-        this.xMsVersionLevelWormEnabled = xMsVersionLevelWormEnabled;
+    public ContainersGetPropertiesHeaders setXMsImmutableStorageWithVersioningEnabled(
+        Boolean xMsImmutableStorageWithVersioningEnabled) {
+        this.xMsImmutableStorageWithVersioningEnabled = xMsImmutableStorageWithVersioningEnabled;
         return this;
     }
 

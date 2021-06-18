@@ -89,7 +89,7 @@ public final class BlobContainerItemProperties {
     /*
      * Indicates if version level worm is enabled on this container.
      */
-    @JsonProperty(value = "VersionLevelWormEnabled")
+    @JsonProperty(value = "ImmutableStorageWithVersioningEnabled")
     private Boolean isImmutableStorageWithVersioningEnabled;
 
     /**
