@@ -48,9 +48,11 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.Duration
-import java.time.temporal.ChronoUnit
+ import java.time.OffsetDateTime
+ import java.time.temporal.ChronoUnit
 
 @ResourceLock("ManagementPlaneThrottling")
+@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
 class ImmutableStorageWithVersioningTest extends APISpec {
 
     private BlobContainerClient vlwContainer;
@@ -65,7 +67,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     def setup() {
         containerName = generateContainerName()
-
         if (env.testMode != TestMode.PLAYBACK) {
             String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                 + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s", subscriptionId,
@@ -138,7 +139,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
                         if (blob.getProperties().hasLegalHold()) {
                             blobClient.setLegalHold(false)
                         }
-                        if (blob.getProperties().getImmutabilityPolicyMode() != null) {
+                        if (blob.getProperties().getImmutabilityPolicy().getPolicyMode() != null) {
                             sleepIfRecord(5 * 1000)
                             blobClient.deleteImmutabilityPolicy()
                         }
@@ -156,7 +157,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "set immutability policy min"() {
         setup:
         def expiryTime = getNamer().getUtcNow().plusSeconds(2)
@@ -175,7 +175,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         BlobImmutabilityPolicyMode.UNLOCKED == response.getPolicyMode()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "set immutability policy"() {
         setup:
@@ -218,7 +217,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         BlobImmutabilityPolicyMode.UNLOCKED || _
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "set immutability policy AC"() {
         setup:
@@ -241,7 +239,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         newDate    || _
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "set immutability policy AC fail"() {
         setup:
         def bac = new BlobRequestConditions()
@@ -259,7 +256,36 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    @Unroll
+    def "set immutability policy AC IA"() {
+        setup:
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setTagsConditions(tags)
+            .setIfMatch(ifMatch)
+            .setIfNoneMatch(ifNoneMatch)
+            .setIfModifiedSince(ifModifiedSince)
+        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def immutabilityPolicy = new BlobImmutabilityPolicy()
+            .setExpiryTime(expiryTime)
+            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
+
+        when:
+        vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy, bac, null, null)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.getMessage() == wrongCondition + " is not applicable to this API."
+
+        where:
+        leaseId     | tags              | ifMatch   | ifNoneMatch   | ifModifiedSince    || wrongCondition
+        "leaseId"   | null              | null      | null          | null               || "'leaseId'"
+        null        | "tagsConditions"  | null      | null          | null               || "'tagsConditions'"
+        null        | null              | "ifMatch" | null          | null               || "'ifMatch'"
+        null        | null              | null      | "ifNoneMatch" | null               || "'ifNoneMatch'"
+        null        | null              | null      | null          | oldDate            || "'ifModifiedSince'"
+    }
+
     def "set immutability policy error"() {
         setup:
         def blob = vlwContainer.getBlobClient(generateBlobName())
@@ -276,7 +302,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "set immutability policy IA"() {
         setup:
         def expiryTime = getNamer().getUtcNow().plusSeconds(2)
@@ -292,7 +317,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         e.getMessage() == "immutabilityPolicy.policyMode must be Locked or Unlocked"
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "delete immutability policy min"() {
         setup:
         def expiryTime = getNamer().getUtcNow().plusSeconds(2)
@@ -310,7 +334,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         properties.getImmutabilityPolicy().getExpiryTime() == null
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "delete immutability policy"() {
         setup:
         def expiryTime = getNamer().getUtcNow().plusSeconds(2)
@@ -328,7 +351,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         properties.getImmutabilityPolicy().getExpiryTime() == null
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "delete immutability policy error"() {
         setup:
         def blob = vlwContainer.getBlobClient(generateBlobName())
@@ -341,7 +363,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "set legal hold min"() {
         when:
@@ -356,7 +377,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         false     || _
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Unroll
     def "set legal hold"() {
         when: "set legal hold"
@@ -387,7 +407,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         false     || _
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "set legal hold error"() {
         setup:
         def blob = vlwContainer.getBlobClient(generateBlobName())
@@ -400,7 +419,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "container properties"() {
         when:
         def response = vlwContainer.getProperties()
@@ -417,7 +435,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         container.getProperties().isImmutableStorageWithVersioningEnabled()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "append blob create"() {
         setup:
         def appendBlob = vlwContainer.getBlobClient(generateBlobName()).getAppendBlobClient()
@@ -440,7 +457,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         response.hasLegalHold()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "page blob create"() {
         setup:
         def pageBlob = vlwContainer.getBlobClient(generateBlobName()).getPageBlobClient()
@@ -463,7 +479,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         response.hasLegalHold()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "block blob commit block list"() {
         setup:
         def blockBlob = vlwBlob.getBlockBlobClient()
@@ -486,7 +501,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         response.hasLegalHold()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "block blob upload"() {
         setup:
         def blockBlob = vlwBlob.getBlockBlobClient()
@@ -509,7 +523,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         response.hasLegalHold()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     @Unroll
     @LiveOnly
     def "blob upload"() {
@@ -539,7 +552,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         null      || _ // Tests single shot upload
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "sync copy"() {
         setup:
         vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null)
@@ -566,7 +578,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         vlwContainer.setAccessPolicy(null, null)
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "copy"() {
         setup:
         def destination = vlwContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -591,7 +602,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     }
 
     /* SAS tests */
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "account sas"() {
         setup:
         def expiryTime = namer.getUtcNow().plusDays(1)
@@ -622,7 +632,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         !response.hasLegalHold()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "container sas"() {
         setup:
         def expiryTime = namer.getUtcNow().plusDays(1)
@@ -651,7 +660,6 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         !response.hasLegalHold()
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "blob sas"() {
         setup:
         def expiryTime = namer.getUtcNow().plusDays(1)
