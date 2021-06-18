@@ -40,10 +40,10 @@ public class CallingServerTestBase extends TestBase {
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
-            "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+            "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
 
-    protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
+    protected static final String AZURE_TENANT_ID = Configuration.getGlobalConfiguration()
+        .get("AZURE_TENANT_ID",
             "016a7064-0581-40b9-be73-6dde64d69d72");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
@@ -100,7 +100,7 @@ public class CallingServerTestBase extends TestBase {
     }
 
     private String getRandomUserId() {
-        return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID();
+        return "8:acs:" + AZURE_TENANT_ID + "_" + UUID.randomUUID();
     }
 
     protected String getGroupId(String testName) {
