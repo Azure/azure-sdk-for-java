@@ -80,7 +80,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctionsWithResponse(HttpClient httpClient) {
+    public void runAllClientFunctionsWithResponse(HttpClient httpClient) throws Exception {
         String groupId = getGroupId("runAllClientFunctionsWithResponse");
         CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctionsWithResponse");
@@ -108,7 +108,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             validateCallRecordingStateWithResponse(serverCall, recordingId, CallRecordingState.ACTIVE);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            throw e;
+            throw new Exception("Error: " + CONNECTION_STRING.split(";")[0] + e.getMessage());
         } finally {
             if (serverCall != null) {
                 try {
