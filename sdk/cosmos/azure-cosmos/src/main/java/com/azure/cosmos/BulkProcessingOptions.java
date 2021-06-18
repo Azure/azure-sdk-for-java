@@ -157,6 +157,8 @@ public final class BulkProcessingOptions<TContext> {
     @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkProcessingThresholds<TContext> getThresholds() {
         return this.thresholds;
+    }
+
     OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
     }

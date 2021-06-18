@@ -19,9 +19,7 @@ import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -163,7 +161,7 @@ public final class BulkExecutor<TContext> {
                     // ItemOperations that are only used to flush the buffers (and will be filtered out before sending
                     // requests to the backend)
                     executorService.scheduleWithFixedDelay(
-                        () -> this.onFlush(),
+                        this::onFlush,
                         0,
                         this.maxMicroBatchIntervalInMs,
                         TimeUnit.MILLISECONDS);

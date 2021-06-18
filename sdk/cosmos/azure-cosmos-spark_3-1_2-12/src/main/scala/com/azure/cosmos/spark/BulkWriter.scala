@@ -2,28 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.
+{
+  BulkItemRequestOptions,
+  BulkOperations,
+  BulkProcessingOptions,
+  BulkProcessingThresholds,
+  CosmosAsyncContainer,
+  CosmosBulkOperationResponse,
+  CosmosException,
+  CosmosItemOperation
+}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.PartitionKey
-import com.azure.cosmos.spark.BulkWriter.DefaultMaxPendingOperationPerCore
-import com.azure.cosmos.
-{
-    BulkItemRequestOptions,
-    BulkOperations,
-    BulkProcessingOptions,
-    BulkProcessingThresholds,
-    CosmosAsyncContainer,
-    CosmosBulkOperationResponse,
-    CosmosException,
-    CosmosItemOperation
-}
 import com.azure.cosmos.spark.BulkWriter.{DefaultMaxPendingOperationPerCore, emitFailureHandler}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
-import com.azure.cosmos.{
-  BulkItemRequestOptions,
-  BulkOperations, BulkProcessingOptions, CosmosAsyncContainer, CosmosBulkOperationResponse, CosmosException, CosmosItemOperation
-}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import reactor.core.Disposable
@@ -38,6 +33,7 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
 import scala.collection.concurrent.TrieMap
+
 
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
@@ -101,7 +97,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
-        .getCosmosBulkProcessingOptionAccessor()
+        .getCosmosBulkProcessingOptionAccessor
         .setOperationContext(bulkOptions, operationContextAndListenerTuple)
     }
   }
@@ -125,7 +121,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
           if (resp.getException != null) {
             Option(resp.getException) match {
-              case Some(cosmosException: CosmosException) => {
+              case Some(cosmosException: CosmosException) =>
                 log.logDebug(s"encountered ${cosmosException.getStatusCode}")
                 if (shouldIgnore(cosmosException)) {
                   log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
@@ -203,7 +199,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     semaphore.acquire()
     val cnt = totalScheduledMetrics.getAndIncrement()
-    log.logDebug(s"total scheduled ${cnt}")
+    log.logDebug(s"total scheduled $cnt")
 
     scheduleWriteInternal(partitionKeyValue, objectNode, OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1))
   }
@@ -283,7 +279,7 @@ class BulkWriter(container: CosmosAsyncContainer,
         assume(semaphore.availablePermits() == maxPendingOperations)
 
         log.logInfo(s"flushAndClose completed with no error. " +
-          s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, totalScheduled=${totalScheduledMetrics}")
+          s"totalSuccessfulIngestionMetrics=${totalSuccessfulIngestionMetrics.get()}, totalScheduled=$totalScheduledMetrics")
         assume(totalScheduledMetrics.get() == totalSuccessfulIngestionMetrics.get)
       } finally {
         closed.set(true)
@@ -302,7 +298,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
   }
 
-  private def captureIfFirstFailure(throwable: Throwable) = {
+  private def captureIfFirstFailure(throwable: Throwable): Unit = {
     log.logError("capture failure", throwable)
     lock.lock()
     try {
