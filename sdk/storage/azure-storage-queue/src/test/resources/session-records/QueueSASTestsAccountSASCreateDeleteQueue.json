@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/cf320dddcf320ddd71971375275b773e1ce247a6b5?sv=2020-08-04&ss=q&srt=sco&se=2021-06-12T23%3A00%3A48Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/cf320dddcf320ddd71971375275b773e1ce247a6b5?sv=2020-10-02&ss=q&srt=sco&se=2021-06-12T23%3A00%3A48Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.11.0-beta.1 (11.0.8; Windows 10; 10.0)",
@@ -20,7 +20,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.queue.core.windows.net/cf320dddcf320ddd71971375275b773e1ce247a6b5?sv=2020-08-04&ss=q&srt=sco&se=2021-06-12T23%3A00%3A48Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/cf320dddcf320ddd71971375275b773e1ce247a6b5?sv=2020-10-02&ss=q&srt=sco&se=2021-06-12T23%3A00%3A48Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-08-04",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.11.0-beta.1 (11.0.8; Windows 10; 10.0)",
