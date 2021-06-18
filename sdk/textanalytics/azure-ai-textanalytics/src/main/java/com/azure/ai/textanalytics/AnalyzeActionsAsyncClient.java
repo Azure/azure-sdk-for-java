@@ -34,6 +34,7 @@ import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTask;
 import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityLinkingTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
@@ -81,7 +82,6 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
@@ -202,7 +202,7 @@ class AnalyzeActionsAsyncClient {
                         entitiesTask.setParameters(
                             new EntitiesTaskParameters()
                                 .setModelVersion(action.getModelVersion())
-                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType())));
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
                         return entitiesTask;
                     }).collect(Collectors.toList()))
             .setEntityRecognitionPiiTasks(actions.getRecognizePiiEntitiesOptions() == null ? null
@@ -218,7 +218,7 @@ class AnalyzeActionsAsyncClient {
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     action.getDomainFilter() == null ? null
                                         : action.getDomainFilter().toString()))
-                                .setStringIndexType(getNonNullStringIndexType(action.getStringIndexType()))
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))
                         );
                         return piiTask;
@@ -384,7 +384,7 @@ class AnalyzeActionsAsyncClient {
                 final RecognizeEntitiesActionResult actionResult = new RecognizeEntitiesActionResult();
                 final EntitiesResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizeEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizeEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toRecognizeEntitiesResultCollectionResponse(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -398,7 +398,7 @@ class AnalyzeActionsAsyncClient {
                 final RecognizePiiEntitiesActionResult actionResult = new RecognizePiiEntitiesActionResult();
                 final PiiResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizePiiEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toRecognizePiiEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -412,7 +412,7 @@ class AnalyzeActionsAsyncClient {
                 final ExtractKeyPhrasesActionResult actionResult = new ExtractKeyPhrasesActionResult();
                 final KeyPhraseResult results = taskItem.getResults();
                 if (results != null) {
-                    ExtractKeyPhrasesActionResultPropertiesHelper.setResult(actionResult,
+                    ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toExtractKeyPhrasesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -427,7 +427,7 @@ class AnalyzeActionsAsyncClient {
                 final RecognizeLinkedEntitiesActionResult actionResult = new RecognizeLinkedEntitiesActionResult();
                 final EntityLinkingResult results = taskItem.getResults();
                 if (results != null) {
-                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setResult(actionResult,
+                    RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toRecognizeLinkedEntitiesResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
@@ -442,7 +442,7 @@ class AnalyzeActionsAsyncClient {
                 final AnalyzeSentimentActionResult actionResult = new AnalyzeSentimentActionResult();
                 final SentimentResponse results = taskItem.getResults();
                 if (results != null) {
-                    AnalyzeSentimentActionResultPropertiesHelper.setResult(actionResult,
+                    AnalyzeSentimentActionResultPropertiesHelper.setDocumentResults(actionResult,
                         toAnalyzeSentimentResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,

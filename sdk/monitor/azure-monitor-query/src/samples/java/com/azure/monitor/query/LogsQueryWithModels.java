@@ -28,11 +28,11 @@ public class LogsQueryWithModels {
                 .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
                 .build();
 
-        LogsClient logsClient = new LogsClientBuilder()
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(tokenCredential)
                 .buildClient();
 
-        LogsQueryResult queryResults = logsClient
+        LogsQueryResult queryResults = logsQueryClient
                 .queryLogs("{workspace-id}", "AppRequests", null);
 
         // Sample to use a model type to read the results

@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
@@ -46,7 +47,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
@@ -85,7 +85,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                         options.getModelVersion(),
-                        getNonNullStringIndexType(options.getStringIndexType()),
+                        StringIndexType.UTF16CODE_UNIT,
                         options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
@@ -121,7 +121,7 @@ class AnalyzeHealthcareEntityAsyncClient {
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                         options.getModelVersion(),
-                        getNonNullStringIndexType(options.getStringIndexType()),
+                        StringIndexType.UTF16CODE_UNIT,
                         options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {

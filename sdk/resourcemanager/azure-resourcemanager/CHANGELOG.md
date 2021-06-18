@@ -2,7 +2,7 @@
 
 ## 2.6.0-beta.1 (Unreleased)
 
-- Added Support for Challenge Based Authentication in `AuthenticationPolicy`.
+- Added support for Challenge Based Authentication in `AuthenticationPolicy`.
 
 ## 2.5.0 (2021-05-28)
 - Updated core dependency from resources
