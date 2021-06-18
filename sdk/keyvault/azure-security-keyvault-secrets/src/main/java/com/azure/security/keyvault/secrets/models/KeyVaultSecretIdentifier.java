@@ -17,7 +17,7 @@ import java.net.URL;
  */
 @Immutable
 public final class KeyVaultSecretIdentifier {
-    private final ClientLogger clientLogger = new ClientLogger(KeyVaultSecretIdentifier.class);
+    private final ClientLogger logger = new ClientLogger(KeyVaultSecretIdentifier.class);
     private final String sourceId, vaultUrl, name, version;
 
     /**
@@ -39,7 +39,7 @@ public final class KeyVaultSecretIdentifier {
      */
     public KeyVaultSecretIdentifier(String sourceId) {
         if (sourceId == null) {
-            throw clientLogger.logThrowableAsError(new NullPointerException("'sourceId' cannot be null."));
+            throw logger.logThrowableAsError(new NullPointerException("'sourceId' cannot be null."));
         }
 
         try {
@@ -57,7 +57,7 @@ public final class KeyVaultSecretIdentifier {
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {
-            throw clientLogger.logThrowableAsError(
+            throw logger.logThrowableAsError(
                 new IllegalArgumentException("'sourceId' is not a valid Key Vault identifier.", e));
         }
     }
