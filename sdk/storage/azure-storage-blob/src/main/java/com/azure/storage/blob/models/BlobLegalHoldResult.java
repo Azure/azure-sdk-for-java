@@ -7,5 +7,9 @@ package com.azure.storage.blob.models;
  * The blob legal hold result.
  */
 public interface BlobLegalHoldResult {
+
+    /**
+     * @return whether or not a legal hold is enabled on the blob.
+     */
     boolean hasLegalHold();
 }
