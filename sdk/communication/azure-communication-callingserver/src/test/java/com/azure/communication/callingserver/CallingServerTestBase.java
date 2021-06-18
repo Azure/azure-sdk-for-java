@@ -43,7 +43,7 @@ public class CallingServerTestBase extends TestBase {
             "endpoint=https://acstestbot1.communication.azure.com/;accesskey=E0Oy7HRSLiMFyuXHQA/9nOYZu2Fc0ia9DxhHtsGhtHuc2RTan24ZAmTjxl5etgZW/+O3pGrXiEpazT81u3quzg==");
 
     protected static final String AZURE_TENANT_ID = Configuration.getGlobalConfiguration()
-        .get("AZURE_TENANT_ID",
+        .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
             "016a7064-0581-40b9-be73-6dde64d69d72");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
