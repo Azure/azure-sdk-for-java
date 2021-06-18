@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.microsoft.azure.spring.cloud.feature.manager.FeatureManagementConfiguration
+com.azure.spring.cloud.feature.manager.FeatureManagementConfiguration

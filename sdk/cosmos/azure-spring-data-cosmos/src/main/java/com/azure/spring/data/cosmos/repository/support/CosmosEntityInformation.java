@@ -66,6 +66,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final boolean autoGenerateId;
     private final boolean persitable;
     private final boolean autoScale;
+    private final boolean isIndexingPolicySpecified;
 
 
     /**
@@ -100,6 +101,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.autoCreateContainer = getIsAutoCreateContainer(domainType);
         this.persitable = Persistable.class.isAssignableFrom(domainType);
         this.autoScale = getIsAutoScale(domainType);
+        this.isIndexingPolicySpecified = isIndexingPolicySpecified(domainType);
     }
 
     @Override
@@ -266,6 +268,14 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      */
     public boolean isAutoScale() {
         return autoScale;
+    }
+
+    public boolean isIndexingPolicySpecified() {
+        return this.isIndexingPolicySpecified;
+    }
+
+    private boolean isIndexingPolicySpecified(Class<?> domainType) {
+        return domainType.getAnnotation(CosmosIndexingPolicy.class) != null;
     }
 
     private IndexingPolicy getIndexingPolicy(Class<?> domainType) {

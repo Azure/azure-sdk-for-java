@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.search.documents.indexes.models.TokenCharacterKind;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,11 +15,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /** Tokenizes the input into n-grams of the given size(s). This tokenizer is implemented using Apache Lucene. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.NGramTokenizer")
-@JsonFlatten
 @Fluent
-public class NGramTokenizer extends LexicalTokenizer {
+public final class NGramTokenizer extends LexicalTokenizer {
     /*
      * The minimum n-gram length. Default is 1. Maximum is 300. Must be less
      * than the value of maxGram.

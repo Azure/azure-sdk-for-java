@@ -121,6 +121,13 @@ public final class DelimitedTextSource extends CopySource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DelimitedTextSource withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

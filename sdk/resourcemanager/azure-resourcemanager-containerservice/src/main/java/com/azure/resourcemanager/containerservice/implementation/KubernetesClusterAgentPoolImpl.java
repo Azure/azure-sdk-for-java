@@ -233,6 +233,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withKubeletConfig(innerModel().kubeletConfig());
         agentPoolInner.withLinuxOSConfig(innerModel().linuxOSConfig());
         agentPoolInner.withEnableEncryptionAtHost(innerModel().enableEncryptionAtHost());
+        agentPoolInner.withEnableUltraSsd(innerModel().enableUltraSsd());
         agentPoolInner.withEnableFips(innerModel().enableFips());
         agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
         return agentPoolInner;

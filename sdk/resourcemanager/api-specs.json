@@ -78,7 +78,7 @@
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
     "args": "--payload-flattening-threshold=1 --tag=package-2021-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities",
-    "note": "Add '@JsonInclude(content = JsonInclude.Include.ALWAYS)' to 'userAssignedIdentities' property of class 'VirtualMachineIdentity', 'VirtualMachineScaleSetIdentity'"
+    "note": "Add '@JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)' to 'userAssignedIdentities' property of class 'VirtualMachineIdentity', 'VirtualMachineScaleSetIdentity'"
   },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
@@ -102,14 +102,14 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-03 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue",
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-05 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue",
     "note": "Remove 'final' from 'ManagedClusterAgentPoolProfile'"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--payload-flattening-threshold=0 --tag=package-2021-05"
+    "args": "--payload-flattening-threshold=0 --tag=package-2021-06"
   },
   "customerinsights": {
     "dir": "azure-resourcemanager-customerinsights",

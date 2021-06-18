@@ -1,7 +1,22 @@
 # Release History
 
-## 5.8.0-beta.1 (Unreleased)
+## 5.9.0-beta.1 (Unreleased)
 
+
+## 5.8.0 (2021-06-14)
+
+### Features Added
+
+- Add `EventHubClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventHubClientBuilder.credential(String, String, AzureSasCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureSasCredential)` overload.
+- Add `EventHubConnectionStringProperties` to get connection string properties.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-amqp` dependency to `2.2.0`.
 
 ## 5.7.1 (2021-05-10)
 

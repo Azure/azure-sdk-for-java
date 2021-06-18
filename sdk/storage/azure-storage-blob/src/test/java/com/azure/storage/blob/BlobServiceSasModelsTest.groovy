@@ -225,18 +225,6 @@ class BlobServiceSasModelsTest extends Specification {
         ex.getMessage().contains("accountName")
     }
 
-    def "ensure state version"() {
-        when:
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues("id"), "container")
-        implUtil.version = null
-        implUtil.ensureState()
-
-        then:
-        implUtil.version // Version is set
-        implUtil.resource == "c" // Default resource is container
-        !implUtil.permissions // Identifier was used so permissions is null
-    }
-
     def "ensure state illegal argument"() {
         when:
         BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues(), null)

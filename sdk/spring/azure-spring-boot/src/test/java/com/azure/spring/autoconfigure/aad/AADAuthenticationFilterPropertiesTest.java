@@ -54,7 +54,6 @@ public class AADAuthenticationFilterPropertiesTest {
         System.setProperty("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET);
         System.setProperty("azure.activedirectory.user-group.allowed-groups",
             TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", ""));
-        System.setProperty("azure.activedirectory.allow-telemetry", "false");
     }
 
     @Disabled
