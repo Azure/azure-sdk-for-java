@@ -4,6 +4,8 @@
 package com.azure.spring.aad.webapp;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -16,6 +18,8 @@ import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -23,6 +27,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 public class AuthorizedClientRepoTest {
 
@@ -36,60 +43,74 @@ public class AuthorizedClientRepoTest {
 
     @Test
     public void loadInitAzureAuthzClient() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                "azure.activedirectory.base-uri = fake-uri")
-            .run(context -> {
-                getBeans(context);
+        try (MockedStatic<RequestContextHolder> requestContextHolder =
+                 mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
+            WebApplicationContextRunnerUtils
+                .getContextRunnerWithRequiredProperties()
+                .withPropertyValues(
+                    "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                    "azure.activedirectory.base-uri = fake-uri")
+                .run(context -> {
+                    getBeans(context);
+                    ServletRequestAttributes attributes = mock(ServletRequestAttributes.class);
+                    requestContextHolder.when(() -> RequestContextHolder.currentRequestAttributes()).thenReturn(attributes);
+                    when(attributes.getResponse()).thenReturn(response);
+                    authorizedRepo.saveAuthorizedClient(
+                        createAuthorizedClient(azure),
+                        createAuthentication(),
+                        request,
+                        response);
 
-                authorizedRepo.saveAuthorizedClient(
-                    createAuthorizedClient(azure),
-                    createAuthentication(),
-                    request,
-                    response);
 
-                OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
-                    "graph",
-                    createAuthentication(),
-                    request);
+                    OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
+                        "graph",
+                        createAuthentication(),
+                        request);
 
-                assertNotNull(client);
-                assertNotNull(client.getAccessToken());
-                assertNotNull(client.getRefreshToken());
+                    assertNotNull(client);
+                    assertNotNull(client.getAccessToken());
+                    assertNotNull(client.getRefreshToken());
 
-                assertTrue(isTokenExpired(client.getAccessToken()));
-                assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
-            });
+                    assertTrue(isTokenExpired(client.getAccessToken()));
+                    assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
+                });
+        }
+
     }
 
     @Test
     public void saveAndLoadAzureAuthzClient() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                "azure.activedirectory.base-uri = fake-uri")
-            .run(context -> {
-                getBeans(context);
+        try (MockedStatic<RequestContextHolder> requestContextHolder =
+                 mockStatic(RequestContextHolder.class, Mockito.CALLS_REAL_METHODS)) {
+            WebApplicationContextRunnerUtils
+                .getContextRunnerWithRequiredProperties()
+                .withPropertyValues(
+                    "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                    "azure.activedirectory.base-uri = fake-uri")
+                .run(context -> {
+                    getBeans(context);
+                    ServletRequestAttributes attributes = mock(ServletRequestAttributes.class);
+                    requestContextHolder.when(() -> RequestContextHolder.currentRequestAttributes()).thenReturn(attributes);
+                    when(attributes.getResponse()).thenReturn(response);
+                    authorizedRepo.saveAuthorizedClient(
+                        createAuthorizedClient(graph),
+                        createAuthentication(),
+                        request,
+                        response);
 
-                authorizedRepo.saveAuthorizedClient(
-                    createAuthorizedClient(graph),
-                    createAuthentication(),
-                    request,
-                    response);
+                    OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
+                        "graph",
+                        createAuthentication(),
+                        request);
 
-                OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
-                    "graph",
-                    createAuthentication(),
-                    request);
+                    assertNotNull(client);
+                    assertNotNull(client.getAccessToken());
+                    assertNotNull(client.getRefreshToken());
 
-                assertNotNull(client);
-                assertNotNull(client.getAccessToken());
-                assertNotNull(client.getRefreshToken());
-
-                assertEquals("fake-access-token", client.getAccessToken().getTokenValue());
-                assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
-            });
+                    assertEquals("fake-access-token", client.getAccessToken().getTokenValue());
+                    assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
+                });
+        }
     }
 
     private void getBeans(AssertableWebApplicationContext context) {
