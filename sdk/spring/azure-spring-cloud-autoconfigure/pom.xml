@@ -35,13 +35,6 @@
       <version>5.3.7</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
 
-		<!-- Telemetry -->
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-telemetry</artifactId>
-      <version>2.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
-    </dependency>
-
 		<!-- Cloud SQL -->
     <dependency>
       <groupId>org.springframework</groupId>

@@ -6,6 +6,7 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
@@ -20,7 +21,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 
@@ -28,6 +28,10 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void downloadMetadata(HttpClient httpClient) throws UnsupportedEncodingException {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadMetadata");
@@ -45,6 +49,10 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "RUN_CALLINGSERVER_TEST_RECORD",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void downloadVideo(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadVideo");

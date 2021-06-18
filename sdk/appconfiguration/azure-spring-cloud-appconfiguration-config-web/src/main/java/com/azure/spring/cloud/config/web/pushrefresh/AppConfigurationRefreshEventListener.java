@@ -26,7 +26,7 @@ public class AppConfigurationRefreshEventListener implements ApplicationListener
     @Override
     public void onApplicationEvent(AppConfigurationRefreshEvent event) {
         try {
-            appConfigurationRefresh.resetCache(event.getEndpoint());
+            appConfigurationRefresh.expireRefreshInterval(event.getEndpoint());
         } catch (Exception e) {
             LOGGER.error("Refresh failed with unexpected exception.", e);
         }

@@ -22,7 +22,6 @@ import org.springframework.mock.env.MockEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.keyvault.KeyVaultProperties.Property.ALLOW_TELEMETRY;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CERTIFICATE_PATH;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_ID;
 import static com.azure.spring.keyvault.KeyVaultProperties.Property.CLIENT_KEY;
@@ -39,7 +38,6 @@ public class KeyVaultEnvironmentPostProcessorTest {
     @BeforeEach
     public void setup() {
         environment = new MockEnvironment();
-        environment.setProperty(KeyVaultProperties.getPropertyName(ALLOW_TELEMETRY), "false");
         testProperties.clear();
         propertySources = environment.getPropertySources();
     }

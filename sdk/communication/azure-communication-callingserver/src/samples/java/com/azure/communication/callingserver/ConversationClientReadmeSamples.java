@@ -4,7 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.communication.callingserver.models.CallRecordingStateResult;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 
@@ -102,7 +102,7 @@ public class ConversationClientReadmeSamples {
     public CallRecordingState getRecordingState(CallingServerClient callingServerClient,
                                                 String serverCallId, String recordingId) {
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
-        CallRecordingStateResult callRecordingStateResult = serverCall.getRecordingState(recordingId);
+        CallRecordingProperties callRecordingStateResult = serverCall.getRecordingState(recordingId);
 
         // CallRecordingState: Active, Inactive
         // If the call has ended, CommunicationErrorException will be thrown. Inactive is
