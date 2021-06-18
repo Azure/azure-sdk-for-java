@@ -429,6 +429,9 @@ Here is a sample dependency management section in maven POM.
 </dependencyManagement>
 ```
 
+To a lesser extent, similar problem could occur in runtime for `azure-core-management` library, when one module depends on multiple Azure Java management SDKs with different versions.
+For example, `azure-resourcemanager` 2.6.0 would require `azure-core-management` 1.3.0 or above, relying on `ArmChallengeAuthenticationPolicy` class for continuous access evaluation support.
+
 ### ARM throttling
 
 Azure Resource Manager applies throttling on the number of requests sent from client within certain span of time.
