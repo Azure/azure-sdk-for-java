@@ -250,7 +250,6 @@ class QueueSASTests extends APISpec {
             .setResourceTypes(resourceType.toString())
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
-            .setVersion(QueueServiceVersion.V2019_02_02.version)
             .generateSasQueryParameters(credential)
             .encode()
 

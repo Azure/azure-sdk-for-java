@@ -82,6 +82,13 @@ public final class AzurePostgreSqlSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzurePostgreSqlSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

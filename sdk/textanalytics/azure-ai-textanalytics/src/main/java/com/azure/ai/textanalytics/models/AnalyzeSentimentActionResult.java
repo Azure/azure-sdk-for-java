@@ -10,11 +10,11 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
  * The {@link AnalyzeSentimentActionResult} model.
  */
 public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResult {
-    private AnalyzeSentimentResultCollection result;
+    private AnalyzeSentimentResultCollection documentResults;
 
     static {
         AnalyzeSentimentActionResultPropertiesHelper.setAccessor(
-            (actionsResult, result) -> actionsResult.setResult(result));
+            (actionsResult, documentResults) -> actionsResult.setDocumentResults(documentResults));
     }
 
     /**
@@ -25,12 +25,12 @@ public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResul
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public AnalyzeSentimentResultCollection getResult() {
+    public AnalyzeSentimentResultCollection getDocumentResults() {
         throwExceptionIfError();
-        return result;
+        return documentResults;
     }
 
-    private void setResult(AnalyzeSentimentResultCollection result) {
-        this.result = result;
+    private void setDocumentResults(AnalyzeSentimentResultCollection documentResults) {
+        this.documentResults = documentResults;
     }
 }
