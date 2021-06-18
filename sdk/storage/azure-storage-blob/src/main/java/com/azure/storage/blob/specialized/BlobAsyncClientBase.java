@@ -33,19 +33,21 @@ import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
 import com.azure.storage.blob.implementation.util.BlobQueryReader;
+import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
-import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
-import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
@@ -98,6 +100,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -2156,7 +2159,12 @@ public class BlobAsyncClientBase {
 
         BlobRequestConditions finalRequestConditions = requestConditions == null
             ? new BlobRequestConditions() : requestConditions;
-        // TODO (gapra) : Discuss, should we just expose ifUnmodifiedSince here?
+
+        ModelHelper.validateConditionsNotPresent(finalRequestConditions,
+            EnumSet.of(BlobRequestConditionProperty.LEASE_ID, BlobRequestConditionProperty.TAGS_CONDITIONS,
+                BlobRequestConditionProperty.IF_MATCH, BlobRequestConditionProperty.IF_NONE_MATCH,
+                BlobRequestConditionProperty.IF_MODIFIED_SINCE));
+
         return this.azureBlobStorage.getBlobs().setImmutabilityPolicyWithResponseAsync(containerName, blobName, null,
             null, finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),
             finalImmutabilityPolicy.getPolicyMode(),
@@ -2265,6 +2273,6 @@ public class BlobAsyncClientBase {
             legalHold, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
-                new BlobLegalHoldResult(response.getDeserializedHeaders().isXMsLegalHold())));
+                new InternalBlobLegalHoldResult(response.getDeserializedHeaders().isXMsLegalHold())));
     }
 }
