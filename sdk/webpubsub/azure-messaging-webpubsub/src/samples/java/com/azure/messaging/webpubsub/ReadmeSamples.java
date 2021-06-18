@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -68,7 +69,7 @@ public class ReadmeSamples {
             .buildClient();
 
         WebPubSubGroup javaGroup = webPubSubServiceClient.getGroup("Java");
-        javaGroup.sendToAll("Hello Java!");
+        javaGroup.sendToAll("Hello Java!", WebPubSubContentType.TEXT_PLAIN);
     }
 
     /**
@@ -80,7 +81,7 @@ public class ReadmeSamples {
             .hub("chat")
             .buildClient();
 
-        webPubSubServiceClient.sendToConnection("myconnectionid", "Hello connection!");
+        webPubSubServiceClient.sendToConnection("myconnectionid", "Hello connection!", WebPubSubContentType.TEXT_PLAIN);
     }
 
     /**
@@ -92,6 +93,6 @@ public class ReadmeSamples {
             .hub("chat")
             .buildClient();
 
-        webPubSubServiceClient.sendToUser("Andy", "Hello Andy!");
+        webPubSubServiceClient.sendToUser("Andy", "Hello Andy!", WebPubSubContentType.TEXT_PLAIN);
     }
 }

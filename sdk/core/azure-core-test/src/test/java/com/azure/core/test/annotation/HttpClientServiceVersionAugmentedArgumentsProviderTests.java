@@ -5,6 +5,7 @@ package com.azure.core.test.annotation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.ServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -51,53 +52,167 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
 
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("getServiceVersionsSupplier")
-    public void getServiceVersionsTest(String[] serviceVersionStrings, boolean useAllServiceVersions,
-        boolean useLatestServiceVersionOnly, Class<? extends ServiceVersion> serviceVersionType,
-        List<? extends ServiceVersion> expectedServiceVersions)
-        throws ReflectiveOperationException {
-        List<? extends ServiceVersion> actualServiceVersions = getServiceVersions(serviceVersionStrings,
-            useAllServiceVersions, useLatestServiceVersionOnly, serviceVersionType);
+    public void getServiceVersionsTest(TestingServiceVersions testingServiceVersions, String minimumServiceVersion,
+        TestMode testMode, List<? extends ServiceVersion> expectedServiceVersions) {
+        List<? extends ServiceVersion> actualServiceVersions = getServiceVersions(testingServiceVersions,
+            minimumServiceVersion, AzureTestingServiceVersion.class, testMode);
 
         assertEquals(expectedServiceVersions.size(), actualServiceVersions.size());
-        assertTrue(actualServiceVersions.containsAll(expectedServiceVersions));
+        for (int i = 0; i < expectedServiceVersions.size(); i++) {
+            assertEquals(expectedServiceVersions.get(i), actualServiceVersions.get(i));
+        }
     }
 
     private static Stream<Arguments> getServiceVersionsSupplier() {
-        Class<? extends ServiceVersion> serviceVersionType = AzureTestingServiceVersion.class;
-
         return Stream.of(
-            // No service versions, not using all versions, and not using latest only defaults to latest.
-            Arguments.of(new String[0], false, false, serviceVersionType, Collections.singletonList(GA)),
+            // Test class without TestingServiceVersions enum uses latest service version.
+            Arguments.of(null, "", TestMode.PLAYBACK, Collections.singletonList(GA)),
+            Arguments.of(null, "", TestMode.LIVE, Collections.singletonList(GA)),
+            Arguments.of(null, "", TestMode.RECORD, Collections.singletonList(GA)),
+            Arguments.of(null, null, TestMode.PLAYBACK, Collections.singletonList(GA)),
+            Arguments.of(null, null, TestMode.LIVE, Collections.singletonList(GA)),
+            Arguments.of(null, null, TestMode.RECORD, Collections.singletonList(GA)),
 
-            // Service versions not using all versions correctly map to their values.
-            Arguments.of(new String[]{ALPHA.getVersion(), BETA.getVersion()}, false, false, serviceVersionType,
-                Arrays.asList(ALPHA, BETA)),
+            // PLAYBACK and RECORD test modes use latest service version if recording service version isn't set.
+            Arguments.of(createTestingServiceVersions(null), "", TestMode.PLAYBACK, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions(null), null, TestMode.PLAYBACK, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions(""), "", TestMode.PLAYBACK, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions(""), null, TestMode.PLAYBACK, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions(null), "", TestMode.RECORD, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions(null), null, TestMode.RECORD, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions(""), "", TestMode.RECORD, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions(""), null, TestMode.RECORD, Collections.singletonList(GA)),
 
-            // Use latest only overrides passed service version strings
-            Arguments.of(new String[]{ALPHA.getVersion(), BETA.getVersion()}, false, true, serviceVersionType,
-                Collections.singletonList(GA)),
+            // PLAYBACK and RECORD test modes use the recording service version if set.
+            Arguments.of(createTestingServiceVersions("alpha"), "", TestMode.PLAYBACK,
+                Collections.singletonList(ALPHA)),
+            Arguments.of(createTestingServiceVersions("alpha"), null, TestMode.PLAYBACK,
+                Collections.singletonList(ALPHA)),
+            Arguments.of(createTestingServiceVersions("alpha"), "", TestMode.RECORD,
+                Collections.singletonList(ALPHA)),
+            Arguments.of(createTestingServiceVersions("alpha"), null, TestMode.RECORD,
+                Collections.singletonList(ALPHA)),
 
-            // Use all versions overrides the passed service versions.
-            Arguments.of(new String[0], true, false, serviceVersionType, Arrays.asList(ALPHA, BETA, GA)),
-            Arguments.of(new String[]{ALPHA.getVersion(), BETA.getVersion()}, true, false, serviceVersionType,
+            // LIVE test mode uses latest service version is no live service versions are set.
+            Arguments.of(createTestingServiceVersions("alpha"), "", TestMode.LIVE, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("alpha"), null, TestMode.LIVE, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("beta"), "", TestMode.LIVE, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("beta"), null, TestMode.LIVE, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("ga"), "", TestMode.LIVE, Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("ga"), null, TestMode.LIVE, Collections.singletonList(GA)),
+
+            // LIVE test mode uses all live service versions if no minimum service version is set.
+            Arguments.of(createTestingServiceVersions("alpha", "alpha", "beta", "ga"), "", TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA, GA)),
+            Arguments.of(createTestingServiceVersions("alpha", "alpha", "beta", "ga"), null, TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA, GA)),
+            Arguments.of(createTestingServiceVersions("beta", "alpha", "beta", "ga"), "", TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA, GA)),
+            Arguments.of(createTestingServiceVersions("beta", "alpha", "beta", "ga"), null, TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA, GA)),
+            Arguments.of(createTestingServiceVersions("ga", "alpha", "beta", "ga"), "", TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA, GA)),
+            Arguments.of(createTestingServiceVersions("ga", "alpha", "beta", "ga"), null, TestMode.LIVE,
                 Arrays.asList(ALPHA, BETA, GA)),
 
-            // USe latest only overrides using all service versions.
-            Arguments.of(new String[0], true, true, serviceVersionType, Collections.singletonList(GA))
+            Arguments.of(createTestingServiceVersions("alpha", "beta", "ga"), "", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("alpha", "beta", "ga"), null, TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("beta", "beta", "ga"), "", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("beta", "beta", "ga"), null, TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("ga", "beta", "ga"), "", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("ga", "beta", "ga"), null, TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "", TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), null, TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "", TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), null, TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "", TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), null, TestMode.LIVE,
+                Arrays.asList(ALPHA, BETA)),
+
+            // LIVE test mode uses the live service versions that support the minimum service version.
+            Arguments.of(createTestingServiceVersions("alpha", "alpha", "beta", "ga"), "beta", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("alpha", "alpha", "beta", "ga"), "beta", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("beta", "alpha", "beta", "ga"), "beta", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("beta", "alpha", "beta", "ga"), "beta", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("ga", "alpha", "beta", "ga"), "beta", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+            Arguments.of(createTestingServiceVersions("ga", "alpha", "beta", "ga"), "beta", TestMode.LIVE,
+                Arrays.asList(BETA, GA)),
+
+            Arguments.of(createTestingServiceVersions("alpha", "beta", "ga"), "ga", TestMode.LIVE,
+                Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("alpha", "beta", "ga"), "ga", TestMode.LIVE,
+                Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("beta", "beta", "ga"), "ga", TestMode.LIVE,
+                Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("beta", "beta", "ga"), "ga", TestMode.LIVE,
+                Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("ga", "beta", "ga"), "ga", TestMode.LIVE,
+                Collections.singletonList(GA)),
+            Arguments.of(createTestingServiceVersions("ga", "beta", "ga"), "ga", TestMode.LIVE,
+                Collections.singletonList(GA)),
+
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "beta", TestMode.LIVE,
+                Collections.singletonList(BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "beta", TestMode.LIVE,
+                Collections.singletonList(BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "beta", TestMode.LIVE,
+                Collections.singletonList(BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "beta", TestMode.LIVE,
+                Collections.singletonList(BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "beta", TestMode.LIVE,
+                Collections.singletonList(BETA)),
+            Arguments.of(createTestingServiceVersions("", "alpha", "beta"), "beta", TestMode.LIVE,
+                Collections.singletonList(BETA))
         );
+    }
+
+    private static TestingServiceVersions createTestingServiceVersions(String recordingServiceVersion,
+        String... liveServiceVersions) {
+        TestingServiceVersions testingServiceVersions = mock(TestingServiceVersions.class);
+        when(testingServiceVersions.serviceVersionType()).then(invocation -> AzureTestingServiceVersion.class);
+        when(testingServiceVersions.recordingServiceVersion()).thenReturn(recordingServiceVersion);
+        when(testingServiceVersions.liveServiceVersions()).thenReturn(liveServiceVersions);
+
+        return testingServiceVersions;
     }
 
     @Test
     public void nonEnumServiceVersionTypeThrows() {
-        assertThrows(NoSuchMethodException.class, () -> getServiceVersions(new String[]{"ignored"}, false, false,
-            ServiceVersion.class));
+        assertThrows(IllegalStateException.class, () -> getServiceVersions(null, "", ServiceVersion.class,
+            TestMode.LIVE));
     }
 
     @Test
     public void serviceVersionTypeWithoutGetLatestThrows() {
-        assertThrows(IllegalStateException.class, () -> getServiceVersions(null, false, false, ServiceVersion.class));
-        assertThrows(IllegalStateException.class, () -> getServiceVersions(new String[]{"ignored"}, false, true,
-            ServiceVersion.class));
+        assertThrows(IllegalStateException.class, () -> getServiceVersions(null, "",
+            ServiceVersionWithoutGetLatest.class, TestMode.LIVE));
+    }
+
+    @Test
+    public void serviceVersionTypesDoNotMatch() {
+        TestingServiceVersions testingServiceVersions = when(mock(TestingServiceVersions.class).serviceVersionType())
+            .then(invocation -> NonEnumServiceVersion.class)
+            .getMock();
+
+        assertThrows(IllegalStateException.class, () -> getServiceVersions(testingServiceVersions, "",
+            AzureTestingServiceVersion.class, TestMode.LIVE));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")

@@ -48,7 +48,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     public void asyncSendToAllVarArgs() {
         WebPubSubAsyncServiceClient client = getAsyncClient();
         // BEGIN: com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.sendToAll#String
-        client.sendToAll("Hello world!").block();
+        client.sendToAll("{\"message\": \"Hello world!\"}").block();
         // END: com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient.sendToAll#String
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncserviceclient.sendToAll#String-WebPubSubContentType
@@ -112,7 +112,7 @@ public final class WebPubSubJavaDocCodeSnippets {
         WebPubSubAsyncGroup groupClient = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String
-        groupClient.sendToAll("Hello world!").block();
+        groupClient.sendToAll("{\"message\": \"Hello world!\"}").block();
         // END: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubasyncgroup.sendToAll#String-WebPubSubContentType
@@ -175,7 +175,7 @@ public final class WebPubSubJavaDocCodeSnippets {
     public void sendToAllVarArgs() {
         WebPubSubServiceClient client = getSyncClient();
         // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String
-        client.sendToAll("Hello world!");
+        client.sendToAll("{\"message\": \"Hello world!\"}");
         // END: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubserviceclient.sendToAll#String-WebPubSubContentType
@@ -232,7 +232,7 @@ public final class WebPubSubJavaDocCodeSnippets {
         WebPubSubGroup adminGroup = null;
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String
-        adminGroup.sendToAll("Hello world!");
+        adminGroup.sendToAll("{\"message\": \"Hello world!\"}");
         // END: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String
 
         // BEGIN: com.azure.messaging.webpubsub.webpubsubgroup.sendToAll#String-WebPubSubContentType

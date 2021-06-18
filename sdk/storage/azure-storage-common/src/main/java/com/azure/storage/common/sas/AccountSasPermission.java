@@ -55,18 +55,18 @@ public final class AccountSasPermission {
      * Creates an {@link AccountSasPermission} from the specified permissions string. This method will throw an {@link
      * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
-     * @param permString A {@code String} which represents the {@link AccountSasPermission}.
+     * @param permissionString A {@code String} which represents the {@link AccountSasPermission}.
      *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
      *
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u, p,
+     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, w, d, x, l, a, c, u, p,
      * t or f.
      */
-    public static AccountSasPermission parse(String permString) {
+    public static AccountSasPermission parse(String permissionString) {
         AccountSasPermission permissions = new AccountSasPermission();
 
-        for (int i = 0; i < permString.length(); i++) {
-            char c = permString.charAt(i);
+        for (int i = 0; i < permissionString.length(); i++) {
+            char c = permissionString.charAt(i);
             switch (c) {
                 case 'r':
                     permissions.readPermission = true;
@@ -104,7 +104,7 @@ public final class AccountSasPermission {
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                            "Permissions", permissionString, c));
             }
         }
         return permissions;

@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.engine.SslDomain;
@@ -47,6 +48,7 @@ public class ConnectionOptionsTest {
         // Arrange
         final String productName = "test-product";
         final String clientVersion = "1.5.10";
+        final String scope = "test-scope";
 
         final String hostname = "host-name.com";
         final SslDomain.VerifyMode verifyMode = SslDomain.VerifyMode.VERIFY_PEER;
@@ -55,8 +57,8 @@ public class ConnectionOptionsTest {
 
         // Act
         final ConnectionOptions actual = new ConnectionOptions(hostname, tokenCredential,
-            CbsAuthorizationType.JSON_WEB_TOKEN, AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS,
-            scheduler, clientOptions, verifyMode, productName, clientVersion);
+            CbsAuthorizationType.JSON_WEB_TOKEN, scope, AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, verifyMode, productName, clientVersion);
 
         // Assert
         assertEquals(hostname, actual.getHostname());
@@ -71,6 +73,7 @@ public class ConnectionOptionsTest {
 
         assertEquals(tokenCredential, actual.getTokenCredential());
         assertEquals(CbsAuthorizationType.JSON_WEB_TOKEN, actual.getAuthorizationType());
+        assertEquals(scope, actual.getAuthorizationScope());
         assertEquals(retryOptions, actual.getRetry());
         assertEquals(verifyMode, actual.getSslVerifyMode());
     }

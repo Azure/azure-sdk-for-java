@@ -87,6 +87,13 @@ public class CopySource {
     private Object maxConcurrentConnections;
 
     /*
+     * If true, disable data store metrics collection. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "disableMetricsCollection")
+    private Object disableMetricsCollection;
+
+    /*
      * A copy activity source.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -152,6 +159,28 @@ public class CopySource {
      */
     public CopySource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the disableMetricsCollection value.
+     */
+    public Object disableMetricsCollection() {
+        return this.disableMetricsCollection;
+    }
+
+    /**
+     * Set the disableMetricsCollection property: If true, disable data store metrics collection. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
+     *
+     * @param disableMetricsCollection the disableMetricsCollection value to set.
+     * @return the CopySource object itself.
+     */
+    public CopySource withDisableMetricsCollection(Object disableMetricsCollection) {
+        this.disableMetricsCollection = disableMetricsCollection;
         return this;
     }
 

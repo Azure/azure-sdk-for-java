@@ -6,16 +6,16 @@ package com.azure.core.test.annotation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.ImplUtils;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.support.AnnotationConsumer;
 import org.junit.platform.commons.support.ReflectionSupport;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -25,14 +25,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 final class HttpClientServiceVersionAugmentedArgumentsProvider
     implements ArgumentsProvider, AnnotationConsumer<HttpClientServiceVersionAugmentedSource> {
-    private static final TestMode TEST_MODE = ImplUtils.getTestMode();
+    private static final TestMode TEST_MODE = TestingHelpers.getTestMode();
 
     private static final Map<Class<? extends ServiceVersion>, ServiceVersion> CLASS_TO_LATEST_SERVICE_VERSION
         = new ConcurrentHashMap<>();
@@ -40,50 +41,53 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
     private static final Map<Class<? extends ServiceVersion>, Map<String, ServiceVersion>>
         CLASS_TO_MAP_STRING_SERVICE_VERSION = new ConcurrentHashMap<>();
 
+    private static final String SERVICE_VERSION_TYPES_MUST_MATCH = "The 'serviceVersionType' used by the "
+        + "'TestingServiceVersions' and 'HttpClientServiceVersionAugmentedSource' annotations do not match. "
+        + "For proper testing behavior they must match. The give was, 'TestingServiceVersions': '%s' and "
+        + "'HttpClientServiceVersionAugmentedSource': '%s'.";
+
     private static final String MUST_BE_STATIC = "Source supplier method is required to be static. Method: %s.";
 
     private static final String MUST_BE_STREAM_ARGUMENTS =
         "Source supplier method is required to return Stream<Arguments>. Return type: %s.";
 
-    private String sourceSupplier;
-    private boolean noSourceSupplier;
+    private final ClientLogger logger = new ClientLogger(HttpClientServiceVersionAugmentedArgumentsProvider.class);
 
-    private String[] serviceVersions;
-    private boolean useAllServiceVersions;
-    private boolean useLatestServiceVersionOnly;
+    private String minimumServiceVersion;
     private Class<? extends ServiceVersion> serviceVersionType;
-
-    private boolean ignoreHttpClients;
-    private boolean usePlaybackClient;
+    private String sourceSupplier;
+    private boolean useHttpClientPermutation;
 
     @Override
     public void accept(HttpClientServiceVersionAugmentedSource annotation) {
-        this.sourceSupplier = annotation.sourceSupplier();
-        this.noSourceSupplier = CoreUtils.isNullOrEmpty(sourceSupplier);
-
-        this.serviceVersions = annotation.serviceVersions();
-        this.useAllServiceVersions = annotation.useAllServiceVersions();
-        this.useLatestServiceVersionOnly = CoreUtils.isNullOrEmpty(serviceVersions) || TEST_MODE == TestMode.PLAYBACK;
+        this.minimumServiceVersion = annotation.minimumServiceVersion();
         this.serviceVersionType = annotation.serviceVersionType();
 
-        this.ignoreHttpClients = annotation.ignoreHttpClients();
-        this.usePlaybackClient = TEST_MODE == TestMode.PLAYBACK;
+        if (!Enum.class.isAssignableFrom(serviceVersionType)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'serviceVersionType' isn't an instance of Enum."));
+        }
+
+        this.sourceSupplier = annotation.sourceSupplier();
+        this.useHttpClientPermutation = annotation.useHttpClientPermutation();
     }
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
         // If the TEST_MODE is PLAYBACK or HttpClients are being ignored don't use HttpClients.
         List<HttpClient> httpClientsToUse = Collections.singletonList(null);
-        if (!ignoreHttpClients && !usePlaybackClient) {
+        if (!useHttpClientPermutation && TEST_MODE != TestMode.PLAYBACK) {
             httpClientsToUse = TestBase.getHttpClients().collect(Collectors.toList());
         }
 
-        List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(serviceVersions, useAllServiceVersions,
-            useLatestServiceVersionOnly, serviceVersionType);
+        TestingServiceVersions testingServiceVersions = context.getRequiredTestClass()
+            .getAnnotation(TestingServiceVersions.class);
+        List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(testingServiceVersions,
+            minimumServiceVersion, serviceVersionType, TEST_MODE);
 
         // If the sourceSupplier isn't provided don't retrieve parameterized testing values.
         List<Arguments> testValues = null;
-        if (!noSourceSupplier) {
+        if (!CoreUtils.isNullOrEmpty(sourceSupplier)) {
             Object source = invokeSupplierMethod(context, sourceSupplier);
             testValues = convertSupplierSourceToArguments(source);
         }
@@ -106,11 +110,11 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
          * 5) HTTP clients exist.
          *    - Use a permutation of HTTP client X service versions X parameterized testing values.
          */
-        if (ignoreHttpClients && noSourceSupplier) {
+        if (!useHttpClientPermutation && testValues == null) {
             return serviceVersionsToUse.stream().map(Arguments::arguments);
-        } else if (ignoreHttpClients) {
+        } else if (!useHttpClientPermutation) {
             return createNonHttpPermutations(serviceVersionsToUse, testValues).stream();
-        } else if (noSourceSupplier) {
+        } else if (testValues == null) {
             return createHttpServiceVersionPermutations(httpClientsToUse, serviceVersionsToUse).stream();
         } else if (CoreUtils.isNullOrEmpty(httpClientsToUse)) {
             return createFullPermutations(Collections.singletonList(null), serviceVersionsToUse, testValues).stream();
@@ -120,43 +124,86 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
     }
 
     /*
-     * Get the ServiceVersions to use in testing.
+     * Gets the service versions that will be used during testing.
      *
-     * This uses reflection to convert the string values into their enum representation. If the string set is null
-     * 'getLatest' will be the only value returned.
+     * If the test class is annotated with TestingServiceVersions that will be used to determine which version(s) will
+     * be tested. When the TEST_MODE is PLAYBACK or RECORD the recording service version will be used. Otherwise, the
+     * live service versions that the test supports will be used.
+     *
+     * If the test class is not annotated with TestingServiceVersions the latest service version will be used for
+     * testing.
      */
-    static List<? extends ServiceVersion> getServiceVersions(String[] serviceVersionStrings,
-        boolean useAllServiceVersions, boolean useLatestServiceVersionOnly,
-        Class<? extends ServiceVersion> serviceVersionType) throws ReflectiveOperationException {
+    static List<? extends ServiceVersion> getServiceVersions(TestingServiceVersions testingServiceVersions,
+        String minimumServiceVersion, Class<? extends ServiceVersion> serviceVersionType, TestMode testMode) {
+        loadServiceVersion(serviceVersionType);
 
-        if (useLatestServiceVersionOnly || (CoreUtils.isNullOrEmpty(serviceVersionStrings) && !useAllServiceVersions)) {
-            return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.computeIfAbsent(serviceVersionType,
-                type -> {
-                    try {
-                        return (ServiceVersion) serviceVersionType.getMethod("getLatest").invoke(serviceVersionType);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                        throw new IllegalStateException("ServiceVersion class doesn't have a getLatest method. Class: "
-                            + serviceVersionType);
-                    }
-                }));
+        if (testingServiceVersions != null) {
+            // If the ServiceVersion types between the method and class annotations do not match throw an error.
+            // This is likely a configuration error.
+            if (testingServiceVersions.serviceVersionType() != serviceVersionType) {
+                throw new IllegalStateException(String.format(SERVICE_VERSION_TYPES_MUST_MATCH,
+                    testingServiceVersions.serviceVersionType().getName(), serviceVersionType.getName()));
+            }
+
+            // If the test mode isn't live return the recording/playback service version.
+            if (testMode != TestMode.LIVE) {
+                // If the recording service version hasn't been set use the latest.
+                if (CoreUtils.isNullOrEmpty(testingServiceVersions.recordingServiceVersion())) {
+                    return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
+                } else {
+                    return Collections.singletonList(CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType)
+                        .get(testingServiceVersions.recordingServiceVersion()));
+                }
+            }
+
+            // If there are no live service versions configured use the latest service version.
+            String[] liveServiceVersions = testingServiceVersions.liveServiceVersions();
+            if (CoreUtils.isNullOrEmpty(liveServiceVersions)) {
+                return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
+            }
+
+            // Otherwise use all live service versions supported by the test.
+            Enum<?> minimumServiceVersionEnum = CoreUtils.isNullOrEmpty(minimumServiceVersion)
+                ? null
+                : (Enum<?>) CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(minimumServiceVersion);
+            Set<String> liveServiceVersionsSet = Arrays.stream(liveServiceVersions).collect(Collectors.toSet());
+            return CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).values().stream()
+                .filter(sv -> liveServiceVersionsSet.contains(sv.getVersion()))
+                .filter(sv -> minimumServiceVersionEnum == null
+                    || ((Enum<?>) sv).ordinal() >= minimumServiceVersionEnum.ordinal())
+                .collect(Collectors.toList());
+        } else {
+            return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
         }
+    }
 
-        // Assumption that the service version type is an enum.
-        Method values = serviceVersionType.getMethod("values");
-        ServiceVersion[] serviceVersions = (ServiceVersion[]) values.invoke(serviceVersionType);
+    /*
+     * Helper method that loads all values and the latest ServiceVersion of the passed serviceVersionType.
+     */
+    private static void loadServiceVersion(Class<? extends ServiceVersion> serviceVersionType) {
+        CLASS_TO_MAP_STRING_SERVICE_VERSION.computeIfAbsent(serviceVersionType, type -> {
+            try {
+                ServiceVersion[] serviceVersions = (ServiceVersion[]) serviceVersionType.getMethod("values")
+                    .invoke(serviceVersionType);
 
-        Map<String, ServiceVersion> stringToServiceVersion = CLASS_TO_MAP_STRING_SERVICE_VERSION
-            .computeIfAbsent(serviceVersionType, type -> Arrays.stream(serviceVersions)
-                .collect(Collectors.toMap(ServiceVersion::getVersion, sv -> sv)));
+                Map<String, ServiceVersion> stringServiceVersionMap = new TreeMap<>();
+                for (ServiceVersion serviceVersion : serviceVersions) {
+                    stringServiceVersionMap.put(serviceVersion.getVersion(), serviceVersion);
+                }
 
-        if (useAllServiceVersions) {
-            return new ArrayList<>(stringToServiceVersion.values());
-        }
+                return stringServiceVersionMap;
+            } catch (ReflectiveOperationException ex) {
+                throw new IllegalStateException(ex);
+            }
+        });
 
-        return Arrays.stream(serviceVersionStrings)
-            .map(stringToServiceVersion::get)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+        CLASS_TO_LATEST_SERVICE_VERSION.computeIfAbsent(serviceVersionType, type -> {
+            try {
+                return (ServiceVersion) serviceVersionType.getMethod("getLatest").invoke(serviceVersionType);
+            } catch (ReflectiveOperationException ex) {
+                throw new IllegalStateException(ex);
+            }
+        });
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")

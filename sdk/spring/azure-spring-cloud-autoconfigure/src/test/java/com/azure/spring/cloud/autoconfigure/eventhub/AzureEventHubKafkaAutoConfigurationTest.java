@@ -14,8 +14,8 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureEventHubKafkaAutoConfigurationTest {
 
@@ -51,12 +52,13 @@ public class AzureEventHubKafkaAutoConfigurationTest {
                           .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAzureEventHubPropertiesStorageAccountIllegal() {
         this.contextRunner.withPropertyValues(
             EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1",
             EVENT_HUB_PROPERTY_PREFIX + "checkpoint-storage-account=1")
-                          .run(context -> context.getBean(AzureEventHubProperties.class));
+                          .run(context -> assertThrows(IllegalStateException.class,
+                              () -> context.getBean(AzureEventHubProperties.class)));
     }
 
     @Test
@@ -68,7 +70,7 @@ public class AzureEventHubKafkaAutoConfigurationTest {
                           .run(context -> context.getBean(AzureEventHubProperties.class));
     }
 
-    @Ignore("org.apache.kafka.common.serialization.StringSerializer required on classpath")
+    @Disabled("org.apache.kafka.common.serialization.StringSerializer required on classpath")
     @Test
     public void testAzureEventHubPropertiesConfigured() {
         this.contextRunner.withPropertyValues(EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1").run(context -> {

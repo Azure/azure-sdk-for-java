@@ -39,6 +39,7 @@ public class TwinTests extends TwinTestBase {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
         String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
         String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
 
@@ -52,10 +53,10 @@ public class TwinTests extends TwinTestBase {
             Iterable<DigitalTwinsModelData> createdList = client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdRoomTwin = client.createOrReplaceDigitalTwin(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
 
-            logger.info("Created {} twin successfully", createdTwin.getId());
-            assertEquals(createdTwin.getId(), roomTwinId);
+            logger.info("Created {} twin successfully", createdRoomTwin.getId());
+            assertEquals(createdRoomTwin.getId(), roomTwinId);
 
             // Get Twin.
             DigitalTwinsResponse<String> getTwinResponse = client.getDigitalTwinWithResponse(roomTwinId, String.class, Context.NONE);
@@ -447,6 +448,57 @@ public class TwinTests extends TwinTestBase {
                 if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
+            } catch (Exception ex) {
+                throw new AssertionFailedError("Test cleanup failed", ex);
+            }
+        }
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
+    @Override
+    public void digitalTwinWithNumericStringProperty(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+        DigitalTwinsClient client = getClient(httpClient, serviceVersion);
+
+        String floorTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
+        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client, randomIntegerStringGenerator);
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID, client, randomIntegerStringGenerator);
+
+        String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
+        String floorModel = TestAssetsHelper.getFloorModelPayload(floorModelId, roomModelId, hvacModelId);
+        String floorTwin = TestAssetsHelper.getFloorTwinPayload(floorModelId);
+
+        List<String> modelsList = new ArrayList<>(Arrays.asList(roomModel, floorModel));
+
+        try {
+            // Create models to test the Twin lifecycle.
+            client.createModels(modelsList);
+            logger.info("Created models successfully");
+
+            BasicDigitalTwin floorTwinToCreate = deserializeJsonString(floorTwin, BasicDigitalTwin.class);
+            floorTwinToCreate.addToContents("name", "1234");
+            floorTwinToCreate.addToContents("roomType", "1234 spacious");
+
+            BasicDigitalTwin createdFloorTwin = client.createOrReplaceDigitalTwin(floorTwinId, floorTwinToCreate , BasicDigitalTwin.class);
+
+            logger.info("Created {} twin successfully", createdFloorTwin.getId());
+            assertEquals(createdFloorTwin.getId(), floorTwinId);
+        }
+        // clean up
+        finally {
+            try {
+                if (roomModelId != null) {
+                    client.deleteModel(roomModelId);
+                }
+                if (floorTwinId != null) {
+                    client.deleteDigitalTwin(floorTwinId);
+                }
+                if (floorModelId != null) {
+                    client.deleteModel(floorModelId);
+                }
+
             } catch (Exception ex) {
                 throw new AssertionFailedError("Test cleanup failed", ex);
             }

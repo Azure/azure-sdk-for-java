@@ -42,43 +42,6 @@ public @interface HttpClientServiceVersionAugmentedSource {
     String sourceSupplier() default "";
 
     /**
-     * List of service versions either the test method supports.
-     * <p>
-     * If no service versions are configured the latest service version available will be the default.
-     * <p>
-     * When {@link TestMode} is {@link TestMode#PLAYBACK} this value is ignored as playback always runs against the
-     * latest service version.
-     *
-     * @return A list of supported service version strings.
-     */
-    String[] serviceVersions() default {};
-
-    /**
-     * Flag that determines if all service versions should be used.
-     * <p>
-     * If this is set to true it overrides the configuration set in {@link #serviceVersions()}. By default this is
-     * false.
-     * <p>
-     * When {@link TestMode} is {@link TestMode#PLAYBACK} this value is ignored as playback always runs against the
-     * latest service version.
-     *
-     * @return A flag indicating if all service versions will be used in testing.
-     */
-    boolean useAllServiceVersions() default false;
-
-    /**
-     * The class that represents the service version type used by the test method.
-     * <p>
-     * This is used to convert the {@link #serviceVersions()} into their {@link ServiceVersion} type.
-     * <p>
-     * If no {@link #serviceVersions()} are provided this class will be used to determine the latest service version and
-     * use that.
-     *
-     * @return The class that represents the service version type used by the test method.
-     */
-    Class<? extends ServiceVersion> serviceVersionType();
-
-    /**
      * A flag indicating if the test method ignores {@link HttpClient HttpClients} that the test run is expected to
      * use.
      * <p>
@@ -87,5 +50,23 @@ public @interface HttpClientServiceVersionAugmentedSource {
      *
      * @return Whether the expected HttpClients to be used in testing are ignored.
      */
-    boolean ignoreHttpClients() default false;
+    boolean useHttpClientPermutation() default false;
+
+    /**
+     * The class that represents the service version type.
+     * <p>
+     * This is used to convert the {@link #minimumServiceVersion()} into its {@link ServiceVersion} type.
+     *
+     * @return The class that represents the minimum service version the test can be ran against.
+     */
+    Class<? extends ServiceVersion> serviceVersionType();
+
+    /**
+     * The minimum service version that the test can be ran against.
+     * <p>
+     * If this isn't set the test will run against all service versions.
+     *
+     * @return The minimum service version that the test can be ran against.
+     */
+    String minimumServiceVersion() default "";
 }

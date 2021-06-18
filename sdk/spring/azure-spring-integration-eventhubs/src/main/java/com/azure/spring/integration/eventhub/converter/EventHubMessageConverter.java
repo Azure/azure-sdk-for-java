@@ -27,7 +27,7 @@ import static org.springframework.messaging.support.NativeMessageHeaderAccessor.
  *
  * @author Warren Zhu
  */
-public class EventHubMessageConverter extends AbstractAzureMessageConverter<EventData> {
+public class EventHubMessageConverter extends AbstractAzureMessageConverter<EventData, EventData> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
 

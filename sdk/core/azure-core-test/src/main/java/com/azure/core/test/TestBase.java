@@ -4,7 +4,7 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
-import com.azure.core.test.implementation.ImplUtils;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
@@ -223,7 +223,7 @@ public abstract class TestBase implements BeforeEachCallback {
      * @return The {@link TestMode} being used for testing.
      */
     static TestMode initializeTestMode() {
-        return ImplUtils.getTestMode();
+        return TestingHelpers.getTestMode();
     }
 
     /**

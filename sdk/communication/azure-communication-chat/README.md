@@ -1,4 +1,4 @@
-# # Azure Communication Chat client library for Java
+# Azure Communication Chat client library for Java
 
 Azure Communication Chat contains the APIs used in chat applications for Azure Communication Services.  
 
@@ -20,7 +20,7 @@ Azure Communication Chat contains the APIs used in chat applications for Azure C
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-chat</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 

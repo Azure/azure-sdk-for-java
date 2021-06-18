@@ -24,6 +24,11 @@ public enum AzureTestingServiceVersion implements ServiceVersion {
         return version;
     }
 
+    /**
+     * Gets the latest {@link AzureTestingServiceVersion}.
+     *
+     * @return The latest {@link AzureTestingServiceVersion}.
+     */
     public static AzureTestingServiceVersion getLatest() {
         return GA;
     }

@@ -155,6 +155,12 @@ public class DatabaseAccountUpdateParameters {
     private Boolean enableAnalyticalStorage;
 
     /*
+     * Analytical storage specific properties.
+     */
+    @JsonProperty(value = "properties.analyticalStorageConfiguration")
+    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
+
+    /*
      * The object representing the policy for taking backups on an account.
      */
     @JsonProperty(value = "properties.backupPolicy")
@@ -178,6 +184,13 @@ public class DatabaseAccountUpdateParameters {
      */
     @JsonProperty(value = "properties.networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
+
+    /*
+     * Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
 
     /**
      * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
@@ -603,6 +616,27 @@ public class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @return the analyticalStorageConfiguration value.
+     */
+    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
+        return this.analyticalStorageConfiguration;
+    }
+
+    /**
+     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
+        return this;
+    }
+
+    /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
      *
      * @return the backupPolicy value.
@@ -685,6 +719,28 @@ public class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -710,6 +766,9 @@ public class DatabaseAccountUpdateParameters {
         }
         if (apiProperties() != null) {
             apiProperties().validate();
+        }
+        if (analyticalStorageConfiguration() != null) {
+            analyticalStorageConfiguration().validate();
         }
         if (backupPolicy() != null) {
             backupPolicy().validate();

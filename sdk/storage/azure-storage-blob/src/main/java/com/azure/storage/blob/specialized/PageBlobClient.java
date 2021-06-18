@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
@@ -69,6 +70,29 @@ public final class PageBlobClient extends BlobClientBase {
     PageBlobClient(PageBlobAsyncClient pageBlobAsyncClient) {
         super(pageBlobAsyncClient);
         this.pageBlobAsyncClient = pageBlobAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link PageBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link PageBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public PageBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new PageBlobClient(pageBlobAsyncClient.getEncryptionScopeClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link PageBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link PageBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public PageBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new PageBlobClient(pageBlobAsyncClient.getCustomerProvidedKeyClient(customerProvidedKey));
     }
 
     /**

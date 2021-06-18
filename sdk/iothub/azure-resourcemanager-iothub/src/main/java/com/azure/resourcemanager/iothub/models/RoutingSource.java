@@ -25,6 +25,9 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
     /** Static value DeviceJobLifecycleEvents for RoutingSource. */
     public static final RoutingSource DEVICE_JOB_LIFECYCLE_EVENTS = fromString("DeviceJobLifecycleEvents");
 
+    /** Static value DeviceConnectionStateEvents for RoutingSource. */
+    public static final RoutingSource DEVICE_CONNECTION_STATE_EVENTS = fromString("DeviceConnectionStateEvents");
+
     /**
      * Creates or finds a RoutingSource from its string representation.
      *

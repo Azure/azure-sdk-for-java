@@ -250,8 +250,7 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
         client.listFileSystems(listFileSystemsOptions, null).forEach(
             deletedFileSystem -> {
                 DataLakeFileSystemClient fileSystemClient = client.undeleteFileSystemWithResponse(
-                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion())
-                        .setDestinationFileSystemName(deletedFileSystem.getName() + "V2"), timeout,
+                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion()), timeout,
                     context).getValue();
             }
         );

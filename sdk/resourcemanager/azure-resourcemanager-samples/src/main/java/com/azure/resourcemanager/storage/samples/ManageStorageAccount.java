@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.storage.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
@@ -14,13 +13,10 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
-import com.azure.resourcemanager.storage.models.StorageService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Azure Storage sample for managing storage accounts -
@@ -88,21 +84,6 @@ public final class ManageStorageAccount {
 
             System.out.println("Created a Storage Account:");
             Utils.print(storageAccount2);
-
-
-            // ============================================================
-            // Update storage account by enabling encryption
-
-            System.out.println("Enabling blob encryption for the storage account: " + storageAccount2.name());
-
-            storageAccount2.update()
-                    .withBlobEncryption()
-                    .apply();
-
-            for (Map.Entry<StorageService, StorageAccountEncryptionStatus> encryptionStatus : storageAccount2.encryptionStatuses().entrySet()) {
-                String status = encryptionStatus.getValue().isEnabled() ? "Enabled" : "Not enabled";
-                System.out.println("Encryption status of the service " + encryptionStatus.getKey() + ":" + status);
-            }
 
             // Create a V2 storage account
 

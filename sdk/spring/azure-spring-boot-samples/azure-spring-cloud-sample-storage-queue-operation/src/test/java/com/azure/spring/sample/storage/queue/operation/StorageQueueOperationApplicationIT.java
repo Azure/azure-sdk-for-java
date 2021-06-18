@@ -3,14 +3,14 @@
 
 package com.azure.spring.sample.storage.queue.operation;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -20,10 +20,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = StorageQueueOperationApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-test.properties")
+@ExtendWith({ MockitoExtension.class })
 public class StorageQueueOperationApplicationIT {
 
     @Autowired
@@ -34,13 +34,13 @@ public class StorageQueueOperationApplicationIT {
         String message = UUID.randomUUID().toString();
 
         mvc.perform(post("/messages?message=" + message)).andExpect(status().isOk())
-            .andExpect(content().string(message));
+           .andExpect(content().string(message));
 
         Thread.sleep(1_000L);
 
         mvc.perform(get("/messages")
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(message));
+           .andExpect(status().isOk())
+           .andExpect(content().string(message));
     }
 }

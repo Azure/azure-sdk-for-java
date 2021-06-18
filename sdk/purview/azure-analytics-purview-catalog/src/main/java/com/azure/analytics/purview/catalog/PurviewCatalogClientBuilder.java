@@ -31,6 +31,7 @@ import java.util.Map;
             PurviewCatalogBaseClient.class,
             EntityBaseClient.class,
             GlossaryBaseClient.class,
+            DiscoveryBaseClient.class,
             RelationshipBaseClient.class,
             TypesBaseClient.class
         })
@@ -293,6 +294,25 @@ public final class PurviewCatalogClientBuilder {
             this.serializer = JsonSerializerProviders.createInstance();
         }
         GlossaryBaseClient client = new GlossaryBaseClient(endpoint, apiVersion, pipeline, serializer);
+        return client;
+    }
+
+    /**
+     * Builds an instance of DiscoveryBaseClient low level client.
+     *
+     * @return an instance of DiscoveryBaseClient.
+     */
+    public DiscoveryBaseClient buildDiscoveryBaseClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-05-01-preview";
+        }
+        if (pipeline == null) {
+            this.pipeline = createHttpPipeline();
+        }
+        if (serializer == null) {
+            this.serializer = JsonSerializerProviders.createInstance();
+        }
+        DiscoveryBaseClient client = new DiscoveryBaseClient(endpoint, apiVersion, pipeline, serializer);
         return client;
     }
 

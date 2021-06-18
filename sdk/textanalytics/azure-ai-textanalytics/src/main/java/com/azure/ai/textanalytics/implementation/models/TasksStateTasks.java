@@ -65,6 +65,12 @@ public final class TasksStateTasks {
     @JsonProperty(value = "entityLinkingTasks")
     private List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks;
 
+    /*
+     * The sentimentAnalysisTasks property.
+     */
+    @JsonProperty(value = "sentimentAnalysisTasks")
+    private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
+
     /**
      * Get the details property: The details property.
      *
@@ -245,6 +251,27 @@ public final class TasksStateTasks {
      */
     public TasksStateTasks setEntityLinkingTasks(List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks) {
         this.entityLinkingTasks = entityLinkingTasks;
+        return this;
+    }
+
+    /**
+     * Get the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @return the sentimentAnalysisTasks value.
+     */
+    public List<TasksStateTasksSentimentAnalysisTasksItem> getSentimentAnalysisTasks() {
+        return this.sentimentAnalysisTasks;
+    }
+
+    /**
+     * Set the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @param sentimentAnalysisTasks the sentimentAnalysisTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setSentimentAnalysisTasks(
+            List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
+        this.sentimentAnalysisTasks = sentimentAnalysisTasks;
         return this;
     }
 }

@@ -1,3 +1,13 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-active-directory
+description: "Stateless authentication filter Sample project for Azure AD Spring Boot Starter client library"
+urlFragment: "azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless"
+---
+
 # Stateless authentication filter sample for Azure AD Spring Boot Starter client library for Java
 
 ## Key concepts

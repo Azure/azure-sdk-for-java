@@ -11,10 +11,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import com.azure.security.keyvault.administration.options.SetRoleDefinitionOptions;
+import com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -100,11 +99,13 @@ public final class KeyVaultAccessControlClient {
     }
 
     /**
-     * Creates or updates a {@link KeyVaultRoleDefinition}.
+     * Creates or updates a {@link KeyVaultRoleDefinition} with a given name. If no name is provided, then a 
+     * {@link KeyVaultRoleDefinition} will be created with a randomly generated name.
      *
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleDefinition}. Managed HSM
      * only supports '/'.
-     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}. It can be any valid UUID.
+     * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}. It can be any valid UUID. If
+     * {@code null} is provided, a name will be randomly generated.
      *
      * @return The created or updated {@link KeyVaultRoleDefinition}.
      *
@@ -145,8 +146,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The retrieved {@link KeyVaultRoleDefinition}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -165,8 +166,8 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * retrieved {@link KeyVaultRoleDefinition}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
@@ -183,16 +184,14 @@ public final class KeyVaultAccessControlClient {
      * only supports '/'.
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
      *
-     * @return The deleted {@link KeyVaultRoleDefinition}.
-     *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleDefinition deleteRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        return asyncClient.deleteRoleDefinition(roleScope, roleDefinitionName).block();
+    public void deleteRoleDefinition(KeyVaultRoleScope roleScope, String roleDefinitionName) {
+        asyncClient.deleteRoleDefinition(roleScope, roleDefinitionName).block();
     }
 
     /**
@@ -202,18 +201,17 @@ public final class KeyVaultAccessControlClient {
      * @param roleDefinitionName The name of the {@link KeyVaultRoleDefinition}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the deleted
-     * {@link KeyVaultRoleDefinition}.
+     * @return A {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleDefinition role definition} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException If the {@link KeyVaultRoleScope role scope} or {@link String roleDefinitionName} are
      * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultRoleDefinition> deleteRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
-                                                                             String roleDefinitionName,
-                                                                             Context context) {
+    public Response<Void> deleteRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
+                                                           String roleDefinitionName,
+                                                           Context context) {
         return asyncClient.deleteRoleDefinitionWithResponse(roleScope, roleDefinitionName, context).block();
     }
 
@@ -261,8 +259,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return A {@link Mono} containing the created {@link KeyVaultRoleAssignment}.
      *
-     * @throws KeyVaultAdministrationException If the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId}
-     * are invalid.
+     * @throws KeyVaultAdministrationException If the given {@code roleScope}, {@code roleDefinitionId} or
+     * {@code principalId} are invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleDefinitionId} or
      * {@link String principalId} are {@code null}.
      */
@@ -283,10 +281,10 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The created {@link KeyVaultRoleAssignment}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
-     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
-     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
+     * already exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
+     * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultRoleAssignment createRoleAssignment(KeyVaultRoleScope roleScope, String roleDefinitionId,
@@ -307,10 +305,11 @@ public final class KeyVaultAccessControlClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the created
      * {@link KeyVaultRoleAssignment}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name already
-     * exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are invalid.
-     * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope}, {@link String roleAssignmentName} or
-     * {@link KeyVaultRoleAssignmentProperties properties} are {@code null}.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given
+     * name already exists or if the given {@code roleScope}, {@code roleDefinitionId} or {@code principalId} are
+     * invalid.
+     * @throws NullPointerException If the {@link KeyVaultRoleScope role scope}, {@link String roleAssignmentName},
+     * {@link String roleDefinitionId} or {@link String principalId} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
@@ -330,8 +329,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The {@link KeyVaultRoleAssignment}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -349,8 +348,8 @@ public final class KeyVaultAccessControlClient {
      *
      * @return The {@link KeyVaultRoleAssignment}.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
@@ -366,16 +365,14 @@ public final class KeyVaultAccessControlClient {
      * @param roleScope The {@link KeyVaultRoleScope role scope} of the {@link KeyVaultRoleAssignment}.
      * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
      *
-     * @return The {@link KeyVaultRoleAssignment}.
-     *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultRoleAssignment deleteRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        return deleteRoleAssignmentWithResponse(roleScope, roleAssignmentName, Context.NONE).getValue();
+    public void deleteRoleAssignment(KeyVaultRoleScope roleScope, String roleAssignmentName) {
+        asyncClient.deleteRoleAssignment(roleScope, roleAssignmentName).block();
     }
 
     /**
@@ -385,17 +382,17 @@ public final class KeyVaultAccessControlClient {
      * @param roleAssignmentName The name of the {@link KeyVaultRoleAssignment}.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return The {@link KeyVaultRoleAssignment}.
+     * @return A {@link Response} with a {@link Void} value.
      *
-     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name cannot
-     * be found or if the given {@code roleScope} is invalid.
+     * @throws KeyVaultAdministrationException If a {@link KeyVaultRoleAssignment role assignment} with the given name
+     * cannot be found or if the given {@code roleScope} is invalid.
      * @throws NullPointerException if the {@link KeyVaultRoleScope roleScope} or {@link String roleAssignmentName} are
      * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultRoleAssignment> deleteRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
-                                                                             String roleAssignmentName,
-                                                                             Context context) {
+    public Response<Void> deleteRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
+                                                           String roleAssignmentName,
+                                                           Context context) {
         return asyncClient.deleteRoleAssignmentWithResponse(roleScope, roleAssignmentName, context).block();
     }
 }
