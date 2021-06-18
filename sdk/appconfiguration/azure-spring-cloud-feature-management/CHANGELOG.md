@@ -1,7 +1,7 @@
 # Release History
 
 ## 2.0.0-beta.2 (Unreleased)
-
+- Updated TimeWindowFilter to support ISO-8601
 
 ## 2.0.0-beta.1 (2021-05-04)
 ### Breaking Changes

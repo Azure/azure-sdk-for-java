@@ -1,7 +1,11 @@
 # Release History
 
 ## 2.0.0-beta.2 (Unreleased)
-
+### Breaking Changes
+- Changed package path to azure.spring.cloud.appconfiguration.config
+- Renamed cache-expiration to refresh-interval
+- Moved and renamed feature-flag cache-expiration to `spring.cloud.azure.appconfiguration.stores[0].monitoring.feature-flag-refresh-interval`
+- Removed use of revisions endpoint
 
 ## 2.0.0-beta.1 (2021-05-04)
 ### Breaking Changes
