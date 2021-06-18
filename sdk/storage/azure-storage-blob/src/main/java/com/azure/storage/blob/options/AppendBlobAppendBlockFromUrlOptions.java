@@ -108,6 +108,9 @@ public class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
+     * Sets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
      * @param sourceAuthorization auth header for accessing source.
      * @return The updated options.
      */

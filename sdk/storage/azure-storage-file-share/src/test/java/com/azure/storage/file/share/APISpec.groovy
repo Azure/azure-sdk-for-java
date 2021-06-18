@@ -346,26 +346,15 @@ class APISpec extends StorageSpec {
         }
     }
 
-    static BlobServiceClient getOauthBlobServiceClient() {
-        def builder = new BlobServiceClientBuilder()
-            .endpoint("https://" + env.primaryAccount.name + ".blob.core.windows.net")
-        if (env.testMode != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build())
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(env.primaryAccount.credential)
-        }
-        return builder.buildClient()
-    }
-
-    static Mono<String> getAuthToken() {
+    static String getAuthToken() {
         if (env.testMode == TestMode.PLAYBACK) {
+            // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return Mono.just("recordingBearerToken")
         }
         new EnvironmentCredentialBuilder().build()
             .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
             .map { it.getToken() }
+            .block()
     }
 
     /**

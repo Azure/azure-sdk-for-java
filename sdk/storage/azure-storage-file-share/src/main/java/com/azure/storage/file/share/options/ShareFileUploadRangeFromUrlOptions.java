@@ -85,6 +85,9 @@ public class ShareFileUploadRangeFromUrlOptions {
     }
 
     /**
+     * Sets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
      * @param sourceAuthorization optional auth header for access to source URL.
      * @return modified options.
      */

@@ -320,7 +320,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def sourceBlob = cc.getBlobClient(generateBlobName())
         sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken().block()
+        def oauthHeader = getAuthToken()
         def blockId = Base64.getEncoder().encodeToString("myBlockId".getBytes())
 
         when:
@@ -2113,7 +2113,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def sourceBlob = cc.getBlobClient(generateBlobName())
         sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken().block()
+        def oauthHeader = getAuthToken()
 
         when:
         blockBlobClient.uploadFromUrlWithResponse(

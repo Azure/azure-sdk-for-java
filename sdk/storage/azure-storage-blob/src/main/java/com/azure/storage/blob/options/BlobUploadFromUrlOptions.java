@@ -170,6 +170,9 @@ public class BlobUploadFromUrlOptions {
     }
 
     /**
+     * Sets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
      * @param sourceAuthorization auth header for access to source.
      * @return The updated options.
      */

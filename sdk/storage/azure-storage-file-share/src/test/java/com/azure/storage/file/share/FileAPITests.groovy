@@ -756,13 +756,13 @@ class FileAPITests extends APISpec {
     def "Copy from URL with oauth source"() {
         given:
         def container = instrument(new BlobServiceClientBuilder())
-            .endpoint("https://" + env.primaryAccount.name + ".blob.core.windows.net")
-            .credential(new StorageSharedKeyCredential(env.primaryAccount.name, env.primaryAccount.key))
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildClient()
             .createBlobContainer(getShareName())
         def blob = container.getBlobClient(generatePathName())
         blob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken().block()
+        def oauthHeader = getAuthToken()
         primaryFileClient.create(data.defaultDataSize)
 
         when:
@@ -783,8 +783,8 @@ class FileAPITests extends APISpec {
     def "Copy from URL with oauth source invalid credential"() {
         given:
         def container = instrument(new BlobServiceClientBuilder())
-            .endpoint("https://" + env.primaryAccount.name + ".blob.core.windows.net")
-            .credential(new StorageSharedKeyCredential(env.primaryAccount.name, env.primaryAccount.key))
+            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(env.primaryAccount.credential)
             .buildClient()
             .createBlobContainer(getShareName())
         def blob = container.getBlobClient(generatePathName())

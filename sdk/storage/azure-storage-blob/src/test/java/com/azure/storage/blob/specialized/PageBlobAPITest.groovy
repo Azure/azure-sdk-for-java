@@ -608,7 +608,7 @@ class PageBlobAPITest extends APISpec {
         def sourceBlob = cc.getBlobClient(generateBlobName())
         def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
         sourceBlob.upload(BinaryData.fromBytes(data))
-        def oauthHeader = getAuthToken().block()
+        def oauthHeader = getAuthToken()
 
         when:
         bc.uploadPagesFromUrlWithResponse(

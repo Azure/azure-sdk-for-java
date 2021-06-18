@@ -118,6 +118,9 @@ public class PageBlobUploadPagesFromUrlOptions {
     }
 
     /**
+     * Sets "Authorization" header for accessing source URL. Currently only "Bearer" authentication is accepted by
+     * Storage.
+     *
      * @param sourceAuthorization auth header for accessing source content.
      * @return The updated options.
      */

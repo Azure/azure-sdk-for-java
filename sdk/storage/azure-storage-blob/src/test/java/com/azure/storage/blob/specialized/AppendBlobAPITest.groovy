@@ -584,7 +584,7 @@ class AppendBlobAPITest extends APISpec {
         setup:
         def sourceBlob = cc.getBlobClient(generateBlobName())
         sourceBlob.upload(data.defaultBinaryData)
-        def oauthHeader = getAuthToken().block()
+        def oauthHeader = getAuthToken()
 
         when:
         bc.appendBlockFromUrlWithResponse(
