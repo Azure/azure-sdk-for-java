@@ -48,9 +48,14 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     private final long refreshInterval;
 
-    KeyVaultCertificates(long refreshInterval) {
+    KeyVaultCertificates(long refreshInterval,
+                         String keyVaultUri,
+                         String tenantId,
+                         String clientId,
+                         String clientSecret,
+                         String managedIdentity) {
         this.refreshInterval = refreshInterval;
-        keyVaultClient = null;
+        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
     }
 
     KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
@@ -60,6 +65,7 @@ public class KeyVaultCertificates implements AzureCertificates {
 
     /**
      * Update KeyVaultClient
+     *
      * @param keyVaultUri keyVault uri
      * @param tenantId tenant id
      * @param clientId client id

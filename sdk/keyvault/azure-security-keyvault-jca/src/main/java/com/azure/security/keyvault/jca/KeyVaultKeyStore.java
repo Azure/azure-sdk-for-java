@@ -127,11 +127,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         jreCertificates = JreCertificates.getInstance();
         wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
-        keyVaultCertificates = new KeyVaultCertificates(refreshInterval);
-        keyVaultCertificates.updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+        keyVaultCertificates = new KeyVaultCertificates(
+            refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
         classpathCertificates = new ClasspathCertificates();
-        allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates,
-            keyVaultCertificates, classpathCertificates);
+        allCertificates = Arrays.asList(
+            jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
     }
 
     @Override
