@@ -101,7 +101,7 @@ service
 <details>
 <summary> batchai </summary>
 
-* [package-2018-05](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/batchai/resource-manager#tag-package-2018-05)
+* package-2018-05
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-batchai/1.0.0-beta.1/jar)
 </details>
 
