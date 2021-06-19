@@ -60,7 +60,7 @@ public final class ListHookOptions {
      * @param maxPageSize The maxPageSize value.
      * @return The ListHookOptions object itself.
      */
-    public ListHookOptions setMaxPageSize(int maxPageSize) {
+    public ListHookOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -72,7 +72,7 @@ public final class ListHookOptions {
      * @param skip The skip value.
      * @return ListHookOptions object itself.
      */
-    public ListHookOptions setSkip(int skip) {
+    public ListHookOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

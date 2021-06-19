@@ -29,7 +29,7 @@ public final class ListCredentialEntityOptions {
      *
      * @return The ListCredentialEntityOptions object itself.
      */
-    public ListCredentialEntityOptions setMaxPageSize(final int maxPageSize) {
+    public ListCredentialEntityOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -52,7 +52,7 @@ public final class ListCredentialEntityOptions {
      *
      * @return ListCredentialEntityOptions itself.
      */
-    public ListCredentialEntityOptions setSkip(final int skip) {
+    public ListCredentialEntityOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

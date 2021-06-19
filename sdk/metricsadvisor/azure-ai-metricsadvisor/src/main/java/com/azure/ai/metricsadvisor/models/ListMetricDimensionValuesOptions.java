@@ -61,7 +61,7 @@ public final class ListMetricDimensionValuesOptions {
      *
      * @return The ListMetricDimensionValuesOptions object itself.
      */
-    public ListMetricDimensionValuesOptions setMaxPageSize(int maxPageSize) {
+    public ListMetricDimensionValuesOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -74,7 +74,7 @@ public final class ListMetricDimensionValuesOptions {
      *
      * @return ListMetricDimensionValuesOptions itself.
      */
-    public ListMetricDimensionValuesOptions setSkip(int skip) {
+    public ListMetricDimensionValuesOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

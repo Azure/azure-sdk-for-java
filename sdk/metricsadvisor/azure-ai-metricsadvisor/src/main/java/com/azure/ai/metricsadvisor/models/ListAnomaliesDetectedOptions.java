@@ -48,7 +48,7 @@ public final class ListAnomaliesDetectedOptions {
      * @param maxPageSize The maxPageSize value.
      * @return The ListAnomaliesDetectedOptions object itself.
      */
-    public ListAnomaliesDetectedOptions setMaxPageSize(int maxPageSize) {
+    public ListAnomaliesDetectedOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -60,7 +60,7 @@ public final class ListAnomaliesDetectedOptions {
      * @param skip The skip value.
      * @return The ListAnomaliesDetectedOptions object itself.
      */
-    public ListAnomaliesDetectedOptions setSkip(int skip) {
+    public ListAnomaliesDetectedOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

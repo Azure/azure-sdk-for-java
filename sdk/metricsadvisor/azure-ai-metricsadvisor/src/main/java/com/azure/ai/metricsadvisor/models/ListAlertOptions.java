@@ -59,7 +59,7 @@ public final class ListAlertOptions {
      * @param maxPageSize The skip value.
      * @return ListAlertOptions itself.
      */
-    public ListAlertOptions setMaxPageSize(int maxPageSize) {
+    public ListAlertOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -71,7 +71,7 @@ public final class ListAlertOptions {
      * @param skip The skip value.
      * @return ListAlertOptions itself.
      */
-    public ListAlertOptions setSkip(int skip) {
+    public ListAlertOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

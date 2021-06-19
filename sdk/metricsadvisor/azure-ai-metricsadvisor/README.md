@@ -319,27 +319,27 @@ final AnomalyAlertConfiguration anomalyAlertConfiguration
 This example demonstrates how a user can query alerts triggered for an anomaly detection configuration and get anomalies for that anomalyAlert.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L256-L276 -->
 ```java
-ng alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
-l OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
-l OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-icsAdvisorClient.listAlerts(
-alertConfigurationId,
-    startTime, endTime)
-.forEach(alert -> {
-    System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
-    System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
+long alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
+final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
+final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
+MetricsAdvisorClient.listAlerts(
+    alertConfigurationId,
+        startTime, endTime)
+    .forEach(alert -> {
+        System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
+        System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
 
-    // List anomalies for returned alerts
-    metricsAdvisorClient.listAnomalies(
-        alertConfigurationId,
-        alert.getId())
-        .forEach(anomaly -> {
-            System.out.printf("DataPoint Anomaly was created on: %s%n", anomaly.getCreatedTime());
-            System.out.printf("DataPoint Anomaly severity: %s%n", anomaly.getSeverity().toString());
-            System.out.printf("DataPoint Anomaly status: %s%n", anomaly.getStatus());
-            System.out.printf("DataPoint Anomaly related series key: %s%n", anomaly.getSeriesKey().asMap());
-        });
-});
+        // List anomalies for returned alerts
+        metricsAdvisorClient.listAnomalies(
+            alertConfigurationId,
+            alert.getId())
+            .forEach(anomaly -> {
+                System.out.printf("DataPoint Anomaly was created on: %s%n", anomaly.getCreatedTime());
+                System.out.printf("DataPoint Anomaly severity: %s%n", anomaly.getSeverity().toString());
+                System.out.printf("DataPoint Anomaly status: %s%n", anomaly.getStatus());
+                System.out.printf("DataPoint Anomaly related series key: %s%n", anomaly.getSeriesKey().asMap());
+            });
+    });
 ```
 
 ## Troubleshooting

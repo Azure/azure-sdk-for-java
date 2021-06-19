@@ -21,7 +21,7 @@ public final class AnomalyAlertConfigurationHelper {
      */
     public interface AnomalyAlertConfigurationAccessor {
         void setId(AnomalyAlertConfiguration configuration, String id);
-        List<String> getIdOfHooksToAlertRaw(AnomalyAlertConfiguration configuration);
+        List<String> getHookIdsToAlertRaw(AnomalyAlertConfiguration configuration);
         List<String> getDimensionsToSplitAlertRaw(AnomalyAlertConfiguration configuration);
     }
 
@@ -38,8 +38,8 @@ public final class AnomalyAlertConfigurationHelper {
         accessor.setId(configuration, id);
     }
 
-    static List<String> getIdOfHooksToAlertRaw(AnomalyAlertConfiguration configuration) {
-        return accessor.getIdOfHooksToAlertRaw(configuration);
+    static List<String> getHookIdsToAlertRaw(AnomalyAlertConfiguration configuration) {
+        return accessor.getHookIdsToAlertRaw(configuration);
     }
 
     static List<String> getDimensionsToSplitAlertRaw(AnomalyAlertConfiguration configuration) {

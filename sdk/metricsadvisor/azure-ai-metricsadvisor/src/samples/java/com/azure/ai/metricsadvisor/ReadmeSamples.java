@@ -26,7 +26,7 @@ import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
@@ -190,7 +190,7 @@ public class ReadmeSamples {
             .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
 
         final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
-            metricsAdvisorAdminClient.createMetricAnomalyDetectionConfig(
+            metricsAdvisorAdminClient.createAnomalyDetectionConfig(
                 metricId,
                 new AnomalyDetectionConfiguration("My dataPoint anomaly detection configuration")
                     .setDescription("anomaly detection config description")
@@ -245,8 +245,8 @@ public class ReadmeSamples {
                                     .setSeverityRangeCondition(new SeverityCondition()
                                         .setMaxAlertSeverity(AnomalySeverity.HIGH)))
                         ))
-                    .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-                    .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
+                    .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
+                    .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
     }
 
     /**

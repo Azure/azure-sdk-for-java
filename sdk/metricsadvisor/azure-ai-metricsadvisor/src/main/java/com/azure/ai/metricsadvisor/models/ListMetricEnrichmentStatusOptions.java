@@ -39,7 +39,7 @@ public final class ListMetricEnrichmentStatusOptions {
      *
      * @return The ListDataFeedOptions object itself.
      */
-    public ListMetricEnrichmentStatusOptions setMaxPageSize(int maxPageSize) {
+    public ListMetricEnrichmentStatusOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ListMetricEnrichmentStatusOptions {
      * @param skip The skip value.
      * @return ListMetricEnrichmentStatusOptions itself.
      */
-    public ListMetricEnrichmentStatusOptions setSkip(int skip) {
+    public ListMetricEnrichmentStatusOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

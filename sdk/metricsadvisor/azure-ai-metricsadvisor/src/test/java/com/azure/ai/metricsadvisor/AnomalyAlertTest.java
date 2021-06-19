@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfigurati
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -249,10 +249,10 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
                 final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = client.updateAlertConfig(
                     createdAnomalyAlert.setMetricAlertConfigurations(
                         Arrays.asList(metricAnomalyAlertConfiguration, metricAnomalyAlertConfiguration2))
-                        .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.XOR));
+                        .setCrossMetricsOperator(MetricAlertConfigurationsOperator.XOR));
                 validateAnomalyAlertResult(inputAnomalyAlert
                     .addMetricAlertConfiguration(metricAnomalyAlertConfiguration2), updatedAnomalyAlertConfiguration);
-                assertEquals(MetricAnomalyAlertConfigurationsOperator.XOR.toString(),
+                assertEquals(MetricAlertConfigurationsOperator.XOR.toString(),
                     updatedAnomalyAlertConfiguration.getCrossMetricsOperator().toString());
 
                 // clear the set configurations, not allowed
@@ -320,13 +320,13 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
 
                 alertConfigurationId.set(createdAnomalyAlert.getId());
 
-                List<String> hookIds = new ArrayList<>(createdAnomalyAlert.getIdOfHooksToAlert());
+                List<String> hookIds = new ArrayList<>(createdAnomalyAlert.getHookIdsToAlert());
                 hookIds.remove(ALERT_HOOK_ID);
 
                 // Act & Assert
                 final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = client.updateAlertConfig(
-                    createdAnomalyAlert.setIdOfHooksToAlert(hookIds));
-                assertEquals(0, updatedAnomalyAlertConfiguration.getIdOfHooksToAlert().size());
+                    createdAnomalyAlert.setHookIdsToAlert(hookIds));
+                assertEquals(0, updatedAnomalyAlertConfiguration.getHookIdsToAlert().size());
             });
         } finally {
             if (!CoreUtils.isNullOrEmpty(alertConfigurationId.get())) {

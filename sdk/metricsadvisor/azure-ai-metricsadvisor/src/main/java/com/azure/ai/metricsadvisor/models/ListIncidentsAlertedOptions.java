@@ -39,7 +39,7 @@ public final class ListIncidentsAlertedOptions {
      *
      * @return The ListIncidentsAlertedOptions object itself.
      */
-    public ListIncidentsAlertedOptions setMaxPageSize(int maxPageSize) {
+    public ListIncidentsAlertedOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ListIncidentsAlertedOptions {
      * @param skip The skip value.
      * @return The ListIncidentsAlertedOptions object itself.
      */
-    public ListIncidentsAlertedOptions setSkip(int skip) {
+    public ListIncidentsAlertedOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

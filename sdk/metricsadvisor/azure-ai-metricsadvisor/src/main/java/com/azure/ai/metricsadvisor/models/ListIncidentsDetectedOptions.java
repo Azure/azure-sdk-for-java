@@ -39,7 +39,7 @@ public final class ListIncidentsDetectedOptions {
      * @param maxPageSize The maxPageSize value.
      * @return ListIncidentsDetectedOptions itself.
      */
-    public ListIncidentsDetectedOptions setMaxPageSize(int maxPageSize) {
+    public ListIncidentsDetectedOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }

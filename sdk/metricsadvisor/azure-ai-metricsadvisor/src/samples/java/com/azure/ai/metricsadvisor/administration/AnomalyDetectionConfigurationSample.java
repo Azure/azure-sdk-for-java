@@ -37,25 +37,25 @@ public class AnomalyDetectionConfigurationSample {
         System.out.printf("Creating detection configuration for metric: %s%n", metricId);
         AnomalyDetectionConfiguration config
             = advisorAdministrationClient
-            .createMetricAnomalyDetectionConfig(metricId, prepareDetectionConfigurationObject());
+            .createAnomalyDetectionConfig(metricId, prepareDetectionConfigurationObject());
         System.out.printf("Created detection configuration: %s%n", config.getId());
 
         // Retrieve the detection configuration that just created.
         System.out.printf("Fetching detection configuration: %s%n", config.getId());
-        config = advisorAdministrationClient.getMetricAnomalyDetectionConfig(
+        config = advisorAdministrationClient.getAnomalyDetectionConfig(
             config.getId());
         printDetectionConfiguration(config);
 
         // Update the detection configuration.
         System.out.printf("Updating detection configuration: %s%n", config.getId());
         config = updateDetectionConfigurationObject(config);
-        advisorAdministrationClient.updateMetricAnomalyDetectionConfig(config);
+        advisorAdministrationClient.updateAnomalyDetectionConfig(config);
         System.out.printf("Updated detection configuration%n");
 
         // List configurations
         System.out.printf("Listing detection configurations%n");
         PagedIterable<AnomalyDetectionConfiguration> detectionConfigsIterable
-            = advisorAdministrationClient.listMetricAnomalyDetectionConfigs(metricId);
+            = advisorAdministrationClient.listAnomalyDetectionConfigs(metricId);
 
         for (AnomalyDetectionConfiguration detectionConfig : detectionConfigsIterable) {
             printDetectionConfiguration(detectionConfig);
@@ -63,7 +63,7 @@ public class AnomalyDetectionConfigurationSample {
 
         // Delete the detection configuration.
         System.out.printf("Deleting detection configuration: %s%n", config.getId());
-        advisorAdministrationClient.deleteMetricAnomalyDetectionConfig(config.getId());
+        advisorAdministrationClient.deleteAnomalyDetectionConfig(config.getId());
         System.out.printf("Deleted detection configuration%n");
     }
 

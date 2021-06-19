@@ -14,7 +14,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOpt
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.administration.models.ListMetricAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListAnomalyDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -345,7 +345,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createMetricAnomalyDetectionConfig#String-AnomalyDetectionConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAnomalyDetectionConfig#String-AnomalyDetectionConfiguration}
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -361,10 +361,10 @@ public final class MetricsAdvisorAdministrationClient {
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfiguration createMetricAnomalyDetectionConfig(
+    public AnomalyDetectionConfiguration createAnomalyDetectionConfig(
         String metricId,
         AnomalyDetectionConfiguration detectionConfiguration) {
-        return createMetricAnomalyDetectionConfigWithResponse(metricId,
+        return createAnomalyDetectionConfigWithResponse(metricId,
             detectionConfiguration,
             Context.NONE).getValue();
     }
@@ -373,7 +373,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createMetricAnomalyDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAnomalyDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context}
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -390,11 +390,11 @@ public final class MetricsAdvisorAdministrationClient {
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> createMetricAnomalyDetectionConfigWithResponse(
+    public Response<AnomalyDetectionConfiguration> createAnomalyDetectionConfigWithResponse(
         String metricId,
         AnomalyDetectionConfiguration detectionConfiguration,
         Context context) {
-        return client.createMetricAnomalyDetectionConfigWithResponse(metricId, detectionConfiguration,
+        return client.createAnomalyDetectionConfigWithResponse(metricId, detectionConfiguration,
             context == null ? Context.NONE : context).block();
     }
 
@@ -402,7 +402,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getMetricAnomalyDetectionConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAnomalyDetectionConfig#String}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @return The {@link AnomalyDetectionConfiguration} identified by the given id.
@@ -411,16 +411,16 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfiguration getMetricAnomalyDetectionConfig(
+    public AnomalyDetectionConfiguration getAnomalyDetectionConfig(
         String detectionConfigurationId) {
-        return getMetricAnomalyDetectionConfigWithResponse(detectionConfigurationId, Context.NONE).getValue();
+        return getAnomalyDetectionConfigWithResponse(detectionConfigurationId, Context.NONE).getValue();
     }
 
     /**
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getMetricAnomalyDetectionConfigWithResponse#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAnomalyDetectionConfigWithResponse#String-Context}
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -430,9 +430,9 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> getMetricAnomalyDetectionConfigWithResponse(
+    public Response<AnomalyDetectionConfiguration> getAnomalyDetectionConfigWithResponse(
         String detectionConfigurationId, Context context) {
-        return client.getMetricAnomalyDetectionConfigWithResponse(detectionConfigurationId,
+        return client.getAnomalyDetectionConfigWithResponse(detectionConfigurationId,
             context == null ? Context.NONE : context).block();
     }
 
@@ -440,7 +440,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateMetricAnomalyDetectionConfig#AnomalyDetectionConfiguration}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAnomalyDetectionConfig#AnomalyDetectionConfiguration}
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @return The updated {@link AnomalyDetectionConfiguration}.
@@ -448,9 +448,9 @@ public final class MetricsAdvisorAdministrationClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfiguration updateMetricAnomalyDetectionConfig(
+    public AnomalyDetectionConfiguration updateAnomalyDetectionConfig(
         AnomalyDetectionConfiguration detectionConfiguration) {
-        return updateMetricAnomalyDetectionConfigWithResponse(detectionConfiguration, Context.NONE)
+        return updateAnomalyDetectionConfigWithResponse(detectionConfiguration, Context.NONE)
             .getValue();
     }
 
@@ -458,7 +458,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateMetricAnomalyDetectionConfigWithResponse#AnomalyDetectionConfiguration-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAnomalyDetectionConfigWithResponse#AnomalyDetectionConfiguration-Context}
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -467,10 +467,10 @@ public final class MetricsAdvisorAdministrationClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> updateMetricAnomalyDetectionConfigWithResponse(
+    public Response<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigWithResponse(
         AnomalyDetectionConfiguration detectionConfiguration,
         Context context) {
-        return client.updateMetricAnomalyDetectionConfigWithResponse(detectionConfiguration,
+        return client.updateAnomalyDetectionConfigWithResponse(detectionConfiguration,
             context == null ? Context.NONE : context).block();
     }
 
@@ -478,7 +478,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a metric anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteMetricAnomalyDetectionConfig#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAnomalyDetectionConfig#String}
      *
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      *
@@ -487,8 +487,8 @@ public final class MetricsAdvisorAdministrationClient {
      *     format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteMetricAnomalyDetectionConfig(String detectionConfigurationId) {
-        deleteMetricAnomalyDetectionConfigWithResponse(detectionConfigurationId, Context.NONE)
+    public void deleteAnomalyDetectionConfig(String detectionConfigurationId) {
+        deleteAnomalyDetectionConfigWithResponse(detectionConfigurationId, Context.NONE)
             .getValue();
     }
 
@@ -496,7 +496,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a metric anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteMetricAnomalyDetectionConfigWithResponse#String-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAnomalyDetectionConfigWithResponse#String-Context}
      *
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -506,10 +506,10 @@ public final class MetricsAdvisorAdministrationClient {
      *     format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteMetricAnomalyDetectionConfigWithResponse(
+    public Response<Void> deleteAnomalyDetectionConfigWithResponse(
         String detectionConfigurationId,
         Context context) {
-        return client.deleteMetricAnomalyDetectionConfigWithResponse(
+        return client.deleteAnomalyDetectionConfigWithResponse(
             detectionConfigurationId,
             context == null ? Context.NONE : context).block();
     }
@@ -518,7 +518,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyDetectionConfigs#String}
      *
      * @param metricId The metric id.
      * @return The anomaly detection configurations.
@@ -526,9 +526,9 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+    public PagedIterable<AnomalyDetectionConfiguration> listAnomalyDetectionConfigs(
         String metricId) {
-        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, null,
+        return new PagedIterable<>(client.listAnomalyDetectionConfigs(metricId, null,
             Context.NONE));
     }
 
@@ -536,7 +536,7 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listMetricAnomalyDetectionConfigs#String-ListMetricAnomalyDetectionConfigsOptions-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAnomalyDetectionConfigs#String-ListAnomalyDetectionConfigsOptions-Context}
      *
      * @param metricId The metric id.
      * @param options th e additional configurable options to specify when querying the result.
@@ -546,11 +546,11 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listMetricAnomalyDetectionConfigs(
+    public PagedIterable<AnomalyDetectionConfiguration> listAnomalyDetectionConfigs(
         String metricId,
-        ListMetricAnomalyDetectionConfigsOptions options,
+        ListAnomalyDetectionConfigsOptions options,
         Context context) {
-        return new PagedIterable<>(client.listMetricAnomalyDetectionConfigs(metricId, options,
+        return new PagedIterable<>(client.listAnomalyDetectionConfigs(metricId, options,
             context == null ? Context.NONE : context));
     }
 

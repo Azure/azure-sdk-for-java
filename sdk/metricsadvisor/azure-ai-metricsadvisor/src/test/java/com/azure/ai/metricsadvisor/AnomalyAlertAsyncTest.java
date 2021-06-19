@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfigurati
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
@@ -260,11 +260,11 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
                 StepVerifier.create(client.updateAlertConfig(
                     createdAnomalyAlert.setMetricAlertConfigurations(
                         Arrays.asList(metricAnomalyAlertConfiguration, metricAnomalyAlertConfiguration2))
-                        .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.XOR)))
+                        .setCrossMetricsOperator(MetricAlertConfigurationsOperator.XOR)))
                     .assertNext(updatedAnomalyAlert -> {
                         validateAnomalyAlertResult(inputAnomalyAlert
                             .addMetricAlertConfiguration(metricAnomalyAlertConfiguration2), updatedAnomalyAlert);
-                        assertEquals(MetricAnomalyAlertConfigurationsOperator.XOR.toString(),
+                        assertEquals(MetricAlertConfigurationsOperator.XOR.toString(),
                             updatedAnomalyAlert.getCrossMetricsOperator().toString());
                     }).verifyComplete();
 
@@ -334,14 +334,14 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
                 assertNotNull(createdAnomalyAlert);
                 alertConfigId.set(createdAnomalyAlert.getId());
 
-                List<String> hookIds = new ArrayList<>(createdAnomalyAlert.getIdOfHooksToAlert());
+                List<String> hookIds = new ArrayList<>(createdAnomalyAlert.getHookIdsToAlert());
                 hookIds.remove(ALERT_HOOK_ID);
 
                 // Act & Assert
                 StepVerifier.create(client.updateAlertConfig(
-                    createdAnomalyAlert.setIdOfHooksToAlert(hookIds)))
+                    createdAnomalyAlert.setHookIdsToAlert(hookIds)))
                     .assertNext(updatedAnomalyAlert ->
-                        assertEquals(0, updatedAnomalyAlert.getIdOfHooksToAlert().size()))
+                        assertEquals(0, updatedAnomalyAlert.getHookIdsToAlert().size()))
                     .verifyComplete();
 
             });

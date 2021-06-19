@@ -75,7 +75,7 @@ public final class ListMetricSeriesDefinitionOptions {
      *
      * @return The ListMetricSeriesDefinitionOptions object itself.
      */
-    public ListMetricSeriesDefinitionOptions setMaxPageSize(int maxPageSize) {
+    public ListMetricSeriesDefinitionOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -87,7 +87,7 @@ public final class ListMetricSeriesDefinitionOptions {
      * @param skip The skip value.
      * @return ListMetricSeriesDefinitionOptions itself.
      */
-    public ListMetricSeriesDefinitionOptions setSkip(int skip) {
+    public ListMetricSeriesDefinitionOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

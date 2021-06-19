@@ -18,7 +18,7 @@ public final class AnomalyAlertConfiguration {
     private String id;
     private final String name;
     private String description;
-    private MetricAnomalyAlertConfigurationsOperator crossMetricsOperator;
+    private MetricAlertConfigurationsOperator crossMetricsOperator;
     private List<MetricAlertConfiguration> metricAnomalyAlertConfigurations;
     private List<String> hookIds;
     private List<String> splitAlertByDimensions;
@@ -32,8 +32,8 @@ public final class AnomalyAlertConfiguration {
                 }
 
                 @Override
-                public List<String> getIdOfHooksToAlertRaw(AnomalyAlertConfiguration configuration) {
-                    return configuration.getIdOfHooksToAlertRaw();
+                public List<String> getHookIdsToAlertRaw(AnomalyAlertConfiguration configuration) {
+                    return configuration.getHookIdsToAlertRaw();
                 }
 
                 @Override
@@ -60,7 +60,7 @@ public final class AnomalyAlertConfiguration {
      * metric level {@link MetricAlertConfiguration} in the alert configuration.
      */
     public AnomalyAlertConfiguration(String name,
-        MetricAnomalyAlertConfigurationsOperator crossMetricsOperator) {
+        MetricAlertConfigurationsOperator crossMetricsOperator) {
         this.name = name;
         this.crossMetricsOperator = crossMetricsOperator;
         this.metricAnomalyAlertConfigurations = new ArrayList<>();
@@ -98,7 +98,7 @@ public final class AnomalyAlertConfiguration {
      *
      * @return The cross metric alert configuration operator.
      */
-    public MetricAnomalyAlertConfigurationsOperator getCrossMetricsOperator() {
+    public MetricAlertConfigurationsOperator getCrossMetricsOperator() {
         return this.crossMetricsOperator;
     }
 
@@ -116,7 +116,7 @@ public final class AnomalyAlertConfiguration {
      *
      * @return The hook ids.
      */
-    public List<String> getIdOfHooksToAlert() {
+    public List<String> getHookIdsToAlert() {
         if (this.hookIds != null) {
             return Collections.unmodifiableList(this.hookIds);
         } else {
@@ -153,7 +153,7 @@ public final class AnomalyAlertConfiguration {
      * @return The AnomalyAlertConfiguration object itself.
      */
     public AnomalyAlertConfiguration setCrossMetricsOperator(
-        MetricAnomalyAlertConfigurationsOperator crossMetricsOperator) {
+        MetricAlertConfigurationsOperator crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
         return this;
     }
@@ -194,7 +194,7 @@ public final class AnomalyAlertConfiguration {
      *
      * @return The AnomalyAlertConfiguration object itself.
      */
-    public AnomalyAlertConfiguration setIdOfHooksToAlert(List<String> hookIds) {
+    public AnomalyAlertConfiguration setHookIdsToAlert(List<String> hookIds) {
         this.hookIds = hookIds;
         return this;
     }
@@ -215,7 +215,7 @@ public final class AnomalyAlertConfiguration {
         this.id = id;
     }
 
-    private List<String> getIdOfHooksToAlertRaw() {
+    private List<String> getHookIdsToAlertRaw() {
         // Getter that won't translate null hookIds to empty-list.
         return this.hookIds;
     }

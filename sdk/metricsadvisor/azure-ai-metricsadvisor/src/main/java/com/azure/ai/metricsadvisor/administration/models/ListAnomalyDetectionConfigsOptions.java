@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * Additional parameters to set when listing anomaly detection configurations.
  */
 @Fluent
-public final class ListMetricAnomalyDetectionConfigsOptions {
+public final class ListAnomalyDetectionConfigsOptions {
     private Integer maxPageSize;
     private Integer skip;
 
@@ -39,7 +39,7 @@ public final class ListMetricAnomalyDetectionConfigsOptions {
      *
      * @return The ListMetricAnomalyDetectionConfigsOptions object itself.
      */
-    public ListMetricAnomalyDetectionConfigsOptions setMaxPageSize(int maxPageSize) {
+    public ListAnomalyDetectionConfigsOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ListMetricAnomalyDetectionConfigsOptions {
      * @param skip The skip value.
      * @return ListMetricAnomalyDetectionConfigsOptions itself.
      */
-    public ListMetricAnomalyDetectionConfigsOptions setSkip(int skip) {
+    public ListAnomalyDetectionConfigsOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

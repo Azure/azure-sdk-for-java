@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.administration.models.SeverityCondition;
@@ -47,8 +47,8 @@ public class MetricsAnomalyAlertConfigOperationsSample {
                             MetricAnomalyAlertScope.forWholeSeries())
                             .setAlertConditions(new MetricAnomalyAlertConditions()
                                 .setSeverityRangeCondition(new SeverityCondition().setMinAlertSeverity(AnomalySeverity.LOW)))))
-                    .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-                    .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
+                    .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
+                    .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
 
         System.out.printf("Created DataPoint Anomaly alert config: %s%n", createdAnomalyAlertConfig.getId());
 
@@ -61,7 +61,7 @@ public class MetricsAnomalyAlertConfigOperationsSample {
         System.out.printf("DataPoint Anomaly alert config name : %s%n", fetchAnomalyAlertConfig.getName());
         System.out.printf("DataPoint Anomaly alert config description : %s%n", fetchAnomalyAlertConfig.getDescription());
         System.out.println("DataPoint Anomaly alert configuration hook ids:");
-        fetchAnomalyAlertConfig.getIdOfHooksToAlert().forEach(System.out::println);
+        fetchAnomalyAlertConfig.getHookIdsToAlert().forEach(System.out::println);
         System.out.printf("DataPoint Anomaly alert configuration cross metrics operator: %s%n",
             fetchAnomalyAlertConfig.getCrossMetricsOperator().toString());
         System.out.println("DataFeedMetric level alert configurations for this anomaly alert config:");
@@ -78,19 +78,19 @@ public class MetricsAnomalyAlertConfigOperationsSample {
         // Update the anomaly alert config.
         System.out.printf("Updating anomaly alert config: %s%n", fetchAnomalyAlertConfig.getId());
 
-        List<String> hookIds = new ArrayList<>(fetchAnomalyAlertConfig.getIdOfHooksToAlert());
+        List<String> hookIds = new ArrayList<>(fetchAnomalyAlertConfig.getHookIdsToAlert());
         hookIds.remove(hookId2);
 
         final AnomalyAlertConfiguration updatedAnomalyAlertConfig
             = advisorAdministrationClient.updateAlertConfig(
             fetchAnomalyAlertConfig
-                .setIdOfHooksToAlert(hookIds)
+                .setHookIdsToAlert(hookIds)
                 .setDescription("updated to remove hookId2"));
 
 
         System.out.printf("Updated anomaly alert config%n");
         System.out.println("Updated anomaly alert config hook Id list:");
-        updatedAnomalyAlertConfig.getIdOfHooksToAlert().forEach(System.out::println);
+        updatedAnomalyAlertConfig.getHookIdsToAlert().forEach(System.out::println);
 
         // Delete the anomaly alert config.
         System.out.printf("Deleting anomaly alert config: %s%n", updatedAnomalyAlertConfig.getId());
@@ -109,7 +109,7 @@ public class MetricsAnomalyAlertConfigOperationsSample {
                 System.out.printf("DataPoint Anomaly alert config description : %s%n",
                     anomalyAlertConfigurationItem.getDescription());
                 System.out.println("DataPoint Anomaly alert configuration hook ids:");
-                anomalyAlertConfigurationItem.getIdOfHooksToAlert().forEach(System.out::println);
+                anomalyAlertConfigurationItem.getHookIdsToAlert().forEach(System.out::println);
                 System.out.printf("DataPoint Anomaly alert configuration cross metrics operator: %s%n",
                     anomalyAlertConfigurationItem.getCrossMetricsOperator().toString());
             });

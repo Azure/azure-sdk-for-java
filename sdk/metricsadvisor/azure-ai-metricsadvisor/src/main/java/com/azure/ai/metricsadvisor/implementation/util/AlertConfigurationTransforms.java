@@ -16,7 +16,7 @@ import com.azure.ai.metricsadvisor.administration.models.BoundaryDirection;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConfigurationsOperator;
+import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScopeType;
 import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
@@ -56,7 +56,7 @@ public final class AlertConfigurationTransforms {
             ? null : AnomalyAlertingConfigurationLogicType.fromString(
             alertConfiguration.getCrossMetricsOperator().toString()));
 
-        List<String> rawIds = AnomalyAlertConfigurationHelper.getIdOfHooksToAlertRaw(alertConfiguration);
+        List<String> rawIds = AnomalyAlertConfigurationHelper.getHookIdsToAlertRaw(alertConfiguration);
         if (rawIds != null) {
             innerAlertConfiguration.setHookIds(rawIds
                 .stream()
@@ -92,7 +92,7 @@ public final class AlertConfigurationTransforms {
             ? null : AnomalyAlertingConfigurationLogicType.fromString(
             alertConfiguration.getCrossMetricsOperator().toString()));
 
-        List<String> rawIds = AnomalyAlertConfigurationHelper.getIdOfHooksToAlertRaw(alertConfiguration);
+        List<String> rawIds = AnomalyAlertConfigurationHelper.getHookIdsToAlertRaw(alertConfiguration);
         if (rawIds != null) {
             innerAlertConfiguration.setHookIds(rawIds
                 .stream()
@@ -219,7 +219,7 @@ public final class AlertConfigurationTransforms {
             alertConfiguration = new AnomalyAlertConfiguration(innerAlertConfiguration.getName());
         } else {
             alertConfiguration = new AnomalyAlertConfiguration(innerAlertConfiguration.getName(),
-                MetricAnomalyAlertConfigurationsOperator.fromString(innerAlertConfiguration
+                MetricAlertConfigurationsOperator.fromString(innerAlertConfiguration
                     .getCrossMetricsOperator()
                     .toString()));
         }
@@ -227,7 +227,7 @@ public final class AlertConfigurationTransforms {
             innerAlertConfiguration.getAnomalyAlertingConfigurationId().toString());
 
         alertConfiguration.setDescription(innerAlertConfiguration.getDescription());
-        alertConfiguration.setIdOfHooksToAlert(innerAlertConfiguration
+        alertConfiguration.setHookIdsToAlert(innerAlertConfiguration
             .getHookIds()
             .stream()
             .map(UUID::toString).collect(Collectors.toList()));
