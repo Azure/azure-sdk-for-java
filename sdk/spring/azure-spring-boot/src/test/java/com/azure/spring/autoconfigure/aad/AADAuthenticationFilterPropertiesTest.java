@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.core.AzureProperties;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -44,6 +45,22 @@ public class AADAuthenticationFilterPropertiesTest {
             assertThat(properties.getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
             assertThat(properties.getActiveDirectoryGroups()
                     .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
+        }
+    }
+
+    @Test
+    public void loadPropertiesFromAzureProperties() {
+        configureAllRequiredProperties();
+        System.clearProperty("azure.activedirectory.tenant-id");
+        System.setProperty("spring.cloud.azure.tenant-id", "azure-tenant-id");
+
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            context.register(Config.class);
+            context.refresh();
+
+            final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+
+            assertThat(properties.getTenantId()).isEqualTo("azure-tenant-id");
         }
     }
 
@@ -99,7 +116,7 @@ public class AADAuthenticationFilterPropertiesTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AADAuthenticationProperties.class)
+    @EnableConfigurationProperties({AADAuthenticationProperties.class, AzureProperties.class})
     static class Config {
     }
 }

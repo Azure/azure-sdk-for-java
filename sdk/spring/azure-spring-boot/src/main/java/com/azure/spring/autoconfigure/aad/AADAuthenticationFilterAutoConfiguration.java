@@ -22,6 +22,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
+import com.azure.spring.core.AzureProperties;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
-@EnableConfigurationProperties({ AADAuthenticationProperties.class })
+@EnableConfigurationProperties({ AADAuthenticationProperties.class, AzureProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);

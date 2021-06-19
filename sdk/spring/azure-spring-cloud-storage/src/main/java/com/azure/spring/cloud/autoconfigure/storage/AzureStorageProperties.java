@@ -61,7 +61,7 @@ public class AzureStorageProperties implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         if (!StringUtils.hasText(resourceGroup)) {
             resourceGroup = Optional.ofNullable(azureProperties)
-                                    .map(prop -> prop.getResourceGroup())
+                                    .map(AzureProperties::getResourceGroup)
                                     .orElse(null);
         }
     }

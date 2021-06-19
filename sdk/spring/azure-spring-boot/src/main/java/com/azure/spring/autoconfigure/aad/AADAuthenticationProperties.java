@@ -7,10 +7,12 @@ import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
+import com.azure.spring.core.AzureProperties;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +35,8 @@ public class AADAuthenticationProperties implements InitializingBean {
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
+    @Autowired(required = false)
+    private AzureProperties azureProperties;
     /**
      * Default UserGroup configuration.
      */
@@ -394,7 +398,15 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         if (!StringUtils.hasText(tenantId)) {
-            tenantId = "common";
+            tenantId = Optional.ofNullable(azureProperties).map(AzureProperties::getTenantId).orElse("common");
+        }
+
+        if (!StringUtils.hasText(clientId)) {
+            clientId = Optional.ofNullable(azureProperties).map(AzureProperties::getClientId).orElse(null);
+        }
+
+        if (!StringUtils.hasText(clientSecret)) {
+            clientSecret = Optional.ofNullable(azureProperties).map(AzureProperties::getClientSecret).orElse(null);
         }
 
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
