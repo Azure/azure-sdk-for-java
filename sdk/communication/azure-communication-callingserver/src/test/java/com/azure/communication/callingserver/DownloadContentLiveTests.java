@@ -104,6 +104,10 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")    
     public void downloadContentStreamFailure(HttpClient httpClient) throws IOException {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
