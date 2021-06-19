@@ -10,6 +10,8 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 
+import static com.azure.spring.core.Constants.DEFAULT_AUTHORITY_HOST;
+
 /**
  *
  */
@@ -39,12 +41,14 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
         String tenantId = getPropertyValue(prefix, "tenant-id");
         String clientId = getPropertyValue(prefix, "client-id");
         String clientSecret = getPropertyValue(prefix, "client-secret");
+        String authorityHost = getPropertyValue(String.class, prefix, "authority-host", DEFAULT_AUTHORITY_HOST);
 
         if (tenantId != null && clientId != null && clientSecret != null) {
             return new ClientSecretCredentialBuilder()
                 .tenantId(tenantId)
                 .clientId(clientId)
                 .clientSecret(clientSecret)
+                .authorityHost(authorityHost)
                 .build();
         }
 
@@ -55,6 +59,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
                 .tenantId(tenantId)
                 .clientId(clientId)
                 .pemCertificate(certPath)
+                .authorityHost(authorityHost)
                 .build();
         }
 
@@ -73,6 +78,12 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
         return Binder.get(this.environment)
                      .bind(prefix + propertyKey, String.class)
                      .orElse(null);
+    }
+
+    protected <C> C getPropertyValue(Class<C> type, String prefix, String propertyKey, C defaultValue) {
+        return Binder.get(this.environment)
+                     .bind(prefix + propertyKey, type)
+                     .orElse(defaultValue);
     }
 
 }

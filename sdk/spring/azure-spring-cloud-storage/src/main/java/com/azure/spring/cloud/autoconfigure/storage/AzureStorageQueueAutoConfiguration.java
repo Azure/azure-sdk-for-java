@@ -12,6 +12,7 @@ import com.azure.spring.cloud.context.core.impl.DefaultEnvironmentProvider;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.azure.spring.core.AzureProperties;
 import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import com.azure.spring.integration.storage.queue.StorageQueueTemplate;
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
@@ -37,7 +38,7 @@ import java.util.Optional;
 @AutoConfigureAfter({ AzureContextAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class })
 @ConditionalOnClass({ QueueServiceClient.class, StorageQueueClientFactory.class })
 @ConditionalOnProperty(name = "spring.cloud.azure.storage.account")
-@EnableConfigurationProperties(AzureStorageProperties.class)
+@EnableConfigurationProperties({AzureStorageProperties.class, AzureProperties.class})
 public class AzureStorageQueueAutoConfiguration {
 
     private static final String STORAGE_QUEUE = "StorageQueue";

@@ -27,6 +27,10 @@ public class DefaultEnvironmentProvider implements EnvironmentProvider {
         this.environment = toAzureEnvironment(cloud);
     }
 
+    public void setEnvironment(AzureEnvironment environment) {
+        this.environment = environment;
+    }
+
     private static AzureEnvironment toAzureEnvironment(AzureCloud cloud) {
         switch (cloud) {
             case AzureChina:

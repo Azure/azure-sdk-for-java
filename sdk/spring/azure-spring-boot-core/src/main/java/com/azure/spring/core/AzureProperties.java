@@ -4,6 +4,7 @@
 package com.azure.spring.core;
 
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.google.common.base.Strings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
@@ -138,7 +139,7 @@ public class AzureProperties {
     /**
      * Enables HTTP request/response logging by setting an HTTP log detail level.
      */
-    private String httpLogDetailLevel;
+    private HttpLogDetailLevel httpLogDetailLevel;
 
     /**
      * Disables tracing.
@@ -343,11 +344,11 @@ public class AzureProperties {
         this.logLevel = logLevel;
     }
 
-    public String getHttpLogDetailLevel() {
+    public HttpLogDetailLevel getHttpLogDetailLevel() {
         return httpLogDetailLevel;
     }
 
-    public void setHttpLogDetailLevel(String httpLogDetailLevel) {
+    public void setHttpLogDetailLevel(HttpLogDetailLevel httpLogDetailLevel) {
         this.httpLogDetailLevel = httpLogDetailLevel;
     }
 

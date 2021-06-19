@@ -25,19 +25,19 @@ public class AzureStorageQueueAutoConfigurationTest {
     @Test
     public void testAzureStorageDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.queue.enabled=false")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+                          .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Test
     public void testWithoutCloudQueueClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClient.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
+                          .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureStoragePropertiesIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=a")
-            .run(context -> context.getBean(AzureStorageProperties.class));
+                          .run(context -> context.getBean(AzureStorageProperties.class));
     }
 
     @Test
@@ -45,6 +45,17 @@ public class AzureStorageQueueAutoConfigurationTest {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=squeue").run(context -> {
             assertThat(context).hasSingleBean(AzureStorageProperties.class);
             assertThat(context.getBean(AzureStorageProperties.class).getAccount()).isEqualTo("squeue");
+        });
+    }
+
+    @Test
+    public void testAzurePropertiesConfigured() {
+        this.contextRunner.withPropertyValues(
+            "spring.cloud.azure.storage.account=squeue",
+            "spring.cloud.azure.resource-group=fake"
+        ).run(context -> {
+            assertThat(context).hasSingleBean(AzureStorageProperties.class);
+            assertThat(context.getBean(AzureStorageProperties.class).getResourceGroup()).isEqualTo("fake");
         });
     }
 

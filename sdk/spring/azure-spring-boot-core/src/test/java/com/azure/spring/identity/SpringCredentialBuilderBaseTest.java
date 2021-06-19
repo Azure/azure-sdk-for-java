@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
+import static com.azure.spring.core.Constants.DEFAULT_AUTHORITY_HOST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,6 +37,7 @@ public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
         assertEquals("fake-secret", builder.getPropertyValue(prefix, "client-secret"));
         assertEquals("fake-tenant-id", builder.getPropertyValue(prefix, "tenant-id"));
         assertEquals("fake-cert-path", builder.getPropertyValue(prefix, "client-certificate-path"));
+        assertEquals(DEFAULT_AUTHORITY_HOST, builder.getPropertyValue(String.class, prefix, "authority-host", DEFAULT_AUTHORITY_HOST));
     }
 
     @Test
