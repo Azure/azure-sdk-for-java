@@ -54,7 +54,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
      * @param participants The participants
      * @throws IllegalArgumentException if any parameter is null or empty.
      */
-    public ParticipantsUpdatedEvent(String callConnectionId, List<CallParticipant> participants) {
+    ParticipantsUpdatedEvent(String callConnectionId, List<CallParticipant> participants) {
         if (callConnectionId == null || callConnectionId.isEmpty()) {
             throw new IllegalArgumentException("object callConnectionId cannot be null or empty");
         }
