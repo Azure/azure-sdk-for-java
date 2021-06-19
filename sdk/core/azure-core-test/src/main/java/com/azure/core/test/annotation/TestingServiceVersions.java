@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * This annotation provides test classes the ability to configure which service versions are used when running tests in
  * {@link TestMode#RECORD}, {@link TestMode#LIVE}, and {@link TestMode#PLAYBACK} modes.
  * <p>
- * The service versions configured here mat interact with how {@link HttpClientServiceVersionAugmentedSource} generates
+ * The service versions configured here mat interact with how {@link AzureMethodSource} generates
  * parameterized test permutations.
  */
 @Retention(RetentionPolicy.RUNTIME)

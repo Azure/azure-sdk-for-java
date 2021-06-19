@@ -5,6 +5,7 @@ package com.azure.core.test.annotation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider;
 import com.azure.core.util.ServiceVersion;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -23,17 +24,14 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@ArgumentsSource(HttpClientServiceVersionAugmentedArgumentsProvider.class)
-public @interface HttpClientServiceVersionAugmentedSource {
+@ArgumentsSource(AzureMethodSourceArgumentsProvider.class)
+public @interface AzureMethodSource {
     /**
      * Name of the method, either fully-qualified with package and class information or relative to the test method,
      * which provides parameterized testing values.
      * <p>
      * The source supplier method must be static and have a return type of {@code Stream<Arguments>}. If either of these
      * don't hold true an {@link IllegalArgumentException} will be thrown during runtime.
-     * <p>
-     * If the return value from the source supplier method isn't {@code Stream<Arguments>} an {@link
-     * IllegalStateException} will be thrown during runtime.
      * <p>
      * By default no additional parameterized testing values are expected.
      *
@@ -42,13 +40,14 @@ public @interface HttpClientServiceVersionAugmentedSource {
     String sourceSupplier() default "";
 
     /**
-     * A flag indicating if the test method ignores {@link HttpClient HttpClients} that the test run is expected to
-     * use.
+     * A flag indicating if the test method should use {@link HttpClient HttpClients} when creating test permutations.
      * <p>
      * When {@link TestMode} is {@link TestMode#PLAYBACK} this value is ignored as playback uses a specialized
      * HttpClient that doesn't make network calls.
+     * <p>
+     * By default {@link HttpClient HttpClients} are used in testing permutations.
      *
-     * @return Whether the expected HttpClients to be used in testing are ignored.
+     * @return A flag indication if {@link HttpClient HttpClients} are used when creating test permutations.
      */
     boolean useHttpClientPermutation() default false;
 

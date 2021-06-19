@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test.annotation;
+package com.azure.core.test.implementation;
 
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;
 
 /**
- * Helper class for testing the source supplier methods on {@link HttpClientServiceVersionAugmentedArgumentsProvider}.
+ * Helper class for testing the source supplier methods on {@link AzureMethodSourceArgumentsProvider}.
  */
 public final class FullyQualifiedSourceSupplierTestHelper {
     /**

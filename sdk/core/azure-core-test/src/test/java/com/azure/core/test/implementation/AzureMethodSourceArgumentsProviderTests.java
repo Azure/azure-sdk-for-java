@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test.annotation;
+package com.azure.core.test.implementation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.TestingServiceVersions;
 import com.azure.core.util.ServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -20,20 +21,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.azure.core.test.annotation.AzureTestingServiceVersion.ALPHA;
-import static com.azure.core.test.annotation.AzureTestingServiceVersion.BETA;
-import static com.azure.core.test.annotation.AzureTestingServiceVersion.GA;
-import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.convertToArguments;
-import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.createFullPermutations;
-import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.createHttpServiceVersionPermutations;
-import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.createNonHttpPermutations;
-import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.getServiceVersions;
-import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.invokeSupplierMethod;
-import static com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProvider.validateSourceSupplier;
+import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.convertToArguments;
+import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.createFullPermutations;
+import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.createHttpServiceVersionPermutations;
+import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.createNonHttpPermutations;
+import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.getServiceVersions;
+import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.invokeSupplierMethod;
+import static com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider.validateSourceSupplier;
+import static com.azure.core.test.implementation.AzureTestingServiceVersion.ALPHA;
+import static com.azure.core.test.implementation.AzureTestingServiceVersion.BETA;
+import static com.azure.core.test.implementation.AzureTestingServiceVersion.GA;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,10 +45,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link HttpClientServiceVersionAugmentedArgumentsProvider}.
+ * Tests {@link AzureMethodSourceArgumentsProvider}.
  */
 @SuppressWarnings("unused")
-public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
+public class AzureMethodSourceArgumentsProviderTests {
 
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("getServiceVersionsSupplier")
@@ -242,16 +242,16 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
     private static Stream<Arguments> invokeSupplierMethodSupplier() {
         return Stream.of(
             // Using a fully-qualified source that's in this class.
-            Arguments.of(null, "com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProviderTests"
+            Arguments.of(null, "com.azure.core.test.implementation.AzureMethodSourceArgumentsProviderTests"
                 + "#staticAndValidReturnType", staticAndValidReturnType()),
 
             // Using a fully-qualified source that's in another class.
             Arguments.of(null,
-                "com.azure.core.test.annotation.FullyQualifiedSourceSupplierTestHelper#staticAndValidReturnType",
+                "com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper#staticAndValidReturnType",
                 FullyQualifiedSourceSupplierTestHelper.staticAndValidReturnType()),
 
             // Using a relative source.
-            Arguments.of(getMockExtensionContext(HttpClientServiceVersionAugmentedArgumentsProviderTests.class),
+            Arguments.of(getMockExtensionContext(AzureMethodSourceArgumentsProviderTests.class),
                 "staticAndValidReturnType", staticAndValidReturnType())
         );
     }
@@ -280,13 +280,13 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
             // Non-existent method.
             // This one is odd as the internal tooling wraps this into an optional and this is what is thrown
             // when Optional.get() is called.
-            Arguments.of("com.azure.core.test.TestBase#notARealMethod", NoSuchElementException.class),
+            Arguments.of("com.azure.core.test.TestBase#notARealMethod", IllegalArgumentException.class),
 
             // Valid return types but have parameters.
-            Arguments.of("com.azure.core.test.annotation.HttpClientServiceVersionAugmentedArgumentsProviderTests"
-                + "#staticAndValidReturnTypeButHasParameters", NoSuchElementException.class),
-            Arguments.of("com.azure.core.test.annotation.FullyQualifiedSourceSupplierTestHelper"
-                + "#staticAndValidReturnTypeButHasParameters", NoSuchElementException.class)
+            Arguments.of("com.azure.core.test.implementation.AzureMethodSourceArgumentsProviderTests"
+                + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class),
+            Arguments.of("com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
+                + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class)
         );
     }
 
@@ -297,8 +297,8 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
     }
 
     private static Stream<Arguments> validateSourceSupplierTestSupplier() throws NoSuchMethodException {
-        Class<HttpClientServiceVersionAugmentedArgumentsProviderTests> thisClass =
-            HttpClientServiceVersionAugmentedArgumentsProviderTests.class;
+        Class<AzureMethodSourceArgumentsProviderTests> thisClass =
+            AzureMethodSourceArgumentsProviderTests.class;
 
         Class<FullyQualifiedSourceSupplierTestHelper> anotherClass = FullyQualifiedSourceSupplierTestHelper.class;
 
@@ -315,8 +315,8 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
     }
 
     private static Stream<Arguments> invalidSourceSupplerSupplier() throws NoSuchMethodException {
-        Class<HttpClientServiceVersionAugmentedArgumentsProviderTests> thisClass =
-            HttpClientServiceVersionAugmentedArgumentsProviderTests.class;
+        Class<AzureMethodSourceArgumentsProviderTests> thisClass =
+            AzureMethodSourceArgumentsProviderTests.class;
 
         Class<FullyQualifiedSourceSupplierTestHelper> anotherClass = FullyQualifiedSourceSupplierTestHelper.class;
 
@@ -348,7 +348,7 @@ public class HttpClientServiceVersionAugmentedArgumentsProviderTests {
             Arguments.of(getMockExtensionContext(null), "notARealMethod", PreconditionViolationException.class),
 
             // Source method doesn't exist.
-            Arguments.of(getMockExtensionContext(TestBase.class), "notARealMethod", NoSuchElementException.class),
+            Arguments.of(getMockExtensionContext(TestBase.class), "notARealMethod", IllegalArgumentException.class),
 
             // Source method isn't static.
             Arguments.of(getMockExtensionContext(TestBase.class), "getTestMode", IllegalArgumentException.class)

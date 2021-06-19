@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.test.annotation;
+package com.azure.core.test.implementation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.implementation.TestingHelpers;
+import com.azure.core.test.annotation.AzureMethodSource;
+import com.azure.core.test.annotation.TestingServiceVersions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,14 +26,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-final class HttpClientServiceVersionAugmentedArgumentsProvider
-    implements ArgumentsProvider, AnnotationConsumer<HttpClientServiceVersionAugmentedSource> {
+/**
+ * An implementation of {@link ArgumentsProvider} enabling the ability to parameterize a test using the {@link
+ * AzureMethodSource} annotation.
+ */
+public final class AzureMethodSourceArgumentsProvider
+    implements ArgumentsProvider, AnnotationConsumer<AzureMethodSource> {
     private static final TestMode TEST_MODE = TestingHelpers.getTestMode();
 
     private static final Map<Class<? extends ServiceVersion>, ServiceVersion> CLASS_TO_LATEST_SERVICE_VERSION
@@ -51,7 +57,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
     private static final String MUST_BE_STREAM_ARGUMENTS =
         "Source supplier method is required to return Stream<Arguments>. Return type: %s.";
 
-    private final ClientLogger logger = new ClientLogger(HttpClientServiceVersionAugmentedArgumentsProvider.class);
+    private final ClientLogger logger = new ClientLogger(AzureMethodSourceArgumentsProvider.class);
 
     private String minimumServiceVersion;
     private Class<? extends ServiceVersion> serviceVersionType;
@@ -59,7 +65,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
     private boolean useHttpClientPermutation;
 
     @Override
-    public void accept(HttpClientServiceVersionAugmentedSource annotation) {
+    public void accept(AzureMethodSource annotation) {
         this.minimumServiceVersion = annotation.minimumServiceVersion();
         this.serviceVersionType = annotation.serviceVersionType();
 
@@ -206,25 +212,30 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
         });
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @SuppressWarnings("SimplifyOptionalCallChains")
     static Object invokeSupplierMethod(ExtensionContext context, String sourceSupplier) throws Exception {
         Class<?> sourceSupplierClass;
-        Method sourceSupplierMethod;
+        Optional<Method> sourceSupplierMethod;
 
         // The method is fully qualified.
         if (sourceSupplier.contains("#")) {
             String[] classAndMethod = sourceSupplier.split("#", 2);
 
             sourceSupplierClass = ReflectionSupport.tryToLoadClass(classAndMethod[0]).get();
-            sourceSupplierMethod = ReflectionSupport.findMethod(sourceSupplierClass, classAndMethod[1]).get();
+            sourceSupplierMethod = ReflectionSupport.findMethod(sourceSupplierClass, classAndMethod[1]);
         } else {
             sourceSupplierClass = context.getRequiredTestClass();
-            sourceSupplierMethod = ReflectionSupport.findMethod(sourceSupplierClass, sourceSupplier).get();
+            sourceSupplierMethod = ReflectionSupport.findMethod(sourceSupplierClass, sourceSupplier);
         }
 
-        validateSourceSupplier(sourceSupplierMethod);
+        if (!sourceSupplierMethod.isPresent()) {
+            throw new IllegalArgumentException(String.format("Unable to find 'sourceSupplier' method %s.",
+                sourceSupplierMethod));
+        }
 
-        return ReflectionSupport.invokeMethod(sourceSupplierMethod, sourceSupplier);
+        validateSourceSupplier(sourceSupplierMethod.get());
+
+        return ReflectionSupport.invokeMethod(sourceSupplierMethod.get(), sourceSupplier);
     }
 
     static void validateSourceSupplier(Method sourceMethod) {
@@ -254,7 +265,7 @@ final class HttpClientServiceVersionAugmentedArgumentsProvider
 
     static List<Arguments> convertSupplierSourceToArguments(Object source) {
         if (source instanceof Stream) {
-            return ((Stream<?>) source).map(HttpClientServiceVersionAugmentedArgumentsProvider::convertToArguments)
+            return ((Stream<?>) source).map(AzureMethodSourceArgumentsProvider::convertToArguments)
                 .collect(Collectors.toList());
         } else {
             throw new IllegalStateException("'sourceSupplier' returned an unsupported type: " + source.getClass());
