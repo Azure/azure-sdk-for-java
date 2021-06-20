@@ -5,7 +5,6 @@ package com.azure.spring.autoconfigure.storage;
 
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.spring.autoconfigure.storage.resource.AzureStorageProtocolResolver;
-import com.azure.spring.utils.ApplicationId;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -17,6 +16,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_BLOB;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_FILES;
+import static com.azure.spring.utils.Constants.VERSION;
 
 /**
  * An auto-configuration for Azure Storage Account
@@ -39,7 +42,7 @@ public class StorageAutoConfiguration {
         return new BlobServiceClientBuilder()
             .endpoint(storageProperties.getBlobEndpoint())
             .credential(new StorageSharedKeyCredential(accountName, accountKey))
-            .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_BLOB));
+            .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_STORAGE_BLOB + VERSION));
     }
 
     @Bean
@@ -52,7 +55,7 @@ public class StorageAutoConfiguration {
         return new ShareServiceClientBuilder()
             .endpoint(storageProperties.getFileEndpoint())
             .credential(new StorageSharedKeyCredential(accountName, accountKey))
-            .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_FILES));
+            .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_STORAGE_FILES + VERSION));
     }
 
     @Configuration

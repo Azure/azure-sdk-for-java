@@ -4,7 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.common.AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter;
-import com.azure.spring.utils.ApplicationId;
+import com.azure.spring.core.ApplicationId;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.util.LinkedMultiValueMap;

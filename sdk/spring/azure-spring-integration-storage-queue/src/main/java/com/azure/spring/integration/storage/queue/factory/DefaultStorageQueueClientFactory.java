@@ -5,7 +5,6 @@ package com.azure.spring.integration.storage.queue.factory;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.util.ClientOptions;
 import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueClientBuilder;
@@ -15,7 +14,8 @@ import org.springframework.lang.NonNull;
 
 import java.util.function.Function;
 
-import static com.azure.spring.cloud.context.core.util.Constants.SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID;
+import static com.azure.spring.cloud.context.core.util.Constants.VERSION;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
 
 /**
  * Default client factory for Storage Queue.
@@ -44,9 +44,8 @@ public class DefaultStorageQueueClientFactory implements StorageQueueClientFacto
         final QueueAsyncClient queueClient = new QueueClientBuilder()
             .connectionString(this.connectionString)
             .queueName(queueName)
-            .clientOptions(new ClientOptions().setApplicationId(SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID))
             .httpLogOptions(new HttpLogOptions()
-                .setApplicationId(SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID)
+                .setApplicationId(AZURE_SPRING_STORAGE_QUEUE + VERSION)
                 .setLogLevel(httpLogDetailLevel))
             .buildAsyncClient();
 

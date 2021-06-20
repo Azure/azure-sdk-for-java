@@ -33,7 +33,8 @@ import java.util.Optional;
 
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
-import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_KEY_VAULT;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_KEY_VAULT;
+import static com.azure.spring.utils.Constants.VERSION;
 import static com.azure.spring.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import static com.azure.spring.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
@@ -90,7 +91,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
                 .vaultUrl(vaultUri)
                 .credential(tokenCredential)
                 .serviceVersion(secretServiceVersion)
-                .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_KEY_VAULT))
+                .httpLogOptions(new HttpLogOptions().setApplicationId(AZURE_SPRING_KEY_VAULT + VERSION))
                 .buildClient();
         try {
             final MutablePropertySources sources = this.environment.getPropertySources();
