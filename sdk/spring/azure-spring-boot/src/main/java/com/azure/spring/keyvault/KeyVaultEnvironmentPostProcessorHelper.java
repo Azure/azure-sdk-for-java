@@ -139,12 +139,12 @@ class KeyVaultEnvironmentPostProcessorHelper {
      */
     public TokenCredential getCredentials(String normalizedName) {
         //use service principle to authenticate
-        final String clientId = getPropertyValue(normalizedName, Property.CLIENT_ID);
+        final String clientId = getProperty(normalizedName, Property.CLIENT_ID);
         final String clientKey = getPropertyValue(normalizedName, Property.CLIENT_KEY);
-        final String tenantId = getPropertyValue(normalizedName, Property.TENANT_ID);
-        final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
-        final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
-        final String authorityHost = getPropertyValue(normalizedName, Property.AUTHORITY_HOST, DEFAULT_AUTHORITY_HOST);
+        final String tenantId = getProperty(normalizedName, Property.TENANT_ID);
+        final String certificatePath = getProperty(normalizedName, Property.CERTIFICATE_PATH);
+        final String certificatePassword = getProperty(normalizedName, Property.CERTIFICATE_PASSWORD);
+        final String authorityHost = getProperty(normalizedName, Property.AUTHORITY_HOST, DEFAULT_AUTHORITY_HOST);
         if (clientId != null && tenantId != null && clientKey != null) {
             LOGGER.debug("Will use custom credentials");
             return new ClientSecretCredentialBuilder()
@@ -199,8 +199,29 @@ class KeyVaultEnvironmentPostProcessorHelper {
             .orElse(defaultValue);
     }
 
+    private String getPropertyValueFromAzureProperties(final Property property, String defaultValue) {
+        return Optional.of(KeyVaultProperties.getPropertyNameFromAzureProperties(property))
+            .map(environment::getProperty)
+            .orElse(defaultValue);
+    }
+
+    private String getProperty(final String normalizedName, final Property property) {
+        return getProperty(normalizedName, property, null);
+    }
+
+    private String getProperty(final String normalizedName, final Property property, String defaultValue) {
+        if (normalizedName != "") {
+            return getPropertyValue(normalizedName, property, defaultValue);
+        }
+
+        return Optional.ofNullable(getPropertyValue(normalizedName, property, defaultValue))
+            .orElse(getPropertyValueFromAzureProperties(property, defaultValue));
+    }
+
     private boolean allowTelemetry() {
-        return Boolean.parseBoolean(getPropertyValue(Property.ALLOW_TELEMETRY));
+        String isTelemetryAllowed = Optional.ofNullable(getPropertyValue(Property.ALLOW_TELEMETRY))
+            .orElse(getPropertyValueFromAzureProperties(Property.ALLOW_TELEMETRY, null));
+        return Boolean.parseBoolean(isTelemetryAllowed);
     }
 
     private void sendTelemetry() {

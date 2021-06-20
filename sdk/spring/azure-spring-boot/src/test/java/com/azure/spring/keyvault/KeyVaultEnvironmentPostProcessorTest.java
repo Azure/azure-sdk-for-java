@@ -149,6 +149,18 @@ public class KeyVaultEnvironmentPostProcessorTest {
         final TokenCredential credentials2 = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault2");
         assertThat(credentials2, IsInstanceOf.instanceOf(ClientSecretCredential.class));
     }
+
+    @Test
+    public void testGetPropertyFromAzureProperties() {
+        testProperties.put(KeyVaultProperties.getPropertyNameFromAzureProperties(CLIENT_ID), "fake-client-id");
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials();
+
+        assertThat(credentials, IsInstanceOf.instanceOf(ManagedIdentityCredential.class));
+    }
 }
 
 @Configuration

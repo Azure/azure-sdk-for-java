@@ -3,6 +3,7 @@
 
 package com.azure.spring.keyvault;
 
+import com.azure.spring.core.AzureProperties;
 import com.azure.spring.utils.Constants;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -171,6 +172,13 @@ public class KeyVaultProperties {
 
     public static String getPropertyName(String normalizedName, Property property) {
         return Stream.of(PREFIX, normalizedName, property.getName())
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.joining(DELIMITER));
+    }
+
+    public static String getPropertyNameFromAzureProperties(Property property) {
+        return Stream.of(AzureProperties.PREFIX, property.getName())
             .map(String::trim)
             .filter(s -> !s.isEmpty())
             .collect(Collectors.joining(DELIMITER));

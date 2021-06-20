@@ -129,7 +129,7 @@ public class AzureProperties {
     /**
      * Disables telemetry collection.
      */
-    private boolean telemetryDisabled;
+    private boolean allowTelemetry;
 
     /**
      * Enables logging by setting a log level.
@@ -328,12 +328,12 @@ public class AzureProperties {
         this.identityDisableCP1 = identityDisableCP1;
     }
 
-    public boolean isTelemetryDisabled() {
-        return telemetryDisabled;
+    public boolean getAllowTelemetry() {
+        return allowTelemetry;
     }
 
-    public void setTelemetryDisabled(boolean telemetryDisabled) {
-        this.telemetryDisabled = telemetryDisabled;
+    public void setAllowTelemetry(boolean allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
     }
 
     public String getLogLevel() {
