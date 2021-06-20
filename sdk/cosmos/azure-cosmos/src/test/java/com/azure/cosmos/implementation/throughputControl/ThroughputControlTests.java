@@ -11,9 +11,10 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
-import com.azure.cosmos.GlobalThroughputControlConfig;
+import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -25,6 +26,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -182,6 +184,41 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void throughputLocalControl_createItem() throws InterruptedException {
+        // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-" + UUID.randomUUID())
+                .setTargetThroughput(6)
+                .build();
+
+        container.enableLocalThroughputControlGroup(groupConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        this.validateRequestNotThrottled(
+            createItemResponse.getDiagnostics().toString(),
+            BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+
+        // second request to same group. which will get throttled
+        TestItem itemGetThrottled = getDocumentDefinition(createItemResponse.getItem().getMypk());
+        FailureValidator failureValidator = new FailureValidator.Builder().statusCode(429).build();
+        validateItemFailure(container.createItem(itemGetThrottled, requestOptions), failureValidator);
+
+        Thread.sleep(500);
+
+        // third request to create same item in step2
+        // Make sure the request really get blocked in step2
+        CosmosItemResponseValidator successValidator = new CosmosItemResponseValidator.Builder<CosmosItemResponse<TestItem>>()
+            .withId(itemGetThrottled.getId())
+            .build();
+        validateItemSuccess(container.createItem(itemGetThrottled), successValidator);
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)

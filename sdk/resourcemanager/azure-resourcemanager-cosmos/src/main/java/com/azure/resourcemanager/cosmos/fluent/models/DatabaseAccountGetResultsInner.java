@@ -6,7 +6,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
 import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
@@ -14,6 +16,7 @@ import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
+import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
@@ -22,6 +25,7 @@ import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
+import com.azure.resourcemanager.cosmos.models.RestoreParameters;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,6 +50,12 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The status of the Cosmos DB account at the time the operation was
@@ -212,6 +222,30 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     private Boolean enableAnalyticalStorage;
 
     /*
+     * Analytical storage specific properties.
+     */
+    @JsonProperty(value = "properties.analyticalStorageConfiguration")
+    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
+
+    /*
+     * A unique identifier assigned to the database account
+     */
+    @JsonProperty(value = "properties.instanceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String instanceId;
+
+    /*
+     * Enum to indicate the mode of account creation.
+     */
+    @JsonProperty(value = "properties.createMode")
+    private CreateMode createMode;
+
+    /*
+     * Parameters to indicate the information about the restore.
+     */
+    @JsonProperty(value = "properties.restoreParameters")
+    private RestoreParameters restoreParameters;
+
+    /*
      * The object representing the policy for taking backups on an account.
      */
     @JsonProperty(value = "properties.backupPolicy")
@@ -235,6 +269,13 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
      */
     @JsonProperty(value = "properties.networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
+
+    /*
+     * Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
 
     /**
      * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
@@ -274,6 +315,15 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     public DatabaseAccountGetResultsInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -689,6 +739,76 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @return the analyticalStorageConfiguration value.
+     */
+    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
+        return this.analyticalStorageConfiguration;
+    }
+
+    /**
+     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the instanceId property: A unique identifier assigned to the database account.
+     *
+     * @return the instanceId value.
+     */
+    public String instanceId() {
+        return this.instanceId;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @param createMode the createMode value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @return the restoreParameters value.
+     */
+    public RestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withRestoreParameters(RestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
      *
      * @return the backupPolicy value.
@@ -770,6 +890,28 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
         return this;
     }
 
+    /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DatabaseAccountGetResultsInner withLocation(String location) {
@@ -824,6 +966,12 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
         }
         if (apiProperties() != null) {
             apiProperties().validate();
+        }
+        if (analyticalStorageConfiguration() != null) {
+            analyticalStorageConfiguration().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
         }
         if (backupPolicy() != null) {
             backupPolicy().validate();

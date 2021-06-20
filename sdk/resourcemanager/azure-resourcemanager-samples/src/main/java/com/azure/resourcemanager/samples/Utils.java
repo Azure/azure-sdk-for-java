@@ -699,6 +699,7 @@ public final class Utils {
         info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.innerModel().enableHttpsTrafficOnly());
 
         info.append("\n\tEncryption status: ");
+        info.append("\n\t\tInfrastructure Encryption: ").append(storageAccount.infrastructureEncryptionEnabled() ? "Enabled" : "Disabled");
         for (Map.Entry<StorageService, StorageAccountEncryptionStatus> eStatus : storageAccount.encryptionStatuses().entrySet()) {
             info.append("\n\t\t").append(eStatus.getValue().storageService()).append(": ").append(eStatus.getValue().isEnabled() ? "Enabled" : "Disabled");
         }

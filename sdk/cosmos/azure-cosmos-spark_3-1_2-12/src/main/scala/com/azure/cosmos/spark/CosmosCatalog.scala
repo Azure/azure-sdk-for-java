@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+
 import java.util
 import scala.collection.mutable.ArrayBuffer
 // scalastyle:off underscore.import
@@ -41,7 +43,7 @@ class CosmosCatalog
     extends CatalogPlugin
     with SupportsNamespaces
     with TableCatalog
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   private lazy val sparkSession = SparkSession.active
 

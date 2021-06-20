@@ -3,6 +3,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.ai.metricsadvisor.implementation.util.IncidentHelper;
 
 import java.time.OffsetDateTime;
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime;
  */
 public final class AnomalyIncident {
     private String id;
+    private String dataFeedId;
     private String metricId;
     private String detectionConfigurationId;
     private DimensionKey rootDimensionKey;
@@ -19,12 +21,19 @@ public final class AnomalyIncident {
     private AnomalyIncidentStatus status;
     private OffsetDateTime startTime;
     private OffsetDateTime lastTime;
+    private Double valueOfRootNode;
+    private Double expectedValueOfRootNode;
 
     static {
         IncidentHelper.setAccessor(new IncidentHelper.IncidentAccessor() {
             @Override
             public void setId(AnomalyIncident incident, String id) {
                 incident.setId(id);
+            }
+
+            @Override
+            public void setDataFeedId(AnomalyIncident incident, String dataFeedId) {
+                incident.setDataFeedId(dataFeedId);
             }
 
             @Override
@@ -40,6 +49,16 @@ public final class AnomalyIncident {
             @Override
             public void setRootDimensionKey(AnomalyIncident incident, DimensionKey rootDimensionKey) {
                 incident.setRootDimensionKey(rootDimensionKey);
+            }
+
+            @Override
+            public void setValue(AnomalyIncident incident, Double value) {
+                incident.setValueOfRootNode(value);
+            }
+
+            @Override
+            public void setExpectedValue(AnomalyIncident incident, Double value) {
+                incident.setExpectedValueOfRootNode(value);
             }
 
             @Override
@@ -73,6 +92,15 @@ public final class AnomalyIncident {
     }
 
     /**
+     * Get the data feed id.
+     *
+     * @return The data feed id.
+     */
+    public String getDataFeedId() {
+        return this.dataFeedId;
+    }
+
+    /**
      * Get the metric id.
      *
      * @return The metric id.
@@ -100,6 +128,25 @@ public final class AnomalyIncident {
      */
     public DimensionKey getRootDimensionKey() {
         return this.rootDimensionKey;
+    }
+
+    /**
+     * Gets the aggregated value at root dimension node where the incident anomalies
+     * are logically aggregated.
+     *
+     * @return The value.
+     */
+    public Double getValueOfRootNode() {
+        return this.valueOfRootNode;
+    }
+
+    /**
+     * Gets the expected aggregated value at root dimension node had there is no incident.
+     *
+     * @return The expected value.
+     */
+    public Double getExpectedValueOfRootNode() {
+        return this.expectedValueOfRootNode;
     }
 
     /**
@@ -142,6 +189,10 @@ public final class AnomalyIncident {
         this.id = id;
     }
 
+    void setDataFeedId(String dataFeedId) {
+        this.dataFeedId = dataFeedId;
+    }
+
     void setMetricId(String metricId) {
         this.metricId = metricId;
     }
@@ -152,6 +203,14 @@ public final class AnomalyIncident {
 
     void setRootDimensionKey(DimensionKey rootDimensionKey) {
         this.rootDimensionKey = rootDimensionKey;
+    }
+
+    void setValueOfRootNode(Double valueOfRootNode) {
+        this.valueOfRootNode = valueOfRootNode;
+    }
+
+    void setExpectedValueOfRootNode(Double value) {
+        this.expectedValueOfRootNode = value;
     }
 
     void setSeverity(AnomalySeverity severity) {

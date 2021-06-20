@@ -18,6 +18,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -264,8 +265,7 @@ public final class CommunicationIdentityClientBuilder {
                                             List<HttpPipelinePolicy> customPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-        policies.add(authorizationPolicy);
-        applyRequiredPolicies(policies);
+        applyRequiredPolicies(policies, authorizationPolicy);
 
         if (customPolicies != null && customPolicies.size() > 0) {
             policies.addAll(customPolicies);
@@ -278,7 +278,7 @@ public final class CommunicationIdentityClientBuilder {
             .build();
     }
 
-    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
+    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies, HttpPipelinePolicy authorizationPolicy) {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
@@ -293,8 +293,11 @@ public final class CommunicationIdentityClientBuilder {
         }
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
+        policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
         policies.add(new CookiePolicy());
+        // auth policy is per request, should be after retry
+        policies.add(authorizationPolicy);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
     }
 }

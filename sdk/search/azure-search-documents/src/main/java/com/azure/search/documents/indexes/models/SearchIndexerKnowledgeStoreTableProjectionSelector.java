@@ -10,6 +10,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 /** Description for what data to store in Azure Tables. */
 @Fluent
 public final class SearchIndexerKnowledgeStoreTableProjectionSelector
@@ -38,5 +40,36 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
      */
     public String getTableName() {
         return this.tableName;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreTableProjectionSelector setReferenceKeyName(String referenceKeyName) {
+        super.setReferenceKeyName(referenceKeyName);
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreTableProjectionSelector setGeneratedKeyName(String generatedKeyName) {
+        super.setGeneratedKeyName(generatedKeyName);
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreTableProjectionSelector setSource(String source) {
+        super.setSource(source);
+
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreTableProjectionSelector setSourceContext(String sourceContext) {
+        super.setSourceContext(sourceContext);
+        return this;
+    }
+
+    @Override
+    public SearchIndexerKnowledgeStoreTableProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
+        super.setInputs(inputs);
+        return this;
     }
 }

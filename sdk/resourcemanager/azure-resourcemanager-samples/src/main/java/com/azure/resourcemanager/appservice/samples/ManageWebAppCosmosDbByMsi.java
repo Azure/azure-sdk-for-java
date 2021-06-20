@@ -44,11 +44,10 @@ public final class ManageWebAppCosmosDbByMsi {
     /**
      * Main function which runs the actual sample.
      * @param azureResourceManager instance of the azure client
-     * @param credential the credential to use
      * @param clientId the client ID
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager, TokenCredential credential, String clientId) throws IOException {
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException {
         // New resources
         final Region region         = Region.US_WEST;
         final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
@@ -81,7 +80,7 @@ public final class ManageWebAppCosmosDbByMsi {
                 .define(vaultName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
-                .enableRoleBasedAccessControl()
+                .withRoleBasedAccessControl()
                 .create();
 
             //============================================================
@@ -198,7 +197,7 @@ public final class ManageWebAppCosmosDbByMsi {
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
-            runSample(azureResourceManager, credential, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+            runSample(azureResourceManager, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

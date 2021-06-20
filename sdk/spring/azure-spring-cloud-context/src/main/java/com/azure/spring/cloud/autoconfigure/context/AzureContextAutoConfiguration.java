@@ -6,12 +6,10 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.core.AzureProperties;
 import com.azure.spring.identity.DefaultSpringCredentialBuilder;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,11 +30,6 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
 @Import(AzureEnvironmentAutoConfiguration.class)
 public class AzureContextAutoConfiguration {
-
-    private static final String PROJECT_VERSION = AzureContextAutoConfiguration.class.getPackage()
-                                                                                     .getImplementationVersion();
-    private static final String SPRING_CLOUD_USER_AGENT = "spring-cloud-azure/" + PROJECT_VERSION;
-
 
     /**
      * Create an {@link AzureResourceManager} bean.
@@ -68,11 +61,4 @@ public class AzureContextAutoConfiguration {
                                                    .alternativePrefix(AzureProperties.PREFIX)
                                                    .build();
     }
-
-    @Bean
-    @ConditionalOnBean(AzureResourceManager.class)
-    public SubscriptionSupplier subscriptionSupplier(AzureResourceManager azureResourceManager) {
-        return azureResourceManager::subscriptionId;
-    }
-
 }

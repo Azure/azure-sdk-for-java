@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
@@ -46,7 +47,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
@@ -84,7 +84,9 @@ class AnalyzeHealthcareEntityAsyncClient {
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        StringIndexType.UTF16CODE_UNIT,
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -118,7 +120,9 @@ class AnalyzeHealthcareEntityAsyncClient {
                 activationOperation(
                     service.healthWithResponseAsync(
                         new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        options.getModelVersion(), getNonNullStringIndexType(options.getStringIndexType()),
+                        options.getModelVersion(),
+                        StringIndexType.UTF16CODE_UNIT,
+                        options.isServiceLogsDisabled(),
                         finalContext)
                         .map(healthResponse -> {
                             final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
@@ -149,10 +153,11 @@ class AnalyzeHealthcareEntityAsyncClient {
         UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
-                final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
-                final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
-                final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStats, context)
+                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+                final Integer topValue = (Integer) continuationTokenMap.getOrDefault("$top", null);
+                final Integer skipValue = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+                final Boolean showStatsValue = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+                return service.healthStatusWithResponseAsync(operationId, topValue, skipValue, showStatsValue, context)
                            .map(this::toTextAnalyticsPagedResponse)
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } else {

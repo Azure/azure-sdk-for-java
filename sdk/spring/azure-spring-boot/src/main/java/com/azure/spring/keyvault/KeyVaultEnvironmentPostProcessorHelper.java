@@ -13,7 +13,6 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
-import com.azure.spring.telemetry.TelemetrySender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -21,18 +20,13 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_KEY_VAULT;
 import static com.azure.spring.utils.Constants.VERSION;
 import static com.azure.spring.utils.Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
@@ -52,8 +46,6 @@ class KeyVaultEnvironmentPostProcessorHelper {
     KeyVaultEnvironmentPostProcessorHelper(final ConfigurableEnvironment environment) {
         this.environment = environment;
         Assert.notNull(environment, "environment must not be null!");
-        // As @PostConstructor not available when post processor, call it explicitly.
-        sendTelemetry();
     }
 
     /**
@@ -183,13 +175,6 @@ class KeyVaultEnvironmentPostProcessorHelper {
         return new ManagedIdentityCredentialBuilder().build();
     }
 
-    private String getPropertyValue(final Property property) {
-        return Optional.of(property)
-                .map(KeyVaultProperties::getPropertyName)
-                .map(environment::getProperty)
-                .orElse(null);
-    }
-
     private String getPropertyValue(final String normalizedName, final Property property) {
         return getPropertyValue(normalizedName, property, null);
     }
@@ -217,22 +202,5 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
         return Optional.ofNullable(getPropertyValue(normalizedName, property, defaultValue))
             .orElse(getPropertyValueFromAzureProperties(property, defaultValue));
-    }
-
-    private boolean allowTelemetry() {
-        String isTelemetryAllowed = Optional.ofNullable(getPropertyValue(Property.ALLOW_TELEMETRY))
-            .orElse(getPropertyValueFromAzureProperties(Property.ALLOW_TELEMETRY, null));
-        return Boolean.parseBoolean(isTelemetryAllowed);
-    }
-
-    private void sendTelemetry() {
-        if (allowTelemetry()) {
-            final Map<String, String> events = new HashMap<>();
-            final TelemetrySender sender = new TelemetrySender();
-
-            events.put(SERVICE_NAME, getClassPackageSimpleName(KeyVaultEnvironmentPostProcessorHelper.class));
-
-            sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
-        }
     }
 }

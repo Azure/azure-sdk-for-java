@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.HttpClientOptions;
+import reactor.netty.resources.ConnectionProvider;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Netty.
@@ -27,6 +28,18 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
                 .writeTimeout(clientOptions.getWriteTimeout())
                 .responseTimeout(clientOptions.getResponseTimeout())
                 .readTimeout(clientOptions.getReadTimeout());
+
+            int maximumConnectionPoolSize = clientOptions.getMaximumConnectionPoolSize();
+
+            ConnectionProvider.Builder connectionProviderBuilder = ConnectionProvider.builder("azure-sdk");
+            connectionProviderBuilder.maxIdleTime(clientOptions.getConnectionIdleTimeout());
+
+            // Only configure the maximum connections if it has been set in the options.
+            if (maximumConnectionPoolSize > 0) {
+                connectionProviderBuilder.maxConnections(maximumConnectionPoolSize);
+            }
+
+            builder = builder.connectionProvider(connectionProviderBuilder.build());
         }
 
         return builder.build();

@@ -87,7 +87,7 @@ public class AnalyzeActions {
                 System.out.println("Entities recognition action results:");
                 for (RecognizeEntitiesActionResult actionResult : actionsResult.getRecognizeEntitiesActionResults()) {
                     if (!actionResult.isError()) {
-                        for (RecognizeEntitiesResult documentResult : actionResult.getResult()) {
+                        for (RecognizeEntitiesResult documentResult : actionResult.getDocumentResults()) {
                             if (!documentResult.isError()) {
                                 for (CategorizedEntity entity : documentResult.getEntities()) {
                                     System.out.printf(
@@ -108,7 +108,7 @@ public class AnalyzeActions {
                 System.out.println("Key phrases extraction action results:");
                 for (ExtractKeyPhrasesActionResult actionResult : actionsResult.getExtractKeyPhrasesActionResults()) {
                     if (!actionResult.isError()) {
-                        for (ExtractKeyPhraseResult documentResult : actionResult.getResult()) {
+                        for (ExtractKeyPhraseResult documentResult : actionResult.getDocumentResults()) {
                             if (!documentResult.isError()) {
                                 System.out.println("\tExtracted phrases:");
                                 for (String keyPhrases : documentResult.getKeyPhrases()) {

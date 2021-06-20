@@ -17,6 +17,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class ContinuousModeBackupPolicy extends BackupPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContinuousModeBackupPolicy.class);
 
+    /** {@inheritDoc} */
+    @Override
+    public ContinuousModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {
+        super.withMigrationState(migrationState);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

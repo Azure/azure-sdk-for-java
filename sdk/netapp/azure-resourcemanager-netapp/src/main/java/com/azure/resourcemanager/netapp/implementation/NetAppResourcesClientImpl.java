@@ -25,6 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
+import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
 import reactor.core.publisher.Mono;
@@ -80,7 +81,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourceNameAvailabilityRequest body,
+            @BodyParam("application/json") FilePathAvailabilityRequest body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -262,7 +263,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkFilePathAvailabilityWithResponseAsync(
-        String location, ResourceNameAvailabilityRequest body) {
+        String location, FilePathAvailabilityRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -312,7 +313,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkFilePathAvailabilityWithResponseAsync(
-        String location, ResourceNameAvailabilityRequest body, Context context) {
+        String location, FilePathAvailabilityRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -358,7 +359,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckAvailabilityResponseInner> checkFilePathAvailabilityAsync(
-        String location, ResourceNameAvailabilityRequest body) {
+        String location, FilePathAvailabilityRequest body) {
         return checkFilePathAvailabilityWithResponseAsync(location, body)
             .flatMap(
                 (Response<CheckAvailabilityResponseInner> res) -> {
@@ -381,8 +382,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * @return information regarding availability of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckAvailabilityResponseInner checkFilePathAvailability(
-        String location, ResourceNameAvailabilityRequest body) {
+    public CheckAvailabilityResponseInner checkFilePathAvailability(String location, FilePathAvailabilityRequest body) {
         return checkFilePathAvailabilityAsync(location, body).block();
     }
 
@@ -399,7 +399,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAvailabilityResponseInner> checkFilePathAvailabilityWithResponse(
-        String location, ResourceNameAvailabilityRequest body, Context context) {
+        String location, FilePathAvailabilityRequest body, Context context) {
         return checkFilePathAvailabilityWithResponseAsync(location, body, context).block();
     }
 

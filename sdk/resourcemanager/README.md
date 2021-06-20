@@ -38,7 +38,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.4.0</version>
+  <version>2.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -100,7 +100,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.2.5</version>
+  <version>1.3.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -112,7 +112,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.9.1</version>
+  <version>1.10.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -312,7 +312,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.4.0</version>
+  <version>2.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -428,6 +428,9 @@ Here is a sample dependency management section in maven POM.
   </dependencies>
 </dependencyManagement>
 ```
+
+To a lesser extent, similar problem could occur in runtime for `azure-core-management` library, when one module depends on multiple Azure Java management SDKs with different versions.
+For example, `azure-resourcemanager` 2.6.0 would require `azure-core-management` 1.3.0 or above, relying on `ArmChallengeAuthenticationPolicy` class for continuous access evaluation support.
 
 ### ARM throttling
 

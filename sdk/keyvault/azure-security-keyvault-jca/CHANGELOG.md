@@ -1,6 +1,13 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
+### New Features
+- Load JRE key store certificates to AzureKeyVault key store. ([#21845](https://github.com/Azure/azure-sdk-for-java/pull/21845))
+- Support properties of azure.cert-path.well-known and azure.cert-path.custom to support load cert from file system. ([#21947](https://github.com/Azure/azure-sdk-for-java/pull/21947))
+
+## 1.0.0-beta.7 (2021-05-24)
+### New Features
+- Add "module-info.java".
 
 
 ## 1.0.0-beta.6 (2021-04-19)

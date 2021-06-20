@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.context.core;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
 import static com.azure.spring.cloud.context.core.util.Constants.VERSION;
@@ -13,7 +13,7 @@ public class ApplicationIdTest {
 
     @Test
     public void maxLength() {
-        Assert.assertTrue((AZURE_SPRING_STORAGE_QUEUE + VERSION).length() <= 24);
+        Assertions.assertTrue((AZURE_SPRING_STORAGE_QUEUE + VERSION).length() <= 24);
     }
 
 }

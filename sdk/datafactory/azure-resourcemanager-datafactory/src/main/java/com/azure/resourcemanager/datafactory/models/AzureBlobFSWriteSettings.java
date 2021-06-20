@@ -56,6 +56,13 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
 
     /** {@inheritDoc} */
     @Override
+    public AzureBlobFSWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureBlobFSWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
         return this;

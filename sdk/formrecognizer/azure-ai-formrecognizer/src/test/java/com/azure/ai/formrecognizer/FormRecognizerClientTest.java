@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.ID;
+import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.IDENTITY;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
@@ -592,7 +592,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeGermanContentFromUrl(HttpClient httpClient,
                                               FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -833,7 +832,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -883,7 +881,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -908,7 +905,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -954,7 +950,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1006,7 +1001,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1030,7 +1024,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1051,7 +1044,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
                                                          FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1179,7 +1171,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
                                                        FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
@@ -1523,7 +1514,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21331")
     public void checkRecognizeFormTypeComposedModelWithModelName(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         final FormTrainingClient formTrainingClient = getFormTrainingClient(httpClient, serviceVersion);
@@ -2060,7 +2050,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         }, INVOICE_PDF);
     }
 
-    // ID Document Recognition
+    // Identity Document Recognition
 
     /**
      * Verifies license card data from a document using file data as source.
@@ -2077,7 +2067,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     Context.NONE)
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
@@ -2110,12 +2100,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 Context.NONE
             ).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
     /**
-     * Verifies ID Document data from a document using file data as source and including element reference details.
+     * Verifies identity document data from a document using file data as source and including element reference details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2131,12 +2121,12 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                         .setFieldElementsIncluded(true),
                     Context.NONE).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
     /**
-     * Verifies ID Document data from a document using blank PDF.
+     * Verifies identity document data from a document using blank PDF.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2158,7 +2148,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verify that ID Document recognition with damaged PDF file.
+     * Verify that identity document recognition with damaged PDF file.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
@@ -2180,7 +2170,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         });
     }
 
-    // ID Document - URL
+    // Identity Document - URL
 
     /**
      * Verifies business card data for a document using source as file url.
@@ -2196,7 +2186,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     Context.NONE
                 ).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), false, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), false, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 
@@ -2222,7 +2212,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     }
 
     /**
-     * Verifies license ID data for a document using source as file url and include content when
+     * Verifies license identity data for a document using source as file url and include content when
      * includeFieldElements is true.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2236,7 +2226,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                     new RecognizeIdentityDocumentOptions().setFieldElementsIncluded(true),
                 Context.NONE).setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
-            validatePrebuiltResultData(syncPoller.getFinalResult(), true, ID);
+            validatePrebuiltResultData(syncPoller.getFinalResult(), true, IDENTITY);
         }, LICENSE_CARD_JPG);
     }
 }
