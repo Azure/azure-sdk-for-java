@@ -1,4 +1,4 @@
-# Azure Identity Spring Integration client library for Java
+# Azure Spring Boot Core client library for Java
 
 [Source code][src]
 

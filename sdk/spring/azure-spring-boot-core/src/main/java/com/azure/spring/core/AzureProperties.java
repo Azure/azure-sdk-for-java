@@ -44,7 +44,7 @@ public class AzureProperties {
     /**
      * Name of the Azure cloud to connect to.
      */
-    private AzureCloud cloud = AzureCloud.Azure;
+    private AzureCloud environment = AzureCloud.Azure;
 
     /**
      * The Azure Active Directory endpoint to connect to.
@@ -192,12 +192,12 @@ public class AzureProperties {
         this.resourceGroup = resourceGroup;
     }
 
-    public AzureCloud getCloud() {
-        return cloud;
+    public AzureCloud getEnvironment() {
+        return environment;
     }
 
-    public void setCloud(AzureCloud cloud) {
-        this.cloud = cloud;
+    public void setEnvironment(AzureCloud environment) {
+        this.environment = environment;
     }
 
     public String getRegion() {
