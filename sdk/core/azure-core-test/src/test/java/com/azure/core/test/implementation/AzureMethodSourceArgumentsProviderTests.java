@@ -283,7 +283,7 @@ public class AzureMethodSourceArgumentsProviderTests {
             Arguments.of("com.azure.core.test.TestBase#notARealMethod", IllegalArgumentException.class),
 
             // Valid return types but have parameters.
-            Arguments.of("com.azure.core.test.implementation.AzureMethodSourceArgumentsProviderTests"
+            Arguments.of("com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
                 + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class),
             Arguments.of("com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
                 + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class)

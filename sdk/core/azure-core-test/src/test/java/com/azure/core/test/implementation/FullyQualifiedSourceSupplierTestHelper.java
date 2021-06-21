@@ -66,7 +66,7 @@ public final class FullyQualifiedSourceSupplierTestHelper {
      * in a {@link RuntimeException}.
      *
      * @param dummyParam Dummy parameter.
-     * @return Dummy Arguements Stream.
+     * @return Dummy Arguments Stream.
      */
     public static Stream<Arguments> staticAndValidReturnTypeButHasParameters(Object dummyParam) {
         return Stream.of(Arguments.of(dummyParam));
