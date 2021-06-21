@@ -1,7 +1,5 @@
 # Azure Spring Boot Core client library for Java
 
-[Source code][src]
-
 ## Getting started
 
 ### Prerequisites
@@ -23,5 +21,4 @@ To suggest a new feature or changes that could be made, file an issue the same w
 You can participate community driven [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
 <!-- LINKS -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-core/src
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
