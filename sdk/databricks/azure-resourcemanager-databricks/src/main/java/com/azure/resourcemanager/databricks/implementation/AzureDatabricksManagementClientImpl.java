@@ -21,8 +21,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.databricks.fluent.DatabricksClient;
+import com.azure.resourcemanager.databricks.fluent.AzureDatabricksManagementClient;
 import com.azure.resourcemanager.databricks.fluent.OperationsClient;
+import com.azure.resourcemanager.databricks.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.databricks.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.databricks.fluent.VNetPeeringsClient;
 import com.azure.resourcemanager.databricks.fluent.WorkspacesClient;
 import java.io.IOException;
@@ -35,10 +37,10 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DatabricksClientImpl type. */
-@ServiceClient(builder = DatabricksClientBuilder.class)
-public final class DatabricksClientImpl implements DatabricksClient {
-    private final ClientLogger logger = new ClientLogger(DatabricksClientImpl.class);
+/** Initializes a new instance of the AzureDatabricksManagementClientImpl type. */
+@ServiceClient(builder = AzureDatabricksManagementClientBuilder.class)
+public final class AzureDatabricksManagementClientImpl implements AzureDatabricksManagementClient {
+    private final ClientLogger logger = new ClientLogger(AzureDatabricksManagementClientImpl.class);
 
     /** The ID of the target subscription. */
     private final String subscriptionId;
@@ -62,18 +64,6 @@ public final class DatabricksClientImpl implements DatabricksClient {
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -124,18 +114,6 @@ public final class DatabricksClientImpl implements DatabricksClient {
         return this.workspaces;
     }
 
-    /** The VNetPeeringsClient object to access its operations. */
-    private final VNetPeeringsClient vNetPeerings;
-
-    /**
-     * Gets the VNetPeeringsClient object to access its operations.
-     *
-     * @return the VNetPeeringsClient object.
-     */
-    public VNetPeeringsClient getVNetPeerings() {
-        return this.vNetPeerings;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -148,8 +126,44 @@ public final class DatabricksClientImpl implements DatabricksClient {
         return this.operations;
     }
 
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
     /**
-     * Initializes an instance of DatabricksClient client.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The VNetPeeringsClient object to access its operations. */
+    private final VNetPeeringsClient vNetPeerings;
+
+    /**
+     * Gets the VNetPeeringsClient object to access its operations.
+     *
+     * @return the VNetPeeringsClient object.
+     */
+    public VNetPeeringsClient getVNetPeerings() {
+        return this.vNetPeerings;
+    }
+
+    /**
+     * Initializes an instance of AzureDatabricksManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -158,7 +172,7 @@ public final class DatabricksClientImpl implements DatabricksClient {
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    DatabricksClientImpl(
+    AzureDatabricksManagementClientImpl(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
@@ -170,10 +184,11 @@ public final class DatabricksClientImpl implements DatabricksClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-04-01";
         this.workspaces = new WorkspacesClientImpl(this);
-        this.vNetPeerings = new VNetPeeringsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.vNetPeerings = new VNetPeeringsClientImpl(this);
     }
 
     /**

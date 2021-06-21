@@ -15,9 +15,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the DatabricksClientImpl type. */
-@ServiceClientBuilder(serviceClients = {DatabricksClientImpl.class})
-public final class DatabricksClientBuilder {
+/** A builder for creating a new instance of the AzureDatabricksManagementClientImpl type. */
+@ServiceClientBuilder(serviceClients = {AzureDatabricksManagementClientImpl.class})
+public final class AzureDatabricksManagementClientBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -27,9 +27,9 @@ public final class DatabricksClientBuilder {
      * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
-     * @return the DatabricksClientBuilder.
+     * @return the AzureDatabricksManagementClientBuilder.
      */
-    public DatabricksClientBuilder subscriptionId(String subscriptionId) {
+    public AzureDatabricksManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -43,9 +43,9 @@ public final class DatabricksClientBuilder {
      * Sets server parameter.
      *
      * @param endpoint the endpoint value.
-     * @return the DatabricksClientBuilder.
+     * @return the AzureDatabricksManagementClientBuilder.
      */
-    public DatabricksClientBuilder endpoint(String endpoint) {
+    public AzureDatabricksManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -59,9 +59,9 @@ public final class DatabricksClientBuilder {
      * Sets The environment to connect to.
      *
      * @param environment the environment value.
-     * @return the DatabricksClientBuilder.
+     * @return the AzureDatabricksManagementClientBuilder.
      */
-    public DatabricksClientBuilder environment(AzureEnvironment environment) {
+    public AzureDatabricksManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -75,9 +75,9 @@ public final class DatabricksClientBuilder {
      * Sets The default poll interval for long-running operation.
      *
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the DatabricksClientBuilder.
+     * @return the AzureDatabricksManagementClientBuilder.
      */
-    public DatabricksClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public AzureDatabricksManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -91,9 +91,9 @@ public final class DatabricksClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the DatabricksClientBuilder.
+     * @return the AzureDatabricksManagementClientBuilder.
      */
-    public DatabricksClientBuilder pipeline(HttpPipeline pipeline) {
+    public AzureDatabricksManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -107,19 +107,19 @@ public final class DatabricksClientBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the DatabricksClientBuilder.
+     * @return the AzureDatabricksManagementClientBuilder.
      */
-    public DatabricksClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public AzureDatabricksManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of DatabricksClientImpl with the provided parameters.
+     * Builds an instance of AzureDatabricksManagementClientImpl with the provided parameters.
      *
-     * @return an instance of DatabricksClientImpl.
+     * @return an instance of AzureDatabricksManagementClientImpl.
      */
-    public DatabricksClientImpl buildClient() {
+    public AzureDatabricksManagementClientImpl buildClient() {
         if (endpoint == null) {
             this.endpoint = "https://management.azure.com";
         }
@@ -138,8 +138,8 @@ public final class DatabricksClientBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        DatabricksClientImpl client =
-            new DatabricksClientImpl(
+        AzureDatabricksManagementClientImpl client =
+            new AzureDatabricksManagementClientImpl(
                 pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
