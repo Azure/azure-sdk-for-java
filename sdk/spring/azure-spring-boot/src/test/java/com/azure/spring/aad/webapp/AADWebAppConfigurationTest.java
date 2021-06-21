@@ -6,7 +6,6 @@ package com.azure.spring.aad.webapp;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -26,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Isolated
 public class AADWebAppConfigurationTest {
 
     @Test
@@ -76,7 +74,7 @@ public class AADWebAppConfigurationTest {
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
                 assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
-                assertEquals("{baseUrl}/login/oauth2/code/", azure.getRedirectUri());
+                assertEquals("{baseUrl}/login/oauth2/code/", azure.getRedirectUriTemplate());
                 assertDefaultScopes(azure, "openid", "profile");
             });
     }
@@ -148,6 +146,8 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADWebAppClientRegistrationRepository repo =
                     context.getBean(AADWebAppClientRegistrationRepository.class);
+                ClientRegistration azure = repo.findByRegistrationId("azure");
+                ClientRegistration graph = repo.findByRegistrationId("graph");
 
                 assertEquals(repo.findByRegistrationId("azure").getAuthorizationGrantType(),
                     AuthorizationGrantType.AUTHORIZATION_CODE);
