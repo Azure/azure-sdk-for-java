@@ -5,6 +5,7 @@ package com.azure.spring.aad.webapp;
 
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
@@ -23,6 +24,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Isolated
 public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     private AADWebAppClientRegistrationRepository clientRepo;

@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
@@ -31,6 +32,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
+@Isolated
 public class AuthorizedClientRepoTest {
 
     private ClientRegistration azure;
