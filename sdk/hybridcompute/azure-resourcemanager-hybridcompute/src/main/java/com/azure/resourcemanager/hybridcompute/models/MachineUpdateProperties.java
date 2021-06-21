@@ -21,6 +21,12 @@ public final class MachineUpdateProperties {
     private LocationData locationData;
 
     /*
+     * Specifies the operating system settings for the hybrid machine.
+     */
+    @JsonProperty(value = "osProfile")
+    private OSProfile osProfile;
+
+    /*
      * The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
      */
@@ -51,6 +57,26 @@ public final class MachineUpdateProperties {
      */
     public MachineUpdateProperties withLocationData(LocationData locationData) {
         this.locationData = locationData;
+        return this;
+    }
+
+    /**
+     * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @return the osProfile value.
+     */
+    public OSProfile osProfile() {
+        return this.osProfile;
+    }
+
+    /**
+     * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @param osProfile the osProfile value to set.
+     * @return the MachineUpdateProperties object itself.
+     */
+    public MachineUpdateProperties withOsProfile(OSProfile osProfile) {
+        this.osProfile = osProfile;
         return this;
     }
 
@@ -106,6 +132,9 @@ public final class MachineUpdateProperties {
     public void validate() {
         if (locationData() != null) {
             locationData().validate();
+        }
+        if (osProfile() != null) {
+            osProfile().validate();
         }
     }
 }

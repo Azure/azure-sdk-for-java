@@ -27,7 +27,7 @@ public final class MachineProperties {
     /*
      * Specifies the operating system settings for the hybrid machine.
      */
-    @JsonProperty(value = "osProfile", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
@@ -98,6 +98,12 @@ public final class MachineProperties {
     private String osVersion;
 
     /*
+     * The type of Operating System (windows/linux).
+     */
+    @JsonProperty(value = "osType")
+    private String osType;
+
+    /*
      * Specifies the Arc Machine's unique SMBIOS ID
      */
     @JsonProperty(value = "vmUuid", access = JsonProperty.Access.WRITE_ONLY)
@@ -148,6 +154,12 @@ public final class MachineProperties {
     private String parentClusterResourceId;
 
     /*
+     * Specifies whether any MS SQL instance is discovered on the machine.
+     */
+    @JsonProperty(value = "mssqlDiscovered")
+    private String mssqlDiscovered;
+
+    /*
      * Detected properties from the machine.
      */
     @JsonProperty(value = "detectedProperties", access = JsonProperty.Access.WRITE_ONLY)
@@ -180,6 +192,17 @@ public final class MachineProperties {
      */
     public OSProfile osProfile() {
         return this.osProfile;
+    }
+
+    /**
+     * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
+     *
+     * @param osProfile the osProfile value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withOsProfile(OSProfile osProfile) {
+        this.osProfile = osProfile;
+        return this;
     }
 
     /**
@@ -306,6 +329,26 @@ public final class MachineProperties {
     }
 
     /**
+     * Get the osType property: The type of Operating System (windows/linux).
+     *
+     * @return the osType value.
+     */
+    public String osType() {
+        return this.osType;
+    }
+
+    /**
+     * Set the osType property: The type of Operating System (windows/linux).
+     *
+     * @param osType the osType value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withOsType(String osType) {
+        this.osType = osType;
+        return this;
+    }
+
+    /**
      * Get the vmUuid property: Specifies the Arc Machine's unique SMBIOS ID.
      *
      * @return the vmUuid value.
@@ -411,6 +454,26 @@ public final class MachineProperties {
      */
     public MachineProperties withParentClusterResourceId(String parentClusterResourceId) {
         this.parentClusterResourceId = parentClusterResourceId;
+        return this;
+    }
+
+    /**
+     * Get the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
+     *
+     * @return the mssqlDiscovered value.
+     */
+    public String mssqlDiscovered() {
+        return this.mssqlDiscovered;
+    }
+
+    /**
+     * Set the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
+     *
+     * @param mssqlDiscovered the mssqlDiscovered value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withMssqlDiscovered(String mssqlDiscovered) {
+        this.mssqlDiscovered = mssqlDiscovered;
         return this;
     }
 
