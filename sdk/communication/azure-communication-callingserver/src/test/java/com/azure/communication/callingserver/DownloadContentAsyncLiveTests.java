@@ -63,7 +63,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
         disabledReason = "Requires human intervention")
     public void downloadMetadataRetryingAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataRetryingAsync");
 
         try {
             Flux<ByteBuffer> content = conversationAsyncClient.downloadStream(METADATA_URL);
@@ -142,7 +142,7 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
         disabledReason = "Requires human intervention")
     public void downloadToFileRetryingAsync(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileAsync");
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadToFileRetryingAsync");
         AsynchronousFileChannel channel = Mockito.mock(AsynchronousFileChannel.class);
 
         doAnswer(invocation -> {
@@ -171,6 +171,10 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
     public void downloadContent404Async(HttpClient httpClient) {
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
         CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadContent404Async");
