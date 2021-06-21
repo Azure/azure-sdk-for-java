@@ -928,7 +928,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2021-05-01";
         this.bigDataPools = new BigDataPoolsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.ipFirewallRules = new IpFirewallRulesClientImpl(this);

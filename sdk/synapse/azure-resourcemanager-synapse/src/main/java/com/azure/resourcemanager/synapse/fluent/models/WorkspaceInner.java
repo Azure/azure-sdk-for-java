@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
@@ -136,10 +137,16 @@ public class WorkspaceInner extends Resource {
     private String adlaResourceId;
 
     /*
-     * Enable or Disable pubic network access to workspace
+     * Enable or Disable public network access to workspace
      */
     @JsonProperty(value = "properties.publicNetworkAccess")
     private WorkspacePublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Initial workspace AAD admin properties for a CSP subscription
+     */
+    @JsonProperty(value = "properties.cspWorkspaceAdminProperties")
+    private CspWorkspaceAdminProperties cspWorkspaceAdminProperties;
 
     /**
      * Get the identity property: Identity of the workspace.
@@ -449,7 +456,7 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+     * Get the publicNetworkAccess property: Enable or Disable public network access to workspace.
      *
      * @return the publicNetworkAccess value.
      */
@@ -458,13 +465,33 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+     * Set the publicNetworkAccess property: Enable or Disable public network access to workspace.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspaceInner object itself.
      */
     public WorkspaceInner withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
+     *
+     * @return the cspWorkspaceAdminProperties value.
+     */
+    public CspWorkspaceAdminProperties cspWorkspaceAdminProperties() {
+        return this.cspWorkspaceAdminProperties;
+    }
+
+    /**
+     * Set the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
+     *
+     * @param cspWorkspaceAdminProperties the cspWorkspaceAdminProperties value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
+        this.cspWorkspaceAdminProperties = cspWorkspaceAdminProperties;
         return this;
     }
 
@@ -511,6 +538,9 @@ public class WorkspaceInner extends Resource {
         }
         if (purviewConfiguration() != null) {
             purviewConfiguration().validate();
+        }
+        if (cspWorkspaceAdminProperties() != null) {
+            cspWorkspaceAdminProperties().validate();
         }
     }
 }

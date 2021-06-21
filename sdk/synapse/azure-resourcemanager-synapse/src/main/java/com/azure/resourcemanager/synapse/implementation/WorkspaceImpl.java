@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceInner;
+import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
@@ -145,6 +146,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public WorkspacePublicNetworkAccess publicNetworkAccess() {
         return this.innerModel().publicNetworkAccess();
+    }
+
+    public CspWorkspaceAdminProperties cspWorkspaceAdminProperties() {
+        return this.innerModel().cspWorkspaceAdminProperties();
     }
 
     public Region region() {
@@ -374,6 +379,11 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             this.updateWorkspacePatchInfo.withPublicNetworkAccess(publicNetworkAccess);
             return this;
         }
+    }
+
+    public WorkspaceImpl withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
+        this.innerModel().withCspWorkspaceAdminProperties(cspWorkspaceAdminProperties);
+        return this;
     }
 
     private boolean isInCreateMode() {

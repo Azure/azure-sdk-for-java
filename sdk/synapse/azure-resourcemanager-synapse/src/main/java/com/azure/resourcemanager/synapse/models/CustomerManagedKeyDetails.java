@@ -26,6 +26,12 @@ public final class CustomerManagedKeyDetails {
     @JsonProperty(value = "key")
     private WorkspaceKeyDetails key;
 
+    /*
+     * Key encryption key
+     */
+    @JsonProperty(value = "kekIdentity")
+    private KekIdentityProperties kekIdentity;
+
     /**
      * Get the status property: The customer managed key status on the workspace.
      *
@@ -56,6 +62,26 @@ public final class CustomerManagedKeyDetails {
     }
 
     /**
+     * Get the kekIdentity property: Key encryption key.
+     *
+     * @return the kekIdentity value.
+     */
+    public KekIdentityProperties kekIdentity() {
+        return this.kekIdentity;
+    }
+
+    /**
+     * Set the kekIdentity property: Key encryption key.
+     *
+     * @param kekIdentity the kekIdentity value to set.
+     * @return the CustomerManagedKeyDetails object itself.
+     */
+    public CustomerManagedKeyDetails withKekIdentity(KekIdentityProperties kekIdentity) {
+        this.kekIdentity = kekIdentity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,6 +89,9 @@ public final class CustomerManagedKeyDetails {
     public void validate() {
         if (key() != null) {
             key().validate();
+        }
+        if (kekIdentity() != null) {
+            kekIdentity().validate();
         }
     }
 }

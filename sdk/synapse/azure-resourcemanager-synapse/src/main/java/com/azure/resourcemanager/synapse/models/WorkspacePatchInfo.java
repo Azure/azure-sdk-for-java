@@ -66,7 +66,7 @@ public class WorkspacePatchInfo {
     private EncryptionDetails encryption;
 
     /*
-     * Enable or Disable pubic network access to workspace
+     * Enable or Disable public network access to workspace
      */
     @JsonProperty(value = "properties.publicNetworkAccess")
     private WorkspacePublicNetworkAccess publicNetworkAccess;
@@ -223,7 +223,7 @@ public class WorkspacePatchInfo {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+     * Get the publicNetworkAccess property: Enable or Disable public network access to workspace.
      *
      * @return the publicNetworkAccess value.
      */
@@ -232,7 +232,7 @@ public class WorkspacePatchInfo {
     }
 
     /**
-     * Set the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+     * Set the publicNetworkAccess property: Enable or Disable public network access to workspace.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspacePatchInfo object itself.
