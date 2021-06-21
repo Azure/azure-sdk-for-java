@@ -18,6 +18,7 @@ trigger:
       - sdk/storage/azure-storage-blob-cryptography
       - sdk/storage/azure-storage-blob-nio
       - sdk/storage/azure-storage-common
+      - sdk/storage/azure-storage-data-movement
       - sdk/storage/azure-storage-file-datalake
       - sdk/storage/azure-storage-file-share
       - sdk/storage/azure-storage-internal-avro
@@ -51,6 +52,7 @@ pr:
       - sdk/storage/azure-storage-blob-cryptography
       - sdk/storage/azure-storage-blob-nio
       - sdk/storage/azure-storage-common
+      - sdk/storage/azure-storage-data-movement
       - sdk/storage/azure-storage-file-datalake
       - sdk/storage/azure-storage-file-share
       - sdk/storage/azure-storage-internal-avro
