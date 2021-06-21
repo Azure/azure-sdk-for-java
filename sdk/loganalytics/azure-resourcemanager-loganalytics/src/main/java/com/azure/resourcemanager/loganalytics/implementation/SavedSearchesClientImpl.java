@@ -158,6 +158,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -168,7 +169,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             resourceGroupName,
                             workspaceName,
                             savedSearchId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -210,6 +211,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -218,7 +220,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 resourceGroupName,
                 workspaceName,
                 savedSearchId,
-                this.client.getApiVersion(),
+                apiVersion,
                 context);
     }
 
@@ -314,6 +316,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -325,7 +328,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             resourceGroupName,
                             workspaceName,
                             savedSearchId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -379,6 +382,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -388,7 +392,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 resourceGroupName,
                 workspaceName,
                 savedSearchId,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -498,6 +502,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -509,7 +514,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             resourceGroupName,
                             workspaceName,
                             savedSearchId,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -552,6 +557,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         if (savedSearchId == null) {
             return Mono.error(new IllegalArgumentException("Parameter savedSearchId is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -561,7 +567,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 resourceGroupName,
                 workspaceName,
                 savedSearchId,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
@@ -656,6 +662,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -665,7 +672,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -705,6 +712,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -712,7 +720,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);

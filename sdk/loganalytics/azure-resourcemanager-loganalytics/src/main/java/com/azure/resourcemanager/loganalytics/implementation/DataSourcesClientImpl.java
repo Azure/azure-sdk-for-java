@@ -180,6 +180,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -190,7 +191,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                             resourceGroupName,
                             workspaceName,
                             dataSourceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
                             accept,
@@ -245,6 +246,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -253,7 +255,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                 resourceGroupName,
                 workspaceName,
                 dataSourceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
                 accept,
@@ -364,6 +366,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -373,7 +376,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                             resourceGroupName,
                             workspaceName,
                             dataSourceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -416,6 +419,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -423,7 +427,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                 resourceGroupName,
                 workspaceName,
                 dataSourceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 context);
     }
@@ -514,6 +518,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -524,7 +529,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                             resourceGroupName,
                             workspaceName,
                             dataSourceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -568,6 +573,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -576,7 +582,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                 resourceGroupName,
                 workspaceName,
                 dataSourceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -677,6 +683,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -688,7 +695,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                             workspaceName,
                             filter,
                             skiptoken,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -742,6 +749,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -751,7 +759,7 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
                 workspaceName,
                 filter,
                 skiptoken,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context)

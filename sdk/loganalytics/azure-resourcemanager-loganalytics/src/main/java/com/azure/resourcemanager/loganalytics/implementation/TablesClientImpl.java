@@ -141,6 +141,7 @@ public final class TablesClientImpl implements TablesClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -151,7 +152,7 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<TableInner>>map(
@@ -194,6 +195,7 @@ public final class TablesClientImpl implements TablesClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -202,7 +204,7 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -316,6 +318,7 @@ public final class TablesClientImpl implements TablesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -326,7 +329,7 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             tableName,
                             parameters,
                             accept,
@@ -377,6 +380,7 @@ public final class TablesClientImpl implements TablesClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -385,7 +389,7 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 tableName,
                 parameters,
                 accept,
@@ -490,6 +494,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +505,7 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             tableName,
                             accept,
                             context))
@@ -544,6 +549,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -552,7 +558,7 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 tableName,
                 accept,
                 context);

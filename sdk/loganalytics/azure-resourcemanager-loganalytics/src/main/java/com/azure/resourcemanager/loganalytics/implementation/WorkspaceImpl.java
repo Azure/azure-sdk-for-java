@@ -101,13 +101,24 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         }
     }
 
-    public Map<String, Object> features() {
-        Map<String, Object> inner = this.innerModel().features();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public Boolean enableDataExport() {
+        return this.innerModel().enableDataExport();
+    }
+
+    public Boolean immediatePurgeDataOn30Days() {
+        return this.innerModel().immediatePurgeDataOn30Days();
+    }
+
+    public Boolean enableLogAccessUsingOnlyResourcePermissions() {
+        return this.innerModel().enableLogAccessUsingOnlyResourcePermissions();
+    }
+
+    public String clusterResourceId() {
+        return this.innerModel().clusterResourceId();
+    }
+
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
     }
 
     public Region region() {
@@ -309,12 +320,57 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         }
     }
 
-    public WorkspaceImpl withFeatures(Map<String, Object> features) {
+    public WorkspaceImpl withEnableDataExport(Boolean enableDataExport) {
         if (isInCreateMode()) {
-            this.innerModel().withFeatures(features);
+            this.innerModel().withEnableDataExport(enableDataExport);
             return this;
         } else {
-            this.updateParameters.withFeatures(features);
+            this.updateParameters.withEnableDataExport(enableDataExport);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days) {
+        if (isInCreateMode()) {
+            this.innerModel().withImmediatePurgeDataOn30Days(immediatePurgeDataOn30Days);
+            return this;
+        } else {
+            this.updateParameters.withImmediatePurgeDataOn30Days(immediatePurgeDataOn30Days);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withEnableLogAccessUsingOnlyResourcePermissions(
+        Boolean enableLogAccessUsingOnlyResourcePermissions) {
+        if (isInCreateMode()) {
+            this
+                .innerModel()
+                .withEnableLogAccessUsingOnlyResourcePermissions(enableLogAccessUsingOnlyResourcePermissions);
+            return this;
+        } else {
+            this
+                .updateParameters
+                .withEnableLogAccessUsingOnlyResourcePermissions(enableLogAccessUsingOnlyResourcePermissions);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withClusterResourceId(String clusterResourceId) {
+        if (isInCreateMode()) {
+            this.innerModel().withClusterResourceId(clusterResourceId);
+            return this;
+        } else {
+            this.updateParameters.withClusterResourceId(clusterResourceId);
+            return this;
+        }
+    }
+
+    public WorkspaceImpl withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisableLocalAuth(disableLocalAuth);
+            return this;
+        } else {
+            this.updateParameters.withDisableLocalAuth(disableLocalAuth);
             return this;
         }
     }

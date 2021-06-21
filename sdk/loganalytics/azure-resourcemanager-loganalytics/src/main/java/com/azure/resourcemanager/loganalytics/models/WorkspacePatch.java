@@ -94,10 +94,35 @@ public class WorkspacePatch extends AzureEntityResource {
     private List<PrivateLinkScopedResource> privateLinkScopedResources;
 
     /*
-     * Workspace features.
+     * Flag that indicate if data should be exported.
      */
-    @JsonProperty(value = "properties.features")
-    private Map<String, Object> features;
+    @JsonProperty(value = "properties.features.enableDataExport")
+    private Boolean enableDataExport;
+
+    /*
+     * Flag that describes if we want to remove the data after 30 days.
+     */
+    @JsonProperty(value = "properties.features.immediatePurgeDataOn30Days")
+    private Boolean immediatePurgeDataOn30Days;
+
+    /*
+     * Flag that indicate which permission to use - resource or workspace or
+     * both.
+     */
+    @JsonProperty(value = "properties.features.enableLogAccessUsingOnlyResourcePermissions")
+    private Boolean enableLogAccessUsingOnlyResourcePermissions;
+
+    /*
+     * Dedicated LA cluster resourceId that is linked to the workspaces.
+     */
+    @JsonProperty(value = "properties.features.clusterResourceId")
+    private String clusterResourceId;
+
+    /*
+     * Disable Non-AAD based Auth.
+     */
+    @JsonProperty(value = "properties.features.disableLocalAuth")
+    private Boolean disableLocalAuth;
 
     /**
      * Get the tags property: Resource tags. Optional.
@@ -298,22 +323,105 @@ public class WorkspacePatch extends AzureEntityResource {
     }
 
     /**
-     * Get the features property: Workspace features.
+     * Get the enableDataExport property: Flag that indicate if data should be exported.
      *
-     * @return the features value.
+     * @return the enableDataExport value.
      */
-    public Map<String, Object> features() {
-        return this.features;
+    public Boolean enableDataExport() {
+        return this.enableDataExport;
     }
 
     /**
-     * Set the features property: Workspace features.
+     * Set the enableDataExport property: Flag that indicate if data should be exported.
      *
-     * @param features the features value to set.
+     * @param enableDataExport the enableDataExport value to set.
      * @return the WorkspacePatch object itself.
      */
-    public WorkspacePatch withFeatures(Map<String, Object> features) {
-        this.features = features;
+    public WorkspacePatch withEnableDataExport(Boolean enableDataExport) {
+        this.enableDataExport = enableDataExport;
+        return this;
+    }
+
+    /**
+     * Get the immediatePurgeDataOn30Days property: Flag that describes if we want to remove the data after 30 days.
+     *
+     * @return the immediatePurgeDataOn30Days value.
+     */
+    public Boolean immediatePurgeDataOn30Days() {
+        return this.immediatePurgeDataOn30Days;
+    }
+
+    /**
+     * Set the immediatePurgeDataOn30Days property: Flag that describes if we want to remove the data after 30 days.
+     *
+     * @param immediatePurgeDataOn30Days the immediatePurgeDataOn30Days value to set.
+     * @return the WorkspacePatch object itself.
+     */
+    public WorkspacePatch withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days) {
+        this.immediatePurgeDataOn30Days = immediatePurgeDataOn30Days;
+        return this;
+    }
+
+    /**
+     * Get the enableLogAccessUsingOnlyResourcePermissions property: Flag that indicate which permission to use -
+     * resource or workspace or both.
+     *
+     * @return the enableLogAccessUsingOnlyResourcePermissions value.
+     */
+    public Boolean enableLogAccessUsingOnlyResourcePermissions() {
+        return this.enableLogAccessUsingOnlyResourcePermissions;
+    }
+
+    /**
+     * Set the enableLogAccessUsingOnlyResourcePermissions property: Flag that indicate which permission to use -
+     * resource or workspace or both.
+     *
+     * @param enableLogAccessUsingOnlyResourcePermissions the enableLogAccessUsingOnlyResourcePermissions value to set.
+     * @return the WorkspacePatch object itself.
+     */
+    public WorkspacePatch withEnableLogAccessUsingOnlyResourcePermissions(
+        Boolean enableLogAccessUsingOnlyResourcePermissions) {
+        this.enableLogAccessUsingOnlyResourcePermissions = enableLogAccessUsingOnlyResourcePermissions;
+        return this;
+    }
+
+    /**
+     * Get the clusterResourceId property: Dedicated LA cluster resourceId that is linked to the workspaces.
+     *
+     * @return the clusterResourceId value.
+     */
+    public String clusterResourceId() {
+        return this.clusterResourceId;
+    }
+
+    /**
+     * Set the clusterResourceId property: Dedicated LA cluster resourceId that is linked to the workspaces.
+     *
+     * @param clusterResourceId the clusterResourceId value to set.
+     * @return the WorkspacePatch object itself.
+     */
+    public WorkspacePatch withClusterResourceId(String clusterResourceId) {
+        this.clusterResourceId = clusterResourceId;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Disable Non-AAD based Auth.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disable Non-AAD based Auth.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the WorkspacePatch object itself.
+     */
+    public WorkspacePatch withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
         return this;
     }
 

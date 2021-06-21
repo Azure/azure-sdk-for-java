@@ -174,6 +174,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -185,7 +186,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                             workspaceName,
                             dataSourceType,
                             this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -240,6 +241,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -249,7 +251,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                 workspaceName,
                 dataSourceType,
                 this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
@@ -368,6 +370,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -377,7 +380,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                             resourceGroupName,
                             workspaceName,
                             dataSourceType,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -420,6 +423,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -427,7 +431,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                 resourceGroupName,
                 workspaceName,
                 dataSourceType,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 context);
     }
@@ -518,6 +522,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -528,7 +533,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                             resourceGroupName,
                             workspaceName,
                             dataSourceType,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -572,6 +577,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -580,7 +586,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                 resourceGroupName,
                 workspaceName,
                 dataSourceType,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -680,6 +686,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -689,7 +696,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             workspaceName,
                             accept,
                             context))
@@ -735,6 +742,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -742,7 +750,7 @@ public final class LinkedStorageAccountsClientImpl implements LinkedStorageAccou
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                this.client.getApiVersion(),
+                apiVersion,
                 workspaceName,
                 accept,
                 context)

@@ -12,6 +12,9 @@ public enum IdentityType {
     /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
+    /** Enum value UserAssigned. */
+    USER_ASSIGNED("UserAssigned"),
+
     /** Enum value None. */
     NONE("None");
 

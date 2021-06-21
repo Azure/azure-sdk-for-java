@@ -118,6 +118,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -127,7 +128,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -167,6 +168,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -174,7 +176,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -268,6 +270,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -278,7 +281,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -318,6 +321,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -326,7 +330,7 @@ public final class SharedKeysOperationsClientImpl implements SharedKeysOperation
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
