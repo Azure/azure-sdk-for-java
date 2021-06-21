@@ -509,8 +509,8 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
-     * Opens a file input stream to download the specified range of the file.
-     *
+     * Opens a file input stream to download the specified range of the file. Defaults to ETag locking if the option
+     * is not specified.
      *
      * @param options {@link DataLakeFileInputStreamOptions}
      * @return An {@link InputStream} object that represents the stream to use for reading from the file.
