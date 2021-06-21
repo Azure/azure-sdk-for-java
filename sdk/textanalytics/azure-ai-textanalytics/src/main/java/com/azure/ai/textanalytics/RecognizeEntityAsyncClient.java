@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -35,7 +36,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
-import static com.azure.ai.textanalytics.implementation.Utility.getNonNullStringIndexType;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
@@ -196,7 +196,7 @@ class RecognizeEntityAsyncClient {
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(), options.isIncludeStatistics(),
             options.isServiceLogsDisabled(),
-            getNonNullStringIndexType(options.getStringIndexType()),
+            StringIndexType.UTF16CODE_UNIT,
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))

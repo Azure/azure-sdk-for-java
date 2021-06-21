@@ -1,8 +1,8 @@
-# Azure Resource Manager Databricks client library for Java
+# Azure Resource Manager AzureDatabricks client library for Java
 
-Azure Resource Manager Databricks client library for Java.
+Azure Resource Manager AzureDatabricks client library for Java.
 
-This package contains Microsoft Azure SDK for Databricks Management SDK. ARM Databricks. Package tag package-2018-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for AzureDatabricks Management SDK. The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace resources. Package tag package-2021-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-databricks</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,7 +60,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-DatabricksManager manager = DatabricksManager
+AzureDatabricksManager manager = AzureDatabricksManager
     .authenticate(credential, profile);
 ```
 
@@ -73,6 +73,8 @@ See [Authentication][authenticate] for more options.
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
 ## Examples
+
+
 
 ## Troubleshooting
 

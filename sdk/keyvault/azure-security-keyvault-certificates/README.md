@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Certificate client library. Add it to y
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.2.0-beta.6</version>
+    <version>4.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -72,6 +72,8 @@ Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
 
     > --certificate-permissions:
     > Accepted values: backup, create, delete, deleteissuers, get, getissuers, import, list, listissuers, managecontacts, manageissuers, purge, recover, restore, setissuers, update
+
+    If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Certificates Officer" in our [RBAC guide][rbac_guide].
 
 * Use the aforementioned Key Vault name to retrieve details of your Key Vault, which also contain your Key Vault URL:
 
@@ -338,5 +340,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [jwk_specification]: https://tools.ietf.org/html/rfc7517
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-certificates%2FREADME.png)

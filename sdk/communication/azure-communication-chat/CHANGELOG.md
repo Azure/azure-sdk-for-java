@@ -3,6 +3,7 @@
 ## 1.1.0-beta.1 (Unreleased)
 - Added method `ChatThreadAsyncClient.listParticipants(ListParticipantsOptions listParticipantsOptions)`
 - Added method `ChatThreadAsyncClient.listReadReceipts(ListReadReceiptOptions listReadReceiptOptions)`
+- Added support for metadata in messages.
 
 ## 1.0.1 (2021-05-27)
 - Dependency versions updated.

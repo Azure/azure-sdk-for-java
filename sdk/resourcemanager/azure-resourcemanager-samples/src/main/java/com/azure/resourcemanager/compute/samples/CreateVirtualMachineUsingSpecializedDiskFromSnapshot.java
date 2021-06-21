@@ -52,7 +52,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
         final String password = Utils.password();
         final Region region = Region.US_WEST;
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
         List<String> apacheInstallScriptUris = new ArrayList<>();
         apacheInstallScriptUris.add(apacheInstallScript);

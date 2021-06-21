@@ -129,7 +129,7 @@ public class ReactorSession implements AmqpSession {
         connectionSubscriptions = Disposables.composite(
             this.endpointStates.subscribe(),
 
-            shutdownSignals.flatMap(signal ->  dispose("Shutdown signal received", null, false)).subscribe());
+            shutdownSignals.flatMap(signal ->  closeAsync("Shutdown signal received", null, false)).subscribe());
 
         session.open();
     }
@@ -153,8 +153,7 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public void dispose() {
-        dispose("Dispose called.", null, true)
-            .block(retryOptions.getTryTimeout());
+        closeAsync().block(retryOptions.getTryTimeout());
     }
 
     /**
@@ -241,7 +240,12 @@ public class ReactorSession implements AmqpSession {
         return isClosedMono.asMono();
     }
 
-    Mono<Void> dispose(String message, ErrorCondition errorCondition, boolean disposeLinks) {
+    @Override
+    public Mono<Void> closeAsync() {
+        return closeAsync(null, null, true);
+    }
+
+    Mono<Void> closeAsync(String message, ErrorCondition errorCondition, boolean disposeLinks) {
         if (isDisposed.getAndSet(true)) {
             return isClosedMono.asMono();
         }
@@ -249,7 +253,7 @@ public class ReactorSession implements AmqpSession {
         final String condition = errorCondition != null ? errorCondition.toString() : NOT_APPLICABLE;
         logger.verbose("connectionId[{}], sessionName[{}], errorCondition[{}]. Setting error condition and "
                 + "disposing session. {}",
-            sessionHandler.getConnectionId(), sessionName, condition, message);
+            sessionHandler.getConnectionId(), sessionName, condition, message != null ? message : "");
 
         return Mono.fromRunnable(() -> {
             try {
@@ -598,7 +602,7 @@ public class ReactorSession implements AmqpSession {
             "connectionId[{}] sessionName[{}] Disposing of active send and receive links due to session close.",
             sessionHandler.getConnectionId(), sessionName);
 
-        dispose("", null, true);
+        closeAsync().subscribe();
     }
 
     private void handleError(Throwable error) {
@@ -612,12 +616,12 @@ public class ReactorSession implements AmqpSession {
 
             condition = new ErrorCondition(Symbol.getSymbol(errorCondition), exception.getMessage());
 
-            dispose(exception.getMessage(), condition, true);
+            closeAsync(exception.getMessage(), condition, true).subscribe();
         } else {
             condition = null;
         }
 
-        dispose(error.getMessage(), condition, true);
+        closeAsync(error.getMessage(), condition, true).subscribe();
     }
 
     /**

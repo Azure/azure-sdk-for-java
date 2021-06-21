@@ -595,11 +595,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         try {
-            if (link instanceof AsyncCloseable) {
-                ((AsyncCloseable) link).closeAsync().subscribe();
-            } else {
-                link.dispose();
-            }
+            ((AsyncCloseable) link).closeAsync().subscribe();
         } catch (Exception error) {
             logger.warning("linkName[{}] entityPath[{}] Unable to dispose of link.", link.getLinkName(),
                 link.getEntityPath(), error);

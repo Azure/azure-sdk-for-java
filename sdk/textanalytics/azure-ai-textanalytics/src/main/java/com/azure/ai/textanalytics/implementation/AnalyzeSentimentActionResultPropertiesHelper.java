@@ -31,7 +31,8 @@ public final class AnalyzeSentimentActionResultPropertiesHelper {
         accessor = analyzeSentimentActionResultAccessor;
     }
 
-    public static void setResult(AnalyzeSentimentActionResult actionResult, AnalyzeSentimentResultCollection result) {
-        accessor.setResult(actionResult, result);
+    public static void setDocumentResults(AnalyzeSentimentActionResult actionResult,
+        AnalyzeSentimentResultCollection documentResults) {
+        accessor.setResult(actionResult, documentResults);
     }
 }

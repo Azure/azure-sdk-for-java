@@ -155,6 +155,12 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     private AnalyticalStorageConfiguration analyticalStorageConfiguration;
 
     /*
+     * Enum to indicate the mode of account creation.
+     */
+    @JsonProperty(value = "properties.createMode")
+    private CreateMode createMode;
+
+    /*
      * The object representing the policy for taking backups on an account.
      */
     @JsonProperty(value = "properties.backupPolicy")
@@ -178,6 +184,19 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
      */
     @JsonProperty(value = "properties.networkAclBypassResourceIds")
     private List<String> networkAclBypassResourceIds;
+
+    /*
+     * Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
+     * Parameters to indicate the information about the restore.
+     */
+    @JsonProperty(value = "properties.restoreParameters")
+    private RestoreParameters restoreParameters;
 
     /** Creates an instance of DatabaseAccountCreateUpdateParameters class. */
     public DatabaseAccountCreateUpdateParameters() {
@@ -623,6 +642,26 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
     }
 
     /**
+     * Get the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @param createMode the createMode value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
      *
      * @return the backupPolicy value.
@@ -705,6 +744,48 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
         return this;
     }
 
+    /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @return the restoreParameters value.
+     */
+    public RestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters withRestoreParameters(RestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public DatabaseAccountCreateUpdateParameters withLocation(String location) {
@@ -761,6 +842,9 @@ public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties
         }
         if (cors() != null) {
             cors().forEach(e -> e.validate());
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
         }
     }
 }

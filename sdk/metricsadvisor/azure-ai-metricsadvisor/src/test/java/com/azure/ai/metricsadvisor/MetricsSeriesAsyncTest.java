@@ -8,7 +8,6 @@ import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;

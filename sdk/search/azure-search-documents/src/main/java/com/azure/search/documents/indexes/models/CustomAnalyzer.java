@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -20,9 +19,8 @@ import java.util.List;
  * configuration consisting of a single predefined tokenizer and one or more filters. The tokenizer is responsible for
  * breaking text into tokens, and the filters for modifying tokens emitted by the tokenizer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.CustomAnalyzer")
-@JsonFlatten
 @Fluent
 public final class CustomAnalyzer extends LexicalAnalyzer {
     /*

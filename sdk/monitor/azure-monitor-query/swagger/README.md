@@ -6,7 +6,7 @@ These settings apply only when `--tag=package-log` is specified on the command l
 
 ``` yaml $(tag) == 'package-log'
 use: '@autorest/java@4.0.22'
-input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/azmon-query-swagger/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/preview/2021-05-19/OperationalInsights.json
+input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/azmon-query-swagger/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/preview/2021-05-19_Preview/OperationalInsights.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.log

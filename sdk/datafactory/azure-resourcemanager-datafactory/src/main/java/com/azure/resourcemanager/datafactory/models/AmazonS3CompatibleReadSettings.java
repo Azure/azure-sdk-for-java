@@ -314,6 +314,13 @@ public final class AmazonS3CompatibleReadSettings extends StoreReadSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3CompatibleReadSettings withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -5,6 +5,8 @@ package com.azure.core.amqp.models;
 
 import java.util.List;
 import java.util.Locale;
+import org.junit.jupiter.api.Test;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Class contains sample code snippets that will be used in javadocs.
@@ -13,8 +15,10 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
     /**
      * Get message body from {@link AmqpAnnotatedMessage}.
      */
+    @Test
     public void checkBodyType() {
-        AmqpAnnotatedMessage amqpAnnotatedMessage = null;
+        AmqpAnnotatedMessage amqpAnnotatedMessage =
+            new AmqpAnnotatedMessage(AmqpMessageBody.fromData("my-amqp-message".getBytes(StandardCharsets.UTF_8)));
         // BEGIN: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
         Object amqpValue;
         AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();

@@ -30,7 +30,7 @@ public class AuthenticationPolicy extends ArmChallengeAuthenticationPolicy {
     }
 
     @Override
-    protected String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
+    public String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
         if (CoreUtils.isNullOrEmpty(scopes)) {
             scopes = new String[1];
             scopes[0] = ResourceManagerUtils.getDefaultScopeFromRequest(context.getHttpRequest(), environment);
