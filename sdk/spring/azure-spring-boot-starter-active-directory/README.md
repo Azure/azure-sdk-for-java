@@ -32,14 +32,14 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
 
 **System diagram**:
 
-![Standalone Web Application](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application.png)
+![Standalone Web Application](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application.png)
 
 
 * Step 1: Make sure `redirect URI` has been set to `{application-base-uri}/login/oauth2/code/`, for 
 example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot be omitted.
 
-    ![web-application-set-redirect-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-1.png)
-    ![web-application-set-redirect-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-2.png)
+    ![web-application-set-redirect-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-1.png)
+    ![web-application-set-redirect-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-set-redirect-uri-2.png)
 
 * Step 2: Add the following dependencies in your pom.xml.
 
@@ -97,7 +97,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 
 **System diagram**:
 
-![web-application-visiting-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-visiting-resource-servers.png)
+![web-application-visiting-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/web-application-visiting-resource-servers.png)
 
 * Step 1: Make sure `redirect URI` has been set, just like [Accessing a web application].
 
@@ -151,7 +151,7 @@ This scenario not support login. Just protect the server by validating the acces
 
 **System diagram**:
 
-![Standalone resource server usage](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server.png)
+![Standalone resource server usage](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server.png)
 
 To use **aad-starter** in this scenario, we need these steps:
 
@@ -180,8 +180,8 @@ To use **aad-starter** in this scenario, we need these steps:
     ```
     Both `client-id` and `app-id-uri` can be used to verify access token. `app-id-uri` can be get in Azure Portal:
     
-    ![get-app-id-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-1.png)
-    ![get-app-id-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-2.png)
+    ![get-app-id-uri-1.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-1.png)
+    ![get-app-id-uri-2.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/get-app-id-uri-2.png)
 
 * Step 3: Write Java code:
   
@@ -213,7 +213,7 @@ This scenario support visit other resource servers in resource servers.
 
 **System diagram**:
 
-![resource-server-visiting-other-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server-visiting-other-resource-servers.png)
+![resource-server-visiting-other-resource-servers.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/resource-server-visiting-other-resource-servers.png)
 
 To use **aad-starter** in this scenario, we need these steps:
 
@@ -486,7 +486,7 @@ This starter supports [Conditional Access] policy. By using [Conditional Access]
  
 In [Resource server visiting other resource server] scenario(For better description, we think that resource server with OBO function as **webapiA** and the other resource servers as **webapiB**), When we configure the webapiB application with Conditional Access(such as [multi-factor authentication]), this stater will help us send the Conditional Access information of the webapiA to the web application and the web application will help us complete the Conditional Access Policy. As shown below:
 
-  ![aad-conditional-access-flow.png](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-flow.png)
+  ![aad-conditional-access-flow.png](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-flow.png)
   
   
   
@@ -497,13 +497,13 @@ In [Resource server visiting other resource server] scenario(For better descript
   
 * Step 1: Follow the guide to create conditional access policy for webapiB.
   
-    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-create-conditional-access.png)
+    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-create-conditional-access.png)
   
-    ![aad-conditional-access-add-application](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-application.png) 
+    ![aad-conditional-access-add-application](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-application.png) 
   
 * Step 2: [Require MFA for all users] or specify the user account in your policy.
 
-    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/master/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-user.png)
+    ![aad-create-conditional-access](https://github.com/Azure/azure-sdk-for-java/raw/main/sdk/spring/azure-spring-boot-starter-active-directory/resource/aad-conditional-access-add-user.png)
     
 * Step 3: Follow the guide, configure our samples.
    1. **webapiB**: [configure webapiB]
