@@ -49,8 +49,14 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     }
 
     public void logIn() {
-        driver.get(app.root() + "oauth2/authorization/azure");
+        String loginUrl = app.root() + "oauth2/authorization/azure";
+        LOGGER.info(loginUrl);
+        driver.get(loginUrl);
+        String beforeLoginPageSource = driver.getPageSource();
+        LOGGER.info(beforeLoginPageSource);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
+        String afterLoginPageSource = driver.getPageSource();
+        LOGGER.info(afterLoginPageSource);
         try {
             try {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
