@@ -122,7 +122,7 @@ DigitalTwinsModelData modelObject = modelResponse.getValue();
 ### Create models
 
 Let's create models using the code below. You need to pass in `List<string>` containing list of json models.
-Check out sample models [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Models).
+Check out sample models [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/Models).
 
 Example of using sync client to create models.
 
@@ -190,7 +190,7 @@ client.deleteModel(modelId);
 
 ### Create digital twins
 
-For Creating Twin you will need to provide Id of a digital Twin such as `myTwin` and the application/json digital twin based on the model created earlier. You can look at sample application/json [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/DigitalTwins).
+For Creating Twin you will need to provide Id of a digital Twin such as `myTwin` and the application/json digital twin based on the model created earlier. You can look at sample application/json [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core/src/samples/resources/DTDL/DigitalTwins).
 
 One option is to use the provided class BasicDigitalTwin for serialization and deserialization.
 

@@ -227,4 +227,4 @@ secretClient.purgeDeletedSecret("<secret-name>");
 ```
 
 ## Additional samples
-More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets/src/samples).
+More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples).

@@ -257,4 +257,4 @@ certificateClient.purgeDeletedCertificate("<certificate-name>");
 ```
 
 ## Additional samples
-More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-certificates/src/samples).
+More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-certificates/src/samples).

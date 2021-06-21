@@ -591,7 +591,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal
@@ -606,7 +606,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
 [best_practices]: https://docs.microsoft.com/azure/key-vault/managed-hsm/best-practices
 [built_in_roles]: https://docs.microsoft.com/azure/key-vault/managed-hsm/built-in-roles
-[storage_readme_sas_token]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob#get-credentials
+[storage_readme_sas_token]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-blob#get-credentials
 [portal_sas_token]: https://docs.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

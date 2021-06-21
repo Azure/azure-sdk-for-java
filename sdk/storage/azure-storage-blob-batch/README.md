@@ -175,7 +175,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_portal]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[blob_service_client]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob#create-a-storage-account
+[blob_service_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-blob#create-a-storage-account
 [error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [blob_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob-batch/src/samples/README.md
 [cla]: https://cla.microsoft.com

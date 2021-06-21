@@ -29,9 +29,9 @@ Sometimes we want to illustrate how several APIs or even packages work together 
 This section lists how-to guides for the most commonly used APIs and most common scenarios, i.e. this section does not attempt to be a complete directory of guides contained in this repository. 
 
 #### General How-To Guides
-- [How to create **Netty Http Client**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-netty#examples)
-- [How to create **OK Http Client**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-http-okhttp#examples)
-- [How to use **Azure Core Tracing Opentelemetry**](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core-tracing-opentelemetry#examples)
+- [How to create **Netty Http Client**](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty#examples)
+- [How to create **OK Http Client**](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-okhttp#examples)
+- [How to use **Azure Core Tracing Opentelemetry**](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-tracing-opentelemetry#examples)
 - How to configure, access, and analyze **logging** information (TODO)
 
 #### Azure.Security.KeyVault.Keys

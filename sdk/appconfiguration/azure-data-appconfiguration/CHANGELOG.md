@@ -90,7 +90,7 @@
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
 and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## 1.0.0-preview.5 (2019-10-11)
 - Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.

@@ -10,7 +10,7 @@ Familiarity with the `com.microsoft.azure:azure-servicebus` library is assumed. 
 library for Java, please refer to the
 [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/README.md)
 and [Service Bus
-samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
+samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
 for the `com.azure:azure-messaging-servicebus` library rather than this guide.
 
 ## Table of contents
@@ -438,4 +438,4 @@ You can read more about how to generate Shared Access Signatures [here](https://
 
 ## Additional samples
 
-More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus).
+More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus).

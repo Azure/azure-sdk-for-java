@@ -102,8 +102,8 @@ Note that these breaking changes are only breaking changes from the preview vers
 ### New features
 
 - Official public preview of azure-digitalTwins-core SDK
-- [Azure Digital Twins Public Repo](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core)
-- [Azure Digital Twins Samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/digitaltwins/azure-digitaltwins-core/src/samples)
+- [Azure Digital Twins Public Repo](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core)
+- [Azure Digital Twins Samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/digitaltwins/azure-digitaltwins-core/src/samples)
 
 ### Breaking changes
 
