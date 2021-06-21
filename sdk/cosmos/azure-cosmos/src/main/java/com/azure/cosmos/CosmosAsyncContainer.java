@@ -302,7 +302,7 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Create,
                 ResourceType.Document,
-                options.getThresholdForDiagnosticsOnTracerInMS());
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options) {
@@ -403,6 +403,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
                 response -> prepareFeedResponse(response, false, classType));
         });
@@ -546,7 +547,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
                 this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
-            pagedFluxOptions.setThresholdForDiagnosticsOnTracerInMS(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracerInMS());
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracer());
 
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
@@ -563,7 +564,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
                 this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
-            pagedFluxOptions.setThresholdForDiagnosticsOnTracerInMS(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracerInMS());
+            pagedFluxOptions.setThresholdForDiagnosticsOnTracer(cosmosQueryRequestOptions.getThresholdForDiagnosticsOnTracer());
 
             return sqlQuerySpecMono.flux()
                 .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
@@ -1304,7 +1305,7 @@ public class CosmosAsyncContainer {
                 requestOptions.getConsistencyLevel(),
                 OperationType.Delete,
                 ResourceType.Document,
-                requestOptions.getThresholdForDiagnosticsOnTracerInMS());
+                requestOptions.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
@@ -1331,7 +1332,7 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Replace,
                 ResourceType.Document,
-                options.getThresholdForDiagnosticsOnTracerInMS());
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
@@ -1359,7 +1360,7 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Patch,
                 ResourceType.Document,
-                options.getThresholdForDiagnosticsOnTracerInMS());
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
@@ -1384,7 +1385,7 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Upsert,
                 ResourceType.Document,
-                options.getThresholdForDiagnosticsOnTracerInMS());
+                options.getThresholdForDiagnosticsOnTracer());
     }
 
     private <T> Mono<CosmosItemResponse<T>> readItemInternal(
@@ -1408,7 +1409,7 @@ public class CosmosAsyncContainer {
                 requestOptions.getConsistencyLevel(),
                 OperationType.Read,
                 ResourceType.Document,
-                requestOptions.getThresholdForDiagnosticsOnTracerInMS());
+                requestOptions.getThresholdForDiagnosticsOnTracer());
     }
 
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {

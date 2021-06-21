@@ -39,6 +39,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
@@ -167,12 +168,12 @@ public class ReflectionUtils {
         set(cosmosAsyncClient, tracerProvider, "tracerProvider");
     }
 
-    public static void setThresholdForCrud(TracerProvider tracerProvider, int thresholdForCrud) {
-        set(tracerProvider, thresholdForCrud, "CRUD_THRESHOLD_FOR_DIAGNOSTICS_IN_MS");
+    public static void setThresholdForCrud(TracerProvider tracerProvider, Duration thresholdForCrud) {
+        set(tracerProvider, thresholdForCrud, "CRUD_THRESHOLD_FOR_DIAGNOSTICS");
     }
 
-    public static void setThresholdForQuery(TracerProvider tracerProvider, int thresholdForQuery) {
-        set(tracerProvider, thresholdForQuery, "QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS");
+    public static void setThresholdForQuery(TracerProvider tracerProvider, Duration thresholdForQuery) {
+        set(tracerProvider, thresholdForQuery, "QUERY_THRESHOLD_FOR_DIAGNOSTICS");
     }
 
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){

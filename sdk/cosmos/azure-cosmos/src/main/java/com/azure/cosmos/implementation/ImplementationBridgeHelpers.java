@@ -6,8 +6,9 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -144,6 +145,37 @@ public class ImplementationBridgeHelpers {
             void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
 
             ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
+        }
+    }
+
+    public static final class CosmosDiagnosticsHelper {
+        private static CosmosDiagnosticsAccessor accessor;
+
+        private CosmosDiagnosticsHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosItemResponse.class);
+        }
+
+        public static void setCosmosDiagnosticsAccessor(final CosmosDiagnosticsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosDiagnosticsAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosDiagnosticsAccessor getCosmosDiagnosticsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosDiagnosticsAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosDiagnosticsAccessor {
+            FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

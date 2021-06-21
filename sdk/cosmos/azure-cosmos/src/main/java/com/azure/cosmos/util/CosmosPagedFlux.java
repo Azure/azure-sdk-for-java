@@ -17,6 +17,8 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ResourceType;
@@ -48,6 +50,8 @@ import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
+//import io.opentelemetry.api.trace.Span;
+
 /**
  * Cosmos implementation of {@link ContinuablePagedFlux}.
  * <p>
@@ -68,16 +72,19 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 
     private final Consumer<FeedResponse<T>> feedResponseConsumer;
+    private CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor;
 
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this.optionsFluxFunction = optionsFluxFunction;
         this.feedResponseConsumer = null;
+        this.cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     }
 
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
                     Consumer<FeedResponse<T>> feedResponseConsumer) {
         this.optionsFluxFunction = optionsFluxFunction;
         this.feedResponseConsumer = feedResponseConsumer;
+        this.cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
     }
 
     /**
@@ -163,17 +170,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 throwable instanceof CosmosException) {
                 CosmosException cosmosException = (CosmosException) throwable;
                 if (pagedFluxOptions.getTracerProvider().isEnabled()) {
-                    ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
+                   ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                     try {
-                        int threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracerInMS();
-                        if(threshold < 0) {
-                            threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
-                        }
-
-                        if (Duration.between(startTime.get(), Instant.now()).toMillis() >= threshold) {
-                            addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
-                                cosmosException.getDiagnostics());
-                        }
+                        addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
+                            cosmosException.getDiagnostics(), parentContext.get());
                     } catch (JsonProcessingException ex) {
                         LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                     }
@@ -192,16 +192,16 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             startTime.set(Instant.now());
         }).doOnNext(feedResponse -> {
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {
-                ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
+               ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                 try {
-                    int threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracerInMS();
-                    if(threshold < 0) {
-                        threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
+                    Duration threshold = pagedFluxOptions.getThresholdForDiagnosticsOnTracer();
+                    if (threshold == null) {
+                        threshold = TracerProvider.QUERY_THRESHOLD_FOR_DIAGNOSTICS;
                     }
 
-                    if (Duration.between(startTime.get(), Instant.now()).toMillis() >= threshold) {
+                    if (Duration.between(startTime.get(), Instant.now()).compareTo(threshold) > 0) {
                         addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
-                            feedResponse.getCosmosDiagnostics());
+                            feedResponse.getCosmosDiagnostics(), parentContext.get());
                     }
                 } catch (JsonProcessingException ex) {
                     LOGGER.debug("Error while serializing diagnostics for tracer", ex);
@@ -294,14 +294,15 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         return reportPayload;
     }
 
-    private void addDiagnosticsOnTracerEvent(TracerProvider tracerProvider, CosmosDiagnostics cosmosDiagnostics) throws JsonProcessingException {
+    private void addDiagnosticsOnTracerEvent(TracerProvider tracerProvider, CosmosDiagnostics cosmosDiagnostics, Context parentContext) throws JsonProcessingException {
         if (cosmosDiagnostics == null) {
             return;
         }
 
         Map<String, Object> attributes = new HashMap<>();
         QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext =
-            BridgeInternal.getQueryPlanDiagnosticsContext(cosmosDiagnostics);
+            cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics) != null ?
+                cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics).getQueryPlanDiagnosticsContext() : null;
         if (queryPlanDiagnosticsContext != null) {
             attributes.put("JSON",
                 Utils.getSimpleObjectMapper().writeValueAsString(queryPlanDiagnosticsContext));
@@ -309,8 +310,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 OffsetDateTime.ofInstant(queryPlanDiagnosticsContext.getStartTimeUTC(), ZoneOffset.UTC));
         }
 
-        FeedResponseDiagnostics feedResponseDiagnostics = BridgeInternal.getFeedResponseDiagnostics(cosmosDiagnostics);
-        if(feedResponseDiagnostics.getQueryMetricsMap() != null && feedResponseDiagnostics.getQueryMetricsMap().size() > 0) {
+        FeedResponseDiagnostics feedResponseDiagnostics = cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
+        if (feedResponseDiagnostics != null && feedResponseDiagnostics.getQueryMetricsMap() != null && feedResponseDiagnostics.getQueryMetricsMap().size() > 0) {
             for(Map.Entry<String, QueryMetrics> entry : feedResponseDiagnostics.getQueryMetricsMap().entrySet()) {
                 attributes = new HashMap<>();
                 attributes.put("Query Metrics", entry.getValue().toString());

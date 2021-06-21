@@ -7,6 +7,8 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -53,6 +55,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
@@ -68,6 +71,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private static final String ITEM_ID = "tracerDoc";
     private static final io.opentelemetry.api.trace.Tracer TRACER;
+    private CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor;
     CosmosAsyncClient client;
     CosmosAsyncDatabase cosmosAsyncDatabase;
     CosmosAsyncContainer cosmosAsyncContainer;
@@ -86,6 +90,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             .buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(client);
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(client);
+        cosmosDiagnosticsAccessor = CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     }
 
@@ -128,8 +133,8 @@ public class CosmosTracerTest extends TestSuiteBase {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
-        ReflectionUtils.setThresholdForCrud(tracerProvider, 0);
-        ReflectionUtils.setThresholdForQuery(tracerProvider, 0);
+        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ZERO);
+        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ZERO);
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         AddEventCapture addEventCapture = new AddEventCapture();
 
@@ -176,8 +181,8 @@ public class CosmosTracerTest extends TestSuiteBase {
     public void cosmosAsyncContainer() throws JsonProcessingException {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
-        ReflectionUtils.setThresholdForCrud(tracerProvider, 0);
-        ReflectionUtils.setThresholdForQuery(tracerProvider, 0);
+        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ZERO);
+        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ZERO);
         ReflectionUtils.setTracerProvider(client, tracerProvider);
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         AddEventCapture addEventCapture = new AddEventCapture();
@@ -210,11 +215,11 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosAsyncDatabase.getId(), traceApiCounter, null, cosmosDiagnostics, attributesMap);
         traceApiCounter++;
 
-        ReflectionUtils.setThresholdForCrud(tracerProvider, 100);
-        ReflectionUtils.setThresholdForQuery(tracerProvider, 500);
+        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ofMillis(100));
+        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ofMillis(500));
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-        requestOptions.setThresholdForDiagnosticsOnTracerInMS(0);
+        requestOptions.setThresholdForDiagnosticsOnTracer(Duration.ZERO);
         InternalObjectNode item = new InternalObjectNode();
         item.setId(ITEM_ID);
         CosmosItemResponse<InternalObjectNode> cosmosItemResponse = cosmosAsyncContainer.createItem(item, requestOptions).block();
@@ -240,7 +245,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         traceApiCounter++;
 
         CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-        queryRequestOptions.setThresholdForDiagnosticsOnTracerInMS(0);
+        queryRequestOptions.setThresholdForDiagnosticsOnTracer(Duration.ZERO);
         FeedResponse<InternalObjectNode> feedItemResponse = cosmosAsyncContainer.readAllItems(queryRequestOptions, InternalObjectNode.class).byPage().single().block();
         Mockito.verify(tracerProvider, Mockito.times(traceApiCounter)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
@@ -260,8 +265,8 @@ public class CosmosTracerTest extends TestSuiteBase {
         Tracer mockTracer = getMockTracer();
         TracerProvider tracerProvider = Mockito.spy(new TracerProvider(mockTracer));
         ReflectionUtils.setTracerProvider(client, tracerProvider);
-        ReflectionUtils.setThresholdForCrud(tracerProvider, 0);
-        ReflectionUtils.setThresholdForQuery(tracerProvider, 0);
+        ReflectionUtils.setThresholdForCrud(tracerProvider, Duration.ZERO);
+        ReflectionUtils.setThresholdForQuery(tracerProvider, Duration.ZERO);
         TracerProviderCapture tracerProviderCapture = new TracerProviderCapture();
         AddEventCapture addEventCapture = new AddEventCapture();
 
@@ -598,7 +603,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             }
         }
 
-        FeedResponseDiagnostics feedResponseDiagnostics = BridgeInternal.getFeedResponseDiagnostics(cosmosDiagnostics);
+        FeedResponseDiagnostics feedResponseDiagnostics = cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
         if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatisticsList().size() > 0) {
             if (feedResponseDiagnostics.getQueryPlanDiagnosticsContext() != null) {
                 //verifying add event call for query plan

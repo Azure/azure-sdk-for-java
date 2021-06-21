@@ -9,6 +9,7 @@ import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class RequestOptions {
     private String filterPredicate;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-    private int thresholdForDiagnosticsOnTracerInMS;
+    private Duration thresholdForDiagnosticsOnTracer;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -420,22 +421,22 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
      * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
      * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
      */
-    public int getThresholdForDiagnosticsOnTracerInMS() {
-        return thresholdForDiagnosticsOnTracerInMS;
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
     }
 
     /**
-     * Sets the thresholdForDiagnosticsOnTracerInMS, if latency on CRUD operation is greater than this
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
      * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
-     * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
-    public void setThresholdForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
-        this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
+    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
     }
 }

@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
@@ -52,8 +53,8 @@ public class TracerProvider {
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
     public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
-    public static int CRUD_THRESHOLD_FOR_DIAGNOSTICS_IN_MS = 100;
-    public static int QUERY_THRESHOLD_FOR_DIAGNOSTICS_IN_MS = 500;
+    public static Duration CRUD_THRESHOLD_FOR_DIAGNOSTICS = Duration.ofMillis(100);
+    public static Duration QUERY_THRESHOLD_FOR_DIAGNOSTICS = Duration.ofMillis(500);
     public TracerProvider(Tracer tracer) {
         this.tracer = tracer;
     }
@@ -144,7 +145,7 @@ public class TracerProvider {
                                                                                      String databaseId,
                                                                                      String endpoint) {
         return traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint,
-            (T response) -> response.getStatusCode(), (T response) -> response.getDiagnostics(), -1);
+            (T response) -> response.getStatusCode(), (T response) -> response.getDiagnostics(), null);
     }
 
     public Mono<TransactionalBatchResponse> traceEnabledBatchResponsePublisher(Mono<TransactionalBatchResponse> resultPublisher,
@@ -165,7 +166,7 @@ public class TracerProvider {
             resourceType,
             TransactionalBatchResponse::getStatusCode,
             TransactionalBatchResponse::getDiagnostics,
-            -1);
+            null);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosItemResponse<T>> resultPublisher,
@@ -177,7 +178,7 @@ public class TracerProvider {
                                                                                    ConsistencyLevel consistencyLevel,
                                                                                    OperationType operationType,
                                                                                    ResourceType resourceType,
-                                                                                   int thresholdForDiagnosticsOnTracerInMS) {
+                                                                                   Duration thresholdForDiagnosticsOnTracer) {
 
         return publisherWithClientTelemetry(resultPublisher, context, spanName, containerId, databaseId,
             BridgeInternal.getServiceEndpoint(client),
@@ -187,7 +188,7 @@ public class TracerProvider {
             resourceType,
             CosmosItemResponse::getStatusCode,
             CosmosItemResponse::getDiagnostics,
-            thresholdForDiagnosticsOnTracerInMS);
+            thresholdForDiagnosticsOnTracer);
     }
 
     private <T> Mono<T> traceEnabledPublisher(Mono<T> resultPublisher,
@@ -197,7 +198,7 @@ public class TracerProvider {
                                               String endpoint,
                                               Function<T, Integer> statusCodeFunc,
                                               Function<T, CosmosDiagnostics> diagnosticFunc,
-                                              int thresholdForDiagnosticsOnTracerInMS) {
+                                              Duration thresholdForDiagnosticsOnTracer) {
         final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
         Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
         final boolean isNestedCall = callDepth.isPresent();
@@ -212,14 +213,14 @@ public class TracerProvider {
                     ((Span) parentContext.get().getData(PARENT_SPAN_KEY).get()).makeCurrent();
                     CosmosDiagnostics cosmosDiagnostics = diagnosticFunc.apply(response);
                     try {
-                        int threshold = thresholdForDiagnosticsOnTracerInMS;
-                        if(threshold < 0) {
-                            threshold = CRUD_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
+                        Duration threshold = thresholdForDiagnosticsOnTracer;
+                        if(threshold == null) {
+                            threshold = CRUD_THRESHOLD_FOR_DIAGNOSTICS;
                         }
 
                         if (cosmosDiagnostics != null
                             && cosmosDiagnostics.getDuration() != null
-                            && cosmosDiagnostics.getDuration().toMillis() >= threshold) {
+                            && cosmosDiagnostics.getDuration().compareTo(threshold) > 0) {
                             addDiagnosticsOnTracerEvent(cosmosDiagnostics);
                         }
                     } catch (JsonProcessingException ex) {
@@ -234,16 +235,7 @@ public class TracerProvider {
                     if (unwrappedException instanceof CosmosException) {
                         CosmosException dce = (CosmosException) unwrappedException;
                         try {
-                            int threshold = thresholdForDiagnosticsOnTracerInMS;
-                            if(threshold < 0) {
-                                threshold = CRUD_THRESHOLD_FOR_DIAGNOSTICS_IN_MS;
-                            }
-
-                            if (dce.getDiagnostics() != null
-                                && dce.getDiagnostics().getDuration() != null
-                                && dce.getDiagnostics().getDuration().toMillis() >= threshold) {
-                                addDiagnosticsOnTracerEvent(dce.getDiagnostics());
-                            }
+                            addDiagnosticsOnTracerEvent(dce.getDiagnostics());
                         } catch (JsonProcessingException ex) {
                             LOGGER.debug("Error while serializing diagnostics for tracer", ex);
                         }
@@ -266,8 +258,8 @@ public class TracerProvider {
                                                      ResourceType resourceType,
                                                      Function<T, Integer> statusCodeFunc,
                                                      Function<T, CosmosDiagnostics> diagnosticFunc,
-                                                     int thresholdForDiagnosticsOnTracerInMS) {
-        Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc, diagnosticFunc, thresholdForDiagnosticsOnTracerInMS);
+                                                     Duration thresholdForDiagnosticsOnTracer) {
+        Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc, diagnosticFunc, thresholdForDiagnosticsOnTracer);
         return tracerMono
             .doOnSuccess(response -> {
                 if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosItemResponse) {

@@ -4,13 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.spark.OperationContext;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
+import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -36,7 +35,7 @@ public class CosmosQueryRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-    private int thresholdForDiagnosticsOnTracerInMS;
+    private Duration thresholdForDiagnosticsOnTracer;
 
     /**
      * Instantiates a new query request options.
@@ -457,23 +456,27 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the thresholdForDiagnosticsOnTracerInMS, if latency on query operation is greater than this
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
      * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
-     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
-    public int getThresholdForDiagnosticsOnTracerInMS() {
-        return thresholdForDiagnosticsOnTracerInMS;
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
     }
 
     /**
-     * Sets the thresholdForDiagnosticsOnTracerInMS, if latency on query operation is greater than this
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
      * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
-     * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     * Default is 500 ms
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
-    public void setThresholdForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
-        this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
+    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

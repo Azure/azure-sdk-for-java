@@ -7,6 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.util.CosmosPagedFlux;
 
+import java.time.Duration;
+
 /**
  * Specifies paging options for Cosmos Paged Flux implementation.
  * @see CosmosPagedFlux
@@ -23,7 +25,7 @@ public class CosmosPagedFluxOptions {
     private ResourceType resourceType;
     private String serviceEndpoint;
     private CosmosAsyncClient cosmosAsyncClient;
-    private int thresholdForDiagnosticsOnTracerInMS;
+    private Duration thresholdForDiagnosticsOnTracer;
 
     public CosmosPagedFluxOptions() {}
 
@@ -134,23 +136,27 @@ public class CosmosPagedFluxOptions {
     }
 
     /**
-     * Gets the thresholdForDiagnosticsOnTracerInMS, if latency on query operation is greater than this
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
      * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
-     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     * Default is 500 ms.
+     *
+     * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
-    public int getThresholdForDiagnosticsOnTracerInMS() {
-        return thresholdForDiagnosticsOnTracerInMS;
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
     }
 
     /**
-     * Sets the thresholdForDiagnosticsOnTracerInMS, if latency on query operation is greater than this
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on query operation is greater than this
      * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
      *
-     * @param thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     * Default is 500 ms.
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
-    public void setThresholdForDiagnosticsOnTracerInMS(int thresholdForDiagnosticsOnTracerInMS) {
-        this.thresholdForDiagnosticsOnTracerInMS = thresholdForDiagnosticsOnTracerInMS;
+    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
     }
 
     public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceEndpoint, String databaseId) {
