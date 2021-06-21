@@ -4,6 +4,9 @@ package com.azure.spring.cloud.config.web.pushrefresh;
 
 import org.springframework.context.ApplicationEvent;
 
+/**
+ * Event sent to set the App Configuration watch interval to zero.
+ */
 public class AppConfigurationRefreshEvent extends ApplicationEvent {
 
     private static final long serialVersionUID = 1L;

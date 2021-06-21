@@ -33,6 +33,9 @@ import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
+/**
+ * Locates Azure App Configuration Property Sources.
+ */
 public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
@@ -59,7 +62,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private static AtomicBoolean configLoaded = new AtomicBoolean(false);
+    private static AtomicBoolean configloaded = new AtomicBoolean(false);
 
     private static AtomicBoolean startup = new AtomicBoolean(true);
 
@@ -81,7 +84,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         }
 
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
-        if (configLoaded.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
+        if (configloaded.get() && !env.getPropertySources().contains(REFRESH_ARGS_PROPERTY_SOURCE)) {
             return null;
         }
 
@@ -111,7 +114,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
-        configLoaded.set(true);
+        configloaded.set(true);
         startup.set(false);
         return composite;
     }
@@ -235,11 +238,11 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 watchKey.setKey(store.getFeatureFlags().getKeyFilter());
                 watchKeysFeatures.add(watchKey);
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
-                    store.getFeatureFlags().getCacheExpiration());
+                    store.getMonitoring().getFeatureFlagRefreshInterval());
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
             }
 
-            StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getCacheExpiration());
+            StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getRefreshInterval());
             StateHolder.setLoadState(store.getEndpoint(), true);
         } catch (RuntimeException e) {
             delayException();

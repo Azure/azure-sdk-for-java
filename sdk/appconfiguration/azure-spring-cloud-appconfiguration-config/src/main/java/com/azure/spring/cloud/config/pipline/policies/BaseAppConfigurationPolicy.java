@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.pipline.policies;
 
-import java.net.URISyntaxException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHeaders;
 
@@ -18,6 +16,9 @@ import com.azure.spring.cloud.config.RequestType;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * HttpPipelinePolicy for connecting to Azure App Configuration.
+ */
 public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     private static final String PACKAGE_NAME = BaseAppConfigurationPolicy.class.getPackage().getImplementationTitle();
@@ -32,7 +33,6 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
      *
      * @param request The http request that will be traced, used to check operation being run.
      * @return String of the value for the correlation-context header.
-     * @throws URISyntaxException
      */
     private static String getTracingInfo(HttpRequest request) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());

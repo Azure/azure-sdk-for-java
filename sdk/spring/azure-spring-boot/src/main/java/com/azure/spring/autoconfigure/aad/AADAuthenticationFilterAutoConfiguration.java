@@ -4,7 +4,6 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
-import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
@@ -21,15 +20,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ClassUtils;
 
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
@@ -110,15 +102,5 @@ public class AADAuthenticationFilterAutoConfiguration {
         long lifespan = properties.getJwkSetCacheLifespan();
         long refreshTime = properties.getJwkSetCacheRefreshTime();
         return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
-    }
-
-    @PostConstruct
-    private void sendTelemetry() {
-        if (properties.isAllowTelemetry()) {
-            final Map<String, String> events = new HashMap<>();
-            final TelemetrySender sender = new TelemetrySender();
-            events.put(SERVICE_NAME, getClassPackageSimpleName(AADAuthenticationFilterAutoConfiguration.class));
-            sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
-        }
     }
 }

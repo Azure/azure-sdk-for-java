@@ -112,6 +112,16 @@ try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(mana
 
 Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
+### File-System certificates
+You can load the certificate in the file system as a trusted certificate by configure the following properties.
+
+```yaml
+azure:
+  cert-path:
+    well-known:     # The file location where you store the well-known certificate
+    custom:         # The file location where you store the custom certificate
+```
+
 ## Troubleshooting
 ### General
 Azure Key Vault JCA clients raise exceptions. For example, if you try to check a client's identity with a certificate chain that does not include a trusted certificate, a `CertificateException` will be thrown. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.

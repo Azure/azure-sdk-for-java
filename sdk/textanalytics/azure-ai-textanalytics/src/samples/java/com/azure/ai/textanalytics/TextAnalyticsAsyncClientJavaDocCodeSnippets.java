@@ -17,7 +17,7 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.PiiEntityDomain;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
@@ -327,7 +327,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string-RecognizePiiEntitiesOptions
         String document = "My SSN is 859-98-0987";
         textAnalyticsAsyncClient.recognizePiiEntities(document, "en",
-            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION))
+            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomain.PROTECTED_HEALTH_INFORMATION))
             .subscribe(piiEntityCollection -> {
                 System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
                 piiEntityCollection.forEach(entity -> System.out.printf(
@@ -957,7 +957,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
-                                    actionResult.getResult().forEach(
+                                    actionResult.getDocumentResults().forEach(
                                         entitiesResult -> entitiesResult.getEntities().forEach(
                                             entity -> System.out.printf(
                                                 "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -969,7 +969,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
-                                    actionResult.getResult().forEach(extractKeyPhraseResult -> {
+                                    actionResult.getDocumentResults().forEach(extractKeyPhraseResult -> {
                                         System.out.println("Extracted phrases:");
                                         extractKeyPhraseResult.getKeyPhrases()
                                             .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
@@ -1001,7 +1001,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         analyzeActionsResult.getRecognizeEntitiesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
-                                    actionResult.getResult().forEach(
+                                    actionResult.getDocumentResults().forEach(
                                         entitiesResult -> entitiesResult.getEntities().forEach(
                                             entity -> System.out.printf(
                                                 "Recognized entity: %s, entity category: %s, entity subcategory: %s,"
@@ -1014,7 +1014,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         analyzeActionsResult.getExtractKeyPhrasesActionResults().forEach(
                             actionResult -> {
                                 if (!actionResult.isError()) {
-                                    actionResult.getResult().forEach(extractKeyPhraseResult -> {
+                                    actionResult.getDocumentResults().forEach(extractKeyPhraseResult -> {
                                         System.out.println("Extracted phrases:");
                                         extractKeyPhraseResult.getKeyPhrases()
                                             .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));

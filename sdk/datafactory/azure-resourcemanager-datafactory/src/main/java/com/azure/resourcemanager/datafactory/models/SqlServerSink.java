@@ -223,6 +223,13 @@ public final class SqlServerSink extends CopySink {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerSink withDisableMetricsCollection(Object disableMetricsCollection) {
+        super.withDisableMetricsCollection(disableMetricsCollection);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
