@@ -29,10 +29,11 @@ public class OrcDataset extends Dataset {
     private DatasetLocation location;
 
     /*
-     * The orcCompressionCodec property.
+     * The data orcCompressionCodec. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.orcCompressionCodec")
-    private OrcCompressionCodec orcCompressionCodec;
+    private Object orcCompressionCodec;
 
     /**
      * Get the location property: The location of the ORC data storage.
@@ -55,21 +56,23 @@ public class OrcDataset extends Dataset {
     }
 
     /**
-     * Get the orcCompressionCodec property: The orcCompressionCodec property.
+     * Get the orcCompressionCodec property: The data orcCompressionCodec. Type: string (or Expression with resultType
+     * string).
      *
      * @return the orcCompressionCodec value.
      */
-    public OrcCompressionCodec orcCompressionCodec() {
+    public Object orcCompressionCodec() {
         return this.orcCompressionCodec;
     }
 
     /**
-     * Set the orcCompressionCodec property: The orcCompressionCodec property.
+     * Set the orcCompressionCodec property: The data orcCompressionCodec. Type: string (or Expression with resultType
+     * string).
      *
      * @param orcCompressionCodec the orcCompressionCodec value to set.
      * @return the OrcDataset object itself.
      */
-    public OrcDataset withOrcCompressionCodec(OrcCompressionCodec orcCompressionCodec) {
+    public OrcDataset withOrcCompressionCodec(Object orcCompressionCodec) {
         this.orcCompressionCodec = orcCompressionCodec;
         return this;
     }
