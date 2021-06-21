@@ -106,46 +106,6 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
         });
     }
 
-    /**
-     * Verifies the result of the list metric feedback  method to return only 3 results using
-     * {@link ListMetricFeedbackOptions#setMaxPageSize(int)}.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    void testListMetricFeedbackTop3(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-
-        // Act & Assert
-        StepVerifier.create(client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setMaxPageSize(3)).byPage())
-            .thenConsumeWhile(metricFeedbackPagedResponse -> 3 >= metricFeedbackPagedResponse.getValue().size())
-            // page size should be less than or equal to 3
-            .verifyComplete();
-    }
-
-    // /**
-    //  * Verifies the result of the list metric feedback  method using skip options.
-    //  */
-    // TODO (savaity) Need a better way of testing Skip
-    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    // void testListMetricFeedbackSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-    //     // Arrange
-    //     client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-    //     final ArrayList<MetricFeedback> actualMetricFeedbackList = new ArrayList<>();
-    //     final ArrayList<MetricFeedback> expectedList = new ArrayList<>();
-    //
-    //     StepVerifier.create(client.listFeedback())
-    //         .thenConsumeWhile(expectedList::add)
-    //         .verifyComplete();
-    //
-    //     // Act & Assert
-    //     StepVerifier.create(client.listFeedback(new ListMetricFeedbackOptions().setSkip(3)))
-    //         .thenConsumeWhile(actualMetricFeedbackList::add)
-    //         .verifyComplete();
-    //
-    //     assertEquals(expectedList.size() - 3, actualMetricFeedbackList.size());
-    // }
 
     /**
      * Verifies the result of the list metric feedback  method to filter results using
