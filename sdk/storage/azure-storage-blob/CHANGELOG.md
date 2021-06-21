@@ -10,7 +10,7 @@
 ## 12.12.0 (2021-06-09)
 - GA release
 
-## 12.12.0-beta.1 (2021-05-13)B
+## 12.12.0-beta.1 (2021-05-13)
 - Added support for the 2020-08-04 service version.
 - Deprecated support to undelete a blob container to a new name. 
 
