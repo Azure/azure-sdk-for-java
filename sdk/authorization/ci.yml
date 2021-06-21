@@ -10,12 +10,6 @@ trigger:
   paths:
     include:
       - sdk/authorization/
-    exclude:
-      - sdk/authorization/mgmt
-      - sdk/authorization/mgmt-v2015_06_01
-      - sdk/authorization/mgmt-v2015_07_01
-      - sdk/authorization/mgmt-v2018_07_01_preview
-      - sdk/authorization/mgmt-v2018_09_01_preview
 
 pr:
   branches:
@@ -28,19 +22,12 @@ pr:
   paths:
     include:
       - sdk/authorization/
-    exclude:
-      - sdk/authorization/mgmt
-      - sdk/authorization/mgmt-v2015_06_01
-      - sdk/authorization/mgmt-v2015_07_01
-      - sdk/authorization/mgmt-v2018_07_01_preview
-      - sdk/authorization/mgmt-v2018_09_01_preview
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    SDKType: data
     ServiceDirectory: authorization
     Artifacts:
-      - name: azure-authentication-msi-token-provider
-        groupId: com.microsoft.azure.msi_auth_token_provider
-        safeName: azureauthenticationmsitokenprovider
+      - name: azure-resourcemanager-authorization-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerauthorizationgenerated
