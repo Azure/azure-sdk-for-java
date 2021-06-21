@@ -9,71 +9,77 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.databricks.fluent.VNetPeeringsClient;
-import com.azure.resourcemanager.databricks.fluent.models.VirtualNetworkPeeringInner;
-import com.azure.resourcemanager.databricks.models.VNetPeerings;
-import com.azure.resourcemanager.databricks.models.VirtualNetworkPeering;
+import com.azure.resourcemanager.databricks.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.databricks.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.databricks.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.databricks.models.PrivateEndpointConnections;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public final class VNetPeeringsImpl implements VNetPeerings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VNetPeeringsImpl.class);
+public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConnections {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsImpl.class);
 
-    private final VNetPeeringsClient innerClient;
+    private final PrivateEndpointConnectionsClient innerClient;
 
     private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
-    public VNetPeeringsImpl(
-        VNetPeeringsClient innerClient, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
+    public PrivateEndpointConnectionsImpl(
+        PrivateEndpointConnectionsClient innerClient,
+        com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public VirtualNetworkPeering get(String resourceGroupName, String workspaceName, String peeringName) {
-        VirtualNetworkPeeringInner inner = this.serviceClient().get(resourceGroupName, workspaceName, peeringName);
+    public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<PrivateEndpointConnectionInner> inner =
+            this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<PrivateEndpointConnection> list(
+        String resourceGroupName, String workspaceName, Context context) {
+        PagedIterable<PrivateEndpointConnectionInner> inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, context);
+        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+    }
+
+    public PrivateEndpointConnection get(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, privateEndpointConnectionName);
         if (inner != null) {
-            return new VirtualNetworkPeeringImpl(inner, this.manager());
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<VirtualNetworkPeering> getWithResponse(
-        String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        Response<VirtualNetworkPeeringInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, peeringName, context);
+    public Response<PrivateEndpointConnection> getWithResponse(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        Response<PrivateEndpointConnectionInner> inner =
+            this
+                .serviceClient()
+                .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new VirtualNetworkPeeringImpl(inner.getValue(), this.manager()));
+                new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String peeringName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, peeringName);
+    public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, privateEndpointConnectionName);
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, peeringName, context);
+    public void delete(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
     }
 
-    public PagedIterable<VirtualNetworkPeering> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<VirtualNetworkPeeringInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkPeeringImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VirtualNetworkPeering> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<VirtualNetworkPeeringInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualNetworkPeeringImpl(inner1, this.manager()));
-    }
-
-    public VirtualNetworkPeering getById(String id) {
+    public PrivateEndpointConnection getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -89,20 +95,22 @@ public final class VNetPeeringsImpl implements VNetPeerings {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
+        String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.",
                                 id)));
         }
-        return this.getWithResponse(resourceGroupName, workspaceName, peeringName, Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
     }
 
-    public Response<VirtualNetworkPeering> getByIdWithResponse(String id, Context context) {
+    public Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -118,17 +126,17 @@ public final class VNetPeeringsImpl implements VNetPeerings {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
+        String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.",
                                 id)));
         }
-        return this.getWithResponse(resourceGroupName, workspaceName, peeringName, context);
+        return this.getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
     }
 
     public void deleteById(String id) {
@@ -147,17 +155,17 @@ public final class VNetPeeringsImpl implements VNetPeerings {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
+        String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.",
                                 id)));
         }
-        this.delete(resourceGroupName, workspaceName, peeringName, Context.NONE);
+        this.delete(resourceGroupName, workspaceName, privateEndpointConnectionName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
@@ -176,20 +184,20 @@ public final class VNetPeeringsImpl implements VNetPeerings {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String peeringName = Utils.getValueFromIdByName(id, "virtualNetworkPeerings");
-        if (peeringName == null) {
+        String privateEndpointConnectionName = Utils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'virtualNetworkPeerings'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.",
                                 id)));
         }
-        this.delete(resourceGroupName, workspaceName, peeringName, context);
+        this.delete(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
     }
 
-    private VNetPeeringsClient serviceClient() {
+    private PrivateEndpointConnectionsClient serviceClient() {
         return this.innerClient;
     }
 
@@ -197,7 +205,7 @@ public final class VNetPeeringsImpl implements VNetPeerings {
         return this.serviceManager;
     }
 
-    public VirtualNetworkPeeringImpl define(String name) {
-        return new VirtualNetworkPeeringImpl(name, this.manager());
+    public PrivateEndpointConnectionImpl define(String name) {
+        return new PrivateEndpointConnectionImpl(name, this.manager());
     }
 }

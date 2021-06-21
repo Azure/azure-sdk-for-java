@@ -31,62 +31,96 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.databricks.fluent.VNetPeeringsClient;
-import com.azure.resourcemanager.databricks.fluent.models.VirtualNetworkPeeringInner;
+import com.azure.resourcemanager.databricks.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.databricks.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.databricks.models.ErrorInfoException;
-import com.azure.resourcemanager.databricks.models.VirtualNetworkPeeringList;
+import com.azure.resourcemanager.databricks.models.PrivateEndpointConnectionsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VNetPeeringsClient. */
-public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
-    private final ClientLogger logger = new ClientLogger(VNetPeeringsClientImpl.class);
+/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
-    private final VNetPeeringsService service;
+    private final PrivateEndpointConnectionsService service;
 
     /** The service client containing this operation class. */
     private final AzureDatabricksManagementClientImpl client;
 
     /**
-     * Initializes an instance of VNetPeeringsClientImpl.
+     * Initializes an instance of PrivateEndpointConnectionsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VNetPeeringsClientImpl(AzureDatabricksManagementClientImpl client) {
+    PrivateEndpointConnectionsClientImpl(AzureDatabricksManagementClientImpl client) {
         this.service =
-            RestProxy.create(VNetPeeringsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy
+                .create(
+                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureDatabricksManagementClientVNetPeerings to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureDatabricksManagementClientPrivateEndpointConnections to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDatabricksManag")
-    private interface VNetPeeringsService {
+    private interface PrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}")
-        @ExpectedResponses({200, 204})
+                + "/workspaces/{workspaceName}/privateEndpointConnections")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<VirtualNetworkPeeringInner>> get(
+        Mono<Response<PrivateEndpointConnectionsList>> list(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("workspaceName") String workspaceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("peeringName") String peeringName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
+                + "/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorInfoException.class)
+        Mono<Response<PrivateEndpointConnectionInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
+                + "/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ErrorInfoException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @BodyParam("application/json") PrivateEndpointConnectionInner privateEndpointConnection,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}")
+                + "/workspaces/{workspaceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -95,39 +129,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
             @PathParam("workspaceName") String workspaceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("peeringName") String peeringName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/virtualNetworkPeerings/{peeringName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("peeringName") String peeringName,
-            @BodyParam("application/json") VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/virtualNetworkPeerings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<VirtualNetworkPeeringList>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -135,7 +137,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<VirtualNetworkPeeringList>> listByWorkspaceNext(
+        Mono<Response<PrivateEndpointConnectionsList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -143,776 +145,17 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
     }
 
     /**
-     * Gets the workspace vNet Peering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String peeringName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            peeringName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the workspace vNet Peering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                peeringName,
-                accept,
-                context);
-    }
-
-    /**
-     * Gets the workspace vNet Peering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkPeeringInner> getAsync(
-        String resourceGroupName, String workspaceName, String peeringName) {
-        return getWithResponseAsync(resourceGroupName, workspaceName, peeringName)
-            .flatMap(
-                (Response<VirtualNetworkPeeringInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the workspace vNet Peering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkPeeringInner get(String resourceGroupName, String workspaceName, String peeringName) {
-        return getAsync(resourceGroupName, workspaceName, peeringName).block();
-    }
-
-    /**
-     * Gets the workspace vNet Peering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workspace vNet Peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualNetworkPeeringInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        return getWithResponseAsync(resourceGroupName, workspaceName, peeringName, context).block();
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String peeringName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            peeringName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                peeringName,
-                accept,
-                context);
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String peeringName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, peeringName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, peeringName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String peeringName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, peeringName).getSyncPoller();
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, peeringName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String peeringName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, peeringName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, peeringName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String peeringName) {
-        deleteAsync(resourceGroupName, workspaceName, peeringName).block();
-    }
-
-    /**
-     * Deletes the workspace vNetPeering.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String peeringName, Context context) {
-        deleteAsync(resourceGroupName, workspaceName, peeringName, context).block();
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        if (virtualNetworkPeeringParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringParameters is required and cannot be null."));
-        } else {
-            virtualNetworkPeeringParameters.validate();
-        }
-        final String apiVersion = "2018-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            peeringName,
-                            virtualNetworkPeeringParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (peeringName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
-        }
-        if (virtualNetworkPeeringParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter virtualNetworkPeeringParameters is required and cannot be null."));
-        } else {
-            virtualNetworkPeeringParameters.validate();
-        }
-        final String apiVersion = "2018-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                peeringName,
-                virtualNetworkPeeringParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters);
-        return this
-            .client
-            .<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkPeeringInner.class,
-                VirtualNetworkPeeringInner.class,
-                Context.NONE);
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, context);
-        return this
-            .client
-            .<VirtualNetworkPeeringInner, VirtualNetworkPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualNetworkPeeringInner.class,
-                VirtualNetworkPeeringInner.class,
-                context);
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters)
-            .block();
-    }
-
-    /**
-     * Creates vNet Peering for workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param peeringName The name of the workspace vNet peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorInfoException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, context)
-            .block();
-    }
-
-    /**
-     * Lists the workspace vNet Peerings.
+     * List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceSinglePageAsync(
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -933,13 +176,13 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-04-01";
+        final String apiVersion = "2021-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByWorkspace(
+                        .list(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
@@ -947,7 +190,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .<PagedResponse<VirtualNetworkPeeringInner>>map(
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -960,7 +203,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
     }
 
     /**
-     * Lists the workspace vNet Peerings.
+     * List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -968,10 +211,10 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceSinglePageAsync(
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -992,11 +235,11 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-04-01";
+        final String apiVersion = "2021-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
+            .list(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
@@ -1016,24 +259,23 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
     }
 
     /**
-     * Lists the workspace vNet Peerings.
+     * List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualNetworkPeeringInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String workspaceName) {
         return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, workspaceName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the workspace vNet Peerings.
+     * List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1041,33 +283,33 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualNetworkPeeringInner> listByWorkspaceAsync(
+    private PagedFlux<PrivateEndpointConnectionInner> listAsync(
         String resourceGroupName, String workspaceName, Context context) {
         return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
-            nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(resourceGroupName, workspaceName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists the workspace vNet Peerings.
+     * List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName));
+    public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String workspaceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName));
     }
 
     /**
-     * Lists the workspace vNet Peerings.
+     * List private endpoint connections of the workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1075,12 +317,796 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(
+    public PagedIterable<PrivateEndpointConnectionInner> list(
         String resourceGroupName, String workspaceName, Context context) {
-        return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, context));
+    }
+
+    /**
+     * Get a private endpoint connection properties for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection properties for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-04-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            workspaceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            privateEndpointConnectionName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get a private endpoint connection properties for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection properties for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-04-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                workspaceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                privateEndpointConnectionName,
+                accept,
+                context);
+    }
+
+    /**
+     * Get a private endpoint connection properties for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection properties for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PrivateEndpointConnectionInner> getAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName)
+            .flatMap(
+                (Response<PrivateEndpointConnectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get a private endpoint connection properties for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection properties for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        return getAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).block();
+    }
+
+    /**
+     * Get a private endpoint connection properties for a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection properties for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
+        }
+        final String apiVersion = "2021-04-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            workspaceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            privateEndpointConnectionName,
+                            privateEndpointConnection,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
+        }
+        final String apiVersion = "2021-04-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .create(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                workspaceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                privateEndpointConnectionName,
+                privateEndpointConnection,
+                accept,
+                context);
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(
+                resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(
+                resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection, context);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class,
+                context);
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        return beginCreateAsync(
+                resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        return beginCreateAsync(
+                resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PrivateEndpointConnectionInner> createAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        return beginCreateAsync(
+                resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PrivateEndpointConnectionInner> createAsync(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        return beginCreateAsync(
+                resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner create(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection) {
+        return createAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection)
+            .block();
+    }
+
+    /**
+     * Update the status of a private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param privateEndpointConnection The private endpoint connection with updated properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private endpoint connection of a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner create(
+        String resourceGroupName,
+        String workspaceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection,
+        Context context) {
+        return createAsync(
+                resourceGroupName, workspaceName, privateEndpointConnectionName, privateEndpointConnection, context)
+            .block();
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-04-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            workspaceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            privateEndpointConnectionName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (workspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-04-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                workspaceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                privateEndpointConnectionName,
+                accept,
+                context);
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).getSyncPoller();
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
+        deleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).block();
+    }
+
+    /**
+     * Remove private endpoint connection with the specified name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorInfoException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+        deleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, context).block();
     }
 
     /**
@@ -1090,10 +1116,10 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1105,8 +1131,8 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualNetworkPeeringInner>>map(
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1126,10 +1152,10 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gets all virtual network peerings under a workspace.
+     * @return list of private link connections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceNextSinglePageAsync(
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1143,7 +1169,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

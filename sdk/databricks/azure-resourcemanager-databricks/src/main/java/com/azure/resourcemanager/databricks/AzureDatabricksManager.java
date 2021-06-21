@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,15 +16,20 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.databricks.fluent.DatabricksClient;
-import com.azure.resourcemanager.databricks.implementation.DatabricksClientBuilder;
+import com.azure.resourcemanager.databricks.fluent.AzureDatabricksManagementClient;
+import com.azure.resourcemanager.databricks.implementation.AzureDatabricksManagementClientBuilder;
 import com.azure.resourcemanager.databricks.implementation.OperationsImpl;
+import com.azure.resourcemanager.databricks.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.databricks.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.databricks.implementation.VNetPeeringsImpl;
 import com.azure.resourcemanager.databricks.implementation.WorkspacesImpl;
 import com.azure.resourcemanager.databricks.models.Operations;
+import com.azure.resourcemanager.databricks.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.databricks.models.PrivateLinkResources;
 import com.azure.resourcemanager.databricks.models.VNetPeerings;
 import com.azure.resourcemanager.databricks.models.Workspaces;
 import java.time.Duration;
@@ -34,21 +38,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Entry point to DatabricksManager. ARM Databricks. */
-public final class DatabricksManager {
+/**
+ * Entry point to AzureDatabricksManager. The Microsoft Azure management APIs allow end users to operate on Azure
+ * Databricks Workspace resources.
+ */
+public final class AzureDatabricksManager {
     private Workspaces workspaces;
-
-    private VNetPeerings vNetPeerings;
 
     private Operations operations;
 
-    private final DatabricksClient clientObject;
+    private PrivateLinkResources privateLinkResources;
 
-    private DatabricksManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private VNetPeerings vNetPeerings;
+
+    private final AzureDatabricksManagementClient clientObject;
+
+    private AzureDatabricksManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new DatabricksClientBuilder()
+            new AzureDatabricksManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -57,25 +68,25 @@ public final class DatabricksManager {
     }
 
     /**
-     * Creates an instance of Databricks service API entry point.
+     * Creates an instance of AzureDatabricks service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the Databricks service API instance.
+     * @return the AzureDatabricks service API instance.
      */
-    public static DatabricksManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static AzureDatabricksManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create DatabricksManager with optional configuration.
+     * Gets a Configurable instance that can be used to create AzureDatabricksManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new DatabricksManager.Configurable();
+        return new AzureDatabricksManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -85,6 +96,7 @@ public final class DatabricksManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -125,6 +137,17 @@ public final class DatabricksManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -150,13 +173,13 @@ public final class DatabricksManager {
         }
 
         /**
-         * Creates an instance of Databricks service API entry point.
+         * Creates an instance of AzureDatabricks service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the Databricks service API instance.
+         * @return the AzureDatabricks service API instance.
          */
-        public DatabricksManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public AzureDatabricksManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -166,7 +189,7 @@ public final class DatabricksManager {
                 .append("-")
                 .append("com.azure.resourcemanager.databricks")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -180,6 +203,9 @@ public final class DatabricksManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -189,10 +215,7 @@ public final class DatabricksManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -201,7 +224,7 @@ public final class DatabricksManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new DatabricksManager(httpPipeline, profile, defaultPollInterval);
+            return new AzureDatabricksManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
@@ -213,14 +236,6 @@ public final class DatabricksManager {
         return workspaces;
     }
 
-    /** @return Resource collection API of VNetPeerings. */
-    public VNetPeerings vNetPeerings() {
-        if (this.vNetPeerings == null) {
-            this.vNetPeerings = new VNetPeeringsImpl(clientObject.getVNetPeerings(), this);
-        }
-        return vNetPeerings;
-    }
-
     /** @return Resource collection API of Operations. */
     public Operations operations() {
         if (this.operations == null) {
@@ -229,11 +244,36 @@ public final class DatabricksManager {
         return operations;
     }
 
+    /** @return Resource collection API of PrivateLinkResources. */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
+    }
+
+    /** @return Resource collection API of PrivateEndpointConnections. */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /** @return Resource collection API of VNetPeerings. */
+    public VNetPeerings vNetPeerings() {
+        if (this.vNetPeerings == null) {
+            this.vNetPeerings = new VNetPeeringsImpl(clientObject.getVNetPeerings(), this);
+        }
+        return vNetPeerings;
+    }
+
     /**
-     * @return Wrapped service client DatabricksClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * @return Wrapped service client AzureDatabricksManagementClient providing direct access to the underlying
+     *     auto-generated API implementation, based on Azure REST API.
      */
-    public DatabricksClient serviceClient() {
+    public AzureDatabricksManagementClient serviceClient() {
         return this.clientObject;
     }
 }

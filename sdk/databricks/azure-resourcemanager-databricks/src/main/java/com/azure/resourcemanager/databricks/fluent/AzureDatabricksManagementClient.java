@@ -7,8 +7,8 @@ package com.azure.resourcemanager.databricks.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for DatabricksClient class. */
-public interface DatabricksClient {
+/** The interface for AzureDatabricksManagementClient class. */
+public interface AzureDatabricksManagementClient {
     /**
      * Gets The ID of the target subscription.
      *
@@ -22,13 +22,6 @@ public interface DatabricksClient {
      * @return the endpoint value.
      */
     String getEndpoint();
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -52,16 +45,30 @@ public interface DatabricksClient {
     WorkspacesClient getWorkspaces();
 
     /**
-     * Gets the VNetPeeringsClient object to access its operations.
-     *
-     * @return the VNetPeeringsClient object.
-     */
-    VNetPeeringsClient getVNetPeerings();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the VNetPeeringsClient object to access its operations.
+     *
+     * @return the VNetPeeringsClient object.
+     */
+    VNetPeeringsClient getVNetPeerings();
 }
