@@ -319,10 +319,10 @@ final AnomalyAlertConfiguration anomalyAlertConfiguration
 This example demonstrates how a user can query alerts triggered for an anomaly detection configuration and get anomalies for that anomalyAlert.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L256-L276 -->
 ```java
-long alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
+String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
 final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
 final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-MetricsAdvisorClient.listAlerts(
+metricsAdvisorClient.listAlerts(
     alertConfigurationId,
         startTime, endTime)
     .forEach(alert -> {

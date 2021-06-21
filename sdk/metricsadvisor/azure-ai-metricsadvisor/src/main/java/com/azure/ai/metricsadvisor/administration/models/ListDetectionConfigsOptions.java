@@ -37,7 +37,7 @@ public final class ListDetectionConfigsOptions {
      *
      * @param maxPageSize The max page size value.
      *
-     * @return The ListMetricAnomalyDetectionConfigsOptions object itself.
+     * @return The ListDetectionConfigsOptions object itself.
      */
     public ListDetectionConfigsOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
@@ -49,7 +49,7 @@ public final class ListDetectionConfigsOptions {
      * in the returned result.
      *
      * @param skip The skip value.
-     * @return ListMetricAnomalyDetectionConfigsOptions itself.
+     * @return ListDetectionConfigsOptions itself.
      */
     public ListDetectionConfigsOptions setSkip(Integer skip) {
         this.skip = skip;

@@ -14,9 +14,9 @@ public final class ListAnomaliesAlertedOptions {
     private Integer skip;
 
     /**
-     * Gets limit indicating the number of items to be included in a service returned page.
+     * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
@@ -35,7 +35,7 @@ public final class ListAnomaliesAlertedOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param maxPageSize The maxPageSize value.
+     * @param maxPageSize The max page size value.
      * @return The ListAnomaliesAlertedOptions itself.
      */
     public ListAnomaliesAlertedOptions setMaxPageSize(Integer maxPageSize) {

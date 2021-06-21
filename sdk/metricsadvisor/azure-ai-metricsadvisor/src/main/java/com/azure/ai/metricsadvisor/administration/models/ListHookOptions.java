@@ -24,9 +24,9 @@ public final class ListHookOptions {
     }
 
     /**
-     * Gets limit indicating the number of items to be included in a service returned page.
+     * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
