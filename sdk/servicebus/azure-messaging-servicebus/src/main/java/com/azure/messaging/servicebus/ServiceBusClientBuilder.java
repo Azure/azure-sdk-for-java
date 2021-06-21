@@ -221,7 +221,7 @@ public final class ServiceBusClientBuilder {
      *     azure-identity</a> has multiple {@link TokenCredential} implementations that can be used to authenticate
      *     the access to the Service Bus resource.
      *
-     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
      * @param credential The token credential to use for authentication. Access controls may be specified by the
      * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.
      *
@@ -250,7 +250,7 @@ public final class ServiceBusClientBuilder {
      * This method and {@link #connectionString(String)} take the same information in different forms. But it allows
      * you to update the name and key.
      *
-     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
      * @param credential {@link AzureNamedKeyCredential} to be used for authentication.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
@@ -276,7 +276,7 @@ public final class ServiceBusClientBuilder {
      * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
      *     Service Bus access control with Shared Access Signatures</a>.
      *
-     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
      * @param credential {@link AzureSasCredential} to be used for authentication.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
