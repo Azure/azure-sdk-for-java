@@ -8,7 +8,6 @@ import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.core.http.rest.Response;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
