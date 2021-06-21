@@ -133,6 +133,16 @@ serverCall.stopRecording(recordingId);
 CallRecordingStateResult callRecordingStateResult = serverCall.getRecordingState(recordingId);
 ```
 
+#### Download a Recording into a file:
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L100-L100 -->
+```java
+callingServerClient.downloadTo(
+            recordingUrl,
+            Paths.get(filePath),
+            null,
+            true
+        );
+```
 ### Play Audio in Call
 
 #### Play Audio: 
