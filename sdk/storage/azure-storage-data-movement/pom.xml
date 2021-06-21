@@ -12,11 +12,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage-blob-data-movement</artifactId>
-  <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-data-movement;current} -->
+  <artifactId>azure-storage-data-movement</artifactId>
+  <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-data-movement;current} -->
 
-  <name>Microsoft Azure module for Storage Blob Data Movement</name>
-  <description>This module contains code for the Microsoft Azure Storage Blob Service Data Movement client library.</description>
+  <name>Microsoft Azure module for Storage Data Movement</name>
+  <description>This module contains code for the Microsoft Azure Storage Data Movement library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -50,13 +50,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common-data-movement</artifactId>
-      <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common-data-movement;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -76,12 +71,6 @@
       <version>12.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
