@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.models.CosmosQueryRequestOptions
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.spark.sql.catalyst.analysis.TypeCoercion
 
@@ -17,7 +18,7 @@ import scala.collection.JavaConverters._
 
 // Infers a schema by reading sample data from a source container.
 private object CosmosTableSchemaInferrer
-  extends CosmosLoggingTrait {
+  extends BasicLoggingTrait {
 
   private[spark] val RawJsonBodyAttributeName = "_rawBody"
   private[spark] val TimestampAttributeName = "_ts"

@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.properties;
 
-import java.time.Duration;
-
 /**
  * Properties for what needs to be requested from Azure App Configuration for Feature Flags.
  */
@@ -16,8 +14,6 @@ public class FeatureFlagStore {
     private Boolean enabled = false;    
 
     private String labelFilter = EMPTY_LABEL;
-
-    private Duration cacheExpiration = Duration.ofSeconds(30);
 
     public Boolean getEnabled() {
         return enabled;
@@ -37,14 +33,6 @@ public class FeatureFlagStore {
 
     public void setLabelFilter(String labelFilter) {
         this.labelFilter = labelFilter;
-    }
-
-    public Duration getCacheExpiration() {
-        return cacheExpiration;
-    }
-
-    public void setCacheExpiration(Duration cacheExpiration) {
-        this.cacheExpiration = cacheExpiration;
     }
 
 }

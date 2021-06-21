@@ -3,9 +3,9 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallModality;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -44,10 +44,6 @@ public class CallingServerTestBase extends TestBase {
     protected static final String RESOURCE_IDENTIFIER = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
             "016a7064-0581-40b9-be73-6dde64d69d72");
-
-    protected static final String GROUP_IDENTIFIER = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_GROUP_IDENTIFIER",
-            "c400789f-e11b-4ceb-88cb-bc8df2a01568");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
@@ -106,7 +102,7 @@ public class CallingServerTestBase extends TestBase {
         return "8:acs:" + RESOURCE_IDENTIFIER + "_" + UUID.randomUUID();
     }
 
-    protected String getGroupId() {
+    protected String getGroupId(String testName) {
         /*
           If tests are running in live mode, we want them to all
           have unique groupId's so they do not conflict with other
@@ -120,7 +116,7 @@ public class CallingServerTestBase extends TestBase {
           For recording tests we need to make sure the groupId
           matches the recorded groupId, or the call will fail.
          */
-        return GROUP_IDENTIFIER;
+        return UUID.nameUUIDFromBytes(testName.getBytes()).toString();
     }
 
     protected CallingServerClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
@@ -180,7 +176,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
@@ -188,7 +184,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions);
@@ -225,7 +221,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
             fromCallConnection = callingServerClient.join(groupId, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
@@ -233,7 +229,7 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                new CallModality[] { CallModality.AUDIO },
+                new MediaType[] { MediaType.AUDIO },
                 new EventSubscriptionType[] { EventSubscriptionType.PARTICIPANTS_UPDATED });
 
             toCallConnection = callingServerClient.join(groupId, toParticipant, joinCallOptions).block();

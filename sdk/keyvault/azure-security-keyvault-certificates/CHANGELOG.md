@@ -1,17 +1,26 @@
 # Release History
 
-## 4.2.0-beta.7 (Unreleased)
+## 4.3.0-beta.1 (Unreleased)
 
-### Bug Fixes
+
+## 4.2.0 (2021-06-17)
+
+### Features Added
+- Changed default service version to `7.2`.
+- Added `KeyVaultCertificateIdentifier` to parse certificate URLs.
+
+### Changes since 4.2.0-beta.6
+
+#### Bug Fixes
 - Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
 
-### New Features
+#### New Features
 - `KeyVaultCertificateIdentifier` can now be used to parse any Key Vault identifier.
 
-### Breaking Changes
+#### Breaking Changes
 - Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
 
-### Non-Breaking Changes
+#### Non-Breaking Changes
 - Renamed `certificateId` to `sourceId` in `KeyVaultCertificateIdentifier`.
 - Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `CertificateClient` and `CertificateAsyncClient`.
 
