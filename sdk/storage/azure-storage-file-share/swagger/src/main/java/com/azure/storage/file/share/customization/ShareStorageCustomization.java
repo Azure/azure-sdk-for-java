@@ -9,14 +9,13 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
-import org.slf4j.Logger;
 
 /**
  * Customization class for File Share Storage.
  */
 public class ShareStorageCustomization extends Customization {
     @Override
-    public void customize(LibraryCustomization customization, Logger logger) {
+    public void customize(LibraryCustomization customization) {
         PackageCustomization implementation = customization.getPackage("com.azure.storage.file.share.implementation");
 
         ClassCustomization directoriesImpl = implementation.getClass("DirectoriesImpl");

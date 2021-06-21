@@ -348,7 +348,8 @@ public final class BlobContainerItemProperties {
     }
 
     /**
-     * Get the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this container.
+     * Get the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
+     * container.
      *
      * @return the isImmutableStorageWithVersioningEnabled value.
      */
@@ -357,9 +358,10 @@ public final class BlobContainerItemProperties {
     }
 
     /**
-     * Set the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this container.
+     * Set the isImmutableStorageWithVersioningEnabled property: Indicates if version level worm is enabled on this
+     * container.
      *
-     * @param isImmutableStorageWithVersioningEnabled the isVersionLevelWormEnabled value to set.
+     * @param isImmutableStorageWithVersioningEnabled the isImmutableStorageWithVersioningEnabled value to set.
      * @return the BlobContainerItemProperties object itself.
      */
     public BlobContainerItemProperties setImmutableStorageWithVersioningEnabled(
