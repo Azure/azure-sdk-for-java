@@ -8,7 +8,7 @@ will focus on side-by-side comparisons for similar operations between the two pa
 
 Familiarity with the `com.microsoft.azure:azure-servicebus` library is assumed. For those new to the Service Bus client
 library for Java, please refer to the
-[README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md)
+[README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/README.md)
 and [Service Bus
 samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
 for the `com.azure:azure-messaging-servicebus` library rather than this guide.

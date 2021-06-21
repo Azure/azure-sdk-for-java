@@ -417,7 +417,7 @@ comments.
 
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/monitor/azure-monitor-query/src
 
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor/azure-monitor-query/src/samples/java/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/README.md
 
 [azure_subscription]: https://azure.microsoft.com/free
 
@@ -425,7 +425,7 @@ comments.
 
 [product_documentation]: https://aka.ms/awps/doc
 
-[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 

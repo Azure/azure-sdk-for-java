@@ -14,9 +14,9 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 
 ## Documentation
 
-- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/quick-start.md)
-- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md)
-- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md)
+- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/quick-start.md)
+- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md)
+- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md)
 
 [//]: # (//TODO: moderakh add more sections)
 [//]: # (//TODO: moderakh Enable Client Logging)
@@ -56,7 +56,7 @@ To suggest a new feature or changes that could be made, file an issue the same w
 
 ## License
 This project is under MIT license and uses and repackages other third party libraries as an uber jar.
-See [NOTICE.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/NOTICE.txt).
+See [NOTICE.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/NOTICE.txt).
 
 ## Contributing
 

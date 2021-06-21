@@ -140,8 +140,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [package_mvn]: https://mvnrepository.com/artifact/com.azure/opentelemetry-exporters-azuremonitor
@@ -149,7 +149,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
-[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md#defaultazurecredential
+[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [opentelemetry_sdk]: https://github.com/open-telemetry/opentelemetry-java/blob/master/QUICKSTART.md
@@ -159,7 +159,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_portal]: https://ms.portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/microsoft.insights%2Fcomponents
 [opentelemetry_io]: https://opentelemetry.io/ 
 [span_data]: https://opentelemetry.lightstep.com/spans
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
 [opentelemtry_spec]: https://opentelemetry.io/
 [instrumentation_library]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#instrumentation-libraries
 [tracer_provider]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#tracer-provider

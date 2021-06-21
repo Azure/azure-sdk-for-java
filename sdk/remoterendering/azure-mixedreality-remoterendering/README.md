@@ -374,7 +374,7 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/remoterendering/azure-mixedreality-remoterendering/src
 [remote_rendering_account]: https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account
-[LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [product_documentation]: https://docs.microsoft.com/azure/remote-rendering/
 [cpp_api]: https://docs.microsoft.com/cpp/api/remote-rendering/
 [dotnet_api]: https://docs.microsoft.com/dotnet/api/microsoft.azure.remoterendering

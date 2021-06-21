@@ -73,8 +73,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [samples]: src/samples/java/com/azure/ai/documenttranslator
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translation/azure-ai-documenttranslator/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/translation/azure-ai-documenttranslator/src/samples/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-documenttranslator/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-documenttranslator/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/translator/document-translation/get-started-with-document-translation
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli

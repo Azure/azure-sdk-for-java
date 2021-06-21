@@ -28,7 +28,7 @@ The package can be downloaded from [Maven](https://search.maven.org/artifact/com
 
 ## How to provide feedback
 
-See our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
+See our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 ## How to get support
 
@@ -59,7 +59,7 @@ The samples are located in this repo. [Java Samples](https://github.com/Azure/az
 
 ### Can I manage Service Bus entities with this library?
 
-Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/microsoft-azure-servicebus/src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
+Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/microsoft-azure-servicebus/src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
 
 ### How do I run the unit tests?
 

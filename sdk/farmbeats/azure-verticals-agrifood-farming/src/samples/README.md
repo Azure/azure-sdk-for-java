@@ -42,10 +42,10 @@ See [Next steps][SDK_README_NEXT_STEPS].
 If you would like to become an active contributor to this project please refer to our [Contribution Guidelines][SDK_README_CONTRIBUTING] for more information.
 
 <!-- LINKS -->
-<!-- [SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#contributing -->
-<!-- [SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#getting-started -->
-<!-- [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#troubleshooting -->
-<!-- [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#key-concepts -->
-<!-- [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#include-the-package -->
-<!-- [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#next-steps -->
-<!-- [create_farms]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/java/com/azure/verticals/agrifood/farming/CreateFarms.java -->
+<!-- [SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#contributing -->
+<!-- [SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#getting-started -->
+<!-- [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#troubleshooting -->
+<!-- [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#key-concepts -->
+<!-- [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#include-the-package -->
+<!-- [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/README.md#next-steps -->
+<!-- [create_farms]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/farmbeats/azure-verticals-agrifood-farming/src/samples/java/com/azure/verticals/agrifood/farming/CreateFarms.java -->

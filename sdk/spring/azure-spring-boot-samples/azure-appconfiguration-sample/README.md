@@ -59,7 +59,7 @@ mvn -Dspring.application.name=foo -Dspring.profiles.active=dev spring-boot:run
 
 ### More details
 
-Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/README.md) about more usage details. 
+Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/README.md) about more usage details. 
 
 ## Examples
 ## Troubleshooting
@@ -67,4 +67,4 @@ Please refer to this [README](https://github.com/Azure/azure-sdk-for-java/blob/m
 ## Contributing
 
 <!-- LINKS -->
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
