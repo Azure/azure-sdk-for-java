@@ -32,7 +32,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.administration.models.ListAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertConditions;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.MetricAlertConfigurationsOperator;
@@ -634,10 +634,10 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createAnomalyDetectionConfig(String, AnomalyDetectionConfiguration)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDetectionConfig(String, AnomalyDetectionConfiguration)}.
      */
     public void createDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyDetectionConfig#String-AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
             .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
@@ -665,21 +665,21 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
 
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         metricsAdvisorAdminAsyncClient
-            .createAnomalyDetectionConfig(metricId, detectionConfig)
+            .createDetectionConfig(metricId, detectionConfig)
             .subscribe(createdDetectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", createdDetectionConfig.getId());
                 System.out.printf("Name: %s%n", createdDetectionConfig.getName());
                 System.out.printf("Description: %s%n", createdDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", createdDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyDetectionConfig#String-AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createAnomalyDetectionConfigWithResponse(String, AnomalyDetectionConfiguration)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#createDetectionConfigWithResponse(String, AnomalyDetectionConfiguration)}.
      */
     public void createDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
             .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
@@ -707,7 +707,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
 
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
         metricsAdvisorAdminAsyncClient
-            .createAnomalyDetectionConfigWithResponse(metricId, detectionConfig)
+            .createDetectionConfigWithResponse(metricId, detectionConfig)
             .subscribe(response -> {
                 System.out.printf("Response statusCode: %d%n", response.getStatusCode());
                 AnomalyDetectionConfiguration createdDetectionConfig = response.getValue();
@@ -716,17 +716,17 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Description: %s%n", createdDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", createdDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAnomalyDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getAnomalyDetectionConfig(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDetectionConfig(String)}.
      */
     public void getDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyDetectionConfig#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getAnomalyDetectionConfig(detectionConfigId)
+            .getDetectionConfig(detectionConfigId)
             .subscribe(detectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
                 System.out.printf("Name: %s%n", detectionConfig.getName());
@@ -893,17 +893,17 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                             .getSuppressCondition().getMinRatio());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyDetectionConfig#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getAnomalyDetectionConfigWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#getDetectionConfigWithResponse(String)}.
      */
     public void getDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyDetectionConfigWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getAnomalyDetectionConfigWithResponse(detectionConfigId)
+            .getDetectionConfigWithResponse(detectionConfigId)
             .subscribe(response -> {
                 System.out.printf("Response statusCode: %d%n", response.getStatusCode());
 
@@ -1073,47 +1073,47 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                             .getSuppressCondition().getMinRatio());
                 }
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAnomalyDetectionConfigWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String
     }
 
     public void listDetectionConfigurations() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyDetectionConfigs#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
-        metricsAdvisorAdminAsyncClient.listAnomalyDetectionConfigs(metricId)
+        metricsAdvisorAdminAsyncClient.listDetectionConfigs(metricId)
             .subscribe(detectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
                 System.out.printf("Name: %s%n", detectionConfig.getName());
                 System.out.printf("Description: %s%n", detectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", detectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyDetectionConfigs#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listAnomalyDetectionConfigs(String, ListAnomalyDetectionConfigsOptions)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#listDetectionConfigs(String, ListDetectionConfigsOptions)}.
      */
     public void listDetectionConfigurationsWithOptions() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyDetectionConfigs#String-ListAnomalyDetectionConfigsOptions
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions
         final String metricId = "0b836da8-10e6-46cd-8f4f-28262e113a62";
-        metricsAdvisorAdminAsyncClient.listAnomalyDetectionConfigs(metricId,
-            new ListAnomalyDetectionConfigsOptions())
+        metricsAdvisorAdminAsyncClient.listDetectionConfigs(metricId,
+            new ListDetectionConfigsOptions())
             .subscribe(detectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", detectionConfig.getId());
                 System.out.printf("Name: %s%n", detectionConfig.getName());
                 System.out.printf("Description: %s%n", detectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", detectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAnomalyDetectionConfigs#String-ListAnomalyDetectionConfigsOptions
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateAnomalyDetectionConfig(AnomalyDetectionConfiguration)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDetectionConfig(AnomalyDetectionConfiguration)}.
      */
     public void updateDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyDetectionConfig#AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getAnomalyDetectionConfig(detectionConfigId)
+            .getDetectionConfig(detectionConfigId)
             .flatMap(detectionConfig -> {
                 detectionConfig.setName("updated config name");
                 detectionConfig.setDescription("updated with more detection conditions");
@@ -1127,7 +1127,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                             .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
                             .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
                 return metricsAdvisorAdminAsyncClient
-                    .updateAnomalyDetectionConfig(detectionConfig);
+                    .updateDetectionConfig(detectionConfig);
             })
             .subscribe(updatedDetectionConfig -> {
                 System.out.printf("Detection config Id: %s%n", updatedDetectionConfig.getId());
@@ -1135,17 +1135,17 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Description: %s%n", updatedDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", updatedDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyDetectionConfig#AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateAnomalyDetectionConfigWithResponse(AnomalyDetectionConfiguration)}
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#updateDetectionConfigWithResponse(AnomalyDetectionConfiguration)}
      */
     public void updateDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyDetectionConfigWithResponse#AnomalyDetectionConfiguration
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .getAnomalyDetectionConfigWithResponse(detectionConfigId)
+            .getDetectionConfigWithResponse(detectionConfigId)
             .flatMap(response -> {
                 AnomalyDetectionConfiguration detectionConfig = response.getValue();
                 detectionConfig.setName("updated config name");
@@ -1159,7 +1159,7 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                             .setAnomalyDetectorDirection(AnomalyDetectorDirection.UP)
                             .setSuppressCondition(new SuppressCondition().setMinNumber(2).setMinRatio(2))));
                 return metricsAdvisorAdminAsyncClient
-                    .updateAnomalyDetectionConfigWithResponse(detectionConfig);
+                    .updateDetectionConfigWithResponse(detectionConfig);
             })
             .subscribe(response -> {
                 AnomalyDetectionConfiguration updatedDetectionConfig = response.getValue();
@@ -1168,32 +1168,32 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Description: %s%n", updatedDetectionConfig.getDescription());
                 System.out.printf("MetricId: %s%n", updatedDetectionConfig.getMetricId());
             });
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAnomalyDetectionConfigWithResponse#AnomalyDetectionConfiguration
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteAnomalyDetectionConfig(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDetectionConfig(String)}.
      */
     public void deleteDetectionConfiguration() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyDetectionConfig#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .deleteAnomalyDetectionConfig(detectionConfigId)
+            .deleteDetectionConfig(detectionConfigId)
             .subscribe();
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyDetectionConfig#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String
     }
 
     /**
-     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteAnomalyDetectionConfigWithResponse(String)}.
+     * Code snippet for {@link MetricsAdvisorAdministrationAsyncClient#deleteDetectionConfigWithResponse(String)}.
      */
     public void deleteDetectionConfigurationWithResponse() {
-        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyDetectionConfigWithResponse#String
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String
         final String detectionConfigId = "7b8069a1-1564-46da-9f50-b5d0dd9129ab";
         metricsAdvisorAdminAsyncClient
-            .deleteAnomalyDetectionConfigWithResponse(detectionConfigId)
+            .deleteDetectionConfigWithResponse(detectionConfigId)
             .subscribe(response ->
                 System.out.printf("Response statusCode: %d%n", response.getStatusCode()));
-        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAnomalyDetectionConfigWithResponse#String
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String
     }
 
     /**

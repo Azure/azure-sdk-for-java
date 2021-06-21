@@ -190,7 +190,7 @@ public class ReadmeSamples {
             .setSuppressCondition(new SuppressCondition().setMinNumber(1).setMinRatio(2));
 
         final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
-            metricsAdvisorAdminClient.createAnomalyDetectionConfig(
+            metricsAdvisorAdminClient.createDetectionConfig(
                 metricId,
                 new AnomalyDetectionConfiguration("My dataPoint anomaly detection configuration")
                     .setDescription("anomaly detection config description")

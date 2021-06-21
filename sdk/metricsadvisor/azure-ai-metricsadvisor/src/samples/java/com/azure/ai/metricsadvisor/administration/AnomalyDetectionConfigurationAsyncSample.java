@@ -9,7 +9,7 @@ import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdConditio
 import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.ListAnomalyDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricSingleSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
@@ -38,7 +38,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // Create the detection configuration.
         Mono<AnomalyDetectionConfiguration> createDetectionConfigMono
             = advisorAdministrationAsyncClient
-            .createAnomalyDetectionConfig(metricId, prepareDetectionConfigurationObject());
+            .createDetectionConfig(metricId, prepareDetectionConfigurationObject());
 
         createDetectionConfigMono
             .doOnSubscribe(__ ->
@@ -49,7 +49,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // Retrieve the detection configuration that just created.
         Mono<AnomalyDetectionConfiguration> fetchDetectionConfigMono = createDetectionConfigMono
             .flatMap(createdDetectionConfig -> {
-                return advisorAdministrationAsyncClient.getAnomalyDetectionConfig(
+                return advisorAdministrationAsyncClient.getDetectionConfig(
                     createdDetectionConfig.getId())
                     .doOnSubscribe(__ ->
                         System.out.printf("Fetching detection configuration: %s%n", createdDetectionConfig.getId()))
@@ -65,7 +65,7 @@ public class AnomalyDetectionConfigurationAsyncSample {
             .flatMap(detectionConfig -> {
                 final String detectionConfigId = detectionConfig.getId();
                 detectionConfig = updateDetectionConfigurationObject(detectionConfig);
-                return advisorAdministrationAsyncClient.updateAnomalyDetectionConfig(detectionConfig)
+                return advisorAdministrationAsyncClient.updateDetectionConfig(detectionConfig)
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating detection configuration: %s%n", detectionConfigId))
                     .doOnSuccess(config ->
@@ -75,15 +75,15 @@ public class AnomalyDetectionConfigurationAsyncSample {
         // List configurations
         System.out.printf("Listing detection configurations%n");
         PagedFlux<AnomalyDetectionConfiguration> detectionConfigsFlux
-            = advisorAdministrationAsyncClient.listAnomalyDetectionConfigs(metricId,
-                new ListAnomalyDetectionConfigsOptions());
+            = advisorAdministrationAsyncClient.listDetectionConfigs(metricId,
+                new ListDetectionConfigsOptions());
 
         detectionConfigsFlux.doOnNext(detectionConfig -> printDetectionConfiguration(detectionConfig))
             .blockLast();
 
         // Delete the detection configuration.
         Mono<Void> deleteDetectionConfigMono = updateDetectionConfigMono.flatMap(detectionConfig -> {
-            return advisorAdministrationAsyncClient.deleteAnomalyDetectionConfig(detectionConfig.getId())
+            return advisorAdministrationAsyncClient.deleteDetectionConfig(detectionConfig.getId())
                 .doOnSubscribe(__ ->
                     System.out.printf("Deleting detection configuration: %s%n", detectionConfig.getId()))
                 .doOnSuccess(config ->
