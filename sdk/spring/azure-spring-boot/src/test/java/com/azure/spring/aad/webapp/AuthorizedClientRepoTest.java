@@ -4,10 +4,8 @@
 package com.azure.spring.aad.webapp;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -32,16 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
-@Isolated
 public class AuthorizedClientRepoTest {
-
-    private ClientRegistration azure;
-    private ClientRegistration graph;
-
-    private OAuth2AuthorizedClientRepository authorizedRepo;
-    private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
-
 
     @Test
     public void loadInitAzureAuthzClient() {
@@ -53,31 +42,36 @@ public class AuthorizedClientRepoTest {
                     "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                     "azure.activedirectory.base-uri = fake-uri")
                 .run(context -> {
-                    getBeans(context);
+                    AADWebAppClientRegistrationRepository clientRepo =
+                        context.getBean(AADWebAppClientRegistrationRepository.class);
+                    ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                    OAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+                        clientRepo,
+                        new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+                        OAuth2AuthorizationContext::getAuthorizedClient);
+                    MockHttpServletRequest request = new MockHttpServletRequest();
+                    MockHttpServletResponse response = new MockHttpServletResponse();
+
                     ServletRequestAttributes attributes = mock(ServletRequestAttributes.class);
-                    requestContextHolder.when(() -> RequestContextHolder.currentRequestAttributes()).thenReturn(attributes);
+                    requestContextHolder.when(() -> RequestContextHolder.currentRequestAttributes())
+                                        .thenReturn(attributes);
                     when(attributes.getResponse()).thenReturn(response);
+
                     authorizedRepo.saveAuthorizedClient(
                         createAuthorizedClient(azure),
                         createAuthentication(),
                         request,
                         response);
 
-
                     OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
                         "graph",
                         createAuthentication(),
                         request);
 
-                    assertNotNull(client);
-                    assertNotNull(client.getAccessToken());
-                    assertNotNull(client.getRefreshToken());
-
+                    assertClient(client);
                     assertTrue(isTokenExpired(client.getAccessToken()));
-                    assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
                 });
         }
-
     }
 
     @Test
@@ -90,10 +84,21 @@ public class AuthorizedClientRepoTest {
                     "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                     "azure.activedirectory.base-uri = fake-uri")
                 .run(context -> {
-                    getBeans(context);
+                    AADWebAppClientRegistrationRepository clientRepo =
+                        context.getBean(AADWebAppClientRegistrationRepository.class);
+                    ClientRegistration graph = clientRepo.findByRegistrationId("graph");
+
+                    OAuth2AuthorizedClientRepository authorizedRepo = new AADOAuth2AuthorizedClientRepository(
+                        clientRepo,
+                        new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+                        OAuth2AuthorizationContext::getAuthorizedClient);
+                    MockHttpServletRequest request = new MockHttpServletRequest();
+                    MockHttpServletResponse response = new MockHttpServletResponse();
                     ServletRequestAttributes attributes = mock(ServletRequestAttributes.class);
-                    requestContextHolder.when(() -> RequestContextHolder.currentRequestAttributes()).thenReturn(attributes);
+                    requestContextHolder.when(() -> RequestContextHolder.currentRequestAttributes())
+                                        .thenReturn(attributes);
                     when(attributes.getResponse()).thenReturn(response);
+
                     authorizedRepo.saveAuthorizedClient(
                         createAuthorizedClient(graph),
                         createAuthentication(),
@@ -105,27 +110,17 @@ public class AuthorizedClientRepoTest {
                         createAuthentication(),
                         request);
 
-                    assertNotNull(client);
-                    assertNotNull(client.getAccessToken());
-                    assertNotNull(client.getRefreshToken());
-
+                    assertClient(client);
                     assertEquals("fake-access-token", client.getAccessToken().getTokenValue());
-                    assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
                 });
         }
     }
 
-    private void getBeans(AssertableWebApplicationContext context) {
-        AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
-        azure = clientRepo.findByRegistrationId("azure");
-        graph = clientRepo.findByRegistrationId("graph");
-
-        authorizedRepo = new AADOAuth2AuthorizedClientRepository(
-            clientRepo,
-            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
-            OAuth2AuthorizationContext::getAuthorizedClient);
-        request = new MockHttpServletRequest();
-        response = new MockHttpServletResponse();
+    private void assertClient(OAuth2AuthorizedClient client) {
+        assertNotNull(client);
+        assertNotNull(client.getAccessToken());
+        assertNotNull(client.getRefreshToken());
+        assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
     }
 
     private OAuth2AuthorizedClient createAuthorizedClient(ClientRegistration client) {
