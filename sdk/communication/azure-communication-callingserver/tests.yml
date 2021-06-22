@@ -5,4 +5,5 @@ stages:
     parameters:
       PackageName: azure-communication-callingserver
       SafeName: azurecommunicationcallingserver
+      Clouds: Public
 
