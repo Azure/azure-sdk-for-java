@@ -42,10 +42,10 @@ class PathScannerTest extends Specification {
             allowReadData(lockedChild, false);
             allowReadData(lockedSubfolder, false);
 
-        PathScannerBuilder scannerFactory = new PathScannerBuilder(folder.toAbsolutePath().toString());
-        PathScanner scanner = scannerFactory.BuildPathScanner();
+            PathScannerFactory scannerFactory = new PathScannerFactory(folder.toAbsolutePath().toString());
+            PathScanner scanner = scannerFactory.buildPathScanner();
 
-            def expectedResult = [openChild, lockedChild, openSubchild]
+            def expectedResult = [folder, openChild, lockedChild, openSubfolder, openSubchild, lockedSubfolder]
                 .stream()
                 .map({ path -> path.toString() })
                 .collect();
@@ -55,6 +55,9 @@ class PathScannerTest extends Specification {
 
         then:
             StepVerifier.create(result)
+                .expectNextMatches({ path -> expectedResult.contains(path) })
+                .expectNextMatches({ path -> expectedResult.contains(path) })
+                .expectNextMatches({ path -> expectedResult.contains(path) })
                 .expectNextMatches({ path -> expectedResult.contains(path) })
                 .expectNextMatches({ path -> expectedResult.contains(path) })
                 .expectNextMatches({ path -> expectedResult.contains(path) })
@@ -87,7 +90,7 @@ class PathScannerTest extends Specification {
             view.setAcl(acl);
         } else {
             Set<PosixFilePermission> permissions =
-                PosixFilePermissions.fromString(allowRead ? "rw-rw-rw-" : "-w--w--w-");
+                PosixFilePermissions.fromString(allowRead ? "rwxrwxrwx" : "-w--w--w-");
 
             Files.setPosixFilePermissions(path, permissions);
         }

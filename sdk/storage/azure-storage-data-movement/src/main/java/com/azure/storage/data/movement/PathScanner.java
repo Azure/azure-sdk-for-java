@@ -5,21 +5,28 @@ package com.azure.storage.data.movement;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.BaseStream;
-import java.util.stream.Stream;
 
 public class PathScanner {
     private final String basePath;
     private final boolean isDir;
 
-    public PathScanner(String path, boolean isDir) {
-        basePath = path;
-        this.isDir = isDir;
+    public PathScanner(String path) {
+        // Resolve the given path to an absolute path in case it isn't one already
+        Path pathObj = Paths.get(path);
+        basePath = pathObj.toAbsolutePath().toString();
+
+        // Check if the path exists and whether or not it's a directory; throw
+        // an error if there's nothing present or readable at the given path
+        if (Files.exists(pathObj)) {
+            isDir = Files.isDirectory(pathObj);
+        } else {
+            throw new IllegalArgumentException("No accessible object exists at the given path");
+        }
     }
 
     public Flux<String> scan(boolean skipSubdirectories) {
@@ -29,25 +36,27 @@ public class PathScanner {
             Mono<Path> basePath = Mono.just(Paths.get(this.basePath));
 
             // Return a Flux constructed from expanding path
-            return basePath.expand(path ->
-                Flux.using(() -> Files.list(path),
-                    Flux::fromStream,
-                    BaseStream::close)
-                    .onErrorResume((e) -> {
-                        // Ignore errors resulting from trying to enumerate contents of
-                        // a file as if it were a directory, but log other errors
-                        if (!(e instanceof NotDirectoryException))
+            return basePath.expand(path -> {
+                // Return an empty publisher when the path is not a directory
+                // (files will cause errors when being used with Files::list)
+                if (!Files.isDirectory(path)) {
+                    return Mono.empty();
+                } else {
+                    return Flux.using(() -> Files.list(path),
+                        Flux::fromStream,
+                        BaseStream::close)
+                        .onErrorResume((e) -> {
+                            // Log any resulting errors
                             System.err.println(e);
 
-                        // If set to skip subdirectories, continue processing; else,
-                        // pass an error which will stop the Flux stream
-                        if (skipSubdirectories)
-                            return Mono.empty();
-                        else
-                            return Mono.error(e);
-                    }))
-                // Remove the folders from the final returned values
-                .filter(path -> !Files.isDirectory(path))
+                            // If set to skip subdirectories, continue processing; else,
+                            // pass an error which will stop the Flux stream
+                            if (skipSubdirectories)
+                                return Mono.empty();
+                            else
+                                return Mono.error(e);
+                        });
+                }})
                 // Return the paths as strings
                 .map(path -> path.toAbsolutePath().toString());
         } else {
