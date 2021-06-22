@@ -185,6 +185,8 @@ public final class BulkExecutor<TContext> {
                     // then the last element in the doOnNext will close it. Sink doesn't mind in case of a double close.
 
                     completeAllSinks();
+                } else {
+                    this.onFlush();
                 }
             })
             .mergeWith(mainFluxProcessor)

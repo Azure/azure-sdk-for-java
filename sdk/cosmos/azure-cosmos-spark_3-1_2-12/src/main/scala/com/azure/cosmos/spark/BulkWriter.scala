@@ -81,25 +81,32 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   private def initializeOperationContext(): SparkTaskContext = {
     val taskContext = TaskContext.get
-    assert(taskContext != null)
 
     val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID().toString, "BulkWriter")
 
-    val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
-      taskContext.stageId(),
-      taskContext.partitionId(),
-      taskContext.taskAttemptId(),
-      "")
+    if (taskContext != null) {
+      val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+        taskContext.stageId(),
+        taskContext.partitionId(),
+        taskContext.taskAttemptId(),
+        "")
 
-    val listener: OperationListener =
-      DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
+      val listener: OperationListener =
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
-    val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-    ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
-      .getCosmosBulkProcessingOptionAccessor
-      .setOperationContext(bulkOptions, operationContextAndListenerTuple)
+      val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
+      ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
+        .getCosmosBulkProcessingOptionAccessor
+        .setOperationContext(bulkOptions, operationContextAndListenerTuple)
 
-    taskDiagnosticsContext
+      taskDiagnosticsContext
+    } else{
+      SparkTaskContext(diagnosticsContext.correlationActivityId,
+        -1,
+        -1,
+        -1,
+        "")
+    }
   }
 
   private val subscriptionDisposable: Disposable = {
