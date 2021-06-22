@@ -118,6 +118,14 @@ public class BlobStorageCustomization extends Customization {
         ClassCustomization blobHttpHeaders = models.getClass("BlobHttpHeaders");
         blobHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobHttpHeaders\")");
         blobHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"blob-http-headers\")");
+        blobHttpHeaders.getMethod("getContentMd5").getJavadoc().setDescription("Get the contentMd5 property: " +
+            "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +
+            "the individual blocks were validated when each was uploaded. The value does not need to be base64 " +
+            "encoded as the SDK will perform the encoding.");
+        blobHttpHeaders.getMethod("setContentMd5").getJavadoc().setDescription("Set the contentMd5 property: " +
+            "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for " +
+            "the individual blocks were validated when each was uploaded. The value does not need to be base64 " +
+            "encoded as the SDK will perform the encoding.");
 
         ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
         blobContainerEncryptionScope.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobContainerEncryptionScope\")");

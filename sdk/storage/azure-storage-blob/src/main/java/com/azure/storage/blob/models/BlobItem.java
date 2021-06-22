@@ -65,7 +65,8 @@ public final class BlobItem {
     private List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /*
-     * The isPrefix property.
+     * The isPrefix property. If blobs are named to mimic a directory hierarchy (i.e. path elements separated by a
+     * delimiter), this property may be used to determine if the {@code BlobItem} is a virtual directory.
      */
     @JsonProperty(value = "IsPrefix")
     private Boolean isPrefix;
@@ -254,7 +255,8 @@ public final class BlobItem {
     }
 
     /**
-     * Get the isPrefix property: The isPrefix property.
+     * Get the isPrefix property: If blobs are named to mimic a directory hierarchy (i.e. path elements separated by a
+     * delimiter), this property may be used to determine if the {@code BlobItem} is a virtual directory.
      *
      * @return the isPrefix value.
      */
