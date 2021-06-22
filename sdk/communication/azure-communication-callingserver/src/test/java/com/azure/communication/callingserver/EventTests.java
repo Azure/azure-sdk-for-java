@@ -53,8 +53,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EventTests {
     @Test
     public void callConnectionStateChangedEventTest() throws JsonProcessingException {
-        var serverCallId = UUID.randomUUID().toString();
-        var callConnectionId = UUID.randomUUID().toString();
+        String serverCallId = UUID.randomUUID().toString();
+        String callConnectionId = UUID.randomUUID().toString();
         CallConnectionStateChangedEventInternal internalEvent =
             new CallConnectionStateChangedEventInternal()
                 .setCallConnectionId(callConnectionId)
