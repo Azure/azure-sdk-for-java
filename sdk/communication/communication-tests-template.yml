@@ -19,6 +19,7 @@ stages:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java)
       Clouds: ${{ parameters.Clouds }}
+      TestMode: ${{ parameters.TestMode }}
       Artifacts:
         - name: ${{ parameters.PackageName }}
           groupId: com.azure
