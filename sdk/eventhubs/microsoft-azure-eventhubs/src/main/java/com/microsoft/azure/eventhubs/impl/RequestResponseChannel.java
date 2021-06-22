@@ -20,7 +20,6 @@ import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
