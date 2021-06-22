@@ -162,7 +162,7 @@ public final class BulkExecutor<TContext> {
                     cosmosItemOperation,
                     this.throttlingRetryOptions);
 
-                if (!(cosmosItemOperation instanceof FlushBuffersItemOperation)) {
+                if (cosmosItemOperation != FlushBuffersItemOperation.singleton()) {
                     totalCount.incrementAndGet();
                 }
             })
@@ -254,7 +254,7 @@ public final class BulkExecutor<TContext> {
                 long timestamp = timeStampItemOperationTuple.getT1();
                 CosmosItemOperation itemOperation = timeStampItemOperationTuple.getT2();
 
-                if (itemOperation instanceof FlushBuffersItemOperation) {
+                if (itemOperation == FlushBuffersItemOperation.singleton()) {
                     if (currentMicroBatchSize.get() > 0) {
                         logger.debug(
                             "Flushing PKRange {} due to FlushItemOperation, Context: {}",
@@ -293,7 +293,7 @@ public final class BulkExecutor<TContext> {
                         timeStampAndItemOperationTuples) {
 
                         CosmosItemOperation itemOperation = timeStampAndItemOperationTuple.getT2();
-                        if (itemOperation instanceof FlushBuffersItemOperation) {
+                        if (itemOperation == FlushBuffersItemOperation.singleton()) {
                             continue;
                         }
                         operations.add(itemOperation);
