@@ -199,7 +199,7 @@ public class EventTests {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(OffsetDateTime.class, new JsonSerializer<>() {
+        simpleModule.addSerializer(OffsetDateTime.class, new JsonSerializer<OffsetDateTime>() {
             @Override
             public void serialize(
                 OffsetDateTime offsetDateTime,
@@ -208,7 +208,7 @@ public class EventTests {
                 jsonGenerator.writeString(offsetDateTime.toString());
             }
         });
-        simpleModule.addDeserializer(OffsetDateTime.class, new JsonDeserializer<>() {
+        simpleModule.addDeserializer(OffsetDateTime.class, new JsonDeserializer<OffsetDateTime>() {
             @Override
             public OffsetDateTime deserialize(
                 JsonParser jsonParser,
