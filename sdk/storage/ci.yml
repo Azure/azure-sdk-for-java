@@ -81,3 +81,5 @@ extends:
     AdditionalModules:
       - name: azure-storage-perf
         groupId: com.azure
+    EnvVars:
+        AZURE_LIVE_TEST_SERVICE_VERSION: 'V2020_10_02'
