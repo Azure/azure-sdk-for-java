@@ -48,9 +48,9 @@ public final class ListDataFeedIngestionOptions {
     }
 
     /**
-     * Gets limit indicating the number of items to be included in a service returned page.
+     * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return this.maxPageSize;
@@ -69,10 +69,10 @@ public final class ListDataFeedIngestionOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param maxPageSize The skip value.
+     * @param maxPageSize The max page size value.
      * @return The ListDataFeedIngestionOptions object itself.
      */
-    public ListDataFeedIngestionOptions setMaxPageSize(int maxPageSize) {
+    public ListDataFeedIngestionOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -84,7 +84,7 @@ public final class ListDataFeedIngestionOptions {
      * @param skip The skip value.
      * @return The ListDataFeedIngestionOptions object itself.
      */
-    public ListDataFeedIngestionOptions setSkip(int skip) {
+    public ListDataFeedIngestionOptions setSkip(Integer skip) {
         this.skip = skip;
         return this;
     }

@@ -18,9 +18,9 @@ public class KeyVaultCertificatesTest {
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
-    private Key key = mock(Key.class);
+    private final Key key = mock(Key.class);
 
-    private Certificate certificate = mock(Certificate.class);
+    private final Certificate certificate = mock(Certificate.class);
 
     private KeyVaultCertificates keyVaultCertificates;
 
