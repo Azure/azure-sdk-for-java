@@ -157,7 +157,7 @@ public final class TableServiceClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential, sasToken,
-            endpoint, retryPolicy,httpLogOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies,
+            endpoint, retryPolicy, httpLogOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies,
             configuration, logger);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
