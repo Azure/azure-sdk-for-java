@@ -38,7 +38,7 @@ public class DownloadContentAsyncUnitTests {
         
         Flux<ByteBuffer> fluxByteBuffer = callingServerClient.downloadStream("https://url.com", new HttpRange(contents.length()));
         
-        var resultContents = new String(fluxByteBuffer.next().block().array(), StandardCharsets.UTF_8);
+        String resultContents = new String(fluxByteBuffer.next().block().array(), StandardCharsets.UTF_8);
         assertEquals("VideoContents", resultContents);
     }
 
@@ -53,7 +53,7 @@ public class DownloadContentAsyncUnitTests {
         Response<Flux<ByteBuffer>> fluxByteBufferResponse = callingServerClient.downloadStreamWithResponse("https://url.com", new HttpRange(contents.length())).block();
         assertEquals(200, fluxByteBufferResponse.getStatusCode());
         Flux<ByteBuffer> fluxByteBuffer = fluxByteBufferResponse.getValue();
-        var resultContents = new String(fluxByteBuffer.next().block().array(), StandardCharsets.UTF_8);
+        String resultContents = new String(fluxByteBuffer.next().block().array(), StandardCharsets.UTF_8);
         assertEquals("VideoContents", resultContents);
     }
     
