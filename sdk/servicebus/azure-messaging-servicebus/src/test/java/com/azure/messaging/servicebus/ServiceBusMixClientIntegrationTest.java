@@ -15,7 +15,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -87,7 +86,6 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final int sendQueueBIndex = TestUtils.USE_CASE_TXN_2;
         final String queueA = isSessionEnabled ? getSessionQueueName(receiveQueueAIndex) : getQueueName(receiveQueueAIndex);
         final String queueB = isSessionEnabled ? getSessionQueueName(sendQueueBIndex) : getQueueName(sendQueueBIndex);
-        final String queueC = isSessionEnabled ? getSessionQueueName(sendQueueBIndex) : getQueueName(15);
         final AtomicBoolean transactionComplete = new AtomicBoolean();
         final CountDownLatch countdownLatch = new CountDownLatch(1);
         final AtomicInteger receivedMessages = new AtomicInteger();
@@ -105,7 +103,6 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         // Initialize sender
         senderAsyncA = builder.sender().queueName(queueA).buildAsyncClient();
         senderSyncB = builder.sender().queueName(queueB).buildClient();
-        ServiceBusSenderClient senderSyncC = builder.sender().queueName(queueC).buildClient();
 
         Consumer<ServiceBusReceivedMessageContext> processMessage = (context) -> {
             receivedMessages.incrementAndGet();
@@ -113,32 +110,22 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             ServiceBusReceivedMessage myMessage = context.getMessage();
             System.out.printf("Processing message. MessageId: %s, Sequence #: %s. Contents: %s %n", myMessage.getMessageId(),
                 myMessage.getSequenceNumber(), myMessage.getBody());
-            if (receivedMessages.get() >= 1) {
+            if (receivedMessages.get() == 1) {
 
                 //Start a transaction
                 ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
                 context.complete(new CompleteOptions().setTransactionContext(transactionId));
-                System.out.println(new Date() +   " " + receivedMessages.get() +". !!! !  sending the message " + context.getMessage().getSequenceNumber());
-                try {
-                    senderSyncB.sendMessage(new ServiceBusMessage(new String(CONTENTS_BYTES) + "-" + context.getMessage().getSequenceNumber()).setMessageId(messageId).setSessionId(sessionId), transactionId);
-                    senderSyncC.sendMessage(new ServiceBusMessage(new String(CONTENTS_BYTES) + "-" + context.getMessage().getSequenceNumber()).setMessageId(messageId).setSessionId(sessionId), transactionId);
-
-
-                    System.out.println(new Date() +   " " + receivedMessages.get() +". !!! !  successfully sent the message " + context.getMessage().getSequenceNumber());
-                    senderSyncB.commitTransaction(transactionId);
-                    transactionComplete.set(true);
-                    //countdownLatch.countDown();
-                    logger.verbose("Transaction committed.");
-                } catch (Exception ee) { System.out.println("Exception in sending : ");
-                    ee.printStackTrace();
-                }
+                senderSyncB.sendMessage(new ServiceBusMessage(CONTENTS_BYTES).setMessageId(messageId).setSessionId(sessionId), transactionId);
+                senderSyncB.commitTransaction(transactionId);
+                transactionComplete.set(true);
+                countdownLatch.countDown();
+                logger.verbose("Transaction committed.");
             }
         };
 
         Consumer<ServiceBusErrorContext> processError = context -> {
             System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'. Error Source: '%s' %n",
                 context.getFullyQualifiedNamespace(), context.getEntityPath(), context.getErrorSource());
-            context.getException().printStackTrace();
             Assertions.fail("Failed processing of message.", context.getException());
 
             if (!(context.getException() instanceof ServiceBusException)) {
@@ -167,15 +154,15 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         processorA.start();
 
         // Assert
-        /*System.out.println("Listening for 10 seconds...");
+        System.out.println("Listening for 10 seconds...");
         if (countdownLatch.await(10, TimeUnit.SECONDS)) {
             System.out.println("Completed processing successfully.");
             Assertions.assertTrue(transactionComplete.get());
         } else {
             System.out.println("Closing processor.");
             Assertions.fail("Failed to process message.");
-        }*/
-        TimeUnit.MINUTES.sleep(60);
+        }
+
         processorA.close();
 
         // Verify that message is received by queue B
@@ -228,7 +215,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             ServiceBusReceivedMessage myMessage = context.getMessage();
             System.out.printf("Processing message. MessageId: %s, Sequence #: %s. Contents: %s %n", myMessage.getMessageId(),
                 myMessage.getSequenceNumber(), myMessage.getBody());
-            if (receivedMessages.get() >= 1) {
+            if (receivedMessages.get() == 1) {
 
                 //Start a transaction
                 ServiceBusTransactionContext transactionId = senderSyncB.createTransaction();
@@ -272,26 +259,26 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         processorA.start();
 
         // Assert
-       /* System.out.println("Listening for 10 seconds...");
+        System.out.println("Listening for 10 seconds...");
         if (countdownLatch.await(10, TimeUnit.SECONDS)) {
             System.out.println("Completed processing successfully.");
             Assertions.assertTrue(transactionComplete.get());
         } else {
             System.out.println("Closing processor.");
             Assertions.fail("Failed to process message.");
-        }*/
+        }
 
         processorA.close();
-        TimeUnit.MINUTES.sleep(60);
+
         // Verify that message is received by queue B
-        /*if (!isSessionEnabled) {
+        if (!isSessionEnabled) {
             setSenderAndReceiver(entityType, sendQueueBIndex, false);
             StepVerifier.create(receiver.receiveMessages().take(1))
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 }).verifyComplete();
-        }*/
+        }
     }
 
     /**

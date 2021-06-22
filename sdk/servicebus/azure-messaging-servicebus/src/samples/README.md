@@ -41,6 +41,9 @@ connection string value can be obtained by:
 - [Schedule and cancel a message][SendScheduledMessageAndCancelAsyncSample]
 - [Peek at a message][PeekMessageAsyncSample]
 
+### Transactions
+- [Cross Entity Transactions][ReceiveMessageAsyncCrossEntityTransactionSample]
+
 ### Synchronous sending and receiving
 - [Send message batches synchronously][SendMessageBatchSyncSample]
 - [Receive messages synchronously][ReceiveMessageSample]
@@ -91,5 +94,6 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING
 [ServiceBusSessionProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusSessionProcessorSample.java
 [AdministrationClientUpdateQueueSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdministrationClientUpdateQueueSample.java
 [ReceiveMessageAsyncUsingSasSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageUsingSasSample.java
+[ReceiveMessageAsyncCrossEntityTransactionSample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncCrossEntityTransactionSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2Fsrc%2Fsamples%2FREADME.png)
