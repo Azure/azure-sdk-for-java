@@ -16,10 +16,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class BulkProcessingOptionsTest {
 
     private static final Random rnd = new Random();
-    private static final ImplementationBridgeHelpers.BulkProcessingThresholdsHelper.BulkProcessingThresholdsAccessor
-        bulkProcessingThresholdsAccessor = ImplementationBridgeHelpers
-            .BulkProcessingThresholdsHelper
-            .getBulkProcessingThresholdsAccessor();
 
     @Test(groups = { "unit" })
     public void minAndMaxTargetRetryRateMustNotBeNegative() {
@@ -53,13 +49,19 @@ public class BulkProcessingOptionsTest {
         BulkProcessingOptions<Object> initialOptions = new BulkProcessingOptions<Object>();
         BulkProcessingThresholds<Object> thresholds = initialOptions.getThresholds();
         ConcurrentMap<String, PartitionScopeThresholds<Object>> partitionScopeThresholdsMap =
-            bulkProcessingThresholdsAccessor.getPartitionScopeThresholds(thresholds);
+            ImplementationBridgeHelpers
+                .BulkProcessingThresholdsHelper
+                .getBulkProcessingThresholdsAccessor()
+                .getPartitionScopeThresholds(thresholds);
         BulkProcessingOptions<Object> optionsWithThresholds =
             new BulkProcessingOptions<Object>(null, thresholds);
 
         assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholds());
         assertThat(partitionScopeThresholdsMap)
             .isSameAs(
-                bulkProcessingThresholdsAccessor.getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
+                ImplementationBridgeHelpers
+                    .BulkProcessingThresholdsHelper
+                    .getBulkProcessingThresholdsAccessor()
+                    .getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
     }
 }
