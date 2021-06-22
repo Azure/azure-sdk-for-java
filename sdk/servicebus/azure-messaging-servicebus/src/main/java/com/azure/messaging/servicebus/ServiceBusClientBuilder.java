@@ -216,10 +216,14 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the credential for the Service Bus resource.
+     * Sets the credential by using a {@link TokenCredential} for the Service Bus resource.
+     * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">
+     *     azure-identity</a> has multiple {@link TokenCredential} implementations that can be used to authenticate
+     *     the access to the Service Bus resource.
      *
-     * @param fullyQualifiedNamespace for the Service Bus.
-     * @param credential {@link TokenCredential} to be used for authentication.
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
+     * @param credential The token credential to use for authentication. Access controls may be specified by the
+     * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
@@ -238,9 +242,15 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the credential for the Service Bus resource.
+     * Sets the credential with the shared access policies for the Service Bus resource.
+     * You can find the shared access policies on the azure portal or Azure CLI.
+     * For instance, on the portal, "Shared Access policies" has 'policy' and its 'Primary Key' and 'Secondary Key'.
+     * The 'name' attribute of the {@link AzureNamedKeyCredential} is the 'policy' on portal and the 'key' attribute
+     * can be either 'Primary Key' or 'Secondary Key'.
+     * This method and {@link #connectionString(String)} take the same information in different forms. But it allows
+     * you to update the name and key.
      *
-     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
      * @param credential {@link AzureNamedKeyCredential} to be used for authentication.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
@@ -250,22 +260,23 @@ public final class ServiceBusClientBuilder {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         Objects.requireNonNull(credential, "'credential' cannot be null.");
-
-        this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
-            credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
-
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
+
         return this;
     }
 
     /**
-     * Sets the credential for the Service Bus resource.
+     * Sets the credential with Shared Access Signature for the Service Bus resource.
+     * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
+     *     Service Bus access control with Shared Access Signatures</a>.
      *
-     * @param fullyQualifiedNamespace for the Service Bus.
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
      * @param credential {@link AzureSasCredential} to be used for authentication.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
@@ -276,12 +287,12 @@ public final class ServiceBusClientBuilder {
             "'fullyQualifiedNamespace' cannot be null.");
         Objects.requireNonNull(credential, "'credential' cannot be null.");
 
-        this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
-
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
+
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
 
         return this;
     }
