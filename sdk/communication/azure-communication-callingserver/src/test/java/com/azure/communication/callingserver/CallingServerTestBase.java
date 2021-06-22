@@ -46,8 +46,8 @@ public class CallingServerTestBase extends TestBase {
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
             "016a7064-0581-40b9-be73-6dde64d69d72");
 
-    protected static final Boolean GENERATE_RANDOM_GROUP_IDENTIFIER = Configuration.getGlobalConfiguration()
-        .get("CALLINGSERVER_GENERATE_RANDOM_GROUP_IDENTIFIER", true);            
+    protected static final Boolean GENERATE_RANDOM_GROUP_IDENTIFIER_RECORD_MODE = Configuration.getGlobalConfiguration()
+        .get("CALLINGSERVER_GENERATE_RANDOM_GROUPID_IN_RECORD_MODE", true);            
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
@@ -110,11 +110,19 @@ public class CallingServerTestBase extends TestBase {
         /*
           If tests are running in live mode, we want them to all
           have unique groupId's so they do not conflict with other
-          recording tests running in live mode. Live test pipeline
-          runs in recording mode, so we need to generate random
-          groupId's.
+          recording tests running in live mode.
          */
-        if (getTestMode() == TestMode.LIVE || GENERATE_RANDOM_GROUP_IDENTIFIER) {        
+        if (getTestMode() == TestMode.LIVE) {        
+            return UUID.randomUUID().toString();
+        }
+
+        /*
+          The Live test pipeline runs in recording mode, so we 
+          need to generate random groupId's. We pull this value
+          from the test.yml file which is only used in CI and
+          Live pipeline.
+         */
+        if (getTestMode() == TestMode.RECORD && GENERATE_RANDOM_GROUP_IDENTIFIER_RECORD_MODE) {
             return UUID.randomUUID().toString();
         }
 
