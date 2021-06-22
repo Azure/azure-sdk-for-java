@@ -118,7 +118,10 @@ public class CallConnectionAsyncUnitTests {
             )));
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        JoinCallOptions options = new JoinCallOptions(CallingServerResponseMocker.URI_CALLBACK, List.of(MediaType.VIDEO), List.of(EventSubscriptionType.PARTICIPANTS_UPDATED));
+        JoinCallOptions options = new JoinCallOptions(
+            CallingServerResponseMocker.URI_CALLBACK,
+            Collections.singletonList(MediaType.VIDEO),
+            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
         Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.joinCallWithResponse(CallingServerResponseMocker.SERVER_CALL_ID, (CommunicationIdentifier) user, options).block();
         assertEquals(202, callConnectionAsyncResponse.getStatusCode());
         assertNotNull(callConnectionAsyncResponse.getValue());
@@ -132,7 +135,10 @@ public class CallConnectionAsyncUnitTests {
             )));
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        JoinCallOptions options = new JoinCallOptions(CallingServerResponseMocker.URI_CALLBACK, List.of(MediaType.VIDEO), List.of(EventSubscriptionType.PARTICIPANTS_UPDATED));
+        JoinCallOptions options = new JoinCallOptions(
+            CallingServerResponseMocker.URI_CALLBACK,
+            Collections.singletonList(MediaType.VIDEO),
+            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
         CallConnectionAsync callConnectionAsync = callingServerAsyncClient.joinCall(CallingServerResponseMocker.SERVER_CALL_ID, (CommunicationIdentifier) user, options).block();
         assertNotNull(callConnectionAsync);
     }   

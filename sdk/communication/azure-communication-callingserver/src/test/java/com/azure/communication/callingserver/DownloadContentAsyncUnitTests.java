@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
@@ -57,6 +58,19 @@ public class DownloadContentAsyncUnitTests {
         assertEquals("VideoContents", resultContents);
     }
     
+    @Test
+    public void downloadStreamWithResponseThrowException() throws IOException {
+        String contents = "VideoContents";
+        CallingServerAsyncClient callingServerClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>("", 416)
+            )));
+        
+        Response<Flux<ByteBuffer>> fluxByteBufferResponse = callingServerClient.downloadStreamWithResponse("https://url.com", new HttpRange(contents.length())).block();
+        Flux<ByteBuffer> fluxByteBuffer = fluxByteBufferResponse.getValue();
+        assertThrows(NullPointerException.class, () -> fluxByteBuffer.next().block());
+    }
+
     @Test
     public void downloadToWithResponse() throws IOException {
         String contents = "VideoContents";
