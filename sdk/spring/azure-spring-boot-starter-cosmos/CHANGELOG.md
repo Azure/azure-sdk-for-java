@@ -2,7 +2,7 @@
 
 ## 3.6.0-beta.1 (Unreleased)
 ### Breaking Changes
-- Deprecated `allowTelemetry` configuration item.
+- Deprecate `allowTelemetry` configuration item.
 
 ## 3.5.0 (2021-05-24)
 ### New Features

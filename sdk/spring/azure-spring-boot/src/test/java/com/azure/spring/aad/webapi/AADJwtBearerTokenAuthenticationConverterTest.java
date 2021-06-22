@@ -21,17 +21,13 @@ import static org.mockito.Mockito.when;
 
 public class AADJwtBearerTokenAuthenticationConverterTest {
 
-    private Jwt jwt;
-    private Map<String, Object> claims;
-    private Map<String, Object> headers;
+    private Jwt jwt = mock(Jwt.class);
+    private Map<String, Object> claims = new HashMap<>();
+    private Map<String, Object> headers = new HashMap<>();
     private JSONArray jsonArray = new JSONArray().appendElement("User.read").appendElement("User.write");
 
     @BeforeEach
     public void init() {
-        jwt = mock(Jwt.class);
-        claims = new HashMap<>();
-        headers = new HashMap<>();
-
         claims.put("iss", "fake-issuer");
         claims.put("tid", "fake-tid");
         headers.put("kid", "kg2LYs2T0CTjIfj4rt6JIynen38");

@@ -37,7 +37,7 @@ public class AADB2CJwtBearerTokenAuthenticationConverter extends AbstractJwtBear
      */
     @Deprecated
     public AADB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
-        super(authoritiesClaimName, DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.get(DEFAULT_AUTHORITY_CLAIM_NAME));
+        this(authoritiesClaimName, DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.get(DEFAULT_AUTHORITY_CLAIM_NAME));
     }
 
     /**
