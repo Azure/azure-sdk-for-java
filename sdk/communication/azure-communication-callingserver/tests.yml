@@ -1,8 +1,9 @@
 trigger: none
 
- - template: /sdk/communication/communication-tests-template.yml
-     parameters:
-       PackageName: azure-communication-callingserver
-       SafeName: azurecommunicationcallingserver      
-       Clouds: Public
-       TestMode: LIVE
+stages:
+- template: /sdk/communication/communication-tests-template.yml
+  parameters:
+    PackageName: azure-communication-callingserver
+    SafeName: azurecommunicationcallingserver      
+    Clouds: Public
+    TestMode: LIVE
