@@ -13,6 +13,7 @@ import com.azure.core.test.TestMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -29,8 +30,10 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         String description = "alert_us!";
         String externalLink = "https://github.com/Azure/azure-sdk-for-java/wiki";
         EmailNotificationHook hook = new EmailNotificationHook(name)
-            .addEmailToAlert(email1)
-            .addEmailToAlert(email2)
+            .setEmailsToAlert(new ArrayList<String>() {{
+                    add(email1);
+                    add(email2);
+                }})
             .setDescription(description)
             .setExternalLink(externalLink);
     }
@@ -102,7 +105,9 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
     protected static class ListHookInput {
         static final ListHookInput INSTANCE = new ListHookInput();
         EmailNotificationHook emailHook = new EmailNotificationHook(UUID.randomUUID().toString())
-            .addEmailToAlert("simpleuser0@hotmail.com");
+            .setEmailsToAlert(new ArrayList<String>() {{
+                    add("simpleuser0@hotmail.com");
+                }});
         WebNotificationHook webHook = new WebNotificationHook(UUID.randomUUID().toString(),
             "https://httpbin.org/post");
         int pageSize = 1;

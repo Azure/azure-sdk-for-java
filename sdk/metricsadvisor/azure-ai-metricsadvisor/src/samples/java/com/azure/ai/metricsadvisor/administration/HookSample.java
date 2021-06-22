@@ -9,6 +9,9 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
 import com.azure.core.http.rest.PagedIterable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Sample demonstrates how to create, get, update, delete and list hook.
  */
@@ -20,11 +23,14 @@ public class HookSample {
                 .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
                 .buildClient();
 
+        List<String> emails = new ArrayList<>();
+        emails.add("alertme@alertme.com");
+
         // Create email notificationHook.
         System.out.printf("Creating NotificationHook%n");
         NotificationHook emailNotificationHookToCreate = new EmailNotificationHook("email notification Hook")
             .setDescription("my email notification Hook")
-            .addEmailToAlert("alertme@alertme.com")
+            .setEmailsToAlert(emails)
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
         NotificationHook notificationHook = advisorAdministrationClient.createHook(emailNotificationHookToCreate);
         System.out.printf("Created notification Hook: %s%n", notificationHook.getId());
@@ -42,10 +48,14 @@ public class HookSample {
         // Update the notificationHook.
         System.out.printf("Updating notification Hook: %s%n", notificationHook.getId());
         EmailNotificationHook emailHookToUpdate = (EmailNotificationHook) notificationHook;
+        final List<String> existingEmails = emailHookToUpdate.getEmailsToAlert();
+        final List<String> emailsToUpdate = new ArrayList<>(existingEmails);
+        emailsToUpdate.remove("alertme@alertme.com");
+        emailsToUpdate.add("alertme2@alertme.com");
+        emailsToUpdate.add("alertme3@alertme.com");
+
         emailHookToUpdate
-            .removeEmailToAlert("alertme@alertme.com")
-            .addEmailToAlert("alertme2@alertme.com")
-            .addEmailToAlert("alertme3@alertme.com");
+            .setEmailsToAlert(emailsToUpdate);
         advisorAdministrationClient.updateHook(emailHookToUpdate);
         System.out.printf("Updated notification Hook: %s%n", notificationHook.getId());
 

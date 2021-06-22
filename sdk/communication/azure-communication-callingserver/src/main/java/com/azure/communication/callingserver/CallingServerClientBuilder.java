@@ -90,7 +90,7 @@ public final class CallingServerClientBuilder {
      * @return The updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    public CallingServerClientBuilder credential(TokenCredential tokenCredential) {
+    CallingServerClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
@@ -103,7 +103,7 @@ public final class CallingServerClientBuilder {
      * @return The updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    public CallingServerClientBuilder credential(AzureKeyCredential keyCredential) {
+    CallingServerClientBuilder credential(AzureKeyCredential keyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
