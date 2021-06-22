@@ -60,6 +60,7 @@ public final class AzureMethodSourceArgumentsProvider
     private final ClientLogger logger = new ClientLogger(AzureMethodSourceArgumentsProvider.class);
 
     private String minimumServiceVersion;
+    private String maximumServiceVersion;
     private Class<? extends ServiceVersion> serviceVersionType;
     private String sourceSupplier;
     private boolean useHttpClientPermutation;
@@ -67,6 +68,7 @@ public final class AzureMethodSourceArgumentsProvider
     @Override
     public void accept(AzureMethodSource annotation) {
         this.minimumServiceVersion = annotation.minimumServiceVersion();
+        this.maximumServiceVersion = annotation.maximumServiceVersion();
         this.serviceVersionType = annotation.serviceVersionType();
 
         if (!Enum.class.isAssignableFrom(serviceVersionType)) {
@@ -89,7 +91,7 @@ public final class AzureMethodSourceArgumentsProvider
         TestingServiceVersions testingServiceVersions = context.getRequiredTestClass()
             .getAnnotation(TestingServiceVersions.class);
         List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(testingServiceVersions,
-            minimumServiceVersion, serviceVersionType, TEST_MODE);
+            minimumServiceVersion, maximumServiceVersion, serviceVersionType, TEST_MODE);
 
         // If the sourceSupplier isn't provided don't retrieve parameterized testing values.
         List<Arguments> testValues = null;
@@ -140,7 +142,8 @@ public final class AzureMethodSourceArgumentsProvider
      * testing.
      */
     static List<? extends ServiceVersion> getServiceVersions(TestingServiceVersions testingServiceVersions,
-        String minimumServiceVersion, Class<? extends ServiceVersion> serviceVersionType, TestMode testMode) {
+        String minimumServiceVersion, String maximumServiceVersion, Class<? extends ServiceVersion> serviceVersionType,
+        TestMode testMode) {
         loadServiceVersion(serviceVersionType);
 
         if (testingServiceVersions != null) {
@@ -172,11 +175,17 @@ public final class AzureMethodSourceArgumentsProvider
             Enum<?> minimumServiceVersionEnum = CoreUtils.isNullOrEmpty(minimumServiceVersion)
                 ? null
                 : (Enum<?>) CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(minimumServiceVersion);
+            Enum<?> maximumServiceVersionEnum = CoreUtils.isNullOrEmpty(maximumServiceVersion)
+                ? null
+                : (Enum<?>) CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(maximumServiceVersion);
+
             Set<String> liveServiceVersionsSet = Arrays.stream(liveServiceVersions).collect(Collectors.toSet());
             return CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).values().stream()
                 .filter(sv -> liveServiceVersionsSet.contains(sv.getVersion()))
                 .filter(sv -> minimumServiceVersionEnum == null
                     || ((Enum<?>) sv).ordinal() >= minimumServiceVersionEnum.ordinal())
+                .filter(sv -> maximumServiceVersionEnum == null
+                    || ((Enum<?>) sv).ordinal() <= maximumServiceVersionEnum.ordinal())
                 .collect(Collectors.toList());
         } else {
             return Collections.singletonList(CLASS_TO_LATEST_SERVICE_VERSION.get(serviceVersionType));
