@@ -29,9 +29,9 @@ public class BlobStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("download"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("getProperties"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("delete"));
-        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setAccessControl"));
-        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("getAccessControl"));
-        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("rename"));
+//        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setAccessControl"));
+//        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("getAccessControl"));
+//        modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("rename"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("undelete"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setExpiry"));
         modifyUnexpectedResponseExceptionType(blobsImpl.getMethod("setHttpHeaders"));
@@ -106,7 +106,7 @@ public class BlobStorageCustomization extends Customization {
 
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
 
-        implementationModels.getClass("DataLakeStorageErrorError").rename("DataLakeStorageErrorDetails");
+//        implementationModels.getClass("DataLakeStorageErrorError").rename("DataLakeStorageErrorDetails");
 
         implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
 

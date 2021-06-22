@@ -639,7 +639,7 @@ public class BlobAsyncClientBase {
         }
 
         return withContext(
-            context -> azureBlobStorage.getBlobs().startCopyFromURLWithResponseAsync(containerName, blobName, url, null, metadata,
+            context -> azureBlobStorage.getBlobs().startCopyFromURLWithResponseAsync(containerName, blobName, sourceUrl, null, metadata,
                 tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
                 sourceModifiedRequestConditions.getIfNoneMatch(), sourceModifiedRequestConditions.getTagsConditions(),
@@ -877,7 +877,7 @@ public class BlobAsyncClientBase {
         }
 
         return this.azureBlobStorage.getBlobs().copyFromURLWithResponseAsync(
-            containerName, blobName, url, null, options.getMetadata(), options.getTier(),
+            containerName, blobName, options.getCopySource(), null, options.getMetadata(), options.getTier(),
             sourceModifiedRequestConditions.getIfModifiedSince(),
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),

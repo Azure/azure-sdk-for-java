@@ -27,7 +27,7 @@ public final class FilterBlobItem {
     /*
      * Blob tags
      */
-    @JsonProperty(value = "Tags")
+    @JsonProperty(value = "Tags", required = true)
     private BlobTags tags;
 
     /**
