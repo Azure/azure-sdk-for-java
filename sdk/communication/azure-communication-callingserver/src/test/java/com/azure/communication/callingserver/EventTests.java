@@ -73,8 +73,8 @@ public class EventTests {
 
     @Test
     public void addParticipantResultEventTest() throws JsonProcessingException {
-        var operationContext = UUID.randomUUID().toString();
-        var message = "Participant added.";
+        String operationContext = UUID.randomUUID().toString();
+        String message = "Participant added.";
         AddParticipantResultEventInternal internalEvent =
             new AddParticipantResultEventInternal()
                 .setOperationContext(operationContext)
@@ -96,8 +96,8 @@ public class EventTests {
 
     @Test
     public void callRecordingStateChangeEventTest() throws JsonProcessingException {
-        var serverCallId = UUID.randomUUID().toString();
-        var recordingId = UUID.randomUUID().toString();
+        String serverCallId = UUID.randomUUID().toString();
+        String recordingId = UUID.randomUUID().toString();
         CallRecordingStateChangeEventInternal internalEvent =
             new CallRecordingStateChangeEventInternal()
                 .setServerCallId(serverCallId)
@@ -118,8 +118,8 @@ public class EventTests {
 
     @Test
     public void playAudioResultEventTest() throws JsonProcessingException {
-        var operationContext = UUID.randomUUID().toString();
-        var message = "Media operation executed.";
+        String operationContext = UUID.randomUUID().toString();
+        String message = "Media operation executed.";
         PlayAudioResultEventInternal internalEvent =
             new PlayAudioResultEventInternal()
                 .setOperationContext(operationContext)
@@ -141,7 +141,7 @@ public class EventTests {
 
     @Test
     public void toneReceivedEventTest() throws JsonProcessingException {
-        var callConnectionId = UUID.randomUUID().toString();
+        String callConnectionId = UUID.randomUUID().toString();
         ToneReceivedEventInternal internalEvent =
             new ToneReceivedEventInternal()
                 .setCallConnectionId(callConnectionId)
@@ -162,9 +162,9 @@ public class EventTests {
 
     @Test
     public void participantsUpdatedEventTest() throws JsonProcessingException {
-        var callConnectionId = UUID.randomUUID().toString();
-        var participantId = UUID.randomUUID().toString();
-        var phoneNumber = "+18881112222";
+        String callConnectionId = UUID.randomUUID().toString();
+        String participantId = UUID.randomUUID().toString();
+        String phoneNumber = "+18881112222";
         ParticipantsUpdatedEventInternal internalEvent =
             new ParticipantsUpdatedEventInternal()
                 .setCallConnectionId(callConnectionId)
