@@ -174,7 +174,7 @@ public class AnomalyDetectionConfigurationSample {
             DimensionKey seriesKey = seriesDetectionCondition.getSeriesKey();
             final String seriesKeyStr
                 = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Key:%n", seriesKeyStr);
+            System.out.printf("- Series Key: %s%n", seriesKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
                 seriesDetectionCondition.getConditionOperator());
 
@@ -229,7 +229,7 @@ public class AnomalyDetectionConfigurationSample {
             DimensionKey seriesGroupKey = seriesGroupDetectionCondition.getSeriesGroupKey();
             final String seriesGroupKeyStr
                 = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
-            System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
+            System.out.printf("- Series Group Key: %s%n", seriesGroupKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
                 seriesGroupDetectionCondition.getConditionOperator());
 

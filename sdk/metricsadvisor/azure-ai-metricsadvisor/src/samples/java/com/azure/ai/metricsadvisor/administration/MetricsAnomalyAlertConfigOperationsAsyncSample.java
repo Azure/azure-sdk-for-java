@@ -77,10 +77,10 @@ public class MetricsAnomalyAlertConfigOperationsAsyncSample {
                             forEach(metricAnomalyAlertConfiguration -> {
                                 System.out.printf("Anomaly Alert detection configuration Id: %s%n",
                                     metricAnomalyAlertConfiguration.getDetectionConfigurationId());
-                                System.out.printf("Anomaly Alert configuration negation value",
+                                System.out.printf("Anomaly Alert configuration negation value: %b%n",
                                     metricAnomalyAlertConfiguration.isNegationOperationEnabled());
-                                System.out.printf("Anomaly Alert configuration scope type",
-                                    metricAnomalyAlertConfiguration.getAlertScope().getScopeType().toString());
+                                System.out.printf("Anomaly Alert configuration scope type: %s%n",
+                                    metricAnomalyAlertConfiguration.getAlertScope().getScopeType());
                             });
                     });
             });

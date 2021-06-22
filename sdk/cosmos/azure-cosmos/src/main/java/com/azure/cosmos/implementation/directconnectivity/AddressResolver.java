@@ -140,7 +140,7 @@ public class AddressResolver implements IAddressResolver {
      *
      * @param request     Request in progress
      * @param targetRange Target partition key range determined by address resolver
-     * @*/
+     * */
     private void throwIfTargetChanged(RxDocumentServiceRequest request, PartitionKeyRange targetRange) {
         // If new range is child of previous range, we don't need to throw any exceptions
         // as LSNs are continued on child ranges.
