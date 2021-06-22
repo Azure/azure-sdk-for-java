@@ -2,7 +2,7 @@ trigger: none
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:     
+    parameters:
       CloudConfig:
         Public:
           SubscriptionConfigurations:
@@ -29,3 +29,4 @@ stages:
       EnvVars:
         SKIP_LIVE_TEST: TRUE
         CALLINGSERVER_GENERATE_RANDOM_GROUP_IDENTIFIER: TRUE
+
