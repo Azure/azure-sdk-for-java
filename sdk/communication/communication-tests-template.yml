@@ -2,7 +2,7 @@ parameters:
   PackageName: not-specified
   SafeName: not-specified
   Clouds: 'Public,Int'
-  TestMode: LIVE
+  TestMode: 'LIVE'
   EnvVars: {}
 
 stages:
