@@ -497,9 +497,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         sourceRequestConditions = (sourceRequestConditions == null)
             ? new BlobRequestConditions() : sourceRequestConditions;
 
-        URL url;
         try {
-            url = new URL(sourceUrl);
+            new URL(sourceUrl);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
@@ -780,13 +779,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        URL url = null;
         if (prevSnapshotUrl == null && prevSnapshot == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("prevSnapshot cannot be null"));
         }
         if (prevSnapshotUrl != null) {
             try {
-                url = new URL(prevSnapshotUrl);
+                new URL(prevSnapshotUrl);
             } catch (MalformedURLException ex) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url."));
             }
@@ -1049,9 +1047,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         PageBlobCopyIncrementalRequestConditions modifiedRequestConditions = (options.getRequestConditions() == null)
             ? new PageBlobCopyIncrementalRequestConditions() : options.getRequestConditions();
 
-        URL url;
         try {
-            url = builder.toUrl();
+            builder.toUrl();
         } catch (MalformedURLException e) {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw logger.logExceptionAsError(new IllegalArgumentException(e));

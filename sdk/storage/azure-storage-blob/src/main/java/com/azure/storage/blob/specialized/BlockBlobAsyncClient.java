@@ -412,9 +412,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             : options.getSourceRequestConditions();
         context = context == null ? Context.NONE : context;
 
-        URL url;
         try {
-            url = new URL(options.getSourceUrl());
+            new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
@@ -586,9 +585,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         sourceRequestConditions = (sourceRequestConditions == null)
             ? new BlobRequestConditions() : sourceRequestConditions;
 
-        URL url;
         try {
-            url = new URL(sourceUrl);
+            new URL(sourceUrl);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }

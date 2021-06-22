@@ -631,9 +631,8 @@ public class BlobAsyncClientBase {
         BlobBeginCopySourceRequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destinationRequestConditions, BlobImmutabilityPolicy immutabilityPolicy,
         Boolean legalHold) {
-        URL url;
         try {
-            url = new URL(sourceUrl);
+            new URL(sourceUrl);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
@@ -869,9 +868,8 @@ public class BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        URL url;
         try {
-            url = new URL(options.getCopySource());
+            new URL(options.getCopySource());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
         }

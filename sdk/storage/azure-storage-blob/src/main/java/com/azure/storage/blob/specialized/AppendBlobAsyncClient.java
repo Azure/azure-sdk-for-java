@@ -397,9 +397,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         sourceRequestConditions = (sourceRequestConditions == null)
             ? new RequestConditions() : sourceRequestConditions;
 
-        URL url;
         try {
-            url = new URL(sourceUrl);
+            new URL(sourceUrl);
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
