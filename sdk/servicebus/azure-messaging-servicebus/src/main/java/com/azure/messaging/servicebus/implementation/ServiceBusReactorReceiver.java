@@ -250,7 +250,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
                     error, handler.getErrorContext(receiver)));
             }
-        }).cache().then();  // cache because closeAsync use `when` to subscribe this Mono again.
+        }).cache();  // cache because closeAsync use `when` to subscribe this Mono again.
 
         workItem.setMono(result);
 
