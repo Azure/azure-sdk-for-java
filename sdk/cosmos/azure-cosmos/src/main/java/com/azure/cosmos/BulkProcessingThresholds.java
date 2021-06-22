@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentMap;
  * Encapsulates internal state used to dynamically determine max micro batch size for bulk operations.
  * It allows passing this state for one `BulkProcessingOptions` to another in case bulk operations are
  * expected to have similar characteristics and the context for determining the micro batch size should be preserved.
- * @param <TContext>
  */
 @Beta(value = Beta.SinceVersion.V4_17_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class BulkProcessingThresholds<TContext> {
