@@ -129,7 +129,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           if (resp.getException != null) {
             Option(resp.getException) match {
               case Some(cosmosException: CosmosException) =>
-                log.logInfo(s"encountered ${cosmosException.getStatusCode}, Context: ${operationContext.toString}")
+                log.logDebug(s"encountered ${cosmosException.getStatusCode}, Context: ${operationContext.toString}")
                 if (shouldIgnore(cosmosException)) {
                   log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
                     s"ignored encountered ${cosmosException.getStatusCode}, Context: ${operationContext.toString}")
@@ -262,10 +262,10 @@ class BulkWriter(container: CosmosAsyncContainer,
         try {
           var activeTasksSnapshot = activeTasks.get()
           while (activeTasksSnapshot > 0 || errorCaptureFirstException.get != null) {
-            log.logInfo(s"Waiting Pending activeTasks $activeTasksSnapshot, Context: ${operationContext.toString}")
+            log.logDebug(s"Waiting for pending activeTasks $activeTasksSnapshot, Context: ${operationContext.toString}")
             pendingTasksCompleted.await()
             activeTasksSnapshot = activeTasks.get()
-            log.logInfo(s"Waiting completed Pending activeTasks $activeTasksSnapshot, Context: ${operationContext.toString}")
+            log.logDebug(s"Waiting completed for pending activeTasks $activeTasksSnapshot, Context: ${operationContext.toString}")
           }
         } finally {
           lock.unlock()
@@ -301,7 +301,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       val activeTasksLeftSnapshot = activeTasks.decrementAndGet()
       val exceptionSnapshot = errorCaptureFirstException.get()
       if (activeTasksLeftSnapshot == 0 || exceptionSnapshot != null) {
-        log.logInfo(s"MarkTaskCompletion, Active tasks left: $activeTasksLeftSnapshot, " +
+        log.logDebug(s"MarkTaskCompletion, Active tasks left: $activeTasksLeftSnapshot, " +
           s"error: $exceptionSnapshot, Context: ${operationContext.toString}")
         pendingTasksCompleted.signal()
       }
@@ -322,7 +322,8 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private def cancelWork(): Unit = {
-    log.logInfo(s"cancelling remaining un process tasks ${activeTasks.get}, Context: ${operationContext.toString}")
+    log.logInfo(s"cancelling remaining unprocessed tasks ${activeTasks.get}, " +
+      s"Context: ${operationContext.toString}")
     subscriptionDisposable.dispose()
   }
 

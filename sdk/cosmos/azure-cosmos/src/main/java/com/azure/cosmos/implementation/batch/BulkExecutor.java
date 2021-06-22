@@ -73,6 +73,7 @@ public final class BulkExecutor<TContext> {
 
     private final CosmosAsyncContainer container;
     private final AsyncDocumentClient docClientWrapper;
+    private final String operationContextText;
     private final OperationContextAndListenerTuple operationListener;
     private final ThrottlingRetryOptions throttlingRetryOptions;
     private final Flux<CosmosItemOperation> inputOperations;
@@ -90,8 +91,6 @@ public final class BulkExecutor<TContext> {
     private final FluxSink<CosmosItemOperation> mainSink;
     private final List<FluxSink<CosmosItemOperation>> groupSinks;
     private final ScheduledExecutorService executorService;
-    private final OperationContextAndListenerTuple operationContext;
-    private final String operationContextText;
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
@@ -106,14 +105,6 @@ public final class BulkExecutor<TContext> {
         this.inputOperations = inputOperations;
         this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
         this.throttlingRetryOptions = docClientWrapper.getConnectionPolicy().getThrottlingRetryOptions();
-        this.operationContext = ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
-            .getCosmosBulkProcessingOptionAccessor()
-            .getOperationContext(bulkOptions);
-        if (this.operationContext != null) {
-            this.operationContextText = this.operationContext.getOperationContext().toString();
-        } else {
-            this.operationContextText = "n/a";
-        }
 
         // Fill the option first, to make the BulkProcessingOptions immutable, as if accessed directly, we might get
         // different values when a new group is created.
@@ -125,6 +116,11 @@ public final class BulkExecutor<TContext> {
         operationListener = ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
             .getCosmosBulkProcessingOptionAccessor()
             .getOperationContext(bulkOptions);
+        if (operationListener.getOperationContext() != null) {
+            operationContextText = operationListener.getOperationContext().toString();
+        } else {
+            operationContextText = "n/a";
+        }
 
         // Initialize sink for handling gone error.
         mainSourceCompleted = new AtomicBoolean(false);
@@ -165,10 +161,7 @@ public final class BulkExecutor<TContext> {
                     cosmosItemOperation,
                     this.throttlingRetryOptions);
 
-                if (cosmosItemOperation instanceof FlushBuffersItemOperation) {
-                    logger.error("Shouldn't increment totalCount for FlushBuffersItemOperation, Context: {}",
-                        this.operationContextText);
-                } else {
+                if (!(cosmosItemOperation instanceof FlushBuffersItemOperation)) {
                     totalCount.incrementAndGet();
                 }
             })
@@ -176,7 +169,7 @@ public final class BulkExecutor<TContext> {
                 mainSourceCompleted.set(true);
 
                 long totalCountSnapshot = totalCount.get();
-                logger.info("Main source completed - # left items {}, Context: {}",
+                logger.debug("Main source completed - # left items {}, Context: {}",
                     totalCountSnapshot,
                     this.operationContextText);
                 if (totalCountSnapshot == 0) {
@@ -211,7 +204,7 @@ public final class BulkExecutor<TContext> {
                 if (totalCountAfterDecrement == 0 && mainSourceCompletedSnapshot) {
                     // It is possible that count is zero but there are more elements in the source.
                     // Count 0 also signifies that there are no pending elements in any sink.
-                    logger.info("All work completed, Context: {}", this.operationContextText);
+                    logger.debug("All work completed, Context: {}", this.operationContextText);
                     completeAllSinks();
                 } else {
                     logger.debug(
@@ -227,10 +220,10 @@ public final class BulkExecutor<TContext> {
                 if (totalCountSnapshot == 0 && mainSourceCompletedSnapshot) {
                     // It is possible that count is zero but there are more elements in the source.
                     // Count 0 also signifies that there are no pending elements in any sink.
-                    logger.info("DoOnComplete: All work completed, Context: {}", this.operationContextText);
+                    logger.debug("DoOnComplete: All work completed, Context: {}", this.operationContextText);
                     completeAllSinks();
                 } else {
-                    logger.info(
+                    logger.debug(
                         "DoOnComplete: Work left - TotalCount after decrement: {}, main sink completed {}, Context: {}",
                         totalCountSnapshot,
                         mainSourceCompletedSnapshot,
@@ -261,11 +254,16 @@ public final class BulkExecutor<TContext> {
                 CosmosItemOperation itemOperation = timeStampItemOperationTuple.getT2();
 
                 if (itemOperation instanceof FlushBuffersItemOperation) {
-                    logger.info(
-                        "Flushing PKRange {} due to FlushItemOperation, Context: {}",
-                        thresholds.getPartitionKeyRangeId(),
-                        this.operationContextText);
-                    return true;
+                    if (currentMicroBatchSize.get() > 0) {
+                        logger.debug(
+                            "Flushing PKRange {} due to FlushItemOperation, Context: {}",
+                            thresholds.getPartitionKeyRangeId(),
+                            this.operationContextText);
+                        return true;
+                    }
+
+                    // avoid counting flush operations for the micro batch size calculation
+                    return false;
                 }
 
                 firstRecordTimeStamp.compareAndSet(-1, timestamp);
@@ -284,11 +282,7 @@ public final class BulkExecutor<TContext> {
                     currentMicroBatchSize.set(0);
                     return true;
                 }
-                logger.debug("Skip Flushing PKRange {} with BatchSize ({}) and age ({}), Context: {}",
-                    thresholds.getPartitionKeyRangeId(),
-                    batchSize,
-                    age,
-                    this.operationContextText);
+
                 return false;
             })
             .flatMap(
@@ -315,19 +309,21 @@ public final class BulkExecutor<TContext> {
         FluxSink<CosmosItemOperation> groupSink) {
 
         if (operations.size() == 0) {
-            logger.error("Empty operations list, Context: {}", this.operationContextText);
+            logger.debug("Empty operations list, Context: {}", this.operationContextText);
             return Flux.empty();
         }
 
         String pkRange = thresholds.getPartitionKeyRangeId();
-        ServerOperationBatchRequest serverOperationBatchRequest = BulkExecutorUtil.createBatchRequest(operations, pkRange);
+        ServerOperationBatchRequest serverOperationBatchRequest =
+            BulkExecutorUtil.createBatchRequest(operations, pkRange);
         if (serverOperationBatchRequest.getBatchPendingOperations().size() > 0) {
             serverOperationBatchRequest.getBatchPendingOperations().forEach(groupSink::next);
         }
 
         return Flux.just(serverOperationBatchRequest.getBatchRequest())
             .publishOn(Schedulers.boundedElastic())
-            .flatMap((PartitionKeyRangeServerBatchRequest serverRequest) -> this.executePartitionKeyRangeServerBatchRequest(serverRequest, groupSink, thresholds));
+            .flatMap((PartitionKeyRangeServerBatchRequest serverRequest) ->
+                this.executePartitionKeyRangeServerBatchRequest(serverRequest, groupSink, thresholds));
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executePartitionKeyRangeServerBatchRequest(
@@ -473,15 +469,11 @@ public final class BulkExecutor<TContext> {
         logger.info("Closing all sinks, Context: {}", this.operationContextText);
 
         executorService.shutdown();
-        logger.info("Executor service shut down, Context: {}", this.operationContextText);
+        logger.debug("Executor service shut down, Context: {}", this.operationContextText);
         mainSink.complete();
-        logger.info("Main sink completed, Context: {}", this.operationContextText);
-        groupSinks.forEach((sink) -> {
-            logger.info("--> Completing group sink {}, Context: {}", sink.hashCode(), this.operationContextText);
-            sink.complete();
-            logger.info("<-- group sink {} completed, Context: {}", sink.hashCode(), this.operationContextText);
-        });
-        logger.info("All group sinks completed, Context: {}", this.operationContextText);
+        logger.debug("Main sink completed, Context: {}", this.operationContextText);
+        groupSinks.forEach(FluxSink::complete);
+        logger.debug("All group sinks completed, Context: {}", this.operationContextText);
     }
 
     private void onFlush() {
