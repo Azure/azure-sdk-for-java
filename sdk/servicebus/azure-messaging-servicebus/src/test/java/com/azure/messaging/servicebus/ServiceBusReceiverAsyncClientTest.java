@@ -319,7 +319,7 @@ class ServiceBusReceiverAsyncClientTest {
         try (
             MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
                 invocationOnMock -> new FluxAutoLockRenew(Flux.empty(),
-                    new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,Duration.ofSeconds(30),
+                    new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, Duration.ofSeconds(30),
                         true),
                     new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()))) {
 
