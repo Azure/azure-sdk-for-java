@@ -6,7 +6,7 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection;
 import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionsOperator;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
@@ -37,25 +37,25 @@ public class AnomalyDetectionConfigurationSample {
         System.out.printf("Creating detection configuration for metric: %s%n", metricId);
         AnomalyDetectionConfiguration config
             = advisorAdministrationClient
-            .createMetricAnomalyDetectionConfig(metricId, prepareDetectionConfigurationObject());
+            .createDetectionConfig(metricId, prepareDetectionConfigurationObject());
         System.out.printf("Created detection configuration: %s%n", config.getId());
 
         // Retrieve the detection configuration that just created.
         System.out.printf("Fetching detection configuration: %s%n", config.getId());
-        config = advisorAdministrationClient.getMetricAnomalyDetectionConfig(
+        config = advisorAdministrationClient.getDetectionConfig(
             config.getId());
         printDetectionConfiguration(config);
 
         // Update the detection configuration.
         System.out.printf("Updating detection configuration: %s%n", config.getId());
         config = updateDetectionConfigurationObject(config);
-        advisorAdministrationClient.updateMetricAnomalyDetectionConfig(config);
+        advisorAdministrationClient.updateDetectionConfig(config);
         System.out.printf("Updated detection configuration%n");
 
         // List configurations
         System.out.printf("Listing detection configurations%n");
         PagedIterable<AnomalyDetectionConfiguration> detectionConfigsIterable
-            = advisorAdministrationClient.listMetricAnomalyDetectionConfigs(metricId);
+            = advisorAdministrationClient.listDetectionConfigs(metricId);
 
         for (AnomalyDetectionConfiguration detectionConfig : detectionConfigsIterable) {
             printDetectionConfiguration(detectionConfig);
@@ -63,13 +63,13 @@ public class AnomalyDetectionConfigurationSample {
 
         // Delete the detection configuration.
         System.out.printf("Deleting detection configuration: %s%n", config.getId());
-        advisorAdministrationClient.deleteMetricAnomalyDetectionConfig(config.getId());
+        advisorAdministrationClient.deleteDetectionConfig(config.getId());
         System.out.printf("Deleted detection configuration%n");
     }
 
     private static AnomalyDetectionConfiguration prepareDetectionConfigurationObject() {
         final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition()
-            .setCrossConditionOperator(DetectionConditionsOperator.OR)
+            .setConditionOperator(DetectionConditionOperator.OR)
             .setSmartDetectionCondition(new SmartDetectionCondition()
                 .setSensitivity(50)
                 .setAnomalyDetectorDirection(AnomalyDetectorDirection.BOTH)
@@ -123,7 +123,7 @@ public class AnomalyDetectionConfigurationSample {
             = detectionConfig.getWholeSeriesDetectionCondition();
 
         System.out.printf("- Use %s operator for multiple detection conditions:%n",
-            wholeSeriesDetectionCondition.getCrossConditionsOperator());
+            wholeSeriesDetectionCondition.getConditionOperator());
 
         System.out.printf("- Smart Detection Condition:%n");
         System.out.printf(" - Sensitivity: %s%n",
@@ -176,7 +176,7 @@ public class AnomalyDetectionConfigurationSample {
                 = Arrays.toString(seriesKey.asMap().entrySet().stream().toArray());
             System.out.printf("- Series Key:%n", seriesKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesDetectionCondition.getCrossConditionsOperator());
+                seriesDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
             System.out.printf("  - Sensitivity: %s%n",
@@ -231,7 +231,7 @@ public class AnomalyDetectionConfigurationSample {
                 = Arrays.toString(seriesGroupKey.asMap().entrySet().stream().toArray());
             System.out.printf("- Series Group Key:%n", seriesGroupKeyStr);
             System.out.printf(" - Use %s operator for multiple detection conditions:%n",
-                seriesGroupDetectionCondition.getCrossConditionsOperator());
+                seriesGroupDetectionCondition.getConditionOperator());
 
             System.out.printf(" - Smart Detection Condition:%n");
             System.out.printf("  - Sensitivity: %s%n",
