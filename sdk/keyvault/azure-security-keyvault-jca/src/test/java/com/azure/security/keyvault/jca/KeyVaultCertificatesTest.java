@@ -18,9 +18,9 @@ public class KeyVaultCertificatesTest {
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
-    private Key key = mock(Key.class);
+    private final Key key = mock(Key.class);
 
-    private Certificate certificate = mock(Certificate.class);
+    private final Certificate certificate = mock(Certificate.class);
 
     private KeyVaultCertificates keyVaultCertificates;
 
@@ -51,9 +51,10 @@ public class KeyVaultCertificatesTest {
     }
 
     @Test
-    public void testRefreshAndGetAliasByCertificate() {
+    public void testRefreshAndGetAliasByCertificate() throws InterruptedException {
         Assertions.assertEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
         when(keyVaultClient.getAliases()).thenReturn(null);
+        Thread.sleep(10); // TODO: (rujche) update this logic
         Assertions.assertNotEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
     }
 

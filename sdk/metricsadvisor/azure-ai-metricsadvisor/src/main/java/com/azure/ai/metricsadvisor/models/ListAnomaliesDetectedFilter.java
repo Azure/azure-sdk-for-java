@@ -15,7 +15,7 @@ import java.util.List;
 public final class ListAnomaliesDetectedFilter {
     private AnomalySeverity minSeverity;
     private AnomalySeverity maxSeverity;
-    private List<DimensionKey> seriesKeys;
+    private List<DimensionKey> seriesGroupKeys;
 
     /**
      * Gets the minimum severity of the anomalies to be included in the list.
@@ -36,13 +36,13 @@ public final class ListAnomaliesDetectedFilter {
     }
 
     /**
-     * Gets the time series keys, indicating that retrieve the anomalies occurred
-     * in these time series.
+     * Gets the time series group keys, indicating that retrieve the anomalies occurred
+     * in the time series in the group.
      *
      * @return The time series keys.
      */
-    public List<DimensionKey> getSeriesKeys() {
-        return this.seriesKeys;
+    public List<DimensionKey> getSeriesGroupKeys() {
+        return this.seriesGroupKeys;
     }
 
     /**
@@ -59,27 +59,28 @@ public final class ListAnomaliesDetectedFilter {
     }
 
     /**
-     * Sets the severity range to be the equal and over the specified severity for the
-     * anomalies to be retrieved.
+     * Sets the severity for the anomalies to be retrieved. The effect of using this method the same
+     * as calling {@link ListAnomaliesDetectedFilter#setSeverityRange(AnomalySeverity, AnomalySeverity)}
+     * with the same min and max severity.
      *
-     * @param minSeverity The minimum severity.
+     * @param severity The severity.
      * @return The ListAnomaliesDetectedFilter object itself.
      */
-    public ListAnomaliesDetectedFilter setSeverity(AnomalySeverity minSeverity) {
-        this.minSeverity = minSeverity;
-        this.maxSeverity = minSeverity;
+    public ListAnomaliesDetectedFilter setSeverity(AnomalySeverity severity) {
+        this.minSeverity = severity;
+        this.maxSeverity = severity;
         return this;
     }
 
     /**
      * Sets the time series keys, indicating that retrieve the anomalies occurred
-     * in these time series.
+     * n the time series in the group.
      *
-     * @param seriesKeys The series keys.
+     * @param seriesGroupKeys The series keys.
      * @return The ListAnomaliesDetectedFilter object itself.
      */
-    public ListAnomaliesDetectedFilter setSeriesKeys(List<DimensionKey> seriesKeys) {
-        this.seriesKeys = seriesKeys;
+    public ListAnomaliesDetectedFilter setSeriesGroupKeys(List<DimensionKey> seriesGroupKeys) {
+        this.seriesGroupKeys = seriesGroupKeys;
         return this;
     }
 }

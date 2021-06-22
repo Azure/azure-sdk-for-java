@@ -77,7 +77,7 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
      * @param startDateTime the startDateTime value.
      * @param serverCallId the serverCallId value.
      */
-    public CallRecordingStateChangeEvent(
+    CallRecordingStateChangeEvent(
         String recordingId,
         CallRecordingState state,
         OffsetDateTime startDateTime,

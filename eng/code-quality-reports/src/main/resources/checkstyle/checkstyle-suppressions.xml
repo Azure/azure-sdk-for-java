@@ -422,12 +422,10 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf|azure-data-tables-perf|azure-template-perf[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields"
-            files=".*[/\\]azure-identity-perf|azure-data-tables-perf|azure-search-perf[/\\].*\.java"/>
-  <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf|azure-data-tables-perf|azure-search-perf|perf-test-core[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]azure-identity-perf|azure-search-perf|azure-storage-perf|azure-data-tables-perf|perf-test-core|azure-template-perf[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-\w+-perf|perf-test-core[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]azure-\w+-perf|perf-test-core[/\\].*\.java"/>
   <!-- Azure Search test models -->
   <suppress checks="StaticVariableName|VisibilityModifier"
             files="com.azure.search.perf.*.java|com.azure.messaging.servicebus.perf.*.java"/>
@@ -488,7 +486,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.telemetry.TelemetryAutoConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueAutoConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.storage.AzureStorageAutoConfiguration.java"/>
