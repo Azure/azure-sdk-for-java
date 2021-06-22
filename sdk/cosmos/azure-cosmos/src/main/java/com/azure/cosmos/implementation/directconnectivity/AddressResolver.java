@@ -148,7 +148,7 @@ public class AddressResolver implements IAddressResolver {
             !isSameCollection(request.requestContext.resolvedPartitionKeyRange, targetRange)) {
             if (!request.getIsNameBased()) {
                 String message = String.format(
-                    "Target should not change for non name based requests. Previous target {}, Current {}",
+                    "Target should not change for non name based requests. Previous target %s, Current %s",
                     request.requestContext.resolvedPartitionKeyRange, targetRange);
                 assert false : message;
                 logger.warn(message);
