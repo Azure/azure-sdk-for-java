@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callingserver.models;
+package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.ProgressReceiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * {@code ProgressReporter} offers a convenient way to add progress tracking to a given Flux.
  */
-public final class ProgressReporter {
+final class ProgressReporter {
 
     private abstract static class ProgressReporterImpl implements ProgressReceiver {
         long blockProgress;
