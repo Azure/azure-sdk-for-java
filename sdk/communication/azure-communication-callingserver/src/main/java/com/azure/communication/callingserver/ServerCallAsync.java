@@ -545,31 +545,6 @@ public final class ServerCallAsync {
 
     Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
         String audioFileUri,
-        String audioFileId,
-        String callbackUri,
-        String operationContext,
-        Context context) {
-        try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
-            //Currently we do not support loop on the audio media for out-call, thus setting the loop to false
-            PlayAudioRequest playAudioRequest =
-                new PlayAudioRequest()
-                    .setAudioFileUri(audioFileUri)
-                    .setLoop(false)
-                    .setAudioFileId(audioFileId)
-                    .setOperationContext(operationContext)
-                    .setCallbackUri(callbackUri);
-            return playAudioWithResponse(playAudioRequest, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-
-
-    }
-
-    Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
-        String audioFileUri,
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {

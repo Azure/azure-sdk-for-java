@@ -164,30 +164,6 @@ public final class CallConnectionAsync {
 
     Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
         String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext,
-        Context context) {
-        try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest playAudioRequest =
-                new PlayAudioRequest()
-                    .setAudioFileUri(audioFileUri)
-                    .setLoop(loop)
-                    .setAudioFileId(audioFileId)
-                    .setOperationContext(operationContext)
-                    .setCallbackUri(callbackUri);
-            return playAudioWithResponseInternal(playAudioRequest, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-
-
-    }
-
-    Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
-        String audioFileUri,
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {
