@@ -4,5 +4,5 @@ trigger: none
      parameters:
        PackageName: azure-communication-callingserver
        SafeName: azurecommunicationcallingserver      
-         Clouds: Public
-         TestMode: LIVE
+       Clouds: Public
+       TestMode: LIVE
