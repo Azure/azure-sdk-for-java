@@ -46,8 +46,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             if (this.currentChannel != null) {
                 if ((this.currentChannel.getState() == IOObjectState.OPENED) || (this.currentChannel.getState() == IOObjectState.OPENING)) {
                     if (TRACE_LOGGER.isInfoEnabled()) {
-                        TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] inner channel rrc[%s] currently [%s], no need to recreate debug [%s]",
-                            this.clientId, this.instanceName, this.currentChannel.getId(), this.currentChannel.getState().toString(), this.currentChannel.getStateDebug()));
+                        TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] inner channel rrc[%s] currently [%s], no need to recreate",
+                            this.clientId, this.instanceName, this.currentChannel.getId(), this.currentChannel.getState().toString()));
                     }
                     return;
                 }
@@ -66,7 +66,7 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
             // Need to start creating an inner channel.
             this.isOpening = true;
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] opening inner channel MARKER2",
+                TRACE_LOGGER.info(String.format(Locale.US, "clientId[%s] rro[%s] opening inner channel",
                     this.clientId, this.instanceName));
             }
         }

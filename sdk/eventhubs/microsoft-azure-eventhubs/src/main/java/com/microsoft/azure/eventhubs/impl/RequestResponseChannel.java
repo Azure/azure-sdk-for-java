@@ -197,12 +197,6 @@ public class RequestResponseChannel implements IOObject {
         return IOObjectState.CLOSING; // only left cases are if some are active and some are closed
     }
 
-    public String getStateDebug() {
-        return String.format(Locale.US, "sendLink local[%s] remote[%s]  receiveLink local[%s] remote[%s]",
-            sendLink.getLocalState().toString(), sendLink.getRemoteState().toString(),
-            receiveLink.getLocalState().toString(), receiveLink.getRemoteState().toString());
-    }
-
     @Override
     public String getId() {
         return this.instanceName;
