@@ -2,9 +2,7 @@ trigger: none
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      PackageName: azure-communication-callingserver
-      SafeName: azurecommunicationcallingserver      
+    parameters:     
       CloudConfig:
         Public:
           SubscriptionConfigurations:
@@ -13,9 +11,9 @@ stages:
             - $(sub-config-communication-services-cloud-test-resources-java)
       Clouds: Public
       Artifacts:
-        - name: ${{ parameters.PackageName }}
+        - name: azure-communication-callingserver
           groupId: com.azure
-          safeName: ${{ parameters.SafeName }}
+          safeName: azurecommunicationcallingserver
       ServiceDirectory: communication
       PreSteps:
         - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
@@ -25,8 +23,8 @@ stages:
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), startsWith(variables['System.StageName'], 'Public'))
           inputs:
             codeCoverageTool: JaCoCo
-            summaryFileLocation: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/jacoco.xml
-            reportDirectory: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/
+            summaryFileLocation: sdk/communication/azure-communication-callingserver/target/site/jacoco/jacoco.xml
+            reportDirectory: sdk/communication/azure-communication-callingserver/target/site/jacoco/
             failIfCoverageEmpty: true
       EnvVars:
         SKIP_LIVE_TEST: TRUE
