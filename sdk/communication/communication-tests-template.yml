@@ -2,6 +2,7 @@ parameters:
   PackageName: not-specified
   SafeName: notspecified
   Clouds: 'Public,Int'
+  TestMode: ${{ parameters.TestMode }}
   EnvVars: {}
 
 stages:
