@@ -4,6 +4,7 @@
 - Added method `ChatThreadAsyncClient.listParticipants(ListParticipantsOptions listParticipantsOptions)`
 - Added method `ChatThreadAsyncClient.listReadReceipts(ListReadReceiptOptions listReadReceiptOptions)`
 - Added support for metadata in messages.
+- Added options class `TypingNotificationOptions` for setting `SenderDisplayName` of the notification sender.
 
 ## 1.0.1 (2021-05-27)
 - Dependency versions updated.
