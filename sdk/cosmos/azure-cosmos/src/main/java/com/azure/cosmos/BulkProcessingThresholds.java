@@ -3,7 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,5 +22,21 @@ public class BulkProcessingThresholds<TContext> {
 
     ConcurrentMap<String, PartitionScopeThresholds<TContext>> getPartitionScopeThresholds() {
         return this.partitionScopeThresholds;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.BulkProcessingThresholdsHelper.setBulkProcessingThresholdsAccessor(
+            new ImplementationBridgeHelpers.BulkProcessingThresholdsHelper.BulkProcessingThresholdsAccessor() {
+                @Override
+                public <T> ConcurrentMap<String, PartitionScopeThresholds<T>> getPartitionScopeThresholds(
+                    BulkProcessingThresholds<T> thresholds) {
+
+                    return thresholds.getPartitionScopeThresholds();
+                }
+            });
     }
 }

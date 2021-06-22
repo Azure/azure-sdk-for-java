@@ -818,11 +818,4 @@ public final class BridgeInternal {
             return null;
         }
     }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <TContext> ConcurrentMap<String, PartitionScopeThresholds<TContext>> getPartitionScopeThresholds(
-        BulkProcessingThresholds<TContext> thresholds) {
-
-        return thresholds.getPartitionScopeThresholds();
-    }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -16,6 +17,10 @@ import static org.testng.Assert.assertEquals;
 public class BulkProcessingOptionsTest {
 
     private static final Random rnd = new Random();
+    private static final ImplementationBridgeHelpers.BulkProcessingThresholdsHelper.BulkProcessingThresholdsAccessor
+        bulkProcessingThresholdsAccessor = ImplementationBridgeHelpers
+            .BulkProcessingThresholdsHelper
+            .getBulkProcessingThresholdsAccessor();
 
     @Test(groups = { "unit" })
     public void minAndMaxTargetRetryRateMustNotBeNegative() {
@@ -49,13 +54,13 @@ public class BulkProcessingOptionsTest {
         BulkProcessingOptions<Object> initialOptions = new BulkProcessingOptions<Object>();
         BulkProcessingThresholds<Object> thresholds = initialOptions.getThresholds();
         ConcurrentMap<String, PartitionScopeThresholds<Object>> partitionScopeThresholdsMap =
-            BridgeInternal.getPartitionScopeThresholds(thresholds);
+            bulkProcessingThresholdsAccessor.getPartitionScopeThresholds(thresholds);
         BulkProcessingOptions<Object> optionsWithThresholds =
             new BulkProcessingOptions<Object>(null, thresholds);
 
         Assert.assertSame(thresholds, optionsWithThresholds.getThresholds());
         Assert.assertSame(
             partitionScopeThresholdsMap,
-            BridgeInternal.getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
+            bulkProcessingThresholdsAccessor.getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
     }
 }

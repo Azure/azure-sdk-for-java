@@ -119,7 +119,9 @@ public final class BulkExecutor<TContext> {
         // different values when a new group is created.
         maxMicroBatchIntervalInMs = bulkOptions.getMaxMicroBatchInterval().toMillis();
         batchContext = bulkOptions.getBatchContext();
-        this.partitionScopeThresholds = BridgeInternal.getPartitionScopeThresholds(bulkOptions.getThresholds());
+        this.partitionScopeThresholds = ImplementationBridgeHelpers.BulkProcessingThresholdsHelper
+            .getBulkProcessingThresholdsAccessor()
+            .getPartitionScopeThresholds(bulkOptions.getThresholds());
         operationListener = ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
             .getCosmosBulkProcessingOptionAccessor()
             .getOperationContext(bulkOptions);
