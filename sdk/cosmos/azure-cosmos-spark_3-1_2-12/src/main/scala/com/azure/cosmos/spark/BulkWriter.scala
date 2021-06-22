@@ -34,7 +34,6 @@ import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, At
 import java.util.concurrent.locks.ReentrantLock
 import scala.collection.concurrent.TrieMap
 
-
 //scalastyle:off null
 //scalastyle:off multiple.string.literals
 class BulkWriter(container: CosmosAsyncContainer,
@@ -78,31 +77,29 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
 
   private val bulkOptions = new BulkProcessingOptions[Object](null, BulkWriter.bulkProcessingThresholds)
-  private val operationContext = initializeDiagnosticsIfConfigured()
+  private val operationContext = initializeOperationContext()
 
-  private def initializeDiagnosticsIfConfigured(): SparkTaskContext = {
-    //if (diagnosticsConfig.mode.isDefined) {
-      val taskContext = TaskContext.get
-      assert(taskContext != null)
+  private def initializeOperationContext(): SparkTaskContext = {
+    val taskContext = TaskContext.get
+    assert(taskContext != null)
 
-      val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID().toString, "BulkWriter")
+    val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID().toString, "BulkWriter")
 
-      val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
-        taskContext.stageId(),
-        taskContext.partitionId(),
-        taskContext.taskAttemptId(),
-        "")
+    val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+      taskContext.stageId(),
+      taskContext.partitionId(),
+      taskContext.taskAttemptId(),
+      "")
 
-      val listener: OperationListener =
-        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
+    val listener: OperationListener =
+      DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
-      val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
-      ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
-        .getCosmosBulkProcessingOptionAccessor
-        .setOperationContext(bulkOptions, operationContextAndListenerTuple)
+    val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
+    ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
+      .getCosmosBulkProcessingOptionAccessor
+      .setOperationContext(bulkOptions, operationContextAndListenerTuple)
 
-      taskDiagnosticsContext
-    //}
+    taskDiagnosticsContext
   }
 
   private val subscriptionDisposable: Disposable = {
@@ -300,9 +297,6 @@ class BulkWriter(container: CosmosAsyncContainer,
         log.logInfo(s"MarkTaskCompletion, Active tasks left: $activeTasksLeftSnapshot, " +
           s"error: $exceptionSnapshot, Context: ${operationContext.toString}")
         pendingTasksCompleted.signal()
-      } else {
-        log.logInfo(s"Skip MarkTaskCompletion, Active tasks left: $activeTasksLeftSnapshot, " +
-          s"error: $exceptionSnapshot, Context: ${operationContext.toString}")
       }
     } finally {
       lock.unlock()
