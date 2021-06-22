@@ -46,6 +46,9 @@ public class CallingServerTestBase extends TestBase {
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
             "016a7064-0581-40b9-be73-6dde64d69d72");
 
+    protected static final Boolean GENERATE_RANDOM_GROUP_IDENTIFIER = Configuration.getGlobalConfiguration()
+        .get("CALLINGSERVER_GENERATE_RANDOM_GROUP_IDENTIFIER", true);            
+
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
 
@@ -107,9 +110,11 @@ public class CallingServerTestBase extends TestBase {
         /*
           If tests are running in live mode, we want them to all
           have unique groupId's so they do not conflict with other
-          recording tests running in live mode.
+          recording tests running in live mode. Live test pipeline
+          runs in recording mode, so we need to generate random
+          groupId's.
          */
-        if (getTestMode() == TestMode.LIVE) {
+        if (getTestMode() == TestMode.LIVE || GENERATE_RANDOM_GROUP_IDENTIFIER) {        
             return UUID.randomUUID().toString();
         }
 
