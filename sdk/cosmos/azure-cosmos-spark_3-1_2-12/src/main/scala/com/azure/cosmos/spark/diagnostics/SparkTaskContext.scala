@@ -22,6 +22,7 @@ private[spark] case class DeleteOperation(sparkTaskContext: SparkTaskContext, it
 private[spark] case class SparkTaskContext(correlationActivityId: String,
                                            stageId: Int,
                                            partitionId: Long,
+                                           taskAttemptId: Long,
                                            details: String) extends OperationContext {
 
   @transient private lazy val cachedToString = {
@@ -29,6 +30,7 @@ private[spark] case class SparkTaskContext(correlationActivityId: String,
       "correlationActivityId=" + correlationActivityId +
       ",stageId=" + stageId +
       ",partitionId=" + partitionId +
+      ",taskAttemptId=" + taskAttemptId +
       ",details=" + details + ")"
   }
 
