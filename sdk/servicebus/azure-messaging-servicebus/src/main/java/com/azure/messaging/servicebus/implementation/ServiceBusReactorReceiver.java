@@ -239,7 +239,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
-        final Mono<Void> result = Mono.create(sink -> {
+        final Mono<Void> result = Mono.<Void>create(sink -> {
             workItem.start(sink);
             try {
                 provider.getReactorDispatcher().invoke(() -> {
@@ -362,7 +362,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         });
     }
 
-    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Object> sink, Throwable error) {
+    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error) {
         final boolean isSettled = delivery != null && delivery.remotelySettled();
         if (isSettled) {
             delivery.settle();
@@ -392,7 +392,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
         private Mono<Void> mono;
         private Instant expirationTime;
-        private MonoSink<Object> sink;
+        private MonoSink<Void> sink;
         private Throwable throwable;
 
         private UpdateDispositionWorkItem(String lockToken, DeliveryState state, Duration timeout) {
@@ -429,11 +429,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             return mono;
         }
 
-        private MonoSink<Object> getSink() {
+        private MonoSink<Void> getSink() {
             return sink;
         }
 
-        private void start(MonoSink<Object> sink) {
+        private void start(MonoSink<Void> sink) {
             Objects.requireNonNull(sink, "'sink' cannot be null.");
             this.sink = sink;
             this.sink.onDispose(() -> isDisposed.set(true));
