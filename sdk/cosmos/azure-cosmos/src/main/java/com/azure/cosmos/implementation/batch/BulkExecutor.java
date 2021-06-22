@@ -116,7 +116,8 @@ public final class BulkExecutor<TContext> {
         operationListener = ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
             .getCosmosBulkProcessingOptionAccessor()
             .getOperationContext(bulkOptions);
-        if (operationListener.getOperationContext() != null) {
+        if (operationListener != null &&
+            operationListener.getOperationContext() != null) {
             operationContextText = operationListener.getOperationContext().toString();
         } else {
             operationContextText = "n/a";
