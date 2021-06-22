@@ -478,6 +478,6 @@ public final class BulkExecutor<TContext> {
     }
 
     private void onFlush() {
-        this.groupSinks.forEach(sink -> sink.next(new FlushBuffersItemOperation()));
+        this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
     }
 }
