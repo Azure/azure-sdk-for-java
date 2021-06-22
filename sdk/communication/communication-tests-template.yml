@@ -1,8 +1,8 @@
 parameters:
   PackageName: not-specified
-  SafeName: notspecified
+  SafeName: not-specified
   Clouds: 'Public,Int'
-  TestMode: ${{ parameters.TestMode }}
+  TestMode: LIVE
   EnvVars: {}
 
 stages:
