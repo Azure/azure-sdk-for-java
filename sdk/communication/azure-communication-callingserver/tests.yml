@@ -1,12 +1,10 @@
 trigger: none
 
-parameters:
-  PackageName: azure-communication-callingserver
-  SafeName: azurecommunicationcallingserver
-
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:     
+    parameters:
+      PackageName: azure-communication-callingserver
+      SafeName: azurecommunicationcallingserver      
       CloudConfig:
         Public:
           SubscriptionConfigurations:
