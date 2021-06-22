@@ -28,6 +28,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: EnvVars
+    type: object
+    default: {}
 
 jobs:
   - job: 'Build'
@@ -295,3 +298,4 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
+        EnvVars: ${{ parameters.EnvVars }}
