@@ -359,8 +359,7 @@ public abstract class IntegrationTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (Exception error) {
-                logger.error(String.format("[%s]: %s didn't close properly.", testName,
-                    closeable.getClass().getSimpleName()), error);
+                logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
 
